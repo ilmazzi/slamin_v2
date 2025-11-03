@@ -1,6 +1,6 @@
 <div>
     @if($articles && $articles->count() > 0)
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" x-data :style="`transform: translateY(${scrollY * 0.03}px)`">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         @foreach($articles->take(3) as $i => $article)
         <article class="group" x-data x-intersect.once="$el.classList.add('animate-fade-in')" style="animation-delay: {{ $i * 0.1 }}s">
             <a href="{{ route('articles.show', $article->id) }}" class="block">

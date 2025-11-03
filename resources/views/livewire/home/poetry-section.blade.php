@@ -1,6 +1,6 @@
 <div>
     @if($poems && $poems->count() > 0)
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" x-data :style="`transform: translateY(${scrollY * 0.05}px)`">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         @foreach($poems->take(3) as $i => $poem)
         <article class="group" x-data x-intersect.once="$el.classList.add('animate-fade-in')" style="animation-delay: {{ $i * 0.1 }}s">
             <a href="{{ route('poems.show', $poem->id) }}" class="block">

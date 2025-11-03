@@ -1,6 +1,6 @@
 <div>
     @if ($recentEvents && $recentEvents->count() > 0)
-    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8" x-data :style="`transform: translateY(${scrollY * 0.1}px)`">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div class="text-center mb-10">
             <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
                 Eventi <span class="italic text-primary-600">in Arrivo</span>
