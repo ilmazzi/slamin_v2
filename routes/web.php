@@ -98,10 +98,10 @@ Route::get('/support', function () {
     return view('pages.support');
 })->name('support');
 
-// Dashboard Route (placeholder)
+// Dashboard Routes (entrambi i nomi per compatibilità)
 Route::get('/dashboard', function () {
     return redirect('/'); // Redirect to home for now
-})->name('dashboard.index');
+})->middleware('auth')->name('dashboard')->name('dashboard.index');
 
 // Auth Routes
 Route::get('/login', function () {
