@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
+// use Spatie\Permission\Traits\HasRoles; // Removed for now - install spatie/laravel-permission if needed
 use App\Models\UserSubscription;
 use App\Models\VideoComment;
 use App\Models\VideoSnap;
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable; // HasRoles removed for now
 
     /**
      * The attributes that are mass assignable.
