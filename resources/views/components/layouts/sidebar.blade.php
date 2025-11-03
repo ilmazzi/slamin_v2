@@ -39,10 +39,11 @@
         <nav class="flex-1 overflow-y-auto overflow-x-visible py-4 px-3">
             <ul class="space-y-1">
                 <!-- Home -->
-                <li class="relative" x-data="{ tooltip: false }">
+                <li class="relative" x-data="{ tooltip: false }" x-ref="homeItem">
                     <a href="{{ route('home') }}" 
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
+                       x-ref="homeLink"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,16 +53,22 @@
                     </a>
                     <!-- Tooltip -->
                     <div x-show="tooltip && collapsed"
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 translate-x-2"
-                         x-transition:enter-end="opacity-100 translate-x-0"
-                         x-transition:leave="transition ease-in duration-150"
-                         x-transition:leave-start="opacity-100 translate-x-0"
-                         x-transition:leave-end="opacity-0 translate-x-2"
-                         class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30"
-                         style="display: none;">
-                        Home
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 translate-x-4 scale-95"
+                         x-transition:enter-end="opacity-100 translate-x-0 scale-100"
+                         x-transition:leave="transition ease-in duration-200"
+                         x-transition:leave-start="opacity-100 translate-x-0 scale-100"
+                         x-transition:leave-end="opacity-0 translate-x-4 scale-95"
+                         class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999] backdrop-blur-sm"
+                         :style="`left: 88px; top: ${$refs.homeLink.getBoundingClientRect().top}px;`"
+                         style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);">
+                        <span class="relative z-10">Home</span>
+                        <!-- Glow effect -->
+                        <div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div>
+                        <!-- Arrow -->
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5">
+                            <div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div>
+                        </div>
                     </div>
                 </li>
 
@@ -70,6 +77,7 @@
                     <a href="{{ route('events.index') }}" 
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
+                       x-ref="eventiLink"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,10 +85,7 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Eventi</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
-                        Eventi
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
-                    </div>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.eventiLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">Eventi</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
 
                 @auth
@@ -89,6 +94,7 @@
                     <a href="#" 
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
+                       x-ref="gigsLink"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,10 +102,7 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Gigs</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
-                        Gigs
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
-                    </div>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.gigsLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">Gigs</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
                 @endauth
 
@@ -108,6 +111,7 @@
                     <a href="#" 
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
+                       x-ref="mediaLink"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,10 +119,7 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Media</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
-                        Media
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
-                    </div>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.mediaLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">Media</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
 
                 <!-- Poesie -->
@@ -126,6 +127,7 @@
                     <a href="{{ route('poems.index') }}" 
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
+                       x-ref="poesieLink"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,10 +135,7 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Poesie</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
-                        Poesie
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
-                    </div>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.poesieLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">Poesie</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
 
                 <!-- Articoli -->
@@ -144,6 +143,7 @@
                     <a href="{{ route('articles.index') }}" 
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
+                       x-ref="articoliLink"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,10 +151,7 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Articoli</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
-                        Articoli
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
-                    </div>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.articoliLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">Articoli</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
 
                 <!-- Galleria -->
@@ -162,6 +159,7 @@
                     <a href="{{ route('gallery.index') }}" 
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
+                       x-ref="galleriaLink"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,10 +167,7 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Galleria</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
-                        Galleria
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
-                    </div>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.galleriaLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">Galleria</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
 
                 @auth
@@ -181,6 +176,7 @@
                     <a href="#" 
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
+                       x-ref="gruppiLink"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,10 +184,7 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Gruppi</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
-                        Gruppi
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
-                    </div>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.gruppiLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">Gruppi</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
 
                 <!-- Forum -->
@@ -199,6 +192,7 @@
                     <a href="#" 
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
+                       x-ref="forumLink"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,10 +200,7 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Forum</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
-                        Forum
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
-                    </div>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.forumLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">Forum</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
                 @endauth
             </ul>
