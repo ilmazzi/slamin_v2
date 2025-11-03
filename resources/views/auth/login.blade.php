@@ -20,7 +20,7 @@
                 </div>
 
                 <!-- Login Form -->
-                <form action="{{ route('login') }}" method="POST" class="mt-8 space-y-6">
+                <form action="{{ route('login.process') }}" method="POST" class="mt-8 space-y-6">
                     @csrf
 
                     <!-- Email -->

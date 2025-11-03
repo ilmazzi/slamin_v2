@@ -103,14 +103,26 @@ Route::get('/dashboard', function () {
     return redirect('/'); // Redirect to home for now
 })->name('dashboard.index');
 
-// Auth Routes (placeholder)
+// Auth Routes
 Route::get('/login', function () {
     return view('auth.login');
 })->middleware('guest')->name('login');
 
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'processLogin'])
+    ->middleware('guest')
+    ->name('login.process');
+
 Route::get('/register', function () {
     return view('auth.register');
 })->middleware('guest')->name('register');
+
+Route::post('/register', [App\Http\Controllers\AuthController::class, 'processRegistration'])
+    ->middleware('guest')
+    ->name('register.process');
+
+Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
 
 // Resource routes removed - now using proper routes above
 

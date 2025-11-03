@@ -52,7 +52,7 @@
                 </div>
 
                 <!-- Register Form -->
-                <form action="{{ route('register') }}" method="POST" class="space-y-5">
+                <form action="{{ route('register.process') }}" method="POST" class="space-y-5">
                     @csrf
 
                     <!-- Nome Completo -->
