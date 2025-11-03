@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public routes
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', \App\Livewire\Home\HomeIndex::class)->name('home');
 
 // Color System
 Route::get('/colors', \App\Livewire\SimpleThemeManager::class)->name('colors');
