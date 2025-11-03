@@ -9,7 +9,7 @@ class HomeIndex extends Component
     public function render()
     {
         return view('livewire.home.home-index')
-            ->layout('components.layouts.master', [
+            ->layout('components.layouts.app', [
                 'title' => 'Home - Poetry Social Network'
             ]);
     }
