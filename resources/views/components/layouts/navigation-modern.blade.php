@@ -5,9 +5,9 @@
         <div class="flex items-center justify-between h-16 md:h-20">
             <!-- Logo -->
             <a href="{{ route('home') }}" class="flex items-center group">
-                <img src="{{ asset('assets/images/logo.svg') }}" 
+                <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
                      alt="{{ config('app.name') }}" 
-                     class="h-10 md:h-14 w-auto group-hover:scale-105 transition-transform">
+                     class="h-8 md:h-10 w-auto group-hover:scale-105 transition-transform">
             </a>
 
             <!-- Desktop Navigation -->
