@@ -4,7 +4,7 @@
     @endphp
     
     @if ($carouselSlides->count() > 0)
-    <section id="hero" class="relative h-screen overflow-hidden"
+    <section id="hero" class="relative h-[70vh] lg:h-[75vh] overflow-hidden"
              x-data="{
                  currentSlide: 0,
                  slides: {{ $carouselSlides->count() }},
