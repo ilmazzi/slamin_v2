@@ -1,83 +1,88 @@
 <div>
     @php
-    // Get latest users with profile photos
-    $recentUsers = \App\Models\User::whereNotNull('profile_photo')
-        ->latest()
-        ->limit(7)
-        ->get();
+    $recentUsers = \App\Models\User::whereNotNull('profile_photo')->latest()->limit(7)->get();
     @endphp
     
     @if($recentUsers && $recentUsers->count() > 0)
-    <section class="py-12 md:py-20 bg-gradient-to-br from-primary-50 via-white to-primary-100 dark:from-neutral-950 dark:via-neutral-900 dark:to-primary-950 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-            <!-- Section Header -->
-            <div class="text-center mb-8 md:mb-12">
-                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-neutral-900 dark:text-white leading-tight animate-fade-in" 
-                    style="font-family: 'Crimson Pro', serif;">
-                    La Voce della <span class="italic text-primary-600">Community</span>
+    <section class="py-16 md:py-24 bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 relative overflow-hidden">
+        <!-- Animated Background -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute w-96 h-96 bg-white rounded-full blur-3xl -top-48 -left-48 animate-pulse"></div>
+            <div class="absolute w-96 h-96 bg-white rounded-full blur-3xl -bottom-48 -right-48 animate-pulse" style="animation-delay: 1s;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+            <!-- Header -->
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white leading-tight" style="font-family: 'Crimson Pro', serif;">
+                    La Voce della <span class="italic text-primary-200">Community</span>
                 </h2>
-                <p class="text-lg md:text-xl lg:text-2xl font-light text-neutral-600 dark:text-neutral-400 animate-fade-in" style="animation-delay: 0.2s">
-                    Migliaia di poeti, un'unica passione
-                </p>
+                <p class="text-xl md:text-2xl text-white/90">Video, foto e storie dei nostri poeti</p>
             </div>
 
-            <!-- Bento Grid (Video + Photos) -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 max-w-6xl mx-auto">
-                <!-- Large Featured User (Mobile: full width, Desktop: 2 cols) -->
+            <!-- Bento Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-6xl mx-auto">
+                <!-- Featured (2x2) -->
                 @if($recentUsers->first())
-                <div class="col-span-2 row-span-2 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl group animate-fade-in-up bg-white dark:bg-neutral-800"
+                <div class="col-span-2 row-span-2 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl group"
+                     x-data
+                     x-intersect.once="$el.classList.add('animate-scale-in')"
                      style="animation-delay: 0.1s">
-                    <div class="relative h-64 md:h-96">
+                    <div class="relative h-full min-h-[300px] md:min-h-[400px] bg-neutral-900">
                         <img src="{{ $recentUsers->first()->profile_photo_url }}" 
                              alt="{{ $recentUsers->first()->name }}" 
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
                         
-                        <!-- Featured Badge -->
-                        <div class="absolute top-4 right-4">
-                            <span class="px-3 py-1.5 bg-primary-600 text-white rounded-full text-xs font-bold uppercase tracking-wider shadow-lg">
-                                ⭐ Featured
-                            </span>
+                        <!-- Play button overlay (simulato) -->
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center shadow-2xl">
+                                <svg class="w-10 h-10 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
                         </div>
                         
-                        <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-                            <h3 class="text-xl md:text-2xl font-bold text-white mb-2">{{ $recentUsers->first()->name }}</h3>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="px-3 py-1 bg-primary-600 text-white text-xs font-bold rounded-full">⭐ Featured</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">{{ $recentUsers->first()->name }}</h3>
                             @if($recentUsers->first()->bio)
-                            <p class="text-sm md:text-base text-white/90 mb-3 line-clamp-2">{{ Str::limit($recentUsers->first()->bio, 100) }}</p>
+                            <p class="text-white/90 text-sm mb-3 line-clamp-2">{{ Str::limit($recentUsers->first()->bio, 80) }}</p>
                             @endif
-                            <div class="flex items-center gap-4 text-white/90 text-sm">
+                            <div class="flex gap-4 text-white/80 text-sm">
                                 <span>{{ $recentUsers->first()->poems()->count() }} poesie</span>
-                                <span>•</span>
-                                <span>{{ $recentUsers->first()->followers_count ?? 0 }} followers</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 @endif
 
-                <!-- Photo Grid Items -->
+                <!-- Grid Photos -->
                 @foreach($recentUsers->skip(1)->take(6) as $i => $user)
-                <div class="rounded-xl md:rounded-2xl overflow-hidden shadow-lg group animate-fade-in-up bg-white dark:bg-neutral-800"
+                <div class="rounded-xl md:rounded-2xl overflow-hidden shadow-xl group"
+                     x-data
+                     x-intersect.once="$el.classList.add('animate-scale-in')"
                      style="animation-delay: {{ ($i + 2) * 0.1 }}s">
-                    <div class="relative aspect-square">
+                    <div class="relative aspect-square bg-neutral-900">
                         <img src="{{ $user->profile_photo_url }}" 
                              alt="{{ $user->name }}" 
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-2 md:p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <p class="text-white text-xs md:text-sm font-semibold truncate">{{ $user->name }}</p>
-                            <p class="text-white/80 text-xs truncate">{{ $user->poems()->count() }} poesie</p>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="absolute bottom-0 left-0 right-0 p-3">
+                                <p class="text-white font-semibold text-sm truncate">{{ $user->name }}</p>
+                                <p class="text-white/80 text-xs">{{ $user->poems()->count() }} poesie</p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
 
-            <!-- CTA Button -->
-            <div class="text-center mt-8 md:mt-12 animate-fade-in" style="animation-delay: 0.8s">
-                <x-ui.buttons.primary 
-                    href="#"
-                    size="lg">
+            <!-- CTA -->
+            <div class="text-center mt-12">
+                <x-ui.buttons.primary href="#" size="lg">
                     Esplora la Community
                 </x-ui.buttons.primary>
             </div>
@@ -85,37 +90,9 @@
     </section>
     
     <style>
-        @keyframes fade-in-up {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-fade-in-up {
-            animation: fade-in-up 0.6s ease-out forwards;
-            opacity: 0;
-        }
-        
-        @keyframes fade-in {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .animate-fade-in {
-            animation: fade-in 0.8s ease-out forwards;
-        }
-        
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
+        @keyframes scale-in { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .animate-scale-in { animation: scale-in 0.5s ease-out forwards; opacity: 0; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     </style>
     @endif
 </div>
