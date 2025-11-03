@@ -39,8 +39,10 @@
         <nav class="flex-1 overflow-y-auto py-4 px-3">
             <ul class="space-y-1">
                 <!-- Home -->
-                <li>
+                <li class="relative" x-data="{ tooltip: false }">
                     <a href="{{ route('home') }}" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,11 +50,26 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Home</span>
                     </a>
+                    <!-- Tooltip -->
+                    <div x-show="tooltip && collapsed"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 translate-x-2"
+                         x-transition:enter-end="opacity-100 translate-x-0"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 translate-x-0"
+                         x-transition:leave-end="opacity-0 translate-x-2"
+                         class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50"
+                         style="display: none;">
+                        Home
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                    </div>
                 </li>
 
                 <!-- Eventi -->
-                <li>
+                <li class="relative" x-data="{ tooltip: false }">
                     <a href="{{ route('events.index') }}" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,12 +77,18 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Eventi</span>
                     </a>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                        Eventi
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                    </div>
                 </li>
 
                 @auth
                 <!-- Gigs -->
-                <li>
+                <li class="relative" x-data="{ tooltip: false }">
                     <a href="#" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,12 +96,18 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Gigs</span>
                     </a>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                        Gigs
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                    </div>
                 </li>
                 @endauth
 
                 <!-- Media -->
-                <li>
+                <li class="relative" x-data="{ tooltip: false }">
                     <a href="#" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,11 +115,17 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Media</span>
                     </a>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                        Media
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                    </div>
                 </li>
 
                 <!-- Poesie -->
-                <li>
+                <li class="relative" x-data="{ tooltip: false }">
                     <a href="{{ route('poems.index') }}" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,11 +133,17 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Poesie</span>
                     </a>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                        Poesie
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                    </div>
                 </li>
 
                 <!-- Articoli -->
-                <li>
+                <li class="relative" x-data="{ tooltip: false }">
                     <a href="{{ route('articles.index') }}" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,11 +151,17 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Articoli</span>
                     </a>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                        Articoli
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                    </div>
                 </li>
 
                 <!-- Galleria -->
-                <li>
+                <li class="relative" x-data="{ tooltip: false }">
                     <a href="{{ route('gallery.index') }}" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,12 +169,18 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Galleria</span>
                     </a>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                        Galleria
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                    </div>
                 </li>
 
                 @auth
                 <!-- Gruppi -->
-                <li>
+                <li class="relative" x-data="{ tooltip: false }">
                     <a href="#" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,11 +188,17 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Gruppi</span>
                     </a>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                        Gruppi
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                    </div>
                 </li>
 
                 <!-- Forum -->
-                <li>
+                <li class="relative" x-data="{ tooltip: false }">
                     <a href="#" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -147,6 +206,10 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Forum</span>
                     </a>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                        Forum
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                    </div>
                 </li>
                 @endauth
             </ul>
