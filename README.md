@@ -1,350 +1,260 @@
-# 🎭 SLAMIN - Poetry Social Network
+# 🎨 SLAMIN Color System
 
-![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
-![Livewire](https://img.shields.io/badge/Livewire-3.x-4E56A6?style=for-the-badge&logo=livewire&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Alpine.js](https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=for-the-badge&logo=alpine.js&logoColor=white)
-
-> **La community poetica più innovativa d'Italia** - Un social network elegante e moderno dedicato ai poeti, con design minimalista e funzionalità avanzate.
+Sistema semplice per gestire colori - 1 palette + semantici fissi tipo Tailwind.
 
 ---
 
-## ✨ Features
-
-### 🎬 Hero Slider
-- **4 slide dinamiche** con auto-play (7s)
-- **Parallax effect** su immagini di sfondo
-- **Progress bar animata** per ogni slide
-- **Navigation arrows** con hover effects
-- **Pause on hover** e ripresa automatica
-- Immagini da Unsplash in HD
-
-### 📰 Feed Interattivo
-- Post con **immagini reali** e poesie
-- **Avatar dinamici** (Pravatar)
-- Layout **senza bordi** - solo shadow e blur
-- Actions: Like, Commenti, Condividi, Salva
-- **Sidebar sticky** con Trending e Suggeriti
-- Filtri: Tutti, Seguiti, Trending
-
-### 🌟 Discover Section
-- Grid responsive di **8 poeti emergenti**
-- **Foto reali** con overlay gradient
-- Hover: scale + translate effects
-- Button "Segui" con backdrop blur
-
-### 🎭 Eventi
-- **3 eventi** con immagini Unsplash
-- Date badge floating
-- Category tags
-- Info complete + CTA
-- Hover: scale image effect
-
-### 🎨 Design System
-- **Palette custom**: Accent (coral), Primary (slate), Secondary (sage)
-- **Tipografia**: Crimson Pro (serif), Inter (sans)
-- **Spacing armonioso**: 8px base grid
-- **Rounded-3xl**: 28px border radius
-- **Backdrop blur**: effetto vetro
-- **No borders**: solo shadow e transparenze
-
----
-
-## 🚀 Tech Stack
-
-- **Backend**: Laravel 12.x
-- **Frontend**: Livewire 3.x
-- **Styling**: Tailwind CSS 4.x + SCSS
-- **JavaScript**: Alpine.js 3.x
-- **Build Tool**: Vite
-- **Images**: Unsplash API + Pravatar
-
----
-
-## 📦 Installazione
-
-### Prerequisiti
-- PHP 8.2+
-- Composer
-- Node.js 20.19+ / 22.12+
-- MySQL/PostgreSQL
-
-### Setup
+## 🚀 Quick Start
 
 ```bash
-# Clone repository
-git clone https://github.com/YOUR-USERNAME/slamin_v2.git
-cd slamin_v2
-
-# Install PHP dependencies
+# 1. Installa dipendenze
+npm install
 composer install
 
-# Install NPM dependencies
-npm install
-
-# Copy environment file
+# 2. Setup ambiente
 cp .env.example .env
-
-# Generate app key
 php artisan key:generate
 
-# Run migrations
-php artisan migrate
-
-# Build assets
-npm run build
-
-# Start development server
-php artisan serve
-```
-
-### Development Mode
-
-```bash
-# Terminal 1: Laravel server
+# 3. Avvia server
 php artisan serve
 
-# Terminal 2: Vite dev server
+# 4. In un altro terminale, compila assets
 npm run dev
 ```
 
-Apri: `http://localhost:8000/parallax`
+**URLs:**
+- Home: `http://localhost:8000`
+- Gestione Colori: `http://localhost:8000/colors`
+- Parallax Demo: `http://localhost:8000/parallax`
 
 ---
 
-## 🎨 Routes Disponibili
+## 🎨 Sistema Colori
 
-| Route | Descrizione |
-|-------|-------------|
-| `/` | Homepage |
-| `/parallax` | **Main Layout** - Hero slider + Feed + Discover + Eventi |
-| `/verse` | Layout masonry innovativo |
-| `/fluid` | Layout editoriale fluido |
-| `/feed` | Social feed layout |
-| `/test-styles` | Test colori e stili |
+### Come Funziona
+
+**1 colore → 1 palette (50-950) + semantici fissi**
+
+### Gestione Colori
+
+Vai su `/colors` per:
+1. Scegliere preset (Sky, Emerald, Orange, Rose, Slate)
+2. Personalizzare il colore base
+3. Generare palette (11 sfumature con algoritmo CIELab)
+4. Applicare al sito
+
+### Palette Principale
+
+Definita in `resources/css/_variables.scss` e `resources/css/app.css`:
+```
+primary-50  → primary-950 (11 sfumature)
+```
+
+Usala per l'identità visiva del sito:
+```html
+<button class="bg-primary-500">Button</button>
+<div class="bg-primary-50">Background chiaro</div>
+<h1 class="text-primary-700">Heading</h1>
+```
+
+### Colori Semantici (Fissi)
+
+Sempre gli stessi, tipo Tailwind:
+```
+success: #10b981 (verde)
+warning: #f59e0b (arancione)
+error: #ef4444 (rosso)
+info: #3b82f6 (blu)
+```
+
+Usa per messaggi:
+```html
+<div class="bg-success">✅ Salvato!</div>
+<div class="bg-warning">⚠️ Attenzione</div>
+<div class="bg-error">❌ Errore</div>
+<div class="bg-info">ℹ️ Info</div>
+```
 
 ---
 
-## 🎯 Funzionalità Principali
+## ⚙️ Build System (Vite)
 
-### Hero Slider
+### File di Configurazione
+
+**`vite.config.js`**
 ```javascript
-// Auto-play configurabile
-autoplayInterval: 7000ms
-// Pause on hover
-// Navigation: arrows + indicators
-// Smooth transitions: 1000ms
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js'
+            ],
+            refresh: true,
+        }),
+    ],
+});
 ```
 
-### Parallax Effect
-```javascript
-// Background: 0.5x scroll speed
-// Content: 0.3x scroll speed
-// Smooth e fluido
-```
+### File CSS
 
-### Animazioni
-- **Scroll animations**: Fade in up con stagger
-- **Hover effects**: Scale, translate, shadow
-- **Transitions**: 300-700ms ease-out
-- **Progress bar**: Linear 7s animation
+**`resources/css/app.css`**
+- Entry point CSS
+- Import Tailwind v4
+- Definisce @theme (variabili CSS custom)
+- Utility classes custom
 
----
+### Comandi Build
 
-## 🎨 Color Palette
-
-```css
-/* Accent - Coral/Terracotta */
---color-accent-500: #e06155;
---color-accent-600: #cc4237;
-
-/* Primary - Slate Blue */
---color-primary-500: #64748b;
---color-primary-600: #475569;
-
-/* Secondary - Sage Green */
---color-secondary-500: #637063;
---color-secondary-600: #4e5a4e;
-
-/* Neutral - Warm Gray */
---color-neutral-50: #fafaf9;
---color-neutral-900: #1c1917;
-```
-
----
-
-## 📁 Struttura Progetto
-
-```
-slamin_v2/
-├── app/
-│   ├── Livewire/          # Componenti Livewire
-│   └── Models/            # Eloquent models
-├── resources/
-│   ├── css/
-│   │   ├── app.css        # Main CSS (Tailwind + custom)
-│   │   ├── _variables.scss # Design tokens
-│   │   └── _mixins.scss   # SCSS mixins
-│   ├── js/
-│   │   └── app.js         # Alpine.js + components
-│   └── views/
-│       ├── components/layouts/
-│       │   ├── parallax.blade.php  # Main layout ⭐
-│       │   ├── verse.blade.php
-│       │   └── fluid.blade.php
-│       └── parallax/
-│           └── index.blade.php      # Homepage ⭐
-├── routes/
-│   └── web.php            # Routes
-└── vite.config.js         # Vite configuration
-```
-
----
-
-## 🎭 Layouts Disponibili
-
-### 1. **Parallax Layout** ⭐ (Consigliato)
-- Hero slider full-screen
-- Feed con sidebar
-- Discover poeti
-- Eventi
-- CTA finale
-- **Route**: `/parallax`
-
-### 2. **Verse Layout**
-- Masonry grid asimmetrica
-- Floating navigation orb
-- FAB verticali
-- Particelle animate
-- **Route**: `/verse`
-
-### 3. **Fluid Layout**
-- Design editoriale
-- Tipografia grande
-- Layout libero
-- Cursor personalizzato
-- **Route**: `/fluid`
-
----
-
-## 🛠️ Personalizzazione
-
-### Modificare Colori
-
-Edita `resources/css/_variables.scss`:
-
-```scss
-$accent-500: #e06155;    // Tuo colore
-$primary-500: #64748b;
-$secondary-500: #637063;
-```
-
-Poi rebuilda:
 ```bash
+# Development (hot reload)
+npm run dev
+
+# Production (ottimizzato)
 npm run build
 ```
 
-### Modificare Slider
+### Come Funziona il Build
 
-Edita `resources/views/parallax/index.blade.php`:
+1. **Vite legge** `resources/css/app.css`
+2. **Processa Tailwind v4** (genera utility classes)
+3. **Applica** variabili custom (@theme)
+4. **Compila** in `public/build/assets/app-[hash].css`
+5. **Genera** `public/build/manifest.json` (mapping file)
 
-```javascript
-slides: [
-    {
-        image: 'URL_TUA_IMMAGINE',
-        title: 'Tuo Titolo',
-        subtitle: 'Tuo Sottotitolo',
-        gradient: 'from-accent-900/80 ...'
-    },
-    // ... altre slide
-]
+### Hot Reload
+
+Con `npm run dev`:
+- Vite server su porta 5173
+- Monitora cambiamenti in `resources/`
+- Auto-refresh browser quando salvi
+
+### Production Build
+
+Con `npm run build`:
+- Minifica CSS/JS
+- Tree-shaking (rimuove codice inutilizzato)
+- Hash nei nomi file (cache busting)
+- Output in `public/build/`
+
+### Includere Assets nelle View
+
+```php
+// Nel <head> delle tue view
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 ```
 
-### Modificare Auto-Play Speed
+Vite genera automaticamente i tag `<link>` e `<script>` corretti.
 
-```javascript
-// Cambia 7000 con i millisecondi desiderati
-setInterval(() => {
-    currentSlide = (currentSlide + 1) % slides.length;
-}, 7000);  // ← Modifica qui
+---
+
+## 📁 Struttura File
+
+```
+resources/
+├── css/
+│   ├── _variables.scss   # Variabili SCSS (colori, spacing, etc.)
+│   ├── _mixins.scss      # Mixins riutilizzabili
+│   └── app.css           # Entry point (Tailwind + custom)
+│
+├── js/
+│   ├── app.js            # Entry point JS
+│   └── bootstrap.js      # Setup librerie (Alpine, etc.)
+│
+└── views/
+    ├── parallax/
+    │   └── index.blade.php      # Pagina principale
+    │
+    ├── livewire/
+    │   └── simple-theme-manager.blade.php  # UI gestione colori
+    │
+    └── components/
+        └── layouts/
+            └── parallax.blade.php   # Layout
+
+app/
+├── Livewire/
+│   └── SimpleThemeManager.php   # Component gestione colori
+│
+└── Services/
+    └── SimpleColorGenerator.php # Generatore palette CIELab
+
+public/
+└── build/                # Output compilato (generato da Vite)
+    ├── manifest.json
+    └── assets/
+        ├── app-[hash].css
+        └── app-[hash].js
+
+vite.config.js           # Config Vite
+package.json             # Dipendenze npm
 ```
 
 ---
 
-## 📸 Screenshots
+## 🛠️ Troubleshooting
 
-### Hero Slider
-![Hero Slider](docs/hero-slider.png)
+### Assets non si aggiornano
 
-### Feed Section
-![Feed](docs/feed-section.png)
-
-### Discover Poeti
-![Discover](docs/discover-poets.png)
-
-### Eventi
-![Eventi](docs/events-section.png)
-
----
-
-## 🚀 Deploy
-
-### Vercel/Netlify (Frontend)
 ```bash
+# Ricompila
 npm run build
-# Upload della cartella public/build
+
+# O riavvia dev server
+npm run dev
 ```
 
-### Laravel Forge/Vapor
+### CSS non applicato
+
 ```bash
-# Push su GitHub
-git push origin main
+# Pulisci cache
+php artisan view:clear
+php artisan cache:clear
 
-# Configura Forge con:
-# - Build Command: npm run build
-# - Deploy Script: standard Laravel
+# Ricompila
+npm run build
+
+# Hard refresh browser
+Cmd + Shift + R (Mac)
+Ctrl + Shift + R (Windows)
+```
+
+### Errori Vite
+
+```bash
+# Reinstalla
+rm -rf node_modules
+npm install
+
+# Rebuild
+npm run build
 ```
 
 ---
 
-## 🤝 Contributing
+## 📦 Dipendenze
 
-Contributi benvenuti! Per favore:
+### PHP/Composer
+- Laravel 11
+- Livewire 3
+- spatie/color (per generazione palette)
 
-1. Fork il progetto
-2. Crea un branch (`git checkout -b feature/AmazingFeature`)
-3. Commit le modifiche (`git commit -m 'Add AmazingFeature'`)
-4. Push al branch (`git push origin feature/AmazingFeature`)
-5. Apri una Pull Request
-
----
-
-## 📝 License
-
-Questo progetto è sotto licenza MIT - vedi il file [LICENSE](LICENSE) per dettagli.
+### NPM
+- Vite 7
+- Tailwind CSS v4
+- Alpine.js
 
 ---
 
-## 👨‍💻 Author
+## 🎉 That's It!
 
-**Mazzi** - [GitHub](https://github.com/YOUR-USERNAME)
+Sistema pulito e semplice:
+- ✅ 1 palette configurabile
+- ✅ Semantici fissi
+- ✅ Vite build veloce
+- ✅ Zero complessità
 
----
-
-## 🙏 Ringraziamenti
-
-- **Unsplash** per le immagini
-- **Pravatar** per gli avatar
-- **Tailwind CSS** per il framework
-- **Laravel** per il backend
-- **Alpine.js** per la reattività
-
----
-
-## 📞 Support
-
-Per domande o supporto, apri una [Issue](https://github.com/YOUR-USERNAME/slamin_v2/issues).
-
----
-
-**Made with ❤️ for the Poetry Community**
+**Enjoy!** 🚀

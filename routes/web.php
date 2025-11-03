@@ -13,17 +13,17 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/test-styles', function () {
-    return view('test-styles');
-})->name('test-styles');
+// Color System
+Route::get('/colors', \App\Livewire\SimpleThemeManager::class)->name('colors');
 
-Route::get('/test-simple', function () {
-    return view('test-simple');
-})->name('test-simple');
+// Parallax Pages
+Route::get('/parallax', function () {
+    return view('parallax.index');
+})->name('parallax');
 
-Route::get('/test-super-simple', function () {
-    return view('test-super-simple');
-})->name('test-super-simple');
+Route::get('/parallax-enhanced', function () {
+    return view('parallax.enhanced');
+})->name('parallax.enhanced');
 
 Route::get('/about', function () {
     return view('pages.about');
@@ -94,10 +94,6 @@ Route::get('/verse', function () {
 Route::get('/fluid', function () {
     return view('fluid.index');
 })->name('fluid');
-
-Route::get('/parallax', function () {
-    return view('parallax.index');
-})->name('parallax');
 
 Route::get('/profile', function () {
     return view('profile.index');

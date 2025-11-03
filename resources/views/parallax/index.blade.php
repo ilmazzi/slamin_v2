@@ -5,32 +5,32 @@
     <section id="hero" class="relative h-screen overflow-hidden"
              x-data="{
                  currentSlide: 0,
-                 slides: [
-                     {
-                         image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1920&q=80',
-                         title: 'Condividi i tuoi <span class=\'italic text-accent-300\'>versi</span><br>con il mondo',
-                         subtitle: 'La community poetica più innovativa d\'Italia',
-                         gradient: 'from-accent-900/80 via-accent-800/70 to-secondary-800/80'
-                     },
-                     {
-                         image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1920&q=80',
-                         title: 'Scopri <span class=\'italic text-secondary-300\'>poeti</span><br>straordinari',
-                         subtitle: 'Connettiti con migliaia di appassionati di poesia',
-                         gradient: 'from-secondary-900/80 via-secondary-800/70 to-primary-800/80'
-                     },
-                     {
-                         image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1920&q=80',
-                         title: 'Partecipa agli <span class=\'italic text-primary-300\'>eventi</span><br>dal vivo',
-                         subtitle: 'Poetry slam, workshop e reading in tutta Italia',
-                         gradient: 'from-primary-900/80 via-primary-800/70 to-accent-800/80'
-                     },
-                     {
-                         image: 'https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=1920&q=80',
-                         title: 'La tua <span class=\'italic text-accent-300\'>voce</span><br>merita di essere ascoltata',
-                         subtitle: 'Pubblica le tue poesie e ricevi feedback dalla community',
-                         gradient: 'from-accent-900/80 via-secondary-800/70 to-accent-800/80'
-                     }
-                 ],
+                slides: [
+                    {
+                        image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1920&q=80',
+                        title: 'Condividi i tuoi <span class=\'italic text-primary-300\'>versi</span><br>con il mondo',
+                        subtitle: 'La community poetica più innovativa d\'Italia',
+                        gradient: 'from-primary-900/80 via-primary-800/70 to-primary-700/80'
+                    },
+                    {
+                        image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1920&q=80',
+                        title: 'Scopri <span class=\'italic text-primary-200\'>poeti</span><br>straordinari',
+                        subtitle: 'Connettiti con migliaia di appassionati di poesia',
+                        gradient: 'from-primary-800/80 via-primary-700/70 to-primary-600/80'
+                    },
+                    {
+                        image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1920&q=80',
+                        title: 'Partecipa agli <span class=\'italic text-primary-300\'>eventi</span><br>dal vivo',
+                        subtitle: 'Poetry slam, workshop e reading in tutta Italia',
+                        gradient: 'from-primary-900/80 via-primary-700/70 to-primary-600/80'
+                    },
+                    {
+                        image: 'https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=1920&q=80',
+                        title: 'La tua <span class=\'italic text-primary-300\'>voce</span><br>merita di essere ascoltata',
+                        subtitle: 'Pubblica le tue poesie e ricevi feedback dalla community',
+                        gradient: 'from-primary-900/80 via-primary-800/70 to-primary-700/80'
+                    }
+                ],
                  autoplayInterval: null
              }"
              x-init="
@@ -71,7 +71,7 @@
                         <p class="text-2xl lg:text-3xl font-light mb-12 text-white/90"
                            x-text="slide.subtitle"></p>
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <button class="px-10 py-5 bg-white text-accent-700 rounded-2xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                            <button class="px-10 py-5 bg-white text-primary-700 rounded-2xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
                                 Inizia Ora
                             </button>
                             <button class="px-10 py-5 bg-white/10 backdrop-blur-sm border-2 border-white/50 text-white rounded-2xl font-bold text-lg hover:bg-white/20 transition-all duration-300">
@@ -146,7 +146,7 @@
                     <p class="text-neutral-600 dark:text-neutral-400">Gli ultimi versi dalla community</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button class="px-4 py-2 bg-accent-100 dark:bg-accent-900/30 text-accent-700 dark:text-accent-400 rounded-lg font-medium hover:bg-accent-200 dark:hover:bg-accent-900/50 transition-colors">
+                    <button class="px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-lg font-medium hover:bg-primary-200 dark:hover:bg-primary-900/50 transition-colors">
                         Tutti
                     </button>
                     <button class="px-4 py-2 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg font-medium transition-colors">
@@ -239,29 +239,29 @@
                             <!-- Post Actions -->
                             <div class="px-6 pb-6 flex items-center justify-between pt-2">
                                 <div class="flex items-center gap-6">
-                                    <button class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors group/btn">
-                                        <svg class="w-6 h-6 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                        </svg>
-                                        <span class="font-semibold">{{ rand(20, 150) }}</span>
-                                    </button>
-                                    <button class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors group/btn">
-                                        <svg class="w-6 h-6 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                        </svg>
-                                        <span class="font-semibold">{{ rand(5, 40) }}</span>
-                                    </button>
-                                    <button class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors group/btn">
-                                        <svg class="w-6 h-6 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <button class="text-neutral-600 dark:text-neutral-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-                                    </svg>
-                                </button>
+                    <button class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-500 transition-colors group/btn">
+                        <svg class="w-6 h-6 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                        <span class="font-semibold">{{ rand(20, 150) }}</span>
+                    </button>
+                    <button class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-500 transition-colors group/btn">
+                        <svg class="w-6 h-6 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                        <span class="font-semibold">{{ rand(5, 40) }}</span>
+                    </button>
+                    <button class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-500 transition-colors group/btn">
+                        <svg class="w-6 h-6 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                        </svg>
+                    </button>
+                </div>
+                <button class="text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-500 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                    </svg>
+                </button>
                             </div>
                         </div>
                     </article>
@@ -275,8 +275,8 @@
                         <h3 class="font-bold text-lg mb-6 text-neutral-900 dark:text-white">Trending</h3>
                         <div class="space-y-4">
                             @foreach(['#PoesiaContemporanea' => '2.3k', '#VersiLiberi' => '1.8k', '#SlamPoetry' => '1.2k', '#Emozioni' => '945'] as $tag => $count)
-                            <div class="group cursor-pointer hover:bg-accent-50 dark:hover:bg-accent-900/20 -mx-2 px-2 py-2 rounded-xl transition-colors">
-                                <div class="font-semibold text-accent-700 dark:text-accent-400 group-hover:text-accent-800 dark:group-hover:text-accent-300 transition-colors">{{ $tag }}</div>
+                            <div class="group cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-900/20 -mx-2 px-2 py-2 rounded-xl transition-colors">
+                                <div class="font-semibold text-primary-700 dark:text-primary-400 group-hover:text-primary-800 dark:group-hover:text-primary-300 transition-colors">{{ $tag }}</div>
                                 <div class="text-sm text-neutral-500 dark:text-neutral-400">{{ $count }} post oggi</div>
                             </div>
                             @endforeach
@@ -292,13 +292,13 @@
                                 <div class="flex items-center gap-3">
                                     <img src="https://i.pravatar.cc/150?img={{ $i + 10 }}" 
                                          alt="Avatar" 
-                                         class="w-12 h-12 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800 group-hover:ring-accent-400 transition-all">
+                                         class="w-12 h-12 rounded-full object-cover ring-2 ring-white dark:ring-neutral-800 group-hover:ring-primary-400 transition-all">
                                     <div>
                                         <div class="font-semibold text-neutral-900 dark:text-white text-sm">{{ ['Sofia Greco', 'Andrea Neri', 'Chiara Blu'][($i-1) % 3] }}</div>
                                         <div class="text-xs text-neutral-500 dark:text-neutral-400">{{ rand(100, 999) }} followers</div>
                                     </div>
                                 </div>
-                                <button class="px-5 py-2 bg-accent-600 hover:bg-accent-700 text-white text-sm font-semibold rounded-full transition-all hover:scale-105">
+                                <button class="px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-full transition-all hover:scale-105">
                                     Segui
                                 </button>
                             </div>
@@ -313,7 +313,7 @@
     <!-- Discover Section con Parallax -->
     <section id="discover" class="relative py-32 overflow-hidden">
         <!-- Parallax Background -->
-        <div class="absolute inset-0 bg-gradient-to-br from-secondary-100 to-secondary-200 dark:from-secondary-900/20 dark:to-secondary-800/20"
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/20 dark:to-primary-800/20"
              x-data
              :style="`transform: translateY(${(scrollY - 800) * 0.3}px)`">
         </div>
@@ -321,7 +321,7 @@
         <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-5xl font-bold text-neutral-900 dark:text-white mb-4" style="font-family: 'Crimson Pro', serif;">
-                    Scopri Nuovi <span class="italic text-secondary-700 dark:text-secondary-400">Talenti</span>
+                    Scopri Nuovi <span class="italic text-primary-700 dark:text-primary-400">Talenti</span>
                 </h2>
                 <p class="text-xl text-neutral-600 dark:text-neutral-400">Poeti emergenti che stanno conquistando la community</p>
             </div>
@@ -377,7 +377,7 @@
                     <h2 class="text-4xl font-bold text-neutral-900 dark:text-white mb-2">Eventi in Arrivo</h2>
                     <p class="text-neutral-600 dark:text-neutral-400">Non perdere i prossimi appuntamenti poetici</p>
                 </div>
-                <a href="{{ route('events.index') }}" class="text-accent-600 hover:text-accent-700 font-medium flex items-center gap-2 group">
+                <a href="{{ route('events.index') }}" class="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2 group">
                     Vedi tutti
                     <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -406,13 +406,13 @@
                         
                         <!-- Date Badge -->
                         <div class="absolute top-6 left-6 bg-white/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-lg">
-                            <div class="text-3xl font-bold text-accent-700">{{ now()->addDays($i * 5)->format('d') }}</div>
+                            <div class="text-3xl font-bold text-primary-700">{{ now()->addDays($i * 5)->format('d') }}</div>
                             <div class="text-sm text-neutral-600 font-medium">{{ now()->addDays($i * 5)->format('M') }}</div>
                         </div>
 
                         <!-- Category -->
                         <div class="absolute top-6 right-6">
-                            <span class="px-4 py-2 bg-accent-600 text-white rounded-full text-xs font-bold uppercase tracking-wider">
+                            <span class="px-4 py-2 bg-primary-600 text-white rounded-full text-xs font-bold uppercase tracking-wider">
                                 {{ ['Poetry Slam', 'Workshop', 'Reading'][($i-1) % 3] }}
                             </span>
                         </div>
@@ -449,7 +449,7 @@
     <!-- CTA Section con Parallax -->
     <section class="relative py-32 overflow-hidden">
         <!-- Parallax Background -->
-        <div class="absolute inset-0 bg-gradient-to-br from-accent-600 via-accent-700 to-secondary-700"
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800"
              x-data
              :style="`transform: translateY(${(scrollY - 2000) * 0.4}px)`">
         </div>
@@ -462,7 +462,7 @@
             <p class="text-xl mb-10 text-white/90">
                 Unisciti a migliaia di poeti che hanno già trovato la loro community
             </p>
-            <button class="px-10 py-5 bg-white text-accent-700 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+            <button class="px-10 py-5 bg-white text-primary-700 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
                 Inizia Gratuitamente
             </button>
         </div>

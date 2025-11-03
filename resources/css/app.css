@@ -8,89 +8,93 @@
 @theme {
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
     
-    --color-primary-50: #f8fafc;
-    --color-primary-100: #f1f5f9;
-    --color-primary-200: #e2e8f0;
-    --color-primary-300: #cbd5e1;
-    --color-primary-400: #94a3b8;
-    --color-primary-500: #64748b;
-    --color-primary-600: #475569;
-    --color-primary-700: #334155;
-    --color-primary-800: #1e293b;
-    --color-primary-900: #0f172a;
+    --color-primary-50: #ecfdf5;
+    --color-primary-100: #d1fae5;
+    --color-primary-200: #a7f3d0;
+    --color-primary-300: #6ee7b7;
+    --color-primary-400: #34d399;
+    --color-primary-500: #10b981;
+    --color-primary-600: #059669;
+    --color-primary-700: #047857;
+    --color-primary-800: #065f46;
+    --color-primary-900: #064e3b;
+    --color-primary-950: #022c22;
     
-    --color-accent-50: #fdf4f3;
-    --color-accent-100: #fce8e6;
-    --color-accent-200: #f9d5d2;
-    --color-accent-300: #f4b5ae;
-    --color-accent-400: #ec8b81;
-    --color-accent-500: #e06155;
-    --color-accent-600: #cc4237;
-    --color-accent-700: #ab352c;
-    --color-accent-800: #8d2f28;
-    --color-accent-900: #752c26;
+    --color-accent-50: #a4ffdb;
+    --color-accent-100: #92ffcd;
+    --color-accent-200: #7cf1bd;
+    --color-accent-300: #68e3ae;
+    --color-accent-400: #4fd69f;
+    --color-accent-500: #10b981;
+    --color-accent-600: #009e6b;
+    --color-accent-700: #008153;
+    --color-accent-800: #00663d;
+    --color-accent-900: #004c29;
+    --color-accent-950: #00381a;
     
-    --color-secondary-50: #f6f7f6;
-    --color-secondary-100: #e3e6e3;
-    --color-secondary-200: #c7ccc7;
-    --color-secondary-300: #a4aba4;
-    --color-secondary-400: #7f8a7f;
-    --color-secondary-500: #637063;
-    --color-secondary-600: #4e5a4e;
-    --color-secondary-700: #414941;
-    --color-secondary-800: #373d37;
-    --color-secondary-900: #2f332f;
+    --color-secondary-50: #a4ffdb;
+    --color-secondary-100: #92ffcd;
+    --color-secondary-200: #7cf1bd;
+    --color-secondary-300: #68e3ae;
+    --color-secondary-400: #4fd69f;
+    --color-secondary-500: #10b981;
+    --color-secondary-600: #009e6b;
+    --color-secondary-700: #008153;
+    --color-secondary-800: #00663d;
+    --color-secondary-900: #004c29;
+    --color-secondary-950: #00381a;
+    
 }
 
 /* UTILITY CLASSES CUSTOM - Scritte a mano perché Tailwind v4 non le genera */
-.bg-primary-50 { background-color: #f8fafc !important; }
-.bg-primary-100 { background-color: #f1f5f9 !important; }
-.bg-primary-200 { background-color: #e2e8f0 !important; }
-.bg-primary-300 { background-color: #cbd5e1 !important; }
-.bg-primary-400 { background-color: #94a3b8 !important; }
-.bg-primary-500 { background-color: #64748b !important; }
-.bg-primary-600 { background-color: #475569 !important; }
-.bg-primary-700 { background-color: #334155 !important; }
-.bg-primary-800 { background-color: #1e293b !important; }
-.bg-primary-900 { background-color: #0f172a !important; }
+.bg-primary-50 { background-color: #ecfdf5 !important; }
+.bg-primary-100 { background-color: #d1fae5 !important; }
+.bg-primary-200 { background-color: #a7f3d0 !important; }
+.bg-primary-300 { background-color: #6ee7b7 !important; }
+.bg-primary-400 { background-color: #34d399 !important; }
+.bg-primary-500 { background-color: #10b981 !important; }
+.bg-primary-600 { background-color: #059669 !important; }
+.bg-primary-700 { background-color: #047857 !important; }
+.bg-primary-800 { background-color: #065f46 !important; }
+.bg-primary-900 { background-color: #064e3b !important; }
 
-.bg-accent-50 { background-color: #fdf4f3 !important; }
-.bg-accent-100 { background-color: #fce8e6 !important; }
-.bg-accent-200 { background-color: #f9d5d2 !important; }
-.bg-accent-300 { background-color: #f4b5ae !important; }
-.bg-accent-400 { background-color: #ec8b81 !important; }
-.bg-accent-500 { background-color: #e06155 !important; }
-.bg-accent-600 { background-color: #cc4237 !important; }
-.bg-accent-700 { background-color: #ab352c !important; }
-.bg-accent-800 { background-color: #8d2f28 !important; }
-.bg-accent-900 { background-color: #752c26 !important; }
+.bg-accent-50 { background-color: #a4ffdb !important; }
+.bg-accent-100 { background-color: #92ffcd !important; }
+.bg-accent-200 { background-color: #7cf1bd !important; }
+.bg-accent-300 { background-color: #68e3ae !important; }
+.bg-accent-400 { background-color: #4fd69f !important; }
+.bg-accent-500 { background-color: #10b981 !important; }
+.bg-accent-600 { background-color: #009e6b !important; }
+.bg-accent-700 { background-color: #008153 !important; }
+.bg-accent-800 { background-color: #00663d !important; }
+.bg-accent-900 { background-color: #004c29 !important; }
 
-.bg-secondary-50 { background-color: #f6f7f6 !important; }
-.bg-secondary-100 { background-color: #e3e6e3 !important; }
-.bg-secondary-200 { background-color: #c7ccc7 !important; }
-.bg-secondary-300 { background-color: #a4aba4 !important; }
-.bg-secondary-400 { background-color: #7f8a7f !important; }
-.bg-secondary-500 { background-color: #637063 !important; }
-.bg-secondary-600 { background-color: #4e5a4e !important; }
-.bg-secondary-700 { background-color: #414941 !important; }
-.bg-secondary-800 { background-color: #373d37 !important; }
-.bg-secondary-900 { background-color: #2f332f !important; }
+.bg-secondary-50 { background-color: #a4ffdb !important; }
+.bg-secondary-100 { background-color: #92ffcd !important; }
+.bg-secondary-200 { background-color: #7cf1bd !important; }
+.bg-secondary-300 { background-color: #68e3ae !important; }
+.bg-secondary-400 { background-color: #4fd69f !important; }
+.bg-secondary-500 { background-color: #10b981 !important; }
+.bg-secondary-600 { background-color: #009e6b !important; }
+.bg-secondary-700 { background-color: #008153 !important; }
+.bg-secondary-800 { background-color: #00663d !important; }
+.bg-secondary-900 { background-color: #004c29 !important; }
 
-.text-primary-700 { color: #334155 !important; }
-.text-accent-600 { color: #cc4237 !important; }
-.text-accent-700 { color: #ab352c !important; }
+.text-primary-700 { color: #047857 !important; }
+.text-accent-600 { color: #009e6b !important; }
+.text-accent-700 { color: #008153 !important; }
 .text-neutral-700 { color: #44403c !important; }
 
-.border-accent-200 { border-color: #f9d5d2 !important; }
-.border-accent-900 { border-color: #752c26 !important; }
+.border-accent-200 { border-color: #7cf1bd !important; }
+.border-accent-900 { border-color: #004c29 !important; }
 
-.hover\:bg-primary-600:hover { background-color: #475569 !important; }
-.hover\:bg-primary-700:hover { background-color: #334155 !important; }
-.hover\:bg-accent-600:hover { background-color: #cc4237 !important; }
-.hover\:bg-secondary-700:hover { background-color: #414941 !important; }
+.hover\:bg-primary-600:hover { background-color: #059669 !important; }
+.hover\:bg-primary-700:hover { background-color: #047857 !important; }
+.hover\:bg-accent-600:hover { background-color: #009e6b !important; }
+.hover\:bg-secondary-700:hover { background-color: #b54600 !important; }
 
 .text-gradient {
-    background: linear-gradient(135deg, #e06155, #ab352c);
+    background: linear-gradient(135deg, #9bdbe8, #5e95a0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -99,6 +103,59 @@
 .h1 { font-size: 3rem; font-weight: 700; line-height: 1.25; }
 .h2 { font-size: 2.25rem; font-weight: 700; line-height: 1.25; }
 .h3 { font-size: 1.875rem; font-weight: 600; line-height: 1.375; }
+
+/* Semantic Colors - Success */
+.bg-success { background-color: #10b981 !important; }
+.bg-success-light { background-color: #d1fae5 !important; }
+.bg-success-dark { background-color: #065f46 !important; }
+.text-success { color: #10b981 !important; }
+.text-success-light { color: #92ffcd !important; }
+.text-success-dark { color: #00663d !important; }
+.border-success { border-color: #009e6b !important; }
+.hover\:bg-success:hover { background-color: #009e6b !important; }
+.hover\:text-success:hover { color: #009e6b !important; }
+
+/* Semantic Colors - Warning */
+.bg-warning { background-color: #f59e0b !important; }
+.bg-warning-light { background-color: #fef3c7 !important; }
+.bg-warning-dark { background-color: #b45309 !important; }
+.text-warning { color: #f59e0b !important; }
+.text-warning-light { color: #ffc97f !important; }
+.text-warning-dark { color: #b54600 !important; }
+.border-warning { border-color: #f97316 !important; }
+.hover\:bg-warning:hover { background-color: #f97316 !important; }
+.hover\:text-warning:hover { color: #f97316 !important; }
+
+/* Semantic Colors - Error/Danger */
+.bg-error { background-color: #ef4444 !important; }
+.bg-error-light { background-color: #fee2e2 !important; }
+.bg-error-dark { background-color: #991b1b !important; }
+.bg-danger { background-color: #d72c4d !important; }
+.bg-danger-light { background-color: #fee2e2 !important; }
+.bg-danger-dark { background-color: #991b1b !important; }
+.text-error { color: #ef4444 !important; }
+.text-error-light { color: #ffb5bf !important; }
+.text-error-dark { color: #98002b !important; }
+.text-danger { color: #d72c4d !important; }
+.text-danger-light { color: #fee2e2 !important; }
+.text-danger-dark { color: #991b1b !important; }
+.border-error { border-color: #d72c4d !important; }
+.border-danger { border-color: #ef4444 !important; }
+.hover\:bg-error:hover { background-color: #d72c4d !important; }
+.hover\:bg-danger:hover { background-color: #ef4444 !important; }
+.hover\:text-error:hover { color: #d72c4d !important; }
+.hover\:text-danger:hover { color: #ef4444 !important; }
+
+/* Semantic Colors - Info */
+.bg-info { background-color: #3b82f6 !important; }
+.bg-info-light { background-color: #dbeafe !important; }
+.bg-info-dark { background-color: #1e40af !important; }
+.text-info { color: #3b82f6 !important; }
+.text-info-light { color: #cafeff !important; }
+.text-info-dark { color: #41757f !important; }
+.border-info { border-color: #7ebac6 !important; }
+.hover\:bg-info:hover { background-color: #7ebac6 !important; }
+.hover\:text-info:hover { color: #7ebac6 !important; }
 
 /* Social Layout Utilities */
 .scrollbar-hide::-webkit-scrollbar {
