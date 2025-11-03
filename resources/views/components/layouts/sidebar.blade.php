@@ -165,8 +165,6 @@
             </button>
         </div>
     </div>
-
-    </div>
 </aside>
 
 <!-- Mobile Overlay -->
