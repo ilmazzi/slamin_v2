@@ -62,58 +62,58 @@
             </x-ui.buttons.primary>
         </div>
     </section>
+    
+    <style>
+        /* Animated Shapes for CTA */
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -100px;
+            animation: float-shape 25s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -50px;
+            left: -50px;
+            animation: float-shape 20s ease-in-out infinite reverse;
+        }
+
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            top: 50%;
+            left: 50%;
+            animation: float-shape 30s ease-in-out infinite;
+        }
+
+        @keyframes float-shape {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(50px, -50px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-30px, 30px) rotate(240deg);
+            }
+        }
+        
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fade-in 0.8s ease-out forwards;
+        }
+    </style>
 </div>
-
-<style>
-    /* Animated Shapes for CTA */
-    .shape {
-        position: absolute;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-    }
-
-    .shape-1 {
-        width: 300px;
-        height: 300px;
-        top: -100px;
-        right: -100px;
-        animation: float-shape 25s ease-in-out infinite;
-    }
-
-    .shape-2 {
-        width: 200px;
-        height: 200px;
-        bottom: -50px;
-        left: -50px;
-        animation: float-shape 20s ease-in-out infinite reverse;
-    }
-
-    .shape-3 {
-        width: 150px;
-        height: 150px;
-        top: 50%;
-        left: 50%;
-        animation: float-shape 30s ease-in-out infinite;
-    }
-
-    @keyframes float-shape {
-        0%, 100% {
-            transform: translate(0, 0) rotate(0deg);
-        }
-        33% {
-            transform: translate(50px, -50px) rotate(120deg);
-        }
-        66% {
-            transform: translate(-30px, 30px) rotate(240deg);
-        }
-    }
-    
-    @keyframes fade-in {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .animate-fade-in {
-        animation: fade-in 0.8s ease-out forwards;
-    }
-</style>
