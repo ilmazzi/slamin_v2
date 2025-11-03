@@ -22,9 +22,9 @@
             <div class="mb-20">
                 <div class="text-center mb-12">
                     <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
-                        Versi della <span class="italic text-primary-600">Community</span>
+                        {!! __('home.poetry_section_title') !!}
                     </h2>
-                    <p class="text-lg text-neutral-600 dark:text-neutral-400">Le poesie più recenti e amate</p>
+                    <p class="text-lg text-neutral-600 dark:text-neutral-400">{{ __('home.poetry_section_subtitle') }}</p>
                 </div>
                 <livewire:home.poetry-section />
             </div>
@@ -33,9 +33,9 @@
             <div>
                 <div class="text-center mb-12">
                     <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
-                        Storie & <span class="italic text-primary-600">Riflessioni</span>
+                        {!! __('home.articles_section_title') !!}
                     </h2>
-                    <p class="text-lg text-neutral-600 dark:text-neutral-400">Articoli dalla community poetica</p>
+                    <p class="text-lg text-neutral-600 dark:text-neutral-400">{{ __('home.articles_section_subtitle') }}</p>
                 </div>
                 <livewire:home.articles-section />
             </div>
@@ -60,13 +60,13 @@
 
         <div class="relative z-10 max-w-4xl mx-auto px-4 md:px-6 text-center text-white">
             <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight text-white" style="font-family: 'Crimson Pro', serif;">
-                La tua <span class="italic">voce</span> conta
+                {!! __('home.cta_title') !!}
             </h2>
             <p class="text-xl md:text-2xl mb-10 text-white max-w-2xl mx-auto">
-                Unisciti alla community poetica più innovativa d'Italia
+                {{ __('home.cta_subtitle') }}
             </p>
             <x-ui.buttons.primary href="{{ route('register') }}" size="lg">
-                Inizia Gratuitamente →
+                {{ __('home.cta_button') }}
             </x-ui.buttons.primary>
         </div>
     </section>

@@ -54,7 +54,7 @@
                     @endif
                     @if($carousel->content_url ?? $carousel->link_url)
                     <x-ui.buttons.primary :href="$carousel->content_url ?? $carousel->link_url" size="lg">
-                        {{ $carousel->link_text ?? 'Scopri di più' }}
+                        {{ $carousel->link_text ?? __('common.discover_more') }}
                     </x-ui.buttons.primary>
                     @endif
                 </div>

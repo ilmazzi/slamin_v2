@@ -46,9 +46,9 @@
         @endforeach
     </div>
 
-    <div class="text-center mt-10">
+        <div class="text-center mt-10">
         <x-ui.buttons.primary :href="route('poems.index')" variant="outline" size="md" icon="M9 5l7 7-7 7">
-            Tutte le Poesie
+            {{ __('home.all_poems_button') }}
         </x-ui.buttons.primary>
     </div>
     

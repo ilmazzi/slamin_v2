@@ -1,0 +1,40 @@
+<?php
+
+return [
+    // Poetry Section
+    'poetry_section_title' => 'Vers de la <span class="italic text-primary-600">Communauté</span>',
+    'poetry_section_subtitle' => 'Les poèmes les plus récents et aimés',
+    'all_poems_button' => 'Tous les Poèmes',
+
+    // Articles Section
+    'articles_section_title' => 'Histoires & <span class="italic text-primary-600">Réflexions</span>',
+    'articles_section_subtitle' => 'Articles de la communauté poétique',
+    'all_articles_button' => 'Tous les Articles',
+
+    // Events Section
+    'events_section_title' => 'Événements <span class="italic text-primary-600">à Venir</span>',
+    'events_section_subtitle' => 'Ne manquez pas les prochains rendez-vous poétiques',
+    'all_events_button' => 'Tous les Événements',
+
+    // Videos Section
+    'videos_section_title' => 'Vidéos & Photos',
+    'videos_section_subtitle' => 'De la communauté',
+
+    // New Users Section
+    'new_users_title' => 'Nouveaux Poètes',
+    'new_users_subtitle' => 'Accueillons les nouveaux membres',
+
+    // Statistics Section
+    'stats_section_title' => 'La Communauté en Chiffres',
+    'stats_section_subtitle' => 'Notre croissance continue',
+    'stats_poets' => 'Poètes',
+    'stats_videos' => 'Vidéos',
+    'stats_events' => 'Événements',
+    'stats_views' => 'Vues',
+
+    // CTA Section
+    'cta_title' => 'Votre <span class="italic">voix</span> compte',
+    'cta_subtitle' => 'Rejoignez la communauté poétique la plus innovante d\'Italie',
+    'cta_button' => 'Commencer Gratuitement →',
+];
+

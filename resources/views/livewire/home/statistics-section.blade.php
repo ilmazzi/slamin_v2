@@ -2,9 +2,9 @@
     <div class="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
         <div class="text-center mb-10">
             <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-2">
-                La Community in Numeri
+                {{ __('home.stats_section_title') }}
             </h2>
-            <p class="text-neutral-600 dark:text-neutral-400">La nostra crescita continua</p>
+            <p class="text-neutral-600 dark:text-neutral-400">{{ __('home.stats_section_subtitle') }}</p>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
@@ -29,7 +29,7 @@
                 <div class="text-3xl md:text-4xl font-bold text-primary-700 dark:text-primary-400 mb-1">
                     <span x-text="count"></span>
                 </div>
-                <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">Poeti</div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">{{ __('home.stats_poets') }}</div>
             </div>
 
             <!-- Videos -->
@@ -53,7 +53,7 @@
                 <div class="text-3xl md:text-4xl font-bold text-primary-700 dark:text-primary-400 mb-1">
                     <span x-text="count"></span>
                 </div>
-                <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">Video</div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">{{ __('home.stats_videos') }}</div>
             </div>
 
             <!-- Events -->
@@ -77,7 +77,7 @@
                 <div class="text-3xl md:text-4xl font-bold text-primary-700 dark:text-primary-400 mb-1">
                     <span x-text="count"></span>
                 </div>
-                <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">Eventi</div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">{{ __('home.stats_events') }}</div>
             </div>
 
             <!-- Views -->
@@ -101,7 +101,7 @@
                 <div class="text-3xl md:text-4xl font-bold text-primary-700 dark:text-primary-400 mb-1">
                     <span x-text="count"></span>
                 </div>
-                <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">Visualizzazioni</div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">{{ __('home.stats_views') }}</div>
             </div>
         </div>
     </div>

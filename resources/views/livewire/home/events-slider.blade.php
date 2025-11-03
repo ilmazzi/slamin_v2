@@ -30,10 +30,10 @@
         <div class="flex items-center justify-between mb-10">
             <div class="flex-1">
                 <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
-                    Eventi <span class="italic text-primary-600">in Arrivo</span>
+                    {!! __('home.events_section_title') !!}
                 </h2>
                 <p class="text-lg text-neutral-600 dark:text-neutral-400">
-                    Non perdere i prossimi appuntamenti poetici
+                    {{ __('home.events_section_subtitle') }}
                 </p>
             </div>
 
@@ -89,7 +89,7 @@
         <!-- CTA -->
         <div class="text-center mt-12">
             <x-ui.buttons.primary :href="route('events.index')" size="md" icon="M9 5l7 7-7 7">
-                Tutti gli Eventi
+                {{ __('home.all_events_button') }}
             </x-ui.buttons.primary>
         </div>
     </div>

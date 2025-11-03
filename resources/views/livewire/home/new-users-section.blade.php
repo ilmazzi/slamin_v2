@@ -7,11 +7,11 @@
     <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-8">
             <div>
-                <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-2">Nuovi Poeti</h2>
-                <p class="text-neutral-600 dark:text-neutral-400">Dai il benvenuto ai nuovi membri</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-2">{{ __('home.new_users_title') }}</h2>
+                <p class="text-neutral-600 dark:text-neutral-400">{{ __('home.new_users_subtitle') }}</p>
             </div>
             <x-ui.buttons.primary href="#" variant="ghost" size="sm" icon="M9 5l7 7-7 7">
-                Vedi tutti
+                {{ __('common.see_all') }}
             </x-ui.buttons.primary>
         </div>
 
@@ -22,7 +22,7 @@
                     <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                 </div>
                 <h3 class="font-semibold text-sm text-neutral-900 dark:text-white truncate px-1">{{ Str::limit($user->name, 15) }}</h3>
-                <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">{{ $user->poems()->count() }} poesie</p>
+                <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">{{ __('common.poems_count', ['count' => $user->poems()->count()]) }}</p>
             </div>
             @endforeach
         </div>

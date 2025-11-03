@@ -9,9 +9,9 @@
         <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
             <div class="text-center mb-8">
                 <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-2">
-                    Video & Foto
+                    {{ __('home.videos_section_title') }}
                 </h2>
-                <p class="text-neutral-600 dark:text-neutral-400">Dalla community</p>
+                <p class="text-neutral-600 dark:text-neutral-400">{{ __('home.videos_section_subtitle') }}</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto">
@@ -71,7 +71,7 @@
                                  class="w-14 h-14 rounded-lg object-cover group-hover:scale-105 transition-transform">
                             <div class="flex-1 min-w-0">
                                 <p class="font-semibold text-sm text-neutral-900 dark:text-white truncate">{{ $user->name }}</p>
-                                <p class="text-xs text-neutral-500 dark:text-neutral-400">{{ $user->poems()->count() }} poesie</p>
+                                <p class="text-xs text-neutral-500 dark:text-neutral-400">{{ __('common.poems_count', ['count' => $user->poems()->count()]) }}</p>
                             </div>
                         </div>
                     </div>
