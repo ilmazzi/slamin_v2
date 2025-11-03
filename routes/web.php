@@ -23,6 +23,53 @@ Route::get('/parallax-enhanced', function () {
     return view('parallax.enhanced');
 })->name('parallax.enhanced');
 
+// Events Routes
+Route::get('/events', function () {
+    $events = \App\Models\Event::where('status', 'published')
+        ->where('is_public', true)
+        ->orderBy('start_datetime', 'desc')
+        ->paginate(12);
+    return view('pages.events-index', compact('events'));
+})->name('events.index');
+
+Route::get('/events/{event}', function ($id) {
+    $event = \App\Models\Event::findOrFail($id);
+    return view('pages.event-show', compact('event'));
+})->name('events.show');
+
+// Poems Routes
+Route::get('/poems', function () {
+    $poems = \App\Models\Poem::where('moderation_status', 'approved')
+        ->where('is_public', true)
+        ->orderBy('created_at', 'desc')
+        ->paginate(12);
+    return view('pages.poems-index', compact('poems'));
+})->name('poems.index');
+
+Route::get('/poems/{poem}', function ($id) {
+    $poem = \App\Models\Poem::findOrFail($id);
+    return view('pages.poem-show', compact('poem'));
+})->name('poems.show');
+
+// Articles Routes
+Route::get('/articles', function () {
+    $articles = \App\Models\Article::where('moderation_status', 'approved')
+        ->where('is_public', true)
+        ->orderBy('created_at', 'desc')
+        ->paginate(12);
+    return view('pages.articles-index', compact('articles'));
+})->name('articles.index');
+
+Route::get('/articles/{article}', function ($id) {
+    $article = \App\Models\Article::findOrFail($id);
+    return view('pages.article-show', compact('article'));
+})->name('articles.show');
+
+// Gallery Route
+Route::get('/gallery', function () {
+    return view('pages.gallery');
+})->name('gallery.index');
+
 Route::get('/about', function () {
     return view('pages.about');
 })->name('about');
@@ -51,24 +98,12 @@ Route::get('/support', function () {
     return view('pages.support');
 })->name('support');
 
-// Resource routes (placeholders)
-Route::get('/events', function () {
-    return view('pages.events');
-})->name('events.index');
+// Dashboard Route (placeholder)
+Route::get('/dashboard', function () {
+    return redirect('/'); // Redirect to home for now
+})->name('dashboard.index');
 
-Route::get('/poems', function () {
-    return view('pages.poems');
-})->name('poems.index');
-
-Route::get('/articles', function () {
-    return view('pages.articles');
-})->name('articles.index');
-
-Route::get('/gallery', function () {
-    return view('pages.gallery');
-})->name('gallery.index');
-
-// Auth routes (if using Breeze/Jetstream, they would be added here)
+// Auth Routes (placeholder)
 Route::get('/login', function () {
     return view('auth.login');
 })->middleware('guest')->name('login');
@@ -77,9 +112,7 @@ Route::get('/register', function () {
     return view('auth.register');
 })->middleware('guest')->name('register');
 
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
-})->middleware('auth')->name('dashboard');
+// Resource routes removed - now using proper routes above
 
 Route::get('/feed', function () {
     return view('dashboard.feed');
