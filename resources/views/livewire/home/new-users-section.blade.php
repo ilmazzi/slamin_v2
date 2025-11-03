@@ -62,23 +62,23 @@
             </div>
         </div>
     </section>
+    
+    <style>
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-up {
+            animation: slide-up 0.5s ease-out forwards;
+            opacity: 0;
+        }
+    </style>
     @endif
 </div>
-
-<style>
-    @keyframes slide-up {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .animate-slide-up {
-        animation: slide-up 0.5s ease-out forwards;
-        opacity: 0;
-    }
-</style>
