@@ -1,7 +1,6 @@
 <div>
     @php
-    $newUsers = \App\Models\User::where('profile_visibility', 'public')
-        ->latest()
+    $newUsers = \App\Models\User::latest()
         ->limit(8)
         ->get();
     @endphp

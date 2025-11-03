@@ -1,8 +1,7 @@
 <div>
     @php
-    // Get latest users with profile photos and videos
+    // Get latest users with profile photos
     $recentUsers = \App\Models\User::whereNotNull('profile_photo')
-        ->where('profile_visibility', 'public')
         ->latest()
         ->limit(7)
         ->get();
