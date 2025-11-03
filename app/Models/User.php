@@ -14,7 +14,7 @@ use App\Models\VideoLike;
 use App\Models\Video;
 use App\Models\SystemSetting;
 use App\Models\UserLanguage;
-use App\Services\OnlineStatusService;
+// use App\Services\OnlineStatusService; // Removed - not needed
 use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -975,7 +975,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getPresenceStateAttribute(): string
     {
-        return app(OnlineStatusService::class)->getPresenceState($this);
+        // return app(OnlineStatusService::class)->getPresenceState($this);
+        return 'offline'; // Default for now
     }
 
     /**
@@ -991,7 +992,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getPresenceClassAttribute(): string
     {
-        return app(OnlineStatusService::class)->classFor($this->presence_state);
+        // return app(OnlineStatusService::class)->classFor($this->presence_state);
+        return 'text-neutral-500'; // Default for now
     }
 
     /**
@@ -999,7 +1001,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getPresenceIconAttribute(): string
     {
-        return app(OnlineStatusService::class)->iconFor($this->presence_state);
+        // return app(OnlineStatusService::class)->iconFor($this->presence_state);
+        return 'ph-circle'; // Default icon
     }
 
     /**
@@ -1007,7 +1010,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getPresenceLabelAttribute(): string
     {
-        return app(OnlineStatusService::class)->labelFor($this->presence_state);
+        // return app(OnlineStatusService::class)->labelFor($this->presence_state);
+        return 'Offline'; // Default for now
     }
 
     /**
