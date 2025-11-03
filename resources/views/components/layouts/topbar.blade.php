@@ -9,16 +9,16 @@
     <div class="flex items-center justify-between h-16 px-4 lg:px-6">
         <!-- Left Side -->
         <div class="flex items-center gap-4 flex-1">
-            <!-- Sidebar Toggle -->
+            <!-- Sidebar Toggle (Mobile Only) -->
             <button @click="$dispatch('toggle-sidebar')" 
-                    class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors">
+                    class="lg:hidden p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors">
                 <svg class="w-6 h-6 text-neutral-700 dark:text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
 
-            <!-- Logo (Hidden on Mobile when sidebar open) -->
-            <a href="{{ route('home') }}" class="hidden md:flex items-center">
+            <!-- Logo -->
+            <a href="{{ route('home') }}" class="flex items-center">
                 <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
                      alt="{{ config('app.name') }}" 
                      class="h-8 w-auto">

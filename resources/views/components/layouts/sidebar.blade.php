@@ -171,6 +171,7 @@
 
 <!-- Mobile Overlay -->
 <div x-show="mobileOpen" 
+     x-cloak
      x-transition:enter="transition-opacity ease-linear duration-300"
      x-transition:enter-start="opacity-0"
      x-transition:enter-end="opacity-100"
@@ -178,20 +179,19 @@
      x-transition:leave-start="opacity-100"
      x-transition:leave-end="opacity-0"
      @click="mobileOpen = false"
-     class="lg:hidden fixed inset-0 top-16 bg-black/50 z-30"
-     style="display: none;">
+     class="lg:hidden fixed inset-0 top-16 bg-black/50 z-30">
 </div>
 
 <!-- Mobile Sidebar -->
 <aside x-show="mobileOpen"
+       x-cloak
        x-transition:enter="transition ease-in-out duration-300"
        x-transition:enter-start="-translate-x-full"
        x-transition:enter-end="translate-x-0"
        x-transition:leave="transition ease-in-out duration-300"
        x-transition:leave-start="translate-x-0"
        x-transition:leave-end="-translate-x-full"
-       class="lg:hidden fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 z-40 overflow-hidden"
-       style="display: none;">
+       class="lg:hidden fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 z-40 overflow-hidden">
     
     <!-- Mobile Sidebar Content -->
     <div class="flex flex-col h-full">

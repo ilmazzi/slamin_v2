@@ -210,3 +210,8 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+/* Alpine.js x-cloak - Hide elements until Alpine is ready */
+[x-cloak] {
+    display: none !important;
+}
