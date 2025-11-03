@@ -18,7 +18,7 @@
 
     {{ $head ?? '' }}
 </head>
-<body class="antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100" 
+<body class="antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-x-hidden" 
       x-data="{ scrollY: 0, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' }" 
       @scroll.window="scrollY = window.scrollY"
       @sidebar-changed.window="sidebarCollapsed = $event.detail.collapsed">
@@ -30,9 +30,9 @@
     <x-layouts.sidebar />
 
     <!-- Main Content Area -->
-    <main class="pt-16 transition-all duration-300 lg:ml-0"
+    <main class="pt-16 transition-all duration-300 lg:ml-0 overflow-x-hidden"
           :class="sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'">
-        <div class="min-h-screen">
+        <div class="min-h-screen overflow-visible">
             {{ $slot }}
         </div>
 
