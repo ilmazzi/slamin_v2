@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth" x-data="{ scrollY: 0 }" @scroll.window="scrollY = window.scrollY">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,9 @@
     <!-- Additional Head Content -->
     {{ $head ?? '' }}
 </head>
-<body class="antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
+<body class="antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100" 
+      x-data="{ scrollY: 0 }" 
+      @scroll.window="scrollY = window.scrollY">
     <!-- Navigation -->
     <x-layouts.navigation-modern />
 
