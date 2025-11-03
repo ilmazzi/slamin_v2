@@ -1,20 +1,14 @@
-<nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-     x-data="{ isOpen: false, scrolled: false }"
-     @scroll.window="scrolled = window.scrollY > 50"
-     :class="scrolled ? 'bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md shadow-lg' : 'bg-transparent'">
+<nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md shadow-lg"
+     x-data="{ isOpen: false }">
     
     <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 md:h-20">
             <!-- Logo -->
             <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                <div class="relative">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-primary-500 to-primary-700 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
-                    <div class="relative w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-xl md:text-2xl">S</span>
-                    </div>
-                </div>
-                <span class="text-xl md:text-2xl font-bold"
-                      :class="scrolled ? 'text-neutral-900 dark:text-white' : 'text-white'">
+                <img src="{{ asset('assets/images/logo.png') }}" 
+                     alt="{{ config('app.name') }}" 
+                     class="h-10 md:h-12 w-auto group-hover:scale-105 transition-transform">
+                <span class="text-xl md:text-2xl font-bold text-neutral-900 dark:text-white">
                     {{ config('app.name') }}
                 </span>
             </a>
@@ -22,23 +16,19 @@
             <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center gap-8">
                 <a href="{{ route('home') }}" 
-                   class="font-medium transition-colors hover:text-primary-600"
-                   :class="scrolled ? 'text-neutral-700 dark:text-neutral-300' : 'text-white/90'">
+                   class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
                     Home
                 </a>
                 <a href="{{ route('events.index') }}" 
-                   class="font-medium transition-colors hover:text-primary-600"
-                   :class="scrolled ? 'text-neutral-700 dark:text-neutral-300' : 'text-white/90'">
+                   class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
                     Eventi
                 </a>
                 <a href="{{ route('poems.index') }}" 
-                   class="font-medium transition-colors hover:text-primary-600"
-                   :class="scrolled ? 'text-neutral-700 dark:text-neutral-300' : 'text-white/90'">
+                   class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
                     Poesie
                 </a>
                 <a href="{{ route('articles.index') }}" 
-                   class="font-medium transition-colors hover:text-primary-600"
-                   :class="scrolled ? 'text-neutral-700 dark:text-neutral-300' : 'text-white/90'">
+                   class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
                     Articoli
                 </a>
             </div>
@@ -47,19 +37,16 @@
             <div class="hidden md:flex items-center gap-4">
                 @auth
                     <a href="{{ route('dashboard.index') }}" 
-                       class="px-6 py-2.5 rounded-full font-semibold transition-all hover:scale-105"
-                       :class="scrolled ? 'bg-primary-600 text-white' : 'bg-white/20 backdrop-blur-md text-white border border-white/30'">
+                       class="px-6 py-2.5 bg-primary-600 text-white rounded-full font-semibold transition-all hover:scale-105">
                         Dashboard
                     </a>
                 @else
                     <a href="{{ route('login') }}" 
-                       class="font-medium transition-colors hover:text-primary-600"
-                       :class="scrolled ? 'text-neutral-700 dark:text-neutral-300' : 'text-white/90'">
+                       class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
                         Accedi
                     </a>
                     <a href="{{ route('register') }}" 
-                       class="px-6 py-2.5 rounded-full font-semibold transition-all hover:scale-105"
-                       :class="scrolled ? 'bg-primary-600 text-white' : 'bg-white/20 backdrop-blur-md text-white border border-white/30'">
+                       class="px-6 py-2.5 bg-primary-600 text-white rounded-full font-semibold transition-all hover:scale-105">
                         Registrati
                     </a>
                 @endauth
@@ -67,8 +54,7 @@
 
             <!-- Mobile Menu Button -->
             <button @click="isOpen = !isOpen" 
-                    class="md:hidden p-2 rounded-lg"
-                    :class="scrolled ? 'text-neutral-900 dark:text-white' : 'text-white'">
+                    class="md:hidden p-2 rounded-lg text-neutral-900 dark:text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path x-show="!isOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     <path x-show="isOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
