@@ -248,6 +248,12 @@ class Article extends Model
             // Restituisce null se non c'è immagine, così il template può gestire il placeholder
             return null;
         }
+        
+        // Se è un URL esterno, ritorna così com'è
+        if (str_starts_with($this->featured_image, 'http')) {
+            return $this->featured_image;
+        }
+        
         return asset('storage/' . $this->featured_image);
     }
 
