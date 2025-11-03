@@ -38,7 +38,7 @@
                 <div class="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/80 to-primary-700/75"></div>
             </div>
             
-            <div class="absolute inset-0 flex items-center justify-center" x-data :style="`transform: translateY(${scrollY * 0.3}px); opacity: ${1 - (scrollY / 600)}`">
+            <div class="absolute inset-0 flex items-center justify-center" x-data :style="`transform: translateY(${scrollY * 0.3}px); opacity: ${Math.max(0, 1 - (scrollY / 1200))}`">
                 <div class="text-center px-4 md:px-6 max-w-5xl mx-auto text-white"
                      x-show="currentSlide === {{ $index }}"
                      x-transition:enter="transition ease-out duration-700 delay-300"

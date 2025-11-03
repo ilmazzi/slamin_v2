@@ -1,7 +1,7 @@
 <div>
-    <div class="bg-white/98 dark:bg-neutral-900/98 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 shadow-sm">
+    <div class="bg-white/98 dark:bg-neutral-900/98 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 shadow-sm mb-0">
         <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-            <div class="grid grid-cols-4 gap-4 py-3">
+            <div class="grid grid-cols-4 gap-4 py-2">
                 <!-- Users -->
                 <div class="flex items-center justify-center gap-2 group"
                      x-data="{ count: 0, target: {{ $stats['total_users'] ?? 0 }}, started: false }"

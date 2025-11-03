@@ -1,10 +1,10 @@
 <div>
     {{-- Statistiche Compatte Sotto Nav --}}
-    <div class="relative z-40 pt-16 md:pt-20">
+    <div class="relative z-40 pt-16 md:pt-20 mb-0">
         <livewire:home.statistics-section />
     </div>
 
-    {{-- Hero Carousel --}}
+    {{-- Hero Carousel - Direttamente sotto stats --}}
     <livewire:home.hero-carousel />
 
     {{-- Video/Foto Community - SEZIONE SEPARATA --}}
