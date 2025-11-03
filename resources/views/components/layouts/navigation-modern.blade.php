@@ -4,13 +4,10 @@
     <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 md:h-20">
             <!-- Logo -->
-            <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                <img src="{{ asset('assets/images/logo.png') }}" 
+            <a href="{{ route('home') }}" class="flex items-center group">
+                <img src="{{ asset('assets/images/logo.svg') }}" 
                      alt="{{ config('app.name') }}" 
-                     class="h-10 md:h-12 w-auto group-hover:scale-105 transition-transform">
-                <span class="text-xl md:text-2xl font-bold text-neutral-900 dark:text-white">
-                    {{ config('app.name') }}
-                </span>
+                     class="h-10 md:h-14 w-auto group-hover:scale-105 transition-transform">
             </a>
 
             <!-- Desktop Navigation -->
