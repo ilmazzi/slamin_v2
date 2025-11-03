@@ -11,7 +11,7 @@
             </a>
 
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center gap-8">
+            <div class="hidden lg:flex items-center gap-6">
                 <a href="{{ route('home') }}" 
                    class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
                     Home
@@ -28,6 +28,20 @@
                    class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
                     Articoli
                 </a>
+                <a href="{{ route('gallery.index') }}" 
+                   class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
+                    Galleria
+                </a>
+                @auth
+                <a href="#" 
+                   class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
+                    Gruppi
+                </a>
+                <a href="#" 
+                   class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
+                    Forum
+                </a>
+                @endauth
             </div>
 
             <!-- Actions -->
@@ -51,7 +65,7 @@
 
             <!-- Mobile Menu Button -->
             <button @click="isOpen = !isOpen" 
-                    class="md:hidden p-2 rounded-lg text-neutral-900 dark:text-white">
+                    class="lg:hidden p-2 rounded-lg text-neutral-900 dark:text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path x-show="!isOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     <path x-show="isOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -67,18 +81,24 @@
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 -translate-y-4"
-             class="md:hidden py-4 space-y-3">
+             class="lg:hidden py-4 space-y-2">
             <a href="{{ route('home') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Home</a>
             <a href="{{ route('events.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Eventi</a>
             <a href="{{ route('poems.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Poesie</a>
             <a href="{{ route('articles.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Articoli</a>
+            <a href="{{ route('gallery.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Galleria</a>
             @auth
-                <a href="{{ route('dashboard.index') }}" class="block px-4 py-2 bg-primary-600 text-white rounded-lg text-center font-semibold">Dashboard</a>
+                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Gruppi</a>
+                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Forum</a>
+                <div class="pt-2 mt-2 border-t border-neutral-200 dark:border-neutral-700">
+                    <a href="{{ route('dashboard.index') }}" class="block px-4 py-2 bg-primary-600 text-white rounded-lg text-center font-semibold">Dashboard</a>
+                </div>
             @else
-                <a href="{{ route('login') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Accedi</a>
-                <a href="{{ route('register') }}" class="block px-4 py-2 bg-primary-600 text-white rounded-lg text-center font-semibold">Registrati</a>
+                <div class="pt-2 mt-2 border-t border-neutral-200 dark:border-neutral-700 space-y-2">
+                    <a href="{{ route('login') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Accedi</a>
+                    <a href="{{ route('register') }}" class="block px-4 py-2 bg-primary-600 text-white rounded-lg text-center font-semibold">Registrati</a>
+                </div>
             @endauth
         </div>
     </div>
 </nav>
-
