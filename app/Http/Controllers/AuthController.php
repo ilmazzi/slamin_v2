@@ -195,7 +195,7 @@ class AuthController extends Controller
                 ? "Ti diamo il bentornato, {$user->name}! Ti ricorderemo per i prossimi accessi."
                 : "Ti diamo il bentornato, {$user->name}!";
 
-            return redirect()->route('dashboard')
+            return redirect()->route('dashboard.index')
                 ->with('success', $message);
         }
 
