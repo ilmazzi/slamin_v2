@@ -1,6 +1,6 @@
 <div>
     {{-- Statistiche Compatte Sotto Nav --}}
-    <div class="relative z-40 pt-16 md:pt-20 mb-0">
+    <div class="relative z-40">
         <livewire:home.statistics-section />
     </div>
 

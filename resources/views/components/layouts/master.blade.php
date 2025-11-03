@@ -25,8 +25,8 @@
     <!-- Navigation -->
     <x-layouts.navigation-modern />
 
-    <!-- Main Content -->
-    <main>
+    <!-- Main Content (no spacing) -->
+    <main class="mt-0">
         {{ $slot }}
     </main>
 

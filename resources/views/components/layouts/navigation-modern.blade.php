@@ -85,6 +85,3 @@
     </div>
 </nav>
 
-<!-- Spacer to prevent content from going under fixed nav -->
-<div class="h-16 md:h-20"></div>
-
