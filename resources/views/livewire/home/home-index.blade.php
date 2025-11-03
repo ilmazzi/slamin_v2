@@ -1,10 +1,5 @@
 <div>
-    {{-- Statistiche Compatte Sotto Nav --}}
-    <div class="relative z-40">
-        <livewire:home.statistics-section />
-    </div>
-
-    {{-- Hero Carousel - Direttamente sotto stats --}}
+    {{-- Hero Carousel --}}
     <livewire:home.hero-carousel />
 
     {{-- Video/Foto Community - SEZIONE SEPARATA --}}
@@ -45,6 +40,11 @@
                 <livewire:home.articles-section />
             </div>
         </div>
+    </div>
+
+    {{-- Statistiche Prima del Footer --}}
+    <div class="py-12 md:py-16 bg-neutral-50 dark:bg-neutral-950">
+        <livewire:home.statistics-section />
     </div>
 
     {{-- CTA Finale --}}
