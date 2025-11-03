@@ -30,7 +30,7 @@
     <x-layouts.sidebar />
 
     <!-- Main Content Area -->
-    <main class="pt-16 transition-all duration-300"
+    <main class="pt-16 transition-all duration-300 lg:ml-0"
           :class="sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'">
         <div class="min-h-screen">
             {{ $slot }}
