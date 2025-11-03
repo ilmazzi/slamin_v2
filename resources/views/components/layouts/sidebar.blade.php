@@ -5,7 +5,10 @@
        }"
        @toggle-sidebar.window="mobileOpen = !mobileOpen"
        :class="collapsed ? 'w-20' : 'w-64'"
-       x-init="$watch('collapsed', value => localStorage.setItem('sidebarCollapsed', value))">
+       x-init="$watch('collapsed', value => { 
+           localStorage.setItem('sidebarCollapsed', value);
+           $dispatch('sidebar-changed', { collapsed: value });
+       })">
     
     <!-- Sidebar Content -->
     <div class="flex flex-col h-full">

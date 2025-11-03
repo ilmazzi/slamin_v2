@@ -20,7 +20,8 @@
 </head>
 <body class="antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100" 
       x-data="{ scrollY: 0, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' }" 
-      @scroll.window="scrollY = window.scrollY">
+      @scroll.window="scrollY = window.scrollY"
+      @sidebar-changed.window="sidebarCollapsed = $event.detail.collapsed">
     
     <!-- Top Bar -->
     <x-layouts.topbar />
