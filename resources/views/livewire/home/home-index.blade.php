@@ -1,11 +1,11 @@
 <div>
-    {{-- Hero Carousel --}}
-    <livewire:home.hero-carousel />
-
-    {{-- Statistiche Flottanti (overlay) --}}
-    <div class="relative -mt-32 z-30 mb-12">
+    {{-- Statistiche Compatte Sotto Nav --}}
+    <div class="relative z-40 pt-16 md:pt-20">
         <livewire:home.statistics-section />
     </div>
+
+    {{-- Hero Carousel --}}
+    <livewire:home.hero-carousel />
 
     {{-- Video/Foto Community - SEZIONE SEPARATA --}}
     <livewire:home.videos-section />
