@@ -9,11 +9,11 @@
      })">
 
 <!-- Desktop Sidebar - Hidden on Mobile -->
-<aside class="hidden lg:fixed lg:block left-0 top-16 bottom-0 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transition-all duration-300 z-40"
-       :class="collapsed ? 'w-20' : 'w-64'"
+<aside class="hidden lg:fixed lg:block left-0 top-16 bottom-0 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transition-all duration-300 z-40 overflow-visible"
+       :class="collapsed ? 'w-20' : 'w-64'">
     
     <!-- Sidebar Content -->
-    <div class="flex flex-col h-full">
+    <div class="flex flex-col h-full overflow-visible">
         <!-- User Info (Top) -->
         @auth
         <div class="p-4 border-b border-neutral-200 dark:border-neutral-800"
@@ -36,7 +36,7 @@
         @endauth
 
         <!-- Navigation Menu -->
-        <nav class="flex-1 overflow-y-auto py-4 px-3">
+        <nav class="flex-1 overflow-y-auto overflow-x-visible py-4 px-3">
             <ul class="space-y-1">
                 <!-- Home -->
                 <li class="relative" x-data="{ tooltip: false }">
@@ -58,10 +58,10 @@
                          x-transition:leave="transition ease-in duration-150"
                          x-transition:leave-start="opacity-100 translate-x-0"
                          x-transition:leave-end="opacity-0 translate-x-2"
-                         class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50"
+                         class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30"
                          style="display: none;">
                         Home
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
                     </div>
                 </li>
 
@@ -77,9 +77,9 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Eventi</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
                         Eventi
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
                     </div>
                 </li>
 
@@ -96,9 +96,9 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Gigs</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
                         Gigs
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
                     </div>
                 </li>
                 @endauth
@@ -115,9 +115,9 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Media</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
                         Media
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
                     </div>
                 </li>
 
@@ -133,9 +133,9 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Poesie</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
                         Poesie
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
                     </div>
                 </li>
 
@@ -151,9 +151,9 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Articoli</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
                         Articoli
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
                     </div>
                 </li>
 
@@ -169,9 +169,9 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Galleria</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
                         Galleria
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
                     </div>
                 </li>
 
@@ -188,9 +188,9 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Gruppi</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
                         Gruppi
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
                     </div>
                 </li>
 
@@ -206,9 +206,9 @@
                         </svg>
                         <span x-show="!collapsed" x-transition class="text-sm font-medium">Forum</span>
                     </a>
-                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-2 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap z-50" style="display: none;">
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-2" class="absolute left-full ml-3 top-1/2 -translate-y-1/2 px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg shadow-xl whitespace-nowrap z-[100] ring-2 ring-primary-400/30" style="display: none;">
                         Forum
-                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-900 dark:border-r-neutral-100"></div>
+                        <div class="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-primary-600"></div>
                     </div>
                 </li>
                 @endauth
@@ -276,7 +276,7 @@
         @endauth
 
         <!-- Navigation Menu -->
-        <nav class="flex-1 overflow-y-auto py-4 px-3">
+        <nav class="flex-1 overflow-y-auto overflow-x-visible py-4 px-3">
             <ul class="space-y-1">
                 <!-- Home -->
                 <li>
