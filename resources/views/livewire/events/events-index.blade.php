@@ -240,21 +240,16 @@
         </div>
     </div>
 
-    <!-- DEBUG: Total events count -->
-    <div class="text-center mb-4 text-sm text-neutral-600 dark:text-neutral-400">
-        Total events: {{ $events->count() }}
-    </div>
-    
     <!-- Scroll Down Indicator (only if more than 6 events) -->
     @if($events->count() > 6)
     <div class="flex justify-center mb-8"
-         x-data="{ visible: true }"
+         x-data="{ visible: true, scrollY: 0 }"
          x-init="setTimeout(() => visible = true, 1200)"
+         @scroll.window="scrollY = window.scrollY; if (scrollY > 300) visible = false"
          x-show="visible"
          x-transition:enter="transition ease-out duration-1000"
          x-transition:enter-start="opacity-0 scale-90"
-         x-transition:enter-end="opacity-100 scale-100"
-         @scroll.window="visible = false">
+         x-transition:enter-end="opacity-100 scale-100">
         <div class="relative">
             <!-- Pulsing Glow Background -->
             <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full blur-xl opacity-50 animate-pulse"></div>
@@ -282,21 +277,15 @@
                 @foreach($events as $index => $event)
                     <div 
                          @if($index < 6)
-                         x-data="{ visible: false }"
-                         x-init="setTimeout(() => visible = true, {{ 500 + ($index * 100) }})"
-                         x-show="visible"
-                         x-transition:enter="transition ease-out duration-700"
-                         x-transition:enter-start="opacity-0 translate-y-8 scale-95"
-                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                         x-data="{ animated: false }"
+                         x-init="setTimeout(() => animated = true, {{ 500 + ($index * 100) }})"
+                         :class="animated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'"
                          @else
-                         x-data="{ visible: false }"
-                         x-intersect.once="visible = true"
-                         x-show="visible"
-                         x-transition:enter="transition ease-out duration-700"
-                         x-transition:enter-start="opacity-0 translate-y-8 scale-95"
-                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                         x-data="{ animated: false }"
+                         x-intersect.once="animated = true"
+                         :class="animated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'"
                          @endif
-                         class="transform hover:scale-105 transition-transform duration-300">
+                         class="transform hover:scale-105 transition-all duration-700 ease-out">
                         <x-ui.cards.event :event="$event" />
                     </div>
                 @endforeach
