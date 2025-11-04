@@ -32,8 +32,11 @@ class PoemFactory extends Factory
             "Le stelle brillano\ncome lacrime di gioia,\nnel manto nero\ndella notte infinita.\n\nOgni stella\nun desiderio,\nogni desiderio\nuna speranza.",
         ];
 
+        $title = fake()->randomElement($poemTitles) . ' ' . Str::random(5);
+        
         return [
-            'title' => fake()->randomElement($poemTitles) . ' ' . fake()->numberBetween(1, 100),
+            'title' => $title,
+            'slug' => Str::slug($title) . '-' . fake()->unique()->numberBetween(1000, 9999),
             'content' => fake()->randomElement($poemContents),
             'description' => fake()->sentence(10),
             'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
@@ -46,6 +49,7 @@ class PoemFactory extends Factory
             'is_featured' => fake()->boolean(20),
             'published_at' => fake()->dateTimeBetween('-30 days', 'now'),
             'is_draft' => false,
+            'word_count' => fake()->numberBetween(20, 150),
         ];
     }
 }

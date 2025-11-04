@@ -24,14 +24,14 @@ class ArticleFactory extends Factory
             'Il Ritmo nelle Parole',
         ];
 
-        $title = fake()->randomElement($titles);
-        $slug = Str::slug($title) . '-' . fake()->numberBetween(1, 1000);
+        $title = fake()->randomElement($titles) . ' ' . Str::random(4);
+        $slug = Str::slug($title) . '-' . fake()->unique()->numberBetween(10000, 99999);
 
         return [
             'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
-            'title' => $title,
-            'content' => fake()->paragraphs(5, true),
-            'excerpt' => fake()->sentence(20),
+            'title' => json_encode(['it' => $title]),
+            'content' => json_encode(['it' => fake()->paragraphs(5, true)]),
+            'excerpt' => json_encode(['it' => fake()->sentence(20)]),
             'featured_image' => 'https://images.unsplash.com/photo-' . fake()->randomElement([
                 '1516589178581-6cd7833ae3b2',
                 '1506157786151-b8491531f063',

@@ -41,21 +41,21 @@ class EventFactory extends Factory
             'venue_address' => fake()->streetAddress(),
             'city' => $city,
             'postcode' => fake()->postcode(),
-            'country' => 'Italia',
+            'country' => 'IT',
             'is_public' => true,
             'max_participants' => fake()->numberBetween(20, 200),
             'entry_fee' => fake()->randomElement([0, 5, 10, 15, 20]),
             'status' => 'published',
             'moderation_status' => 'approved',
             'organizer_id' => User::inRandomOrder()->first()->id ?? User::factory(),
-            'participants_count' => fake()->numberBetween(10, 150),
-            'view_count' => fake()->numberBetween(50, 1000),
             'like_count' => fake()->numberBetween(5, 100),
-            'event_type' => fake()->randomElement(['poetry_reading', 'workshop', 'competition', 'meetup']),
-            'event_images' => json_encode([
-                'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1200&auto=format&fit=crop',
-            ]),
+            'comment_count' => fake()->numberBetween(0, 30),
+            'category' => fake()->randomElement(['poetry_reading', 'workshop', 'competition', 'meetup']),
+            'image_url' => 'https://images.unsplash.com/photo-' . fake()->randomElement([
+                '1540575467063-178a50c2df87',
+                '1523580494863-6f3031224c94',
+                '1506157786151-b8491531f063',
+            ]) . '?w=1200&auto=format&fit=crop',
         ];
     }
 }
