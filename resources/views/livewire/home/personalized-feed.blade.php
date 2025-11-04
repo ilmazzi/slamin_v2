@@ -79,20 +79,20 @@
                                 </div>
                             @endif
 
-                            <!-- Actions -->
+                             <!-- Actions -->
                             <div class="p-6 border-t border-neutral-100 dark:border-neutral-700">
-                                <div class="flex items-center gap-6" x-data="{ liked: false, likesCount: {{ $item['likes_count'] }} }">
+                                <div class="flex items-center gap-6">
                                     <!-- Like -->
                                     <button type="button"
-                                            @click="liked = !liked; likesCount = liked ? likesCount + 1 : likesCount - 1"
+                                            wire:click="toggleLike({{ $item['id'] }}, '{{ $item['type'] }}')"
                                             class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
                                         <img src="{{ asset('assets/icon/new/like.svg') }}" 
                                              alt="Like" 
                                              class="w-5 h-5 group-hover:scale-125 transition-transform duration-300"
-                                             :style="liked 
+                                             style="{{ $item['is_liked'] ?? false
                                                 ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
-                                                : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
-                                        <span class="font-medium text-sm" :style="'color: ' + (liked ? '#dc2626' : '#525252')" x-text="likesCount"></span>
+                                                : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);' }}">
+                                        <span class="font-medium text-sm" style="color: {{ ($item['is_liked'] ?? false) ? '#dc2626' : '#525252' }}">{{ $item['likes_count'] }}</span>
                                     </button>
                                     <!-- Comments -->
                                     <button type="button"
