@@ -193,9 +193,9 @@
              x-transition:leave-start="opacity-100 scale-100 rotate-0"
              x-transition:leave-end="opacity-0 scale-150 rotate-180"
              class="relative">
-            <img src="{{ asset('assets/images/draghetto.png') }}" 
+            <img src="{{ asset('assets/images/draghetto-like.png') }}" 
                  alt="Like!" 
-                 class="w-64 h-64 drop-shadow-2xl animate-bounce">
+                 class="w-80 h-80 drop-shadow-2xl animate-bounce">
             <!-- Particles Effect -->
             <div class="absolute inset-0 -z-10">
                 <div class="absolute top-0 left-0 w-4 h-4 bg-red-500 rounded-full animate-ping" style="animation-delay: 0ms;"></div>
