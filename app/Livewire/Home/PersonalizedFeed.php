@@ -167,8 +167,11 @@ class PersonalizedFeed extends Component
             // Count mutual followers if user is authenticated
             $mutualFollowersCount = 0;
             if (Auth::check()) {
+                // Get IDs of users that the current user follows
+                $followingIds = Auth::user()->following()->pluck('users.id');
+                // Count how many of the poet's followers are also followed by current user
                 $mutualFollowersCount = $poet->followers()
-                    ->whereIn('follower_id', Auth::user()->following()->pluck('followed_id'))
+                    ->whereIn('users.id', $followingIds)
                     ->count();
             }
             
