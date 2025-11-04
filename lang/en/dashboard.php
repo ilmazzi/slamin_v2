@@ -49,6 +49,11 @@ return [
     'calendar_subtitle' => 'Your events and commitments',
     'organized_events' => 'Organized Events',
     'today' => 'Today',
+    'hide' => 'Hide',
+    'show' => 'Show',
+    'event' => 'event',
+    'events_count' => 'events',
+    'active' => 'active',
     
     // Social Activities
     'social_activities' => 'Social Activities',

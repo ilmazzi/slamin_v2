@@ -49,6 +49,11 @@ return [
     'calendar_subtitle' => 'I tuoi eventi e impegni',
     'organized_events' => 'Eventi Organizzati',
     'today' => 'Oggi',
+    'hide' => 'Nascondi',
+    'show' => 'Mostra',
+    'event' => 'evento',
+    'events_count' => 'eventi',
+    'active' => 'attivi',
     
     // Social Activities
     'social_activities' => 'Attività Sociali',
