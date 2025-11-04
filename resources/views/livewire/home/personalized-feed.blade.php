@@ -80,28 +80,13 @@
                             @endif
 
                             <!-- Actions -->
-                            <div class="p-6 flex items-center justify-between border-t border-neutral-100 dark:border-neutral-700">
-                                <div class="flex items-center gap-6">
-                                    <button wire:click="toggleLike({{ $item['id'] }}, 'poem')" 
-                                            class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-red-600 transition-colors group/like">
-                                        <svg class="w-5 h-5 group-hover/like:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                        </svg>
-                                        <span class="font-medium">{{ $item['likes_count'] }}</span>
-                                    </button>
-                                    <button class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 transition-colors">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                        </svg>
-                                        <span class="font-medium">{{ $item['comments_count'] }}</span>
-                                    </button>
-                                </div>
-                                <button class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 transition-colors">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                                    </svg>
-                                    <span class="font-medium">{{ __('common.share') }}</span>
-                                </button>
+                            <div class="p-6 border-t border-neutral-100 dark:border-neutral-700">
+                                <livewire:components.social-actions 
+                                    :contentId="$item['id']" 
+                                    contentType="poem" 
+                                    :likesCount="$item['likes_count']" 
+                                    :commentsCount="$item['comments_count']" 
+                                    :key="'poem-' . $item['id']" />
                             </div>
                         </div>
 
@@ -182,12 +167,14 @@
                                 </div>
                             </div>
                             <div class="p-6">
-                                <h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">{{ $item['title'] }}</h4>
-                                <div class="flex items-center gap-4 text-sm text-neutral-600 dark:text-neutral-400">
-                                    <span>{{ $item['views_count'] }} {{ __('feed.views') }}</span>
-                                    <span>•</span>
-                                    <span>{{ $item['likes_count'] }} {{ __('feed.likes') }}</span>
-                                </div>
+                                <h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">{{ $item['title'] }}</h4>
+                                <livewire:components.social-actions 
+                                    :contentId="$item['id']" 
+                                    contentType="video" 
+                                    :likesCount="$item['likes_count']" 
+                                    :commentsCount="0" 
+                                    :viewsCount="$item['views_count']"
+                                    :key="'video-' . $item['id']" />
                             </div>
                         </div>
 
@@ -219,10 +206,17 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <div class="flex items-center gap-4 mt-4 text-sm text-neutral-600 dark:text-neutral-400">
-                                    <span>{{ $item['photos_count'] }} {{ __('feed.photos') }}</span>
-                                    <span>•</span>
-                                    <span>{{ $item['likes_count'] }} {{ __('feed.likes') }}</span>
+                                <div class="flex items-center justify-between mt-4 pt-4 border-t border-neutral-100 dark:border-neutral-700">
+                                    <span class="text-sm text-neutral-600 dark:text-neutral-400">
+                                        {{ $item['photos_count'] }} {{ __('feed.photos') }}
+                                    </span>
+                                    <livewire:components.social-actions 
+                                        :contentId="$item['id']" 
+                                        contentType="gallery" 
+                                        :likesCount="$item['likes_count']" 
+                                        :commentsCount="0"
+                                        :showCounts="true"
+                                        :key="'gallery-' . $item['id']" />
                                 </div>
                             </div>
                         </div>
