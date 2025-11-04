@@ -1,3 +1,5 @@
+<!-- Navigation only for GUEST users - logged users have sidebar -->
+@guest
 <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md shadow-lg"
      x-data="{ isOpen: false }">
     
@@ -32,18 +34,6 @@
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full"></span>
                     </span>
                 </a>
-                @auth
-                <a href="#" 
-                   class="group flex items-center gap-2 font-medium text-neutral-700 dark:text-neutral-300 transition-all hover:text-primary-600 relative py-1">
-                    <svg class="w-4 h-4 transition-transform group-hover:scale-110 group-hover:rotate-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
-                    <span class="relative">
-                        Gigs
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full"></span>
-                    </span>
-                </a>
-                @endauth
                 <a href="#" 
                    class="group flex items-center gap-2 font-medium text-neutral-700 dark:text-neutral-300 transition-all hover:text-primary-600 relative py-1">
                     <svg class="w-4 h-4 transition-transform group-hover:scale-110 group-hover:-rotate-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,38 +74,10 @@
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full"></span>
                     </span>
                 </a>
-                @auth
-                <a href="#" 
-                   class="group flex items-center gap-2 font-medium text-neutral-700 dark:text-neutral-300 transition-all hover:text-primary-600 relative py-1">
-                    <svg class="w-4 h-4 transition-transform group-hover:scale-110 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                    </svg>
-                    <span class="relative">
-                        Gruppi
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full"></span>
-                    </span>
-                </a>
-                <a href="#" 
-                   class="group flex items-center gap-2 font-medium text-neutral-700 dark:text-neutral-300 transition-all hover:text-primary-600 relative py-1">
-                    <svg class="w-4 h-4 transition-transform group-hover:scale-110 group-hover:-rotate-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                    </svg>
-                    <span class="relative">
-                        Forum
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full"></span>
-                    </span>
-                </a>
-                @endauth
             </div>
 
-            <!-- Actions -->
+            <!-- Actions - Only Login/Register for guests -->
             <div class="hidden md:flex items-center gap-4">
-                @auth
-                    <a href="{{ route('dashboard.index') }}" 
-                       class="px-6 py-2.5 bg-primary-600 text-white rounded-full font-semibold transition-all hover:scale-105">
-                        Dashboard
-                    </a>
-                @else
                     <a href="{{ route('login') }}" 
                        class="font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:text-primary-600">
                         Accedi
@@ -124,7 +86,6 @@
                        class="px-6 py-2.5 bg-primary-600 text-white rounded-full font-semibold transition-all hover:scale-105">
                         Registrati
                     </a>
-                @endauth
             </div>
 
             <!-- Mobile Menu Button -->
@@ -152,18 +113,11 @@
             <a href="{{ route('poems.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Poesie</a>
             <a href="{{ route('articles.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Articoli</a>
             <a href="{{ route('gallery.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Galleria</a>
-            @auth
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Gruppi</a>
-                <a href="#" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Forum</a>
-                <div class="pt-2 mt-2 border-t border-neutral-200 dark:border-neutral-700">
-                    <a href="{{ route('dashboard.index') }}" class="block px-4 py-2 bg-primary-600 text-white rounded-lg text-center font-semibold">Dashboard</a>
-                </div>
-            @else
-                <div class="pt-2 mt-2 border-t border-neutral-200 dark:border-neutral-700 space-y-2">
-                    <a href="{{ route('login') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Accedi</a>
-                    <a href="{{ route('register') }}" class="block px-4 py-2 bg-primary-600 text-white rounded-lg text-center font-semibold">Registrati</a>
-                </div>
-            @endauth
+            <div class="pt-2 mt-2 border-t border-neutral-200 dark:border-neutral-700 space-y-2">
+                <a href="{{ route('login') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Accedi</a>
+                <a href="{{ route('register') }}" class="block px-4 py-2 bg-primary-600 text-white rounded-lg text-center font-semibold">Registrati</a>
+            </div>
         </div>
     </div>
 </nav>
+@endguest
