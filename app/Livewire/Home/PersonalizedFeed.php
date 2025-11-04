@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Models\UnifiedLike;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Faker\Factory as FakerFactory;
 
 class PersonalizedFeed extends Component
 {
@@ -26,7 +25,6 @@ class PersonalizedFeed extends Component
     {
         $user = Auth::user();
         $this->feedItems = [];
-        $faker = FakerFactory::create();
 
         // Load real data from database
         
@@ -72,13 +70,16 @@ class PersonalizedFeed extends Component
             ->get();
 
         foreach ($events as $event) {
+            // Count real participants from event_user pivot table
+            $participantsCount = $event->participants()->count();
+            
             $this->feedItems[] = [
                 'type' => 'event',
                 'id' => $event->id,
                 'title' => $event->title,
                 'location' => ($event->city ?? 'Milano') . ', ' . ($event->venue_name ?? ''),
                 'date' => Carbon::parse($event->start_datetime)->isoFormat('dddd D MMM, HH:mm'),
-                'participants_count' => $faker->numberBetween(20, 200),
+                'participants_count' => $participantsCount,
                 'image' => $event->image_url ?? 'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&auto=format&fit=crop',
                 'is_attending' => false,
             ];
@@ -157,49 +158,36 @@ class PersonalizedFeed extends Component
         $newPoets = User::whereHas('poems', function($query) {
                 $query->where('moderation_status', 'approved');
             })
-            ->withCount('poems')
+            ->withCount(['poems', 'followers'])
             ->latest('created_at')
             ->limit(1)
             ->get();
 
         foreach ($newPoets as $poet) {
+            // Count mutual followers if user is authenticated
+            $mutualFollowersCount = 0;
+            if (Auth::check()) {
+                $mutualFollowersCount = $poet->followers()
+                    ->whereIn('follower_id', Auth::user()->following()->pluck('followed_id'))
+                    ->count();
+            }
+            
             $this->feedItems[] = [
                 'type' => 'suggestion',
                 'id' => $poet->id,
                 'poet' => [
                     'name' => $poet->name,
                     'avatar' => $poet->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($poet->name) . '&background=dc2626&color=fff',
-                    'followers_count' => $faker->numberBetween(50, 2000),
+                    'followers_count' => $poet->followers_count ?? 0,
                     'poems_count' => $poet->poems_count,
                     'bio' => $poet->bio ?? 'Poeta contemporaneo, amo scrivere di natura e sentimenti.',
                 ],
-                'mutual_followers' => $faker->numberBetween(0, 15),
+                'mutual_followers' => $mutualFollowersCount,
             ];
         }
 
-        // Mock gallery (placeholder - will be replaced with real galleries)
-        $randomUser = User::inRandomOrder()->first();
-        if ($randomUser) {
-            $this->feedItems[] = [
-                'type' => 'gallery',
-                'id' => 1,
-                'author' => [
-                    'name' => $randomUser->name,
-                    'avatar' => $randomUser->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($randomUser->name) . '&background=f59e0b&color=fff',
-                    'verified' => false,
-                ],
-                'title' => 'Momenti Poetici - ' . $faker->randomElement(['Firenze', 'Roma', 'Milano']),
-                'photos_count' => $faker->numberBetween(5, 12),
-                'images' => [
-                    'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=400&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1549877452-9c387954fbc2?w=400&auto=format&fit=crop',
-                ],
-                'likes_count' => $faker->numberBetween(50, 300),
-                'created_at' => Carbon::instance($faker->dateTimeBetween('-7 days', 'now'))->diffForHumans(),
-                'is_liked' => false,
-            ];
-        }
+        // TODO: Add real gallery feature when implemented
+        // For now, galleries are not included in the feed
     }
 
     public function toggleLike($itemId, $itemType)
