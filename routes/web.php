@@ -16,6 +16,13 @@ Route::post('/api/like/toggle', [App\Http\Controllers\Api\LikeController::class,
     ->middleware('auth')
     ->name('api.like.toggle');
 
+// API Comments
+Route::get('/api/comments', [App\Http\Controllers\Api\CommentController::class, 'index'])
+    ->name('api.comments.index');
+Route::post('/api/comments', [App\Http\Controllers\Api\CommentController::class, 'store'])
+    ->middleware('auth')
+    ->name('api.comments.store');
+
 // Color System
 Route::get('/colors', \App\Livewire\SimpleThemeManager::class)->name('colors');
 
