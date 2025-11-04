@@ -211,7 +211,7 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
                         :isLiked="$isLiked"
                         :likesCount="$video->like_count ?? 0"
                         size="sm"
-                        class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90 [&_img]:!brightness-0 [&_img]:!invert" />
+                        class="[&_span]:!text-white/90" />
                 </div>
                 
                 <!-- Comment Button Component -->
