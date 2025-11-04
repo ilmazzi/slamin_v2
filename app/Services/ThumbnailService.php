@@ -266,12 +266,21 @@ class ThumbnailService
      */
     public function generateExternalVideoThumbnail(Video $video): ?string
     {
-        // YouTube
+        // YouTube - try maxresdefault first (HD), fallback to hqdefault
         if (strpos($video->video_url, 'youtube') !== false || strpos($video->video_url, 'youtu.be') !== false) {
             $videoId = $video->video_id;
             if ($videoId) {
+                // Try HD thumbnail first
                 $youtubeThumbnail = "https://img.youtube.com/vi/{$videoId}/maxresdefault.jpg";
-                return $this->downloadThumbnailFromUrl($youtubeThumbnail, $video, 'youtube');
+                $result = $this->downloadThumbnailFromUrl($youtubeThumbnail, $video, 'youtube');
+                
+                // If maxresdefault fails (not all videos have it), try hqdefault
+                if (!$result) {
+                    $youtubeThumbnail = "https://img.youtube.com/vi/{$videoId}/hqdefault.jpg";
+                    $result = $this->downloadThumbnailFromUrl($youtubeThumbnail, $video, 'youtube');
+                }
+                
+                return $result;
             }
         }
 

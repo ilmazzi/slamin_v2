@@ -1,4 +1,17 @@
-<div>
+<div x-data="{ 
+    showVideoModal: false, 
+    currentVideo: null,
+    openVideo(video) {
+        this.currentVideo = video;
+        this.showVideoModal = true;
+        document.body.style.overflow = 'hidden';
+    },
+    closeVideo() {
+        this.showVideoModal = false;
+        this.currentVideo = null;
+        document.body.style.overflow = '';
+    }
+}">
     @if($videos && $videos->count() > 0)
     <section class="py-12 md:py-16 bg-neutral-50 dark:bg-neutral-950">
         <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
@@ -48,17 +61,25 @@
                 <!-- Slides Container with aspect ratio wrapper -->
                 <div class="relative aspect-video overflow-hidden rounded-3xl shadow-2xl bg-neutral-900">
                     @foreach($videos as $index => $video)
-                    <a href="{{ $video->video_url }}" 
-                       target="_blank"
-                       x-show="currentSlide === {{ $index }}"
-                       x-transition:enter="transition ease-out duration-500"
-                       x-transition:enter-start="opacity-0 translate-x-full"
-                       x-transition:enter-end="opacity-100 translate-x-0"
-                       x-transition:leave="transition ease-in duration-300"
-                       x-transition:leave-start="opacity-100 translate-x-0"
-                       x-transition:leave-end="opacity-0 -translate-x-full"
-                       class="absolute inset-0 w-full h-full block"
-                       style="{{ $index !== 0 ? 'display: none;' : '' }}">
+                    <div @click="openVideo({ 
+                            id: {{ $video->id }},
+                            title: {{ Js::from($video->title) }},
+                            url: {{ Js::from($video->video_url) }},
+                            user: {{ Js::from([
+                                'name' => $video->user->name,
+                                'avatar' => $video->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($video->user->name) . '&background=059669&color=fff'
+                            ]) }},
+                            created_at: {{ Js::from($video->created_at->diffForHumans()) }}
+                         })"
+                         x-show="currentSlide === {{ $index }}"
+                         x-transition:enter="transition ease-out duration-500"
+                         x-transition:enter-start="opacity-0 translate-x-full"
+                         x-transition:enter-end="opacity-100 translate-x-0"
+                         x-transition:leave="transition ease-in duration-300"
+                         x-transition:leave-start="opacity-100 translate-x-0"
+                         x-transition:leave-end="opacity-0 -translate-x-full"
+                         class="absolute inset-0 w-full h-full cursor-pointer"
+                         style="{{ $index !== 0 ? 'display: none;' : '' }}">
                         
                         <!-- Video Thumbnail - Uses getThumbnailUrlAttribute accessor -->
                         <img src="{{ $video->thumbnail_url }}" 
@@ -134,7 +155,7 @@
                                 </div>
                             </div>
                         </div>
-                    </a>
+                    </div>
                     @endforeach
                 </div>
                 
@@ -166,4 +187,62 @@
         </div>
     </section>
     @endif
+
+    <!-- Video Modal -->
+    <div x-show="showVideoModal"
+         x-cloak
+         @click.self="closeVideo()"
+         @keydown.escape.window="closeVideo()"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+        
+        <div x-show="showVideoModal"
+             x-transition:enter="transition ease-out duration-300 delay-100"
+             x-transition:enter-start="opacity-0 scale-90"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-90"
+             class="relative w-full max-w-6xl bg-neutral-900 rounded-2xl overflow-hidden shadow-2xl">
+            
+            <!-- Close Button -->
+            <button @click="closeVideo()"
+                    class="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 hover:rotate-90">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            
+            <!-- Video Player -->
+            <div class="aspect-video bg-black">
+                <iframe x-show="currentVideo"
+                        :src="currentVideo ? currentVideo.url.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/') : ''"
+                        class="w-full h-full"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                </iframe>
+            </div>
+            
+            <!-- Video Info -->
+            <div class="p-6 bg-neutral-900 text-white">
+                <h3 class="text-2xl font-bold mb-3" style="font-family: 'Crimson Pro', serif;" x-text="currentVideo?.title"></h3>
+                
+                <div class="flex items-center gap-3 mb-4">
+                    <img :src="currentVideo?.user.avatar" 
+                         :alt="currentVideo?.user.name"
+                         class="w-12 h-12 rounded-full object-cover ring-2 ring-primary-500">
+                    <div>
+                        <p class="font-semibold" x-text="currentVideo?.user.name"></p>
+                        <p class="text-sm text-neutral-400" x-text="currentVideo?.created_at"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
