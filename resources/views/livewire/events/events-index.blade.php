@@ -258,25 +258,10 @@
                 </button>
             </div>
             
-            <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-primary-200 dark:border-primary-800"
-                 x-data="{ mapReady: false }"
-                 x-init="setTimeout(() => mapReady = true, 500)">
-                <!-- Map Container -->
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-primary-200 dark:border-primary-800">
+                <!-- Map Container (always visible) -->
                 <div id="eventsMap" 
-                     x-ref="map"
-                     class="h-[500px] w-full bg-neutral-100 dark:bg-neutral-800 transition-all duration-500"
-                     x-show="mapReady"
-                     x-transition:enter="transition ease-out duration-700"
-                     x-transition:enter-start="opacity-0 scale-95"
-                     x-transition:enter-end="opacity-100 scale-100">
-                </div>
-                
-                <!-- Loading State -->
-                <div x-show="!mapReady" class="h-[500px] flex items-center justify-center bg-gradient-to-br from-primary-50 to-accent-50 dark:from-neutral-800 dark:to-neutral-900">
-                    <div class="text-center">
-                        <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-primary-600 mx-auto mb-4"></div>
-                        <p class="text-neutral-600 dark:text-neutral-400 font-semibold">{{ __('events.loading_map') }}...</p>
-                    </div>
+                     class="h-[500px] w-full bg-neutral-100 dark:bg-neutral-800">
                 </div>
                 
                 <!-- Map Controls Overlay -->
