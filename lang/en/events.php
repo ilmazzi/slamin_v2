@@ -49,6 +49,13 @@ return [
     'browse_by_category' => 'Browse by Category',
     'view_details' => 'View Details',
     
+    // Map
+    'events_map' => 'Events Map',
+    'center_map' => 'Center Map',
+    'reset_view' => 'Reset View',
+    'legend' => 'Legend',
+    'loading_map' => 'Loading map',
+    
     // Event Details
     'entry_fee' => 'Entry Fee',
     'max_participants' => 'Max participants',

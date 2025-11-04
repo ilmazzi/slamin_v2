@@ -49,6 +49,13 @@ return [
     'browse_by_category' => 'Parcourir par Catégorie',
     'view_details' => 'Voir les Détails',
     
+    // Map
+    'events_map' => 'Carte des Événements',
+    'center_map' => 'Centrer la Carte',
+    'reset_view' => 'Réinitialiser la Vue',
+    'legend' => 'Légende',
+    'loading_map' => 'Chargement de la carte',
+    
     // Event Details
     'entry_fee' => 'Frais d\'entrée',
     'max_participants' => 'Max participants',

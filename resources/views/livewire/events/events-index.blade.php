@@ -240,6 +240,73 @@
         </div>
     </div>
 
+    <!-- Interactive Map Section -->
+    <section class="mb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                    {{ __('events.events_map') }}
+                </h2>
+                <button 
+                    @click="$refs.map.scrollIntoView({ behavior: 'smooth' })"
+                    class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full text-sm font-semibold transition-all hover:scale-105">
+                    <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    {{ __('events.center_map') }}
+                </button>
+            </div>
+            
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-primary-200 dark:border-primary-800"
+                 x-data="{ mapReady: false }"
+                 x-init="setTimeout(() => mapReady = true, 500)">
+                <!-- Map Container -->
+                <div id="eventsMap" 
+                     x-ref="map"
+                     class="h-[500px] w-full bg-neutral-100 dark:bg-neutral-800 transition-all duration-500"
+                     x-show="mapReady"
+                     x-transition:enter="transition ease-out duration-700"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100">
+                </div>
+                
+                <!-- Loading State -->
+                <div x-show="!mapReady" class="h-[500px] flex items-center justify-center bg-gradient-to-br from-primary-50 to-accent-50 dark:from-neutral-800 dark:to-neutral-900">
+                    <div class="text-center">
+                        <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-primary-600 mx-auto mb-4"></div>
+                        <p class="text-neutral-600 dark:text-neutral-400 font-semibold">{{ __('events.loading_map') }}...</p>
+                    </div>
+                </div>
+                
+                <!-- Map Controls Overlay -->
+                <div class="absolute top-4 right-4 z-[1000] flex flex-col gap-2">
+                    <button 
+                        onclick="map.setView([41.9028, 12.4964], 6)"
+                        class="p-3 bg-white dark:bg-neutral-800 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 group"
+                        title="{{ __('events.reset_view') }}">
+                        <svg class="w-5 h-5 text-primary-600 group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Legend -->
+                <div class="absolute bottom-4 left-4 z-[1000] bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-primary-200 dark:border-primary-800">
+                    <h4 class="text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-2 uppercase tracking-wider">{{ __('events.legend') }}</h4>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach(['poetry_slam' => '#EF4444', 'workshop' => '#F59E0B', 'open_mic' => '#10B981', 'reading' => '#3B82F6', 'other' => '#6B7280'] as $cat => $color)
+                        <div class="flex items-center gap-1.5">
+                            <div class="w-3 h-3 rounded-full" style="background-color: {{ $color }}"></div>
+                            <span class="text-xs text-neutral-600 dark:text-neutral-400">{{ ucfirst(str_replace('_', ' ', $cat)) }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Dynamic Bento Box Layout -->
     <div class="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16"
          x-data="{ scrollY: 0, mouseX: 0, mouseY: 0 }"
@@ -458,3 +525,147 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+@endpush
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+let map = null;
+let markers = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    initMap();
+});
+
+function initMap() {
+    // Initialize map centered on Italy
+    map = L.map('eventsMap').setView([41.9028, 12.4964], 6);
+    
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(map);
+    
+    // Category colors matching legend
+    const categoryColors = {
+        'poetry_slam': '#EF4444',
+        'workshop': '#F59E0B',
+        'open_mic': '#10B981',
+        'reading': '#3B82F6',
+        'festival': '#8B5CF6',
+        'concert': '#EC4899',
+        'book_presentation': '#6B7280'
+    };
+    
+    // Add events to map
+    const events = @json($events->filter(fn($e) => $e->latitude && $e->longitude)->values()->map(fn($e) => [
+        'id' => $e->id,
+        'title' => $e->title,
+        'category' => $e->category,
+        'city' => $e->city,
+        'venue_name' => $e->venue_name,
+        'start_datetime' => $e->start_datetime->format('d M Y H:i'),
+        'latitude' => floatval($e->latitude),
+        'longitude' => floatval($e->longitude),
+        'image_url' => $e->image_url,
+        'url' => route('events.show', $e->id)
+    ]));
+    
+    console.log('Loading', events.length, 'events on map');
+    
+    events.forEach((event, index) => {
+        const color = categoryColors[event.category] || '#6B7280';
+        
+        // Custom marker icon
+        const markerIcon = L.divIcon({
+            className: 'custom-marker',
+            html: `
+                <div class="relative group">
+                    <div class="w-8 h-8 rounded-full border-3 border-white shadow-lg transition-all hover:scale-125"
+                         style="background-color: ${color};">
+                    </div>
+                    <div class="absolute inset-0 rounded-full animate-ping" 
+                         style="background-color: ${color}; opacity: 0.3;"></div>
+                </div>
+            `,
+            iconSize: [32, 32],
+            iconAnchor: [16, 16]
+        });
+        
+        const marker = L.marker([event.latitude, event.longitude], {
+            icon: markerIcon
+        }).addTo(map);
+        
+        // Create popup with modern design
+        const popupContent = `
+            <div class="p-4 min-w-[280px]">
+                ${event.image_url ? `
+                    <img src="${event.image_url}" 
+                         class="w-full h-32 object-cover rounded-lg mb-3" 
+                         alt="${event.title}">
+                ` : ''}
+                <div class="mb-2">
+                    <span class="px-2 py-1 bg-primary-100 text-primary-700 text-xs font-semibold rounded-full">
+                        ${event.category ? event.category.replace('_', ' ').toUpperCase() : 'EVENT'}
+                    </span>
+                </div>
+                <h3 class="text-lg font-bold text-neutral-900 mb-2">${event.title}</h3>
+                <div class="space-y-1 text-sm text-neutral-600 mb-3">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span>${event.start_datetime}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span>${event.venue_name}, ${event.city}</span>
+                    </div>
+                </div>
+                <a href="${event.url}" 
+                   class="block w-full text-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-semibold transition-all text-sm">
+                    {{ __('events.view_details') }}
+                </a>
+            </div>
+        `;
+        
+        marker.bindPopup(popupContent, {
+            maxWidth: 320,
+            className: 'custom-popup'
+        });
+        
+        markers.push(marker);
+    });
+    
+    // Fit bounds to show all markers
+    if (markers.length > 0) {
+        const group = new L.featureGroup(markers);
+        map.fitBounds(group.getBounds().pad(0.1));
+    }
+}
+</script>
+
+<style>
+.custom-popup .leaflet-popup-content-wrapper {
+    border-radius: 1rem;
+    padding: 0;
+    overflow: hidden;
+}
+
+.custom-popup .leaflet-popup-tip {
+    display: none;
+}
+
+.custom-marker {
+    background: transparent;
+    border: none;
+}
+</style>
+@endpush

@@ -49,6 +49,13 @@ return [
     'browse_by_category' => 'Esplora per Categoria',
     'view_details' => 'Vedi Dettagli',
     
+    // Map
+    'events_map' => 'Mappa Eventi',
+    'center_map' => 'Centra Mappa',
+    'reset_view' => 'Reimposta Vista',
+    'legend' => 'Legenda',
+    'loading_map' => 'Caricamento mappa',
+    
     // Event Details
     'entry_fee' => 'Quota di iscrizione',
     'max_participants' => 'Max partecipanti',
