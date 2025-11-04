@@ -184,6 +184,6 @@ class EventsIndex extends Component
             'events' => $this->events,
             'statistics' => $this->statistics,
             'cities' => $this->cities,
-        ])->extends('components.layouts.app')->section('content');
+        ])->layout('components.layouts.app');
     }
 }
