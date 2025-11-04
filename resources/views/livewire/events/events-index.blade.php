@@ -24,11 +24,11 @@
             @endfor
         </div>
         
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
-             x-data="{ visible: false }"
-             x-intersect.once="visible = true">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <!-- Title & Intro -->
             <div class="text-center text-white mb-8"
+                 x-data="{ visible: false }"
+                 x-init="setTimeout(() => visible = true, 100)"
                  x-show="visible"
                  x-transition:enter="transition ease-out duration-1000"
                  x-transition:enter-start="opacity-0 -translate-y-10"
@@ -43,8 +43,10 @@
 
             <!-- Search Bar -->
             <div class="max-w-4xl mx-auto"
+                 x-data="{ visible: false }"
+                 x-init="setTimeout(() => visible = true, 200)"
                  x-show="visible"
-                 x-transition:enter="transition ease-out duration-1000 delay-200"
+                 x-transition:enter="transition ease-out duration-1000"
                  x-transition:enter-start="opacity-0 scale-95"
                  x-transition:enter-end="opacity-100 scale-100">
                 <div class="relative">
@@ -61,8 +63,10 @@
 
             <!-- Quick Filters -->
             <div class="mt-6 flex flex-wrap justify-center gap-2"
+                 x-data="{ visible: false }"
+                 x-init="setTimeout(() => visible = true, 300)"
                  x-show="visible"
-                 x-transition:enter="transition ease-out duration-1000 delay-300"
+                 x-transition:enter="transition ease-out duration-1000"
                  x-transition:enter-start="opacity-0 translate-y-4"
                  x-transition:enter-end="opacity-100 translate-y-0">
                 <button 
@@ -189,35 +193,48 @@
         </div>
     </div>
 
-    <!-- Statistics Section with Parallax -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 mb-12"
+    <!-- Statistics Section - Modern Floating Style -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 mb-16"
          x-data="{ scrollY: 0 }"
          @scroll.window="scrollY = window.scrollY">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
             @foreach([
-                ['icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', 'label' => 'total_events', 'value' => $statistics['total_events'], 'color' => 'primary', 'delay' => 0],
-                ['icon' => 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'label' => 'public_events', 'value' => $statistics['public_events'], 'color' => 'accent', 'delay' => 100],
-                ['icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', 'label' => 'upcoming_events', 'value' => $statistics['upcoming_events'], 'color' => 'primary', 'delay' => 200],
-                ['icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', 'label' => 'venues_count', 'value' => $statistics['venues_count'], 'color' => 'accent', 'delay' => 300]
+                ['label' => 'total_events', 'value' => $statistics['total_events'], 'gradient' => 'from-primary-400 to-primary-600', 'delay' => 0],
+                ['label' => 'public_events', 'value' => $statistics['public_events'], 'gradient' => 'from-accent-400 to-accent-600', 'delay' => 100],
+                ['label' => 'upcoming_events', 'value' => $statistics['upcoming_events'], 'gradient' => 'from-primary-500 to-accent-500', 'delay' => 200],
+                ['label' => 'venues_count', 'value' => $statistics['venues_count'], 'gradient' => 'from-accent-500 to-primary-600', 'delay' => 300]
             ] as $stat)
             <div 
-                class="bg-white dark:bg-neutral-800 rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:rotate-1 cursor-pointer group"
+                class="group relative"
                 x-data="{ count: 0, target: {{ $stat['value'] }}, visible: false }"
-                x-intersect.once="visible = true; let duration = 1500; let increment = target / (duration / 16); let timer = setInterval(() => { count += increment; if (count >= target) { count = target; clearInterval(timer); } }, 16);"
+                x-init="setTimeout(() => { visible = true; let duration = 2000; let increment = target / (duration / 16); let timer = setInterval(() => { count += increment; if (count >= target) { count = target; clearInterval(timer); } }, 16); }, {{ $stat['delay'] }})"
                 x-show="visible"
-                x-transition:enter="transition ease-out duration-700 delay-{{ $stat['delay'] }}"
-                x-transition:enter-start="opacity-0 -translate-y-8 scale-90"
-                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                :style="`transform: translateY(${scrollY * 0.05}px)`">
-                <div class="flex items-center justify-center mb-3">
-                    <div class="w-12 h-12 rounded-full bg-{{ $stat['color'] }}-100 dark:bg-{{ $stat['color'] }}-900/30 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-{{ $stat['color'] }}-600 dark:text-{{ $stat['color'] }}-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $stat['icon'] }}"/>
-                        </svg>
+                x-transition:enter="transition ease-out duration-1000"
+                x-transition:enter-start="opacity-0 scale-50 -translate-y-10"
+                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                :style="`transform: translateY(${scrollY * 0.03}px)`">
+                
+                <!-- Floating Number Container -->
+                <div class="relative p-8 rounded-2xl bg-white/80 dark:bg-neutral-800/80 backdrop-blur-xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-3 hover:scale-105 cursor-pointer border border-primary-200/50 dark:border-primary-800/50">
+                    <!-- Gradient Glow Effect -->
+                    <div class="absolute inset-0 rounded-2xl bg-gradient-to-br {{ $stat['gradient'] }} opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+                    
+                    <!-- Number -->
+                    <div class="relative text-center">
+                        <div class="text-5xl md:text-6xl font-black bg-gradient-to-br {{ $stat['gradient'] }} bg-clip-text text-transparent mb-2"
+                             x-text="Math.floor(count).toLocaleString()">
+                            0
+                        </div>
+                        
+                        <!-- Label -->
+                        <div class="text-xs md:text-sm font-medium text-neutral-600 dark:text-neutral-400 uppercase tracking-wider">
+                            {{ __('events.' . $stat['label']) }}
+                        </div>
                     </div>
+                    
+                    <!-- Decorative Corner Element -->
+                    <div class="absolute top-3 right-3 w-3 h-3 rounded-full bg-gradient-to-br {{ $stat['gradient'] }} opacity-50 group-hover:opacity-100 transition-opacity"></div>
                 </div>
-                <h3 class="text-3xl font-bold text-center text-neutral-900 dark:text-white mb-1" x-text="Math.floor(count).toLocaleString()">0</h3>
-                <p class="text-xs text-center text-neutral-600 dark:text-neutral-400">{{ __('events.' . $stat['label']) }}</p>
             </div>
             @endforeach
         </div>
@@ -229,9 +246,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($events as $index => $event)
                     <div x-data="{ visible: false }"
+                         @if($index < 6)
+                         x-init="setTimeout(() => visible = true, {{ 500 + ($index * 100) }})"
+                         @else
                          x-intersect.once="visible = true"
+                         @endif
                          x-show="visible"
-                         x-transition:enter="transition ease-out duration-700 delay-{{ ($index % 6) * 100 }}"
+                         x-transition:enter="transition ease-out duration-700"
                          x-transition:enter-start="opacity-0 translate-y-8 scale-95"
                          x-transition:enter-end="opacity-100 translate-y-0 scale-100"
                          class="transform hover:scale-105 transition-transform duration-300">
