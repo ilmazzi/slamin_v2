@@ -241,7 +241,24 @@
     </div>
 
     <!-- Dynamic Bento Box Layout -->
-    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16"
+         x-data="{ scrollY: 0, mouseX: 0, mouseY: 0 }"
+         @scroll.window="scrollY = window.scrollY"
+         @mousemove.window="mouseX = $event.clientX; mouseY = $event.clientY">
+        
+        <!-- Animated Floating Orbs Background -->
+        <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-40">
+            <div class="absolute w-[600px] h-[600px] rounded-full blur-3xl bg-gradient-to-br from-primary-300/40 to-accent-300/40"
+                 :style="`transform: translate(${mouseX * 0.02}px, ${scrollY * 0.2 + mouseY * 0.02}px)`"
+                 style="top: 10%; left: 10%;"></div>
+            <div class="absolute w-[500px] h-[500px] rounded-full blur-3xl bg-gradient-to-br from-accent-300/40 to-primary-400/40 animate-pulse"
+                 :style="`transform: translate(-${mouseX * 0.03}px, ${scrollY * 0.3 - mouseY * 0.02}px)`"
+                 style="top: 50%; right: 10%; animation-delay: 1s;"></div>
+            <div class="absolute w-[400px] h-[400px] rounded-full blur-3xl bg-gradient-to-br from-primary-400/40 to-accent-500/40 animate-pulse"
+                 :style="`transform: translate(${mouseX * 0.025}px, ${scrollY * 0.15 + mouseY * 0.015}px)`"
+                 style="bottom: 20%; left: 40%; animation-delay: 2s;"></div>
+        </div>
+        
         @if($events->count() > 0)
             @php
                 // Pattern di dimensioni per creare varietà visiva
@@ -268,17 +285,29 @@
                     <article 
                         x-data="{ 
                             visible: false,
-                            isHovered: false
+                            isHovered: false,
+                            tiltX: 0,
+                            tiltY: 0
                         }"
                         x-init="setTimeout(() => visible = true, {{ 50 + ($index * 60) }})"
                         x-show="visible"
                         @mouseenter="isHovered = true"
-                        @mouseleave="isHovered = false"
+                        @mouseleave="isHovered = false; tiltX = 0; tiltY = 0"
+                        @mousemove="
+                            if (isHovered) {
+                                const rect = $el.getBoundingClientRect();
+                                const x = $event.clientX - rect.left;
+                                const y = $event.clientY - rect.top;
+                                tiltX = ((y / rect.height) - 0.5) * -10;
+                                tiltY = ((x / rect.width) - 0.5) * 10;
+                            }
+                        "
                         x-transition:enter="transition ease-out duration-800"
                         x-transition:enter-start="opacity-0 scale-90 {{ $isLarge ? 'rotate-2' : '-rotate-1' }}"
                         x-transition:enter-end="opacity-100 scale-100 rotate-0"
-                        class="{{ $sizeClass }} group relative overflow-hidden rounded-3xl cursor-pointer"
-                        :class="isHovered ? 'z-20' : 'z-10'">
+                        class="{{ $sizeClass }} group relative overflow-hidden rounded-3xl cursor-pointer transition-all duration-300"
+                        :class="isHovered ? 'z-20 shadow-2xl' : 'z-10 shadow-lg'"
+                        :style="`transform: ${isHovered ? `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)` : 'none'}`">
                         
                         <!-- Event Image Background -->
                         <div class="absolute inset-0">
@@ -294,9 +323,17 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
                         </div>
                         
+                        <!-- Sparkle Effect on Hover -->
+                        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                            <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
+                            <div class="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-primary-300 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style="animation-delay: 0.1s"></div>
+                            <div class="absolute bottom-1/3 left-1/3 w-2 h-2 bg-accent-300 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style="animation-delay: 0.2s"></div>
+                            <div class="absolute top-1/2 right-1/4 w-1 h-1 bg-white rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style="animation-delay: 0.15s"></div>
+                        </div>
+                        
                         <!-- Floating Category Badge -->
-                        <div class="absolute top-4 right-4 z-10">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase rounded-full border border-white/30">
+                        <div class="absolute top-4 right-4 z-10 transform transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase rounded-full border border-white/30 shadow-lg">
                                 {{ str_replace('_', ' ', $event->category ?? 'Event') }}
                             </span>
                         </div>
@@ -368,6 +405,14 @@
                         
                         <!-- Animated Border on Hover -->
                         <div class="absolute inset-0 border-4 border-primary-400 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300 pointer-events-none"></div>
+                        
+                        <!-- Shine Effect on Hover -->
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none overflow-hidden">
+                            <div class="absolute -inset-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 group-hover:animate-shine"></div>
+                        </div>
+                        
+                        <!-- Glow Effect Under Card -->
+                        <div class="absolute -inset-4 bg-gradient-to-r from-primary-500/0 via-primary-500/20 to-accent-500/0 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
                         
                         <!-- Click Overlay -->
                         <a href="{{ route('events.show', $event) }}" class="absolute inset-0 z-5"></a>
