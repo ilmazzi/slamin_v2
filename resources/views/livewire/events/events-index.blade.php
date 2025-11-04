@@ -599,11 +599,13 @@ function initMap() {
     // Add events to map
     const events = @json($mapData);
     
-    console.log('Map data received:', events);
-    console.log('Loading', events.length, 'events on map');
+    console.log('📊 Map data received:', events);
+    console.log('📍 Loading', events.length, 'events on map (out of {{ $events->count() }} total)');
     
     if (events.length === 0) {
-        console.warn('No events with coordinates found!');
+        console.warn('⚠️ No events with coordinates found!');
+    } else if (events.length < {{ $events->count() }}) {
+        console.warn(`⚠️ Only ${events.length} out of {{ $events->count() }} events have coordinates!`);
     }
     
     events.forEach((event, index) => {
