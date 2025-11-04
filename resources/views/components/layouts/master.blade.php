@@ -24,11 +24,9 @@
 <body class="antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100" 
       x-data="{ scrollY: 0 }" 
       @scroll.window="scrollY = window.scrollY">
-    <!-- Navigation -->
-    <x-layouts.navigation-modern />
-
-    <!-- Main Content (no spacing) -->
-    <main class="mt-0">
+    
+    <!-- Main Content (no spacing - no navigation needed) -->
+    <main>
         {{ $slot }}
     </main>
 
