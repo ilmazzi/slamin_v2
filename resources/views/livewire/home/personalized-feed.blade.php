@@ -10,12 +10,6 @@
                 <p class="text-neutral-600 dark:text-neutral-400 mt-2">
                     {{ __('feed.subtitle') }}
                 </p>
-                <!-- TEST BUTTON -->
-                <button type="button" 
-                        wire:click="$dispatch('notify', { message: 'TEST OK!', type: 'success' })"
-                        class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600">
-                    🧪 TEST CLICK
-                </button>
             </div>
             
             <!-- Filter Pills -->
@@ -87,12 +81,37 @@
 
                             <!-- Actions -->
                             <div class="p-6 border-t border-neutral-100 dark:border-neutral-700">
-                                <livewire:components.social-actions 
-                                    :contentId="$item['id']" 
-                                    contentType="poem" 
-                                    :likesCount="$item['likes_count']" 
-                                    :commentsCount="$item['comments_count']" 
-                                    :key="'poem-' . $item['id']" />
+                                <div class="flex items-center gap-6" x-data="{ liked: false, likesCount: {{ $item['likes_count'] }} }">
+                                    <!-- Like -->
+                                    <button type="button"
+                                            @click="liked = !liked; likesCount = liked ? likesCount + 1 : likesCount - 1"
+                                            class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
+                                        <img src="{{ asset('assets/icon/new/like.svg') }}" 
+                                             alt="Like" 
+                                             class="w-5 h-5 group-hover:scale-125 transition-transform duration-300"
+                                             :style="liked 
+                                                ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
+                                                : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
+                                        <span class="font-medium text-sm" :style="'color: ' + (liked ? '#dc2626' : '#525252')" x-text="likesCount"></span>
+                                    </button>
+                                    <!-- Comments -->
+                                    <button type="button"
+                                            @click="alert('Commenti in arrivo!')"
+                                            class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 transition-all duration-300 group cursor-pointer">
+                                        <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                        </svg>
+                                        <span class="font-medium text-sm">{{ $item['comments_count'] }}</span>
+                                    </button>
+                                    <!-- Share -->
+                                    <button type="button"
+                                            @click="alert('Condivisione in arrivo!')"
+                                            class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 transition-all duration-300 group cursor-pointer">
+                                        <svg class="w-5 h-5 group-hover:scale-110 group-hover:rotate-12 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -174,13 +193,36 @@
                             </div>
                             <div class="p-6">
                                 <h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">{{ $item['title'] }}</h4>
-                                <livewire:components.social-actions 
-                                    :contentId="$item['id']" 
-                                    contentType="video" 
-                                    :likesCount="$item['likes_count']" 
-                                    :commentsCount="0" 
-                                    :viewsCount="$item['views_count']"
-                                    :key="'video-' . $item['id']" />
+                                <div class="flex items-center gap-6" x-data="{ liked: false, likesCount: {{ $item['likes_count'] }} }">
+                                    <!-- Like -->
+                                    <button type="button"
+                                            @click="liked = !liked; likesCount = liked ? likesCount + 1 : likesCount - 1"
+                                            class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
+                                        <img src="{{ asset('assets/icon/new/like.svg') }}" 
+                                             alt="Like" 
+                                             class="w-5 h-5 group-hover:scale-125 transition-transform duration-300"
+                                             :style="liked 
+                                                ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
+                                                : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
+                                        <span class="font-medium text-sm" :style="'color: ' + (liked ? '#dc2626' : '#525252')" x-text="likesCount"></span>
+                                    </button>
+                                    <!-- Views -->
+                                    <div class="flex items-center gap-2 text-neutral-500 dark:text-neutral-500">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                        <span class="font-medium text-sm">{{ $item['views_count'] }}</span>
+                                    </div>
+                                    <!-- Share -->
+                                    <button type="button"
+                                            @click="alert('Condivisione in arrivo!')"
+                                            class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 transition-all duration-300 group cursor-pointer">
+                                        <svg class="w-5 h-5 group-hover:scale-110 group-hover:rotate-12 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -216,13 +258,28 @@
                                     <span class="text-sm text-neutral-600 dark:text-neutral-400">
                                         {{ $item['photos_count'] }} {{ __('feed.photos') }}
                                     </span>
-                                    <livewire:components.social-actions 
-                                        :contentId="$item['id']" 
-                                        contentType="gallery" 
-                                        :likesCount="$item['likes_count']" 
-                                        :commentsCount="0"
-                                        :showCounts="true"
-                                        :key="'gallery-' . $item['id']" />
+                                    <div class="flex items-center gap-4" x-data="{ liked: false, likesCount: {{ $item['likes_count'] }} }">
+                                        <!-- Like -->
+                                        <button type="button"
+                                                @click="liked = !liked; likesCount = liked ? likesCount + 1 : likesCount - 1"
+                                                class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
+                                            <img src="{{ asset('assets/icon/new/like.svg') }}" 
+                                                 alt="Like" 
+                                                 class="w-5 h-5 group-hover:scale-125 transition-transform duration-300"
+                                                 :style="liked 
+                                                    ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
+                                                    : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
+                                            <span class="font-medium text-sm" :style="'color: ' + (liked ? '#dc2626' : '#525252')" x-text="likesCount"></span>
+                                        </button>
+                                        <!-- Share -->
+                                        <button type="button"
+                                                @click="alert('Condivisione in arrivo!')"
+                                                class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 transition-all duration-300 group cursor-pointer">
+                                            <svg class="w-5 h-5 group-hover:scale-110 group-hover:rotate-12 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
