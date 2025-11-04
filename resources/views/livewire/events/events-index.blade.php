@@ -521,19 +521,49 @@
 let map = null;
 let markers = [];
 
+// Wait for Livewire to be ready
+document.addEventListener('livewire:navigated', initMap);
 document.addEventListener('DOMContentLoaded', function() {
-    initMap();
+    // Give Livewire time to render
+    setTimeout(initMap, 1000);
 });
 
 function initMap() {
-    // Initialize map centered on Italy
-    map = L.map('eventsMap').setView([41.9028, 12.4964], 6);
+    // Check if map already initialized
+    if (map !== null) {
+        return;
+    }
+    
+    // Check if element exists
+    const mapElement = document.getElementById('eventsMap');
+    if (!mapElement) {
+        console.error('Map element not found!');
+        return;
+    }
+    
+    console.log('Initializing Leaflet map...');
+    
+    try {
+        // Initialize map centered on Italy
+        map = L.map('eventsMap').setView([41.9028, 12.4964], 6);
+        
+        console.log('Map initialized successfully');
     
     // Add OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 19
     }).addTo(map);
+    
+    console.log('Tiles added to map');
+    
+    tileLayer.on('load', function() {
+        console.log('Map tiles loaded successfully');
+    });
+    
+    tileLayer.on('tileerror', function(error) {
+        console.error('Tile loading error:', error);
+    });
     
     // Category colors matching legend
     const categoryColors = {
@@ -549,7 +579,12 @@ function initMap() {
     // Add events to map
     const events = @json($mapData);
     
+    console.log('Map data received:', events);
     console.log('Loading', events.length, 'events on map');
+    
+    if (events.length === 0) {
+        console.warn('No events with coordinates found!');
+    }
     
     events.forEach((event, index) => {
         const color = categoryColors[event.category] || '#6B7280';
@@ -573,6 +608,8 @@ function initMap() {
         const marker = L.marker([event.latitude, event.longitude], {
             icon: markerIcon
         }).addTo(map);
+        
+        console.log(`Added marker ${index + 1}/${events.length}:`, event.title, `at [${event.latitude}, ${event.longitude}]`);
         
         // Create popup with modern design
         const popupContent = `
@@ -622,6 +659,18 @@ function initMap() {
     if (markers.length > 0) {
         const group = new L.featureGroup(markers);
         map.fitBounds(group.getBounds().pad(0.1));
+        console.log('Map bounds fitted to', markers.length, 'markers');
+    } else {
+        console.warn('No markers to display on map');
+    }
+    
+    // Force map to recalculate size
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 100);
+    
+    } catch (error) {
+        console.error('Error initializing map:', error);
     }
 }
 </script>
