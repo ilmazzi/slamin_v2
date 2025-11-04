@@ -48,15 +48,17 @@
                 <!-- Slides Container with aspect ratio wrapper -->
                 <div class="relative aspect-video overflow-hidden rounded-3xl shadow-2xl bg-neutral-900">
                     @foreach($videos as $index => $video)
-                    <div x-show="currentSlide === {{ $index }}"
-                         x-transition:enter="transition ease-out duration-500"
-                         x-transition:enter-start="opacity-0 translate-x-full"
-                         x-transition:enter-end="opacity-100 translate-x-0"
-                         x-transition:leave="transition ease-in duration-300"
-                         x-transition:leave-start="opacity-100 translate-x-0"
-                         x-transition:leave-end="opacity-0 -translate-x-full"
-                         class="absolute inset-0 w-full h-full"
-                         style="{{ $index !== 0 ? 'display: none;' : '' }}">
+                    <a href="{{ $video->video_url }}" 
+                       target="_blank"
+                       x-show="currentSlide === {{ $index }}"
+                       x-transition:enter="transition ease-out duration-500"
+                       x-transition:enter-start="opacity-0 translate-x-full"
+                       x-transition:enter-end="opacity-100 translate-x-0"
+                       x-transition:leave="transition ease-in duration-300"
+                       x-transition:leave-start="opacity-100 translate-x-0"
+                       x-transition:leave-end="opacity-0 -translate-x-full"
+                       class="absolute inset-0 w-full h-full block"
+                       style="{{ $index !== 0 ? 'display: none;' : '' }}">
                         
                         <!-- Video Thumbnail - Uses getThumbnailUrlAttribute accessor -->
                         <img src="{{ $video->thumbnail_url }}" 
@@ -65,10 +67,10 @@
                              onerror="this.src='{{ asset('assets/images/placeholder/placholder-1.jpg') }}'">
                         
                         <!-- Dark Overlay -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
                         
                         <!-- Play Button -->
-                        <div class="absolute inset-0 flex items-center justify-center group cursor-pointer">
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                             <div class="w-20 h-20 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
                                 <svg class="w-10 h-10 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M8 5v14l11-7z"/>
@@ -76,8 +78,8 @@
                             </div>
                         </div>
                         
-                        <!-- Video Info Overlay (Bottom) -->
-                        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
+                        <!-- Video Info Overlay (Bottom) - pointer-events-none to allow link click -->
+                        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white pointer-events-none">
                             <h3 class="text-2xl md:text-3xl font-bold mb-3 drop-shadow-lg" style="font-family: 'Crimson Pro', serif;">
                                 {{ $video->title }}
                             </h3>
@@ -93,8 +95,8 @@
                                 </div>
                             </div>
                             
-                            <!-- Stats - Using Reusable Components -->
-                            <div class="flex items-center gap-6 text-white/90">
+                            <!-- Stats - Using Reusable Components with pointer-events-auto -->
+                            <div class="flex items-center gap-6 text-white/90 pointer-events-auto">
                                 <!-- Views -->
                                 <div class="flex items-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +107,7 @@
                                 </div>
                                 
                                 <!-- Like Button Component -->
-                                <div class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90">
+                                <div class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90" @click.prevent>
                                     <x-like-button 
                                         :itemId="$video->id"
                                         itemType="video"
@@ -115,7 +117,7 @@
                                 </div>
                                 
                                 <!-- Comment Button Component -->
-                                <div class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90">
+                                <div class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90" @click.prevent>
                                     <x-comment-button 
                                         :itemId="$video->id"
                                         itemType="video"
@@ -124,7 +126,7 @@
                                 </div>
                                 
                                 <!-- Share Button Component -->
-                                <div class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_button]:hover:!opacity-100">
+                                <div class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_button]:hover:!opacity-100" @click.prevent>
                                     <x-share-button 
                                         :itemId="$video->id"
                                         itemType="video"
@@ -132,7 +134,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                     @endforeach
                 </div>
                 
