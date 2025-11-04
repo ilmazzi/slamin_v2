@@ -240,197 +240,145 @@
         </div>
     </div>
 
-    <!-- Scroll Down Indicator (only if more than 6 events) -->
-    @if($events->count() > 6)
-    <div class="flex justify-center mb-8"
-         x-data="{ visible: true, scrollY: 0 }"
-         x-init="setTimeout(() => visible = true, 1200)"
-         @scroll.window="scrollY = window.scrollY; if (scrollY > 300) visible = false"
-         x-show="visible"
-         x-transition:enter="transition ease-out duration-1000"
-         x-transition:enter-start="opacity-0 scale-90"
-         x-transition:enter-end="opacity-100 scale-100">
-        <div class="relative">
-            <!-- Pulsing Glow Background -->
-            <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full blur-xl opacity-50 animate-pulse"></div>
-            
-            <!-- Arrow Container -->
-            <div class="relative px-8 py-4 bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm rounded-full shadow-2xl border border-primary-200 dark:border-primary-700">
-                <div class="flex items-center gap-3">
-                    <span class="text-sm font-semibold text-neutral-700 dark:text-neutral-200">
-                        {{ __('events.scroll_for_more') }}
-                    </span>
-                    <!-- Animated Arrow -->
-                    <svg class="w-5 h-5 text-primary-600 dark:text-primary-400 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    <!-- Events Content Container -->
-    <div>
-        @php
-            // Group events by category
-            $eventsByCategory = $events->groupBy('category');
-            $featuredEvents = $events->take(3);
-            $upcomingEvents = $events->where('start_datetime', '>', now())->take(8);
-        @endphp
-
-        <!-- Featured Events Carousel -->
-    @if($featuredEvents->count() > 0)
-    <section class="relative mb-16 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold mb-8 bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
-                {{ __('events.featured_events') }}
-            </h2>
-            
-            <div x-data="{ currentSlide: 0, totalSlides: {{ $featuredEvents->count() }} }" 
-                 x-init="setInterval(() => { currentSlide = (currentSlide + 1) % totalSlides }, 5000)"
-                 class="relative">
+    <!-- Dynamic Bento Box Layout -->
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        @if($events->count() > 0)
+            @php
+                // Pattern di dimensioni per creare varietà visiva
+                $sizes = [
+                    'xl' => 'col-span-2 row-span-2 min-h-[500px]',  // Extra large
+                    'lg' => 'col-span-2 row-span-1 min-h-[280px]',  // Large horizontal
+                    'md' => 'col-span-1 row-span-2 min-h-[450px]',  // Medium vertical
+                    'sm' => 'col-span-1 row-span-1 min-h-[280px]',  // Small square
+                ];
                 
-                <!-- Slides Container -->
-                <div class="relative h-96 rounded-3xl overflow-hidden">
-                    @foreach($featuredEvents as $index => $event)
-                    <div x-show="currentSlide === {{ $index }}"
-                         x-transition:enter="transition ease-out duration-700"
-                         x-transition:enter-start="opacity-0 translate-x-full"
-                         x-transition:enter-end="opacity-100 translate-x-0"
-                         x-transition:leave="transition ease-in duration-700"
-                         x-transition:leave-start="opacity-100 translate-x-0"
-                         x-transition:leave-end="opacity-0 -translate-x-full"
-                         class="absolute inset-0">
+                // Pattern: XL, SM, SM, LG, MD, SM, SM, LG, XL... (si ripete)
+                $pattern = ['xl', 'sm', 'sm', 'lg', 'md', 'sm', 'sm', 'lg'];
+            @endphp
+            
+            <!-- Grid Fluido Bento Style -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-auto">
+                @foreach($events as $index => $event)
+                    @php
+                        $sizeKey = $pattern[$index % count($pattern)];
+                        $sizeClass = $sizes[$sizeKey];
+                        $isLarge = in_array($sizeKey, ['xl', 'lg', 'md']);
+                    @endphp
+                    
+                    <article 
+                        x-data="{ 
+                            visible: false,
+                            isHovered: false
+                        }"
+                        x-init="setTimeout(() => visible = true, {{ 50 + ($index * 60) }})"
+                        x-show="visible"
+                        @mouseenter="isHovered = true"
+                        @mouseleave="isHovered = false"
+                        x-transition:enter="transition ease-out duration-800"
+                        x-transition:enter-start="opacity-0 scale-90 {{ $isLarge ? 'rotate-2' : '-rotate-1' }}"
+                        x-transition:enter-end="opacity-100 scale-100 rotate-0"
+                        class="{{ $sizeClass }} group relative overflow-hidden rounded-3xl cursor-pointer"
+                        :class="isHovered ? 'z-20' : 'z-10'">
                         
-                        <!-- Background Image with Gradient Overlay -->
+                        <!-- Event Image Background -->
                         <div class="absolute inset-0">
                             @if($event->image_url)
-                            <img src="{{ $event->image_url }}" class="w-full h-full object-cover" alt="{{ $event->title }}">
+                            <img src="{{ $event->image_url }}" 
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                                 alt="{{ $event->title }}">
+                            @else
+                            <div class="w-full h-full bg-gradient-to-br from-primary-400 via-primary-500 to-accent-600"></div>
                             @endif
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+                            
+                            <!-- Gradient Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+                        </div>
+                        
+                        <!-- Floating Category Badge -->
+                        <div class="absolute top-4 right-4 z-10">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase rounded-full border border-white/30">
+                                {{ str_replace('_', ' ', $event->category ?? 'Event') }}
+                            </span>
                         </div>
                         
                         <!-- Content -->
-                        <div class="relative h-full flex items-center px-12">
-                            <div class="max-w-2xl">
-                                <span class="inline-block px-4 py-1 bg-primary-500 text-white text-sm font-semibold rounded-full mb-4">
-                                    {{ strtoupper(str_replace('_', ' ', $event->category ?? 'EVENT')) }}
-                                </span>
-                                <h3 class="text-4xl font-bold text-white mb-4">{{ $event->title }}</h3>
-                                <p class="text-white/90 text-lg mb-6">{{ Str::limit($event->description, 150) }}</p>
-                                <div class="flex items-center gap-6 text-white/80 mb-6">
-                                    <span class="flex items-center gap-2">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                        </svg>
-                                        {{ $event->start_datetime->format('d M Y') }}
-                                    </span>
-                                    <span class="flex items-center gap-2">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                        </svg>
-                                        {{ $event->city }}
+                        <div class="relative h-full flex flex-col justify-end p-6 {{ $isLarge ? 'p-8' : 'p-6' }}">
+                            <!-- Date Badge -->
+                            <div class="mb-3">
+                                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-500/90 backdrop-blur-sm rounded-full">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span class="text-white text-sm font-semibold">
+                                        {{ $event->start_datetime->format('d M') }}
                                     </span>
                                 </div>
+                            </div>
+                            
+                            <!-- Title -->
+                            <h3 class="text-white font-bold mb-2 {{ $isLarge ? 'text-3xl' : 'text-xl' }} line-clamp-2 group-hover:text-primary-300 transition-colors">
+                                {{ $event->title }}
+                            </h3>
+                            
+                            <!-- Location -->
+                            <div class="flex items-center gap-2 text-white/80 text-sm mb-3">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span>{{ $event->city }}</span>
+                            </div>
+                            
+                            @if($isLarge)
+                            <!-- Description (only for large cards) -->
+                            <p class="text-white/70 text-sm mb-4 line-clamp-2">
+                                {{ Str::limit($event->description, 100) }}
+                            </p>
+                            @endif
+                            
+                            <!-- Social Actions -->
+                            <div class="flex items-center gap-3" @click.stop>
+                                <x-like-button 
+                                    :itemId="$event->id"
+                                    itemType="event"
+                                    :isLiked="$event->is_liked ?? false"
+                                    :likesCount="$event->like_count ?? 0"
+                                    size="sm"
+                                    class="text-white" />
+                                
+                                <x-comment-button 
+                                    :itemId="$event->id"
+                                    itemType="event"
+                                    :commentsCount="$event->comment_count ?? 0"
+                                    size="sm"
+                                    class="text-white" />
+                            </div>
+                            
+                            <!-- Hover Reveal: View Button -->
+                            <div class="mt-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                                 <a href="{{ route('events.show', $event) }}" 
-                                   class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-full transition-all hover:scale-105">
+                                   class="inline-flex items-center gap-2 px-4 py-2 bg-white text-primary-600 rounded-full font-semibold hover:bg-primary-50 transition-colors text-sm">
                                     {{ __('events.view_details') }}
-                                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                     </svg>
                                 </a>
                             </div>
                         </div>
-                    </div>
-                    @endforeach
-                </div>
-                
-                <!-- Navigation Dots -->
-                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-                    @foreach($featuredEvents as $index => $event)
-                    <button @click="currentSlide = {{ $index }}"
-                            class="w-2 h-2 rounded-full transition-all"
-                            :class="currentSlide === {{ $index }} ? 'bg-white w-8' : 'bg-white/50'">
-                    </button>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </section>
-    @endif
-
-    <!-- Upcoming Events - Horizontal Scroll -->
-    @if($upcomingEvents->count() > 0)
-    <section class="mb-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold mb-8 bg-gradient-to-r from-accent-600 to-primary-600 bg-clip-text text-transparent">
-                {{ __('events.upcoming_soon') }}
-            </h2>
-            
-            <div class="flex gap-6 overflow-x-auto scrollbar-hide pb-4" 
-                 x-data="{ autoScroll: true }"
-                 x-init="setInterval(() => { if(autoScroll) $el.scrollLeft += 2 }, 50)">
-                @foreach($upcomingEvents as $event)
-                <div class="flex-shrink-0 w-80 group"
-                     @mouseenter="autoScroll = false"
-                     @mouseleave="autoScroll = true">
-                    <div class="transform transition-all duration-300 hover:scale-105 hover:-translate-y-2">
-                        <x-ui.cards.event :event="$event" />
-                    </div>
-                </div>
+                        
+                        <!-- Animated Border on Hover -->
+                        <div class="absolute inset-0 border-4 border-primary-400 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300 pointer-events-none"></div>
+                        
+                        <!-- Click Overlay -->
+                        <a href="{{ route('events.show', $event) }}" class="absolute inset-0 z-5"></a>
+                    </article>
                 @endforeach
             </div>
-        </div>
-    </section>
-    @endif
-
-    <!-- Events by Category -->
-    @if($eventsByCategory->count() > 0)
-    <section class="mb-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold mb-8 bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
-                {{ __('events.browse_by_category') }}
-            </h2>
-            
-            <div x-data="{ activeCategory: '{{ $eventsByCategory->keys()->first() }}' }">
-                <!-- Category Tabs -->
-                <div class="flex flex-wrap gap-3 mb-8">
-                    @foreach($eventsByCategory->keys() as $category)
-                    <button @click="activeCategory = '{{ $category }}'"
-                            class="px-6 py-3 rounded-full font-semibold transition-all duration-300"
-                            :class="activeCategory === '{{ $category }}' 
-                                ? 'bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-lg scale-105' 
-                                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'">
-                        {{ strtoupper(str_replace('_', ' ', $category ?? 'OTHER')) }}
-                        <span class="ml-2 text-xs opacity-75">({{ $eventsByCategory[$category]->count() }})</span>
-                    </button>
-                    @endforeach
-                </div>
-                
-                <!-- Category Content - Masonry Grid -->
-                @foreach($eventsByCategory as $category => $categoryEvents)
-                <div x-show="activeCategory === '{{ $category }}'"
-                     x-transition:enter="transition ease-out duration-500"
-                     x-transition:enter-start="opacity-0 translate-y-4"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-                    @foreach($categoryEvents->take(9) as $event)
-                    <div class="break-inside-avoid group">
-                        <div class="transform transition-all duration-300 hover:scale-105 hover:-rotate-1">
-                            <x-ui.cards.event :event="$event" />
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-    @endif
+        @endif
+    </div>
     
-        @if($events->count() === 0)
+    @if($events->count() === 0)
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <!-- Empty State -->
         <div class="text-center py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-neutral-100 dark:bg-neutral-800 mb-4">
@@ -452,10 +400,9 @@
                     </svg>
                     {{ __('events.reset_filters') }}
                 </button>
-            </div>
-        @endif
+        </div>
     </div>
-    <!-- End Events Content Container -->
+    @endif
 
     <!-- Loading Overlay -->
     <div wire:loading wire:target="search,city,type,freeOnly,quickFilter,applyQuickFilter,resetFilters" 
