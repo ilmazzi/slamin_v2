@@ -4,7 +4,9 @@ namespace App\Livewire\Home;
 
 use Livewire\Component;
 use App\Models\Poem;
+use App\Models\Article;
 use App\Models\Event;
+use App\Models\Video;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
