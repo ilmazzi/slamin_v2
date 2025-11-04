@@ -47,29 +47,36 @@
         <livewire:home.statistics-section />
     </div>
 
-    {{-- CTA Finale --}}
-    <section class="relative py-24 md:py-32 overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800">
-        <!-- Animated Background Layer -->
-        <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800"></div>
-        
-        <!-- Floating Shapes -->
-        <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-            <div class="absolute w-96 h-96 bg-white/10 rounded-full -top-48 -right-48 animate-float-slow"></div>
-            <div class="absolute w-64 h-64 bg-white/10 rounded-full -bottom-32 -left-32 animate-float-slow" style="animation-delay: 2s;"></div>
-        </div>
+    {{-- CTA Finale o Feed Personalizzato --}}
+    @guest
+        <section class="relative py-24 md:py-32 overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800">
+            <!-- Animated Background Layer -->
+            <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800"></div>
+            
+            <!-- Floating Shapes -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+                <div class="absolute w-96 h-96 bg-white/10 rounded-full -top-48 -right-48 animate-float-slow"></div>
+                <div class="absolute w-64 h-64 bg-white/10 rounded-full -bottom-32 -left-32 animate-float-slow" style="animation-delay: 2s;"></div>
+            </div>
 
-        <div class="relative z-10 max-w-4xl mx-auto px-4 md:px-6 text-center text-white">
-            <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight text-white" style="font-family: 'Crimson Pro', serif;">
-                {!! __('home.cta_title') !!}
-            </h2>
-            <p class="text-xl md:text-2xl mb-10 text-white max-w-2xl mx-auto">
-                {{ __('home.cta_subtitle') }}
-            </p>
-            <x-ui.buttons.primary href="{{ route('register') }}" size="lg">
-                {{ __('home.cta_button') }}
-            </x-ui.buttons.primary>
-        </div>
-    </section>
+            <div class="relative z-10 max-w-4xl mx-auto px-4 md:px-6 text-center text-white">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight text-white" style="font-family: 'Crimson Pro', serif;">
+                    {!! __('home.cta_title') !!}
+                </h2>
+                <p class="text-xl md:text-2xl mb-10 text-white max-w-2xl mx-auto">
+                    {{ __('home.cta_subtitle') }}
+                </p>
+                <x-ui.buttons.primary href="{{ route('register') }}" size="lg">
+                    {{ __('home.cta_button') }}
+                </x-ui.buttons.primary>
+            </div>
+        </section>
+    @endguest
+
+    @auth
+        {{-- Feed Personalizzato per Utenti Loggati --}}
+        <livewire:home.personalized-feed />
+    @endauth
     
     <style>
         @keyframes float-slow { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -30px) scale(1.1); } }
