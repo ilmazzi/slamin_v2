@@ -45,8 +45,8 @@
                  @mouseenter="stopAutoplay()"
                  @mouseleave="startAutoplay()">
                 
-                <!-- Slides Container -->
-                <div class="relative overflow-hidden rounded-3xl shadow-2xl">
+                <!-- Slides Container with aspect ratio wrapper -->
+                <div class="relative aspect-video overflow-hidden rounded-3xl shadow-2xl bg-neutral-900">
                     @foreach($videos as $index => $video)
                     <div x-show="currentSlide === {{ $index }}"
                          x-transition:enter="transition ease-out duration-500"
@@ -55,21 +55,14 @@
                          x-transition:leave="transition ease-in duration-300"
                          x-transition:leave-start="opacity-100 translate-x-0"
                          x-transition:leave-end="opacity-0 -translate-x-full"
-                         class="relative aspect-video bg-neutral-900"
+                         class="absolute inset-0 w-full h-full"
                          style="{{ $index !== 0 ? 'display: none;' : '' }}">
                         
-                        <!-- Video Thumbnail -->
-                        @if($video->thumbnail)
-                        <img src="{{ $video->thumbnail }}" 
+                        <!-- Video Thumbnail - Uses getThumbnailUrlAttribute accessor -->
+                        <img src="{{ $video->thumbnail_url }}" 
                              alt="{{ $video->title }}" 
-                             class="w-full h-full object-cover">
-                        @else
-                        <div class="w-full h-full bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center">
-                            <svg class="w-24 h-24 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        @endif
+                             class="w-full h-full object-cover"
+                             onerror="this.src='{{ asset('assets/images/placeholder/placholder-1.jpg') }}'">
                         
                         <!-- Dark Overlay -->
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
