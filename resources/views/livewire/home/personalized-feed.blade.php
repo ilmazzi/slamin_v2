@@ -10,6 +10,12 @@
                 <p class="text-neutral-600 dark:text-neutral-400 mt-2">
                     {{ __('feed.subtitle') }}
                 </p>
+                <!-- TEST BUTTON -->
+                <button type="button" 
+                        wire:click="$dispatch('notify', { message: 'TEST OK!', type: 'success' })"
+                        class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600">
+                    🧪 TEST CLICK
+                </button>
             </div>
             
             <!-- Filter Pills -->

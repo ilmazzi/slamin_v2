@@ -1,17 +1,11 @@
-<div class="flex items-center {{ $layout === 'vertical' ? 'flex-col' : 'gap-6' }}" 
-     x-data="{ 
-        testClick() { 
-            console.log('Button clicked!'); 
-            alert('Click funziona! Livewire: ' + (typeof @this !== 'undefined' ? 'OK' : 'NO'));
-        } 
-     }">
+<div class="flex items-center {{ $layout === 'vertical' ? 'flex-col' : 'gap-6' }}">
     
     <!-- Like Button -->
     <button 
         type="button"
         wire:click="toggleLike"
-        @click="console.log('Like clicked!', $wire)"
-        class="flex items-center gap-2 transition-all duration-300 group {{ $layout === 'vertical' ? 'flex-col' : '' }} cursor-pointer relative z-10">
+        @click="console.log('Like button clicked!')"
+        class="flex items-center gap-2 transition-all duration-300 group {{ $layout === 'vertical' ? 'flex-col' : '' }} cursor-pointer hover:opacity-80">
         <img src="{{ asset('assets/icon/new/like.svg') }}" 
              alt="Like" 
              class="group-hover:scale-125 transition-transform duration-300 {{ $size === 'small' ? 'w-4 h-4' : ($size === 'large' ? 'w-7 h-7' : 'w-5 h-5') }}"
