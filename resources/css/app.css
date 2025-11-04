@@ -5,6 +5,9 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* FORCE Tailwind to use ONLY .dark class, NOT prefers-color-scheme */
+@variant dark (.dark &);
+
 @theme {
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
     
@@ -257,4 +260,13 @@
 .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+/* CRITICAL: Disable prefers-color-scheme completely - use ONLY .dark class */
+@media (prefers-color-scheme: dark) {
+    /* Override ALL dark mode styles from prefers-color-scheme */
+    /* This ensures system dark mode preference is completely ignored */
+    :root:not(.dark) {
+        color-scheme: light !important;
+    }
 }
