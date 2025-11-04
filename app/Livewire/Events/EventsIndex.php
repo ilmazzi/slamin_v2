@@ -178,12 +178,32 @@ class EventsIndex extends Component
                    ->values();
     }
 
+    public function getMapDataProperty()
+    {
+        return $this->events
+            ->filter(fn($e) => $e->latitude && $e->longitude)
+            ->values()
+            ->map(fn($e) => [
+                'id' => $e->id,
+                'title' => $e->title,
+                'category' => $e->category,
+                'city' => $e->city,
+                'venue_name' => $e->venue_name,
+                'start_datetime' => $e->start_datetime->format('d M Y H:i'),
+                'latitude' => floatval($e->latitude),
+                'longitude' => floatval($e->longitude),
+                'image_url' => $e->image_url,
+                'url' => route('events.show', $e->id)
+            ]);
+    }
+
     public function render()
     {
         return view('livewire.events.events-index', [
             'events' => $this->events,
             'statistics' => $this->statistics,
             'cities' => $this->cities,
+            'mapData' => $this->mapData,
         ])->layout('components.layouts.app');
     }
 }
