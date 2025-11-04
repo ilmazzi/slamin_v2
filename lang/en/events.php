@@ -43,6 +43,12 @@ return [
     'try_adjusting_filters' => 'Try adjusting your filters or search for something else.',
     'scroll_for_more' => 'Scroll to see more events',
     
+    // Sections
+    'featured_events' => 'Featured Events',
+    'upcoming_soon' => 'Coming Soon',
+    'browse_by_category' => 'Browse by Category',
+    'view_details' => 'View Details',
+    
     // Event Details
     'entry_fee' => 'Entry Fee',
     'max_participants' => 'Max participants',

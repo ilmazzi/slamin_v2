@@ -270,74 +270,169 @@
     </div>
     @endif
 
-    <!-- Events Grid - Magazine Layout -->
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16"
-         x-data="{ scrollY: 0 }"
-         @scroll.window="scrollY = window.scrollY">
-        
-        <!-- Animated Background Layer (parallax subtile) -->
-        <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-30">
-            <div class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-primary-300/40 to-accent-300/40 rounded-full blur-3xl"
-                 :style="`transform: translateY(${scrollY * 0.3}px)`"></div>
-            <div class="absolute top-1/2 right-1/4 w-80 h-80 bg-gradient-to-br from-accent-300/40 to-primary-400/40 rounded-full blur-3xl"
-                 :style="`transform: translateY(${scrollY * 0.5}px)`"></div>
-        </div>
-        
-        @if($events->count() > 0)
-            <!-- Magazine Style Grid with Featured Event -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 auto-rows-auto">
-                @foreach($events as $index => $event)
-                    @php
-                        // First event is FEATURED (large)
-                        // Events 2-3 are medium
-                        // Rest are normal
-                        $isFeatured = $index === 0;
-                        $isMedium = in_array($index, [1, 2]);
-                        
-                        $colSpan = $isFeatured ? 'lg:col-span-8' : ($isMedium ? 'lg:col-span-4' : 'lg:col-span-4');
-                        $rowSpan = $isFeatured ? 'lg:row-span-2' : 'lg:row-span-1';
-                    @endphp
-                    
-                    <div 
-                         x-data="{ visible: false, isHovered: false }"
-                         x-init="setTimeout(() => visible = true, {{ 100 + ($index * 80) }})"
-                         x-show="visible"
+    <!-- Events Content Container -->
+    <div>
+        @php
+            // Group events by category
+            $eventsByCategory = $events->groupBy('category');
+            $featuredEvents = $events->take(3);
+            $upcomingEvents = $events->where('start_datetime', '>', now())->take(8);
+        @endphp
+
+        <!-- Featured Events Carousel -->
+    @if($featuredEvents->count() > 0)
+    <section class="relative mb-16 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-8 bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                {{ __('events.featured_events') }}
+            </h2>
+            
+            <div x-data="{ currentSlide: 0, totalSlides: {{ $featuredEvents->count() }} }" 
+                 x-init="setInterval(() => { currentSlide = (currentSlide + 1) % totalSlides }, 5000)"
+                 class="relative">
+                
+                <!-- Slides Container -->
+                <div class="relative h-96 rounded-3xl overflow-hidden">
+                    @foreach($featuredEvents as $index => $event)
+                    <div x-show="currentSlide === {{ $index }}"
                          x-transition:enter="transition ease-out duration-700"
-                         x-transition:enter-start="opacity-0 scale-95 {{ $isFeatured ? 'translate-y-8' : 'translate-y-4' }}"
-                         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                         @mouseenter="isHovered = true"
-                         @mouseleave="isHovered = false"
-                         class="{{ $colSpan }} {{ $rowSpan }} group relative overflow-hidden rounded-2xl {{ $isFeatured ? 'min-h-[500px]' : 'min-h-[280px]' }}">
+                         x-transition:enter-start="opacity-0 translate-x-full"
+                         x-transition:enter-end="opacity-100 translate-x-0"
+                         x-transition:leave="transition ease-in duration-700"
+                         x-transition:leave-start="opacity-100 translate-x-0"
+                         x-transition:leave-end="opacity-0 -translate-x-full"
+                         class="absolute inset-0">
                         
-                        <!-- Glassmorphism Container -->
-                        <div class="relative h-full backdrop-blur-sm bg-white/80 dark:bg-neutral-900/80 border border-neutral-200/50 dark:border-neutral-700/50 rounded-2xl overflow-hidden transition-all duration-500"
-                             :class="isHovered ? 'shadow-2xl scale-[1.02] border-primary-400/50' : 'shadow-lg'">
-                            
-                            <!-- Gradient Overlay Animato -->
-                            <div class="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-transparent to-accent-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                            
-                            <!-- Corner Accent -->
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-accent-400/20 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                            
-                            <!-- Event Card Content -->
-                            <div class="relative h-full z-10 {{ $isFeatured ? 'p-6' : 'p-0' }}">
-                                <x-ui.cards.event :event="$event" />
-                            </div>
-                            
-                            <!-- Animated Border Glow -->
-                            <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                                 style="background: linear-gradient(45deg, transparent, rgba(16, 185, 129, 0.1), transparent); background-size: 200% 200%; animation: gradient-shift 3s ease infinite;">
-                            </div>
+                        <!-- Background Image with Gradient Overlay -->
+                        <div class="absolute inset-0">
+                            @if($event->image_url)
+                            <img src="{{ $event->image_url }}" class="w-full h-full object-cover" alt="{{ $event->title }}">
+                            @endif
+                            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
                         </div>
                         
-                        <!-- Hover Lift Effect -->
-                        <div class="absolute inset-0 -z-10 bg-gradient-to-br from-primary-400/20 to-accent-400/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <!-- Content -->
+                        <div class="relative h-full flex items-center px-12">
+                            <div class="max-w-2xl">
+                                <span class="inline-block px-4 py-1 bg-primary-500 text-white text-sm font-semibold rounded-full mb-4">
+                                    {{ strtoupper(str_replace('_', ' ', $event->category ?? 'EVENT')) }}
+                                </span>
+                                <h3 class="text-4xl font-bold text-white mb-4">{{ $event->title }}</h3>
+                                <p class="text-white/90 text-lg mb-6">{{ Str::limit($event->description, 150) }}</p>
+                                <div class="flex items-center gap-6 text-white/80 mb-6">
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                        {{ $event->start_datetime->format('d M Y') }}
+                                    </span>
+                                    <span class="flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        </svg>
+                                        {{ $event->city }}
+                                    </span>
+                                </div>
+                                <a href="{{ route('events.show', $event) }}" 
+                                   class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-full transition-all hover:scale-105">
+                                    {{ __('events.view_details') }}
+                                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
+                </div>
+                
+                <!-- Navigation Dots -->
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                    @foreach($featuredEvents as $index => $event)
+                    <button @click="currentSlide = {{ $index }}"
+                            class="w-2 h-2 rounded-full transition-all"
+                            :class="currentSlide === {{ $index }} ? 'bg-white w-8' : 'bg-white/50'">
+                    </button>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- Upcoming Events - Horizontal Scroll -->
+    @if($upcomingEvents->count() > 0)
+    <section class="mb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-8 bg-gradient-to-r from-accent-600 to-primary-600 bg-clip-text text-transparent">
+                {{ __('events.upcoming_soon') }}
+            </h2>
+            
+            <div class="flex gap-6 overflow-x-auto scrollbar-hide pb-4" 
+                 x-data="{ autoScroll: true }"
+                 x-init="setInterval(() => { if(autoScroll) $el.scrollLeft += 2 }, 50)">
+                @foreach($upcomingEvents as $event)
+                <div class="flex-shrink-0 w-80 group"
+                     @mouseenter="autoScroll = false"
+                     @mouseleave="autoScroll = true">
+                    <div class="transform transition-all duration-300 hover:scale-105 hover:-translate-y-2">
+                        <x-ui.cards.event :event="$event" />
+                    </div>
+                </div>
                 @endforeach
             </div>
-        @else
-            <!-- Empty State -->
-            <div class="text-center py-16">
+        </div>
+    </section>
+    @endif
+
+    <!-- Events by Category -->
+    @if($eventsByCategory->count() > 0)
+    <section class="mb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-8 bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                {{ __('events.browse_by_category') }}
+            </h2>
+            
+            <div x-data="{ activeCategory: '{{ $eventsByCategory->keys()->first() }}' }">
+                <!-- Category Tabs -->
+                <div class="flex flex-wrap gap-3 mb-8">
+                    @foreach($eventsByCategory->keys() as $category)
+                    <button @click="activeCategory = '{{ $category }}'"
+                            class="px-6 py-3 rounded-full font-semibold transition-all duration-300"
+                            :class="activeCategory === '{{ $category }}' 
+                                ? 'bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-lg scale-105' 
+                                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'">
+                        {{ strtoupper(str_replace('_', ' ', $category ?? 'OTHER')) }}
+                        <span class="ml-2 text-xs opacity-75">({{ $eventsByCategory[$category]->count() }})</span>
+                    </button>
+                    @endforeach
+                </div>
+                
+                <!-- Category Content - Masonry Grid -->
+                @foreach($eventsByCategory as $category => $categoryEvents)
+                <div x-show="activeCategory === '{{ $category }}'"
+                     x-transition:enter="transition ease-out duration-500"
+                     x-transition:enter-start="opacity-0 translate-y-4"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                    @foreach($categoryEvents->take(9) as $event)
+                    <div class="break-inside-avoid group">
+                        <div class="transform transition-all duration-300 hover:scale-105 hover:-rotate-1">
+                            <x-ui.cards.event :event="$event" />
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+    
+        @if($events->count() === 0)
+        <!-- Empty State -->
+        <div class="text-center py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-neutral-100 dark:bg-neutral-800 mb-4">
                     <svg class="w-10 h-10 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -360,6 +455,7 @@
             </div>
         @endif
     </div>
+    <!-- End Events Content Container -->
 
     <!-- Loading Overlay -->
     <div wire:loading wire:target="search,city,type,freeOnly,quickFilter,applyQuickFilter,resetFilters" 

@@ -43,6 +43,12 @@ return [
     'try_adjusting_filters' => 'Essayez d\'ajuster vos filtres ou de rechercher autre chose.',
     'scroll_for_more' => 'Faites défiler pour voir plus d\'événements',
     
+    // Sections
+    'featured_events' => 'Événements en Vedette',
+    'upcoming_soon' => 'Bientôt',
+    'browse_by_category' => 'Parcourir par Catégorie',
+    'view_details' => 'Voir les Détails',
+    
     // Event Details
     'entry_fee' => 'Frais d\'entrée',
     'max_participants' => 'Max participants',
