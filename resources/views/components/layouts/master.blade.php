@@ -18,17 +18,24 @@
     <!-- Dark Mode Script - MUST run before page renders -->
     <script>
         // Initialize theme IMMEDIATELY (before page renders)
+        // FORCE light mode, ignore system preference completely
         (function() {
+            const html = document.documentElement;
             const savedMode = localStorage.getItem('darkMode');
-            // If no preference saved, default to LIGHT mode (not system preference)
+            
+            // ALWAYS remove dark class first
+            html.classList.remove('dark');
+            
+            // If no preference saved, default to LIGHT mode
             if (savedMode === null) {
                 localStorage.setItem('darkMode', 'false');
-                document.documentElement.classList.remove('dark');
             } else if (savedMode === 'true') {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
+                // Only add dark if explicitly saved as true
+                html.classList.add('dark');
             }
+            
+            // Force light mode styling
+            html.style.colorScheme = savedMode === 'true' ? 'dark' : 'light';
         })();
     </script>
 
