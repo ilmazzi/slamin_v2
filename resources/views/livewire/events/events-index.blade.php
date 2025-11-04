@@ -270,21 +270,68 @@
     </div>
     @endif
 
-    <!-- Events Grid - Clean and Elegant -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <!-- Events Grid - Magazine Layout -->
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16"
+         x-data="{ scrollY: 0 }"
+         @scroll.window="scrollY = window.scrollY">
+        
+        <!-- Animated Background Layer (parallax subtile) -->
+        <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-30">
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-primary-300/40 to-accent-300/40 rounded-full blur-3xl"
+                 :style="`transform: translateY(${scrollY * 0.3}px)`"></div>
+            <div class="absolute top-1/2 right-1/4 w-80 h-80 bg-gradient-to-br from-accent-300/40 to-primary-400/40 rounded-full blur-3xl"
+                 :style="`transform: translateY(${scrollY * 0.5}px)`"></div>
+        </div>
+        
         @if($events->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Magazine Style Grid with Featured Event -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 auto-rows-auto">
                 @foreach($events as $index => $event)
-                    <div 
-                         x-data="{ visible: false }"
-                         x-init="setTimeout(() => visible = true, {{ 100 + ($index * 50) }})"
-                         x-show="visible"
-                         x-transition:enter="transition ease-out duration-500"
-                         x-transition:enter-start="opacity-0 translate-y-4"
-                         x-transition:enter-end="opacity-100 translate-y-0"
-                         class="group transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    @php
+                        // First event is FEATURED (large)
+                        // Events 2-3 are medium
+                        // Rest are normal
+                        $isFeatured = $index === 0;
+                        $isMedium = in_array($index, [1, 2]);
                         
-                        <x-ui.cards.event :event="$event" />
+                        $colSpan = $isFeatured ? 'lg:col-span-8' : ($isMedium ? 'lg:col-span-4' : 'lg:col-span-4');
+                        $rowSpan = $isFeatured ? 'lg:row-span-2' : 'lg:row-span-1';
+                    @endphp
+                    
+                    <div 
+                         x-data="{ visible: false, isHovered: false }"
+                         x-init="setTimeout(() => visible = true, {{ 100 + ($index * 80) }})"
+                         x-show="visible"
+                         x-transition:enter="transition ease-out duration-700"
+                         x-transition:enter-start="opacity-0 scale-95 {{ $isFeatured ? 'translate-y-8' : 'translate-y-4' }}"
+                         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                         @mouseenter="isHovered = true"
+                         @mouseleave="isHovered = false"
+                         class="{{ $colSpan }} {{ $rowSpan }} group relative overflow-hidden rounded-2xl {{ $isFeatured ? 'min-h-[500px]' : 'min-h-[280px]' }}">
+                        
+                        <!-- Glassmorphism Container -->
+                        <div class="relative h-full backdrop-blur-sm bg-white/80 dark:bg-neutral-900/80 border border-neutral-200/50 dark:border-neutral-700/50 rounded-2xl overflow-hidden transition-all duration-500"
+                             :class="isHovered ? 'shadow-2xl scale-[1.02] border-primary-400/50' : 'shadow-lg'">
+                            
+                            <!-- Gradient Overlay Animato -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-transparent to-accent-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            
+                            <!-- Corner Accent -->
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-accent-400/20 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            
+                            <!-- Event Card Content -->
+                            <div class="relative h-full z-10 {{ $isFeatured ? 'p-6' : 'p-0' }}">
+                                <x-ui.cards.event :event="$event" />
+                            </div>
+                            
+                            <!-- Animated Border Glow -->
+                            <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                 style="background: linear-gradient(45deg, transparent, rgba(16, 185, 129, 0.1), transparent); background-size: 200% 200%; animation: gradient-shift 3s ease infinite;">
+                            </div>
+                        </div>
+                        
+                        <!-- Hover Lift Effect -->
+                        <div class="absolute inset-0 -z-10 bg-gradient-to-br from-primary-400/20 to-accent-400/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                 @endforeach
             </div>
