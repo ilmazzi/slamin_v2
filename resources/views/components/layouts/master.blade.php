@@ -15,6 +15,23 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
+    <!-- Dark Mode Script - MUST run before page renders -->
+    <script>
+        // Initialize theme IMMEDIATELY (before page renders)
+        (function() {
+            const savedMode = localStorage.getItem('darkMode');
+            // If no preference saved, default to LIGHT mode (not system preference)
+            if (savedMode === null) {
+                localStorage.setItem('darkMode', 'false');
+                document.documentElement.classList.remove('dark');
+            } else if (savedMode === 'true') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+
     <!-- Styles & Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
