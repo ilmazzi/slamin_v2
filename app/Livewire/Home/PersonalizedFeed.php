@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Event;
 use App\Models\Video;
 use App\Models\User;
+use App\Models\UnifiedLike;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -36,6 +37,12 @@ class PersonalizedFeed extends Component
             ->get();
 
         foreach ($poems as $poem) {
+            // Check if user already liked this
+            $isLiked = Auth::check() && UnifiedLike::where('user_id', Auth::id())
+                ->where('likeable_type', Poem::class)
+                ->where('likeable_id', $poem->id)
+                ->exists();
+
             $this->feedItems[] = [
                 'type' => 'poem',
                 'id' => $poem->id,
@@ -50,6 +57,7 @@ class PersonalizedFeed extends Component
                 'comments_count' => $poem->comment_count ?? 0,
                 'created_at' => $poem->published_at ? Carbon::parse($poem->published_at)->diffForHumans() : Carbon::parse($poem->created_at)->diffForHumans(),
                 'image' => $poem->thumbnail,
+                'is_liked' => $isLiked,
             ];
         }
 
@@ -85,6 +93,11 @@ class PersonalizedFeed extends Component
         foreach ($videos as $video) {
             $minutes = floor($video->duration / 60);
             $seconds = $video->duration % 60;
+
+            $isLiked = Auth::check() && UnifiedLike::where('user_id', Auth::id())
+                ->where('likeable_type', Video::class)
+                ->where('likeable_id', $video->id)
+                ->exists();
             
             $this->feedItems[] = [
                 'type' => 'video',
@@ -100,6 +113,7 @@ class PersonalizedFeed extends Component
                 'likes_count' => $video->like_count ?? 0,
                 'thumbnail' => $video->thumbnail ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop',
                 'created_at' => Carbon::parse($video->created_at)->diffForHumans(),
+                'is_liked' => $isLiked,
             ];
         }
 
@@ -148,14 +162,73 @@ class PersonalizedFeed extends Component
                 ],
                 'likes_count' => fake()->numberBetween(50, 300),
                 'created_at' => Carbon::instance(fake()->dateTimeBetween('-7 days', 'now'))->diffForHumans(),
+                'is_liked' => false,
             ];
         }
     }
 
     public function toggleLike($itemId, $itemType)
     {
-        // Handle like toggle
-        $this->dispatch('notify', ['message' => 'Like aggiunto!', 'type' => 'success']);
+        if (!Auth::check()) {
+            $this->dispatch('notify', [
+                'message' => __('social.login_to_like'),
+                'type' => 'warning'
+            ]);
+            return ['liked' => false, 'count' => 0];
+        }
+
+        // Map type to model class
+        $modelMap = [
+            'poem' => Poem::class,
+            'video' => Video::class,
+            'article' => Article::class,
+            'event' => Event::class,
+            'gallery' => 'App\Models\Gallery', // Placeholder
+        ];
+
+        $modelClass = $modelMap[$itemType] ?? null;
+        if (!$modelClass) {
+            return ['liked' => false, 'count' => 0];
+        }
+
+        // Check if already liked
+        $existingLike = UnifiedLike::where('user_id', Auth::id())
+            ->where('likeable_type', $modelClass)
+            ->where('likeable_id', $itemId)
+            ->first();
+
+        if ($existingLike) {
+            // Unlike
+            $existingLike->delete();
+            
+            // Update counter in model
+            $model = $modelClass::find($itemId);
+            if ($model) {
+                $model->decrement('like_count');
+            }
+            
+            return ['liked' => false, 'count' => $model->like_count ?? 0];
+        } else {
+            // Like
+            UnifiedLike::create([
+                'user_id' => Auth::id(),
+                'likeable_type' => $modelClass,
+                'likeable_id' => $itemId,
+            ]);
+            
+            // Update counter in model
+            $model = $modelClass::find($itemId);
+            if ($model) {
+                $model->increment('like_count');
+            }
+            
+            $this->dispatch('notify', [
+                'message' => __('social.liked'),
+                'type' => 'success'
+            ]);
+            
+            return ['liked' => true, 'count' => $model->like_count ?? 1];
+        }
     }
 
     public function attendEvent($eventId)
