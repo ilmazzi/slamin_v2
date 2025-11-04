@@ -193,10 +193,10 @@
     class="fixed bottom-4 right-4 z-50 max-w-sm">
         <div class="rounded-xl shadow-2xl overflow-hidden"
              :class="{
-                'bg-green-600': type === 'success',
-                'bg-blue-600': type === 'info',
-                'bg-yellow-600': type === 'warning',
-                'bg-red-600': type === 'error'
+                'bg-success-600': type === 'success',
+                'bg-info-600': type === 'info',
+                'bg-warning-600': type === 'warning',
+                'bg-danger-600': type === 'error'
              }">
             <div class="p-4 flex items-center gap-3">
                 <!-- Icon Success -->

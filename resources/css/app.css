@@ -44,6 +44,23 @@
     --color-secondary-900: #004c29;
     --color-secondary-950: #00381a;
     
+    /* Semantic Colors */
+    --color-success-500: #22C55E;
+    --color-success-600: #16A34A;
+    --color-success-700: #15803D;
+    
+    --color-warning-500: #EAB308;
+    --color-warning-600: #CA8A04;
+    --color-warning-700: #A16207;
+    
+    --color-danger-500: #EF4444;
+    --color-danger-600: #DC2626;
+    --color-danger-700: #B91C1C;
+    
+    --color-info-500: #0EA5E9;
+    --color-info-600: #0284C7;
+    --color-info-700: #0369A1;
+    
 }
 
 /* UTILITY CLASSES CUSTOM - Scritte a mano perché Tailwind v4 non le genera */
@@ -92,6 +109,23 @@
 .hover\:bg-primary-700:hover { background-color: #047857 !important; }
 .hover\:bg-accent-600:hover { background-color: #009e6b !important; }
 .hover\:bg-secondary-700:hover { background-color: #b54600 !important; }
+
+/* Semantic Colors Utilities */
+.bg-success-500 { background-color: #22C55E !important; }
+.bg-success-600 { background-color: #16A34A !important; }
+.bg-success-700 { background-color: #15803D !important; }
+
+.bg-warning-500 { background-color: #EAB308 !important; }
+.bg-warning-600 { background-color: #CA8A04 !important; }
+.bg-warning-700 { background-color: #A16207 !important; }
+
+.bg-danger-500 { background-color: #EF4444 !important; }
+.bg-danger-600 { background-color: #DC2626 !important; }
+.bg-danger-700 { background-color: #B91C1C !important; }
+
+.bg-info-500 { background-color: #0EA5E9 !important; }
+.bg-info-600 { background-color: #0284C7 !important; }
+.bg-info-700 { background-color: #0369A1 !important; }
 
 .text-gradient {
     background: linear-gradient(135deg, #9bdbe8, #5e95a0);
