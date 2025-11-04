@@ -117,6 +117,39 @@ class PersonalizedFeed extends Component
             ];
         }
 
+        // Articles
+        $articles = Article::with('user')
+            ->where('is_public', true)
+            ->where('moderation_status', 'approved')
+            ->latest('published_at')
+            ->limit(2)
+            ->get();
+
+        $locale = app()->getLocale();
+        foreach ($articles as $article) {
+            $isLiked = Auth::check() && UnifiedLike::where('user_id', Auth::id())
+                ->where('likeable_type', Article::class)
+                ->where('likeable_id', $article->id)
+                ->exists();
+
+            $this->feedItems[] = [
+                'type' => 'article',
+                'id' => $article->id,
+                'author' => [
+                    'name' => $article->user->name,
+                    'avatar' => $article->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($article->user->name) . '&background=059669&color=fff',
+                    'verified' => false,
+                ],
+                'title' => is_array($article->title) ? ($article->title[$locale] ?? $article->title['it'] ?? '') : $article->title,
+                'excerpt' => is_array($article->excerpt) ? \Str::limit($article->excerpt[$locale] ?? $article->excerpt['it'] ?? '', 150) : \Str::limit($article->excerpt, 150),
+                'likes_count' => $article->like_count ?? 0,
+                'comments_count' => $article->comment_count ?? 0,
+                'created_at' => $article->published_at ? Carbon::parse($article->published_at)->diffForHumans() : Carbon::parse($article->created_at)->diffForHumans(),
+                'image' => $article->thumbnail ?? 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop',
+                'is_liked' => $isLiked,
+            ];
+        }
+
 
         // New poet suggestions
         $newPoets = User::whereHas('poems', function($query) {

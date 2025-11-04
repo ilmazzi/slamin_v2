@@ -15,5 +15,9 @@ return [
     'send' => 'Send',
     'comment_added' => 'Comment added!',
     'comment_deleted' => 'Comment deleted',
+    
+    // Errors
+    'error_like' => 'Error adding like. Please try again.',
+    'error_generic' => 'An error occurred. Please try again.',
 ];
 

@@ -5,6 +5,7 @@ return [
     'discover_more' => 'Discover more',
     'see_all' => 'See all',
     'read_more' => 'Read more',
+    'learn_more' => 'Learn more',
     'watch' => 'Watch',
     'share' => 'Share',
     'like' => 'Like',

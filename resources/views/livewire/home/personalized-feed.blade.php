@@ -81,62 +81,97 @@
 
                              <!-- Actions -->
                             <div class="p-6 border-t border-neutral-100 dark:border-neutral-700">
-                                <div class="flex items-center gap-6" 
-                                     x-data="{ 
-                                        liked: {{ $item['is_liked'] ? 'true' : 'false' }}, 
-                                        likesCount: {{ $item['likes_count'] }},
-                                        toggleLike() {
-                                            this.liked = !this.liked;
-                                            this.likesCount = this.liked ? this.likesCount + 1 : this.likesCount - 1;
-                                            
-                                            fetch('{{ route('api.like.toggle') }}', {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                                },
-                                                body: JSON.stringify({
-                                                    id: {{ $item['id'] }},
-                                                    type: '{{ $item['type'] }}'
-                                                })
-                                            })
-                                            .then(res => res.json())
-                                            .then(data => {
-                                                if(data.success && data.liked) {
-                                                    $dispatch('notify', { type: 'like' });
-                                                }
-                                            });
-                                        }
-                                    }">
-                                    <!-- Like -->
-                                    <button type="button"
-                                            @click="toggleLike()"
-                                            class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
-                                        <img src="{{ asset('assets/icon/new/like.svg') }}" 
-                                             alt="Like" 
-                                             class="w-5 h-5 group-hover:scale-125 transition-transform duration-300"
-                                             :style="liked 
-                                                ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
-                                                : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
-                                        <span class="font-medium text-sm" :style="'color: ' + (liked ? '#dc2626' : '#525252')" x-text="likesCount"></span>
-                                    </button>
-                                    <!-- Comments -->
-                                    <button type="button"
-                                            @click="$dispatch('open-comments', { id: {{ $item['id'] }}, type: '{{ $item['type'] }}' })"
-                                            class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 transition-all duration-300 group cursor-pointer">
-                                        <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                        </svg>
-                                        <span class="font-medium text-sm">{{ $item['comments_count'] }}</span>
-                                    </button>
-                                    <!-- Share -->
-                                    <button type="button"
-                                            @click="$dispatch('notify', { message: '{{ __('social.shared') }}', type: 'success' })"
-                                            class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 transition-all duration-300 group cursor-pointer">
-                                        <svg class="w-5 h-5 group-hover:scale-110 group-hover:rotate-12 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                                        </svg>
-                                    </button>
+                                <div class="flex items-center gap-6">
+                                    <x-like-button 
+                                        :item-id="$item['id']"
+                                        :item-type="$item['type']"
+                                        :is-liked="$item['is_liked']"
+                                        :likes-count="$item['likes_count']"
+                                    />
+                                    
+                                    <x-comment-button 
+                                        :item-id="$item['id']"
+                                        :item-type="$item['type']"
+                                        :comments-count="$item['comments_count']"
+                                    />
+                                    
+                                    <x-share-button 
+                                        :item-id="$item['id']"
+                                        :item-type="$item['type']"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                    @elseif($item['type'] === 'article')
+                        <!-- Article Card -->
+                        <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
+                            @if(isset($item['image']) && $item['image'])
+                                <div class="aspect-video overflow-hidden relative">
+                                    <img src="{{ $item['image'] }}" alt="{{ $item['title'] }}" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute top-4 left-4">
+                                        <span class="px-3 py-1 bg-accent text-white text-xs font-semibold rounded-full shadow-lg">
+                                            📝 {{ __('feed.article_badge') ?? 'Articolo' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Author Info -->
+                            <div class="p-6 flex items-center justify-between border-b border-neutral-100 dark:border-neutral-700">
+                                <div class="flex items-center gap-3">
+                                    <img src="{{ $item['author']['avatar'] }}" alt="{{ $item['author']['name'] }}" 
+                                         class="w-12 h-12 rounded-full object-cover ring-2 ring-accent/20">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h3 class="font-bold text-neutral-900 dark:text-white">{{ $item['author']['name'] }}</h3>
+                                            @if($item['author']['verified'])
+                                                <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                </svg>
+                                            @endif
+                                        </div>
+                                        <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ $item['created_at'] }}</p>
+                                    </div>
+                                </div>
+                                <button class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300" title="{{ __('common.more_options') }}">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Article Content -->
+                            <div class="p-6">
+                                <h4 class="text-2xl font-bold text-neutral-900 dark:text-white mb-3 group-hover:text-accent transition-colors">
+                                    {{ $item['title'] }}
+                                </h4>
+                                <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                                    {{ $item['excerpt'] }}
+                                </p>
+                            </div>
+
+                             <!-- Actions -->
+                            <div class="p-6 border-t border-neutral-100 dark:border-neutral-700">
+                                <div class="flex items-center gap-6">
+                                    <x-like-button 
+                                        :item-id="$item['id']"
+                                        :item-type="$item['type']"
+                                        :is-liked="$item['is_liked']"
+                                        :likes-count="$item['likes_count']"
+                                    />
+                                    
+                                    <x-comment-button 
+                                        :item-id="$item['id']"
+                                        :item-type="$item['type']"
+                                        :comments-count="$item['comments_count']"
+                                    />
+                                    
+                                    <x-share-button 
+                                        :item-id="$item['id']"
+                                        :item-type="$item['type']"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -219,41 +254,14 @@
                             </div>
                             <div class="p-6">
                                 <h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">{{ $item['title'] }}</h4>
-                                <div class="flex items-center gap-6" x-data="{ 
-                                    liked: {{ $item['is_liked'] ? 'true' : 'false' }}, 
-                                    likesCount: {{ $item['likes_count'] }},
-                                    toggleLike() {
-                                        this.liked = !this.liked;
-                                        this.likesCount = this.liked ? this.likesCount + 1 : this.likesCount - 1;
-                                        
-                                        fetch('{{ route('api.like.toggle') }}', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                            },
-                                            body: JSON.stringify({ id: {{ $item['id'] }}, type: '{{ $item['type'] }}' })
-                                        })
-                                        .then(res => res.json())
-                                        .then(data => {
-                                            if(data.success && data.liked) {
-                                                $dispatch('notify', { message: '{{ __('social.liked') }}', type: 'success' });
-                                            }
-                                        });
-                                    }
-                                }">
-                                    <!-- Like -->
-                                    <button type="button"
-                                            @click="toggleLike()"
-                                            class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
-                                        <img src="{{ asset('assets/icon/new/like.svg') }}" 
-                                             alt="Like" 
-                                             class="w-5 h-5 group-hover:scale-125 transition-transform duration-300"
-                                             :style="liked 
-                                                ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
-                                                : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
-                                        <span class="font-medium text-sm" :style="'color: ' + (liked ? '#dc2626' : '#525252')" x-text="likesCount"></span>
-                                    </button>
+                                <div class="flex items-center gap-6">
+                                    <x-like-button 
+                                        :item-id="$item['id']"
+                                        :item-type="$item['type']"
+                                        :is-liked="$item['is_liked']"
+                                        :likes-count="$item['likes_count']"
+                                    />
+                                    
                                     <!-- Views -->
                                     <div class="flex items-center gap-2 text-neutral-500 dark:text-neutral-500">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
@@ -262,14 +270,11 @@
                                         </svg>
                                         <span class="font-medium text-sm">{{ $item['views_count'] }}</span>
                                     </div>
-                                    <!-- Share -->
-                                    <button type="button"
-                                            @click="$dispatch('notify', { message: '{{ __('social.shared') }}', type: 'success' })"
-                                            class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 transition-all duration-300 group cursor-pointer">
-                                        <svg class="w-5 h-5 group-hover:scale-110 group-hover:rotate-12 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                                        </svg>
-                                    </button>
+                                    
+                                    <x-share-button 
+                                        :item-id="$item['id']"
+                                        :item-type="$item['type']"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -306,49 +311,20 @@
                                     <span class="text-sm text-neutral-600 dark:text-neutral-400">
                                         {{ $item['photos_count'] }} {{ __('feed.photos') }}
                                     </span>
-                                    <div class="flex items-center gap-4" x-data="{ 
-                                        liked: {{ $item['is_liked'] ? 'true' : 'false' }}, 
-                                        likesCount: {{ $item['likes_count'] }},
-                                        toggleLike() {
-                                            this.liked = !this.liked;
-                                            this.likesCount = this.liked ? this.likesCount + 1 : this.likesCount - 1;
-                                            
-                                            fetch('{{ route('api.like.toggle') }}', {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json',
-                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                                },
-                                                body: JSON.stringify({ id: {{ $item['id'] }}, type: '{{ $item['type'] }}' })
-                                            })
-                                            .then(res => res.json())
-                                            .then(data => {
-                                                if(data.success && data.liked) {
-                                                    $dispatch('notify', { message: '{{ __('social.liked') }}', type: 'success' });
-                                                }
-                                            });
-                                        }
-                                    }">
-                                        <!-- Like -->
-                                        <button type="button"
-                                                @click="toggleLike()"
-                                                class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
+                                    <div class="flex items-center gap-4">
+                                        <!-- Gallery likes temporaneamente disabilitati finché non avremo un modello Gallery -->
+                                        <div class="flex items-center gap-2 text-neutral-400">
                                             <img src="{{ asset('assets/icon/new/like.svg') }}" 
                                                  alt="Like" 
-                                                 class="w-5 h-5 group-hover:scale-125 transition-transform duration-300"
-                                                 :style="liked 
-                                                    ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
-                                                    : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
-                                            <span class="font-medium text-sm" :style="'color: ' + (liked ? '#dc2626' : '#525252')" x-text="likesCount"></span>
-                                        </button>
-                                        <!-- Share -->
-                                        <button type="button"
-                                                @click="$dispatch('notify', { message: '{{ __('social.shared') }}', type: 'success' })"
-                                                class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 transition-all duration-300 group cursor-pointer">
-                                            <svg class="w-5 h-5 group-hover:scale-110 group-hover:rotate-12 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                                            </svg>
-                                        </button>
+                                                 class="w-5 h-5 opacity-50"
+                                                 style="filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);">
+                                            <span class="font-medium text-sm">{{ $item['likes_count'] }}</span>
+                                        </div>
+                                        
+                                        <x-share-button 
+                                            :item-id="$item['id']"
+                                            :item-type="$item['type']"
+                                        />
                                     </div>
                                 </div>
                             </div>

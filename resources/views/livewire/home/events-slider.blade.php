@@ -62,8 +62,8 @@
         </div>
 
         <!-- Events Slider Container -->
-        <div class="relative overflow-hidden">
-            <div class="flex transition-transform duration-500 ease-out"
+        <div class="relative overflow-x-hidden -mx-3 px-3">
+            <div class="flex transition-transform duration-500 ease-out pb-8"
                  :style="`transform: translateX(-${currentPage * 100}%)`">
                 @foreach($recentEvents->take(6) as $i => $event)
                 <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-3"

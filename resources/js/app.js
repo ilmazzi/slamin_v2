@@ -1,10 +1,7 @@
 import './bootstrap';
-import Alpine from 'alpinejs';
-import focus from '@alpinejs/focus';
-import intersect from '@alpinejs/intersect';
 
-Alpine.plugin(focus);
-Alpine.plugin(intersect);
+// Livewire 3 include già Alpine.js automaticamente!
+// Aggiungiamo i plugin usando l'hook di Livewire
 
 // Initialize dark mode on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -14,4 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-Alpine.start();
+// Configura Alpine quando Livewire è pronto
+document.addEventListener('livewire:init', () => {
+    console.log('✅ Livewire initialized!');
+});
+
+// Importa i plugin Alpine per Livewire
+import focus from '@alpinejs/focus'
+import intersect from '@alpinejs/intersect'
+
+// Esporta per Livewire
+window.AlpinePlugins = [focus, intersect];

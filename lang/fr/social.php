@@ -15,5 +15,9 @@ return [
     'send' => 'Envoyer',
     'comment_added' => 'Commentaire ajouté!',
     'comment_deleted' => 'Commentaire supprimé',
+    
+    // Errors
+    'error_like' => 'Erreur lors de l\'ajout du j\'aime. Réessayez.',
+    'error_generic' => 'Une erreur s\'est produite. Réessayez.',
 ];
 

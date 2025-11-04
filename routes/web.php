@@ -110,9 +110,14 @@ Route::get('/support', function () {
     return view('pages.support');
 })->name('support');
 
+// Test Livewire
+Route::get('/test-livewire', function () {
+    return view('pages.test-livewire');
+})->middleware('auth');
+
 // Dashboard Route
 Route::get('/dashboard', function () {
-    return redirect('/'); // Redirect to home for now
+    return view('pages.dashboard');
 })->middleware('auth')->name('dashboard.index');
 
 // Auth Routes

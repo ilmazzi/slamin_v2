@@ -128,6 +128,37 @@ class User extends Authenticatable implements MustVerifyEmail
      */
 
     /**
+     * Temporary role methods - Will be replaced with Spatie Permission
+     */
+    public function getRoleNames()
+    {
+        // TODO: Replace with Spatie Permission when installed
+        // For now, return mock roles based on email or default
+        if (str_contains($this->email, 'admin')) {
+            return collect(['admin', 'poet']);
+        }
+        return collect(['poet']); // Default role
+    }
+
+    public function hasRole($role): bool
+    {
+        // TODO: Replace with Spatie Permission when installed
+        return $this->getRoleNames()->contains($role);
+    }
+
+    public function hasAnyRole($roles): bool
+    {
+        // TODO: Replace with Spatie Permission when installed
+        $roleNames = $this->getRoleNames();
+        foreach ((array)$roles as $role) {
+            if ($roleNames->contains($role)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Check if user is an admin
      */
     public function isAdmin(): bool

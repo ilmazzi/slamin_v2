@@ -12,9 +12,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
 
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
     <!-- Styles & Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
 
     <!-- Additional Head Content -->
     {{ $head ?? '' }}
@@ -33,9 +35,6 @@
     <!-- Footer -->
     <x-layouts.footer-modern />
 
-    <!-- Scripts -->
-    @livewireScripts
-    
     <!-- Additional Body Scripts -->
     {{ $scripts ?? '' }}
 
@@ -169,13 +168,29 @@
         </div>
     </div>
 
-    <!-- Dragon Like Animation -->
+    <!-- Dragon Like Animation with Confetti -->
     <div x-data="{ 
         show: false,
+        confetti: [],
         showDragon(data) {
             if(data.type === 'like') {
                 this.show = true;
+                this.generateConfetti();
                 setTimeout(() => { this.show = false; }, 2000);
+            }
+        },
+        generateConfetti() {
+            this.confetti = [];
+            const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f97316', '#14b8a6'];
+            for(let i = 0; i < 50; i++) {
+                this.confetti.push({
+                    id: i,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    left: Math.random() * 100,
+                    delay: Math.random() * 0.5,
+                    duration: 2 + Math.random() * 1,
+                    rotation: Math.random() * 360
+                });
             }
         }
     }"
@@ -184,6 +199,17 @@
     x-cloak
     class="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none"
     style="display: none;">
+        <!-- Confetti -->
+        <template x-for="conf in confetti" :key="conf.id">
+            <div class="absolute top-0 w-3 h-3 rounded-sm"
+                 :style="`
+                    left: ${conf.left}%;
+                    background-color: ${conf.color};
+                    animation: confetti-fall ${conf.duration}s linear ${conf.delay}s forwards;
+                    transform: rotate(${conf.rotation}deg);
+                 `"></div>
+        </template>
+        
         <!-- Animated Dragon -->
         <div x-show="show"
              x-transition:enter="transition ease-out duration-500"
@@ -192,7 +218,7 @@
              x-transition:leave="transition ease-in duration-500"
              x-transition:leave-start="opacity-100 scale-100 rotate-0"
              x-transition:leave-end="opacity-0 scale-150 rotate-180"
-             class="relative">
+             class="relative z-10">
             <img src="{{ asset('assets/images/draghetto-like.png') }}" 
                  alt="Like!" 
                  class="w-80 h-80 drop-shadow-2xl animate-bounce">
@@ -205,6 +231,20 @@
             </div>
         </div>
     </div>
+    
+    <!-- Confetti Animation CSS -->
+    <style>
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotateZ(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotateZ(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
 
     <!-- Toast Notifications (solo per info/warning/error) -->
     <div x-data="{ 

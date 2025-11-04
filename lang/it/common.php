@@ -5,6 +5,7 @@ return [
     'discover_more' => 'Scopri di più',
     'see_all' => 'Vedi tutti',
     'read_more' => 'Leggi di più',
+    'learn_more' => 'Scopri',
     'watch' => 'Guarda',
     'share' => 'Condividi',
     'like' => 'Mi piace',

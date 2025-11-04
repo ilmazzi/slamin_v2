@@ -16,6 +16,9 @@ return [
     'participants' => 'partecipanti',
     'attend_event' => 'Partecipa all\'Evento',
     
+    // Article Card
+    'article_badge' => 'Articolo',
+    
     // Metrics
     'views' => 'visualizzazioni',
     'likes' => 'like',

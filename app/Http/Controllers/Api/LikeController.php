@@ -24,7 +24,7 @@ class LikeController extends Controller
 
         $request->validate([
             'id' => 'required|integer',
-            'type' => 'required|string|in:poem,video,article,event,gallery',
+            'type' => 'required|string|in:poem,video,article,event',
         ]);
 
         $modelMap = [
@@ -36,7 +36,19 @@ class LikeController extends Controller
 
         $modelClass = $modelMap[$request->type] ?? null;
         if (!$modelClass) {
-            return response()->json(['success' => false], 400);
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid content type'
+            ], 400);
+        }
+
+        // Verifica che il contenuto esista
+        $model = $modelClass::find($request->id);
+        if (!$model) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Content not found'
+            ], 404);
         }
 
         // Check if already liked
@@ -48,15 +60,12 @@ class LikeController extends Controller
         if ($existingLike) {
             // Unlike
             $existingLike->delete();
-            $model = $modelClass::find($request->id);
-            if ($model) {
-                $model->decrement('like_count');
-            }
+            $model->decrement('like_count');
             
             return response()->json([
                 'success' => true,
                 'liked' => false,
-                'count' => $model->like_count ?? 0,
+                'count' => $model->fresh()->like_count ?? 0,
             ]);
         } else {
             // Like
@@ -66,15 +75,12 @@ class LikeController extends Controller
                 'likeable_id' => $request->id,
             ]);
             
-            $model = $modelClass::find($request->id);
-            if ($model) {
-                $model->increment('like_count');
-            }
+            $model->increment('like_count');
             
             return response()->json([
                 'success' => true,
                 'liked' => true,
-                'count' => $model->like_count ?? 1,
+                'count' => $model->fresh()->like_count ?? 1,
             ]);
         }
     }

@@ -15,5 +15,9 @@ return [
     'send' => 'Invia',
     'comment_added' => 'Commento aggiunto!',
     'comment_deleted' => 'Commento eliminato',
+    
+    // Errors
+    'error_like' => 'Errore durante l\'aggiunta del like. Riprova.',
+    'error_generic' => 'Si è verificato un errore. Riprova.',
 ];
 

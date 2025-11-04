@@ -16,6 +16,9 @@ return [
     'participants' => 'participants',
     'attend_event' => 'Attend Event',
     
+    // Article Card
+    'article_badge' => 'Article',
+    
     // Metrics
     'views' => 'views',
     'likes' => 'likes',

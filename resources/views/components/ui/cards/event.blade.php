@@ -56,9 +56,9 @@
     </div>
 
     <!-- Event Details -->
-    <div class="p-4 md:p-6">
+    <div class="p-4 md:p-6 min-h-[140px] flex flex-col justify-between">
         @if($event->description)
-        <p class="text-sm md:text-base text-neutral-600 dark:text-neutral-400 mb-4 line-clamp-2">
+        <p class="text-sm md:text-base text-neutral-600 dark:text-neutral-400 mb-4 line-clamp-3">
             {{ $event->description }}
         </p>
         @endif
