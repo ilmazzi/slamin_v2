@@ -41,6 +41,7 @@ return [
     // Empty State
     'no_events_found' => 'Nessun evento trovato',
     'try_adjusting_filters' => 'Prova a modificare i filtri o cercarne uno diverso.',
+    'scroll_for_more' => 'Scorri per vedere altri eventi',
     
     // Event Details
     'entry_fee' => 'Quota di iscrizione',

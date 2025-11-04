@@ -41,6 +41,7 @@ return [
     // Empty State
     'no_events_found' => 'No events found',
     'try_adjusting_filters' => 'Try adjusting your filters or search for something else.',
+    'scroll_for_more' => 'Scroll to see more events',
     
     // Event Details
     'entry_fee' => 'Entry Fee',

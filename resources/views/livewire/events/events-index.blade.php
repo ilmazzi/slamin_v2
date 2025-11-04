@@ -240,17 +240,44 @@
         </div>
     </div>
 
+    <!-- Scroll Down Indicator (only if more than 6 events) -->
+    @if($events->count() > 6)
+    <div class="flex justify-center mb-8"
+         x-data="{ visible: true }"
+         x-init="setTimeout(() => visible = true, 1200)"
+         x-show="visible"
+         x-transition:enter="transition ease-out duration-1000"
+         x-transition:enter-start="opacity-0 scale-90"
+         x-transition:enter-end="opacity-100 scale-100"
+         @scroll.window="visible = false">
+        <div class="relative">
+            <!-- Pulsing Glow Background -->
+            <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full blur-xl opacity-50 animate-pulse"></div>
+            
+            <!-- Arrow Container -->
+            <div class="relative px-8 py-4 bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm rounded-full shadow-2xl border border-primary-200 dark:border-primary-700">
+                <div class="flex items-center gap-3">
+                    <span class="text-sm font-semibold text-neutral-700 dark:text-neutral-200">
+                        {{ __('events.scroll_for_more') }}
+                    </span>
+                    <!-- Animated Arrow -->
+                    <svg class="w-5 h-5 text-primary-600 dark:text-primary-400 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Events Grid with Staggered Animations -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         @if($events->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($events as $index => $event)
                     <div x-data="{ visible: false }"
-                         @if($index < 6)
-                         x-init="setTimeout(() => visible = true, {{ 500 + ($index * 100) }})"
-                         @else
-                         x-intersect.once="visible = true"
-                         @endif
+                         x-init="@if($index < 6)setTimeout(() => visible = true, {{ 500 + ($index * 100) }})@else; /* Will be triggered by x-intersect */@endif"
+                         x-intersect:enter.once="visible = true"
                          x-show="visible"
                          x-transition:enter="transition ease-out duration-700"
                          x-transition:enter-start="opacity-0 translate-y-8 scale-95"
