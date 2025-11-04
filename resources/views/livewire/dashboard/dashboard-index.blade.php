@@ -69,12 +69,13 @@
     <!-- Stats Grid -->
     <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pb-12 space-y-12">
         
-        <!-- 📊 Stats - Numeri Animati con Counter (NO CARD!) -->
+        <!-- 📊 Stats - Numeri Animati con Counter (Grid 2x2 su mobile!) -->
         <div x-data="{ visible: false }" 
              x-intersect.once="visible = true"
-             class="relative py-12">
+             class="relative py-8 md:py-12">
             
-            <div class="flex flex-wrap items-baseline justify-center gap-x-12 gap-y-8">
+            <!-- Grid 2x2 su mobile, flex su desktop -->
+            <div class="grid grid-cols-2 md:flex md:flex-wrap items-baseline justify-center gap-x-6 gap-y-6 md:gap-x-12 md:gap-y-8">
                 @php
                 $statsData = [
                     ['label' => __('dashboard.poems'), 'value' => $stats['total_poems']],
@@ -111,11 +112,12 @@
                              }
                          }"
                          x-init="animate()">
-                        <div class="inline-flex flex-col items-center">
-                            <span class="text-6xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 group-hover:scale-110 transition-transform duration-300"
+                        <div class="flex flex-col items-center">
+                            <!-- Numeri più piccoli su mobile: text-4xl vs text-7xl -->
+                            <span class="text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 group-hover:scale-110 transition-transform duration-300"
                                   x-text="Math.floor(count).toLocaleString()">
                             </span>
-                            <span class="text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-widest mt-2">
+                            <span class="text-[10px] md:text-sm font-bold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider md:tracking-widest mt-1 md:mt-2 text-center">
                                 {{ $stat['label'] }}
                             </span>
                         </div>
@@ -124,12 +126,13 @@
             </div>
         </div>
 
-        <!-- ⚡ Quick Actions - Pills Colorate (NO CARD!) -->
-        <div class="relative py-8" 
+        <!-- ⚡ Quick Actions - Pills Colorate Ottimizzate per Mobile -->
+        <div class="relative py-6 md:py-8" 
              x-data="{ visible: false }" 
              x-intersect.once="visible = true">
             
-            <div class="flex flex-wrap items-center justify-center gap-3 md:gap-4">
+            <!-- Grid 2x2 su mobile, flex wrap su desktop -->
+            <div class="grid grid-cols-2 md:flex md:flex-wrap items-center justify-center gap-2.5 md:gap-4">
                 @php
                 $colors = [
                     ['from' => 'from-primary-500', 'to' => 'to-primary-600', 'hover_from' => 'hover:from-primary-600', 'hover_to' => 'hover:to-primary-700'],
@@ -146,10 +149,10 @@
                        x-transition:enter-start="opacity-0 scale-90 rotate-12"
                        x-transition:enter-end="opacity-100 scale-100 rotate-0"
                        style="transition-delay: {{ $index * 100 }}ms"
-                       class="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r {{ $colors[$index]['from'] }} {{ $colors[$index]['to'] }} {{ $colors[$index]['hover_from'] }} {{ $colors[$index]['hover_to'] }} text-white font-semibold shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-rotate-1 transition-all duration-300">
+                       class="group flex items-center justify-center gap-2 md:gap-3 px-3 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl bg-gradient-to-r {{ $colors[$index]['from'] }} {{ $colors[$index]['to'] }} {{ $colors[$index]['hover_from'] }} {{ $colors[$index]['hover_to'] }} text-white font-semibold shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-rotate-1 transition-all duration-300">
                         
-                        <!-- SVG Icons -->
-                        <svg class="w-6 h-6 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <!-- SVG Icons - più piccole su mobile -->
+                        <svg class="w-5 h-5 md:w-6 md:h-6 flex-shrink-0 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             @if($loop->index === 0)
                                 <!-- Pen/Write Icon -->
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
@@ -165,10 +168,11 @@
                             @endif
                         </svg>
                         
-                        <span class="text-sm md:text-base whitespace-nowrap">{{ $action['title'] }}</span>
+                        <!-- Testo più piccolo su mobile, break-words per andare a capo se necessario -->
+                        <span class="text-xs md:text-base font-medium md:font-semibold leading-tight text-center flex-1">{{ $action['title'] }}</span>
                         
-                        <!-- Arrow animata -->
-                        <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" 
+                        <!-- Arrow animata - nascosta su mobile per risparmiare spazio -->
+                        <svg class="hidden md:block w-5 h-5 flex-shrink-0 transform group-hover:translate-x-1 transition-transform duration-300" 
                              fill="none" 
                              stroke="currentColor" 
                              viewBox="0 0 24 24">
@@ -787,7 +791,7 @@
                                 <div class="w-16 h-16 rounded-2xl bg-primary-800/50 dark:bg-primary-800/30 flex items-center justify-center">
                                     <i class="ph ph-chat-circle text-3xl text-accent"></i>
                                 </div>
-                                <div>
+<div>
                                     <h3 class="text-xl font-bold text-white mb-1">{{ $socialActivities[3]['title'] }}</h3>
                                     <p class="text-primary-300 dark:text-primary-400 text-sm">{{ $socialActivities[3]['description'] }}</p>
                                 </div>
