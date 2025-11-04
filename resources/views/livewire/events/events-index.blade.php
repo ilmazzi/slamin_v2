@@ -545,18 +545,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1000);
 });
 
-// Listen for Livewire updates (when filters change)
-document.addEventListener('livewire:update', function() {
-    console.log('🔄 Livewire updated - refreshing map markers...');
-    updateMapMarkers();
-});
-
-// Also listen with new Livewire 3 hook
-Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
-    succeed(({ snapshot, effect }) => {
-        console.log('🔄 Livewire commit hook - refreshing map markers...');
-        setTimeout(updateMapMarkers, 100);
+// Use MutationObserver to watch for data-events changes
+const observeMapData = () => {
+    const dataElement = document.getElementById('mapEventsData');
+    if (!dataElement) {
+        console.warn('Map data element not found, retrying...');
+        setTimeout(observeMapData, 500);
+        return;
+    }
+    
+    console.log('👀 Setting up MutationObserver for map data changes...');
+    
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-events') {
+                console.log('🔄 data-events attribute changed! Updating markers...');
+                updateMapMarkers();
+            }
+        });
     });
+    
+    observer.observe(dataElement, {
+        attributes: true,
+        attributeFilter: ['data-events']
+    });
+    
+    console.log('✅ MutationObserver active');
+};
+
+// Start observing after DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(observeMapData, 1500);
 });
 
 function initMap() {
@@ -775,29 +794,34 @@ function updateMapMarkers() {
     // Get updated events data from data container (NOT wire:ignore element)
     const dataElement = document.getElementById('mapEventsData');
     if (!dataElement) {
-        console.error('Map data element not found!');
+        console.error('❌ Map data element not found!');
         return;
     }
     
     const eventsData = dataElement.getAttribute('data-events');
     if (!eventsData) {
-        console.error('No events data found in data element!');
+        console.error('❌ No events data found in data element!');
         return;
     }
+    
+    console.log('📦 Raw data from attribute:', eventsData.substring(0, 100) + '...');
     
     let events;
     try {
         events = JSON.parse(eventsData);
     } catch (e) {
-        console.error('Error parsing events data:', e);
+        console.error('❌ Error parsing events data:', e);
         return;
     }
     
-    console.log('📍 Updating with', events.length, 'events');
+    console.log('📍 Parsed events:', events);
+    console.log('📍 Updating map with', events.length, 'events (filtered)');
     
     // Remove existing markers
+    console.log('🗑️ Removing', markers.length, 'old markers...');
     markers.forEach(marker => map.removeLayer(marker));
     markers = [];
+    console.log('✅ Old markers removed');
     
     // Category colors
     const categoryColors = {
@@ -911,13 +935,18 @@ function updateMapMarkers() {
         markers.push(marker);
     });
     
+    console.log('🎯 Total markers added:', markers.length);
+    
     // Fit bounds to show all markers
     if (markers.length > 0) {
         const group = new L.featureGroup(markers);
         map.fitBounds(group.getBounds().pad(0.1));
-        console.log('✅ Map updated with', markers.length, 'markers');
+        console.log('✅ Map updated successfully with', markers.length, 'markers');
+        console.log('📌 Map re-centered to show all filtered events');
     } else {
-        console.warn('⚠️ No markers after update');
+        console.warn('⚠️ No markers after update - map will be empty');
+        // Reset to default view if no markers
+        map.setView([41.9028, 12.4964], 6);
     }
 }
 </script>
