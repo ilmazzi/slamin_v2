@@ -705,9 +705,10 @@ function initMap() {
                 
                 <!-- CTA Button -->
                 <a href="${event.url}" 
-                   class="block w-full text-center px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                   class="block w-full text-center px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                   style="color: white !important; text-decoration: none !important;">
                     {{ __('events.view_details') }}
-                    <svg class="inline w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="inline w-4 h-4 ml-1" fill="none" stroke="white" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                 </a>
@@ -770,9 +771,19 @@ function initMap() {
     border: none;
 }
 
-/* Hover effect on popup button */
+/* Popup link styling - force white text */
+.custom-popup a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
 .custom-popup a:hover {
+    color: white !important;
     transform: scale(1.05);
+}
+
+.custom-popup a svg {
+    stroke: white !important;
 }
 </style>
 @endpush
