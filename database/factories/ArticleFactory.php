@@ -24,15 +24,15 @@ class ArticleFactory extends Factory
             'Il Ritmo nelle Parole',
         ];
 
-        $title = fake()->randomElement($titles) . ' ' . Str::random(4);
-        $slug = Str::slug($title) . '-' . fake()->unique()->numberBetween(10000, 99999);
+        $title = $this->faker->randomElement($titles) . ' ' . Str::random(4);
+        $slug = Str::slug($title) . '-' . $this->faker->unique()->numberBetween(10000, 99999);
 
         return [
             'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'title' => json_encode(['it' => $title]),
-            'content' => json_encode(['it' => fake()->paragraphs(5, true)]),
-            'excerpt' => json_encode(['it' => fake()->sentence(20)]),
-            'featured_image' => 'https://images.unsplash.com/photo-' . fake()->randomElement([
+            'content' => json_encode(['it' => $this->faker->paragraphs(5, true)]),
+            'excerpt' => json_encode(['it' => $this->faker->sentence(20)]),
+            'featured_image' => 'https://images.unsplash.com/photo-' . $this->faker->randomElement([
                 '1516589178581-6cd7833ae3b2',
                 '1506157786151-b8491531f063',
                 '1455390582262-044cdead277a',
@@ -41,12 +41,12 @@ class ArticleFactory extends Factory
             'status' => 'published',
             'moderation_status' => 'approved',
             'is_public' => true,
-            'featured' => fake()->boolean(30),
-            'views_count' => fake()->numberBetween(100, 5000),
-            'likes_count' => fake()->numberBetween(20, 500),
-            'comments_count' => fake()->numberBetween(5, 100),
+            'featured' => $this->faker->boolean(30),
+            'views_count' => $this->faker->numberBetween(100, 5000),
+            'likes_count' => $this->faker->numberBetween(20, 500),
+            'comments_count' => $this->faker->numberBetween(5, 100),
             'slug' => $slug,
-            'published_at' => fake()->dateTimeBetween('-60 days', 'now'),
+            'published_at' => $this->faker->dateTimeBetween('-60 days', 'now'),
             'language' => 'it',
         ];
     }

@@ -32,24 +32,24 @@ class PoemFactory extends Factory
             "Le stelle brillano\ncome lacrime di gioia,\nnel manto nero\ndella notte infinita.\n\nOgni stella\nun desiderio,\nogni desiderio\nuna speranza.",
         ];
 
-        $title = fake()->randomElement($poemTitles) . ' ' . Str::random(5);
+        $title = $this->faker->randomElement($poemTitles) . ' ' . Str::random(5);
         
         return [
             'title' => $title,
-            'slug' => Str::slug($title) . '-' . fake()->unique()->numberBetween(1000, 9999),
-            'content' => fake()->randomElement($poemContents),
-            'description' => fake()->sentence(10),
+            'slug' => Str::slug($title) . '-' . $this->faker->unique()->numberBetween(1000, 9999),
+            'content' => $this->faker->randomElement($poemContents),
+            'description' => $this->faker->sentence(10),
             'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'is_public' => true,
             'moderation_status' => 'approved',
-            'view_count' => fake()->numberBetween(50, 2000),
-            'like_count' => fake()->numberBetween(10, 300),
-            'comment_count' => fake()->numberBetween(0, 50),
+            'view_count' => $this->faker->numberBetween(50, 2000),
+            'like_count' => $this->faker->numberBetween(10, 300),
+            'comment_count' => $this->faker->numberBetween(0, 50),
             'language' => 'it',
-            'is_featured' => fake()->boolean(20),
-            'published_at' => fake()->dateTimeBetween('-30 days', 'now'),
+            'is_featured' => $this->faker->boolean(20),
+            'published_at' => $this->faker->dateTimeBetween('-30 days', 'now'),
             'is_draft' => false,
-            'word_count' => fake()->numberBetween(20, 150),
+            'word_count' => $this->faker->numberBetween(20, 150),
         ];
     }
 }
