@@ -5,26 +5,26 @@
         <div class="flex items-center justify-between mb-8">
             <div>
                 <h2 class="text-3xl lg:text-4xl font-bold text-neutral-900 dark:text-white">
-                    Il Tuo <span class="italic text-primary-600">Feed</span>
+                    {!! __('feed.title') !!}
                 </h2>
                 <p class="text-neutral-600 dark:text-neutral-400 mt-2">
-                    Contenuti personalizzati dai poeti che segui
+                    {{ __('feed.subtitle') }}
                 </p>
             </div>
             
             <!-- Filter Pills -->
             <div class="hidden md:flex items-center gap-2">
                 <button class="px-4 py-2 rounded-full bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors">
-                    Tutti
+                    {{ __('feed.filter_all') }}
                 </button>
                 <button class="px-4 py-2 rounded-full bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
-                    Poesie
+                    {{ __('feed.filter_poems') }}
                 </button>
                 <button class="px-4 py-2 rounded-full bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
-                    Eventi
+                    {{ __('feed.filter_events') }}
                 </button>
                 <button class="px-4 py-2 rounded-full bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
-                    Video
+                    {{ __('feed.filter_videos') }}
                 </button>
             </div>
         </div>
@@ -55,7 +55,7 @@
                                         <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ $item['created_at'] }}</p>
                                     </div>
                                 </div>
-                                <button class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300">
+                                <button class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300" title="{{ __('common.more_options') }}">
                                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
                                     </svg>
@@ -100,7 +100,7 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
                                     </svg>
-                                    <span class="font-medium">Condividi</span>
+                                    <span class="font-medium">{{ __('common.share') }}</span>
                                 </button>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                                 </div>
                                 <div class="absolute top-4 left-4">
                                     <span class="px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-full shadow-lg">
-                                        📅 Evento
+                                        📅 {{ __('feed.event_badge') }}
                                     </span>
                                 </div>
                             </div>
@@ -141,7 +141,7 @@
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                                         </svg>
-                                        <span>{{ $item['participants_count'] }} partecipanti</span>
+                                        <span>{{ $item['participants_count'] }} {{ __('feed.participants') }}</span>
                                     </div>
                                 </div>
                                 <button wire:click="attendEvent({{ $item['id'] }})" 
@@ -149,7 +149,7 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                     </svg>
-                                    Partecipa all'Evento
+                                    {{ __('feed.attend_event') }}
                                 </button>
                             </div>
                         </div>
@@ -184,9 +184,9 @@
                             <div class="p-6">
                                 <h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">{{ $item['title'] }}</h4>
                                 <div class="flex items-center gap-4 text-sm text-neutral-600 dark:text-neutral-400">
-                                    <span>{{ $item['views_count'] }} visualizzazioni</span>
+                                    <span>{{ $item['views_count'] }} {{ __('feed.views') }}</span>
                                     <span>•</span>
-                                    <span>{{ $item['likes_count'] }} like</span>
+                                    <span>{{ $item['likes_count'] }} {{ __('feed.likes') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -220,9 +220,9 @@
                                     @endforeach
                                 </div>
                                 <div class="flex items-center gap-4 mt-4 text-sm text-neutral-600 dark:text-neutral-400">
-                                    <span>{{ $item['photos_count'] }} foto</span>
+                                    <span>{{ $item['photos_count'] }} {{ __('feed.photos') }}</span>
                                     <span>•</span>
-                                    <span>{{ $item['likes_count'] }} like</span>
+                                    <span>{{ $item['likes_count'] }} {{ __('feed.likes') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -238,7 +238,7 @@
                     @if($item['type'] === 'suggestion')
                         <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-6">
                             <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-4">
-                                🌟 Poeti Consigliati
+                                🌟 {{ __('feed.suggested_poets') }}
                             </h3>
                             <div class="space-y-4">
                                 <div class="flex items-start gap-3">
@@ -252,13 +252,13 @@
                                             {{ $item['poet']['bio'] }}
                                         </p>
                                         <div class="flex items-center gap-3 text-xs text-neutral-500 dark:text-neutral-500 mb-3">
-                                            <span>{{ $item['poet']['followers_count'] }} follower</span>
+                                            <span>{{ $item['poet']['followers_count'] }} {{ __('feed.followers') }}</span>
                                             <span>•</span>
-                                            <span>{{ $item['poet']['poems_count'] }} poesie</span>
+                                            <span>{{ $item['poet']['poems_count'] }} {{ __('feed.poems_count') }}</span>
                                         </div>
                                         <button wire:click="followPoet({{ $item['id'] }})" 
                                                 class="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-colors">
-                                            Segui
+                                            {{ __('feed.follow') }}
                                         </button>
                                     </div>
                                 </div>
@@ -269,7 +269,7 @@
 
                 <!-- Trending Topics -->
                 <div class="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl shadow-lg p-6 text-white">
-                    <h3 class="text-lg font-bold mb-4">🔥 Trending Oggi</h3>
+                    <h3 class="text-lg font-bold mb-4">🔥 {{ __('feed.trending_today') }}</h3>
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
                             <span class="text-sm">#PoesiaContemporanea</span>
@@ -289,7 +289,7 @@
                 <!-- Quick Actions -->
                 <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-6">
                     <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-4">
-                        ⚡ Azioni Rapide
+                        ⚡ {{ __('feed.quick_actions') }}
                     </h3>
                     <div class="space-y-2">
                         <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors group">
@@ -298,7 +298,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                 </svg>
                             </div>
-                            <span class="font-medium text-neutral-900 dark:text-white">Scrivi Poesia</span>
+                            <span class="font-medium text-neutral-900 dark:text-white">{{ __('feed.write_poem') }}</span>
                         </a>
                         <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors group">
                             <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -306,7 +306,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                                 </svg>
                             </div>
-                            <span class="font-medium text-neutral-900 dark:text-white">Carica Video</span>
+                            <span class="font-medium text-neutral-900 dark:text-white">{{ __('feed.upload_video') }}</span>
                         </a>
                         <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors group">
                             <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -314,7 +314,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
                             </div>
-                            <span class="font-medium text-neutral-900 dark:text-white">Crea Evento</span>
+                            <span class="font-medium text-neutral-900 dark:text-white">{{ __('feed.create_event') }}</span>
                         </a>
                     </div>
                 </div>

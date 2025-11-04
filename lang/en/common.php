@@ -9,6 +9,7 @@ return [
     'share' => 'Share',
     'like' => 'Like',
     'comment' => 'Comment',
+    'more_options' => 'More options',
     
     // Counts
     'poems_count' => ':count poems',

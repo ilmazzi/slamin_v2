@@ -9,6 +9,7 @@ return [
     'share' => 'Partager',
     'like' => 'J\'aime',
     'comment' => 'Commenter',
+    'more_options' => 'Plus d\'options',
     
     // Counts
     'poems_count' => ':count poèmes',
