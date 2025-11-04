@@ -16,6 +16,10 @@ Route::post('/api/like/toggle', [App\Http\Controllers\Api\LikeController::class,
     ->middleware('auth')
     ->name('api.like.toggle');
 
+Route::post('/api/snaps', [App\Http\Controllers\Api\SnapController::class, 'store'])
+    ->middleware('auth')
+    ->name('api.snaps.store');
+
 // API Comments
 Route::get('/api/comments', [App\Http\Controllers\Api\CommentController::class, 'index'])
     ->name('api.comments.index');

@@ -5,6 +5,7 @@
     'autoplay' => false,
     'size' => 'full', // full, large, medium, small
     'directUrl' => null, // Direct file URL for PeerTube videos
+    'showSnaps' => false, // Show snap timeline and create button
 ])
 
 @php
@@ -20,6 +21,10 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
 <div x-data="{ 
     showModal: false,
     videoData: null,
+    currentTime: 0,
+    showSnapModal: false,
+    snapTitle: '',
+    snapDescription: '',
     
     init() {
         this.videoData = {
@@ -69,8 +74,65 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
             if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
         }
         return url;
+    },
+    
+    updateTime(event) {
+        this.currentTime = event.target.currentTime;
+        this.$dispatch('video-time-update', { time: this.currentTime });
+    },
+    
+    seekToTime(timestamp) {
+        const videoEl = this.$refs.videoPlayer;
+        if (videoEl) {
+            videoEl.currentTime = timestamp;
+        }
+    },
+    
+    openSnapModal() {
+        this.showSnapModal = true;
+    },
+    
+    closeSnapModal() {
+        this.showSnapModal = false;
+        this.snapTitle = '';
+        this.snapDescription = '';
+    },
+    
+    async createSnap() {
+        if (!this.snapTitle) return;
+        
+        try {
+            const response = await fetch('{{ route('api.snaps.store') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    video_id: this.videoData.id,
+                    title: this.snapTitle,
+                    description: this.snapDescription,
+                    timestamp: Math.floor(this.currentTime)
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                this.$dispatch('notify', { message: data.message, type: 'success' });
+                this.closeSnapModal();
+                // Refresh timeline
+                window.location.reload();
+            } else {
+                this.$dispatch('notify', { message: data.message || 'Errore creazione snap', type: 'error' });
+            }
+        } catch (error) {
+            console.error('Error creating snap:', error);
+            this.$dispatch('notify', { message: 'Errore creazione snap', type: 'error' });
+        }
     }
 }" 
+@seek-video.window="seekToTime($event.detail.timestamp)"
 {{ $attributes->merge(['class' => $containerClass]) }}>
     
     <!-- Video Thumbnail (Clickable) -->
@@ -190,19 +252,33 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
             </button>
             
             <!-- Video Player -->
-            <div class="aspect-video bg-black">
+            <div class="aspect-video bg-black relative">
                 <!-- PeerTube: Use native HTML5 video tag with DIRECT file URL -->
                 <template x-if="showModal && (isPeerTube(videoData.url) || videoData.directUrl)">
-                    <video controls 
+                    <video x-ref="videoPlayer"
+                           controls 
                            autoplay
                            playsinline
                            webkit-playsinline
                            preload="metadata"
                            class="w-full h-full"
+                           @timeupdate="updateTime($event)"
                            :src="videoData.directUrl || videoData.url">
                         Your browser does not support the video tag.
                     </video>
                 </template>
+                
+                @if($showSnaps)
+                <!-- Create Snap Button (floating on video) -->
+                <button @click.stop="openSnapModal()"
+                        class="absolute top-4 left-4 z-10 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2">
+                    <img src="{{ asset('assets/icon/new/like.svg') }}" 
+                         alt="Snap" 
+                         class="w-4 h-4"
+                         style="filter: brightness(0) saturate(100%) invert(100%);">
+                    <span class="text-sm font-medium">Crea Snap</span>
+                </button>
+                @endif
                 
                 <!-- YouTube: Use iframe embed -->
                 <template x-if="showModal && isYouTube(videoData.url) && !videoData.directUrl">
@@ -251,9 +327,110 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
                         </div>
                     </div>
                 </div>
+                
+                @if($showSnaps)
+                <!-- Snap Timeline -->
+                <div class="px-6 pb-6">
+                    @livewire('snap.snap-timeline', ['video' => $video])
+                </div>
+                @endif
             </div>
         </div>
+    </template>
+    
+    @if($showSnaps)
+    <!-- Snap Creation Modal -->
+    <template x-teleport="body">
+        <div x-show="showSnapModal"
+             x-cloak
+             @click.self="closeSnapModal()"
+             @keydown.escape.window="closeSnapModal()"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+             style="display: none;">
+            
+            <div x-show="showSnapModal"
+                 x-transition:enter="transition ease-out duration-300 delay-100"
+                 x-transition:enter-start="opacity-0 scale-90"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-90"
+                 class="relative w-full max-w-md bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
+                
+                <!-- Header -->
+                <div class="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-700">
+                    <div class="flex items-center gap-2">
+                        <img src="{{ asset('assets/icon/new/like.svg') }}" 
+                             alt="Snap" 
+                             class="w-5 h-5"
+                             style="filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);">
+                        <h3 class="text-xl font-bold text-neutral-900 dark:text-white">Crea Snap</h3>
+                    </div>
+                    <button @click="closeSnapModal()"
+                            class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Body -->
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
+                            Titolo *
+                        </label>
+                        <input type="text" 
+                               x-model="snapTitle"
+                               class="w-full px-4 py-2 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-700 dark:text-white transition-all"
+                               placeholder="Titolo del momento"
+                               required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
+                            Descrizione
+                        </label>
+                        <textarea x-model="snapDescription"
+                                  class="w-full px-4 py-2 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-700 dark:text-white transition-all resize-none"
+                                  rows="3"
+                                  placeholder="Descrizione del momento"></textarea>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-700 px-4 py-2 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="font-medium" x-text="Math.floor(currentTime / 60) + ':' + String(Math.floor(currentTime % 60)).padStart(2, '0')"></span>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div class="flex items-center justify-end gap-3 p-6 border-t border-neutral-200 dark:border-neutral-700">
+                    <button @click="closeSnapModal()"
+                            class="px-5 py-2.5 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-xl font-medium transition-all">
+                        Annulla
+                    </button>
+                    <button @click="createSnap()"
+                            :disabled="!snapTitle"
+                            class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                        <img src="{{ asset('assets/icon/new/like.svg') }}" 
+                             alt="Snap" 
+                             class="w-4 h-4"
+                             style="filter: brightness(0) saturate(100%) invert(100%);">
+                        Crea Snap
+                    </button>
+                </div>
+            </div>
         </div>
     </template>
+    @endif
 </div>
+
 
