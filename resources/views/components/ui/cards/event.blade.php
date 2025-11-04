@@ -63,6 +63,27 @@
         </p>
         @endif
         
+        <!-- Social Actions - Using Reusable Components -->
+        <div class="flex items-center gap-4 mb-4" @click.stop>
+            <x-like-button 
+                :itemId="$event->id"
+                itemType="event"
+                :isLiked="$event->is_liked ?? false"
+                :likesCount="$event->like_count ?? 0"
+                size="sm" />
+            
+            <x-comment-button 
+                :itemId="$event->id"
+                itemType="event"
+                :commentsCount="$event->comment_count ?? 0"
+                size="sm" />
+            
+            <x-share-button 
+                :itemId="$event->id"
+                itemType="event"
+                size="sm" />
+        </div>
+        
         <!-- Attendees & CTA -->
         <div class="flex items-center justify-between">
             @if($event->organizer)
