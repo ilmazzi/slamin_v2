@@ -240,6 +240,11 @@
         </div>
     </div>
 
+    <!-- DEBUG: Total events count -->
+    <div class="text-center mb-4 text-sm text-neutral-600 dark:text-neutral-400">
+        Total events: {{ $events->count() }}
+    </div>
+    
     <!-- Scroll Down Indicator (only if more than 6 events) -->
     @if($events->count() > 6)
     <div class="flex justify-center mb-8"
@@ -275,15 +280,22 @@
         @if($events->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($events as $index => $event)
-                    <div x-data="{ visible: false }"
+                    <div 
                          @if($index < 6)
+                         x-data="{ visible: false }"
                          x-init="setTimeout(() => visible = true, {{ 500 + ($index * 100) }})"
-                         @endif
-                         x-intersect:enter.once="visible = true"
                          x-show="visible"
                          x-transition:enter="transition ease-out duration-700"
                          x-transition:enter-start="opacity-0 translate-y-8 scale-95"
                          x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                         @else
+                         x-data="{ visible: false }"
+                         x-intersect.once="visible = true"
+                         x-show="visible"
+                         x-transition:enter="transition ease-out duration-700"
+                         x-transition:enter-start="opacity-0 translate-y-8 scale-95"
+                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                         @endif
                          class="transform hover:scale-105 transition-transform duration-300">
                         <x-ui.cards.event :event="$event" />
                     </div>
