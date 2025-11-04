@@ -4,6 +4,8 @@ namespace App\Livewire\Home;
 
 use Livewire\Component;
 use App\Models\Article;
+use App\Models\UnifiedLike;
+use Illuminate\Support\Facades\Auth;
 
 class ArticlesSection extends Component
 {
@@ -32,6 +34,20 @@ class ArticlesSection extends Component
                 ->orderBy('created_at', 'desc')
                 ->limit(6)
                 ->get();
+        }
+        
+        // Check if user has liked each article
+        if (Auth::check()) {
+            foreach ($articles as $article) {
+                $article->is_liked = UnifiedLike::where('user_id', Auth::id())
+                    ->where('likeable_type', Article::class)
+                    ->where('likeable_id', $article->id)
+                    ->exists();
+            }
+        } else {
+            foreach ($articles as $article) {
+                $article->is_liked = false;
+            }
         }
         
         return view('livewire.home.articles-section', [

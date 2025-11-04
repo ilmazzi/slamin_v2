@@ -4,6 +4,8 @@ namespace App\Livewire\Home;
 
 use Livewire\Component;
 use App\Models\Poem;
+use App\Models\UnifiedLike;
+use Illuminate\Support\Facades\Auth;
 
 class PoetrySection extends Component
 {
@@ -32,6 +34,20 @@ class PoetrySection extends Component
                 ->orderBy('created_at', 'desc')
                 ->limit(6)
                 ->get();
+        }
+        
+        // Check if user has liked each poem
+        if (Auth::check()) {
+            foreach ($poems as $poem) {
+                $poem->is_liked = UnifiedLike::where('user_id', Auth::id())
+                    ->where('likeable_type', Poem::class)
+                    ->where('likeable_id', $poem->id)
+                    ->exists();
+            }
+        } else {
+            foreach ($poems as $poem) {
+                $poem->is_liked = false;
+            }
         }
         
         return view('livewire.home.poetry-section', [
