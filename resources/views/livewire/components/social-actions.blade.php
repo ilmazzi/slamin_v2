@@ -1,9 +1,17 @@
-<div class="flex items-center {{ $layout === 'vertical' ? 'flex-col' : 'gap-6' }}">
+<div class="flex items-center {{ $layout === 'vertical' ? 'flex-col' : 'gap-6' }}" 
+     x-data="{ 
+        testClick() { 
+            console.log('Button clicked!'); 
+            alert('Click funziona! Livewire: ' + (typeof @this !== 'undefined' ? 'OK' : 'NO'));
+        } 
+     }">
     
     <!-- Like Button -->
     <button 
+        type="button"
         wire:click="toggleLike"
-        class="flex items-center gap-2 transition-all duration-300 group {{ $layout === 'vertical' ? 'flex-col' : '' }}">
+        @click="console.log('Like clicked!', $wire)"
+        class="flex items-center gap-2 transition-all duration-300 group {{ $layout === 'vertical' ? 'flex-col' : '' }} cursor-pointer relative z-10">
         <img src="{{ asset('assets/icon/new/like.svg') }}" 
              alt="Like" 
              class="group-hover:scale-125 transition-transform duration-300 {{ $size === 'small' ? 'w-4 h-4' : ($size === 'large' ? 'w-7 h-7' : 'w-5 h-5') }}"
@@ -21,8 +29,9 @@
 
     <!-- Comments Button -->
     <button 
+        type="button"
         wire:click="openComments"
-        class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-500 transition-all duration-300 group {{ $layout === 'vertical' ? 'flex-col' : '' }}">
+        class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-500 transition-all duration-300 group {{ $layout === 'vertical' ? 'flex-col' : '' }} cursor-pointer">
         <svg class="group-hover:scale-110 transition-transform duration-200 {{ $size === 'small' ? 'w-4 h-4' : ($size === 'large' ? 'w-7 h-7' : 'w-5 h-5') }}" 
              fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
@@ -37,8 +46,9 @@
 
     <!-- Share Button -->
     <button 
+        type="button"
         wire:click="share"
-        class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-500 transition-all duration-300 group {{ $layout === 'vertical' ? 'flex-col' : '' }}">
+        class="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-500 transition-all duration-300 group {{ $layout === 'vertical' ? 'flex-col' : '' }} cursor-pointer">
         <svg class="group-hover:scale-110 group-hover:rotate-12 transition-all duration-200 {{ $size === 'small' ? 'w-4 h-4' : ($size === 'large' ? 'w-7 h-7' : 'w-5 h-5') }}" 
              fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
