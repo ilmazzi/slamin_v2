@@ -9,12 +9,13 @@ class VideosSection extends Component
 {
     public function render()
     {
+        // Get top 5 most popular videos by total interactions (views + likes + comments)
         $videos = Video::where('moderation_status', 'approved')
             ->where('is_public', true)
             ->with('user')
-            ->withCount(['views', 'likes', 'comments'])
-            ->orderBy('created_at', 'desc')
-            ->limit(6)
+            ->selectRaw('videos.*, (COALESCE(view_count, 0) + COALESCE(like_count, 0) + COALESCE(comment_count, 0)) as total_interactions')
+            ->orderByDesc('total_interactions')
+            ->limit(5)
             ->get();
         
         return view('livewire.home.videos-section', [
