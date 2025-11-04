@@ -62,9 +62,28 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
         };
     },
     
-    openModal() {
+    async openModal() {
         this.showModal = true;
         document.body.style.overflow = 'hidden';
+        
+        // Track video view
+        try {
+            const response = await fetch(`/api/videos/${this.videoData.id}/view`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+            
+            const data = await response.json();
+            if (data.success && data.incremented) {
+                // Update view count in UI
+                this.videoData.stats.views = data.view_count;
+            }
+        } catch (error) {
+            console.error('Error tracking video view:', error);
+        }
     },
     
     closeModal() {

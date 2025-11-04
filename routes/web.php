@@ -20,6 +20,9 @@ Route::post('/api/snaps', [App\Http\Controllers\Api\SnapController::class, 'stor
     ->middleware('auth')
     ->name('api.snaps.store');
 
+Route::post('/api/videos/{video}/view', [App\Http\Controllers\Api\VideoViewController::class, 'increment'])
+    ->name('api.videos.view');
+
 // API Comments
 Route::get('/api/comments', [App\Http\Controllers\Api\CommentController::class, 'index'])
     ->name('api.comments.index');
