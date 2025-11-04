@@ -30,7 +30,7 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
         @guest
             this.$dispatch('notify', { 
                 message: 'Effettua il login per mettere mi piace', 
-                type: 'warning' 
+                type: 'success' 
             });
             return;
         @endguest
