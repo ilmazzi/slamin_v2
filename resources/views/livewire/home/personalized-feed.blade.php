@@ -81,16 +81,33 @@
 
                              <!-- Actions -->
                             <div class="p-6 border-t border-neutral-100 dark:border-neutral-700">
-                                <div class="flex items-center gap-6" x-data="{ 
-                                    liked: {{ $item['is_liked'] ? 'true' : 'false' }}, 
-                                    likesCount: {{ $item['likes_count'] }},
-                                    async toggleLike() {
-                                        this.liked = !this.liked;
-                                        this.likesCount = this.liked ? this.likesCount + 1 : this.likesCount - 1;
-                                        
-                                        await $wire.toggleLike({{ $item['id'] }}, '{{ $item['type'] }}');
-                                    }
-                                }">
+                                <div class="flex items-center gap-6" 
+                                     x-data="{ 
+                                        liked: {{ $item['is_liked'] ? 'true' : 'false' }}, 
+                                        likesCount: {{ $item['likes_count'] }},
+                                        toggleLike() {
+                                            this.liked = !this.liked;
+                                            this.likesCount = this.liked ? this.likesCount + 1 : this.likesCount - 1;
+                                            
+                                            fetch('{{ route('api.like.toggle') }}', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                },
+                                                body: JSON.stringify({
+                                                    id: {{ $item['id'] }},
+                                                    type: '{{ $item['type'] }}'
+                                                })
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if(data.success && data.liked) {
+                                                    $dispatch('notify', { message: '{{ __('social.liked') }}', type: 'success' });
+                                                }
+                                            });
+                                        }
+                                    }">
                                     <!-- Like -->
                                     <button type="button"
                                             @click="toggleLike()"
@@ -205,10 +222,24 @@
                                 <div class="flex items-center gap-6" x-data="{ 
                                     liked: {{ $item['is_liked'] ? 'true' : 'false' }}, 
                                     likesCount: {{ $item['likes_count'] }},
-                                    async toggleLike() {
+                                    toggleLike() {
                                         this.liked = !this.liked;
                                         this.likesCount = this.liked ? this.likesCount + 1 : this.likesCount - 1;
-                                        await $wire.toggleLike({{ $item['id'] }}, '{{ $item['type'] }}');
+                                        
+                                        fetch('{{ route('api.like.toggle') }}', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                            },
+                                            body: JSON.stringify({ id: {{ $item['id'] }}, type: '{{ $item['type'] }}' })
+                                        })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            if(data.success && data.liked) {
+                                                $dispatch('notify', { message: '{{ __('social.liked') }}', type: 'success' });
+                                            }
+                                        });
                                     }
                                 }">
                                     <!-- Like -->
@@ -278,10 +309,24 @@
                                     <div class="flex items-center gap-4" x-data="{ 
                                         liked: {{ $item['is_liked'] ? 'true' : 'false' }}, 
                                         likesCount: {{ $item['likes_count'] }},
-                                        async toggleLike() {
+                                        toggleLike() {
                                             this.liked = !this.liked;
                                             this.likesCount = this.liked ? this.likesCount + 1 : this.likesCount - 1;
-                                            await $wire.toggleLike({{ $item['id'] }}, '{{ $item['type'] }}');
+                                            
+                                            fetch('{{ route('api.like.toggle') }}', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                },
+                                                body: JSON.stringify({ id: {{ $item['id'] }}, type: '{{ $item['type'] }}' })
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                if(data.success && data.liked) {
+                                                    $dispatch('notify', { message: '{{ __('social.liked') }}', type: 'success' });
+                                                }
+                                            });
                                         }
                                     }">
                                         <!-- Like -->

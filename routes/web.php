@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::get('/', \App\Livewire\Home\HomeIndex::class)->name('home');
 
+// API Like Toggle
+Route::post('/api/like/toggle', [App\Http\Controllers\Api\LikeController::class, 'toggle'])
+    ->middleware('auth')
+    ->name('api.like.toggle');
+
 // Color System
 Route::get('/colors', \App\Livewire\SimpleThemeManager::class)->name('colors');
 
