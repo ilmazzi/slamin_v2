@@ -63,6 +63,7 @@
                                         :directUrl="$video->direct_url ?? null"
                                         :showStats="true" 
                                         :showAuthor="true"
+                                        :showSnaps="true"
                                         size="full"
                                         class="w-full h-full" />
                     </div>
