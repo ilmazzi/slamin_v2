@@ -28,7 +28,10 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
     
     toggleLike() {
         @guest
-            window.location.href = '{{ route('login') }}';
+            this.$dispatch('notify', { 
+                message: 'Effettua il login per mettere mi piace', 
+                type: 'info' 
+            });
             return;
         @endguest
         
