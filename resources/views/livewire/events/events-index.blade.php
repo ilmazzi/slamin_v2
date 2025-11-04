@@ -276,7 +276,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($events as $index => $event)
                     <div x-data="{ visible: false }"
-                         x-init="@if($index < 6)setTimeout(() => visible = true, {{ 500 + ($index * 100) }})@else; /* Will be triggered by x-intersect */@endif"
+                         @if($index < 6)
+                         x-init="setTimeout(() => visible = true, {{ 500 + ($index * 100) }})"
+                         @endif
                          x-intersect:enter.once="visible = true"
                          x-show="visible"
                          x-transition:enter="transition ease-out duration-700"
