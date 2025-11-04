@@ -50,11 +50,11 @@
                     @foreach($videos as $index => $video)
                     <div x-show="currentSlide === {{ $index }}"
                          x-transition:enter="transition ease-out duration-500"
-                         x-transition:enter-start="opacity-0"
-                         x-transition:enter-end="opacity-100"
+                         x-transition:enter-start="opacity-0 translate-x-full"
+                         x-transition:enter-end="opacity-100 translate-x-0"
                          x-transition:leave="transition ease-in duration-300"
-                         x-transition:leave-start="opacity-100"
-                         x-transition:leave-end="opacity-0"
+                         x-transition:leave-start="opacity-100 translate-x-0"
+                         x-transition:leave-end="opacity-0 -translate-x-full"
                          class="relative aspect-video bg-neutral-900"
                          style="{{ $index !== 0 ? 'display: none;' : '' }}">
                         
@@ -100,8 +100,9 @@
                                 </div>
                             </div>
                             
-                            <!-- Stats -->
-                            <div class="flex items-center gap-6 text-sm text-white/90">
+                            <!-- Stats - Using Reusable Components -->
+                            <div class="flex items-center gap-6 text-white/90">
+                                <!-- Views -->
                                 <div class="flex items-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -109,17 +110,32 @@
                                     </svg>
                                     <span class="font-medium">{{ number_format($video->view_count ?? 0) }}</span>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                                    </svg>
-                                    <span class="font-medium">{{ number_format($video->like_count ?? 0) }}</span>
+                                
+                                <!-- Like Button Component -->
+                                <div class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90">
+                                    <x-like-button 
+                                        :itemId="$video->id"
+                                        itemType="video"
+                                        :isLiked="false"
+                                        :likesCount="$video->like_count ?? 0"
+                                        size="md" />
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                    </svg>
-                                    <span class="font-medium">{{ number_format($video->comment_count ?? 0) }}</span>
+                                
+                                <!-- Comment Button Component -->
+                                <div class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90">
+                                    <x-comment-button 
+                                        :itemId="$video->id"
+                                        itemType="video"
+                                        :commentsCount="$video->comment_count ?? 0"
+                                        size="md" />
+                                </div>
+                                
+                                <!-- Share Button Component -->
+                                <div class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_button]:hover:!opacity-100">
+                                    <x-share-button 
+                                        :itemId="$video->id"
+                                        itemType="video"
+                                        size="md" />
                                 </div>
                             </div>
                         </div>
