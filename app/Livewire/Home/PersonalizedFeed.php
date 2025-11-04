@@ -70,8 +70,9 @@ class PersonalizedFeed extends Component
             ->get();
 
         foreach ($events as $event) {
-            // Count real participants from event_user pivot table
-            $participantsCount = $event->participants()->count();
+            // TODO: Implement participants count when EventParticipant model is created
+            // For now, show 0 or hide the count
+            $participantsCount = 0;
             
             $this->feedItems[] = [
                 'type' => 'event',
