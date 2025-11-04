@@ -4,6 +4,7 @@
     'showAuthor' => true,
     'autoplay' => false,
     'size' => 'full', // full, large, medium, small
+    'directUrl' => null, // Direct file URL for PeerTube videos
 ])
 
 @php
@@ -25,6 +26,7 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
             id: {{ $video->id }},
             title: {{ Js::from($video->title) }},
             url: {{ Js::from($video->video_url) }},
+            directUrl: {{ Js::from($directUrl) }},
             thumbnail: {{ Js::from($video->thumbnail_url) }},
             user: {
                 name: {{ Js::from($video->user->name) }},
@@ -49,28 +51,22 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
         document.body.style.overflow = '';
     },
     
-    getEmbedUrl(url) {
-        // YouTube
+    isPeerTube(url) {
+        return url && (url.includes('video.slamin.it') || url.includes('peertube'));
+    },
+    
+    isYouTube(url) {
+        return url && (url.includes('youtube.com') || url.includes('youtu.be'));
+    },
+    
+    getYouTubeEmbedUrl(url) {
         if (url.includes('youtube.com/watch')) {
             let videoId = url.match(/[?&]v=([^&]+)/)?.[1];
-            if (videoId) {
-                return `https://www.youtube.com/embed/${videoId}?autoplay={{ $autoplay ? '1' : '0' }}&rel=0`;
-            }
+            if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
         }
         if (url.includes('youtu.be/')) {
             let videoId = url.match(/youtu\.be\/([^?]+)/)?.[1];
-            if (videoId) {
-                return `https://www.youtube.com/embed/${videoId}?autoplay={{ $autoplay ? '1' : '0' }}&rel=0`;
-            }
-        }
-        // PeerTube - format: https://video.slamin.it/w/{uuid} or /videos/watch/{uuid}
-        if (url.includes('video.slamin.it') || url.includes('peertube')) {
-            // Extract UUID from various PeerTube URL formats
-            let uuid = url.match(/\/w\/([a-zA-Z0-9-]+)/)?.[1] || 
-                       url.match(/\/videos\/watch\/([a-zA-Z0-9-]+)/)?.[1];
-            if (uuid) {
-                return `https://video.slamin.it/videos/embed/${uuid}?autoplay={{ $autoplay ? '1' : '0' }}`;
-            }
+            if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
         }
         return url;
     }
@@ -195,13 +191,38 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
             
             <!-- Video Player -->
             <div class="aspect-video bg-black">
-                <iframe x-show="showModal"
-                        :src="showModal ? getEmbedUrl(videoData.url) : ''"
-                        class="w-full h-full"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                </iframe>
+                <!-- PeerTube: Use native HTML5 video tag with DIRECT file URL -->
+                <template x-if="showModal && (isPeerTube(videoData.url) || videoData.directUrl)">
+                    <video controls 
+                           autoplay
+                           playsinline
+                           webkit-playsinline
+                           preload="metadata"
+                           class="w-full h-full"
+                           :src="videoData.directUrl || videoData.url">
+                        Your browser does not support the video tag.
+                    </video>
+                </template>
+                
+                <!-- YouTube: Use iframe embed -->
+                <template x-if="showModal && isYouTube(videoData.url) && !videoData.directUrl">
+                    <iframe :src="getYouTubeEmbedUrl(videoData.url)"
+                            class="w-full h-full"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                    </iframe>
+                </template>
+                
+                <!-- Other: Fallback iframe -->
+                <template x-if="showModal && !isPeerTube(videoData.url) && !isYouTube(videoData.url) && !videoData.directUrl">
+                    <iframe :src="videoData.url"
+                            class="w-full h-full"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                    </iframe>
+                </template>
             </div>
             
             <!-- Video Info Footer -->

@@ -60,6 +60,7 @@
                         
                         <!-- REUSABLE VIDEO PLAYER COMPONENT -->
                         <x-video-player :video="$video" 
+                                        :directUrl="$video->direct_url ?? null"
                                         :showStats="true" 
                                         :showAuthor="true"
                                         size="full"
