@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Models\Video;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class PersonalizedFeed extends Component
 {
@@ -47,7 +48,7 @@ class PersonalizedFeed extends Component
                 'excerpt' => \Str::limit($poem->content, 150),
                 'likes_count' => $poem->like_count ?? 0,
                 'comments_count' => $poem->comment_count ?? 0,
-                'created_at' => $poem->published_at?->diffForHumans() ?? $poem->created_at->diffForHumans(),
+                'created_at' => $poem->published_at ? Carbon::parse($poem->published_at)->diffForHumans() : Carbon::parse($poem->created_at)->diffForHumans(),
                 'image' => $poem->thumbnail,
             ];
         }
@@ -66,7 +67,7 @@ class PersonalizedFeed extends Component
                 'id' => $event->id,
                 'title' => $event->title,
                 'location' => ($event->city ?? 'Milano') . ', ' . ($event->venue_name ?? ''),
-                'date' => $event->start_datetime->isoFormat('dddd D MMM, HH:mm'),
+                'date' => Carbon::parse($event->start_datetime)->isoFormat('dddd D MMM, HH:mm'),
                 'participants_count' => fake()->numberBetween(20, 200),
                 'image' => $event->image_url ?? 'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&auto=format&fit=crop',
                 'is_attending' => false,
@@ -98,7 +99,7 @@ class PersonalizedFeed extends Component
                 'views_count' => $video->view_count ?? 0,
                 'likes_count' => $video->like_count ?? 0,
                 'thumbnail' => $video->thumbnail ?? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop',
-                'created_at' => $video->created_at->diffForHumans(),
+                'created_at' => Carbon::parse($video->created_at)->diffForHumans(),
             ];
         }
 
@@ -146,7 +147,7 @@ class PersonalizedFeed extends Component
                     'https://images.unsplash.com/photo-1549877452-9c387954fbc2?w=400&auto=format&fit=crop',
                 ],
                 'likes_count' => fake()->numberBetween(50, 300),
-                'created_at' => fake()->dateTimeBetween('-7 days', 'now')->diffForHumans(),
+                'created_at' => Carbon::instance(fake()->dateTimeBetween('-7 days', 'now'))->diffForHumans(),
             ];
         }
     }
