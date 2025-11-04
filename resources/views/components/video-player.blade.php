@@ -6,7 +6,23 @@
     'size' => 'full', // full, large, medium, small
     'directUrl' => null, // Direct file URL for PeerTube videos
     'showSnaps' => false, // Show snap timeline and create button
+    'isLiked' => null, // Override isLiked check (auto-detect if null)
 ])
+
+@php
+use App\Models\UnifiedLike;
+use Illuminate\Support\Facades\Auth;
+
+// Auto-detect if user has liked this video
+if ($isLiked === null && Auth::check()) {
+    $isLiked = UnifiedLike::where('user_id', Auth::id())
+        ->where('likeable_type', get_class($video))
+        ->where('likeable_id', $video->id)
+        ->exists();
+} else if ($isLiked === null) {
+    $isLiked = false;
+}
+@endphp
 
 @php
 $sizeClasses = [
@@ -192,7 +208,7 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
                     <x-like-button 
                         :itemId="$video->id"
                         itemType="video"
-                        :isLiked="false"
+                        :isLiked="$isLiked"
                         :likesCount="$video->like_count ?? 0"
                         size="sm" />
                 </div>
