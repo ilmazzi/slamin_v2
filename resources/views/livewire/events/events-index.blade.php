@@ -258,10 +258,11 @@
                 </button>
             </div>
             
-            <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-primary-200 dark:border-primary-800">
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-primary-200 dark:border-primary-800" wire:ignore>
                 <!-- Map Container (always visible) -->
                 <div id="eventsMap" 
-                     class="h-[500px] w-full bg-neutral-100 dark:bg-neutral-800">
+                     class="h-[500px] w-full bg-neutral-100 dark:bg-neutral-800"
+                     data-events='@json($mapData)'>
                 </div>
                 
                 <!-- Map Controls Overlay -->
@@ -538,6 +539,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1000);
 });
 
+// Listen for Livewire updates (when filters change)
+document.addEventListener('livewire:update', function() {
+    console.log('🔄 Livewire updated - refreshing map markers...');
+    updateMapMarkers();
+});
+
+// Also listen with new Livewire 3 hook
+Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
+    succeed(({ snapshot, effect }) => {
+        console.log('🔄 Livewire commit hook - refreshing map markers...');
+        setTimeout(updateMapMarkers, 100);
+    });
+});
+
 function initMap() {
     // Check if Leaflet is loaded
     if (typeof L === 'undefined') {
@@ -740,6 +755,163 @@ function initMap() {
     
     } catch (error) {
         console.error('Error initializing map:', error);
+    }
+}
+
+function updateMapMarkers() {
+    if (!map) {
+        console.warn('Map not initialized yet, cannot update markers');
+        return;
+    }
+    
+    console.log('🗺️ Updating map markers...');
+    
+    // Get updated events data from data attribute
+    const mapElement = document.getElementById('eventsMap');
+    if (!mapElement) {
+        console.error('Map element not found!');
+        return;
+    }
+    
+    const eventsData = mapElement.getAttribute('data-events');
+    if (!eventsData) {
+        console.error('No events data found in map element!');
+        return;
+    }
+    
+    let events;
+    try {
+        events = JSON.parse(eventsData);
+    } catch (e) {
+        console.error('Error parsing events data:', e);
+        return;
+    }
+    
+    console.log('📍 Updating with', events.length, 'events');
+    
+    // Remove existing markers
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
+    
+    // Category colors
+    const categoryColors = {
+        'poetry_slam': '#EF4444',
+        'workshop': '#F59E0B',
+        'open_mic': '#10B981',
+        'reading': '#3B82F6',
+        'festival': '#8B5CF6',
+        'concert': '#EC4899',
+        'book_presentation': '#6B7280'
+    };
+    
+    // Add new markers
+    events.forEach((event, index) => {
+        const color = categoryColors[event.category] || '#6B7280';
+        
+        const markerIcon = L.divIcon({
+            className: 'custom-marker',
+            html: `
+                <div class="relative group">
+                    <div class="w-8 h-8 rounded-full border-3 border-white shadow-lg transition-all hover:scale-125"
+                         style="background-color: ${color};">
+                    </div>
+                    <div class="absolute inset-0 rounded-full animate-ping" 
+                         style="background-color: ${color}; opacity: 0.3;"></div>
+                </div>
+            `,
+            iconSize: [32, 32],
+            iconAnchor: [16, 16]
+        });
+        
+        const marker = L.marker([event.latitude, event.longitude], {
+            icon: markerIcon
+        }).addTo(map);
+        
+        const popupContent = `
+            <div class="relative overflow-hidden" style="width: 320px;">
+                ${event.image_url ? `
+                    <div class="relative h-40 overflow-hidden">
+                        <img src="${event.image_url}" 
+                             class="w-full h-full object-cover" 
+                             alt="${event.title}">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute top-3 right-3">
+                            <span class="px-3 py-1 bg-white/90 backdrop-blur-sm text-primary-700 text-xs font-bold uppercase rounded-full shadow-lg">
+                                ${event.category ? event.category.replace('_', ' ') : 'Event'}
+                            </span>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                            <h3 class="text-xl font-bold text-white leading-tight">${event.title}</h3>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-white">
+                ` : `
+                    <div class="relative p-6 bg-gradient-to-br from-primary-500 to-accent-600">
+                        <div class="absolute top-3 right-3">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-bold uppercase rounded-full border border-white/30">
+                                ${event.category ? event.category.replace('_', ' ') : 'Event'}
+                            </span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white pr-20">${event.title}</h3>
+                    </div>
+                    <div class="p-4 bg-white">
+                `}
+                
+                <div class="space-y-2.5 mb-4">
+                    <div class="flex items-center gap-3 text-neutral-700">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-50 flex items-center justify-content center">
+                            <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-xs text-neutral-500 uppercase tracking-wide font-semibold">Data</div>
+                            <div class="text-sm font-semibold text-neutral-900">${event.start_datetime}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 text-neutral-700">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent-50 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-xs text-neutral-500 uppercase tracking-wide font-semibold">Luogo</div>
+                            <div class="text-sm font-semibold text-neutral-900">${event.venue_name}</div>
+                            <div class="text-xs text-neutral-500">${event.city}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="${event.url}" 
+                   class="block w-full text-center px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                   style="color: white !important; text-decoration: none !important;">
+                    {{ __('events.view_details') }}
+                    <svg class="inline w-4 h-4 ml-1" fill="none" stroke="white" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+            </div>
+        `;
+        
+        marker.bindPopup(popupContent, {
+            maxWidth: 320,
+            className: 'custom-popup'
+        });
+        
+        markers.push(marker);
+    });
+    
+    // Fit bounds to show all markers
+    if (markers.length > 0) {
+        const group = new L.featureGroup(markers);
+        map.fitBounds(group.getBounds().pad(0.1));
+        console.log('✅ Map updated with', markers.length, 'markers');
+    } else {
+        console.warn('⚠️ No markers after update');
     }
 }
 </script>
