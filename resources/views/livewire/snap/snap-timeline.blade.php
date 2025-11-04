@@ -19,9 +19,9 @@
             
             <!-- Marker Icon -->
             <div class="w-6 h-6 bg-primary-600 border-2 border-white dark:border-neutral-900 rounded-full flex items-center justify-center shadow-lg group-hover:scale-125 transition-all duration-300">
-                <img src="{{ asset('assets/icon/new/like.svg') }}" 
+                <img src="{{ asset('assets/icon/new/snap.svg') }}" 
                      alt="Snap" 
-                     class="w-3 h-3"
+                     class="w-3.5 h-3.5"
                      style="filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7500%) hue-rotate(0deg) brightness(100%) contrast(100%);">
             </div>
             

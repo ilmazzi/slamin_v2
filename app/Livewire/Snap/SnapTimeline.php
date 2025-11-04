@@ -12,7 +12,10 @@ class SnapTimeline extends Component
     public $currentTime = 0;
     public $duration = 0;
     
-    protected $listeners = ['video-time-update' => 'updateTime'];
+    protected $listeners = [
+        'video-time-update' => 'updateTime',
+        'snap-created' => 'refreshSnaps'
+    ];
     
     public function mount(Video $video)
     {
@@ -29,6 +32,11 @@ class SnapTimeline extends Component
     public function updateTime($time)
     {
         $this->currentTime = $time;
+    }
+    
+    public function refreshSnaps()
+    {
+        $this->snaps = $this->video->approvedSnaps()->orderBy('timestamp')->get();
     }
     
     public function render()

@@ -121,8 +121,8 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
             if (data.success) {
                 this.$dispatch('notify', { message: data.message, type: 'success' });
                 this.closeSnapModal();
-                // Refresh timeline
-                window.location.reload();
+                // Refresh only the snap timeline component via Livewire
+                Livewire.dispatch('snap-created', { videoId: this.videoData.id });
             } else {
                 this.$dispatch('notify', { message: data.message || 'Errore creazione snap', type: 'error' });
             }
@@ -272,9 +272,9 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
                 <!-- Create Snap Button (floating on video) -->
                 <button @click.stop="openSnapModal()"
                         class="absolute top-4 left-4 z-10 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2">
-                    <img src="{{ asset('assets/icon/new/like.svg') }}" 
+                    <img src="{{ asset('assets/icon/new/snap.svg') }}" 
                          alt="Snap" 
-                         class="w-4 h-4"
+                         class="w-5 h-5"
                          style="filter: brightness(0) saturate(100%) invert(100%);">
                     <span class="text-sm font-medium">Crea Snap</span>
                 </button>
@@ -366,9 +366,9 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
                 <!-- Header -->
                 <div class="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-700">
                     <div class="flex items-center gap-2">
-                        <img src="{{ asset('assets/icon/new/like.svg') }}" 
+                        <img src="{{ asset('assets/icon/new/snap.svg') }}" 
                              alt="Snap" 
-                             class="w-5 h-5"
+                             class="w-6 h-6"
                              style="filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);">
                         <h3 class="text-xl font-bold text-neutral-900 dark:text-white">Crea Snap</h3>
                     </div>
@@ -420,9 +420,9 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
                     <button @click="createSnap()"
                             :disabled="!snapTitle"
                             class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
-                        <img src="{{ asset('assets/icon/new/like.svg') }}" 
+                        <img src="{{ asset('assets/icon/new/snap.svg') }}" 
                              alt="Snap" 
-                             class="w-4 h-4"
+                             class="w-5 h-5"
                              style="filter: brightness(0) saturate(100%) invert(100%);">
                         Crea Snap
                     </button>
