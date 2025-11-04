@@ -43,13 +43,7 @@ Route::get('/parallax-enhanced', function () {
 })->name('parallax.enhanced');
 
 // Events Routes
-Route::get('/events', function () {
-    $events = \App\Models\Event::where('status', 'published')
-        ->where('is_public', true)
-        ->orderBy('start_datetime', 'desc')
-        ->paginate(12);
-    return view('pages.events-index', compact('events'));
-})->name('events.index');
+Route::get('/events', \App\Livewire\Events\EventsIndex::class)->name('events.index');
 
 Route::get('/events/{event}', function ($id) {
     $event = \App\Models\Event::findOrFail($id);
