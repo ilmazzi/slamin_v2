@@ -270,23 +270,58 @@
     </div>
     @endif
 
-    <!-- Events Grid with Staggered Animations -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <!-- Events Grid with Parallax Effects -->
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16"
+         x-data="{ scrollY: 0 }"
+         @scroll.window="scrollY = window.scrollY">
+        
+        <!-- Animated Background Waves -->
+        <div class="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+            <div class="absolute top-20 left-0 w-96 h-96 bg-gradient-to-br from-primary-200/30 to-accent-200/30 rounded-full blur-3xl animate-pulse"
+                 :style="`transform: translateX(${scrollY * 0.1}px) translateY(${scrollY * 0.05}px)`"></div>
+            <div class="absolute top-1/3 right-0 w-80 h-80 bg-gradient-to-br from-accent-200/30 to-primary-300/30 rounded-full blur-3xl animate-pulse"
+                 style="animation-delay: 1s"
+                 :style="`transform: translateX(-${scrollY * 0.08}px) translateY(${scrollY * 0.06}px)`"></div>
+            <div class="absolute bottom-20 left-1/4 w-72 h-72 bg-gradient-to-br from-primary-300/30 to-accent-300/30 rounded-full blur-3xl animate-pulse"
+                 style="animation-delay: 2s"
+                 :style="`transform: translateX(${scrollY * 0.12}px) translateY(-${scrollY * 0.04}px)`"></div>
+        </div>
         @if($events->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($events as $index => $event)
+                    @php
+                        $delay = ($index % 3) * 100;
+                        $parallaxSpeed = 0.02 + (($index % 3) * 0.01);
+                    @endphp
                     <div 
-                         @if($index < 6)
-                         x-data="{ animated: false }"
-                         x-init="setTimeout(() => animated = true, {{ 500 + ($index * 100) }})"
-                         :class="animated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'"
-                         @else
-                         x-data="{ animated: false }"
-                         x-intersect.once="animated = true"
-                         :class="animated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'"
-                         @endif
-                         class="transform hover:scale-105 transition-all duration-700 ease-out">
-                        <x-ui.cards.event :event="$event" />
+                         x-data="{ 
+                             visible: false,
+                             scrollY: 0
+                         }"
+                         x-init="setTimeout(() => visible = true, {{ 500 + $delay }})"
+                         @scroll.window="scrollY = window.scrollY"
+                         x-show="visible"
+                         x-transition:enter="transition ease-out duration-1000"
+                         x-transition:enter-start="opacity-0 translate-y-12 scale-90 rotate-3"
+                         x-transition:enter-end="opacity-100 translate-y-0 scale-100 rotate-0"
+                         :style="`transform: translateY(${scrollY * {{ $parallaxSpeed }}}px) scale(${1 + (scrollY * 0.00005)})`"
+                         class="group relative">
+                        
+                        <!-- Parallax Card Wrapper with 3D Effect -->
+                        <div class="relative transform transition-all duration-500 hover:scale-110 hover:-translate-y-4 hover:rotate-2 hover:shadow-2xl"
+                             style="transform-style: preserve-3d; perspective: 1000px;">
+                            
+                            <!-- Animated Glow on Hover -->
+                            <div class="absolute -inset-1 bg-gradient-to-r from-primary-400 via-accent-400 to-primary-600 rounded-2xl opacity-0 group-hover:opacity-75 blur-xl transition-all duration-500 animate-pulse"></div>
+                            
+                            <!-- Event Card -->
+                            <div class="relative z-10">
+                                <x-ui.cards.event :event="$event" />
+                            </div>
+                            
+                            <!-- Floating Decorative Element -->
+                            <div class="absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-br from-accent-400 to-primary-600 rounded-full opacity-0 group-hover:opacity-20 blur-2xl transition-all duration-500 group-hover:animate-ping"></div>
+                        </div>
                     </div>
                 @endforeach
             </div>
