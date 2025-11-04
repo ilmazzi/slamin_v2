@@ -518,36 +518,56 @@
 @push('scripts')
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+console.log('🌍 Leaflet map script loaded!');
+
 let map = null;
 let markers = [];
 
 // Wait for Livewire to be ready
-document.addEventListener('livewire:navigated', initMap);
+document.addEventListener('livewire:navigated', function() {
+    console.log('livewire:navigated event fired');
+    initMap();
+});
+
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded event fired');
     // Give Livewire time to render
-    setTimeout(initMap, 1000);
+    setTimeout(function() {
+        console.log('Calling initMap after 1000ms timeout');
+        initMap();
+    }, 1000);
 });
 
 function initMap() {
+    // Check if Leaflet is loaded
+    if (typeof L === 'undefined') {
+        console.error('Leaflet library not loaded yet, retrying in 500ms...');
+        setTimeout(initMap, 500);
+        return;
+    }
+    
     // Check if map already initialized
     if (map !== null) {
+        console.log('Map already initialized, skipping');
         return;
     }
     
     // Check if element exists
     const mapElement = document.getElementById('eventsMap');
     if (!mapElement) {
-        console.error('Map element not found!');
+        console.error('Map element not found! Retrying in 500ms...');
+        setTimeout(initMap, 500);
         return;
     }
     
-    console.log('Initializing Leaflet map...');
+    console.log('🗺️ Initializing Leaflet map...');
+    console.log('Map element found:', mapElement);
     
     try {
         // Initialize map centered on Italy
         map = L.map('eventsMap').setView([41.9028, 12.4964], 6);
         
-        console.log('Map initialized successfully');
+        console.log('✅ Map object created successfully');
     
     // Add OpenStreetMap tiles
     const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
