@@ -169,12 +169,52 @@
         </div>
     </div>
 
-    <!-- Toast Notifications -->
+    <!-- Dragon Like Animation -->
+    <div x-data="{ 
+        show: false,
+        showDragon(data) {
+            if(data.type === 'like') {
+                this.show = true;
+                setTimeout(() => { this.show = false; }, 2000);
+            }
+        }
+    }"
+    @notify.window="showDragon($event.detail)"
+    x-show="show"
+    x-cloak
+    class="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none"
+    style="display: none;">
+        <!-- Animated Dragon -->
+        <div x-show="show"
+             x-transition:enter="transition ease-out duration-500"
+             x-transition:enter-start="opacity-0 scale-0 rotate-[-180deg]"
+             x-transition:enter-end="opacity-100 scale-100 rotate-0"
+             x-transition:leave="transition ease-in duration-500"
+             x-transition:leave-start="opacity-100 scale-100 rotate-0"
+             x-transition:leave-end="opacity-0 scale-150 rotate-180"
+             class="relative">
+            <img src="{{ asset('assets/images/draghetto.png') }}" 
+                 alt="Like!" 
+                 class="w-64 h-64 drop-shadow-2xl animate-bounce">
+            <!-- Particles Effect -->
+            <div class="absolute inset-0 -z-10">
+                <div class="absolute top-0 left-0 w-4 h-4 bg-red-500 rounded-full animate-ping" style="animation-delay: 0ms;"></div>
+                <div class="absolute top-10 right-0 w-3 h-3 bg-pink-500 rounded-full animate-ping" style="animation-delay: 200ms;"></div>
+                <div class="absolute bottom-0 left-10 w-5 h-5 bg-red-400 rounded-full animate-ping" style="animation-delay: 400ms;"></div>
+                <div class="absolute bottom-10 right-10 w-3 h-3 bg-pink-400 rounded-full animate-ping" style="animation-delay: 600ms;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications (solo per info/warning/error) -->
     <div x-data="{ 
         show: false, 
         message: '', 
         type: 'success',
         showToast(data) {
+            // Skip dragon likes
+            if(data.type === 'like') return;
+            
             this.message = data.message;
             this.type = data.type || 'success';
             this.show = true;
@@ -202,6 +242,10 @@
                 <!-- Icon Success -->
                 <svg x-show="type === 'success'" class="w-6 h-6 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <!-- Icon Info -->
+                <svg x-show="type === 'info'" class="w-6 h-6 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
                 <!-- Icon Warning -->
                 <svg x-show="type === 'warning'" class="w-6 h-6 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

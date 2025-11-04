@@ -103,7 +103,7 @@
                                             .then(res => res.json())
                                             .then(data => {
                                                 if(data.success && data.liked) {
-                                                    $dispatch('notify', { message: '{{ __('social.liked') }}', type: 'success' });
+                                                    $dispatch('notify', { type: 'like' });
                                                 }
                                             });
                                         }
