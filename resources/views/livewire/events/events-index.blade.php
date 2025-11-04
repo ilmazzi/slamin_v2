@@ -635,37 +635,83 @@ function initMap() {
         
         // Create popup with modern design
         const popupContent = `
-            <div class="p-4 min-w-[280px]">
+            <div class="relative overflow-hidden" style="width: 320px;">
                 ${event.image_url ? `
-                    <img src="${event.image_url}" 
-                         class="w-full h-32 object-cover rounded-lg mb-3" 
-                         alt="${event.title}">
-                ` : ''}
-                <div class="mb-2">
-                    <span class="px-2 py-1 bg-primary-100 text-primary-700 text-xs font-semibold rounded-full">
-                        ${event.category ? event.category.replace('_', ' ').toUpperCase() : 'EVENT'}
-                    </span>
-                </div>
-                <h3 class="text-lg font-bold text-neutral-900 mb-2">${event.title}</h3>
-                <div class="space-y-1 text-sm text-neutral-600 mb-3">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        <span>${event.start_datetime}</span>
+                    <!-- Image Header with Gradient Overlay -->
+                    <div class="relative h-40 overflow-hidden">
+                        <img src="${event.image_url}" 
+                             class="w-full h-full object-cover" 
+                             alt="${event.title}">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        
+                        <!-- Category Badge on Image -->
+                        <div class="absolute top-3 right-3">
+                            <span class="px-3 py-1 bg-white/90 backdrop-blur-sm text-primary-700 text-xs font-bold uppercase rounded-full shadow-lg">
+                                ${event.category ? event.category.replace('_', ' ') : 'Event'}
+                            </span>
+                        </div>
+                        
+                        <!-- Title on Image -->
+                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                            <h3 class="text-xl font-bold text-white leading-tight">${event.title}</h3>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        <span>${event.venue_name}, ${event.city}</span>
+                    
+                    <!-- Content -->
+                    <div class="p-4 bg-white">
+                ` : `
+                    <!-- No Image - Gradient Header -->
+                    <div class="relative p-6 bg-gradient-to-br from-primary-500 to-accent-600">
+                        <div class="absolute top-3 right-3">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-bold uppercase rounded-full border border-white/30">
+                                ${event.category ? event.category.replace('_', ' ') : 'Event'}
+                            </span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white pr-20">${event.title}</h3>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="p-4 bg-white">
+                `}
+                
+                <!-- Info Section -->
+                <div class="space-y-2.5 mb-4">
+                    <div class="flex items-center gap-3 text-neutral-700">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-xs text-neutral-500 uppercase tracking-wide font-semibold">Data</div>
+                            <div class="text-sm font-semibold text-neutral-900">${event.start_datetime}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 text-neutral-700">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent-50 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-xs text-neutral-500 uppercase tracking-wide font-semibold">Luogo</div>
+                            <div class="text-sm font-semibold text-neutral-900">${event.venue_name}</div>
+                            <div class="text-xs text-neutral-500">${event.city}</div>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- CTA Button -->
                 <a href="${event.url}" 
-                   class="block w-full text-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-semibold transition-all text-sm">
+                   class="block w-full text-center px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
                     {{ __('events.view_details') }}
+                    <svg class="inline w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
                 </a>
+            </div>
             </div>
         `;
         
@@ -699,18 +745,34 @@ function initMap() {
 
 <style>
 .custom-popup .leaflet-popup-content-wrapper {
-    border-radius: 1rem;
+    border-radius: 1.5rem;
     padding: 0;
     overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border: 2px solid rgba(16, 185, 129, 0.2);
 }
 
-.custom-popup .leaflet-popup-tip {
+.custom-popup .leaflet-popup-content {
+    margin: 0;
+    width: 320px !important;
+}
+
+.custom-popup .leaflet-popup-tip-container {
     display: none;
+}
+
+.custom-popup .leaflet-popup-close-button {
+    display: none !important;
 }
 
 .custom-marker {
     background: transparent;
     border: none;
+}
+
+/* Hover effect on popup button */
+.custom-popup a:hover {
+    transform: scale(1.05);
 }
 </style>
 @endpush
