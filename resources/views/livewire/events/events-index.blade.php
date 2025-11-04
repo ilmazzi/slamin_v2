@@ -258,10 +258,16 @@
                 </button>
             </div>
             
-            <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-primary-200 dark:border-primary-800" wire:ignore>
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-primary-200 dark:border-primary-800">
                 <!-- Map Container (always visible) -->
                 <div id="eventsMap" 
-                     class="h-[500px] w-full bg-neutral-100 dark:bg-neutral-800"
+                     wire:ignore
+                     class="h-[500px] w-full bg-neutral-100 dark:bg-neutral-800">
+                </div>
+                
+                <!-- Hidden data container that updates with Livewire -->
+                <div id="mapEventsData" 
+                     class="hidden"
                      data-events='@json($mapData)'>
                 </div>
                 
@@ -764,18 +770,18 @@ function updateMapMarkers() {
         return;
     }
     
-    console.log('🗺️ Updating map markers...');
+    console.log('🗺️ Updating map markers after filter change...');
     
-    // Get updated events data from data attribute
-    const mapElement = document.getElementById('eventsMap');
-    if (!mapElement) {
-        console.error('Map element not found!');
+    // Get updated events data from data container (NOT wire:ignore element)
+    const dataElement = document.getElementById('mapEventsData');
+    if (!dataElement) {
+        console.error('Map data element not found!');
         return;
     }
     
-    const eventsData = mapElement.getAttribute('data-events');
+    const eventsData = dataElement.getAttribute('data-events');
     if (!eventsData) {
-        console.error('No events data found in map element!');
+        console.error('No events data found in data element!');
         return;
     }
     
