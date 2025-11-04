@@ -81,18 +81,27 @@
 
                              <!-- Actions -->
                             <div class="p-6 border-t border-neutral-100 dark:border-neutral-700">
-                                <div class="flex items-center gap-6">
+                                <div class="flex items-center gap-6" x-data="{ 
+                                    liked: {{ $item['is_liked'] ? 'true' : 'false' }}, 
+                                    likesCount: {{ $item['likes_count'] }},
+                                    async toggleLike() {
+                                        this.liked = !this.liked;
+                                        this.likesCount = this.liked ? this.likesCount + 1 : this.likesCount - 1;
+                                        
+                                        await $wire.toggleLike({{ $item['id'] }}, '{{ $item['type'] }}');
+                                    }
+                                }">
                                     <!-- Like -->
                                     <button type="button"
-                                            wire:click="toggleLike({{ $item['id'] }}, '{{ $item['type'] }}')"
+                                            @click="toggleLike()"
                                             class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
                                         <img src="{{ asset('assets/icon/new/like.svg') }}" 
                                              alt="Like" 
                                              class="w-5 h-5 group-hover:scale-125 transition-transform duration-300"
-                                             style="{{ $item['is_liked'] ?? false
+                                             :style="liked 
                                                 ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
-                                                : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);' }}">
-                                        <span class="font-medium text-sm" style="color: {{ ($item['is_liked'] ?? false) ? '#dc2626' : '#525252' }}">{{ $item['likes_count'] }}</span>
+                                                : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
+                                        <span class="font-medium text-sm" :style="'color: ' + (liked ? '#dc2626' : '#525252')" x-text="likesCount"></span>
                                     </button>
                                     <!-- Comments -->
                                     <button type="button"
@@ -193,18 +202,26 @@
                             </div>
                             <div class="p-6">
                                 <h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">{{ $item['title'] }}</h4>
-                                <div class="flex items-center gap-6">
+                                <div class="flex items-center gap-6" x-data="{ 
+                                    liked: {{ $item['is_liked'] ? 'true' : 'false' }}, 
+                                    likesCount: {{ $item['likes_count'] }},
+                                    async toggleLike() {
+                                        this.liked = !this.liked;
+                                        this.likesCount = this.liked ? this.likesCount + 1 : this.likesCount - 1;
+                                        await $wire.toggleLike({{ $item['id'] }}, '{{ $item['type'] }}');
+                                    }
+                                }">
                                     <!-- Like -->
                                     <button type="button"
-                                            wire:click="toggleLike({{ $item['id'] }}, '{{ $item['type'] }}')"
+                                            @click="toggleLike()"
                                             class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
                                         <img src="{{ asset('assets/icon/new/like.svg') }}" 
                                              alt="Like" 
                                              class="w-5 h-5 group-hover:scale-125 transition-transform duration-300"
-                                             style="{{ $item['is_liked'] ?? false
+                                             :style="liked 
                                                 ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
-                                                : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);' }}">
-                                        <span class="font-medium text-sm" style="color: {{ ($item['is_liked'] ?? false) ? '#dc2626' : '#525252' }}">{{ $item['likes_count'] }}</span>
+                                                : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
+                                        <span class="font-medium text-sm" :style="'color: ' + (liked ? '#dc2626' : '#525252')" x-text="likesCount"></span>
                                     </button>
                                     <!-- Views -->
                                     <div class="flex items-center gap-2 text-neutral-500 dark:text-neutral-500">
@@ -258,18 +275,26 @@
                                     <span class="text-sm text-neutral-600 dark:text-neutral-400">
                                         {{ $item['photos_count'] }} {{ __('feed.photos') }}
                                     </span>
-                                    <div class="flex items-center gap-4">
+                                    <div class="flex items-center gap-4" x-data="{ 
+                                        liked: {{ $item['is_liked'] ? 'true' : 'false' }}, 
+                                        likesCount: {{ $item['likes_count'] }},
+                                        async toggleLike() {
+                                            this.liked = !this.liked;
+                                            this.likesCount = this.liked ? this.likesCount + 1 : this.likesCount - 1;
+                                            await $wire.toggleLike({{ $item['id'] }}, '{{ $item['type'] }}');
+                                        }
+                                    }">
                                         <!-- Like -->
                                         <button type="button"
-                                                wire:click="toggleLike({{ $item['id'] }}, '{{ $item['type'] }}')"
+                                                @click="toggleLike()"
                                                 class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
                                             <img src="{{ asset('assets/icon/new/like.svg') }}" 
                                                  alt="Like" 
                                                  class="w-5 h-5 group-hover:scale-125 transition-transform duration-300"
-                                                 style="{{ $item['is_liked'] ?? false
+                                                 :style="liked 
                                                     ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
-                                                    : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);' }}">
-                                            <span class="font-medium text-sm" style="color: {{ ($item['is_liked'] ?? false) ? '#dc2626' : '#525252' }}">{{ $item['likes_count'] }}</span>
+                                                    : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
+                                            <span class="font-medium text-sm" :style="'color: ' + (liked ? '#dc2626' : '#525252')" x-text="likesCount"></span>
                                         </button>
                                         <!-- Share -->
                                         <button type="button"
