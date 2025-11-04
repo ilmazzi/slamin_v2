@@ -51,15 +51,26 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
     
     getEmbedUrl(url) {
         // YouTube
-        if (url.includes('youtube.com') || url.includes('youtu.be')) {
-            let videoId = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?]+)/)?.[1];
+        if (url.includes('youtube.com/watch')) {
+            let videoId = url.match(/[?&]v=([^&]+)/)?.[1];
             if (videoId) {
-                return `https://www.youtube.com/embed/${videoId}?autoplay={{ $autoplay ? '1' : '0' }}`;
+                return `https://www.youtube.com/embed/${videoId}?autoplay={{ $autoplay ? '1' : '0' }}&rel=0`;
             }
         }
-        // PeerTube
+        if (url.includes('youtu.be/')) {
+            let videoId = url.match(/youtu\.be\/([^?]+)/)?.[1];
+            if (videoId) {
+                return `https://www.youtube.com/embed/${videoId}?autoplay={{ $autoplay ? '1' : '0' }}&rel=0`;
+            }
+        }
+        // PeerTube - format: https://video.slamin.it/w/{uuid} or /videos/watch/{uuid}
         if (url.includes('video.slamin.it') || url.includes('peertube')) {
-            return url.replace('/watch/', '/videos/embed/');
+            // Extract UUID from various PeerTube URL formats
+            let uuid = url.match(/\/w\/([a-zA-Z0-9-]+)/)?.[1] || 
+                       url.match(/\/videos\/watch\/([a-zA-Z0-9-]+)/)?.[1];
+            if (uuid) {
+                return `https://video.slamin.it/videos/embed/${uuid}?autoplay={{ $autoplay ? '1' : '0' }}`;
+            }
         }
         return url;
     }
@@ -150,19 +161,20 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
         @endif
     </div>
 
-    <!-- Video Modal -->
-    <div x-show="showModal"
-         x-cloak
-         @click.self="closeModal()"
-         @keydown.escape.window="closeModal()"
-         x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
-         style="display: none;">
+    <!-- Video Modal - Teleported to body to avoid slide transitions -->
+    <template x-teleport="body">
+        <div x-show="showModal"
+             x-cloak
+             @click.self="closeModal()"
+             @keydown.escape.window="closeModal()"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+             style="display: none;">
         
         <div x-show="showModal"
              x-transition:enter="transition ease-out duration-300 delay-100"
@@ -220,6 +232,7 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+    </template>
 </div>
 
