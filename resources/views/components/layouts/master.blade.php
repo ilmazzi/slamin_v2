@@ -112,7 +112,7 @@
             
             <!-- Header -->
             <div class="p-6 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
-                <h3 class="text-xl font-bold text-neutral-900 dark:text-white">💬 Commenti</h3>
+                <h3 class="text-xl font-bold text-neutral-900 dark:text-white">{{ __('social.comments_title') }}</h3>
                 <button @click="show = false" class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -127,7 +127,7 @@
                 </template>
                 
                 <template x-if="!loading && comments.length === 0">
-                    <div class="text-center py-8 text-neutral-500">Nessun commento ancora. Sii il primo a commentare!</div>
+                    <div class="text-center py-8 text-neutral-500">{{ __('social.no_comments') }}</div>
                 </template>
                 
                 <template x-for="comment in comments" :key="comment.id">
@@ -156,11 +156,11 @@
                     <div class="flex-1 flex gap-2">
                         <input type="text" 
                                x-model="newComment"
-                               placeholder="Scrivi un commento..."
+                               placeholder="{{ __('social.write_comment_placeholder') }}"
                                class="flex-1 px-4 py-2 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-neutral-900 dark:text-white">
                         <button type="submit"
                                 class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors">
-                            Invia
+                            {{ __('social.send') }}
                         </button>
                     </div>
                 </form>
@@ -193,10 +193,10 @@
     class="fixed bottom-4 right-4 z-50 max-w-sm">
         <div class="rounded-xl shadow-2xl overflow-hidden"
              :class="{
-                'bg-green-500': type === 'success',
-                'bg-blue-500': type === 'info',
-                'bg-yellow-500': type === 'warning',
-                'bg-red-500': type === 'error'
+                'bg-green-600': type === 'success',
+                'bg-blue-600': type === 'info',
+                'bg-yellow-600': type === 'warning',
+                'bg-red-600': type === 'error'
              }">
             <div class="p-4 flex items-center gap-3">
                 <!-- Icon Success -->
