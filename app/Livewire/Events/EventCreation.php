@@ -227,9 +227,9 @@ class EventCreation extends Component
             abort(403, 'Devi essere autenticato per creare eventi');
         }
 
-        // Check if user has organizer role
-        if (!$user->isOrganizer()) {
-            abort(403, 'Solo gli organizzatori possono creare eventi. Richiedi il ruolo di organizzatore.');
+        // Check if user has organizer or admin role
+        if (!$user->isOrganizer() && !$user->isAdmin()) {
+            abort(403, 'Solo gli organizzatori e gli admin possono creare eventi. Richiedi il ruolo di organizzatore.');
         }
 
         // Load recent venues - convert to array for Livewire compatibility
