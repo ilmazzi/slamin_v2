@@ -489,8 +489,8 @@
                                         </label>
                                         <div id="eventCreationMap" 
                                              wire:ignore 
-                                             class="h-96 w-full rounded-2xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-700 shadow-lg bg-neutral-100 dark:bg-neutral-900"
-                                             style="min-height: 384px; position: relative; z-index: 1;"></div>
+                                             class="h-96 w-full border-2 border-neutral-300 dark:border-neutral-700 shadow-lg"
+                                             style="min-height: 384px; width: 100%; height: 384px; position: relative; z-index: 1; background: #e5e7eb;"></div>
                                         @if($latitude && $longitude)
                                             <div class="mt-3 flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1048,20 +1048,24 @@ function initCreationMap() {
         return;
     }
 
+    // DESTROY existing map if it exists
+    if (creationMap) {
+        console.log('🗑️ Destroying existing map...');
+        creationMap.remove();
+        creationMap = null;
+        creationMarker = null;
+    }
+
     // Check if container is visible AND has dimensions
     const rect = mapContainer.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0 || mapContainer.offsetParent === null) {
-        console.log('❌ Map container is hidden or has no dimensions, skipping init');
+    console.log('📐 Container dimensions:', rect.width, 'x', rect.height, 'visible:', mapContainer.offsetParent !== null);
+    
+    if (rect.width === 0 || rect.height === 0) {
+        console.log('❌ Map container has no dimensions, skipping init');
         return;
     }
 
-    if (creationMap) {
-        console.log('✅ Map already exists, just resizing...');
-        creationMap.invalidateSize();
-        return;
-    }
-
-    console.log('🗺️ Initializing event creation map with container size:', rect.width, 'x', rect.height);
+    console.log('🗺️ CREATING NEW map with container size:', rect.width, 'x', rect.height);
 
     // Default to Rome, Italy
     const defaultLat = 41.9028;
