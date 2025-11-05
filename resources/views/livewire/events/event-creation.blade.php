@@ -180,31 +180,30 @@
                  x-transition:enter-start="opacity-0 translate-x-10 scale-95"
                  x-transition:enter-end="opacity-100 translate-x-0 scale-100">
                 
-                <div class="relative backdrop-blur-2xl bg-white/10 dark:bg-white/5 rounded-3xl shadow-2xl border border-white/20 p-8 mb-8 group hover:shadow-primary-500/20 transition-all duration-500"
+                <div class="relative backdrop-blur-xl bg-white/90 dark:bg-neutral-900/90 rounded-3xl shadow-2xl border border-white/50 dark:border-neutral-700/50 p-8 mb-8 group hover:shadow-primary-500/20 transition-all duration-500"
                      x-data="{ mouseX: 0, mouseY: 0 }"
-                     @mousemove="mouseX = ($event.pageX - $el.offsetLeft) / $el.offsetWidth * 100; mouseY = ($event.pageY - $el.offsetTop) / $el.offsetHeight * 100"
-                     :style="`background: radial-gradient(circle at ${mouseX}% ${mouseY}%, rgba(34, 197, 94, 0.1), transparent 50%)`">
+                     @mousemove="mouseX = ($event.pageX - $el.offsetLeft) / $el.offsetWidth * 100; mouseY = ($event.pageY - $el.offsetTop) / $el.offsetHeight * 100">
                     
-                    {{-- Animated gradient overlay --}}
-                    <div class="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-transparent to-accent-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    {{-- Subtle gradient overlay on hover --}}
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-accent-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
                     
                     <div class="relative z-10">
                         <div class="flex items-center gap-4 mb-8">
                             {{-- Icon with pulse effect --}}
                             <div class="relative">
-                                <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500 rounded-2xl blur-xl opacity-50 animate-pulse"></div>
-                                <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-2xl transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
-                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500 rounded-2xl blur-lg opacity-30 animate-pulse"></div>
+                                <div class="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-xl transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </div>
                             </div>
                             
                             <div class="flex-1">
-                                <h2 class="text-3xl font-black text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white via-primary-200 to-accent-200">
+                                <h2 class="text-3xl font-black text-neutral-900 dark:text-white mb-1">
                                     Informazioni Base
                                 </h2>
-                                <p class="text-white/70 text-lg">
+                                <p class="text-neutral-600 dark:text-neutral-400">
                                     ✨ Iniziamo con i dettagli essenziali del tuo evento
                                 </p>
                             </div>
@@ -213,16 +212,22 @@
                         <div class="space-y-6">
                             {{-- Title --}}
                             <div>
-                                <label class="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2 flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
                                     </svg>
                             Titolo Evento *
                         </label>
-                        <input type="text"
-                               wire:model.live="title"
-                               class="w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all @error('title') border-red-500 @enderror"
-                               placeholder="Es: Poetry Slam Roma 2025">
+                        <div class="relative group">
+                            <input type="text"
+                                   wire:model.live="title"
+                                   class="w-full px-4 py-3 rounded-xl border-2 border-neutral-200 dark:border-neutral-700 bg-white/50 dark:bg-neutral-800/50 backdrop-blur-sm text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500
+                                          focus:border-primary-500 dark:focus:border-primary-400 focus:bg-white dark:focus:bg-neutral-800 focus:ring-2 focus:ring-primary-500/20 focus:shadow-lg focus:shadow-primary-500/10
+                                          transition-all duration-300 @error('title') border-red-500 ring-2 ring-red-500/20 @enderror"
+                                   placeholder="Es: Poetry Slam Roma 2025">
+                            {{-- Glow effect on focus --}}
+                            <div class="absolute inset-0 bg-gradient-to-r from-primary-500/0 via-primary-500/5 to-accent-500/0 rounded-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                        </div>
                         @error('title')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror
