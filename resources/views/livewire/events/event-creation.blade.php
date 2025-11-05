@@ -506,7 +506,8 @@
                                         </label>
                                         <div id="eventCreationMap" 
                                              wire:ignore 
-                                             class="h-96 rounded-2xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-700 shadow-lg"></div>
+                                             class="h-96 w-full rounded-2xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-700 shadow-lg bg-neutral-100 dark:bg-neutral-900"
+                                             style="min-height: 384px; position: relative; z-index: 1;"></div>
                                         @if($latitude && $longitude)
                                             <div class="mt-3 flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1059,12 +1060,28 @@ function initCreationMap() {
     const defaultLat = 41.9028;
     const defaultLng = 12.4964;
 
-    creationMap = L.map('eventCreationMap').setView([defaultLat, defaultLng], 6);
+    creationMap = L.map('eventCreationMap', {
+        center: [defaultLat, defaultLng],
+        zoom: 6,
+        zoomControl: true,
+        scrollWheelZoom: true
+    });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    console.log('🗺️ Map object created, adding tile layer...');
+
+    const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
-        maxZoom: 19
-    }).addTo(creationMap);
+        maxZoom: 19,
+        minZoom: 3
+    });
+
+    tileLayer.on('loading', () => console.log('🔄 Tiles loading...'));
+    tileLayer.on('load', () => console.log('✅ Tiles loaded!'));
+    tileLayer.on('tileerror', (error) => console.error('❌ Tile error:', error));
+
+    tileLayer.addTo(creationMap);
+    
+    console.log('✅ Tile layer added to map');
 
     // Click to add marker
     creationMap.on('click', function(e) {
