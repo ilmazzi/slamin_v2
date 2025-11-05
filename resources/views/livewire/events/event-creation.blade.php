@@ -287,12 +287,18 @@
                          x-transition:enter-end="opacity-100 translate-x-0"
                          x-init="$watch('$wire.currentStep', value => {
                              if (value === 2) {
-                                 console.log('Step 2 now visible, fixing map...');
+                                 console.log('📍 Step 2 now visible!');
+                                 // Wait for transition to complete, then check if In Presenza is selected
                                  setTimeout(() => {
-                                     if (typeof initCreationMap === 'function') {
-                                         initCreationMap();
+                                     if (!$wire.is_online) {
+                                         console.log('✅ Step 2 visible AND In Presenza selected, init map!');
+                                         if (typeof initCreationMap === 'function') {
+                                             initCreationMap();
+                                         }
+                                     } else {
+                                         console.log('ℹ️ Step 2 visible but Online selected, skipping map init');
                                      }
-                                 }, 400);
+                                 }, 600);
                              }
                          })">
                         
@@ -399,7 +405,32 @@
 
                                 {{-- Physical Location Fields - Keep in DOM, use :class for visibility --}}
                                 <div class="space-y-6"
-                                     :class="$wire.is_online ? 'hidden' : 'block'">
+                                     :class="$wire.is_online ? 'hidden' : 'block'"
+                                     x-init="
+                                         // Initial load check
+                                         if (!$wire.is_online) {
+                                             console.log('✅ Initial load with In Presenza, initializing map...');
+                                             setTimeout(() => {
+                                                 if (typeof initCreationMap === 'function') {
+                                                     initCreationMap();
+                                                 }
+                                             }, 600);
+                                         }
+                                         
+                                         // Watch for changes
+                                         $watch('$wire.is_online', (value) => {
+                                             console.log('👀 is_online changed to:', value);
+                                             if (!value) {
+                                                 console.log('✅ Switched to In Presenza, initializing map...');
+                                                 setTimeout(() => {
+                                                     console.log('🗺️ Calling initCreationMap...');
+                                                     if (typeof initCreationMap === 'function') {
+                                                         initCreationMap();
+                                                     }
+                                                 }, 400);
+                                             }
+                                         });
+                                     ">
                                     <div class="relative group">
                                         <input type="text"
                                                wire:model="venue_name"
@@ -489,20 +520,14 @@
                                         </div>
                                     </div>
 
-                                    {{-- Interactive Map - ALWAYS rendered --}}
+                                    {{-- Interactive Map - ALWAYS rendered, NO x-init here --}}
                                     <div>
                                         <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
                                             Seleziona Posizione sulla Mappa
                                         </label>
                                         <div id="eventCreationMap" 
                                              wire:ignore 
-                                             class="h-96 rounded-2xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-700 shadow-lg"
-                                             x-init="setTimeout(() => {
-                                                 console.log('🗺️ Map container rendered, initializing...');
-                                                 if (typeof initCreationMap === 'function') {
-                                                     initCreationMap();
-                                                 }
-                                             }, 200)"></div>
+                                             class="h-96 rounded-2xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-700 shadow-lg"></div>
                                         @if($latitude && $longitude)
                                             <div class="mt-3 flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
