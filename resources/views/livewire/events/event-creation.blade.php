@@ -397,125 +397,120 @@
                                     </div>
                                 </div>
 
-                                {{-- Physical Location --}}
-                                <div x-show="!$wire.is_online" 
-                                     x-transition:enter="transition ease-out duration-300"
-                                     x-transition:enter-start="opacity-0 -translate-y-2"
-                                     x-transition:enter-end="opacity-100 translate-y-0"
-                                     x-init="$watch('$wire.is_online', value => {
-                                         if (!value) {
-                                             setTimeout(() => {
+                                {{-- Physical Location Fields - Keep in DOM, use :class for visibility --}}
+                                <div class="space-y-6"
+                                     :class="$wire.is_online ? 'hidden' : 'block'">
+                                    <div class="relative group">
+                                        <input type="text"
+                                               wire:model="venue_name"
+                                               id="venue_name"
+                                               placeholder=" "
+                                               class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
+                                                      focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                      transition-all duration-300">
+                                        <label for="venue_name" 
+                                               class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
+                                                      peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
+                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
+                                                      transition-all duration-200">
+                                            Nome Venue
+                                        </label>
+                                    </div>
+
+                                    <div class="relative group">
+                                        <input type="text"
+                                               wire:model="venue_address"
+                                               id="venue_address"
+                                               placeholder=" "
+                                               class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
+                                                      focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                      transition-all duration-300">
+                                        <label for="venue_address" 
+                                               class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
+                                                      peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
+                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
+                                                      transition-all duration-200">
+                                            Indirizzo
+                                        </label>
+                                    </div>
+
+                                    <div class="grid md:grid-cols-3 gap-4">
+                                        <div class="relative group">
+                                            <input type="text"
+                                                   wire:model="city"
+                                                   id="city"
+                                                   placeholder=" "
+                                                   class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
+                                                          focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                          transition-all duration-300">
+                                            <label for="city" 
+                                                   class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
+                                                          peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
+                                                          peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
+                                                          transition-all duration-200">
+                                                Città
+                                            </label>
+                                        </div>
+                                        <div class="relative group">
+                                            <input type="text"
+                                                   wire:model="postcode"
+                                                   id="postcode"
+                                                   placeholder=" "
+                                                   class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
+                                                          focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                          transition-all duration-300">
+                                            <label for="postcode" 
+                                                   class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
+                                                          peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
+                                                          peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
+                                                          transition-all duration-200">
+                                                CAP
+                                            </label>
+                                        </div>
+                                        <div class="relative group">
+                                            <select wire:model="country"
+                                                    id="country"
+                                                    class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white appearance-none cursor-pointer
+                                                           focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                           transition-all duration-300">
+                                                <option value="IT">Italia</option>
+                                                <option value="CH">Svizzera</option>
+                                                <option value="FR">Francia</option>
+                                                <option value="DE">Germania</option>
+                                                <option value="ES">Spagna</option>
+                                                <option value="UK">Regno Unito</option>
+                                            </select>
+                                            <label for="country" class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                                                Paese
+                                            </label>
+                                            <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400 dark:text-neutral-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    {{-- Interactive Map - ALWAYS rendered --}}
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
+                                            Seleziona Posizione sulla Mappa
+                                        </label>
+                                        <div id="eventCreationMap" 
+                                             wire:ignore 
+                                             class="h-96 rounded-2xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-700 shadow-lg"
+                                             x-init="setTimeout(() => {
+                                                 console.log('🗺️ Map container rendered, initializing...');
                                                  if (typeof initCreationMap === 'function') {
                                                      initCreationMap();
                                                  }
-                                             }, 350);
-                                         }
-                                     })"
-                                     class="space-y-6">
-                                        <div class="relative group">
-                                            <input type="text"
-                                                   wire:model="venue_name"
-                                                   id="venue_name"
-                                                   placeholder=" "
-                                                   class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
-                                                          focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                          transition-all duration-300">
-                                            <label for="venue_name" 
-                                                   class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
-                                                          peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                          peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
-                                                          transition-all duration-200">
-                                                Nome Venue
-                                            </label>
-                                        </div>
-
-                                        <div class="relative group">
-                                            <input type="text"
-                                                   wire:model="venue_address"
-                                                   id="venue_address"
-                                                   placeholder=" "
-                                                   class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
-                                                          focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                          transition-all duration-300">
-                                            <label for="venue_address" 
-                                                   class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
-                                                          peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                          peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
-                                                          transition-all duration-200">
-                                                Indirizzo
-                                            </label>
-                                        </div>
-
-                                        <div class="grid md:grid-cols-3 gap-4">
-                                            <div class="relative group">
-                                                <input type="text"
-                                                       wire:model="city"
-                                                       id="city"
-                                                       placeholder=" "
-                                                       class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
-                                                              focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                              transition-all duration-300">
-                                                <label for="city" 
-                                                       class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
-                                                              peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                              peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
-                                                              transition-all duration-200">
-                                                    Città
-                                                </label>
-                                            </div>
-                                            <div class="relative group">
-                                                <input type="text"
-                                                       wire:model="postcode"
-                                                       id="postcode"
-                                                       placeholder=" "
-                                                       class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
-                                                              focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                              transition-all duration-300">
-                                                <label for="postcode" 
-                                                       class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
-                                                              peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                              peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
-                                                              transition-all duration-200">
-                                                    CAP
-                                                </label>
-                                            </div>
-                                            <div class="relative group">
-                                                <select wire:model="country"
-                                                        id="country"
-                                                        class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white appearance-none cursor-pointer
-                                                               focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                               transition-all duration-300">
-                                                    <option value="IT">Italia</option>
-                                                    <option value="CH">Svizzera</option>
-                                                    <option value="FR">Francia</option>
-                                                    <option value="DE">Germania</option>
-                                                    <option value="ES">Spagna</option>
-                                                    <option value="UK">Regno Unito</option>
-                                                </select>
-                                                <label for="country" class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
-                                                    Paese
-                                                </label>
-                                                <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400 dark:text-neutral-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                             }, 200)"></div>
+                                        @if($latitude && $longitude)
+                                            <div class="mt-3 flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                                 </svg>
+                                                <span class="font-medium">Coordinate salvate: {{ number_format($latitude, 6) }}, {{ number_format($longitude, 6) }}</span>
                                             </div>
-                                        </div>
-
-                                        {{-- Interactive Map --}}
-                                        <div>
-                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
-                                                Seleziona Posizione sulla Mappa
-                                            </label>
-                                            <div id="eventCreationMap" wire:ignore class="h-96 rounded-2xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-700 shadow-lg"></div>
-                                            @if($latitude && $longitude)
-                                                <div class="mt-3 flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                                    </svg>
-                                                    <span class="font-medium">Coordinate salvate: {{ number_format($latitude, 6) }}, {{ number_format($longitude, 6) }}</span>
-                                                </div>
-                                            @endif
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -1026,36 +1021,35 @@
 let creationMap = null;
 let creationMarker = null;
 
-document.addEventListener('livewire:navigated', function() {
-    initCreationMap();
-});
-
-// Also try to init on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(initCreationMap, 500);
-});
-
+// DO NOT auto-initialize! Only when Step 2 is visible and In Presenza is selected
 function initCreationMap() {
     const mapContainer = document.getElementById('eventCreationMap');
-    if (!mapContainer || typeof L === 'undefined') {
-        console.log('Map container not found or Leaflet not loaded, retrying...');
-        setTimeout(initCreationMap, 500);
+    
+    if (!mapContainer) {
+        console.log('❌ Map container not found');
+        return;
+    }
+    
+    if (typeof L === 'undefined') {
+        console.log('❌ Leaflet not loaded, retrying...');
+        setTimeout(initCreationMap, 300);
         return;
     }
 
-    // Check if container is visible
-    if (mapContainer.offsetParent === null) {
-        console.log('Map container is hidden, will init when visible');
+    // Check if container is visible AND has dimensions
+    const rect = mapContainer.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0 || mapContainer.offsetParent === null) {
+        console.log('❌ Map container is hidden or has no dimensions, skipping init');
         return;
     }
 
     if (creationMap) {
-        console.log('Map already initialized, refreshing size...');
+        console.log('✅ Map already exists, just resizing...');
         creationMap.invalidateSize();
         return;
     }
 
-    console.log('Initializing event creation map...');
+    console.log('🗺️ Initializing event creation map with container size:', rect.width, 'x', rect.height);
 
     // Default to Rome, Italy
     const defaultLat = 41.9028;
@@ -1113,35 +1107,29 @@ function initCreationMap() {
             .catch(err => console.error('Geocoding error:', err));
     });
 
-    // CRITICAL: Fix size immediately after init
+    // MULTIPLE invalidateSize calls to ensure proper rendering
     setTimeout(() => {
         if (creationMap) {
-            console.log('Fixing map size after init...');
+            console.log('🔧 First resize (200ms)...');
             creationMap.invalidateSize();
         }
     }, 200);
+    
+    setTimeout(() => {
+        if (creationMap) {
+            console.log('🔧 Second resize (500ms)...');
+            creationMap.invalidateSize();
+        }
+    }, 500);
+    
+    setTimeout(() => {
+        if (creationMap) {
+            console.log('🔧 Final resize (1000ms)...');
+            creationMap.invalidateSize();
+        }
+    }, 1000);
 
-    console.log('Event creation map initialized!');
+    console.log('✅ Event creation map initialized successfully!');
 }
-
-// Listen for step changes and reinitialize/resize map
-Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
-    succeed(({ snapshot, effect }) => {
-        setTimeout(() => {
-            const mapContainer = document.getElementById('eventCreationMap');
-            
-            // If we're on step 2 and map container is visible
-            if (mapContainer && mapContainer.offsetParent !== null) {
-                if (!creationMap) {
-                    console.log('Step 2 visible, initializing map...');
-                    initCreationMap();
-                } else {
-                    console.log('Step 2 visible, resizing map...');
-                    creationMap.invalidateSize();
-                }
-            }
-        }, 300);
-    });
-});
 </script>
 @endpush
