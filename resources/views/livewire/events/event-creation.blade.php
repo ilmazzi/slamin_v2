@@ -1,31 +1,15 @@
 {{-- INNOVATIVE EVENT CREATION FORM - Total Redesign --}}
-<div class="min-h-screen bg-neutral-950 relative overflow-hidden" 
+<div class="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50/30 to-accent-50/20 dark:from-neutral-900 dark:via-primary-950/50 dark:to-accent-950/30 relative overflow-hidden" 
      x-data="{ 
-         currentStep: @entangle('currentStep'),
-         mouseX: 0, 
-         mouseY: 0,
-         tiltX: 0,
-         tiltY: 0
-     }"
-     @mousemove.window="
-         mouseX = $event.clientX; 
-         mouseY = $event.clientY;
-         tiltX = (($event.clientY / window.innerHeight) - 0.5) * 20;
-         tiltY = (($event.clientX / window.innerWidth) - 0.5) * -20;
-     ">
+         currentStep: @entangle('currentStep')
+     }">
     
-    {{-- ANIMATED BACKGROUND WITH MORPHING BLOBS --}}
-    <div class="absolute inset-0 overflow-hidden">
-        {{-- Mesh Gradient Background --}}
-        <div class="absolute inset-0 bg-gradient-to-br from-primary-950 via-neutral-950 to-accent-950"></div>
-        
-        {{-- Morphing Blobs --}}
-        <div class="absolute top-0 -left-40 w-96 h-96 bg-gradient-to-br from-primary-600/30 to-primary-500/30 rounded-full blur-3xl animate-blob"></div>
-        <div class="absolute top-0 -right-40 w-96 h-96 bg-gradient-to-br from-accent-600/30 to-accent-500/30 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-40 left-1/2 w-96 h-96 bg-gradient-to-br from-primary-500/20 to-accent-500/20 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
-        
-        {{-- Grid Pattern --}}
-        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]"></div>
+    {{-- ANIMATED BACKGROUND WITH SUBTLE BLOBS --}}
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        {{-- Morphing Blobs (più sottili) --}}
+        <div class="absolute top-0 -left-40 w-96 h-96 bg-gradient-to-br from-primary-200/40 to-primary-300/40 dark:from-primary-600/20 dark:to-primary-500/20 rounded-full blur-3xl animate-blob"></div>
+        <div class="absolute top-40 -right-40 w-80 h-80 bg-gradient-to-br from-accent-200/40 to-accent-300/40 dark:from-accent-600/20 dark:to-accent-500/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-20 left-1/3 w-72 h-72 bg-gradient-to-br from-primary-300/30 to-accent-300/30 dark:from-primary-500/15 dark:to-accent-500/15 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
     </div>
 
     <div class="relative z-10 max-w-[1400px] mx-auto px-6 py-12">
@@ -34,12 +18,12 @@
             {{-- Left: Steps Navigation (Vertical on desktop) --}}
             <div class="relative">
                 {{-- Floating Card with Steps --}}
-                <div class="sticky top-24 backdrop-blur-2xl bg-white/5 rounded-3xl p-8 border border-white/10 shadow-2xl">
+                <div class="sticky top-24 backdrop-blur-xl bg-white/90 dark:bg-neutral-800/90 rounded-3xl p-8 border border-neutral-200/50 dark:border-neutral-700/50 shadow-2xl">
                     <div class="mb-8">
-                        <h1 class="text-4xl font-black text-white mb-3 tracking-tight">
+                        <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3 tracking-tight">
                             Crea Evento
                         </h1>
-                        <p class="text-white/60">
+                        <p class="text-neutral-600 dark:text-neutral-400">
                             Segui i passaggi per pubblicare il tuo evento
                         </p>
                     </div>
@@ -87,10 +71,10 @@
                                 
                                 {{-- Step Info --}}
                                 <div class="flex-1 text-left">
-                                    <div class="font-semibold {{ $stepNum == $currentStep ? 'text-white' : 'text-white/60 group-hover:text-white/80' }}">
+                                    <div class="font-semibold {{ $stepNum == $currentStep ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-800 dark:group-hover:text-neutral-300' }}">
                                         {{ $step['title'] }}
                                     </div>
-                                    <div class="text-sm text-white/40">
+                                    <div class="text-sm text-neutral-500 dark:text-neutral-500">
                                         {{ $step['desc'] }}
                                     </div>
                                 </div>
@@ -99,22 +83,21 @@
                     </div>
 
                     {{-- Progress Bar --}}
-                    <div class="mt-8 pt-8 border-t border-white/10">
-                        <div class="flex items-center justify-between text-sm text-white/60 mb-2">
+                    <div class="mt-8 pt-8 border-t border-neutral-200 dark:border-neutral-700">
+                        <div class="flex items-center justify-between text-sm text-neutral-600 dark:text-neutral-400 mb-2">
                             <span>Progresso</span>
-                            <span class="font-semibold text-white">{{ round(($currentStep / $totalSteps) * 100) }}%</span>
+                            <span class="font-semibold text-neutral-900 dark:text-white">{{ round(($currentStep / $totalSteps) * 100) }}%</span>
                         </div>
-                        <div class="h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full transition-all duration-700"
+                        <div class="h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full transition-all duration-700 shadow-lg shadow-primary-500/30"
                                  style="width: {{ ($currentStep / $totalSteps) * 100 }}%"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Right: Form Content with 3D Tilt --}}
-            <div class="relative" 
-                 :style="`transform: perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg); transition: transform 0.1s ease-out;`">
+            {{-- Right: Form Content --}}
+            <div class="relative">
                 
                 <form wire:submit.prevent="save" class="space-y-8">
                     {{-- ============ STEP 1: BASIC INFO ============ --}}
@@ -146,18 +129,16 @@
                                                wire:model.live="title"
                                                id="title"
                                                placeholder=" "
-                                               class="peer w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-white/10 text-white placeholder-transparent
-                                                      focus:border-primary-500/50 focus:bg-white/10 focus:ring-4 focus:ring-primary-500/10
-                                                      transition-all duration-300 @error('title') border-red-500/50 ring-4 ring-red-500/10 @enderror">
+                                               class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
+                                                      focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                      transition-all duration-300 @error('title') border-red-500 ring-4 ring-red-500/10 @enderror">
                                         <label for="title" 
-                                               class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-neutral-950 text-white/60
-                                                      peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-white/40
-                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-400
+                                               class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400
+                                                      peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-400 dark:peer-placeholder-shown:text-neutral-500
+                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
                                                       transition-all duration-200">
                                             Titolo Evento *
                                         </label>
-                                        {{-- Glow on focus --}}
-                                        <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500/0 via-primary-500/20 to-accent-500/0 opacity-0 peer-focus:opacity-100 transition-opacity -z-10 blur-xl"></div>
                                     </div>
                                     @error('title')
                                         <p class="mt-2 text-sm text-red-400 flex items-center gap-2">
@@ -166,22 +147,22 @@
                                         </p>
                                     @enderror
                                     @if(strlen($title) > 0)
-                                        <p class="mt-2 text-sm text-white/40">{{ strlen($title) }}/255 caratteri</p>
+                                        <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">{{ strlen($title) }}/255 caratteri</p>
                                     @endif
                                 </div>
 
                                 {{-- Subtitle Toggle (Neumorphic Switch) --}}
-                                <div class="flex items-center justify-between p-5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all group cursor-pointer"
+                                <div class="flex items-center justify-between p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-all group cursor-pointer"
                                      wire:click="toggleSubtitle">
                                     <div class="flex items-center gap-3">
                                         <div class="w-12 h-7 rounded-full relative transition-all duration-300
-                                                    {{ $has_subtitle ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-white/10' }}">
+                                                    {{ $has_subtitle ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}">
                                             <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
                                                         {{ $has_subtitle ? 'left-6' : 'left-1' }}"></div>
                                         </div>
-                                        <span class="text-white font-medium">Aggiungi Sottotitolo</span>
+                                        <span class="text-neutral-900 dark:text-white font-medium">Aggiungi Sottotitolo</span>
                                     </div>
-                                    <span class="text-sm text-white/40">Opzionale</span>
+                                    <span class="text-sm text-neutral-500 dark:text-neutral-400">Opzionale</span>
                                 </div>
 
                                 {{-- Subtitle Field (Animated Height) --}}
@@ -194,13 +175,13 @@
                                                wire:model.live="subtitle"
                                                id="subtitle"
                                                placeholder=" "
-                                               class="peer w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-white/10 text-white placeholder-transparent
-                                                      focus:border-accent-500/50 focus:bg-white/10 focus:ring-4 focus:ring-accent-500/10
+                                               class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
+                                                      focus:border-accent-500 dark:focus:border-accent-400 focus:ring-4 focus:ring-accent-500/10
                                                       transition-all duration-300">
                                         <label for="subtitle" 
-                                               class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-neutral-950 text-white/60
+                                               class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400
                                                       peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-accent-400
+                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-accent-600 dark:peer-focus:text-accent-400
                                                       transition-all duration-200">
                                             Sottotitolo
                                         </label>
@@ -213,46 +194,46 @@
                                     <div class="relative group">
                                         <select wire:model.live="category"
                                                 id="category"
-                                                class="w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-white/10 text-white appearance-none cursor-pointer
-                                                       focus:border-primary-500/50 focus:bg-white/10 focus:ring-4 focus:ring-primary-500/10
+                                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white appearance-none cursor-pointer
+                                                       focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
                                                        transition-all duration-300">
-                                            <option value="" class="bg-neutral-900">Seleziona categoria</option>
+                                            <option value="" class="bg-white dark:bg-neutral-900">Seleziona categoria</option>
                                             @foreach(App\Models\Event::getCategories() as $key => $name)
-                                                <option value="{{ $key }}" class="bg-neutral-900">{{ $name }}</option>
+                                                <option value="{{ $key }}" class="bg-white dark:bg-neutral-900">{{ $name }}</option>
                                             @endforeach
                                         </select>
-                                        <label for="category" class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-neutral-950 text-white/60">
+                                        <label for="category" class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
                                             Categoria *
                                         </label>
-                                        <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400 dark:text-neutral-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
                                     </div>
 
                                     {{-- Visibility Radio Cards --}}
                                     <div>
-                                        <label class="block text-sm font-medium text-white/60 mb-3">Visibilità *</label>
+                                        <label class="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-3">Visibilità *</label>
                                         <div class="grid grid-cols-2 gap-3">
                                             <label class="relative cursor-pointer">
                                                 <input type="radio" wire:model="is_public" value="1" class="sr-only peer">
                                                 <div class="p-4 rounded-2xl border-2 text-center transition-all
-                                                            peer-checked:border-primary-500/50 peer-checked:bg-primary-500/10 peer-checked:shadow-lg peer-checked:shadow-primary-500/20
-                                                            border-white/10 bg-white/5 hover:bg-white/10">
-                                                    <svg class="w-6 h-6 mx-auto mb-1 transition-colors {{ $is_public ? 'text-primary-400' : 'text-white/40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            peer-checked:border-primary-500 peer-checked:bg-primary-50 dark:peer-checked:bg-primary-900/20 peer-checked:shadow-lg peer-checked:shadow-primary-500/20
+                                                            border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800">
+                                                    <svg class="w-6 h-6 mx-auto mb-1 transition-colors {{ $is_public ? 'text-primary-600 dark:text-primary-400' : 'text-neutral-400 dark:text-neutral-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                                     </svg>
-                                                    <span class="text-sm font-medium {{ $is_public ? 'text-white' : 'text-white/60' }}">Pubblico</span>
+                                                    <span class="text-sm font-medium {{ $is_public ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400' }}">Pubblico</span>
                                                 </div>
                                             </label>
                                             <label class="relative cursor-pointer">
                                                 <input type="radio" wire:model="is_public" value="0" class="sr-only peer">
                                                 <div class="p-4 rounded-2xl border-2 text-center transition-all
-                                                            peer-checked:border-accent-500/50 peer-checked:bg-accent-500/10 peer-checked:shadow-lg peer-checked:shadow-accent-500/20
-                                                            border-white/10 bg-white/5 hover:bg-white/10">
-                                                    <svg class="w-6 h-6 mx-auto mb-1 transition-colors {{ !$is_public ? 'text-accent-400' : 'text-white/40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            peer-checked:border-accent-500 peer-checked:bg-accent-50 dark:peer-checked:bg-accent-900/20 peer-checked:shadow-lg peer-checked:shadow-accent-500/20
+                                                            border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800">
+                                                    <svg class="w-6 h-6 mx-auto mb-1 transition-colors {{ !$is_public ? 'text-accent-600 dark:text-accent-400' : 'text-neutral-400 dark:text-neutral-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                                     </svg>
-                                                    <span class="text-sm font-medium {{ !$is_public ? 'text-white' : 'text-white/60' }}">Privato</span>
+                                                    <span class="text-sm font-medium {{ !$is_public ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400' }}">Privato</span>
                                                 </div>
                                             </label>
                                         </div>
@@ -265,13 +246,13 @@
                                               id="description"
                                               rows="5"
                                               placeholder=" "
-                                              class="peer w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-white/10 text-white placeholder-transparent resize-none
-                                                     focus:border-primary-500/50 focus:bg-white/10 focus:ring-4 focus:ring-primary-500/10
+                                              class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent resize-none
+                                                     focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
                                                      transition-all duration-300"></textarea>
                                     <label for="description" 
-                                           class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-neutral-950 text-white/60
+                                           class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400
                                                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                  peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-400
+                                                  peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
                                                   transition-all duration-200">
                                         Descrizione
                                     </label>
@@ -283,17 +264,17 @@
                                               id="requirements"
                                               rows="3"
                                               placeholder=" "
-                                              class="peer w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-white/10 text-white placeholder-transparent resize-none
-                                                     focus:border-accent-500/50 focus:bg-white/10 focus:ring-4 focus:ring-accent-500/10
+                                              class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent resize-none
+                                                     focus:border-accent-500 dark:focus:border-accent-400 focus:ring-4 focus:ring-accent-500/10
                                                      transition-all duration-300"></textarea>
                                     <label for="requirements" 
-                                           class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-neutral-950 text-white/60
+                                           class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400
                                                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                  peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-accent-400
+                                                  peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-accent-600 dark:peer-focus:text-accent-400
                                                   transition-all duration-200">
                                         Requisiti
                                     </label>
-                                    <p class="mt-2 text-sm text-white/40">Eventuali requisiti per partecipare</p>
+                                    <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">Eventuali requisiti per partecipare</p>
                                 </div>
                             </div>
                         </div>
@@ -305,17 +286,17 @@
                              x-transition:enter="transition ease-out duration-500"
                              x-transition:enter-start="opacity-0 translate-x-20"
                              x-transition:enter-end="opacity-100 translate-x-0">
-                            <div class="backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 rounded-3xl p-8 border border-white/20 shadow-2xl">
+                            <div class="backdrop-blur-sm bg-white/95 dark:bg-neutral-800/95 rounded-3xl p-8 border border-neutral-200/80 dark:border-neutral-700/80 shadow-2xl">
                                 <div class="text-center py-20">
                                     <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-primary-500/50">
                                         <span class="text-4xl font-black text-white">{{ $i }}</span>
                                     </div>
-                                    <h3 class="text-2xl font-bold text-white mb-2">Step {{ $i }}</h3>
-                                    <p class="text-white/60">Contenuto in arrivo...</p>
+                                    <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-2">Step {{ $i }}</h3>
+                                    <p class="text-neutral-600 dark:text-neutral-400">Contenuto in arrivo...</p>
                                 </div>
                             </div>
                         </div>
-                    @endfor
+                        @endfor
 
                     {{-- Navigation Buttons --}}
                     <div class="flex items-center justify-between gap-4 pt-8">
