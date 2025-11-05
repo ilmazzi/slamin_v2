@@ -25,20 +25,47 @@
         </div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <!-- Title & Intro -->
-            <div class="text-center text-white mb-8"
+            <!-- Title & Intro with Create Button -->
+            <div class="text-center text-white mb-8 relative"
                  x-data="{ visible: false }"
                  x-init="setTimeout(() => visible = true, 100)"
                  x-show="visible"
                  x-transition:enter="transition ease-out duration-1000"
                  x-transition:enter-start="opacity-0 -translate-y-10"
                  x-transition:enter-end="opacity-100 translate-y-0">
+                
+                <!-- Create Event Button - Desktop (top right) -->
+                @auth
+                    @if(auth()->user()->isOrganizer())
+                        <a href="{{ route('events.create') }}" 
+                           class="absolute top-0 right-0 hidden md:flex items-center gap-2 px-6 py-3 bg-white text-primary-600 rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-300 group">
+                            <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            Crea Evento
+                        </a>
+                    @endif
+                @endauth
+                
                 <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-accent-200 animate-gradient">
                     {{ __('events.discover_events') }}
                 </h1>
                 <p class="text-xl text-white/90 italic">
                     {{ __('events.where_poetry_lives') }}
                 </p>
+                
+                <!-- Create Event Button - Mobile (below title) -->
+                @auth
+                    @if(auth()->user()->isOrganizer())
+                        <a href="{{ route('events.create') }}" 
+                           class="md:hidden inline-flex items-center gap-2 px-6 py-3 mt-4 bg-white text-primary-600 rounded-xl font-semibold hover:shadow-2xl transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            Crea Evento
+                        </a>
+                    @endif
+                @endauth
             </div>
 
             <!-- Search Bar -->

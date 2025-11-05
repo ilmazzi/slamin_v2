@@ -29,6 +29,19 @@
 
             <!-- Right side -->
             <div class="flex items-center space-x-4" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }">
+                <!-- Create Event Button (Organizers only) -->
+                @auth
+                    @if(auth()->user()->isOrganizer())
+                        <a href="{{ route('events.create') }}" 
+                           class="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-600 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            Crea Evento
+                        </a>
+                    @endif
+                @endauth
+                
                 <!-- Dark mode toggle -->
                 <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode); document.documentElement.classList.toggle('dark')"
                         class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
@@ -92,6 +105,16 @@
          x-transition
          class="md:hidden border-t border-gray-200 dark:border-gray-700">
         <div class="px-4 py-4 space-y-2">
+            @auth
+                @if(auth()->user()->isOrganizer())
+                    <a href="{{ route('events.create') }}" class="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-primary-500 to-accent-600 text-white hover:shadow-lg rounded-lg font-medium">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Crea Evento
+                    </a>
+                @endif
+            @endauth
             <a href="{{ route('events.index') }}" class="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                 Eventi
             </a>
