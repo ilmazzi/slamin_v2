@@ -17,12 +17,12 @@
     {{-- ANIMATED BACKGROUND WITH MORPHING BLOBS --}}
     <div class="absolute inset-0 overflow-hidden">
         {{-- Mesh Gradient Background --}}
-        <div class="absolute inset-0 bg-gradient-to-br from-violet-950 via-neutral-950 to-emerald-950"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-950 via-neutral-950 to-accent-950"></div>
         
         {{-- Morphing Blobs --}}
-        <div class="absolute top-0 -left-40 w-96 h-96 bg-gradient-to-br from-violet-600/30 to-purple-600/30 rounded-full blur-3xl animate-blob"></div>
-        <div class="absolute top-0 -right-40 w-96 h-96 bg-gradient-to-br from-emerald-600/30 to-cyan-600/30 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-40 left-1/2 w-96 h-96 bg-gradient-to-br from-pink-600/30 to-rose-600/30 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
+        <div class="absolute top-0 -left-40 w-96 h-96 bg-gradient-to-br from-primary-600/30 to-primary-500/30 rounded-full blur-3xl animate-blob"></div>
+        <div class="absolute top-0 -right-40 w-96 h-96 bg-gradient-to-br from-accent-600/30 to-accent-500/30 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-40 left-1/2 w-96 h-96 bg-gradient-to-br from-primary-500/20 to-accent-500/20 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
         
         {{-- Grid Pattern --}}
         <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]"></div>
@@ -62,13 +62,13 @@
                                     type="button"
                                     class="group w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300
                                            {{ $stepNum == $currentStep 
-                                               ? 'bg-gradient-to-r from-violet-500/20 to-emerald-500/20 border border-violet-500/50' 
+                                               ? 'bg-gradient-to-r from-primary-500/20 to-accent-500/20 border border-primary-500/50' 
                                                : 'hover:bg-white/5 border border-transparent' }}">
                                 {{-- Step Number with Glow --}}
                                 <div class="relative flex-shrink-0">
                                     @if($stepNum < $currentStep)
                                         {{-- Completed --}}
-                                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/50">
+                                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-lg shadow-primary-500/50">
                                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
                                             </svg>
@@ -76,7 +76,7 @@
                                     @else
                                         <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300
                                                     {{ $stepNum == $currentStep 
-                                                        ? 'bg-gradient-to-br from-violet-500 to-pink-500 shadow-lg shadow-violet-500/50' 
+                                                        ? 'bg-gradient-to-br from-primary-500 to-accent-600 shadow-lg shadow-primary-500/50' 
                                                         : 'bg-white/10 group-hover:bg-white/20' }}">
                                             <svg class="w-6 h-6 {{ $stepNum == $currentStep ? 'text-white' : 'text-white/40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $step['icon'] }}"/>
@@ -105,7 +105,7 @@
                             <span class="font-semibold text-white">{{ round(($currentStep / $totalSteps) * 100) }}%</span>
                         </div>
                         <div class="h-2 bg-white/10 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-violet-500 via-pink-500 to-emerald-500 rounded-full transition-all duration-700"
+                            <div class="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full transition-all duration-700"
                                  style="width: {{ ($currentStep / $totalSteps) * 100 }}%"></div>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                         <div class="backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 rounded-3xl p-8 border border-white/20 shadow-2xl">
                             {{-- Header --}}
                             <div class="flex items-center gap-4 mb-8">
-                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center shadow-lg shadow-violet-500/50">
+                                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-lg shadow-primary-500/50">
                                     <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
@@ -147,17 +147,17 @@
                                                id="title"
                                                placeholder=" "
                                                class="peer w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-white/10 text-white placeholder-transparent
-                                                      focus:border-violet-500/50 focus:bg-white/10 focus:ring-4 focus:ring-violet-500/10
+                                                      focus:border-primary-500/50 focus:bg-white/10 focus:ring-4 focus:ring-primary-500/10
                                                       transition-all duration-300 @error('title') border-red-500/50 ring-4 ring-red-500/10 @enderror">
                                         <label for="title" 
                                                class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-neutral-950 text-white/60
                                                       peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-white/40
-                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-violet-400
+                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-400
                                                       transition-all duration-200">
                                             Titolo Evento *
                                         </label>
                                         {{-- Glow on focus --}}
-                                        <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-violet-500/0 via-pink-500/20 to-violet-500/0 opacity-0 peer-focus:opacity-100 transition-opacity -z-10 blur-xl"></div>
+                                        <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-500/0 via-primary-500/20 to-accent-500/0 opacity-0 peer-focus:opacity-100 transition-opacity -z-10 blur-xl"></div>
                                     </div>
                                     @error('title')
                                         <p class="mt-2 text-sm text-red-400 flex items-center gap-2">
@@ -175,7 +175,7 @@
                                      wire:click="toggleSubtitle">
                                     <div class="flex items-center gap-3">
                                         <div class="w-12 h-7 rounded-full relative transition-all duration-300
-                                                    {{ $has_subtitle ? 'bg-gradient-to-r from-violet-500 to-pink-500' : 'bg-white/10' }}">
+                                                    {{ $has_subtitle ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-white/10' }}">
                                             <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
                                                         {{ $has_subtitle ? 'left-6' : 'left-1' }}"></div>
                                         </div>
@@ -195,12 +195,12 @@
                                                id="subtitle"
                                                placeholder=" "
                                                class="peer w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-white/10 text-white placeholder-transparent
-                                                      focus:border-pink-500/50 focus:bg-white/10 focus:ring-4 focus:ring-pink-500/10
+                                                      focus:border-accent-500/50 focus:bg-white/10 focus:ring-4 focus:ring-accent-500/10
                                                       transition-all duration-300">
                                         <label for="subtitle" 
                                                class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-neutral-950 text-white/60
                                                       peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-pink-400
+                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-accent-400
                                                       transition-all duration-200">
                                             Sottotitolo
                                         </label>
@@ -214,7 +214,7 @@
                                         <select wire:model.live="category"
                                                 id="category"
                                                 class="w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-white/10 text-white appearance-none cursor-pointer
-                                                       focus:border-emerald-500/50 focus:bg-white/10 focus:ring-4 focus:ring-emerald-500/10
+                                                       focus:border-primary-500/50 focus:bg-white/10 focus:ring-4 focus:ring-primary-500/10
                                                        transition-all duration-300">
                                             <option value="" class="bg-neutral-900">Seleziona categoria</option>
                                             @foreach(App\Models\Event::getCategories() as $key => $name)
@@ -236,9 +236,9 @@
                                             <label class="relative cursor-pointer">
                                                 <input type="radio" wire:model="is_public" value="1" class="sr-only peer">
                                                 <div class="p-4 rounded-2xl border-2 text-center transition-all
-                                                            peer-checked:border-emerald-500/50 peer-checked:bg-emerald-500/10 peer-checked:shadow-lg peer-checked:shadow-emerald-500/20
+                                                            peer-checked:border-primary-500/50 peer-checked:bg-primary-500/10 peer-checked:shadow-lg peer-checked:shadow-primary-500/20
                                                             border-white/10 bg-white/5 hover:bg-white/10">
-                                                    <svg class="w-6 h-6 mx-auto mb-1 transition-colors {{ $is_public ? 'text-emerald-400' : 'text-white/40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg class="w-6 h-6 mx-auto mb-1 transition-colors {{ $is_public ? 'text-primary-400' : 'text-white/40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                                     </svg>
                                                     <span class="text-sm font-medium {{ $is_public ? 'text-white' : 'text-white/60' }}">Pubblico</span>
@@ -247,9 +247,9 @@
                                             <label class="relative cursor-pointer">
                                                 <input type="radio" wire:model="is_public" value="0" class="sr-only peer">
                                                 <div class="p-4 rounded-2xl border-2 text-center transition-all
-                                                            peer-checked:border-pink-500/50 peer-checked:bg-pink-500/10 peer-checked:shadow-lg peer-checked:shadow-pink-500/20
+                                                            peer-checked:border-accent-500/50 peer-checked:bg-accent-500/10 peer-checked:shadow-lg peer-checked:shadow-accent-500/20
                                                             border-white/10 bg-white/5 hover:bg-white/10">
-                                                    <svg class="w-6 h-6 mx-auto mb-1 transition-colors {{ !$is_public ? 'text-pink-400' : 'text-white/40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg class="w-6 h-6 mx-auto mb-1 transition-colors {{ !$is_public ? 'text-accent-400' : 'text-white/40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                                     </svg>
                                                     <span class="text-sm font-medium {{ !$is_public ? 'text-white' : 'text-white/60' }}">Privato</span>
@@ -266,12 +266,12 @@
                                               rows="5"
                                               placeholder=" "
                                               class="peer w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-white/10 text-white placeholder-transparent resize-none
-                                                     focus:border-cyan-500/50 focus:bg-white/10 focus:ring-4 focus:ring-cyan-500/10
+                                                     focus:border-primary-500/50 focus:bg-white/10 focus:ring-4 focus:ring-primary-500/10
                                                      transition-all duration-300"></textarea>
                                     <label for="description" 
                                            class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-neutral-950 text-white/60
                                                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                  peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-cyan-400
+                                                  peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-400
                                                   transition-all duration-200">
                                         Descrizione
                                     </label>
@@ -284,12 +284,12 @@
                                               rows="3"
                                               placeholder=" "
                                               class="peer w-full px-5 py-4 rounded-2xl bg-white/5 border-2 border-white/10 text-white placeholder-transparent resize-none
-                                                     focus:border-amber-500/50 focus:bg-white/10 focus:ring-4 focus:ring-amber-500/10
+                                                     focus:border-accent-500/50 focus:bg-white/10 focus:ring-4 focus:ring-accent-500/10
                                                      transition-all duration-300"></textarea>
                                     <label for="requirements" 
                                            class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-neutral-950 text-white/60
                                                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                  peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-amber-400
+                                                  peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-accent-400
                                                   transition-all duration-200">
                                         Requisiti
                                     </label>
@@ -300,14 +300,14 @@
                     </div>
 
                     {{-- PLACEHOLDER for other steps --}}
-                    @for($i = 2; $i <= 5; $i++)
+                        @for($i = 2; $i <= 5; $i++)
                         <div x-show="$wire.currentStep === {{ $i }}"
                              x-transition:enter="transition ease-out duration-500"
                              x-transition:enter-start="opacity-0 translate-x-20"
                              x-transition:enter-end="opacity-100 translate-x-0">
                             <div class="backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 rounded-3xl p-8 border border-white/20 shadow-2xl">
                                 <div class="text-center py-20">
-                                    <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-violet-500/50">
+                                    <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-primary-500/50">
                                         <span class="text-4xl font-black text-white">{{ $i }}</span>
                                     </div>
                                     <h3 class="text-2xl font-bold text-white mb-2">Step {{ $i }}</h3>
@@ -337,8 +337,8 @@
                         @if($currentStep < $totalSteps)
                             <button type="button"
                                     wire:click="nextStep"
-                                    class="px-8 py-4 rounded-2xl bg-gradient-to-r from-violet-500 via-pink-500 to-emerald-500 text-white font-bold text-lg
-                                           hover:shadow-2xl hover:shadow-violet-500/50 hover:scale-105
+                                    class="px-8 py-4 rounded-2xl bg-gradient-to-r from-primary-500 to-accent-600 text-white font-bold text-lg
+                                           hover:shadow-2xl hover:shadow-primary-500/50 hover:scale-105
                                            active:scale-95 transition-all duration-200 flex items-center gap-2">
                                 Avanti
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -347,8 +347,8 @@
                             </button>
                         @else
                             <button type="submit"
-                                    class="px-12 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-black text-xl
-                                           hover:shadow-2xl hover:shadow-emerald-500/50 hover:scale-105
+                                    class="px-12 py-4 rounded-2xl bg-gradient-to-r from-primary-500 to-accent-600 text-white font-black text-xl
+                                           hover:shadow-2xl hover:shadow-primary-500/50 hover:scale-105
                                            active:scale-95 transition-all duration-200 flex items-center gap-3">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
