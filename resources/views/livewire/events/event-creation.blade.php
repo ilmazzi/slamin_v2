@@ -374,8 +374,12 @@
                                 </div>
 
                                 {{-- Online URL --}}
-                                @if($is_online)
-                                    <div class="relative group" x-show="$wire.is_online" x-transition>
+                                <div x-show="$wire.is_online" 
+                                     x-transition:enter="transition ease-out duration-300"
+                                     x-transition:enter-start="opacity-0 -translate-y-2"
+                                     x-transition:enter-end="opacity-100 translate-y-0"
+                                     style="display: none;">
+                                    <div class="relative group">
                                         <input type="url"
                                                wire:model="online_url"
                                                id="online_url"
@@ -391,11 +395,23 @@
                                             URL Evento Online *
                                         </label>
                                     </div>
-                                @endif
+                                </div>
 
                                 {{-- Physical Location --}}
-                                @if(!$is_online)
-                                    <div x-show="!$wire.is_online" x-transition class="space-y-6">
+                                <div x-show="!$wire.is_online" 
+                                     x-transition:enter="transition ease-out duration-300"
+                                     x-transition:enter-start="opacity-0 -translate-y-2"
+                                     x-transition:enter-end="opacity-100 translate-y-0"
+                                     x-init="$watch('$wire.is_online', value => {
+                                         if (!value) {
+                                             setTimeout(() => {
+                                                 if (typeof initCreationMap === 'function') {
+                                                     initCreationMap();
+                                                 }
+                                             }, 350);
+                                         }
+                                     })"
+                                     class="space-y-6">
                                         <div class="relative group">
                                             <input type="text"
                                                    wire:model="venue_name"
@@ -501,7 +517,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                @endif
+                                </div>
                             </div>
                         </div>
                     </div>
