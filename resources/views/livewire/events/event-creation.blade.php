@@ -284,13 +284,7 @@
                     <div x-show="$wire.currentStep === 2"
                          x-transition:enter="transition ease-out duration-500"
                          x-transition:enter-start="opacity-0 translate-x-20"
-                         x-transition:enter-end="opacity-100 translate-x-0"
-                         x-init="$watch('$wire.currentStep', value => {
-                             value === 2 && setTimeout(() => {
-                                 console.log('🗺️ Step 2 visible, initializing map...');
-                                 typeof initCreationMap === 'function' && initCreationMap();
-                             }, 700);
-                         })">
+                         x-transition:enter-end="opacity-100 translate-x-0">
                         
                         <div class="backdrop-blur-sm bg-white dark:bg-neutral-800 rounded-3xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-2xl">
                             {{-- Header --}}
@@ -369,10 +363,8 @@
                                     </div>
                                 </div>
 
-                                {{-- ALWAYS RENDER BOTH - Use opacity for visibility --}}
-                                
-                                {{-- Online URL --}}
-                                <div :class="$wire.is_online ? 'block' : 'hidden'">
+                                {{-- Online URL - Show only when Online --}}
+                                @if($is_online)
                                     <div class="relative group">
                                         <input type="url"
                                                wire:model="online_url"
@@ -389,10 +381,11 @@
                                             URL Evento Online *
                                         </label>
                                     </div>
-                                </div>
+                                @endif
 
-                                {{-- Physical Location Fields + Map - ALWAYS in DOM --}}
-                                <div :class="$wire.is_online ? 'hidden' : 'block'" class="space-y-6">
+                                {{-- Physical Location Fields + Map - Show only when In Presenza --}}
+                                @if(!$is_online)
+                                <div class="space-y-6">
                                     <div class="relative group">
                                         <input type="text"
                                                wire:model="venue_name"
@@ -508,6 +501,7 @@
                                         @endif
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>
