@@ -18,12 +18,12 @@
             {{-- Left: Steps Navigation (Vertical on desktop) --}}
             <div class="relative">
                 {{-- Floating Card with Steps --}}
-                <div class="sticky top-24 backdrop-blur-xl bg-white/90 dark:bg-neutral-800/90 rounded-3xl p-8 border border-neutral-200/50 dark:border-neutral-700/50 shadow-2xl">
+                <div class="sticky top-24 backdrop-blur-xl bg-white dark:bg-neutral-800 rounded-3xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-2xl">
                     <div class="mb-8">
                         <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3 tracking-tight">
                             Crea Evento
                         </h1>
-                        <p class="text-neutral-600 dark:text-neutral-400">
+                        <p class="text-neutral-700 dark:text-neutral-300">
                             Segui i passaggi per pubblicare il tuo evento
                         </p>
                     </div>
@@ -61,8 +61,8 @@
                                         <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300
                                                     {{ $stepNum == $currentStep 
                                                         ? 'bg-gradient-to-br from-primary-500 to-accent-600 shadow-lg shadow-primary-500/50' 
-                                                        : 'bg-white/10 group-hover:bg-white/20' }}">
-                                            <svg class="w-6 h-6 {{ $stepNum == $currentStep ? 'text-white' : 'text-white/40' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        : 'bg-neutral-100 dark:bg-neutral-700 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-600' }}">
+                                            <svg class="w-6 h-6 {{ $stepNum == $currentStep ? 'text-white' : 'text-neutral-500 dark:text-neutral-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $step['icon'] }}"/>
                                             </svg>
                                         </div>
@@ -71,10 +71,10 @@
                                 
                                 {{-- Step Info --}}
                                 <div class="flex-1 text-left">
-                                    <div class="font-semibold {{ $stepNum == $currentStep ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-800 dark:group-hover:text-neutral-300' }}">
+                                    <div class="font-bold {{ $stepNum == $currentStep ? 'text-neutral-900 dark:text-white' : 'text-neutral-700 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-white' }}">
                                         {{ $step['title'] }}
                                     </div>
-                                    <div class="text-sm text-neutral-500 dark:text-neutral-500">
+                                    <div class="text-sm {{ $stepNum == $currentStep ? 'text-neutral-700 dark:text-neutral-300' : 'text-neutral-600 dark:text-neutral-400' }}">
                                         {{ $step['desc'] }}
                                     </div>
                                 </div>
@@ -84,9 +84,9 @@
 
                     {{-- Progress Bar --}}
                     <div class="mt-8 pt-8 border-t border-neutral-200 dark:border-neutral-700">
-                        <div class="flex items-center justify-between text-sm text-neutral-600 dark:text-neutral-400 mb-2">
-                            <span>Progresso</span>
-                            <span class="font-semibold text-neutral-900 dark:text-white">{{ round(($currentStep / $totalSteps) * 100) }}%</span>
+                        <div class="flex items-center justify-between text-sm text-neutral-700 dark:text-neutral-300 mb-2">
+                            <span class="font-medium">Progresso</span>
+                            <span class="font-bold text-neutral-900 dark:text-white">{{ round(($currentStep / $totalSteps) * 100) }}%</span>
                         </div>
                         <div class="h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden">
                             <div class="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full transition-all duration-700 shadow-lg shadow-primary-500/30"
@@ -107,7 +107,7 @@
                          x-transition:enter-end="opacity-100 translate-x-0">
                         
                         {{-- Card with Neomorphism + Glass --}}
-                        <div class="backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 rounded-3xl p-8 border border-white/20 shadow-2xl">
+                        <div class="backdrop-blur-sm bg-white dark:bg-neutral-800 rounded-3xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-2xl">
                             {{-- Header --}}
                             <div class="flex items-center gap-4 mb-8">
                                 <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-lg shadow-primary-500/50">
@@ -116,8 +116,8 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h2 class="text-2xl font-bold text-white">Informazioni Base</h2>
-                                    <p class="text-white/60">I dettagli essenziali del tuo evento</p>
+                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">Informazioni Base</h2>
+                                    <p class="text-neutral-700 dark:text-neutral-300">I dettagli essenziali del tuo evento</p>
                                 </div>
                             </div>
 
@@ -286,13 +286,13 @@
                              x-transition:enter="transition ease-out duration-500"
                              x-transition:enter-start="opacity-0 translate-x-20"
                              x-transition:enter-end="opacity-100 translate-x-0">
-                            <div class="backdrop-blur-sm bg-white/95 dark:bg-neutral-800/95 rounded-3xl p-8 border border-neutral-200/80 dark:border-neutral-700/80 shadow-2xl">
+                            <div class="backdrop-blur-sm bg-white dark:bg-neutral-800 rounded-3xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-2xl">
                                 <div class="text-center py-20">
                                     <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-primary-500/50">
                                         <span class="text-4xl font-black text-white">{{ $i }}</span>
                                     </div>
                                     <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-2">Step {{ $i }}</h3>
-                                    <p class="text-neutral-600 dark:text-neutral-400">Contenuto in arrivo...</p>
+                                    <p class="text-neutral-700 dark:text-neutral-300">Contenuto in arrivo...</p>
                                 </div>
                             </div>
                         </div>
