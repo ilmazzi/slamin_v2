@@ -1017,6 +1017,30 @@
 .animation-delay-4000 {
     animation-delay: 4s;
 }
+
+/* Force Leaflet map visibility */
+#eventCreationMap {
+    display: block !important;
+    width: 100% !important;
+    height: 384px !important;
+}
+
+#eventCreationMap .leaflet-container {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+}
+
+#eventCreationMap .leaflet-pane,
+#eventCreationMap .leaflet-tile-pane,
+#eventCreationMap .leaflet-overlay-pane {
+    display: block !important;
+}
+
+#eventCreationMap .leaflet-tile {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
 </style>
 @endpush
 
