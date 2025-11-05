@@ -363,7 +363,7 @@
     </div>
 </div>
 
-{{-- CUSTOM ANIMATIONS --}}
+@push('styles')
 <style>
 @keyframes blob {
     0%, 100% { transform: translate(0, 0) scale(1); }
@@ -384,3 +384,4 @@
     animation-delay: 4s;
 }
 </style>
+@endpush
