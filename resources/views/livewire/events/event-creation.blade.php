@@ -484,9 +484,16 @@
 
                                     {{-- Interactive Map - ALWAYS in DOM --}}
                                     <div>
-                                        <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
-                                            Seleziona Posizione sulla Mappa
-                                        </label>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                                                Seleziona Posizione sulla Mappa
+                                            </label>
+                                            <button type="button"
+                                                    onclick="console.log('🔴 MANUAL INIT!'); initCreationMap();"
+                                                    class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">
+                                                🔴 DEBUG: Init Mappa
+                                            </button>
+                                        </div>
                                         <div id="eventCreationMap" 
                                              wire:ignore 
                                              class="h-96 w-full border-2 border-neutral-300 dark:border-neutral-700 shadow-lg"
