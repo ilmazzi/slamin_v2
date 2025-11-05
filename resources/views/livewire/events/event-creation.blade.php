@@ -286,20 +286,9 @@
                          x-transition:enter-start="opacity-0 translate-x-20"
                          x-transition:enter-end="opacity-100 translate-x-0"
                          x-init="$watch('$wire.currentStep', value => {
-                             if (value === 2) {
-                                 console.log('📍 Step 2 now visible!');
-                                 // Wait for transition to complete, then check if In Presenza is selected
-                                 setTimeout(() => {
-                                     if (!$wire.is_online) {
-                                         console.log('✅ Step 2 visible AND In Presenza selected, init map!');
-                                         if (typeof initCreationMap === 'function') {
-                                             initCreationMap();
-                                         }
-                                     } else {
-                                         console.log('ℹ️ Step 2 visible but Online selected, skipping map init');
-                                     }
-                                 }, 600);
-                             }
+                             value === 2 && setTimeout(() => {
+                                 !$wire.is_online && typeof initCreationMap === 'function' && initCreationMap();
+                             }, 600);
                          })">
                         
                         <div class="backdrop-blur-sm bg-white dark:bg-neutral-800 rounded-3xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-2xl">
@@ -407,29 +396,19 @@
                                 <div class="space-y-6"
                                      :class="$wire.is_online ? 'hidden' : 'block'"
                                      x-init="
-                                         // Initial load check
-                                         if (!$wire.is_online) {
-                                             console.log('✅ Initial load with In Presenza, initializing map...');
-                                             setTimeout(() => {
-                                                 if (typeof initCreationMap === 'function') {
-                                                     initCreationMap();
-                                                 }
+                                         (() => {
+                                             !$wire.is_online && setTimeout(() => {
+                                                 console.log('✅ Initial load with In Presenza');
+                                                 typeof initCreationMap === 'function' && initCreationMap();
                                              }, 600);
-                                         }
-                                         
-                                         // Watch for changes
-                                         $watch('$wire.is_online', (value) => {
-                                             console.log('👀 is_online changed to:', value);
-                                             if (!value) {
-                                                 console.log('✅ Switched to In Presenza, initializing map...');
-                                                 setTimeout(() => {
-                                                     console.log('🗺️ Calling initCreationMap...');
-                                                     if (typeof initCreationMap === 'function') {
-                                                         initCreationMap();
-                                                     }
+                                             
+                                             $watch('$wire.is_online', (value) => {
+                                                 !value && setTimeout(() => {
+                                                     console.log('✅ Switched to In Presenza');
+                                                     typeof initCreationMap === 'function' && initCreationMap();
                                                  }, 400);
-                                             }
-                                         });
+                                             });
+                                         })()
                                      ">
                                     <div class="relative group">
                                         <input type="text"
