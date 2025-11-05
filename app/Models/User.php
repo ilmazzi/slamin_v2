@@ -135,9 +135,10 @@ class User extends Authenticatable implements MustVerifyEmail
         // TODO: Replace with Spatie Permission when installed
         // For now, return mock roles based on email or default
         if (str_contains($this->email, 'admin')) {
-            return collect(['admin', 'poet']);
+            return collect(['admin', 'poet', 'organizer']);
         }
-        return collect(['poet']); // Default role
+        // Give all users 'poet' and 'organizer' roles by default for testing
+        return collect(['poet', 'organizer']); // Default roles
     }
 
     public function hasRole($role): bool

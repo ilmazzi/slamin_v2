@@ -36,7 +36,7 @@
                 
                 <!-- Create Event Button - Desktop (top right) -->
                 @auth
-                    @if(auth()->user()->isOrganizer() || auth()->user()->isAdmin())
+                    @if(auth()->user()->canOrganizeEvents())
                         <a href="{{ route('events.create') }}" 
                            class="absolute top-0 right-0 hidden md:flex items-center gap-2 px-6 py-3 bg-white text-primary-600 rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-300 group">
                             <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,7 +56,7 @@
                 
                 <!-- Create Event Button - Mobile (below title) -->
                 @auth
-                    @if(auth()->user()->isOrganizer() || auth()->user()->isAdmin())
+                    @if(auth()->user()->canOrganizeEvents())
                         <a href="{{ route('events.create') }}" 
                            class="md:hidden inline-flex items-center gap-2 px-6 py-3 mt-4 bg-white text-primary-600 rounded-xl font-semibold hover:shadow-2xl transition-all duration-300">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

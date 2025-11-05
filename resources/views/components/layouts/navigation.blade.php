@@ -31,7 +31,7 @@
             <div class="flex items-center space-x-4" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }">
                 <!-- Create Event Button (Organizers & Admins) -->
                 @auth
-                    @if(auth()->user()->isOrganizer() || auth()->user()->isAdmin())
+                    @if(auth()->user()->canOrganizeEvents())
                         <a href="{{ route('events.create') }}" 
                            class="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-600 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,7 +106,7 @@
          class="md:hidden border-t border-gray-200 dark:border-gray-700">
         <div class="px-4 py-4 space-y-2">
             @auth
-                @if(auth()->user()->isOrganizer() || auth()->user()->isAdmin())
+                @if(auth()->user()->canOrganizeEvents())
                     <a href="{{ route('events.create') }}" class="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-primary-500 to-accent-600 text-white hover:shadow-lg rounded-lg font-medium">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
