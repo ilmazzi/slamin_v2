@@ -392,24 +392,13 @@
                                     </div>
                                 </div>
 
-                                {{-- Physical Location Fields - Keep in DOM, use :class for visibility --}}
+                                {{-- Physical Location Fields (without map) --}}
                                 <div class="space-y-6"
-                                     :class="$wire.is_online ? 'hidden' : 'block'"
-                                     x-init="
-                                         (() => {
-                                             !$wire.is_online && setTimeout(() => {
-                                                 console.log('✅ Initial load with In Presenza');
-                                                 typeof initCreationMap === 'function' && initCreationMap();
-                                             }, 600);
-                                             
-                                             $watch('$wire.is_online', (value) => {
-                                                 !value && setTimeout(() => {
-                                                     console.log('✅ Switched to In Presenza');
-                                                     typeof initCreationMap === 'function' && initCreationMap();
-                                                 }, 400);
-                                             });
-                                         })()
-                                     ">
+                                     x-show="!$wire.is_online"
+                                     x-transition:enter="transition ease-out duration-300"
+                                     x-transition:enter-start="opacity-0 -translate-y-2"
+                                     x-transition:enter-end="opacity-100 translate-y-0"
+                                     style="display: none;">
                                     <div class="relative group">
                                         <input type="text"
                                                wire:model="venue_name"
@@ -498,25 +487,44 @@
                                             </svg>
                                         </div>
                                     </div>
+                                </div>
 
-                                    {{-- Interactive Map - ALWAYS rendered, NO x-init here --}}
-                                    <div>
-                                        <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
-                                            Seleziona Posizione sulla Mappa
-                                        </label>
-                                        <div id="eventCreationMap" 
-                                             wire:ignore 
-                                             class="h-96 w-full rounded-2xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-700 shadow-lg bg-neutral-100 dark:bg-neutral-900"
-                                             style="min-height: 384px; position: relative; z-index: 1;"></div>
-                                        @if($latitude && $longitude)
-                                            <div class="mt-3 flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                                </svg>
-                                                <span class="font-medium">Coordinate salvate: {{ number_format($latitude, 6) }}, {{ number_format($longitude, 6) }}</span>
-                                            </div>
-                                        @endif
-                                    </div>
+                                {{-- Interactive Map - OUTSIDE parent div, always visible when In Presenza --}}
+                                <div x-show="!$wire.is_online"
+                                     x-transition:enter="transition ease-out duration-300"
+                                     x-transition:enter-start="opacity-0 -translate-y-2"
+                                     x-transition:enter-end="opacity-100 translate-y-0"
+                                     style="display: none;"
+                                     x-init="
+                                         (() => {
+                                             !$wire.is_online && setTimeout(() => {
+                                                 console.log('✅ Map section visible, initializing...');
+                                                 typeof initCreationMap === 'function' && initCreationMap();
+                                             }, 600);
+                                             
+                                             $watch('$wire.is_online', (value) => {
+                                                 !value && setTimeout(() => {
+                                                     console.log('✅ Switched to In Presenza, map init...');
+                                                     typeof initCreationMap === 'function' && initCreationMap();
+                                                 }, 400);
+                                             });
+                                         })()
+                                     ">
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
+                                        Seleziona Posizione sulla Mappa
+                                    </label>
+                                    <div id="eventCreationMap" 
+                                         wire:ignore 
+                                         class="h-96 w-full rounded-2xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-700 shadow-lg bg-neutral-100 dark:bg-neutral-900"
+                                         style="min-height: 384px; position: relative; z-index: 1;"></div>
+                                    @if($latitude && $longitude)
+                                        <div class="mt-3 flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                            <span class="font-medium">Coordinate salvate: {{ number_format($latitude, 6) }}, {{ number_format($longitude, 6) }}</span>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
