@@ -284,7 +284,17 @@
                     <div x-show="$wire.currentStep === 2"
                          x-transition:enter="transition ease-out duration-500"
                          x-transition:enter-start="opacity-0 translate-x-20"
-                         x-transition:enter-end="opacity-100 translate-x-0">
+                         x-transition:enter-end="opacity-100 translate-x-0"
+                         x-init="$watch('$wire.currentStep', value => {
+                             if (value === 2) {
+                                 console.log('Step 2 now visible, fixing map...');
+                                 setTimeout(() => {
+                                     if (typeof initCreationMap === 'function') {
+                                         initCreationMap();
+                                     }
+                                 }, 400);
+                             }
+                         })">
                         
                         <div class="backdrop-blur-sm bg-white dark:bg-neutral-800 rounded-3xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-2xl">
                             {{-- Header --}}
@@ -1017,8 +1027,15 @@ function initCreationMap() {
         return;
     }
 
+    // Check if container is visible
+    if (mapContainer.offsetParent === null) {
+        console.log('Map container is hidden, will init when visible');
+        return;
+    }
+
     if (creationMap) {
-        console.log('Map already initialized');
+        console.log('Map already initialized, refreshing size...');
+        creationMap.invalidateSize();
         return;
     }
 
@@ -1059,7 +1076,7 @@ function initCreationMap() {
         @this.set('latitude', lat.toFixed(6));
         @this.set('longitude', lng.toFixed(6));
 
-        // Reverse geocode to get address (optional)
+        // Reverse geocode to get address
         fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=it`)
             .then(response => response.json())
             .then(data => {
@@ -1080,24 +1097,34 @@ function initCreationMap() {
             .catch(err => console.error('Geocoding error:', err));
     });
 
-    // Fix map size on tab change
+    // CRITICAL: Fix size immediately after init
     setTimeout(() => {
         if (creationMap) {
+            console.log('Fixing map size after init...');
             creationMap.invalidateSize();
         }
-    }, 100);
+    }, 200);
 
     console.log('Event creation map initialized!');
 }
 
-// Listen for step changes
+// Listen for step changes and reinitialize/resize map
 Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
     succeed(({ snapshot, effect }) => {
         setTimeout(() => {
-            if (creationMap && document.getElementById('eventCreationMap')) {
-                creationMap.invalidateSize();
+            const mapContainer = document.getElementById('eventCreationMap');
+            
+            // If we're on step 2 and map container is visible
+            if (mapContainer && mapContainer.offsetParent !== null) {
+                if (!creationMap) {
+                    console.log('Step 2 visible, initializing map...');
+                    initCreationMap();
+                } else {
+                    console.log('Step 2 visible, resizing map...');
+                    creationMap.invalidateSize();
+                }
             }
-        }, 100);
+        }, 300);
     });
 });
 </script>
