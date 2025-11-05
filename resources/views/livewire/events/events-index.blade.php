@@ -193,7 +193,7 @@
                     </div>
 
                     <!-- Free Only -->
-                    <div>
+<div>
                         <label class="block text-white text-sm font-medium mb-2">{{ __('events.price') }}</label>
                         <label class="flex items-center cursor-pointer">
                             <input type="checkbox" wire:model.live="freeOnly" class="mr-2 rounded text-accent-500 focus:ring-accent-400">
@@ -433,7 +433,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
                                     <span class="text-white text-sm font-semibold">
-                                        {{ $event->start_datetime->format('d M') }}
+                                        {{ $event->start_datetime ? $event->start_datetime->format('d M') : 'TBD' }}
                                     </span>
                                 </div>
                             </div>

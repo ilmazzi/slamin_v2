@@ -49,10 +49,7 @@ Route::get('/events/create', \App\Livewire\Events\EventCreation::class)
     ->middleware('auth')
     ->name('events.create');
 
-Route::get('/events/{event}', function ($id) {
-    $event = \App\Models\Event::findOrFail($id);
-    return view('pages.event-show', compact('event'));
-})->name('events.show');
+Route::get('/events/{event}', \App\Livewire\Events\EventShow::class)->name('events.show');
 
 // Poems Routes
 Route::get('/poems', function () {

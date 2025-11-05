@@ -617,6 +617,23 @@ class EventCreation extends Component
         }
     }
 
+    // Availability Options Management
+    public function addAvailabilityOption()
+    {
+        $this->availability_options[] = [
+            'datetime' => '',
+            'description' => '',
+        ];
+    }
+
+    public function removeAvailabilityOption($index)
+    {
+        if (isset($this->availability_options[$index])) {
+            unset($this->availability_options[$index]);
+            $this->availability_options = array_values($this->availability_options); // Re-index
+        }
+    }
+
     // ========================================
     // SAVE EVENT
     // ========================================

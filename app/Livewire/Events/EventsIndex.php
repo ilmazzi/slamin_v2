@@ -189,7 +189,7 @@ class EventsIndex extends Component
                 'category' => $e->category,
                 'city' => $e->city,
                 'venue_name' => $e->venue_name,
-                'start_datetime' => $e->start_datetime->format('d M Y H:i'),
+                'start_datetime' => $e->start_datetime ? $e->start_datetime->format('d M Y H:i') : 'Data da definire',
                 'latitude' => floatval($e->latitude),
                 'longitude' => floatval($e->longitude),
                 'image_url' => $e->image_url,

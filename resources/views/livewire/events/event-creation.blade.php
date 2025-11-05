@@ -177,7 +177,7 @@
                                                placeholder=" "
                                                class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
                                                       focus:border-accent-500 dark:focus:border-accent-400 focus:ring-4 focus:ring-accent-500/10
-                                                      transition-all duration-300">
+                                                      transition-all duration-300 @error('subtitle') border-red-500 ring-4 ring-red-500/10 @enderror">
                                         <label for="subtitle" 
                                                class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400
                                                       peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
@@ -185,6 +185,9 @@
                                                       transition-all duration-200">
                                             Sottotitolo
                                         </label>
+                                        @error('subtitle')
+                                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -334,6 +337,152 @@
                                     </div>
                                 </div>
 
+                                {{-- Recurrence --}}
+                                <div class="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-2xl p-6 border border-amber-200 dark:border-amber-800">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                                                <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                                </svg>
+                                                Evento Ricorrente
+                                            </h3>
+                                            <p class="text-sm text-neutral-600 dark:text-neutral-400">L'evento si ripete nel tempo</p>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-12 h-7 rounded-full relative transition-all duration-300 cursor-pointer
+                                                        {{ $is_recurring ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 'bg-neutral-300 dark:bg-neutral-700' }}"
+                                                 wire:click="$toggle('is_recurring')">
+                                                <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
+                                                            {{ $is_recurring ? 'left-6' : 'left-1' }}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    @if($is_recurring)
+                                        <div class="space-y-4">
+                                            <div class="grid md:grid-cols-3 gap-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Tipo Ricorrenza *</label>
+                                                    <select wire:model="recurrence_type" 
+                                                            class="w-full px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                                        <option value="">Seleziona...</option>
+                                                        <option value="daily">Giornaliera</option>
+                                                        <option value="weekly">Settimanale</option>
+                                                        <option value="monthly">Mensile</option>
+                                                        <option value="yearly">Annuale</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Ogni (intervallo) *</label>
+                                                    <input type="number" wire:model="recurrence_interval" min="1" 
+                                                           class="w-full px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Numero Occorrenze</label>
+                                                    <input type="number" wire:model="recurrence_count" min="1" max="100" placeholder="Illimitate" 
+                                                           class="w-full px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                                </div>
+                                            </div>
+
+                                            @if($recurrence_type === 'weekly')
+                                                <div>
+                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">Giorni della Settimana *</label>
+                                                    <div class="flex flex-wrap gap-2">
+                                                        @foreach(['Lun' => '1', 'Mar' => '2', 'Mer' => '3', 'Gio' => '4', 'Ven' => '5', 'Sab' => '6', 'Dom' => '0'] as $label => $value)
+                                                            <label class="flex items-center cursor-pointer">
+                                                                <input type="checkbox" wire:model="recurrence_weekdays" value="{{ $value }}" class="hidden peer">
+                                                                <div class="px-4 py-2 rounded-lg border-2 transition-all
+                                                                            peer-checked:border-amber-500 peer-checked:bg-amber-100 dark:peer-checked:bg-amber-900/30 peer-checked:text-amber-900 dark:peer-checked:text-amber-100
+                                                                            border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                                                                    {{ $label }}
+                                                                </div>
+                                                            </label>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            @if($recurrence_type === 'monthly')
+                                                <div>
+                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Giorno del Mese (1-31) *</label>
+                                                    <input type="number" wire:model="recurrence_monthday" min="1" max="31" 
+                                                           class="w-full px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+
+                                {{-- Availability Based --}}
+                                <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/10 dark:to-pink-900/10 rounded-2xl p-6 border border-purple-200 dark:border-purple-800">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                                                <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                                </svg>
+                                                Basato su Disponibilità
+                                            </h3>
+                                            <p class="text-sm text-neutral-600 dark:text-neutral-400">Gli invitati scelgono tra date/orari proposti</p>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-12 h-7 rounded-full relative transition-all duration-300 cursor-pointer
+                                                        {{ $is_availability_based ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 'bg-neutral-300 dark:bg-neutral-700' }}"
+                                                 wire:click="$toggle('is_availability_based')">
+                                                <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
+                                                            {{ $is_availability_based ? 'left-6' : 'left-1' }}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    @if($is_availability_based)
+                                        <div class="space-y-4">
+                                            <div class="grid md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Scadenza Risposte</label>
+                                                    <input type="datetime-local" wire:model="availability_deadline" 
+                                                           class="w-full px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Istruzioni</label>
+                                                    <input type="text" wire:model="availability_instructions" placeholder="Es: Scegli almeno 2 opzioni" 
+                                                           class="w-full px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <label class="text-sm font-medium text-neutral-700 dark:text-neutral-300">Opzioni di Date/Orari</label>
+                                                    <button type="button" wire:click="addAvailabilityOption" 
+                                                            class="px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-semibold transition-all hover:scale-105">
+                                                        + Aggiungi Opzione
+                                                    </button>
+                                                </div>
+                                                
+                                                @if(count($availability_options) > 0)
+                                                    <div class="space-y-3">
+                                                        @foreach($availability_options as $index => $option)
+                                                            <div class="flex gap-3">
+                                                                <input type="datetime-local" wire:model="availability_options.{{ $index }}.datetime" 
+                                                                       class="flex-1 px-4 py-2 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                                                <input type="text" wire:model="availability_options.{{ $index }}.description" placeholder="Descrizione opzionale" 
+                                                                       class="flex-1 px-4 py-2 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                                                <button type="button" wire:click="removeAvailabilityOption({{ $index }})" 
+                                                                        class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold transition-all hover:scale-110">
+                                                                    ×
+                                                                </button>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                @else
+                                                    <p class="text-sm text-neutral-500 dark:text-neutral-400 italic text-center py-3">Nessuna opzione aggiunta</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+
                                 {{-- Location Type Toggle --}}
                                 <div>
                                     <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">Modalità Evento *</label>
@@ -372,7 +521,7 @@
                                                placeholder=" "
                                                class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
                                                       focus:border-accent-500 dark:focus:border-accent-400 focus:ring-4 focus:ring-accent-500/10
-                                                      transition-all duration-300">
+                                                      transition-all duration-300 @error('online_url') border-red-500 ring-4 ring-red-500/10 @enderror">
                                         <label for="online_url" 
                                                class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
                                                       peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
@@ -380,6 +529,9 @@
                                                       transition-all duration-200">
                                             URL Evento Online *
                                         </label>
+                                        @error('online_url')
+                                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -721,7 +873,7 @@
                                            placeholder=" "
                                            class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
                                                   focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                  transition-all duration-300">
+                                                  transition-all duration-300 @error('max_participants') border-red-500 ring-4 ring-red-500/10 @enderror">
                                     <label for="max_participants" 
                                            class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
                                                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
@@ -730,6 +882,9 @@
                                         Numero Massimo Partecipanti
                                     </label>
                                     <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">Lascia vuoto per nessun limite</p>
+                                    @error('max_participants')
+                                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 {{-- Allow Requests --}}
@@ -743,6 +898,302 @@
                                         </div>
                                         <span class="text-neutral-900 dark:text-white font-medium">Permetti Richieste di Partecipazione</span>
                                     </div>
+                                </div>
+
+                                {{-- Registration Deadline --}}
+                                <div class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <label class="text-neutral-900 dark:text-white font-medium">Scadenza Registrazioni</label>
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-12 h-7 rounded-full relative transition-all duration-300 cursor-pointer
+                                                        {{ $has_registration_deadline ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}"
+                                                 wire:click="$toggle('has_registration_deadline')">
+                                                <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
+                                                            {{ $has_registration_deadline ? 'left-6' : 'left-1' }}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if($has_registration_deadline)
+                                        <div class="grid grid-cols-2 gap-4 mt-4">
+                                            <div>
+                                                <input type="date" wire:model="registration_deadline_date" 
+                                                       class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                            </div>
+                                            <div>
+                                                <input type="time" wire:model="registration_deadline_time" 
+                                                       class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                {{-- Gig Positions --}}
+                                <div class="bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl p-6 border border-primary-200 dark:border-primary-700">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                                                <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                                </svg>
+                                                Posizioni Lavorative
+                                                <span class="text-sm bg-primary-600 dark:bg-primary-500 text-white px-2 py-1 rounded-lg">{{ count($gig_positions) }}</span>
+                                            </h3>
+                                            <p class="text-sm text-neutral-600 dark:text-neutral-400">Definisci le posizioni disponibili per l'evento</p>
+                                        </div>
+                                        <button type="button" wire:click="addGigPosition" 
+                                                class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-lg hover:scale-105 transition-all flex items-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                            Aggiungi
+                                        </button>
+                                    </div>
+
+                                    @if(count($gig_positions) > 0)
+                                        <div class="space-y-4">
+                                            @foreach($gig_positions as $index => $position)
+                                                <div class="bg-white dark:bg-neutral-800 rounded-xl p-5 border border-neutral-200 dark:border-neutral-700">
+                                                    <div class="flex items-center justify-between mb-4">
+                                                        <h4 class="font-bold text-neutral-900 dark:text-white">Posizione #{{ $index + 1 }}</h4>
+                                                        <button type="button" wire:click="removeGigPosition({{ $index }})" 
+                                                                class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold">
+                                                            Rimuovi
+                                                        </button>
+                                                    </div>
+                                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                        <div>
+                                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Tipo *</label>
+                                                            <select wire:model.live="gig_positions.{{ $index }}.type" 
+                                                                    class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border-2 border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
+                                                                           focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                                           transition-all duration-300 appearance-none cursor-pointer font-medium">
+                                                                <option value="">Seleziona...</option>
+                                                                <option value="poeta">Poeta/Artista</option>
+                                                                <option value="mc">MC/Host</option>
+                                                                <option value="tecnico">Supporto Tecnico</option>
+                                                                <option value="volontario">Volontario</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Quantità *</label>
+                                                            <input type="number" wire:model.live="gig_positions.{{ $index }}.quantity" min="1" 
+                                                                   class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border-2 border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
+                                                                          focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                                          transition-all duration-300 font-medium">
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Lingua</label>
+                                                            <select wire:model.live="gig_positions.{{ $index }}.language" 
+                                                                    class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border-2 border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
+                                                                           focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                                           transition-all duration-300 appearance-none cursor-pointer font-medium">
+                                                                <option value="">Nessuna preferenza</option>
+                                                                <option value="italiano">Italiano</option>
+                                                                <option value="inglese">Inglese</option>
+                                                                <option value="francese">Francese</option>
+                                                                <option value="tedesco">Tedesco</option>
+                                                                <option value="spagnolo">Spagnolo</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Cachet --}}
+                                                    <div class="mt-4 p-4 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
+                                                        <label class="flex items-center gap-2 cursor-pointer mb-3">
+                                                            <input type="checkbox" wire:model.live="gig_positions.{{ $index }}.has_cachet" class="w-5 h-5 text-primary-600 rounded">
+                                                            <span class="font-semibold text-neutral-900 dark:text-white">Cachet</span>
+                                                        </label>
+                                                        @if(isset($position['has_cachet']) && $position['has_cachet'])
+                                                            <div class="grid grid-cols-2 gap-3">
+                                                                <input type="number" wire:model="gig_positions.{{ $index }}.cachet_amount" step="0.01" placeholder="Importo" 
+                                                                       class="px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border-2 border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
+                                                                              focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                                              transition-all duration-300 font-medium">
+                                                                <select wire:model="gig_positions.{{ $index }}.cachet_currency" 
+                                                                        class="px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border-2 border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
+                                                                               focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                                               transition-all duration-300 appearance-none cursor-pointer font-medium">
+                                                                    <option value="EUR">EUR (€)</option>
+                                                                    <option value="USD">USD ($)</option>
+                                                                    <option value="GBP">GBP (£)</option>
+                                                                </select>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+
+                                                    {{-- Travel --}}
+                                                    <div class="mt-3 p-4 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
+                                                        <label class="flex items-center gap-2 cursor-pointer mb-3">
+                                                            <input type="checkbox" wire:model.live="gig_positions.{{ $index }}.has_travel" class="w-5 h-5 text-primary-600 rounded">
+                                                            <span class="font-semibold text-neutral-900 dark:text-white">Spese di Viaggio</span>
+                                                        </label>
+                                                        @if(isset($position['has_travel']) && $position['has_travel'])
+                                                            <div class="grid grid-cols-2 gap-3">
+                                                                <input type="number" wire:model="gig_positions.{{ $index }}.travel_max" step="0.01" placeholder="Copertura massima" 
+                                                                       class="px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border-2 border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
+                                                                              focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                                              transition-all duration-300 font-medium">
+                                                                <select wire:model="gig_positions.{{ $index }}.travel_currency" 
+                                                                        class="px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border-2 border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
+                                                                               focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                                               transition-all duration-300 appearance-none cursor-pointer font-medium">
+                                                                    <option value="EUR">EUR (€)</option>
+                                                                    <option value="USD">USD ($)</option>
+                                                                    <option value="GBP">GBP (£)</option>
+                                                                </select>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+
+                                                    {{-- Accommodation --}}
+                                                    <div class="mt-3 p-4 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
+                                                        <label class="flex items-center gap-2 cursor-pointer mb-3">
+                                                            <input type="checkbox" wire:model.live="gig_positions.{{ $index }}.has_accommodation" class="w-5 h-5 text-primary-600 rounded">
+                                                            <span class="font-semibold text-neutral-900 dark:text-white">Vitto e Alloggio</span>
+                                                        </label>
+                                                        @if(isset($position['has_accommodation']) && $position['has_accommodation'])
+                                                            <textarea wire:model="gig_positions.{{ $index }}.accommodation_details" rows="2" placeholder="Dettagli alloggio..." 
+                                                                      class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border-2 border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
+                                                                             focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                                             transition-all duration-300 font-medium"></textarea>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="text-center py-8 text-neutral-600 dark:text-neutral-400">
+                                            <svg class="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                            </svg>
+                                            Nessuna posizione lavorativa definita
+                                        </div>
+                                    @endif
+                                </div>
+
+                                {{-- Invitations (Performers/Organizers) --}}
+                                <div class="bg-gradient-to-br from-accent-50 to-primary-50 dark:from-accent-900/20 dark:to-primary-900/20 rounded-2xl p-6 border border-accent-200 dark:border-accent-700">
+                                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2 mb-4">
+                                        <svg class="w-5 h-5 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                        </svg>
+                                        Invita Partecipanti (Performer/Organizer)
+                                        <span class="text-sm bg-accent-600 dark:bg-accent-500 text-white px-2 py-1 rounded-lg">{{ count($invitations) }}</span>
+                                    </h3>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Cerca e invita artisti o organizzatori</p>
+
+                                    {{-- Search --}}
+                                    <div class="relative mb-4">
+                                        <input type="text" wire:model.live.debounce.300ms="userSearchQuery" placeholder="Cerca utenti..." 
+                                               class="w-full px-4 py-3 pl-11 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                        <svg class="w-5 h-5 absolute left-3 top-3.5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                        </svg>
+                                    </div>
+
+                                    {{-- Search Results --}}
+                                    @if(strlen($userSearchQuery) >= 2 && count($searchResults) > 0)
+                                        <div class="bg-white dark:bg-neutral-800 rounded-xl p-3 mb-4 max-h-64 overflow-y-auto">
+                                            @foreach($searchResults as $result)
+                                                <div class="flex items-center justify-between p-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg">
+                                                    <div>
+                                                        <div class="font-semibold text-neutral-900 dark:text-white">{{ $result['name'] }}</div>
+                                                        @if($result['nickname'])
+                                                            <div class="text-sm text-neutral-600 dark:text-neutral-400">@{{ $result['nickname'] }}</div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="flex gap-2">
+                                                        <button type="button" wire:click="addInvitation({{ $result['id'] }}, 'performer')" 
+                                                                class="px-3 py-1 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm">
+                                                            Artista
+                                                        </button>
+                                                        <button type="button" wire:click="addInvitation({{ $result['id'] }}, 'organizer')" 
+                                                                class="px-3 py-1 bg-accent-600 hover:bg-accent-700 text-white rounded-lg text-sm">
+                                                            Organizer
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
+
+                                    {{-- Invited List --}}
+                                    @if(count($invitations) > 0)
+                                        <div class="space-y-2">
+                                            @foreach($invitations as $index => $invitation)
+                                                <div class="bg-white dark:bg-neutral-800 rounded-lg p-3 flex items-center justify-between">
+                                                    <div class="font-semibold text-neutral-900 dark:text-white">{{ $invitation['name'] }}</div>
+                                                    <div class="flex items-center gap-3">
+                                                        <select wire:model="invitations.{{ $index }}.role" 
+                                                                class="px-3 py-1 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white text-sm">
+                                                            <option value="performer">Artista</option>
+                                                            <option value="organizer">Organizer</option>
+                                                        </select>
+                                                        <button type="button" wire:click="removeInvitation({{ $index }})" 
+                                                                class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
+                                                            Rimuovi
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+
+                                {{-- Audience Invitations --}}
+                                <div class="bg-neutral-100 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-300 dark:border-neutral-700">
+                                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2 mb-4">
+                                        <svg class="w-5 h-5 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
+                                        </svg>
+                                        Invita Pubblico
+                                        <span class="text-sm bg-neutral-600 dark:bg-neutral-500 text-white px-2 py-1 rounded-lg">{{ count($audienceInvitations) }}</span>
+                                    </h3>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Invita persone ad assistere all'evento</p>
+
+                                    {{-- Search --}}
+                                    <div class="relative mb-4">
+                                        <input type="text" wire:model.live.debounce.300ms="audienceSearchQuery" placeholder="Cerca utenti..." 
+                                               class="w-full px-4 py-3 pl-11 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                        <svg class="w-5 h-5 absolute left-3 top-3.5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                        </svg>
+                                    </div>
+
+                                    {{-- Search Results --}}
+                                    @if(strlen($audienceSearchQuery) >= 2 && count($audienceSearchResults) > 0)
+                                        <div class="bg-white dark:bg-neutral-800 rounded-xl p-3 mb-4 max-h-64 overflow-y-auto">
+                                            @foreach($audienceSearchResults as $result)
+                                                <div class="flex items-center justify-between p-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg">
+                                                    <div>
+                                                        <div class="font-semibold text-neutral-900 dark:text-white">{{ $result['name'] }}</div>
+                                                        @if($result['nickname'])
+                                                            <div class="text-sm text-neutral-600 dark:text-neutral-400">@{{ $result['nickname'] }}</div>
+                                                        @endif
+                                                    </div>
+                                                    <button type="button" wire:click="addAudienceInvitation({{ $result['id'] }})" 
+                                                            class="px-4 py-2 bg-neutral-600 hover:bg-neutral-700 text-white rounded-lg text-sm">
+                                                        Invita
+                                                    </button>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
+
+                                    {{-- Invited List --}}
+                                    @if(count($audienceInvitations) > 0)
+                                        <div class="space-y-2">
+                                            @foreach($audienceInvitations as $index => $audience)
+                                                <div class="bg-white dark:bg-neutral-800 rounded-lg p-3 flex items-center justify-between">
+                                                    <div class="font-semibold text-neutral-900 dark:text-white">{{ $audience['name'] }}</div>
+                                                    <button type="button" wire:click="removeAudienceInvitation({{ $index }})" 
+                                                            class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
+                                                        Rimuovi
+                                                    </button>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
 
                                 {{-- Status --}}

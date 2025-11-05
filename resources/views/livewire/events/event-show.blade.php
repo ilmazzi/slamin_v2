@@ -1,0 +1,396 @@
+<div class="event-show-page min-h-screen bg-neutral-50 dark:bg-neutral-900">
+    
+    {{-- Success Toast --}}
+    @if(session('success'))
+        <div class="fixed top-24 right-6 z-50"
+             x-data="{ show: true }"
+             x-show="show"
+             x-init="setTimeout(() => show = false, 5000)"
+             x-transition:enter="transition ease-out duration-500"
+             x-transition:enter-start="opacity-0 translate-x-full"
+             x-transition:enter-end="opacity-100 translate-x-0"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-end="opacity-0 translate-x-full">
+            <div class="bg-gradient-to-r from-primary-500 to-accent-600 px-6 py-3 shadow-xl flex items-center gap-3">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span class="font-bold text-white">{{ session('success') }}</span>
+            </div>
+        </div>
+    @endif
+
+    {{-- HERO CON PARALLAX --}}
+    <div class="relative h-screen flex items-center justify-center overflow-hidden -mt-16"
+         x-data="{ scrollY: 0 }"
+         @scroll.window="scrollY = window.pageYOffset">
+        
+        {{-- Background Layer 1 - Image con Parallax --}}
+        @if($event->image_url)
+            <div class="absolute inset-0" 
+                 :style="`transform: translateY(${scrollY * 0.5}px)`">
+                <img src="{{ $event->image_url }}" 
+                     class="w-full h-full object-cover scale-110"
+                     alt="{{ $event->title }}">
+            </div>
+        @else
+            <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-accent-600 to-primary-700"></div>
+        @endif
+
+        {{-- Gradient Overlay --}}
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-neutral-900/50 to-neutral-900/90"></div>
+
+        {{-- Geometric Pattern Overlay --}}
+        <div class="absolute inset-0 opacity-5">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
+        </div>
+
+        {{-- Content Layer con Parallax invertito --}}
+        <div class="relative z-10 max-w-6xl mx-auto px-6 text-center"
+             :style="`transform: translateY(${scrollY * -0.2}px)`">
+            
+            {{-- Badges Eleganti --}}
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <div class="group relative px-6 py-3 backdrop-blur-xl bg-white/10 border-2 border-white/20 overflow-hidden hover:border-white/40 transition-all">
+                    <div class="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all"></div>
+                    <span class="relative text-white text-sm font-black uppercase tracking-[0.2em]">
+                        {{ \App\Models\Event::getCategories()[$event->category] ?? $event->category }}
+                    </span>
+                </div>
+                
+                <div class="group relative px-6 py-3 backdrop-blur-xl {{ $event->is_public ? 'bg-primary-500/90' : 'bg-neutral-600/90' }} border-2 border-white/20 overflow-hidden hover:scale-105 transition-all">
+                    <span class="relative text-white text-sm font-black uppercase tracking-[0.2em]">
+                        {{ $event->is_public ? 'Pubblico' : 'Privato' }}
+                    </span>
+                </div>
+                
+                @if(!$event->is_paid_event)
+                    <div class="group relative px-6 py-3 backdrop-blur-xl bg-accent-500/90 border-2 border-white/20 overflow-hidden hover:scale-105 transition-all">
+                        <span class="relative text-white text-sm font-black uppercase tracking-[0.2em]">Free Entry</span>
+                    </div>
+                @else
+                    <div class="group relative px-6 py-3 backdrop-blur-xl bg-accent-600/90 border-2 border-white/20 overflow-hidden">
+                        <span class="relative text-white text-sm font-black uppercase tracking-[0.2em]">{{ number_format($event->entry_fee ?? 0, 2) }} EUR</span>
+                    </div>
+                @endif
+            </div>
+
+            {{-- Title con Parallax --}}
+            <h1 class="text-5xl md:text-7xl font-black text-white mb-6 leading-[1.1] tracking-tight" 
+                style="text-shadow: 0 10px 40px rgba(0,0,0,0.8)">
+                {{ $event->title }}
+            </h1>
+
+            @if($event->subtitle)
+                <div class="inline-block">
+                    <p class="text-2xl md:text-3xl text-white/95 font-medium leading-relaxed max-w-3xl border-l-4 border-accent-500 pl-6 text-left" 
+                       style="text-shadow: 0 4px 20px rgba(0,0,0,0.6)">
+                        {{ $event->subtitle }}
+                    </p>
+                </div>
+            @endif
+        </div>
+
+        {{-- Scroll Indicator - Fuori dal contenitore content --}}
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+            <svg class="w-8 h-8 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </div>
+
+    {{-- CONTENT --}}
+    <div class="relative py-16">
+        <div class="max-w-6xl mx-auto px-6">
+            
+            {{-- Special Badges --}}
+            <div class="flex flex-wrap gap-4 mb-12">
+                @if($event->is_recurring)
+                    <div class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-600 text-white">
+                        <svg class="w-6 h-6 animate-spin" style="animation-duration: 3s" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        <div>
+                            <div class="font-black uppercase text-sm">Ricorrente</div>
+                            <div class="text-sm opacity-90">{{ ucfirst($event->recurrence_type) }}@if($event->recurrence_count) × {{ $event->recurrence_count }}@endif</div>
+                        </div>
+                    </div>
+                @endif
+                @if($event->is_availability_based)
+                    <div class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-accent-500 to-primary-600 text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="font-black uppercase text-sm">Basato su Disponibilità</span>
+                    </div>
+                @endif
+            </div>
+
+            {{-- Grid Layout --}}
+            <div class="grid lg:grid-cols-3 gap-12">
+                
+                {{-- Main Content (2/3) --}}
+                <div class="lg:col-span-2 space-y-12">
+                    
+                    @if($event->description)
+                        <div>
+                            <div class="text-primary-600 dark:text-primary-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Descrizione</div>
+                            <p class="text-neutral-900 dark:text-neutral-100 text-xl leading-relaxed whitespace-pre-line">{{ $event->description }}</p>
+                        </div>
+                    @endif
+
+                    @if($event->requirements)
+                        <div>
+                            <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Requisiti</div>
+                            <p class="text-neutral-900 dark:text-neutral-100 text-xl leading-relaxed whitespace-pre-line">{{ $event->requirements }}</p>
+                        </div>
+                    @endif
+
+                    @if($event->promotional_video)
+                        <div>
+                            <div class="text-primary-600 dark:text-primary-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Video</div>
+                            <div class="aspect-video bg-neutral-900">
+                                <iframe src="{{ $event->promotional_video }}" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Availability Options --}}
+                    @if($event->is_availability_based && $event->availabilityOptions && $event->availabilityOptions->count() > 0)
+                        <div>
+                            <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Date Disponibili</div>
+                            <div class="space-y-4">
+                                @foreach($event->availabilityOptions as $index => $option)
+                                    <div class="flex items-baseline gap-4 pl-6 border-l-2 border-accent-500/30 hover:border-accent-500 transition-colors">
+                                        <span class="text-accent-600 dark:text-accent-400 font-black text-lg">{{ $index + 1 }}.</span>
+                                        <div>
+                                            <div class="text-neutral-900 dark:text-white font-black text-xl">{{ \Carbon\Carbon::parse($option->datetime)->format('d M Y - H:i') }}</div>
+                                            @if($option->description)
+                                                <div class="text-neutral-600 dark:text-neutral-400 italic">{{ $option->description }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            @if($event->availability_deadline)
+                                <div class="mt-6 px-4 py-2 bg-primary-500/10 border-l-4 border-primary-500 inline-block">
+                                    <span class="text-primary-700 dark:text-primary-400 font-bold text-sm">Scadenza: {{ \Carbon\Carbon::parse($event->availability_deadline)->format('d/m/Y H:i') }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
+                    {{-- Gig Positions --}}
+                    @if($event->gig_positions && count($event->gig_positions) > 0)
+                        <div>
+                            <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Posizioni ({{ count($event->gig_positions) }})</div>
+                            <div class="space-y-6">
+                                @foreach($event->gig_positions as $position)
+                                    <div class="border-l-4 border-accent-500/30 hover:border-accent-500 pl-6 transition-colors">
+                                        <div class="text-neutral-900 dark:text-white text-2xl font-black mb-2">{{ ucfirst($position['type'] ?? 'Posizione') }}</div>
+                                        <div class="text-neutral-600 dark:text-neutral-400 font-bold mb-3">Quantità: {{ $position['quantity'] ?? 1 }}</div>
+                                        <div class="space-y-2 text-neutral-700 dark:text-neutral-300">
+                                            @if(!empty($position['language']))
+                                                <div>▸ Lingua: <strong class="text-neutral-900 dark:text-white">{{ ucfirst($position['language']) }}</strong></div>
+                                            @endif
+                                            @if(!empty($position['has_cachet']) && $position['has_cachet'])
+                                                <div>▸ Cachet: <strong class="text-primary-600 dark:text-primary-400">{{ $position['cachet_amount'] ?? 0 }} {{ $position['cachet_currency'] ?? 'EUR' }}</strong></div>
+                                            @endif
+                                            @if(!empty($position['has_travel']) && $position['has_travel'])
+                                                <div>▸ Spese viaggio: <strong class="text-accent-600 dark:text-accent-400">Max {{ $position['travel_max'] ?? 0 }} {{ $position['travel_currency'] ?? 'EUR' }}</strong></div>
+                                            @endif
+                                            @if(!empty($position['has_accommodation']) && $position['has_accommodation'])
+                                                <div>▸ Vitto/Alloggio: <strong class="text-accent-600 dark:text-accent-400">{{ $position['accommodation_details'] ?? 'Incluso' }}</strong></div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Invitations --}}
+                    @php
+                        $performers = $event->invitations->where('role', 'performer') ?? collect();
+                        $organizers = $event->invitations->where('role', 'organizer') ?? collect();
+                        $audience = $event->invitations->where('role', 'audience') ?? collect();
+                    @endphp
+
+                    @if($performers->count() > 0)
+                        <div>
+                            <div class="text-primary-600 dark:text-primary-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Artisti ({{ $performers->count() }})</div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                @foreach($performers as $invitation)
+                                    <div class="hover:translate-x-2 transition-transform">
+                                        <x-ui.user-avatar 
+                                            :user="$invitation->invitedUser" 
+                                            size="md" 
+                                            :showName="true" 
+                                            :showStatus="true"
+                                            :status="$invitation->status"
+                                        />
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($organizers->count() > 0)
+                        <div>
+                            <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Organizzatori ({{ $organizers->count() }})</div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                @foreach($organizers as $invitation)
+                                    <div class="hover:translate-x-2 transition-transform">
+                                        <x-ui.user-avatar 
+                                            :user="$invitation->invitedUser" 
+                                            size="md" 
+                                            :showName="true" 
+                                            :showStatus="true"
+                                            :status="$invitation->status"
+                                        />
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($audience->count() > 0)
+                        <div>
+                            <div class="text-primary-600 dark:text-primary-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Pubblico ({{ $audience->count() }})</div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                @foreach($audience->take(12) as $invitation)
+                                    <div class="hover:translate-x-2 transition-transform">
+                                        <x-ui.user-avatar 
+                                            :user="$invitation->invitedUser" 
+                                            size="sm" 
+                                            :link="true"
+                                            :showName="true"
+                                        />
+                                    </div>
+                                @endforeach
+                            </div>
+                            @if($audience->count() > 12)
+                                <div class="mt-4 text-neutral-600 dark:text-neutral-400 text-sm font-semibold">
+                                    +{{ $audience->count() - 12 }} altri invitati
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Sidebar (1/3) --}}
+                <div class="lg:col-span-1 space-y-8">
+                    
+                    {{-- Organizer --}}
+                    @if($event->organizer)
+                        <div class="border-l-4 border-primary-500 pl-4">
+                            <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-3 uppercase">Organizzatore</div>
+                            <x-ui.user-avatar 
+                                :user="$event->organizer" 
+                                size="sm" 
+                                :showName="true" 
+                                :showNickname="true" 
+                            />
+                        </div>
+                    @endif
+
+                    {{-- Date/Time --}}
+                    @if($event->start_datetime || $event->end_datetime)
+                        <div class="border-l-4 border-accent-500 pl-4">
+                            <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-3 uppercase">Data & Ora</div>
+                            <div class="space-y-3">
+                                @if($event->start_datetime)
+                                    <div>
+                                        <div class="text-xs text-neutral-500 font-bold mb-1">INIZIO</div>
+                                        <div class="text-neutral-900 dark:text-white font-black text-lg">{{ \Carbon\Carbon::parse($event->start_datetime)->format('d/m/Y H:i') }}</div>
+                                    </div>
+                                @endif
+                                @if($event->end_datetime)
+                                    <div>
+                                        <div class="text-xs text-neutral-500 font-bold mb-1">FINE</div>
+                                        <div class="text-neutral-900 dark:text-white font-black text-lg">{{ \Carbon\Carbon::parse($event->end_datetime)->format('d/m/Y H:i') }}</div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Location --}}
+                    <div class="border-l-4 border-primary-500 pl-4">
+                        <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-3 uppercase">{{ $event->is_online ? 'Online' : 'Luogo' }}</div>
+                        @if($event->is_online)
+                            <a href="{{ $event->online_url }}" target="_blank" class="text-accent-600 dark:text-accent-400 font-bold hover:underline break-all">
+                                {{ $event->online_url }}
+                            </a>
+                        @else
+                            <div class="space-y-1 text-neutral-900 dark:text-white">
+                                @if($event->venue_name)
+                                    <div class="font-black text-lg">{{ $event->venue_name }}</div>
+                                @endif
+                                @if($event->venue_address)
+                                    <div class="text-neutral-700 dark:text-neutral-300">{{ $event->venue_address }}</div>
+                                @endif
+                                @if($event->city)
+                                    <div class="text-neutral-600 dark:text-neutral-400">{{ $event->postcode }} {{ $event->city }}</div>
+                                @endif
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Settings --}}
+                    <div class="border-t-2 border-neutral-300 dark:border-neutral-700 pt-6">
+                        <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-4 uppercase">Info</div>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-2">
+                                <span class="text-neutral-600 dark:text-neutral-400 font-bold uppercase">Capacity</span>
+                                <span class="text-neutral-900 dark:text-white font-black">{{ $event->max_participants ?: '∞' }}</span>
+                            </div>
+                            <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-2">
+                                <span class="text-neutral-600 dark:text-neutral-400 font-bold uppercase">Requests</span>
+                                <span class="font-black {{ $event->allow_requests ? 'text-primary-600 dark:text-primary-400' : 'text-neutral-500' }}">{{ $event->allow_requests ? 'OPEN' : 'CLOSED' }}</span>
+                            </div>
+                            @if($event->registration_deadline)
+                                <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-2">
+                                    <span class="text-neutral-600 dark:text-neutral-400 font-bold uppercase">Deadline</span>
+                                    <span class="text-accent-600 dark:text-accent-400 font-black">{{ \Carbon\Carbon::parse($event->registration_deadline)->format('d/m') }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Back Button --}}
+            <div class="mt-16">
+                <a href="{{ route('events.index') }}" wire:navigate
+                   class="inline-flex items-center gap-2 text-neutral-900 dark:text-white text-lg font-black hover:text-primary-600 dark:hover:text-primary-400 transition-colors group">
+                    <svg class="w-6 h-6 group-hover:-translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    TORNA AGLI EVENTI
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @push('styles')
+    <style>
+        @keyframes blob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+        
+        .animate-blob { animation: blob 8s ease-in-out infinite; }
+        .animate-blob-slow { animation: blob 12s ease-in-out infinite; }
+        .animate-blob-slower { animation: blob 16s ease-in-out infinite; }
+    </style>
+    @endpush
+</div>
