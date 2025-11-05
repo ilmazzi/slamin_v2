@@ -45,6 +45,10 @@ Route::get('/parallax-enhanced', function () {
 // Events Routes
 Route::get('/events', \App\Livewire\Events\EventsIndex::class)->name('events.index');
 
+Route::get('/events/create', \App\Livewire\Events\EventCreation::class)
+    ->middleware('auth')
+    ->name('events.create');
+
 Route::get('/events/{event}', function ($id) {
     $event = \App\Models\Event::findOrFail($id);
     return view('pages.event-show', compact('event'));

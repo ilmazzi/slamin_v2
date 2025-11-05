@@ -236,6 +236,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Check if user is an event organizer
+     */
+    public function isOrganizer(): bool
+    {
+        return $this->hasRole('organizer');
+    }
+
+    /**
      * Get user's preferred language
      */
     public function getPreferredLanguage(): string
