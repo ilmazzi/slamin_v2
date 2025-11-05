@@ -1164,5 +1164,31 @@ function initCreationMap() {
 
     console.log('✅ Event creation map initialized successfully!');
 }
+
+// Listen for Livewire updates (when is_online changes)
+document.addEventListener('livewire:init', () => {
+    Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
+        succeed(({ snapshot, effect }) => {
+            setTimeout(() => {
+                const mapContainer = document.getElementById('eventCreationMap');
+                if (mapContainer && mapContainer.offsetParent !== null) {
+                    console.log('🔄 Livewire updated, map container visible, initializing...');
+                    initCreationMap();
+                }
+            }, 500);
+        });
+    });
+});
+
+// Also try when Step 2 becomes visible
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const mapContainer = document.getElementById('eventCreationMap');
+        if (mapContainer && mapContainer.offsetParent !== null) {
+            console.log('📍 DOMContentLoaded, map visible, initializing...');
+            initCreationMap();
+        }
+    }, 1000);
+});
 </script>
 @endpush
