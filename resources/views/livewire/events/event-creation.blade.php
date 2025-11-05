@@ -1,77 +1,167 @@
-<div class="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50 dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-800 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {{-- Page Header --}}
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-600 mb-4">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<div class="min-h-screen bg-gradient-to-br from-primary-900 via-accent-800 to-neutral-900 dark:from-neutral-950 dark:via-primary-950 dark:to-neutral-900 py-8 relative overflow-hidden"
+     x-data="{ 
+         currentStep: @entangle('currentStep'),
+         mouseX: 0, 
+         mouseY: 0,
+         particles: []
+     }"
+     x-init="
+         // Initialize particles
+         for(let i = 0; i < 50; i++) {
+             particles.push({
+                 x: Math.random() * window.innerWidth,
+                 y: Math.random() * window.innerHeight,
+                 size: Math.random() * 3 + 1,
+                 speedX: (Math.random() - 0.5) * 0.5,
+                 speedY: (Math.random() - 0.5) * 0.5
+             });
+         }
+     "
+     @mousemove.window="mouseX = $event.clientX; mouseY = $event.clientY">
+    
+    {{-- Animated Background --}}
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        {{-- Gradient Orbs --}}
+        <div class="absolute top-20 left-10 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute top-40 right-20 w-80 h-80 bg-accent-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-20 left-1/3 w-72 h-72 bg-primary-400/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+        
+        {{-- Floating particles --}}
+        <template x-for="(particle, index) in particles" :key="index">
+            <div class="absolute w-1 h-1 bg-white/30 rounded-full"
+                 :style="`left: ${particle.x}px; top: ${particle.y}px; width: ${particle.size}px; height: ${particle.size}px`"
+                 x-init="setInterval(() => { 
+                     particle.x += particle.speedX; 
+                     particle.y += particle.speedY;
+                     if(particle.x < 0 || particle.x > window.innerWidth) particle.speedX *= -1;
+                     if(particle.y < 0 || particle.y > window.innerHeight) particle.speedY *= -1;
+                 }, 50)"></div>
+        </template>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {{-- Page Header with 3D effect --}}
+        <div class="text-center mb-12"
+             x-data="{ visible: false }"
+             x-init="setTimeout(() => visible = true, 100)"
+             x-show="visible"
+             x-transition:enter="transition ease-out duration-1000"
+             x-transition:enter-start="opacity-0 scale-95 -translate-y-10"
+             x-transition:enter-end="opacity-100 scale-100 translate-y-0">
+            
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-gradient-to-br from-primary-500 to-accent-600 mb-6 shadow-2xl shadow-primary-500/50 animate-bounce"
+                 style="animation-iteration-count: 1; animation-duration: 2s;">
+                <svg class="w-12 h-12 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
             </div>
-            <h1 class="text-4xl font-bold text-neutral-900 dark:text-white mb-2">
+            
+            <h1 class="text-5xl md:text-6xl font-black text-white mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white via-primary-200 to-accent-200">
                 Crea Nuovo Evento
             </h1>
-            <p class="text-neutral-600 dark:text-neutral-400">
-                Compila il form per creare un nuovo evento sulla piattaforma
+            <p class="text-xl text-white/80 max-w-2xl mx-auto italic">
+                ✨ Porta la tua creatività sul palco digitale ✨
             </p>
         </div>
 
-        {{-- Progress Steps --}}
-        <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-6 mb-6">
+        {{-- Progress Steps - Glassmorphism & 3D --}}
+        <div class="relative backdrop-blur-xl bg-white/10 dark:bg-white/5 rounded-3xl shadow-2xl border border-white/20 p-8 mb-8"
+             x-data="{ visible: false }"
+             x-init="setTimeout(() => visible = true, 200)"
+             x-show="visible"
+             x-transition:enter="transition ease-out duration-700"
+             x-transition:enter-start="opacity-0 translate-y-10 scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 scale-100">
+            
+            {{-- Floating glow effect --}}
+            <div class="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-accent-500/20 rounded-3xl blur-xl"></div>
+            
             {{-- Desktop Progress --}}
-            <div class="hidden lg:flex items-center justify-between">
+            <div class="hidden lg:flex items-center justify-between relative z-10">
                 @for($i = 1; $i <= $totalSteps; $i++)
                     <div class="flex items-center {{ $i < $totalSteps ? 'flex-1' : '' }}">
                         <button wire:click="goToStep({{ $i }})" 
                                 type="button"
-                                class="flex flex-col items-center group cursor-pointer">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-all duration-300
-                                        {{ $i <= $currentStep 
-                                            ? 'bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-lg scale-110' 
-                                            : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-400' }}">
-                                @if($i == 1)
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                @elseif($i == 2)
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                @elseif($i == 3)
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                @elseif($i == 4)
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-                                    </svg>
-                                @else
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                    </svg>
-                                @endif
+                                class="flex flex-col items-center group cursor-pointer transform transition-all duration-500 hover:scale-110">
+                            <div class="relative">
+                                {{-- Glow ring --}}
+                                <div class="absolute inset-0 rounded-full bg-gradient-to-r from-primary-400 to-accent-400 blur-lg opacity-0 group-hover:opacity-75 transition-opacity duration-500
+                                            {{ $i <= $currentStep ? 'opacity-50' : '' }}"></div>
+                                
+                                {{-- Icon container with 3D effect --}}
+                                <div class="relative w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500
+                                            {{ $i <= $currentStep 
+                                                ? 'bg-gradient-to-br from-primary-500 via-primary-600 to-accent-600 text-white shadow-2xl shadow-primary-500/50 rotate-0' 
+                                                : 'bg-white/10 text-white/50 shadow-xl backdrop-blur-sm' }}
+                                            group-hover:rotate-12 group-hover:shadow-2xl"
+                                     x-init="$el.style.transform = 'perspective(1000px) rotateY(' + ({{ $i }} == currentStep ? '0' : '0') + 'deg)'">
+                                    
+                                    @if($i == 1)
+                                        <svg class="w-8 h-8 transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    @elseif($i == 2)
+                                        <svg class="w-8 h-8 transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                    @elseif($i == 3)
+                                        <svg class="w-8 h-8 transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                    @elseif($i == 4)
+                                        <svg class="w-8 h-8 transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                        </svg>
+                                    @else
+                                        <svg class="w-8 h-8 transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                    @endif
+                                    
+                                    {{-- Check mark for completed --}}
+                                    @if($i < $currentStep)
+                                        <div class="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg animate-bounce"
+                                             style="animation-iteration-count: 1;">
+                                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
-                            <span class="text-sm font-medium {{ $i <= $currentStep ? 'text-primary-600 dark:text-primary-400' : 'text-neutral-500' }}">
+                            
+                            <span class="mt-3 text-sm font-semibold transition-all duration-300
+                                        {{ $i <= $currentStep ? 'text-white' : 'text-white/50' }}
+                                        group-hover:text-white group-hover:scale-110">
                                 Step {{ $i }}
                             </span>
                         </button>
                         @if($i < $totalSteps)
-                            <div class="flex-1 h-1 mx-4 rounded-full {{ $i < $currentStep ? 'bg-primary-500' : 'bg-neutral-200 dark:bg-neutral-700' }}"></div>
+                            {{-- Connecting line with gradient --}}
+                            <div class="flex-1 h-2 mx-6 rounded-full relative overflow-hidden">
+                                <div class="absolute inset-0 bg-white/10"></div>
+                                <div class="h-full rounded-full bg-gradient-to-r from-primary-500 to-accent-500 transition-all duration-700 ease-out
+                                            {{ $i < $currentStep ? 'w-full' : 'w-0' }}"
+                                     style="box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);"></div>
+                            </div>
                         @endif
                     </div>
                 @endfor
             </div>
 
             {{-- Mobile Progress --}}
-            <div class="lg:hidden">
-                <div class="text-center mb-4">
-                    <span class="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+            <div class="lg:hidden relative z-10">
+                <div class="text-center mb-6">
+                    <span class="text-lg font-bold text-white bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent">
                         Step {{ $currentStep }} di {{ $totalSteps }}
                     </span>
                 </div>
-                <div class="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-2">
-                    <div class="bg-gradient-to-r from-primary-500 to-accent-600 h-2 rounded-full transition-all duration-300"
+                <div class="relative w-full h-4 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary-500/20 via-accent-500/20 to-primary-500/20 animate-pulse"></div>
+                    <div class="h-full bg-gradient-to-r from-primary-500 via-primary-600 to-accent-600 rounded-full transition-all duration-700 ease-out relative"
                          style="width: {{ ($currentStep / $totalSteps) * 100 }}%">
+                        <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-r from-transparent to-white/30 animate-pulse"></div>
                     </div>
                 </div>
             </div>
@@ -82,25 +172,51 @@
             {{-- ========================================
                  STEP 1: BASIC INFORMATION
                  ======================================== --}}
-            <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-6 mb-6 {{ $currentStep == 1 ? 'block' : 'hidden' }}">
-                <div class="border-b border-neutral-200 dark:border-neutral-700 pb-4 mb-6">
-                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
-                            <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+            <div class="{{ $currentStep == 1 ? 'block' : 'hidden' }}"
+                 x-data="{ visible: false }"
+                 x-init="if({{ $currentStep }} == 1) setTimeout(() => visible = true, 100)"
+                 x-show="visible || {{ $currentStep }} != 1"
+                 x-transition:enter="transition ease-out duration-700"
+                 x-transition:enter-start="opacity-0 translate-x-10 scale-95"
+                 x-transition:enter-end="opacity-100 translate-x-0 scale-100">
+                
+                <div class="relative backdrop-blur-2xl bg-white/10 dark:bg-white/5 rounded-3xl shadow-2xl border border-white/20 p-8 mb-8 group hover:shadow-primary-500/20 transition-all duration-500"
+                     x-data="{ mouseX: 0, mouseY: 0 }"
+                     @mousemove="mouseX = ($event.pageX - $el.offsetLeft) / $el.offsetWidth * 100; mouseY = ($event.pageY - $el.offsetTop) / $el.offsetHeight * 100"
+                     :style="`background: radial-gradient(circle at ${mouseX}% ${mouseY}%, rgba(34, 197, 94, 0.1), transparent 50%)`">
+                    
+                    {{-- Animated gradient overlay --}}
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-transparent to-accent-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-4 mb-8">
+                            {{-- Icon with pulse effect --}}
+                            <div class="relative">
+                                <div class="absolute inset-0 bg-gradient-to-r from-primary-500 to-accent-500 rounded-2xl blur-xl opacity-50 animate-pulse"></div>
+                                <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-2xl transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <div class="flex-1">
+                                <h2 class="text-3xl font-black text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white via-primary-200 to-accent-200">
+                                    Informazioni Base
+                                </h2>
+                                <p class="text-white/70 text-lg">
+                                    ✨ Iniziamo con i dettagli essenziali del tuo evento
+                                </p>
+                            </div>
                         </div>
-                        Informazioni Base
-                    </h2>
-                    <p class="text-neutral-600 dark:text-neutral-400 mt-2">
-                        Inserisci titolo, categoria e descrizione dell'evento
-                    </p>
-                </div>
 
-                <div class="space-y-6">
-                    {{-- Title --}}
-                    <div>
-                        <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                        <div class="space-y-6">
+                            {{-- Title --}}
+                            <div>
+                                <label class="block text-sm font-medium text-white/90 mb-2 flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                                    </svg>
                             Titolo Evento *
                         </label>
                         <input type="text"
