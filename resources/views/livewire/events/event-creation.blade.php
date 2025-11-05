@@ -475,13 +475,20 @@
                                             </div>
                                         </div>
 
-                                        {{-- Map Placeholder --}}
-                                        <div class="bg-neutral-100 dark:bg-neutral-900 rounded-2xl p-8 border-2 border-dashed border-neutral-300 dark:border-neutral-700 text-center">
-                                            <svg class="w-16 h-16 text-neutral-400 dark:text-neutral-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-                                            </svg>
-                                            <p class="text-neutral-600 dark:text-neutral-400 font-medium">Mappa Interattiva</p>
-                                            <p class="text-sm text-neutral-500 dark:text-neutral-500 mt-2">Clicca sulla mappa per selezionare le coordinate</p>
+                                        {{-- Interactive Map --}}
+                                        <div>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
+                                                Seleziona Posizione sulla Mappa
+                                            </label>
+                                            <div id="eventCreationMap" wire:ignore class="h-96 rounded-2xl overflow-hidden border-2 border-neutral-300 dark:border-neutral-700 shadow-lg"></div>
+                                            @if($latitude && $longitude)
+                                                <div class="mt-3 flex items-center gap-2 text-sm text-primary-600 dark:text-primary-400">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                    <span class="font-medium">Coordinate salvate: {{ number_format($latitude, 6) }}, {{ number_format($longitude, 6) }}</span>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endif
@@ -637,6 +644,40 @@
                                     @endif
                                 </div>
                             </div>
+
+                            {{-- Festival Events Selector (only if category = festival) --}}
+                            @if($category === 'festival')
+                                <div class="mt-8 pt-8 border-t border-neutral-200 dark:border-neutral-700"
+                                     x-show="$wire.category === 'festival'"
+                                     x-transition>
+                                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-4 flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                        </svg>
+                                        Eventi del Festival
+                                    </h3>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+                                        Seleziona quali eventi fanno parte di questo festival. Potrai collegarli dopo aver creato il festival.
+                                    </p>
+                                    
+                                    <div class="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-6 border border-amber-200 dark:border-amber-800">
+                                        <div class="flex items-start gap-3">
+                                            <svg class="w-6 h-6 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            <div class="flex-1">
+                                                <p class="font-semibold text-amber-700 dark:text-amber-300 mb-2">
+                                                    🎪 Questo è un Festival
+                                                </p>
+                                                <p class="text-sm text-amber-700 dark:text-amber-300">
+                                                    Dopo aver creato il festival, potrai collegare eventi specifici modificando questo evento o gli eventi singoli.
+                                                    Gli eventi collegati al festival avranno il campo <code class="bg-amber-100 dark:bg-amber-900/40 px-2 py-0.5 rounded">festival_id</code> impostato automaticamente.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -930,6 +971,7 @@
 </div>
 
 @push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
 @keyframes blob {
     0%, 100% { transform: translate(0, 0) scale(1); }
@@ -950,4 +992,113 @@
     animation-delay: 4s;
 }
 </style>
+@endpush
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+let creationMap = null;
+let creationMarker = null;
+
+document.addEventListener('livewire:navigated', function() {
+    initCreationMap();
+});
+
+// Also try to init on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initCreationMap, 500);
+});
+
+function initCreationMap() {
+    const mapContainer = document.getElementById('eventCreationMap');
+    if (!mapContainer || typeof L === 'undefined') {
+        console.log('Map container not found or Leaflet not loaded, retrying...');
+        setTimeout(initCreationMap, 500);
+        return;
+    }
+
+    if (creationMap) {
+        console.log('Map already initialized');
+        return;
+    }
+
+    console.log('Initializing event creation map...');
+
+    // Default to Rome, Italy
+    const defaultLat = 41.9028;
+    const defaultLng = 12.4964;
+
+    creationMap = L.map('eventCreationMap').setView([defaultLat, defaultLng], 6);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(creationMap);
+
+    // Click to add marker
+    creationMap.on('click', function(e) {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+
+        // Remove old marker
+        if (creationMarker) {
+            creationMap.removeLayer(creationMarker);
+        }
+
+        // Add new marker
+        creationMarker = L.marker([lat, lng], {
+            icon: L.divIcon({
+                html: `<div style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); border: 3px solid white;"></div>`,
+                className: 'custom-marker',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32]
+            })
+        }).addTo(creationMap);
+
+        // Update Livewire component
+        @this.set('latitude', lat.toFixed(6));
+        @this.set('longitude', lng.toFixed(6));
+
+        // Reverse geocode to get address (optional)
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=it`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.address) {
+                    if (data.address.city || data.address.town || data.address.village) {
+                        @this.set('city', data.address.city || data.address.town || data.address.village);
+                    }
+                    if (data.address.postcode) {
+                        @this.set('postcode', data.address.postcode);
+                    }
+                    if (data.address.road && data.address.house_number) {
+                        @this.set('venue_address', data.address.road + ', ' + data.address.house_number);
+                    } else if (data.address.road) {
+                        @this.set('venue_address', data.address.road);
+                    }
+                }
+            })
+            .catch(err => console.error('Geocoding error:', err));
+    });
+
+    // Fix map size on tab change
+    setTimeout(() => {
+        if (creationMap) {
+            creationMap.invalidateSize();
+        }
+    }, 100);
+
+    console.log('Event creation map initialized!');
+}
+
+// Listen for step changes
+Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
+    succeed(({ snapshot, effect }) => {
+        setTimeout(() => {
+            if (creationMap && document.getElementById('eventCreationMap')) {
+                creationMap.invalidateSize();
+            }
+        }, 100);
+    });
+});
+</script>
 @endpush
