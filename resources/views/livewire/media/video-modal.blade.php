@@ -47,7 +47,7 @@
 
                 {{-- Timeline Snap (sopra il video) --}}
                 @if($videoDirectUrl)
-                    <div class="px-6 pt-4 pb-2 bg-neutral-900 flex items-center gap-4">
+                    <div class="px-6 pt-16 pb-3 bg-neutral-900 flex items-center gap-4">
                         <div class="flex-1">
                             @livewire('snap.snap-timeline', ['video' => $video], key('snap-timeline-modal-' . $video->id))
                         </div>
