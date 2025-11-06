@@ -42,7 +42,7 @@
         
         {{-- Pulsante Crea Snap (sopra il video - Desktop) --}}
         @if($videoDirectUrl)
-        <div class="absolute top-4 right-4 hidden md:block">
+        <div class="absolute top-4 left-4 hidden md:block z-20">
             <button @click="createSnapAtCurrentTime()" 
                     class="w-12 h-12 bg-primary-600 hover:bg-primary-700 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all"
                     title="Crea Snap">
@@ -69,9 +69,22 @@
     </div>
     @endif
     
+    {{-- Messaggi di successo/errore --}}
+    @if (session()->has('message'))
+        <div class="mt-4 p-4 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg">
+            {{ session('message') }}
+        </div>
+    @endif
+    
+    @if (session()->has('error'))
+        <div class="mt-4 p-4 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-lg">
+            {{ session('error') }}
+        </div>
+    @endif
+    
     {{-- Timeline con Snap --}}
-    <div class="mt-4">
-        @livewire('snap.snap-timeline', ['video' => $video, 'snaps' => $this->snaps])
+    <div class="mt-4" wire:key="snap-timeline-{{ $video->id }}">
+        @livewire('snap.snap-timeline', ['video' => $video, 'snaps' => $this->snaps], key('snap-timeline-' . $video->id))
     </div>
     
     {{-- Snap Modal --}}

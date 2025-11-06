@@ -126,15 +126,24 @@ class SnapPlayer extends Component
             $this->snapDescription = '';
             $this->showSnapModal = false;
             
+            // Refresh della timeline
+            $this->dispatch('snap-created');
+            
+            // Messaggio di successo
+            session()->flash('message', 'Snap creato con successo!');
+            
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Errore validazione snap', [
                 'errors' => $e->errors(),
             ]);
+            session()->flash('error', 'Errore: ' . json_encode($e->errors()));
             throw $e;
         } catch (\Exception $e) {
             Log::error('Errore creazione snap', [
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
+            session()->flash('error', 'Errore durante la creazione dello snap: ' . $e->getMessage());
         }
     }
     
