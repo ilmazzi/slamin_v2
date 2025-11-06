@@ -54,7 +54,7 @@
                         
                         {{-- Pulsante Crea Snap (solo per utenti autenticati) --}}
                         @auth
-                        <button @click.stop="openSnapModal()"
+                        <button @click.stop="$dispatch('open-snap-modal')"
                                 class="flex-shrink-0 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2">
                             <img src="{{ asset('assets/icon/new/snap.svg') }}" 
                                  alt="Snap" 
@@ -69,6 +69,7 @@
                 {{-- Video Player --}}
                 <div class="aspect-video bg-black relative" 
                      @seek-video.window="seekToTime($event.detail.timestamp)"
+                     @open-snap-modal.window="openSnapModal()"
                      x-data="{
                     currentTime: 0,
                     duration: 0,
