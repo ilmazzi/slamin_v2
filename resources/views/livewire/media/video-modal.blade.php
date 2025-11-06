@@ -45,9 +45,19 @@
                     </svg>
                 </button>
 
+                {{-- Timeline Snap (sopra il video) --}}
+                @if($videoDirectUrl)
+                    <div class="px-6 pt-4 pb-2 bg-neutral-900">
+                        @livewire('snap.snap-timeline', ['video' => $video], key('snap-timeline-modal-' . $video->id))
+                    </div>
+                @endif
+
                 {{-- Video Player --}}
-                <div class="aspect-video bg-black relative" x-data="{
+                <div class="aspect-video bg-black relative" 
+                     @seek-video.window="seekToTime($event.detail.timestamp)"
+                     x-data="{
                     currentTime: 0,
+                    duration: 0,
                     snapTimestamp: 0,
                     showSnapModal: false,
                     snapTitle: '',
@@ -55,6 +65,20 @@
                     
                     updateTime(event) {
                         this.currentTime = event.target.currentTime;
+                        // Ottieni durata reale dal player
+                        if (event.target.duration && !isNaN(event.target.duration)) {
+                            this.duration = event.target.duration;
+                        }
+                        // Dispatch per aggiornare timeline
+                        Livewire.dispatch('video-time-update', [this.currentTime, this.duration]);
+                    },
+                    
+                    seekToTime(timestamp) {
+                        const video = this.$refs.videoPlayer;
+                        if (video) {
+                            video.currentTime = timestamp;
+                            video.play();
+                        }
                     },
                     
                     openSnapModal() {
@@ -126,6 +150,7 @@
                                webkit-playsinline
                                preload="auto"
                                class="w-full h-full"
+                               @loadedmetadata="if ($event.target.duration) { duration = $event.target.duration; Livewire.dispatch('video-time-update', [currentTime, duration]); }"
                                @timeupdate="updateTime($event)"
                                src="{{ $videoDirectUrl }}">
                             Your browser does not support the video tag.
@@ -225,13 +250,6 @@
                                 </svg>
                                 <p class="text-lg">Video non disponibile</p>
                             </div>
-                        </div>
-                    @endif
-                    
-                    {{-- Timeline Snap --}}
-                    @if($videoDirectUrl)
-                        <div class="absolute bottom-0 left-0 right-0 p-4">
-                            @livewire('snap.snap-timeline', ['video' => $video], key('snap-timeline-modal-' . $video->id))
                         </div>
                     @endif
                 </div>

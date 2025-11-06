@@ -29,9 +29,16 @@ class SnapTimeline extends Component
         $this->dispatch('seek-video', timestamp: $timestamp);
     }
     
-    public function updateTime($time)
+    public function updateTime($time = null, $duration = null)
     {
-        $this->currentTime = $time;
+        // Se riceve parametri individuali
+        if ($time !== null) {
+            $this->currentTime = $time;
+        }
+        
+        if ($duration !== null && $duration > 0) {
+            $this->duration = $duration;
+        }
     }
     
     public function refreshSnaps()
