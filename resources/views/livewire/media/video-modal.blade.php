@@ -47,8 +47,22 @@
 
                 {{-- Timeline Snap (sopra il video) --}}
                 @if($videoDirectUrl)
-                    <div class="px-6 pt-4 pb-2 bg-neutral-900">
-                        @livewire('snap.snap-timeline', ['video' => $video], key('snap-timeline-modal-' . $video->id))
+                    <div class="px-6 pt-4 pb-2 bg-neutral-900 flex items-center gap-4">
+                        <div class="flex-1">
+                            @livewire('snap.snap-timeline', ['video' => $video], key('snap-timeline-modal-' . $video->id))
+                        </div>
+                        
+                        {{-- Pulsante Crea Snap (solo per utenti autenticati) --}}
+                        @auth
+                        <button @click.stop="openSnapModal()"
+                                class="flex-shrink-0 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2">
+                            <img src="{{ asset('assets/icon/new/snap.svg') }}" 
+                                 alt="Snap" 
+                                 class="w-5 h-5"
+                                 style="filter: brightness(0) saturate(100%) invert(100%);">
+                            <span class="text-sm font-medium">Crea Snap</span>
+                        </button>
+                        @endauth
                     </div>
                 @endif
 
@@ -94,8 +108,13 @@
                         if (!this.snapTitle) return;
                         
                         @guest
-                            alert('Devi effettuare il login per creare snap!');
-                            window.location.href = '{{ route('login') }}';
+                            window.dispatchEvent(new CustomEvent('notify', { 
+                                detail: { 
+                                    message: 'Devi effettuare il login per creare snap!', 
+                                    type: 'error' 
+                                } 
+                            }));
+                            setTimeout(() => window.location.href = '{{ route('login') }}', 1500);
                             return;
                         @endguest
                         
@@ -114,16 +133,19 @@
                                 })
                             });
                             
-                            console.log('Response status:', response.status);
                             const text = await response.text();
-                            console.log('Response text:', text);
                             
                             let data;
                             try {
                                 data = JSON.parse(text);
                             } catch (e) {
                                 console.error('JSON parse error:', e, 'Response:', text);
-                                alert('Errore nel salvataggio dello snap. Controlla la console.');
+                                window.dispatchEvent(new CustomEvent('notify', { 
+                                    detail: { 
+                                        message: 'Errore nel salvataggio dello snap', 
+                                        type: 'error' 
+                                    } 
+                                }));
                                 return;
                             }
                             
@@ -131,14 +153,33 @@
                                 this.snapTitle = '';
                                 this.snapDescription = '';
                                 this.showSnapModal = false;
+                                
+                                // Animazione draghetto come per i like
+                                window.dispatchEvent(new CustomEvent('notify', { 
+                                    detail: { 
+                                        message: data.message || 'Snap creato!', 
+                                        type: 'snap' 
+                                    } 
+                                }));
+                                
+                                // Refresh timeline
                                 Livewire.dispatch('snap-created', { videoId: {{ $video->id }} });
-                                alert('Snap creato con successo!');
                             } else {
-                                alert('Errore: ' + (data.message || 'Impossibile creare lo snap'));
+                                window.dispatchEvent(new CustomEvent('notify', { 
+                                    detail: { 
+                                        message: data.message || 'Impossibile creare lo snap', 
+                                        type: 'error' 
+                                    } 
+                                }));
                             }
                         } catch (error) {
                             console.error('Error creating snap:', error);
-                            alert('Errore: ' + error.message);
+                            window.dispatchEvent(new CustomEvent('notify', { 
+                                detail: { 
+                                    message: 'Errore: ' + error.message, 
+                                    type: 'error' 
+                                } 
+                            }));
                         }
                     }
                 }">
@@ -156,17 +197,6 @@
                             Your browser does not support the video tag.
                         </video>
                         
-                        {{-- Pulsante Crea Snap (solo per utenti autenticati) --}}
-                        @auth
-                        <button @click.stop="openSnapModal()"
-                                class="absolute top-4 left-4 z-10 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2">
-                            <img src="{{ asset('assets/icon/new/snap.svg') }}" 
-                                 alt="Snap" 
-                                 class="w-5 h-5"
-                                 style="filter: brightness(0) saturate(100%) invert(100%);">
-                            <span class="text-sm font-medium">Crea Snap</span>
-                        </button>
-                        @endauth
                         
                         {{-- Modal Snap --}}
                         <template x-if="showSnapModal">

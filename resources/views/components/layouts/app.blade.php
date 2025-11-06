@@ -200,12 +200,14 @@
         </div>
     </div>
 
-    <!-- Dragon Like Animation with Confetti -->
+    <!-- Dragon Like/Snap Animation with Confetti -->
     <div x-data="{ 
         show: false,
         confetti: [],
+        animationType: 'like',
         showDragon(data) {
-            if(data.type === 'like') {
+            if(data.type === 'like' || data.type === 'snap') {
+                this.animationType = data.type;
                 this.show = true;
                 this.generateConfetti();
                 setTimeout(() => { this.show = false; }, 2000);
@@ -242,7 +244,7 @@
                  `"></div>
         </template>
         
-        <!-- Animated Dragon -->
+        <!-- Animated Dragon/Snap -->
         <div x-show="show"
              x-transition:enter="transition ease-out duration-500"
              x-transition:enter-start="opacity-0 scale-0 rotate-[-180deg]"
@@ -251,15 +253,38 @@
              x-transition:leave-start="opacity-100 scale-100 rotate-0"
              x-transition:leave-end="opacity-0 scale-150 rotate-180"
              class="relative z-10">
-            <img src="{{ asset('assets/images/draghetto-like.png') }}" 
-                 alt="Like!" 
-                 class="w-80 h-80 drop-shadow-2xl animate-bounce">
+            
+            <!-- Like Animation -->
+            <template x-if="animationType === 'like'">
+                <img src="{{ asset('assets/images/draghetto-like.png') }}" 
+                     alt="Like!" 
+                     class="w-80 h-80 drop-shadow-2xl animate-bounce">
+            </template>
+            
+            <!-- Snap Animation -->
+            <template x-if="animationType === 'snap'">
+                <div class="w-80 h-80 flex items-center justify-center animate-bounce">
+                    <img src="{{ asset('assets/icon/new/snap.svg') }}" 
+                         alt="Snap!" 
+                         class="w-64 h-64 drop-shadow-2xl"
+                         style="filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);">
+                </div>
+            </template>
+            
             <!-- Particles Effect -->
             <div class="absolute inset-0 -z-10">
-                <div class="absolute top-0 left-0 w-4 h-4 bg-red-500 rounded-full animate-ping" style="animation-delay: 0ms;"></div>
-                <div class="absolute top-10 right-0 w-3 h-3 bg-pink-500 rounded-full animate-ping" style="animation-delay: 200ms;"></div>
-                <div class="absolute bottom-0 left-10 w-5 h-5 bg-red-400 rounded-full animate-ping" style="animation-delay: 400ms;"></div>
-                <div class="absolute bottom-10 right-10 w-3 h-3 bg-pink-400 rounded-full animate-ping" style="animation-delay: 600ms;"></div>
+                <div class="absolute top-0 left-0 w-4 h-4 rounded-full animate-ping" 
+                     :class="animationType === 'like' ? 'bg-red-500' : 'bg-primary-500'" 
+                     style="animation-delay: 0ms;"></div>
+                <div class="absolute top-10 right-0 w-3 h-3 rounded-full animate-ping" 
+                     :class="animationType === 'like' ? 'bg-pink-500' : 'bg-primary-400'" 
+                     style="animation-delay: 200ms;"></div>
+                <div class="absolute bottom-0 left-10 w-5 h-5 rounded-full animate-ping" 
+                     :class="animationType === 'like' ? 'bg-red-400' : 'bg-primary-600'" 
+                     style="animation-delay: 400ms;"></div>
+                <div class="absolute bottom-10 right-10 w-3 h-3 rounded-full animate-ping" 
+                     :class="animationType === 'like' ? 'bg-pink-400' : 'bg-primary-300'" 
+                     style="animation-delay: 600ms;"></div>
             </div>
         </div>
     </div>
