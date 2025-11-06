@@ -47,13 +47,13 @@
                 </div>
 
                 {{-- Minimal Toggle --}}
-                <div class="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 p-1 rounded-full">
+                <div class="flex items-center gap-1 bg-neutral-100 dark:bg-neutral-800 p-1 rounded-full">
                     <button wire:click="toggleVideoType('popular')"
-                            class="px-6 py-3 rounded-full font-black text-sm transition-all {{ $videoType === 'popular' ? 'bg-primary-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
+                            class="px-3 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $videoType === 'popular' ? 'bg-primary-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
                         POPOLARI
                     </button>
                     <button wire:click="toggleVideoType('recent')"
-                            class="px-6 py-3 rounded-full font-black text-sm transition-all {{ $videoType === 'recent' ? 'bg-accent-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
+                            class="px-3 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $videoType === 'recent' ? 'bg-accent-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
                         RECENTI
                     </button>
                 </div>
@@ -186,13 +186,13 @@
                 </div>
 
                 {{-- Toggle --}}
-                <div class="flex items-center gap-2 bg-white dark:bg-neutral-800 p-1 rounded-full shadow-xl">
+                <div class="flex items-center gap-1 bg-white dark:bg-neutral-800 p-1 rounded-full shadow-xl">
                     <button wire:click="togglePhotoType('popular')"
-                            class="px-6 py-3 rounded-full font-black text-sm transition-all {{ $photoType === 'popular' ? 'bg-accent-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
+                            class="px-3 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $photoType === 'popular' ? 'bg-accent-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
                         POPOLARI
                     </button>
                     <button wire:click="togglePhotoType('recent')"
-                            class="px-6 py-3 rounded-full font-black text-sm transition-all {{ $photoType === 'recent' ? 'bg-primary-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
+                            class="px-3 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $photoType === 'recent' ? 'bg-primary-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
                         RECENTI
                     </button>
                 </div>
