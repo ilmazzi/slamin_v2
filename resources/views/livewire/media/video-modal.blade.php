@@ -45,9 +45,16 @@
                     </svg>
                 </button>
 
-                {{-- Video Player con Snap --}}
-                <div class="bg-black">
-                    @livewire('snap.snap-player', ['video' => $video], key('snap-player-' . $video->id))
+                {{-- Video Player --}}
+                <div class="aspect-video bg-black">
+                    <x-video-player 
+                        :video="$video" 
+                        :directUrl="$videoDirectUrl ?? $video->direct_url" 
+                        :showStats="false" 
+                        :showAuthor="false" 
+                        :showSnaps="true" 
+                        size="full" 
+                        class="w-full h-full" />
                 </div>
 
                 {{-- Video Info --}}
