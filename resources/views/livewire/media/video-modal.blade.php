@@ -45,35 +45,9 @@
                     </svg>
                 </button>
 
-                {{-- Video Player --}}
-                <div class="aspect-video bg-black relative">
-                    @if($videoDirectUrl)
-                        {{-- Video diretto (MP4 da PeerTube) --}}
-                        <video id="videoPlayer" 
-                               controls 
-                               playsinline
-                               webkit-playsinline
-                               preload="auto"
-                               class="w-full h-full"
-                               src="{{ $videoDirectUrl }}">
-                            Your browser does not support the video tag.
-                        </video>
-                        
-                        {{-- Debug Info --}}
-                        <div class="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded z-10">
-                            URL: {{ Str::limit($videoDirectUrl, 50) }}
-                        </div>
-                    @else
-                        {{-- Video non disponibile --}}
-                        <div class="flex items-center justify-center h-full">
-                            <div class="text-center text-white">
-                                <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                                </svg>
-                                <p class="text-lg">Video non disponibile</p>
-                            </div>
-                        </div>
-                    @endif
+                {{-- Video Player con Snap --}}
+                <div class="bg-black">
+                    @livewire('snap.snap-player', ['video' => $video], key('snap-player-' . $video->id))
                 </div>
 
                 {{-- Video Info --}}
