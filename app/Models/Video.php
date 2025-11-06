@@ -43,6 +43,7 @@ class Video extends Model
         'peertube_uuid',
         'peertube_short_uuid',
         'peertube_url',
+        'peertube_direct_url',
         'peertube_thumbnail_url',
         'peertube_tags',
         'peertube_status',
@@ -397,5 +398,29 @@ class Video extends Model
         }
 
         return null;
+    }
+
+    /**
+     * Ottiene l'URL diretto per il player (accessor riutilizzabile)
+     */
+    public function getDirectUrlAttribute(): ?string
+    {
+        // Priorità 1: peertube_direct_url dal database (URL del file MP4)
+        if ($this->getRawOriginal('peertube_direct_url')) {
+            return $this->getRawOriginal('peertube_direct_url');
+        }
+
+        // Priorità 2: direct_url generico dal database
+        if ($this->getRawOriginal('direct_url')) {
+            return $this->getRawOriginal('direct_url');
+        }
+
+        // Priorità 3: Se è PeerTube, usa l'embed URL
+        if ($this->isUploadedToPeerTube()) {
+            return $this->peertube_embed_url;
+        }
+
+        // Altrimenti usa video_url
+        return $this->video_url;
     }
 }

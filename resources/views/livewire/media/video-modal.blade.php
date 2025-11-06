@@ -2,8 +2,21 @@
     @if($isOpen && $video)
         {{-- Modal Backdrop --}}
         <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
-             x-data="{ show: @entangle('isOpen') }"
+             x-data="{ 
+                 show: @entangle('isOpen'),
+                 playVideo() {
+                     setTimeout(() => {
+                         const video = this.$el.querySelector('video');
+                         if (video) {
+                             video.load();
+                             video.play().catch(e => console.log('Play bloccato:', e));
+                         }
+                     }, 100);
+                 }
+             }"
              x-show="show"
+             x-init="playVideo()"
+             @open-video.window="playVideo()"
              x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="opacity-0"
              x-transition:enter-end="opacity-100"
@@ -33,15 +46,32 @@
                 </button>
 
                 {{-- Video Player --}}
-                <div class="aspect-video bg-black">
-                    <x-video-player 
-                        :video="$video" 
-                        :directUrl="$video->direct_url ?? null" 
-                        :showStats="false" 
-                        :showAuthor="false" 
-                        :showSnaps="true" 
-                        size="full" 
-                        class="w-full h-full" />
+                <div class="aspect-video bg-black relative">
+                    @if($video->direct_url)
+                        {{-- Video diretto (MP4 da PeerTube) --}}
+                        <video id="videoPlayer" 
+                               controls 
+                               playsinline
+                               webkit-playsinline
+                               preload="auto"
+                               class="w-full h-full"
+                               src="{{ $video->direct_url }}">
+                            Your browser does not support the video tag.
+                        </video>
+                        
+                        {{-- Debug Info --}}
+                        <div class="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                            URL: {{ Str::limit($video->direct_url, 50) }}
+                        </div>
+                    @else
+                        {{-- Fallback per YouTube/altro --}}
+                        <iframe src="{{ $video->video_url }}"
+                                class="w-full h-full"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                        </iframe>
+                    @endif
                 </div>
 
                 {{-- Video Info --}}

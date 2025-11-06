@@ -21,12 +21,17 @@ class VideoFactory extends Factory
             'Lettura Emotiva',
         ];
 
+        $peertubeUuid = $this->faker->uuid();
+        
         return [
             'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
             'title' => $this->faker->randomElement($titles),
             'description' => $this->faker->sentence(15),
-            'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // Placeholder
-            'thumbnail' => 'https://images.unsplash.com/photo-' . $this->faker->randomElement([
+            'video_url' => 'https://video.slamin.it/videos/watch/' . $peertubeUuid,
+            'peertube_uuid' => $peertubeUuid,
+            'peertube_video_id' => $this->faker->numberBetween(1, 1000),
+            'peertube_direct_url' => 'https://download.blender.org/demo/movies/BBB/bbb_sunflower_1080p_30fps_normal.mp4', // URL MP4 di esempio funzionante
+            'thumbnail_path' => 'https://images.unsplash.com/photo-' . $this->faker->randomElement([
                 '1507003211169-0a1dd7228f2d',
                 '1494790108377-be9c29b29330',
                 '1506794778202-cad84cf45f1d',
@@ -38,6 +43,7 @@ class VideoFactory extends Factory
             'is_public' => true,
             'status' => 'published',
             'moderation_status' => 'approved',
+            'peertube_status' => 'ready',
         ];
     }
 }
