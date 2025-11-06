@@ -47,7 +47,7 @@
 
                 {{-- Video Player --}}
                 <div class="aspect-video bg-black relative">
-                    @if($video->direct_url)
+                    @if($videoDirectUrl)
                         {{-- Video diretto (MP4 da PeerTube) --}}
                         <video id="videoPlayer" 
                                controls 
@@ -55,22 +55,24 @@
                                webkit-playsinline
                                preload="auto"
                                class="w-full h-full"
-                               src="{{ $video->direct_url }}">
+                               src="{{ $videoDirectUrl }}">
                             Your browser does not support the video tag.
                         </video>
                         
                         {{-- Debug Info --}}
-                        <div class="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                            URL: {{ Str::limit($video->direct_url, 50) }}
+                        <div class="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded z-10">
+                            URL: {{ Str::limit($videoDirectUrl, 50) }}
                         </div>
                     @else
-                        {{-- Fallback per YouTube/altro --}}
-                        <iframe src="{{ $video->video_url }}"
-                                class="w-full h-full"
-                                frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen>
-                        </iframe>
+                        {{-- Video non disponibile --}}
+                        <div class="flex items-center justify-center h-full">
+                            <div class="text-center text-white">
+                                <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                                <p class="text-lg">Video non disponibile</p>
+                            </div>
+                        </div>
                     @endif
                 </div>
 
