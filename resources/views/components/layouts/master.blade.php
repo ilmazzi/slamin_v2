@@ -253,12 +253,9 @@
             
             <!-- Snap Animation -->
             <template x-if="animationType === 'snap'">
-                <div class="w-80 h-80 flex items-center justify-center animate-bounce">
-                    <img src="{{ asset('assets/icon/new/snap.svg') }}" 
-                         alt="Snap!" 
-                         class="w-64 h-64 drop-shadow-2xl"
-                         style="filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);">
-                </div>
+                <img src="{{ asset('assets/images/draghetto-snap.png') }}" 
+                     alt="Snap!" 
+                     class="w-80 h-80 drop-shadow-2xl animate-bounce">
             </template>
             
             <!-- Particles Effect -->
