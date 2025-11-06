@@ -60,7 +60,7 @@
                                  alt="Snap" 
                                  class="w-5 h-5"
                                  style="filter: brightness(0) saturate(100%) invert(100%);">
-                            <span class="text-sm font-medium">Crea Snap</span>
+                            <span class="text-sm font-medium">{{ __('media.create_snap') }}</span>
                         </button>
                         @endauth
                     </div>
@@ -213,7 +213,7 @@
                                                  alt="Snap" 
                                                  class="w-6 h-6"
                                                  style="filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);">
-                                            <h3 class="text-xl font-bold text-neutral-900 dark:text-white">Crea Snap</h3>
+                                            <h3 class="text-xl font-bold text-neutral-900 dark:text-white">{{ __('media.create_snap') }}</h3>
                                         </div>
                                         <button @click="showSnapModal = false"
                                                 class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300">
@@ -227,22 +227,22 @@
                                     <div class="p-6 space-y-4">
                                         <div>
                                             <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
-                                                Titolo *
+                                                {{ __('media.title') }} *
                                             </label>
                                             <input type="text" 
                                                    x-model="snapTitle"
                                                    class="w-full px-4 py-2 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-700 dark:text-white transition-all"
-                                                   placeholder="Titolo del momento">
+                                                   placeholder="{{ __('media.snap_title_placeholder') }}">
                                         </div>
                                         
                                         <div>
                                             <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
-                                                Descrizione
+                                                {{ __('media.description') }}
                                             </label>
                                             <textarea x-model="snapDescription"
                                                       class="w-full px-4 py-2 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-700 dark:text-white transition-all resize-none"
                                                       rows="3"
-                                                      placeholder="Descrizione del momento"></textarea>
+                                                      placeholder="{{ __('media.snap_description_placeholder') }}"></textarea>
                                         </div>
                                         
                                         <div class="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-700 px-4 py-2 rounded-lg">
@@ -257,7 +257,7 @@
                                     <div class="flex items-center justify-end gap-3 p-6 border-t border-neutral-200 dark:border-neutral-700">
                                         <button @click="showSnapModal = false"
                                                 class="px-5 py-2.5 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-xl font-medium">
-                                            Annulla
+                                            {{ __('common.cancel') }}
                                         </button>
                                         <button @click="createSnap()"
                                                 :disabled="!snapTitle"
@@ -266,7 +266,7 @@
                                                  alt="Snap" 
                                                  class="w-5 h-5"
                                                  style="filter: brightness(0) saturate(100%) invert(100%);">
-                                            Crea Snap
+                                            {{ __('media.create_snap') }}
                                         </button>
                                     </div>
                                 </div>

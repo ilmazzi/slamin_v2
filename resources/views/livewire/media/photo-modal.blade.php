@@ -44,7 +44,7 @@
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex-1">
                             <h2 class="text-2xl font-black text-neutral-900 dark:text-white mb-2" style="font-family: 'Crimson Pro', serif;">
-                                {{ $photo->title ?? 'Senza titolo' }}
+                                {{ $photo->title ?? __('media.untitled') }}
                             </h2>
                             
                             @if($photo->description)

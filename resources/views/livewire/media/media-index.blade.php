@@ -108,7 +108,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                                 </svg>
-                                                <span>{{ number_format($mostPopularVideo->view_count ?? 0) }} visualizzazioni</span>
+                                                <span>{{ number_format($mostPopularVideo->view_count ?? 0) }} {{ __('media.views') }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -159,7 +159,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
-                                        <span>{{ number_format($video->view_count ?? 0) }} visualizzazioni</span>
+                                        <span>{{ number_format($video->view_count ?? 0) }} {{ __('media.views') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -230,10 +230,10 @@
                             {{-- Content --}}
                             <div class="absolute bottom-0 left-0 right-0 p-10">
                                 <div class="inline-block px-4 py-1.5 bg-accent-600 rounded-full mb-4">
-                                    <span class="text-white text-xs font-black tracking-wider">IN EVIDENZA</span>
+                                    <span class="text-white text-xs font-black tracking-wider">{{ __('media.featured') }}</span>
                                 </div>
                                 <h3 class="text-4xl md:text-5xl font-black text-white mb-4 leading-tight" style="font-family: 'Crimson Pro', serif;">
-                                    {{ $mostPopularPhoto->title ?? 'Senza titolo' }}
+                                    {{ $mostPopularPhoto->title ?? __('media.untitled') }}
                                 </h3>
                                 @if($mostPopularPhoto->user)
                                     <div class="flex items-center gap-3">
@@ -245,7 +245,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                                 </svg>
-                                                <span>{{ number_format($mostPopularPhoto->view_count ?? 0) }} visualizzazioni</span>
+                                                <span>{{ number_format($mostPopularPhoto->view_count ?? 0) }} {{ __('media.views') }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -283,7 +283,7 @@
                                 {{-- Title Bottom --}}
                                 <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 to-transparent">
                                     <h4 class="text-white font-black text-lg line-clamp-2 mb-2">
-                                        {{ $photo->title ?? 'Senza titolo' }}
+                                        {{ $photo->title ?? __('media.untitled') }}
                                     </h4>
                                     @if($photo->user)
                                         <div class="flex items-center gap-2 mb-2">
@@ -296,7 +296,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
-                                        <span>{{ number_format($photo->view_count ?? 0) }} visualizzazioni</span>
+                                        <span>{{ number_format($photo->view_count ?? 0) }} {{ __('media.views') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -329,7 +329,7 @@
                 <div class="relative">
                     <input type="text"
                            wire:model.live.debounce.300ms="searchQuery"
-                           placeholder="Cerca video, foto, autori..."
+                           placeholder="{{ __('media.search_placeholder') }}"
                            class="w-full px-8 py-6 pl-16 bg-white/10 backdrop-blur-lg border-2 border-white/20 text-white placeholder:text-white/40 rounded-2xl
                                   focus:border-primary-500 focus:bg-white/15 transition-all text-xl font-bold">
                     <svg class="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -437,7 +437,7 @@
                                 </div>
 
                                 <div class="absolute bottom-0 left-0 right-0 p-5">
-                                    <h4 class="text-xl font-black text-white mb-2 line-clamp-2">{{ $photo->title ?? 'Senza titolo' }}</h4>
+                                    <h4 class="text-xl font-black text-white mb-2 line-clamp-2">{{ $photo->title ?? __('media.untitled') }}</h4>
                                     @if($photo->user)
                                         <div class="text-white/80 text-sm font-medium">{{ $photo->user->name }}</div>
                                     @endif

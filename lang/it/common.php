@@ -11,6 +11,9 @@ return [
     'like' => 'Mi piace',
     'comment' => 'Commenta',
     'more_options' => 'Più opzioni',
+    'cancel' => 'Annulla',
+    'save' => 'Salva',
+    'close' => 'Chiudi',
     
     // Counts
     'poems_count' => ':count poesie',
