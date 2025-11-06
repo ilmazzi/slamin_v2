@@ -84,16 +84,31 @@
                                 })
                             });
                             
-                            const data = await response.json();
+                            console.log('Response status:', response.status);
+                            const text = await response.text();
+                            console.log('Response text:', text);
+                            
+                            let data;
+                            try {
+                                data = JSON.parse(text);
+                            } catch (e) {
+                                console.error('JSON parse error:', e, 'Response:', text);
+                                alert('Errore nel salvataggio dello snap. Controlla la console.');
+                                return;
+                            }
                             
                             if (data.success) {
                                 this.snapTitle = '';
                                 this.snapDescription = '';
                                 this.showSnapModal = false;
                                 Livewire.dispatch('snap-created', { videoId: {{ $video->id }} });
+                                alert('Snap creato con successo!');
+                            } else {
+                                alert('Errore: ' + (data.message || 'Impossibile creare lo snap'));
                             }
                         } catch (error) {
                             console.error('Error creating snap:', error);
+                            alert('Errore: ' + error.message);
                         }
                     }
                 }">
