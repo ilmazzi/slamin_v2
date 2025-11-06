@@ -69,6 +69,12 @@
                     async createSnap() {
                         if (!this.snapTitle) return;
                         
+                        @guest
+                            alert('Devi effettuare il login per creare snap!');
+                            window.location.href = '{{ route('login') }}';
+                            return;
+                        @endguest
+                        
                         try {
                             const response = await fetch('{{ route('api.snaps.store') }}', {
                                 method: 'POST',
@@ -125,7 +131,8 @@
                             Your browser does not support the video tag.
                         </video>
                         
-                        {{-- Pulsante Crea Snap --}}
+                        {{-- Pulsante Crea Snap (solo per utenti autenticati) --}}
+                        @auth
                         <button @click.stop="openSnapModal()"
                                 class="absolute top-4 left-4 z-10 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2">
                             <img src="{{ asset('assets/icon/new/snap.svg') }}" 
@@ -134,6 +141,7 @@
                                  style="filter: brightness(0) saturate(100%) invert(100%);">
                             <span class="text-sm font-medium">Crea Snap</span>
                         </button>
+                        @endauth
                         
                         {{-- Modal Snap --}}
                         <template x-if="showSnapModal">
