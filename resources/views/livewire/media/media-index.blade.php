@@ -72,7 +72,7 @@
                              x-transition:enter="transition ease-out duration-1000"
                              x-transition:enter-start="opacity-0 scale-95"
                              x-transition:enter-end="opacity-100 scale-100"
-                             class="aspect-[16/9] relative">
+                             class="h-full relative">
                             
                             <img src="{{ $mostPopularVideo->thumbnail_url }}" 
                                  onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1200&q=80'"
@@ -100,10 +100,16 @@
                                 </h3>
                                 @if($mostPopularVideo->user)
                                     <div class="flex items-center gap-3">
-                                        <img src="{{ $mostPopularVideo->user->profile_photo_url }}" class="w-10 h-10 rounded-full border-2 border-white">
+                                        <x-ui.user-avatar :user="$mostPopularVideo->user" size="md" :showName="false" />
                                         <div>
                                             <div class="text-white font-bold">{{ $mostPopularVideo->user->name }}</div>
-                                            <div class="text-white/70 text-sm">{{ number_format($mostPopularVideo->views_count ?? 0) }} visualizzazioni</div>
+                                            <div class="text-white/70 text-sm flex items-center gap-2">
+                                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                                <span>{{ number_format($mostPopularVideo->view_count ?? 0) }} visualizzazioni</span>
+                                            </div>
                                         </div>
                                     </div>
                                 @endif
@@ -139,14 +145,21 @@
 
                                 {{-- Title Bottom --}}
                                 <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 to-transparent">
-                                    <h4 class="text-white font-black text-lg line-clamp-2 mb-1">
+                                    <h4 class="text-white font-black text-lg line-clamp-2 mb-2">
                                         {{ $video->title }}
                                     </h4>
+                                    @if($video->user)
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <x-ui.user-avatar :user="$video->user" size="xs" :showName="false" />
+                                            <span class="text-white/90 text-sm font-medium">{{ $video->user->name }}</span>
+                                        </div>
+                                    @endif
                                     <div class="flex items-center gap-2 text-white/70 text-sm">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
-                                        {{ number_format($video->views_count ?? 0) }}
+                                        <span>{{ number_format($video->view_count ?? 0) }} visualizzazioni</span>
                                     </div>
                                 </div>
                             </div>
@@ -198,7 +211,7 @@
                              x-transition:enter="transition ease-out duration-1000"
                              x-transition:enter-start="opacity-0 scale-95"
                              x-transition:enter-end="opacity-100 scale-100"
-                             class="aspect-[16/9] relative">
+                             class="h-full relative">
                             
                             <img src="{{ $mostPopularPhoto->image_url }}" 
                                  onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80'"
@@ -224,10 +237,16 @@
                                 </h3>
                                 @if($mostPopularPhoto->user)
                                     <div class="flex items-center gap-3">
-                                        <img src="{{ $mostPopularPhoto->user->profile_photo_url }}" class="w-10 h-10 rounded-full border-2 border-white">
+                                        <x-ui.user-avatar :user="$mostPopularPhoto->user" size="md" :showName="false" />
                                         <div>
                                             <div class="text-white font-bold">{{ $mostPopularPhoto->user->name }}</div>
-                                            <div class="text-white/70 text-sm">{{ number_format($mostPopularPhoto->views_count ?? 0) }} visualizzazioni</div>
+                                            <div class="text-white/70 text-sm flex items-center gap-2">
+                                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                                <span>{{ number_format($mostPopularPhoto->view_count ?? 0) }} visualizzazioni</span>
+                                            </div>
                                         </div>
                                     </div>
                                 @endif
@@ -263,14 +282,21 @@
 
                                 {{-- Title Bottom --}}
                                 <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 to-transparent">
-                                    <h4 class="text-white font-black text-lg line-clamp-2 mb-1">
+                                    <h4 class="text-white font-black text-lg line-clamp-2 mb-2">
                                         {{ $photo->title ?? 'Senza titolo' }}
                                     </h4>
+                                    @if($photo->user)
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <x-ui.user-avatar :user="$photo->user" size="xs" :showName="false" />
+                                            <span class="text-white/90 text-sm font-medium">{{ $photo->user->name }}</span>
+                                        </div>
+                                    @endif
                                     <div class="flex items-center gap-2 text-white/70 text-sm">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
-                                        {{ number_format($photo->views_count ?? 0) }}
+                                        <span>{{ number_format($photo->view_count ?? 0) }} visualizzazioni</span>
                                     </div>
                                 </div>
                             </div>
