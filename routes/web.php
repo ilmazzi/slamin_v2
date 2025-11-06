@@ -45,11 +45,33 @@ Route::get('/parallax-enhanced', function () {
 // Events Routes
 Route::get('/events', \App\Livewire\Events\EventsIndex::class)->name('events.index');
 
+// Media Routes
+Route::get('/media', \App\Livewire\Media\MediaIndex::class)->name('media.index');
+Route::get('/videos/{video}', function(\App\Models\Video $video) {
+    return view('pages.video-show', compact('video'));
+})->name('videos.show');
+Route::get('/photos/{photo}', function(\App\Models\Photo $photo) {
+    return view('pages.photo-show', compact('photo'));
+})->name('photos.show');
+
 Route::get('/events/create', \App\Livewire\Events\EventCreation::class)
     ->middleware('auth')
     ->name('events.create');
 
 Route::get('/events/{event}', \App\Livewire\Events\EventShow::class)->name('events.show');
+
+Route::get('/events/{event}/edit', \App\Livewire\Events\EventEdit::class)
+    ->middleware('auth')
+    ->name('events.edit');
+
+// Manage route (da implementare)
+Route::get('/events/{event}/manage', function(\App\Models\Event $event) {
+    // Check permissions
+    if (auth()->user()->id !== $event->organizer_id && !auth()->user()->canOrganizeEvents()) {
+        abort(403);
+    }
+    return view('livewire.events.event-manage', compact('event'));
+})->middleware('auth')->name('events.manage');
 
 // Poems Routes
 Route::get('/poems', function () {

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
-class EventCreation extends Component
+class EventEdit extends Component
 {
     use WithFileUploads;
 
@@ -211,28 +211,116 @@ class EventCreation extends Component
     // ========================================
     // LIFECYCLE METHODS
     // ========================================
-    public function mount()
-    {
-        // Set default values
-        $this->timezone = config('app.timezone', 'Europe/Rome');
-        $this->country = 'IT';
-        $this->is_public = true;
-        $this->status = 'published';
-        $this->ticket_currency = 'EUR';
-        $this->invitation_role = 'performer';
+    public $eventId;
 
+    public function mount(Event $event)
+    {
         // Check permissions
         $user = Auth::user();
         if (!$user) {
-            abort(403, 'Devi essere autenticato per creare eventi');
+            abort(403, 'Devi essere autenticato per modificare eventi');
         }
 
-        // Check if user can organize events (admin, moderator, or organizer)
-        if (!$user->canOrganizeEvents()) {
-            abort(403, 'Non hai i permessi per creare eventi. Richiedi il ruolo di organizzatore.');
+        // Check if user is organizer or admin
+        if ($event->organizer_id !== $user->id && !$user->canOrganizeEvents()) {
+            abort(403, 'Non hai i permessi per modificare questo evento');
         }
 
-        // Load recent venues - convert to array for Livewire compatibility
+        $this->eventId = $event->id;
+
+        // Pre-populate ALL fields
+        $this->title = $event->title;
+        $this->has_subtitle = !empty($event->subtitle);
+        $this->subtitle = $event->subtitle ?? '';
+        $this->description = $event->description ?? '';
+        $this->requirements = $event->requirements ?? '';
+        $this->category = $event->category;
+        $this->is_public = $event->is_public;
+
+        // Dates
+        $this->start_datetime = $event->start_datetime ? $event->start_datetime->format('Y-m-d\TH:i') : '';
+        $this->end_datetime = $event->end_datetime ? $event->end_datetime->format('Y-m-d\TH:i') : '';
+        
+        // Availability
+        $this->is_availability_based = $event->is_availability_based;
+        $this->availability_deadline = $event->availability_deadline ? $event->availability_deadline->format('Y-m-d\TH:i') : '';
+        $this->availability_instructions = $event->availability_instructions ?? '';
+        $this->availability_options = $event->availabilityOptions->map(fn($opt) => [
+            'datetime' => $opt->datetime->format('Y-m-d\TH:i'),
+            'description' => $opt->description ?? ''
+        ])->toArray();
+
+        // Location
+        $this->is_online = $event->is_online;
+        $this->online_url = $event->online_url ?? '';
+        $this->timezone = $event->timezone ?? 'Europe/Rome';
+        $this->venue_name = $event->venue_name ?? '';
+        $this->venue_address = $event->venue_address ?? '';
+        $this->city = $event->city ?? '';
+        $this->postcode = $event->postcode ?? '';
+        $this->country = $event->country ?? 'IT';
+        $this->latitude = $event->latitude ?? '';
+        $this->longitude = $event->longitude ?? '';
+
+        // Recurrence
+        $this->is_recurring = $event->is_recurring;
+        $this->recurrence_type = $event->recurrence_type ?? '';
+        $this->recurrence_interval = $event->recurrence_interval ?? 1;
+        $this->recurrence_count = $event->recurrence_count ?? '';
+        $this->recurrence_weekdays = $event->recurrence_weekdays ?? [];
+        $this->recurrence_monthday = $event->recurrence_monthday ?? '';
+
+        // Media
+        $this->promotional_video = $event->promotional_video ?? '';
+        $this->is_paid_event = ($event->entry_fee ?? 0) > 0;
+        $this->ticket_price = $event->entry_fee ?? 0;
+        $this->ticket_currency = 'EUR';
+
+        // Groups & Festival - Disabled for now (Group model not implemented)
+        $this->is_linked_to_group = false;
+        $this->selected_groups = [];
+        $this->festival_id = $event->festival_id ?? '';
+        $this->selected_festival_events = $event->festival_events ?? [];
+
+        // Gig Positions
+        $this->gig_positions = $event->gig_positions ?? [];
+
+        // Settings
+        $this->max_participants = $event->max_participants ?? '';
+        $this->allow_requests = $event->allow_requests;
+        $this->status = $event->status;
+
+        // Invitations
+        $this->invitations = $event->invitations()
+            ->whereIn('role', ['performer', 'organizer'])
+            ->with('invitedUser')
+            ->get()
+            ->map(fn($inv) => [
+                'user_id' => $inv->invited_user_id,
+                'name' => $inv->invitedUser->name ?? '',
+                'email' => $inv->invitedUser->email ?? '',
+                'role' => $inv->role,
+            ])
+            ->toArray();
+
+        // Separate performer invitations for preview
+        $this->performer_invitations = collect($this->invitations)
+            ->filter(fn($inv) => $inv['role'] === 'performer')
+            ->values()
+            ->toArray();
+
+        $this->audienceInvitations = $event->invitations()
+            ->where('role', 'audience')
+            ->with('invitedUser')
+            ->get()
+            ->map(fn($inv) => [
+                'user_id' => $inv->invited_user_id,
+                'name' => $inv->invitedUser->name ?? '',
+                'email' => $inv->invitedUser->email ?? '',
+            ])
+            ->toArray();
+
+        // Load recent venues
         $this->recentVenues = RecentVenue::getPopularVenues(8)->toArray();
     }
 
@@ -644,9 +732,16 @@ class EventCreation extends Component
             // Final validation
             $this->validate();
             
+            $event = Event::findOrFail($this->eventId);
+            
             // Handle image upload
-            $imagePath = null;
+            $imagePath = $event->image_url; // Keep existing image by default
             if ($this->event_image) {
+                // Delete old image if exists
+                if ($event->image_url && Storage::disk('public')->exists(str_replace('/storage/', '', $event->image_url))) {
+                    Storage::disk('public')->delete(str_replace('/storage/', '', $event->image_url));
+                }
+                // Store new image and get the path
                 $storedPath = $this->event_image->store('events', 'public');
                 $imagePath = '/storage/' . $storedPath;
             }
@@ -663,8 +758,8 @@ class EventCreation extends Component
                 $festivalEvents = $this->selected_festival_events;
             }
 
-            // Create event
-            $event = Event::create([
+            // UPDATE event
+            $event->update([
                 // Basic Information
                 'title' => $this->title,
                 'subtitle' => $this->subtitle,
@@ -721,19 +816,16 @@ class EventCreation extends Component
                 'festival_id' => $this->category !== Event::CATEGORY_FESTIVAL && $this->festival_id ? $this->festival_id : null,
                 'festival_events' => $festivalEvents,
 
-                // Organizer
-                'organizer_id' => Auth::id(),
-                
-                // Moderation (auto-approve for now)
-                'moderation_status' => 'approved',
             ]);
 
-            // Attach groups - Disabled for now (Group model not implemented)
+            // Sync groups - Disabled for now (Group model not implemented)
             // if ($this->is_linked_to_group && !empty($this->selected_groups)) {
-            //     $event->groups()->attach($this->selected_groups);
+            //     $event->groups()->sync($this->selected_groups);
             // }
 
-            // Handle invitations (participants)
+            // Delete and recreate invitations
+            $event->invitations()->delete();
+            
             if (!empty($this->invitations)) {
                 foreach ($this->invitations as $invitation) {
                     $event->invitations()->create([
@@ -745,7 +837,6 @@ class EventCreation extends Component
                 }
             }
 
-            // Handle audience invitations
             if (!empty($this->audienceInvitations)) {
                 foreach ($this->audienceInvitations as $audience) {
                     $event->invitations()->create([
@@ -757,7 +848,9 @@ class EventCreation extends Component
                 }
             }
 
-            // Handle availability options
+            // Delete and recreate availability options
+            $event->availabilityOptions()->delete();
+            
             if ($this->is_availability_based && !empty($this->availability_options)) {
                 foreach ($this->availability_options as $option) {
                     if (is_array($option) && !empty($option['datetime'])) {
@@ -782,7 +875,7 @@ class EventCreation extends Component
                 ]);
             }
 
-            session()->flash('success', 'Evento creato con successo!');
+            session()->flash('success', 'Evento aggiornato con successo!');
             
             return redirect()->route('events.show', $event);
 
@@ -805,7 +898,7 @@ class EventCreation extends Component
     // ========================================
     public function render()
     {
-        return view('livewire.events.event-creation', [
+        return view('livewire.events.event-edit', [
             'categories' => Event::getCategories(),
         ])->layout('components.layouts.app');
     }

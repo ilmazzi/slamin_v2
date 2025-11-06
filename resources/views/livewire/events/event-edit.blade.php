@@ -21,7 +21,7 @@
                 <div class="sticky top-24 backdrop-blur-xl bg-white dark:bg-neutral-800 rounded-3xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-2xl">
                     <div class="mb-8">
                         <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3 tracking-tight">
-                            Crea Evento
+                            Modifica Evento
                         </h1>
                         <p class="text-neutral-700 dark:text-neutral-300">
                             Segui i passaggi per pubblicare il tuo evento
@@ -1297,7 +1297,7 @@
                                                 <svg class="w-10 h-10 mx-auto mb-3 transition-colors {{ $status === 'draft' ? 'text-accent-600 dark:text-accent-400' : 'text-neutral-400 dark:text-neutral-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                 </svg>
-                                                <span class="font-bold {{ $status === 'draft' ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400' }}">Salva Bozza</span>
+                                                <span class="font-bold {{ $status === 'draft' ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400' }}">Salva Modifiche</span>
                                                 <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-1">Pubblica più tardi</p>
                                             </div>
                                         </label>
@@ -1753,7 +1753,7 @@
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                {{ $status === 'published' ? 'Pubblica Evento' : 'Salva Bozza' }}
+                                {{ $status === 'published' ? 'Aggiorna Evento' : 'Salva Modifiche' }}
                             </button>
                         @endif
                     </div>
@@ -1966,7 +1966,7 @@ function initCreationMap() {
 
     console.log('✅ Event creation map initialized successfully!');
 
-    // Load existing marker if coordinates exist (e.g., from recent venue)
+    // Load existing marker if coordinates exist
     setTimeout(() => {
         const existingLat = @this.get('latitude');
         const existingLng = @this.get('longitude');

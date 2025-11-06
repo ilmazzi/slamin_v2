@@ -162,6 +162,74 @@
                         </div>
                     @endif
 
+                    {{-- Groups --}}
+                    {{-- @if($event->groups && $event->groups->count() > 0)
+                        <div>
+                            <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Gruppi Collegati</div>
+                            <div class="space-y-4">
+                                @foreach($event->groups as $group)
+                                    <div class="border-l-4 border-accent-500/30 hover:border-accent-500 pl-6 transition-colors">
+                                        <div class="text-neutral-900 dark:text-white text-2xl font-black mb-1">{{ $group->name }}</div>
+                                        @if($group->description)
+                                            <div class="text-neutral-600 dark:text-neutral-400">{{ Str::limit($group->description, 120) }}</div>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif --}}
+
+                    {{-- Festival Events (if this is a festival) --}}
+                    @if($event->category === 'festival')
+                        @php
+                            $festivalEvents = \App\Models\Event::where('festival_id', $event->id)->get();
+                        @endphp
+                        @if($festivalEvents->count() > 0)
+                            <div>
+                                <div class="text-primary-600 dark:text-primary-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Eventi del Festival ({{ $festivalEvents->count() }})</div>
+                                <div class="space-y-4">
+                                    @foreach($festivalEvents as $festEvent)
+                                        <a href="{{ route('events.show', $festEvent) }}" 
+                                           class="block border-l-4 border-primary-500/30 hover:border-primary-500 pl-6 transition-colors group">
+                                            <div class="text-neutral-900 dark:text-white text-xl font-black mb-1 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                                                {{ $festEvent->title }}
+                                            </div>
+                                            @if($festEvent->start_datetime)
+                                                <div class="text-sm text-neutral-600 dark:text-neutral-400 font-bold">
+                                                    {{ \Carbon\Carbon::parse($festEvent->start_datetime)->format('d M Y - H:i') }}
+                                                </div>
+                                            @endif
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+
+                    {{-- Part of Festival (if this event is linked to a festival) --}}
+                    @if($event->festival_id)
+                        @php
+                            $festival = \App\Models\Event::find($event->festival_id);
+                        @endphp
+                        @if($festival)
+                            <div>
+                                <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Fa Parte del Festival</div>
+                                <a href="{{ route('events.show', $festival) }}" 
+                                   class="block border-l-4 border-accent-500/50 hover:border-accent-500 pl-6 transition-colors group">
+                                    <div class="text-neutral-900 dark:text-white text-3xl font-black mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400">
+                                        {{ $festival->title }}
+                                    </div>
+                                    @if($festival->start_datetime && $festival->end_datetime)
+                                        <div class="text-neutral-600 dark:text-neutral-400 font-bold">
+                                            {{ \Carbon\Carbon::parse($festival->start_datetime)->format('d M Y') }} - 
+                                            {{ \Carbon\Carbon::parse($festival->end_datetime)->format('d M Y') }}
+                                        </div>
+                                    @endif
+                                </a>
+                            </div>
+                        @endif
+                    @endif
+
                     {{-- Availability Options --}}
                     @if($event->is_availability_based && $event->availabilityOptions && $event->availabilityOptions->count() > 0)
                         <div>
@@ -341,6 +409,18 @@
                                     <div class="text-neutral-600 dark:text-neutral-400">{{ $event->postcode }} {{ $event->city }}</div>
                                 @endif
                             </div>
+
+                            {{-- Mini Map --}}
+                            @if($event->latitude && $event->longitude)
+                                <div class="mt-4">
+                                    <div id="eventShowMap" 
+                                         class="w-full h-48 rounded-xl overflow-hidden shadow-lg border-2 border-primary-200 dark:border-primary-800"
+                                         data-lat="{{ $event->latitude }}"
+                                         data-lng="{{ $event->longitude }}"
+                                         data-name="{{ $event->venue_name ?? $event->title }}">
+                                    </div>
+                                </div>
+                            @endif
                         @endif
                     </div>
 
@@ -367,8 +447,8 @@
                 </div>
             </div>
 
-            {{-- Back Button --}}
-            <div class="mt-16">
+            {{-- Action Buttons --}}
+            <div class="mt-16 flex flex-wrap gap-4">
                 <a href="{{ route('events.index') }}" wire:navigate
                    class="inline-flex items-center gap-2 text-neutral-900 dark:text-white text-lg font-black hover:text-primary-600 dark:hover:text-primary-400 transition-colors group">
                     <svg class="w-6 h-6 group-hover:-translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -376,11 +456,32 @@
                     </svg>
                     TORNA AGLI EVENTI
                 </a>
+
+                @auth
+                    @if(auth()->user()->id === $event->organizer_id || auth()->user()->canOrganizeEvents())
+                        <a href="{{ route('events.edit', $event) }}" wire:navigate
+                           class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-black uppercase tracking-wide transition-all hover:scale-105">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                            MODIFICA EVENTO
+                        </a>
+                        
+                        <a href="{{ route('events.manage', $event) }}" wire:navigate
+                           class="inline-flex items-center gap-2 px-6 py-3 bg-accent-600 hover:bg-accent-700 text-white font-black uppercase tracking-wide transition-all hover:scale-105">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            GESTISCI
+                        </a>
+                    @endif
+                @endauth
             </div>
         </div>
     </div>
 
     @push('styles')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         @keyframes blob {
             0%, 100% { transform: translate(0, 0) scale(1); }
@@ -392,5 +493,48 @@
         .animate-blob-slow { animation: blob 12s ease-in-out infinite; }
         .animate-blob-slower { animation: blob 16s ease-in-out infinite; }
     </style>
+    @endpush
+
+    @push('scripts')
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mapContainer = document.getElementById('eventShowMap');
+        
+        if (mapContainer) {
+            const lat = parseFloat(mapContainer.dataset.lat);
+            const lng = parseFloat(mapContainer.dataset.lng);
+            const name = mapContainer.dataset.name;
+            
+            // Initialize map
+            const eventMap = L.map('eventShowMap', {
+                scrollWheelZoom: false,
+                dragging: true,
+                zoomControl: true
+            }).setView([lat, lng], 15);
+            
+            // Add Voyager tile layer
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap, © CartoDB',
+                maxZoom: 19
+            }).addTo(eventMap);
+            
+            // Add marker
+            const marker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: `<div style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); border: 3px solid white;"></div>`,
+                    className: 'custom-event-marker',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32]
+                })
+            }).addTo(eventMap);
+            
+            // Add popup
+            marker.bindPopup(`<strong>${name}</strong>`).openPopup();
+            
+            console.log('✅ Event show map initialized at:', lat, lng);
+        }
+    });
+    </script>
     @endpush
 </div>

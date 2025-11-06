@@ -299,15 +299,74 @@
                 </div>
                 
                 <!-- Map Controls Overlay -->
-                <div class="absolute top-4 right-4 z-[1000] flex flex-col gap-2">
+                <div class="absolute top-4 right-4 z-[1000] flex flex-col gap-3">
+                    <!-- Reset View -->
                     <button 
                         onclick="map.setView([41.9028, 12.4964], 6)"
                         class="p-3 bg-white dark:bg-neutral-800 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 group"
-                        title="{{ __('events.reset_view') }}">
+                        title="Centra mappa sull'Italia">
                         <svg class="w-5 h-5 text-primary-600 group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
                     </button>
+                    
+                    <!-- Map Style Selector -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-full shadow-lg p-2 flex flex-col gap-2">
+                        <button 
+                            onclick="changeMapStyle('standard')"
+                            id="style-standard"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Mappa Standard">
+                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                            </svg>
+                        </button>
+                        <button 
+                            onclick="changeMapStyle('satellite')"
+                            id="style-satellite"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Vista Satellite">
+                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </button>
+                        <button 
+                            onclick="changeMapStyle('dark')"
+                            id="style-dark"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Mappa Scura">
+                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                            </svg>
+                        </button>
+                        <button 
+                            onclick="changeMapStyle('voyager')"
+                            id="style-voyager"
+                            class="map-style-btn active p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Mappa Colorata">
+                            <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                            </svg>
+                        </button>
+                        <button 
+                            onclick="changeMapStyle('positron')"
+                            id="style-positron"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Mappa Chiara Minimal">
+                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                        </button>
+                        <button 
+                            onclick="changeMapStyle('topo')"
+                            id="style-topo"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Mappa Topografica">
+                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 
                 <!-- Legend -->
@@ -636,21 +695,61 @@ function initMap() {
         
         console.log('✅ Map object created successfully');
     
-    // Add OpenStreetMap tiles
-    const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-        maxZoom: 19
-    }).addTo(map);
+    // Tile layers
+    const tileLayers = {
+        standard: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }),
+        satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '© Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN',
+            maxZoom: 19
+        }),
+        dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap, © CartoDB',
+            maxZoom: 19
+        }),
+        voyager: L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap, © CartoDB',
+            maxZoom: 19
+        }),
+        positron: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap, © CartoDB',
+            maxZoom: 19
+        }),
+        topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap, © OpenTopoMap',
+            maxZoom: 17
+        })
+    };
+
+    // Add default tile layer
+    let currentTileLayer = tileLayers.voyager.addTo(map);
+    let currentStyle = 'voyager';
     
     console.log('Tiles added to map');
     
-    tileLayer.on('load', function() {
-        console.log('Map tiles loaded successfully');
-    });
-    
-    tileLayer.on('tileerror', function(error) {
-        console.error('Tile loading error:', error);
-    });
+    // Function to change map style
+    window.changeMapStyle = function(style) {
+        if (tileLayers[style] && currentStyle !== style) {
+            console.log('Changing map style to:', style);
+            
+            // Remove current layer
+            map.removeLayer(currentTileLayer);
+            
+            // Add new layer
+            currentTileLayer = tileLayers[style].addTo(map);
+            currentStyle = style;
+            
+            // Update button states
+            document.querySelectorAll('.map-style-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('style-' + style).classList.add('active');
+            
+            console.log('Map style changed to:', style);
+        }
+    };
     
     // Category colors matching legend
     const categoryColors = {
@@ -979,6 +1078,21 @@ function updateMapMarkers() {
 </script>
 
 <style>
+/* Map style buttons */
+.map-style-btn {
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.map-style-btn.active {
+    opacity: 1;
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.map-style-btn.active svg {
+    color: #10b981 !important;
+}
+
 .custom-popup .leaflet-popup-content-wrapper {
     border-radius: 1.5rem;
     padding: 0;

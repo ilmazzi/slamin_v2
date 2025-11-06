@@ -3,6 +3,7 @@
     'delay' => 0,
 ])
 
+<a href="{{ route('events.show', $event) }}" class="block">
 <article 
     class="group cursor-pointer overflow-hidden rounded-2xl md:rounded-3xl bg-white dark:bg-neutral-800 shadow-lg hover:shadow-2xl transition-all duration-500"
     x-data="{ hovered: false }"
@@ -97,12 +98,14 @@
             </div>
             @endif
             
-            <x-ui.buttons.primary 
-                :href="route('events.show', $event->id)" 
-                size="sm">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-full transition-all group-hover:scale-105">
                 Partecipa
-            </x-ui.buttons.primary>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </div>
         </div>
     </div>
 </article>
+</a>
 

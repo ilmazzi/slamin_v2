@@ -61,7 +61,7 @@ class DashboardIndex extends Component
                     'venue' => $event->venue_name ?? __('dashboard.online_event'),
                     'city' => $event->city,
                     'image' => $event->image_url,
-                    'url' => '#', // route('events.show', $event->id)
+                    'url' => route('events.show', $event),
                 ];
             })
             ->toArray();
@@ -220,6 +220,7 @@ class DashboardIndex extends Component
                 'color' => 'primary',
                 'image' => $event->image_url ?? null,
                 'location' => $event->venue_name ?? $event->city ?? null,
+                'url' => route('events.show', $event),
             ];
         })->toArray();
     }

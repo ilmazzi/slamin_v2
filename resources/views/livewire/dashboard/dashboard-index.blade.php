@@ -486,11 +486,12 @@
                             @if($dayEvents->count() > 0)
                                 <div class="bg-white dark:bg-neutral-800 p-4 space-y-3">
                                     @foreach($dayEvents as $event)
-                                        <article class="group cursor-pointer overflow-hidden rounded-xl bg-white dark:bg-neutral-800 shadow-md hover:shadow-xl transition-all duration-300"
-                                                 x-data="{ hovered: false }"
-                                                 @mouseenter="hovered = true"
-                                                 @mouseleave="hovered = false">
-                                            <div class="relative h-32 overflow-hidden">
+                                        <a href="{{ $event['url'] ?? '#' }}" class="block">
+                                            <article class="group cursor-pointer overflow-hidden rounded-xl bg-white dark:bg-neutral-800 shadow-md hover:shadow-xl transition-all duration-300"
+                                                     x-data="{ hovered: false }"
+                                                     @mouseenter="hovered = true"
+                                                     @mouseleave="hovered = false">
+                                                <div class="relative h-32 overflow-hidden">
                                                 @if(!empty($event['image']))
                                                     <img src="{{ $event['image'] }}" 
                                                          alt="{{ $event['title'] }}" 
@@ -519,6 +520,7 @@
                                                 </div>
                                             </div>
                                         </article>
+                                        </a>
                                     @endforeach
                                 </div>
                             @else
@@ -595,14 +597,15 @@
                                             
                                             @foreach($day['events'] as $eventIndex => $event)
                                                 <!-- Event Card - Con immagine o pulito -->
-                                                <div class="absolute inset-0 transition-all duration-500 cursor-pointer"
-                                                     x-show="currentSlide === {{ $eventIndex }}"
-                                                     x-transition:enter="transition ease-out duration-500"
-                                                     x-transition:enter-start="opacity-0 scale-95"
-                                                     x-transition:enter-end="opacity-100 scale-100"
-                                                     x-transition:leave="transition ease-in duration-300"
-                                                     x-transition:leave-start="opacity-100"
-                                                     x-transition:leave-end="opacity-0 scale-95">
+                                                <a href="{{ $event['url'] ?? '#' }}" 
+                                                   class="absolute inset-0 transition-all duration-500 cursor-pointer block"
+                                                   x-show="currentSlide === {{ $eventIndex }}"
+                                                   x-transition:enter="transition ease-out duration-500"
+                                                   x-transition:enter-start="opacity-0 scale-95"
+                                                   x-transition:enter-end="opacity-100 scale-100"
+                                                   x-transition:leave="transition ease-in duration-300"
+                                                   x-transition:leave-start="opacity-100"
+                                                   x-transition:leave-end="opacity-0 scale-95">
                                                     
                                                     @if($event['image'] ?? false)
                                                         <!-- Evento con IMMAGINE -->
@@ -634,7 +637,7 @@
                                                             </div>
                                                         @endif
                                                     </div>
-                                                </div>
+                                                </a>
                                             @endforeach
                                         </div>
                                     @else

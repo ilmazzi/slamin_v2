@@ -115,4 +115,12 @@ trait HasViews
     {
         return $query->withCount('views')->orderBy('views_count', 'desc');
     }
+
+    /**
+     * Incrementa il contatore delle visualizzazioni (metodo semplificato)
+     */
+    public function incrementViewCount(): void
+    {
+        $this->incrementViewIfNotOwner(auth()->user());
+    }
 }
