@@ -36,24 +36,24 @@
         <div class="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- Header con Toggle Floating --}}
-            <div class="flex items-center justify-between mb-16">
-                <div class="flex items-baseline gap-6">
-                    <h2 class="text-6xl md:text-7xl font-black text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-16">
+                <div class="flex items-baseline gap-4">
+                    <h2 class="text-5xl md:text-7xl font-black text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
                         Video
                     </h2>
-                    <div class="text-primary-600 dark:text-primary-400 text-4xl font-black">
+                    <div class="text-primary-600 dark:text-primary-400 text-3xl md:text-4xl font-black">
                         {{ $videoType === 'popular' ? ($popularVideos->count() + 1) : ($recentVideos->count() + 1) }}
                     </div>
                 </div>
 
                 {{-- Minimal Toggle --}}
-                <div class="flex items-center gap-1 bg-neutral-100 dark:bg-neutral-800 p-1 rounded-full">
+                <div class="flex items-center gap-1 bg-neutral-100 dark:bg-neutral-800 p-1 rounded-full self-start md:self-auto">
                     <button wire:click="toggleVideoType('popular')"
-                            class="px-3 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $videoType === 'popular' ? 'bg-primary-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
+                            class="px-4 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $videoType === 'popular' ? 'bg-primary-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
                         POPOLARI
                     </button>
                     <button wire:click="toggleVideoType('recent')"
-                            class="px-3 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $videoType === 'recent' ? 'bg-accent-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
+                            class="px-4 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $videoType === 'recent' ? 'bg-accent-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
                         RECENTI
                     </button>
                 </div>
@@ -175,24 +175,24 @@
         <div class="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- Header --}}
-            <div class="flex items-center justify-between mb-16">
-                <div class="flex items-baseline gap-6">
-                    <h2 class="text-6xl md:text-7xl font-black text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-16">
+                <div class="flex items-baseline gap-4">
+                    <h2 class="text-5xl md:text-7xl font-black text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
                         Foto
                     </h2>
-                    <div class="text-accent-600 dark:text-accent-400 text-4xl font-black">
+                    <div class="text-accent-600 dark:text-accent-400 text-3xl md:text-4xl font-black">
                         {{ $photoType === 'popular' ? ($popularPhotos->count() + 1) : ($recentPhotos->count() + 1) }}
                     </div>
                 </div>
 
                 {{-- Toggle --}}
-                <div class="flex items-center gap-1 bg-white dark:bg-neutral-800 p-1 rounded-full shadow-xl">
+                <div class="flex items-center gap-1 bg-white dark:bg-neutral-800 p-1 rounded-full shadow-xl self-start md:self-auto">
                     <button wire:click="togglePhotoType('popular')"
-                            class="px-3 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $photoType === 'popular' ? 'bg-accent-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
+                            class="px-4 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $photoType === 'popular' ? 'bg-accent-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
                         POPOLARI
                     </button>
                     <button wire:click="togglePhotoType('recent')"
-                            class="px-3 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $photoType === 'recent' ? 'bg-primary-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
+                            class="px-4 md:px-6 py-2 md:py-3 rounded-full font-black text-xs md:text-sm transition-all {{ $photoType === 'recent' ? 'bg-primary-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400' }}">
                         RECENTI
                     </button>
                 </div>
