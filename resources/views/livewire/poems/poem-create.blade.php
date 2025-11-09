@@ -367,11 +367,11 @@
                     <!-- Descrizione Breve -->
                     <div class="mb-8">
                         <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3 font-poem">
-                            Descrizione Breve <span class="text-neutral-400">(opzionale)</span>
+                            {{ __('poems.create.description_optional') }}
                         </label>
                         <textarea wire:model.blur="description"
                                   rows="3"
-                                  placeholder="Una breve introduzione alla tua poesia..."
+                                  placeholder="{{ __('poems.placeholders.description') }}"
                                   class="w-full px-6 py-4 rounded-2xl border-2 border-neutral-200 dark:border-neutral-700
                                          bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white
                                          focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20
@@ -393,7 +393,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                               d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                     </svg>
-                    Dettagli
+                    {{ __('common.details') }}
                 </h3>
                 
                 <div class="grid md:grid-cols-2 gap-6">
@@ -401,7 +401,7 @@
                     <!-- Categoria -->
                     <div>
                         <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
-                            Categoria
+                            {{ __('poems.create.category_label') }}
                         </label>
                         <div class="relative">
                             <select wire:model.live="category"
@@ -411,7 +411,7 @@
                                            text-neutral-900 dark:text-white
                                            focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30
                                            transition-all duration-200 cursor-pointer font-medium">
-                                <option value="">Seleziona categoria</option>
+                                <option value="">{{ __('poems.create.select_category') }}</option>
                                 @foreach($categories as $key => $name)
                                     <option value="{{ $key }}">{{ $name }}</option>
                                 @endforeach
@@ -427,7 +427,7 @@
                     <!-- Tipo Poesia -->
                     <div>
                         <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
-                            Tipo di Poesia
+                            {{ __('poems.create.type_label') }}
                         </label>
                         <div class="relative">
                             <select wire:model.live="poemType"
@@ -437,7 +437,7 @@
                                            text-neutral-900 dark:text-white
                                            focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30
                                            transition-all duration-200 cursor-pointer font-medium">
-                                <option value="">Seleziona tipo</option>
+                                <option value="">{{ __('common.select') }}</option>
                                 @foreach($poemTypes as $key => $name)
                                     <option value="{{ $key }}">{{ $name }}</option>
                                 @endforeach
@@ -453,7 +453,7 @@
                     <!-- Lingua -->
                     <div>
                         <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
-                            Lingua
+                            {{ __('poems.create.language_label') }}
                         </label>
                         <div class="relative">
                             <select wire:model.live="language"
@@ -478,11 +478,11 @@
                     <!-- Tags -->
                     <div>
                         <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
-                            Tags <span class="text-neutral-400">(separa con virgole)</span>
+                            {{ __('poems.create.tags_label') }}
                         </label>
                         <input wire:model.blur="tags"
                                type="text"
-                               placeholder="amore, natura, vita, ..."
+                               placeholder="{{ __('poems.create.tags_placeholder') }}"
                                class="w-full px-6 py-4 rounded-2xl border-2 border-neutral-200 dark:border-neutral-700
                                       bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white
                                       focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20

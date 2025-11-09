@@ -14,6 +14,8 @@ return [
     'cancel' => 'Annulla',
     'save' => 'Salva',
     'close' => 'Chiudi',
+    'details' => 'Dettagli',
+    'select' => 'Seleziona',
     
     // Counts
     'poems_count' => ':count poesie',
