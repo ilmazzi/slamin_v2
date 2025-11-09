@@ -59,11 +59,10 @@
             
             <div class="relative z-10">
                 <h1 class="text-5xl md:text-7xl font-bold text-neutral-900 dark:text-white mb-4 font-poem tracking-tight">
-                    <span class="inline-block animate-fade-in">Le</span>
-                    <span class="inline-block animate-fade-in-delay-1 bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent"> Poesie</span>
+                    <span class="inline-block animate-fade-in">{{ __('poems.index.title') }}</span>
                 </h1>
                 <p class="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto font-poem italic animate-fade-in-delay-2">
-                    "La poesia è l'eco di un'anima che danza con le parole"
+                    "{{ __('poems.index.subtitle') }}"
                 </p>
             </div>
             
@@ -81,7 +80,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                   d="M12 4v16m8-8H4"/>
                         </svg>
-                        <span class="font-poem text-lg">Scrivi una Poesia</span>
+                        <span class="font-poem text-lg">{{ __('poems.create.write_poem') }}</span>
                     </a>
                 </div>
             @endauth
@@ -96,7 +95,7 @@
                 <!-- View Mode Toggle -->
                 <div class="flex items-center justify-between mb-6 pb-6 border-b border-neutral-200 dark:border-neutral-700">
                     <h3 class="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                        Visualizzazione:
+                        {{ __('poems.index.view_mode') }}
                     </h3>
                     <div class="flex gap-2">
                         <button wire:click="setViewMode('grid')"
@@ -104,7 +103,7 @@
                                        {{ $viewMode === 'grid' 
                                           ? 'bg-primary-500 text-white shadow-lg' 
                                           : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-600' }}"
-                                title="Griglia">
+                                title="{{ __('poems.index.view_grid') }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
@@ -115,7 +114,7 @@
                                        {{ $viewMode === 'list' 
                                           ? 'bg-primary-500 text-white shadow-lg' 
                                           : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-600' }}"
-                                title="Lista">
+                                title="{{ __('poems.index.view_list') }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M4 6h16M4 12h16M4 18h16"/>
@@ -126,7 +125,7 @@
                                        {{ $viewMode === 'magazine' 
                                           ? 'bg-primary-500 text-white shadow-lg' 
                                           : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-600' }}"
-                                title="Magazine">
+                                title="{{ __('poems.index.view_magazine') }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
@@ -147,7 +146,7 @@
                         </div>
                         <input wire:model.live.debounce.500ms="search"
                                type="text"
-                               placeholder="Cerca tra le poesie..."
+                               placeholder="{{ __('poems.index.search_placeholder') }}"
                                class="w-full pl-12 pr-4 py-4 rounded-2xl 
                                       border-2 border-neutral-200 dark:border-neutral-700 
                                       bg-white dark:bg-neutral-900
@@ -182,7 +181,7 @@
                                        hover:shadow-md
                                        transition-all duration-200 cursor-pointer 
                                        font-medium text-sm">
-                            <option value="">📚 Tutte le categorie</option>
+                            <option value="">{{ __('poems.filters.all_categories') }}</option>
                             @foreach($categories as $key => $name)
                                 <option value="{{ $key }}">{{ $name }}</option>
                             @endforeach
@@ -207,7 +206,7 @@
                                        hover:shadow-md
                                        transition-all duration-200 cursor-pointer 
                                        font-medium text-sm">
-                            <option value="">🌍 Tutte le lingue</option>
+                            <option value="">{{ __('poems.filters.all_languages') }}</option>
                             @foreach($languages as $code => $name)
                                 <option value="{{ $code }}">{{ $name }}</option>
                             @endforeach
@@ -232,10 +231,10 @@
                                        hover:shadow-md
                                        transition-all duration-200 cursor-pointer 
                                        font-medium text-sm">
-                            <option value="recent">🕒 Recenti</option>
-                            <option value="popular">🔥 Popolari</option>
-                            <option value="oldest">📜 Storiche</option>
-                            <option value="alphabetical">🔤 A-Z</option>
+                            <option value="recent">{{ __('poems.filters.sort_recent') }}</option>
+                            <option value="popular">{{ __('poems.filters.sort_popular') }}</option>
+                            <option value="oldest">{{ __('poems.filters.sort_oldest') }}</option>
+                            <option value="alphabetical">{{ __('poems.filters.sort_alphabetical') }}</option>
                         </select>
                         <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                             <svg class="w-5 h-5 text-neutral-500 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -294,7 +293,7 @@
                                 class="px-4 py-2 text-sm text-neutral-600 dark:text-neutral-400
                                        hover:text-primary-600 dark:hover:text-primary-400 
                                        transition-colors font-medium whitespace-nowrap">
-                            ✨ Azzera tutto
+                            ✨ {{ __('poems.index.clear_filters') }}
                         </button>
                     </div>
                 @endif
@@ -314,7 +313,7 @@
                     <path class="opacity-75" fill="currentColor" 
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span class="font-medium font-poem">Cercando tra i versi...</span>
+                <span class="font-medium font-poem">{{ __('poems.index.searching') }}</span>
             </div>
         </div>
         
@@ -438,11 +437,11 @@
                 </div>
                 
                 <h3 class="text-3xl font-bold text-neutral-900 dark:text-white mb-4 font-poem">
-                    Nessuna Poesia Trovata
+                    {{ __('poems.index.no_poems_title') }}
                 </h3>
                 
                 <p class="text-lg text-neutral-600 dark:text-neutral-400 mb-8 max-w-md mx-auto font-poem italic">
-                    "Il silenzio delle parole non ancora scritte..."
+                    "{{ __('poems.index.no_poems_subtitle') }}"
                 </p>
                 
                 @if($search || $category || $language || $type)
@@ -456,7 +455,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
-                        <span class="font-poem">Esplora Tutto</span>
+                        <span class="font-poem">{{ __('poems.index.explore_all') }}</span>
                     </button>
                 @endif
             </div>

@@ -60,12 +60,32 @@ return [
         'loading_processing' => 'Caricamento in corso...',
     ],
     
+    // Index
+    'index' => [
+        'title' => 'Le Poesie',
+        'subtitle' => 'La poesia è l\'eco di un\'anima che danza con le parole',
+        'view_mode' => 'Visualizzazione:',
+        'view_grid' => 'Griglia',
+        'view_list' => 'Lista',
+        'view_magazine' => 'Magazine',
+        'search_placeholder' => 'Cerca tra le poesie...',
+        'searching' => 'Cercando tra i versi...',
+        'no_poems_title' => 'Nessuna Poesia Trovata',
+        'no_poems_subtitle' => 'Il silenzio delle parole non ancora scritte...',
+        'clear_filters' => 'Azzera tutto',
+        'explore_all' => 'Esplora Tutto',
+    ],
+    
     // Filters
     'filters' => [
         'filter_by_category' => 'Filtra per Categoria',
         'filter_by_language' => 'Filtra per Lingua',
-        'all_categories' => 'Tutte le Categorie',
-        'all_languages' => 'Tutte le Lingue',
+        'all_categories' => '📚 Tutte le categorie',
+        'all_languages' => '🌍 Tutte le lingue',
+        'sort_recent' => '🕒 Recenti',
+        'sort_popular' => '🔥 Popolari',
+        'sort_oldest' => '📜 Storiche',
+        'sort_alphabetical' => '🔤 A-Z',
         'featured' => 'In Evidenza',
         'drafts' => 'Bozze',
         'bookmarks' => 'Preferiti',
