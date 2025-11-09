@@ -39,6 +39,13 @@ return [
     
     // Gig List
     'available_gigs' => 'Traduzioni Disponibili',
+    'subtitle' => 'Porta la poesia oltre i confini linguistici',
+    'search_gigs' => 'Cerca traduzioni...',
+    'sort_recent' => 'Più Recenti',
+    'sort_compensation_high' => 'Compenso Più Alto',
+    'sort_compensation_low' => 'Compenso Più Basso',
+    'sort_deadline' => 'Scadenza',
+    'applications_count_label' => 'Candidature',
     'my_gigs' => 'Le Mie Richieste',
     'my_applications' => 'Le Mie Candidature',
     'active_translations' => 'Traduzioni Attive',
