@@ -16,6 +16,10 @@ return [
     'close' => 'Chiudi',
     'details' => 'Dettagli',
     'select' => 'Seleziona',
+    'optional' => 'opzionale',
+    'click_to_upload' => 'Clicca per caricare un\'immagine',
+    'image_formats' => 'JPG, PNG, WebP (max 2MB)',
+    'remove' => 'Rimuovi',
     
     // Counts
     'poems_count' => ':count poesie',

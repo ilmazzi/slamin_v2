@@ -495,7 +495,7 @@
                 <!-- Upload Thumbnail -->
                 <div class="px-8 md:px-12 lg:px-16 pb-8">
                     <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
-                        Immagine di Copertina <span class="text-neutral-400">(opzionale)</span>
+                        {{ __('poems.form.thumbnail') }} <span class="text-neutral-400">({{ __('common.optional') }})</span>
                     </label>
                     
                     <div class="flex flex-col md:flex-row gap-6">
@@ -507,13 +507,13 @@
                                 <svg class="w-12 h-12 mx-auto mb-4 text-neutral-400 group-hover:text-primary-500 transition-colors" 
                                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 1 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                                 </svg>
                                 <p class="text-sm font-medium text-neutral-600 dark:text-neutral-400 group-hover:text-primary-600 transition-colors">
-                                    Clicca per caricare un'immagine
+                                    {{ __('common.click_to_upload') }}
                                 </p>
                                 <p class="text-xs text-neutral-500 dark:text-neutral-500 mt-2">
-                                    JPG, PNG, WebP (max 2MB)
+                                    {{ __('common.image_formats') }}
                                 </p>
                             </div>
                             <input wire:model="thumbnail" type="file" accept="image/*" class="hidden">
@@ -531,7 +531,7 @@
                                                 wire:click="$set('thumbnail', null)"
                                                 class="px-4 py-2 bg-red-500 text-white rounded-lg font-medium
                                                        hover:bg-red-600 transition-colors">
-                                            Rimuovi
+                                            {{ __('common.remove') }}
                                         </button>
                                     </div>
                                 </div>
