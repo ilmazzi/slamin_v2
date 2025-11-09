@@ -73,19 +73,21 @@ Route::get('/events/{event}/manage', function(\App\Models\Event $event) {
     return view('livewire.events.event-manage', compact('event'));
 })->middleware('auth')->name('events.manage');
 
-// Poems Routes
-Route::get('/poems', function () {
-    $poems = \App\Models\Poem::where('moderation_status', 'approved')
-        ->where('is_public', true)
-        ->orderBy('created_at', 'desc')
-        ->paginate(12);
-    return view('pages.poems-index', compact('poems'));
-})->name('poems.index');
+// Poems Routes (Livewire)
+Route::get('/poems', \App\Livewire\Poems\PoemIndex::class)->name('poems.index');
 
-Route::get('/poems/{poem}', function ($id) {
-    $poem = \App\Models\Poem::findOrFail($id);
-    return view('pages.poem-show', compact('poem'));
-})->name('poems.show');
+// Poems CRUD (Auth required) - PRIMA di {slug} per evitare conflitti!
+Route::middleware('auth')->group(function () {
+    Route::get('/poems/create', \App\Livewire\Poems\PoemCreate::class)->name('poems.create');
+    Route::get('/poems/my/poems', \App\Livewire\Poems\MyPoems::class)->name('poems.my-poems');
+    Route::get('/poems/my/drafts', \App\Livewire\Poems\MyDrafts::class)->name('poems.drafts');
+    Route::get('/poems/my/bookmarks', \App\Livewire\Poems\MyBookmarks::class)->name('poems.bookmarks');
+    Route::get('/poems/my/liked', \App\Livewire\Poems\MyLiked::class)->name('poems.liked');
+    Route::get('/poems/{slug}/edit', \App\Livewire\Poems\PoemEdit::class)->name('poems.edit');
+});
+
+// Poems Show - DOPO le route specifiche
+Route::get('/poems/{slug}', \App\Livewire\Poems\PoemShow::class)->name('poems.show');
 
 // Articles Routes
 Route::get('/articles', function () {

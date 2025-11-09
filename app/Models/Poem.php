@@ -164,17 +164,7 @@ class Poem extends Model
     // Accessors
     public function getThumbnailUrlAttribute()
     {
-        // Se c'è thumbnail (campo vecchio) e inizia con http, è un URL esterno
-        if ($this->thumbnail && str_starts_with($this->thumbnail, 'http')) {
-            return $this->thumbnail;
-        }
-        
-        // Altrimenti usa thumbnail_path
         if ($this->thumbnail_path) {
-            // Se è già un URL esterno
-            if (str_starts_with($this->thumbnail_path, 'http')) {
-                return $this->thumbnail_path;
-            }
             return asset('storage/' . $this->thumbnail_path);
         }
 
@@ -224,10 +214,20 @@ class Poem extends Model
 
         static::creating(function ($poem) {
             if (empty($poem->slug)) {
-                $poem->slug = Str::slug($poem->title);
+                $poem->slug = $poem->title 
+                    ? Str::slug($poem->title) 
+                    : 'poesia-' . Str::random(8);
             }
             if (empty($poem->word_count)) {
                 $poem->word_count = str_word_count(strip_tags($poem->content));
+            }
+        });
+        
+        static::created(function ($poem) {
+            // Aggiorna slug con ID se era random
+            if (Str::startsWith($poem->slug, 'poesia-')) {
+                $poem->slug = 'poesia-' . $poem->id;
+                $poem->saveQuietly();
             }
         });
 

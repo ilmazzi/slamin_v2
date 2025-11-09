@@ -12,9 +12,14 @@ $colorClasses = match($color) {
     'info' => 'bg-info text-white',
     default => 'bg-primary-600 text-white',
 };
+
+$content = $label ?: $slot;
+$hasContent = !empty(trim($content));
 @endphp
 
+@if($hasContent)
 <span {{ $attributes->merge(['class' => "px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg {$colorClasses}"]) }}>
-    {{ $label ?: $slot }}
+    {{ $content }}
 </span>
+@endif
 
