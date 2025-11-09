@@ -40,5 +40,6 @@ return [
     'no_results' => 'No results found',
     'back_to_poems' => 'Back to poems',
     'back_to' => 'Back to',
+    'all' => 'All',
 ];
 
