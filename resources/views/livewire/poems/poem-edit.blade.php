@@ -723,12 +723,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // LOAD EXISTING CONTENT on edit - wait for Livewire to populate textarea
+    setTimeout(function() {
+        const existingContent = textarea.value;
+        if (existingContent && existingContent.trim() !== '') {
+            quill.root.innerHTML = existingContent;
+            console.log('✅ Loaded existing content:', existingContent.substring(0, 50) + '...');
+        } else {
+            console.log('⚠️ No existing content found in textarea');
+        }
+    }, 100);
+    
     // Sync Quill → Textarea → Livewire
     quill.on('text-change', function() {
         textarea.value = quill.root.innerHTML;
         textarea.dispatchEvent(new Event('input', { bubbles: true }));
     });
     
-    console.log('✅ Quill initialized');
+    console.log('✅ Quill initialized for editing');
 });
 </script>
