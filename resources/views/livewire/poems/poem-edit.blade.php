@@ -338,12 +338,12 @@
                                 <div class="paper-texture"></div>
                             
                             <!-- Quill Editor Container -->
-                            <div id="quill-editor-wrapper">
+                            <div id="quill-editor-wrapper" wire:ignore>
                                 <div id="quill-editor" 
                                      class="min-h-[500px] font-poem text-xl leading-relaxed bg-transparent"
                                      style="border: none; padding-left: 72px;"></div>
                             </div>
-                            <textarea wire:model="content" id="quill-content" style="display:none;">{{ $content }}</textarea>
+                            <textarea wire:model.live="content" id="quill-content" style="display:none;">{{ $content }}</textarea>
                         </div>
                         </div>
                         
