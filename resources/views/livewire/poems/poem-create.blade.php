@@ -200,7 +200,7 @@
             <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
-            <span class="font-poem">Torna alle poesie</span>
+            <span class="font-poem">{{ __('common.back_to_poems') }}</span>
         </a>
         
         <!-- Header Poetico -->
@@ -210,10 +210,10 @@
             </div>
             
             <h1 class="text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-4 font-poem relative z-10">
-                Scrivi la Tua Poesia
+                {{ __('poems.create.title') }}
             </h1>
             <p class="text-xl text-neutral-600 dark:text-neutral-400 font-poem italic max-w-2xl mx-auto">
-                "Lascia che le parole danzino sulla carta bianca"
+                "{{ __('poems.create.subtitle') }}"
             </p>
             
             <!-- Success/Error Messages -->
@@ -279,11 +279,11 @@
                             <svg class="w-5 h-5 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
                             </svg>
-                            Titolo <span class="text-neutral-400 font-normal text-sm">(opzionale)</span>
+                            {{ __('poems.create.title_optional') }}
                         </label>
                         <input wire:model.blur="title"
                                type="text"
-                               placeholder="Un titolo per i tuoi versi..."
+                               placeholder="{{ __('poems.placeholders.title') }}"
                                class="w-full px-6 py-4 rounded-2xl border-2 border-neutral-200 dark:border-neutral-700
                                       bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white
                                       focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20
@@ -306,7 +306,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
-                            I Tuoi Versi <span class="text-red-500">*</span>
+                            {{ __('poems.form.content') }} <span class="text-red-500">*</span>
                         </label>
                         
                         <!-- FOGLIO DI CARTA REALISTICO CON BORDI 3D -->

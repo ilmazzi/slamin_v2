@@ -32,5 +32,7 @@ return [
     'welcome' => 'Benvenuto',
     'loading' => 'Caricamento...',
     'no_results' => 'Nessun risultato trovato',
+    'back_to_poems' => 'Torna alle poesie',
+    'back_to' => 'Torna a',
 ];
 
