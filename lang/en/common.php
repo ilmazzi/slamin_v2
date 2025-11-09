@@ -11,6 +11,15 @@ return [
     'like' => 'Like',
     'comment' => 'Comment',
     'more_options' => 'More options',
+    'cancel' => 'Cancel',
+    'save' => 'Save',
+    'close' => 'Close',
+    'details' => 'Details',
+    'select' => 'Select',
+    'optional' => 'optional',
+    'click_to_upload' => 'Click to upload an image',
+    'image_formats' => 'JPG, PNG, WebP (max 2MB)',
+    'remove' => 'Remove',
     
     // Counts
     'poems_count' => ':count poems',
@@ -29,5 +38,7 @@ return [
     'welcome' => 'Welcome',
     'loading' => 'Loading...',
     'no_results' => 'No results found',
+    'back_to_poems' => 'Back to poems',
+    'back_to' => 'Back to',
 ];
 

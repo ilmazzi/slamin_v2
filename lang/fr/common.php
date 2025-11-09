@@ -11,6 +11,15 @@ return [
     'like' => 'J\'aime',
     'comment' => 'Commenter',
     'more_options' => 'Plus d\'options',
+    'cancel' => 'Annuler',
+    'save' => 'Enregistrer',
+    'close' => 'Fermer',
+    'details' => 'Détails',
+    'select' => 'Sélectionner',
+    'optional' => 'facultatif',
+    'click_to_upload' => 'Cliquez pour télécharger une image',
+    'image_formats' => 'JPG, PNG, WebP (max 2MB)',
+    'remove' => 'Supprimer',
     
     // Counts
     'poems_count' => ':count poèmes',
@@ -29,5 +38,7 @@ return [
     'welcome' => 'Bienvenue',
     'loading' => 'Chargement...',
     'no_results' => 'Aucun résultat trouvé',
+    'back_to_poems' => 'Retour aux poèmes',
+    'back_to' => 'Retour à',
 ];
 

@@ -71,5 +71,22 @@ return [
     'free_label' => 'Gratuit',
     'unlimited' => 'Illimité',
     'not_available' => 'Non disponible',
+    
+    // Create/Edit
+    'create' => [
+        'title' => 'Créer un Événement',
+        'edit_title' => 'Modifier l\'Événement',
+        'publish_status' => 'Statut de Publication',
+        'publish_now' => 'Publier Maintenant',
+        'save_draft' => 'Enregistrer le Brouillon',
+        'publish_later' => 'Publier plus tard',
+        'preview_confirm' => 'Aperçu & Confirmer',
+        'publish_event' => 'Publier l\'Événement',
+        'update_event' => 'Mettre à Jour l\'Événement',
+        'save_changes' => 'Enregistrer les Modifications',
+        'saving' => 'Enregistrement...',
+        'published_badge' => '🚀 Publié',
+        'draft_badge' => '📝 Brouillon',
+    ],
 ];
 

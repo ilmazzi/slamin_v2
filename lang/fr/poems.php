@@ -37,7 +37,27 @@ return [
     
     // Create
     'create' => [
-        'title' => 'Crea Poesia',
+        'title' => 'Écrivez Votre Poésie',
+        'page_title' => 'Créer un Nouveau Poème',
+        'subtitle' => 'La poésie est l\'écho d\'une âme qui danse avec les mots',
+        'write_poem' => 'Écrire un Poème',
+        'publish_poem' => 'Publier le Poème',
+        'save_draft' => 'Enregistrer comme Brouillon',
+        'preview' => 'Aperçu',
+        'hide_preview' => 'Masquer',
+        'upload_cover' => 'Télécharger Image de Couverture',
+        'choose_file' => 'Choisir un Fichier',
+        'or_drag_drop' => 'ou glisser ici',
+        'no_file_chosen' => 'Aucun fichier choisi',
+        'title_optional' => 'Titre (facultatif)',
+        'description_optional' => 'Brève Description (facultatif)',
+        'category_label' => 'Catégorie',
+        'select_category' => 'Sélectionner une catégorie',
+        'type_label' => 'Type de Poème',
+        'language_label' => 'Langue',
+        'tags_label' => 'Tags',
+        'tags_placeholder' => 'Séparés par virgule (ex: amour, nature, vie)',
+        'loading_processing' => 'Traitement en cours...',
     ],
     
     // Filters
@@ -65,12 +85,69 @@ return [
         ],
     ],
     
+    // Index
+    'index' => [
+        'title' => 'Les Poèmes',
+        'subtitle' => 'La poésie est l\'écho d\'une âme qui danse avec les mots',
+        'view_mode' => 'Affichage:',
+        'view_grid' => 'Grille',
+        'view_list' => 'Liste',
+        'view_magazine' => 'Magazine',
+        'search_placeholder' => 'Rechercher parmi les poèmes...',
+        'searching' => 'Recherche en cours...',
+        'no_poems_title' => 'Aucun Poème Trouvé',
+        'no_poems_subtitle' => 'Le silence des mots pas encore écrits...',
+        'clear_filters' => 'Tout effacer',
+        'explore_all' => 'Explorer Tout',
+    ],
+    
+    // Filters
+    'filters' => [
+        'filter_by_category' => 'Filtrer par Catégorie',
+        'filter_by_language' => 'Filtrer par Langue',
+        'all_categories' => '📚 Toutes les catégories',
+        'all_languages' => '🌍 Toutes les langues',
+        'sort_recent' => '🕒 Récents',
+        'sort_popular' => '🔥 Populaires',
+        'sort_oldest' => '📜 Anciens',
+        'sort_alphabetical' => '🔤 A-Z',
+        'featured' => 'En Vedette',
+        'drafts' => 'Brouillons',
+        'bookmarks' => 'Favoris',
+        'liked' => 'Aimés',
+    ],
+    
     // Placeholders
     'placeholders' => [
-        'search' => 'Cerca poesie per titolo, autore, contenuto...',
-        'title' => 'Inserisci il titolo della poesia',
-        'content' => 'Scrivi qui la tua poesia...',
-        'description' => 'Descrizione breve (opzionale)',
+        'search' => 'Rechercher des poèmes par titre, auteur, contenu...',
+        'title' => 'Entrez le titre du poème',
+        'content' => 'Écrivez votre poésie ici...\n\nChaque vers\nchaque mot\nchaque silence\n\na sa signification...',
+        'description' => 'Brève description (facultatif)',
+    ],
+    
+    // Edit
+    'edit' => [
+        'title' => 'Modifier Votre Poésie',
+        'update_poem' => 'Mettre à Jour le Poème',
+        'update_draft' => 'Mettre à Jour le Brouillon',
+    ],
+    
+    // Preview
+    'preview' => [
+        'modal_title' => 'Aperçu',
+    ],
+    
+    // Show
+    'show' => [
+        'related_poems' => 'Poèmes Connexes',
+        'discover_more' => 'Découvrez d\'autres voix poétiques',
+        'edit_poem' => 'Modifier',
+        'original_poem' => 'Poème Original',
+        'translated_version' => 'Traduction',
+        'translator_notes' => 'Notes du Traducteur',
+        'about_author' => 'À Propos de l\'Auteur',
+        'author_bio_empty' => 'Aucune biographie disponible',
+        'statistics' => 'Statistiques',
     ],
     
     // My Poems

@@ -37,7 +37,27 @@ return [
     
     // Create
     'create' => [
-        'title' => 'Crea Poesia',
+        'title' => 'Write Your Poetry',
+        'page_title' => 'Create New Poem',
+        'subtitle' => 'Poetry is the echo of a soul dancing with words',
+        'write_poem' => 'Write a Poem',
+        'publish_poem' => 'Publish Poem',
+        'save_draft' => 'Save as Draft',
+        'preview' => 'Preview',
+        'hide_preview' => 'Hide',
+        'upload_cover' => 'Upload Cover Image',
+        'choose_file' => 'Choose File',
+        'or_drag_drop' => 'or drag here',
+        'no_file_chosen' => 'No file chosen',
+        'title_optional' => 'Title (optional)',
+        'description_optional' => 'Brief Description (optional)',
+        'category_label' => 'Category',
+        'select_category' => 'Select a category',
+        'type_label' => 'Poem Type',
+        'language_label' => 'Language',
+        'tags_label' => 'Tags',
+        'tags_placeholder' => 'Comma separated (e.g.: love, nature, life)',
+        'loading_processing' => 'Processing...',
     ],
     
     // Filters
@@ -65,12 +85,69 @@ return [
         ],
     ],
     
+    // Index
+    'index' => [
+        'title' => 'Poems',
+        'subtitle' => 'Poetry is the echo of a soul dancing with words',
+        'view_mode' => 'View:',
+        'view_grid' => 'Grid',
+        'view_list' => 'List',
+        'view_magazine' => 'Magazine',
+        'search_placeholder' => 'Search among poems...',
+        'searching' => 'Searching through verses...',
+        'no_poems_title' => 'No Poems Found',
+        'no_poems_subtitle' => 'The silence of words not yet written...',
+        'clear_filters' => 'Clear all',
+        'explore_all' => 'Explore All',
+    ],
+    
+    // Filters
+    'filters' => [
+        'filter_by_category' => 'Filter by Category',
+        'filter_by_language' => 'Filter by Language',
+        'all_categories' => '📚 All categories',
+        'all_languages' => '🌍 All languages',
+        'sort_recent' => '🕒 Recent',
+        'sort_popular' => '🔥 Popular',
+        'sort_oldest' => '📜 Oldest',
+        'sort_alphabetical' => '🔤 A-Z',
+        'featured' => 'Featured',
+        'drafts' => 'Drafts',
+        'bookmarks' => 'Bookmarks',
+        'liked' => 'Liked',
+    ],
+    
     // Placeholders
     'placeholders' => [
-        'search' => 'Cerca poesie per titolo, autore, contenuto...',
-        'title' => 'Inserisci il titolo della poesia',
-        'content' => 'Scrivi qui la tua poesia...',
-        'description' => 'Descrizione breve (opzionale)',
+        'search' => 'Search poems by title, author, content...',
+        'title' => 'Enter the poem title',
+        'content' => 'Write your poetry here...\n\nEvery verse\nevery word\nevery silence\n\nhas its meaning...',
+        'description' => 'Brief description (optional)',
+    ],
+    
+    // Edit
+    'edit' => [
+        'title' => 'Edit Your Poetry',
+        'update_poem' => 'Update Poem',
+        'update_draft' => 'Update Draft',
+    ],
+    
+    // Preview
+    'preview' => [
+        'modal_title' => 'Preview',
+    ],
+    
+    // Show
+    'show' => [
+        'related_poems' => 'Related Poems',
+        'discover_more' => 'Discover other poetic voices',
+        'edit_poem' => 'Edit',
+        'original_poem' => 'Original Poem',
+        'translated_version' => 'Translation',
+        'translator_notes' => 'Translator Notes',
+        'about_author' => 'About the Author',
+        'author_bio_empty' => 'No biography available',
+        'statistics' => 'Statistics',
     ],
     
     // My Poems

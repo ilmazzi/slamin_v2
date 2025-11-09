@@ -71,5 +71,22 @@ return [
     'free_label' => 'Free',
     'unlimited' => 'Unlimited',
     'not_available' => 'Not available',
+    
+    // Create/Edit
+    'create' => [
+        'title' => 'Create Event',
+        'edit_title' => 'Edit Event',
+        'publish_status' => 'Publication Status',
+        'publish_now' => 'Publish Now',
+        'save_draft' => 'Save Draft',
+        'publish_later' => 'Publish later',
+        'preview_confirm' => 'Preview & Confirm',
+        'publish_event' => 'Publish Event',
+        'update_event' => 'Update Event',
+        'save_changes' => 'Save Changes',
+        'saving' => 'Saving...',
+        'published_badge' => '🚀 Published',
+        'draft_badge' => '📝 Draft',
+    ],
 ];
 
