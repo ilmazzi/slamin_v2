@@ -610,65 +610,80 @@
             
         </form>
         
-        <!-- Preview Modal - Anteprima Poetica -->
+        <!-- Preview Modal - Anteprima Poetica con Carta Vintage -->
         @if($showPreview && $content)
             <div class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in"
                  @click.self="$wire.togglePreview()">
-                <div class="relative bg-gradient-to-br from-amber-50 via-white to-amber-50 dark:from-neutral-800 dark:via-neutral-900 dark:to-neutral-800 
-                            rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+                
+                <div class="relative max-w-4xl w-full max-h-[90vh] overflow-hidden"
+                     style="transform: perspective(1200px) rotateX(1deg);">
                     
-                    <!-- Header con sfondo poetico -->
-                    <div class="relative bg-gradient-to-r from-primary-500/10 via-primary-400/5 to-primary-500/10 
-                                border-b-2 border-primary-200 dark:border-primary-900/50 px-8 py-6">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
-                                <h2 class="text-2xl font-bold text-neutral-900 dark:text-white font-poem">
-                                    Anteprima
-                                </h2>
+                    <!-- FOGLIO VINTAGE -->
+                    <div class="relative vintage-paper-sheet-card overflow-visible">
+                        <!-- Angolo piegato -->
+                        <div class="vintage-corner-card"></div>
+                        
+                        <!-- Texture + Macchie -->
+                        <div class="vintage-texture-card"></div>
+                        <div class="vintage-stains-card"></div>
+                        
+                        <!-- Contenuto carta -->
+                        <div class="relative z-10 overflow-y-auto max-h-[90vh]">
+                            
+                            <!-- Header -->
+                            <div class="sticky top-0 bg-gradient-to-b from-[#f5ead8] via-[#f9f3e8] to-transparent dark:from-[#2a2622] dark:via-[#352f28] dark:to-transparent
+                                        border-b border-neutral-300/30 dark:border-neutral-600/30 px-8 py-6 z-20">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <svg class="w-7 h-7 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                        </svg>
+                                        <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 font-poem">
+                                            Anteprima
+                                        </h2>
+                                    </div>
+                                    <button type="button" 
+                                            wire:click="togglePreview"
+                                            class="p-2 rounded-xl hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50 
+                                                   transition-all duration-200 hover:rotate-90">
+                                        <svg class="w-6 h-6 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                            <button type="button" 
-                                    wire:click="togglePreview"
-                                    class="p-2 rounded-xl hover:bg-primary-100 dark:hover:bg-primary-900/30 
-                                           transition-all duration-200 hover:rotate-90">
-                                <svg class="w-6 h-6 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Content Area con scroll -->
-                    <div class="overflow-y-auto max-h-[calc(90vh-100px)] p-8 md:p-12">
-                        <!-- Decorazione virgolette -->
-                        <div class="text-8xl text-primary-200 dark:text-primary-900/30 font-serif leading-none mb-6">
-                            "
-                        </div>
-                        
-                        @if($title)
-                            <h3 class="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-8 font-poem 
-                                       leading-tight text-center animate-fade-in-scale">
-                                {{ $title }}
-                            </h3>
-                        @endif
-                        
-                        <!-- Contenuto Poesia -->
-                        <div class="poem-content prose prose-lg md:prose-xl prose-neutral dark:prose-invert max-w-none
-                                    font-poem text-neutral-800 dark:text-neutral-200 leading-relaxed
-                                    px-4 md:px-8">
-                            {!! $content !!}
-                        </div>
-                        
-                        <!-- Decorazione finale -->
-                        <div class="mt-12 flex justify-center">
-                            <svg class="w-20 h-6 text-primary-300 dark:text-primary-800" viewBox="0 0 100 24" fill="none">
-                                <path d="M0 12 Q25 0, 50 12 T100 12" stroke="currentColor" stroke-width="2" fill="none"/>
-                            </svg>
+                            
+                            <!-- Content Area -->
+                            <div class="p-8 md:p-12">
+                                <!-- Decorazione virgolette -->
+                                <div class="text-8xl text-neutral-300 dark:text-neutral-700 font-serif leading-none mb-6">
+                                    "
+                                </div>
+                                
+                                @if($title)
+                                    <h3 class="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-8 font-poem 
+                                               leading-tight text-center animate-fade-in-scale">
+                                        {{ $title }}
+                                    </h3>
+                                @endif
+                                
+                                <!-- Contenuto Poesia -->
+                                <div class="poem-content prose prose-lg md:prose-xl prose-neutral dark:prose-invert max-w-none
+                                            font-poem text-neutral-800 dark:text-neutral-200 leading-relaxed
+                                            px-4 md:px-8">
+                                    {!! $content !!}
+                                </div>
+                                
+                                <!-- Divisore calligrafico finale -->
+                                <div class="mt-12 flex items-center justify-center">
+                                    <div class="flex-1 h-px bg-gradient-to-r from-transparent via-neutral-400/30 to-neutral-400/15"></div>
+                                    <div class="px-4 text-neutral-500/50 text-2xl">❦</div>
+                                    <div class="flex-1 h-px bg-gradient-to-l from-transparent via-neutral-400/30 to-neutral-400/15"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
