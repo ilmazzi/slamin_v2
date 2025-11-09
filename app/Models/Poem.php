@@ -96,6 +96,9 @@ class Poem extends Model
         return $this->hasMany(PoemTranslation::class);
     }
 
+    /**
+     * Gig per richiedere traduzioni
+     */
     public function gigs(): HasMany
     {
         return $this->hasMany(Gig::class);

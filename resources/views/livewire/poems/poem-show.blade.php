@@ -477,6 +477,9 @@
                             </svg>
                             <span class="font-poem">{{ __('poems.show.edit_poem') }}</span>
                         </a>
+                        
+                        <!-- Translation Request Button (owner only) -->
+                        <livewire:translations.translation-request :poem="$poem" :key="'translation-request-'.$poem->id" />
                     @endif
                 </div>
             </div>
