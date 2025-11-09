@@ -11,12 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('articles', function (Blueprint $table) {
-            // Rinomina le colonne per uniformarle con le altre tabelle
-            $table->renameColumn('likes_count', 'like_count');
-            $table->renameColumn('comments_count', 'comment_count');
-            $table->renameColumn('views_count', 'view_count');
-        });
+        // Verifica che la tabella articles esista prima di modificarla
+        if (Schema::hasTable('articles')) {
+            Schema::table('articles', function (Blueprint $table) {
+                // Rinomina le colonne solo se esistono
+                if (Schema::hasColumn('articles', 'likes_count') && !Schema::hasColumn('articles', 'like_count')) {
+                    $table->renameColumn('likes_count', 'like_count');
+                }
+                if (Schema::hasColumn('articles', 'comments_count') && !Schema::hasColumn('articles', 'comment_count')) {
+                    $table->renameColumn('comments_count', 'comment_count');
+                }
+                if (Schema::hasColumn('articles', 'views_count') && !Schema::hasColumn('articles', 'view_count')) {
+                    $table->renameColumn('views_count', 'view_count');
+                }
+            });
+        }
     }
 
     /**

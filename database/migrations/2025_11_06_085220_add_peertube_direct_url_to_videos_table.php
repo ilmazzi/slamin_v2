@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('videos', function (Blueprint $table) {
-            $table->string('peertube_direct_url', 500)->nullable();
-        });
+        if (Schema::hasTable('videos') && !Schema::hasColumn('videos', 'peertube_direct_url')) {
+            Schema::table('videos', function (Blueprint $table) {
+                $table->string('peertube_direct_url', 500)->nullable();
+            });
+        }
     }
 
     /**
