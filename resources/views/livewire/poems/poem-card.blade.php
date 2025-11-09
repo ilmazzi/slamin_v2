@@ -70,14 +70,14 @@
             <div class="relative z-10 flex flex-col h-full">
                 
                 <!-- Titolo -->
-            <h3 class="text-lg font-bold mb-3 text-amber-900 dark:text-amber-100 
+            <h3 class="text-lg font-bold mb-3 text-neutral-900 dark:text-neutral-100 
                        group-hover:text-primary-600 dark:group-hover:text-primary-400 
                        transition-colors font-poem leading-tight line-clamp-2">
                 "{{ $poem->title ?: __('poems.untitled') }}"
             </h3>
             
             <!-- Excerpt -->
-            <p class="text-amber-800 dark:text-amber-200 italic line-clamp-3 text-sm mb-4 font-poem leading-relaxed flex-1">
+            <p class="text-neutral-700 dark:text-neutral-300 italic line-clamp-3 text-sm mb-4 font-poem leading-relaxed flex-1">
                 {{ $poem->description ?? Str::limit(strip_tags($poem->content), 100) }}
             </p>
             
@@ -86,18 +86,18 @@
                 <div class="flex flex-wrap gap-2 mb-4">
                     @foreach(array_slice($poem->tags, 0, 3) as $tag)
                         <span class="px-2 py-0.5 text-xs rounded-full 
-                                     bg-amber-100 dark:bg-amber-900/30
-                                     text-amber-700 dark:text-amber-300
-                                     border border-amber-300 dark:border-amber-700
+                                     bg-neutral-100 dark:bg-neutral-700/50
+                                     text-neutral-700 dark:text-neutral-300
+                                     border border-neutral-300 dark:border-neutral-600
                                      font-medium">
                             #{{ $tag }}
                         </span>
                     @endforeach
                     @if(count($poem->tags) > 3)
                         <span class="px-2 py-0.5 text-xs rounded-full 
-                                     bg-amber-200 dark:bg-amber-800/30 
-                                     text-amber-800 dark:text-amber-400
-                                     border border-amber-300 dark:border-amber-700">
+                                     bg-neutral-200 dark:bg-neutral-600/50 
+                                     text-neutral-800 dark:text-neutral-400
+                                     border border-neutral-300 dark:border-neutral-600">
                             +{{ count($poem->tags) - 3 }}
                         </span>
                     @endif
@@ -129,7 +129,7 @@
                         size="sm"
                         class="hover:scale-110 transition-transform" />
                     
-                    <div class="flex items-center gap-1 text-sm text-amber-600 dark:text-amber-400">
+                    <div class="flex items-center gap-1 text-sm text-neutral-600 dark:text-neutral-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
