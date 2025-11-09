@@ -1285,7 +1285,7 @@
                                                 <svg class="w-10 h-10 mx-auto mb-3 transition-colors {{ $status === 'published' ? 'text-primary-600 dark:text-primary-400' : 'text-neutral-400 dark:text-neutral-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                                 </svg>
-                                                <span class="font-bold {{ $status === 'published' ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400' }}">Pubblica Subito</span>
+                                                <span class="font-bold {{ $status === 'published' ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400' }}">{{ __('events.create.publish_now') }}</span>
                                                 <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-1">Visibile immediatamente</p>
                                             </div>
                                         </label>
@@ -1297,8 +1297,8 @@
                                                 <svg class="w-10 h-10 mx-auto mb-3 transition-colors {{ $status === 'draft' ? 'text-accent-600 dark:text-accent-400' : 'text-neutral-400 dark:text-neutral-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                 </svg>
-                                                <span class="font-bold {{ $status === 'draft' ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400' }}">Salva Bozza</span>
-                                                <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-1">Pubblica più tardi</p>
+                                                <span class="font-bold {{ $status === 'draft' ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400' }}">{{ __('events.create.save_draft') }}</span>
+                                                <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-1">{{ __('events.create.publish_later') }}</p>
                                             </div>
                                         </label>
                                     </div>
@@ -1322,7 +1322,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">Anteprima & Conferma</h2>
+                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ __('events.create.preview_confirm') }}</h2>
                                     <p class="text-neutral-700 dark:text-neutral-300">Verifica tutti i dati prima di pubblicare</p>
                                 </div>
                             </div>
@@ -1698,7 +1698,7 @@
                                             <dd>
                                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold
                                                              {{ $status === 'published' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300' }}">
-                                                    {{ $status === 'published' ? '🚀 Pubblicato' : '📝 Bozza' }}
+                                                    {{ $status === 'published' ? __('events.create.published_badge') : __('events.create.draft_badge') }}
                                                 </span>
                                             </dd>
                                         </div>
@@ -1753,7 +1753,7 @@
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                {{ $status === 'published' ? 'Pubblica Evento' : 'Salva Bozza' }}
+                                {{ $status === 'published' ? __('events.create.publish_event') : __('events.create.save_draft') }}
                             </button>
                         @endif
                     </div>
