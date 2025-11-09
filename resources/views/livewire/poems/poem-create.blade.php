@@ -559,7 +559,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                               d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                     </svg>
-                    <span class="font-poem">{{ $showPreview ? 'Nascondi' : 'Anteprima' }}</span>
+                    <span class="font-poem">{{ $showPreview ? __('poems.create.hide_preview') : __('poems.create.preview') }}</span>
                 </button>
                 
                 <div class="flex items-center gap-4">
@@ -575,7 +575,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                   d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
                         </svg>
-                        <span class="font-poem">Salva Bozza</span>
+                        <span class="font-poem">{{ __('poems.create.save_draft') }}</span>
                     </button>
                     
                     <button type="button"
@@ -591,7 +591,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                   d="M5 13l4 4L19 7"/>
                         </svg>
-                        <span class="font-poem">Pubblica Poesia</span>
+                        <span class="font-poem">{{ __('poems.create.publish_poem') }}</span>
                     </button>
                 </div>
             </div>
@@ -642,7 +642,7 @@
                                                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
                                         <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 font-poem">
-                                            Anteprima
+                                            {{ __('poems.preview.modal_title') }}
                                         </h2>
                                     </div>
                                     <button type="button" 
