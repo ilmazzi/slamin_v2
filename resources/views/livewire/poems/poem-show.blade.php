@@ -497,9 +497,10 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     @foreach($relatedPoems as $index => $relatedPoem)
-                        <div style="animation-delay: {{ $index * 0.15 }}s" class="opacity-0 animate-fade-in">
+                        <div style="animation-delay: {{ $index * 0.15 }}s" class="opacity-0 animate-fade-in h-full">
                             <livewire:poems.poem-card 
-                                :poem="$relatedPoem" 
+                                :poem="$relatedPoem"
+                                :showActions="true"
                                 :key="'related-'.$relatedPoem->id"
                                 wire:key="related-{{ $relatedPoem->id }}" />
                         </div>
