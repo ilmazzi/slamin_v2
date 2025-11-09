@@ -37,7 +37,27 @@ return [
     
     // Create
     'create' => [
-        'title' => 'Crea Poesia',
+        'title' => 'Scrivi la Tua Poesia',
+        'page_title' => 'Crea Nuova Poesia',
+        'subtitle' => 'La poesia è l\'eco di un\'anima che danza con le parole',
+        'write_poem' => 'Scrivi una Poesia',
+        'publish_poem' => 'Pubblica Poesia',
+        'save_draft' => 'Salva come Bozza',
+        'preview' => 'Anteprima',
+        'hide_preview' => 'Nascondi',
+        'upload_cover' => 'Carica Immagine di Copertina',
+        'choose_file' => 'Scegli File',
+        'or_drag_drop' => 'o trascina qui',
+        'no_file_chosen' => 'Nessun file scelto',
+        'title_optional' => 'Titolo (opzionale)',
+        'description_optional' => 'Descrizione Breve (opzionale)',
+        'category_label' => 'Categoria',
+        'select_category' => 'Seleziona una categoria',
+        'type_label' => 'Tipo di Poesia',
+        'language_label' => 'Lingua',
+        'tags_label' => 'Tag',
+        'tags_placeholder' => 'Separati da virgola (es: amore, natura, vita)',
+        'loading_processing' => 'Caricamento in corso...',
     ],
     
     // Filters
@@ -69,8 +89,20 @@ return [
     'placeholders' => [
         'search' => 'Cerca poesie per titolo, autore, contenuto...',
         'title' => 'Inserisci il titolo della poesia',
-        'content' => 'Scrivi qui la tua poesia...',
+        'content' => 'Scrivi qui la tua poesia...\n\nOgni verso\nogni parola\nogni silenzio\n\nha il suo significato...',
         'description' => 'Descrizione breve (opzionale)',
+    ],
+    
+    // Edit
+    'edit' => [
+        'title' => 'Modifica la Tua Poesia',
+        'update_poem' => 'Aggiorna Poesia',
+        'update_draft' => 'Aggiorna Bozza',
+    ],
+    
+    // Preview
+    'preview' => [
+        'modal_title' => 'Anteprima',
     ],
     
     // My Poems
