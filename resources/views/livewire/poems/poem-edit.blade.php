@@ -343,7 +343,7 @@
                                      class="min-h-[500px] font-poem text-xl leading-relaxed bg-transparent"
                                      style="border: none; padding-left: 72px;"></div>
                             </div>
-                            <textarea wire:model="content" id="quill-content" style="display:none;"></textarea>
+                            <textarea wire:model="content" id="quill-content" style="display:none;">{{ $content }}</textarea>
                         </div>
                         </div>
                         
@@ -723,16 +723,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // LOAD EXISTING CONTENT on edit - wait for Livewire to populate textarea
-    setTimeout(function() {
-        const existingContent = textarea.value;
-        if (existingContent && existingContent.trim() !== '') {
-            quill.root.innerHTML = existingContent;
-            console.log('✅ Loaded existing content:', existingContent.substring(0, 50) + '...');
-        } else {
-            console.log('⚠️ No existing content found in textarea');
-        }
-    }, 100);
+    // LOAD EXISTING CONTENT on edit - textarea has initial value inline
+    const initialContent = textarea.value;
+    if (initialContent && initialContent.trim() !== '') {
+        quill.root.innerHTML = initialContent;
+        console.log('✅ Loaded existing content:', initialContent.substring(0, 50) + '...');
+    } else {
+        console.log('⚠️ No existing content found in textarea');
+    }
     
     // Sync Quill → Textarea → Livewire
     quill.on('text-change', function() {
