@@ -1275,7 +1275,7 @@
 
                                 {{-- Status --}}
                                 <div>
-                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">Stato Pubblicazione *</label>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">{{ __('events.create.publish_status') }} *</label>
                                     <div class="grid grid-cols-2 gap-4">
                                         <label class="relative cursor-pointer">
                                             <input type="radio" wire:model="status" value="published" class="sr-only peer">

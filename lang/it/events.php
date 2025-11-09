@@ -71,5 +71,22 @@ return [
     'free_label' => 'Gratuito',
     'unlimited' => 'Illimitato',
     'not_available' => 'Non disponibile',
+    
+    // Create/Edit
+    'create' => [
+        'title' => 'Crea Evento',
+        'edit_title' => 'Modifica Evento',
+        'publish_status' => 'Stato Pubblicazione',
+        'publish_now' => 'Pubblica Subito',
+        'save_draft' => 'Salva Bozza',
+        'publish_later' => 'Pubblica più tardi',
+        'preview_confirm' => 'Anteprima & Conferma',
+        'publish_event' => 'Pubblica Evento',
+        'update_event' => 'Aggiorna Evento',
+        'save_changes' => 'Salva Modifiche',
+        'saving' => 'Salvando...',
+        'published_badge' => '🚀 Pubblicato',
+        'draft_badge' => '📝 Bozza',
+    ],
 ];
 
