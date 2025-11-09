@@ -475,7 +475,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
-                            <span class="font-poem">Modifica</span>
+                            <span class="font-poem">{{ __('poems.show.edit_poem') }}</span>
                         </a>
                     @endif
                 </div>
@@ -487,11 +487,11 @@
             <div class="animate-fade-in-delay-1">
                 <div class="text-center mb-10">
                     <h2 class="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white font-poem inline-block relative">
-                        Poesie Correlate
+                        {{ __('poems.show.related_poems') }}
                         <div class="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary-500 to-transparent rounded-full"></div>
                     </h2>
                     <p class="text-neutral-600 dark:text-neutral-400 mt-3 font-poem italic">
-                        Scopri altre voci poetiche
+                        {{ __('poems.show.discover_more') }}
                     </p>
                 </div>
                 

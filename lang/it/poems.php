@@ -125,6 +125,19 @@ return [
         'modal_title' => 'Anteprima',
     ],
     
+    // Show
+    'show' => [
+        'related_poems' => 'Poesie Correlate',
+        'discover_more' => 'Scopri altre voci poetiche',
+        'edit_poem' => 'Modifica',
+        'original_poem' => 'Poesia Originale',
+        'translated_version' => 'Traduzione',
+        'translator_notes' => 'Note del Traduttore',
+        'about_author' => 'Sull\'Autore',
+        'author_bio_empty' => 'Nessuna biografia disponibile',
+        'statistics' => 'Statistiche',
+    ],
+    
     // My Poems
     'my_poems' => [
         'title' => 'Le Mie Poesie',
