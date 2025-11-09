@@ -63,6 +63,21 @@ return [
     'send_application' => 'Invia Candidatura',
     'application_sent' => 'Candidatura inviata con successo!',
     'already_applied' => 'Hai già inviato una candidatura per questa traduzione',
+    'cannot_apply' => 'Non puoi candidarti per questa traduzione',
+    'applications_received' => 'Candidature Ricevute',
+    'your_application' => 'La Tua Candidatura',
+    'accept_application' => 'Accetta Candidatura',
+    'application_accepted' => 'Candidatura accettata! Il traduttore è stato notificato',
+    'cannot_accept' => 'Impossibile accettare la candidatura',
+    'unauthorized' => 'Non sei autorizzato a compiere questa azione',
+    'back_to_gigs' => 'Torna alle traduzioni',
+    'view_full_poem' => 'Leggi poesia completa',
+    'gig_details' => 'Dettagli Richiesta',
+    'requested_by' => 'Richiesto da',
+    'cancel_gig' => 'Annulla Richiesta',
+    'confirm_cancel_gig' => 'Sei sicuro di voler annullare questa richiesta di traduzione?',
+    'gig_cancelled' => 'Richiesta annullata con successo',
+    'status' => 'Stato',
     
     // Negotiation
     'negotiation' => 'Contrattazione',
@@ -92,6 +107,20 @@ return [
     'approve_translation' => 'Approva Traduzione',
     'request_changes' => 'Richiedi Modifiche',
     'reject_translation' => 'Rifiuta Traduzione',
+    
+    // My Pages
+    'manage_your_requests' => 'Gestisci le tue richieste di traduzione',
+    'track_your_applications' => 'Monitora le tue candidature',
+    'no_gigs_created' => 'Non hai ancora richieste attive',
+    'create_first_request' => 'Crea la tua prima richiesta di traduzione da una poesia',
+    'no_applications' => 'Non hai ancora inviato candidature',
+    'browse_gigs_to_apply' => 'Esplora le traduzioni disponibili e candidati',
+    'withdraw_application' => 'Ritira Candidatura',
+    'confirm_withdraw' => 'Sei sicuro di voler ritirare questa candidatura?',
+    'application_withdrawn' => 'Candidatura ritirata',
+    'requested_compensation' => 'Compenso Richiesto',
+    'delivery' => 'Consegna',
+    'gig_status' => 'Stato Richiesta',
     
     // Statistics
     'applications_count' => ':count candidature',

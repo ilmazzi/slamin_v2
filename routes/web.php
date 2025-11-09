@@ -90,12 +90,12 @@ Route::middleware('auth')->group(function () {
 Route::get('/poems/{slug}', \App\Livewire\Poems\PoemShow::class)->name('poems.show');
 
 // Translation Gigs Routes
-// Route::middleware('auth')->prefix('translations')->group(function () {
-//     Route::get('/gigs', \App\Livewire\Translations\GigIndex::class)->name('translations.gigs.index');
-//     Route::get('/gig/{gig}', \App\Livewire\Translations\GigShow::class)->name('translations.gig.show');
-//     Route::get('/my-gigs', \App\Livewire\Translations\MyGigs::class)->name('translations.my-gigs');
-//     Route::get('/my-applications', \App\Livewire\Translations\MyApplications::class)->name('translations.my-applications');
-// });
+Route::middleware('auth')->prefix('translations')->group(function () {
+    Route::get('/gigs', \App\Livewire\Translations\GigIndex::class)->name('translations.gigs.index');
+    Route::get('/gig/{gig}', \App\Livewire\Translations\GigShow::class)->name('translations.gig.show');
+    Route::get('/my-gigs', \App\Livewire\Translations\MyGigs::class)->name('translations.my-gigs');
+    Route::get('/my-applications', \App\Livewire\Translations\MyApplications::class)->name('translations.my-applications');
+});
 
 // Articles Routes
 Route::get('/articles', function () {
