@@ -845,7 +845,7 @@
     color: #9d8f7f;
 }
 
-/* Social actions below paper */
+/* Social actions below paper (OLD - kept for compatibility) */
 .paper-actions {
     display: flex;
     align-items: center;
@@ -863,6 +863,23 @@
 .dark .paper-actions {
     background: rgba(42, 37, 32, 0.8);
     border-color: rgba(180, 120, 70, 0.3);
+}
+
+/* Social actions integrated INSIDE paper */
+.paper-actions-integrated {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem 1rem 0.5rem;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(139, 115, 85, 0.15);
+    position: relative;
+    z-index: 10;
+}
+
+.dark .paper-actions-integrated {
+    border-top-color: rgba(180, 120, 70, 0.2);
 }
 
 /* ========================================
