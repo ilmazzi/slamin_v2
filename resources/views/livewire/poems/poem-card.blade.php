@@ -1,6 +1,6 @@
 <div class="h-full">
     <article 
-        wire:click="openPoem"
+        onclick="window.location='{{ route('poems.show', $poem->slug) }}'"
         class="group cursor-pointer h-full flex flex-col">
         
         <!-- HEADER (senza effetto carta) -->
