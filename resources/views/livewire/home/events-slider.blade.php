@@ -105,6 +105,27 @@
                             </div>
                             <div class="barcode-number">{{ str_pad($event->id, 12, '0', STR_PAD_LEFT) }}</div>
                         </div>
+                        
+                        {{-- Social Actions --}}
+                        <div class="ticket-social" @click.stop>
+                            <x-like-button 
+                                :itemId="$event->id"
+                                itemType="event"
+                                :isLiked="$event->is_liked ?? false"
+                                :likesCount="$event->like_count ?? 0"
+                                size="sm" />
+                            
+                            <x-comment-button 
+                                :itemId="$event->id"
+                                itemType="event"
+                                :commentsCount="$event->comment_count ?? 0"
+                                size="sm" />
+                            
+                            <x-share-button 
+                                :itemId="$event->id"
+                                itemType="event"
+                                size="sm" />
+                        </div>
                     </div>
                     
                     {{-- Stub Section (tear-off part) --}}
@@ -297,6 +318,17 @@
         color: #666;
         font-family: 'Courier New', monospace;
         letter-spacing: 0.1em;
+    }
+    
+    /* Social Actions */
+    .ticket-social {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        padding-top: 1rem;
+        margin-top: 0.75rem;
+        border-top: 1px dashed rgba(139, 115, 85, 0.25);
     }
     
     /* Stub (tear-off section) */
