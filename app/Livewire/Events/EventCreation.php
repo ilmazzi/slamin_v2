@@ -777,8 +777,8 @@ class EventCreation extends Component
                     'city' => $this->city,
                     'postcode' => $this->postcode,
                     'country' => $this->country,
-                    'latitude' => $this->latitude,
-                    'longitude' => $this->longitude,
+                    'latitude' => $this->latitude ?: null,
+                    'longitude' => $this->longitude ?: null,
                 ]);
             }
 
