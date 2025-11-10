@@ -1115,8 +1115,27 @@ function updateMapMarkers() {
 }
 
 .custom-marker {
-    background: transparent;
-    border: none;
+    background: transparent !important;
+    border: none !important;
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+.custom-marker * {
+    display: block !important;
+    visibility: visible !important;
+}
+
+.leaflet-marker-pane {
+    z-index: 600 !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.leaflet-marker-pane * {
+    display: block !important;
+    visibility: visible !important;
 }
 
 /* Popup link styling - force white text */

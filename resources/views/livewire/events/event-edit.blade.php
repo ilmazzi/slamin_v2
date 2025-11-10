@@ -1874,15 +1874,28 @@
     visibility: visible !important;
 }
 
-/* Ensure markers are visible */
+/* Ensure markers are ALWAYS visible - FORCE */
 #eventCreationMap .leaflet-marker-pane {
     z-index: 600 !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+#eventCreationMap .leaflet-marker-pane * {
+    display: block !important;
+    visibility: visible !important;
 }
 
 #eventCreationMap .custom-event-marker {
     display: block !important;
     opacity: 1 !important;
     visibility: visible !important;
+}
+
+#eventCreationMap .custom-event-marker div {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
 }
 </style>
 @endpush
