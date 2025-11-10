@@ -1,6 +1,6 @@
-<div>
+<div x-data="{ open: @entangle('showNegotiation') }">
     <!-- Toggle Button -->
-    <button wire:click="toggleNegotiation" 
+    <button @click="$wire.toggleNegotiation()" 
             class="relative px-4 py-2 rounded-xl bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-900 dark:text-blue-100 font-medium transition-colors">
         💬 {{ __('negotiations.negotiate') }}
         
@@ -10,27 +10,40 @@
             </span>
         @endif
     </button>
-</div>
 
-<!-- Negotiation Modal/Panel - Outside main div for proper z-index -->
-@if($showNegotiation)
-    @teleport('body')
-        <div class="fixed inset-0 z-[9999] overflow-y-auto flex items-center justify-center p-4"
+    <!-- Negotiation Modal/Panel -->
+    <template x-teleport="body">
+        <div x-show="open"
+             x-cloak
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 z-[9999] overflow-y-auto flex items-center justify-center p-4"
              style="margin: 0 !important; padding: 1rem !important;">
             
             <!-- Background overlay -->
             <div class="fixed inset-0 bg-neutral-900/75 backdrop-blur-sm" 
-                 wire:click="toggleNegotiation"></div>
+                 @click="$wire.toggleNegotiation()"></div>
 
             <!-- Modal panel -->
-            <div class="relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-neutral-800 shadow-2xl rounded-3xl overflow-hidden flex flex-col">
+            <div x-show="open"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 class="relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-neutral-800 shadow-2xl rounded-3xl overflow-hidden flex flex-col">
                     
                     <!-- Header -->
                     <div class="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-700">
                         <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">
                             💬 {{ __('negotiations.title') }}
                         </h2>
-                        <button wire:click="toggleNegotiation" 
+                        <button @click="$wire.toggleNegotiation()" 
                                 class="text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -236,8 +249,8 @@
 
             </div>
         </div>
-    @endteleport
-@endif
+    </template>
+</div>
 
 <script>
     // Auto-scroll to bottom when new messages arrive
