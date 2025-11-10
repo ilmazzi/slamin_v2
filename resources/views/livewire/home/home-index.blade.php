@@ -194,26 +194,28 @@
                 inset 0 -3px 15px rgba(0, 0, 0, 0.2);
         }
         
-        /* Polaroid Wall - Clean White Background */
+        /* Polaroid Wall - Chalkboard Background (WebP 1.0 MB) */
         .polaroid-wall-section {
             position: relative;
             background: 
-                /* Subtle paper texture */
-                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='texture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='15' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23texture)' opacity='0.03'/%3E%3C/svg%3E"),
-                /* Clean white */
-                #ffffff;
+                /* Real chalkboard image - contain to show full height */
+                url('/assets/images/lavagna.webp') center/contain no-repeat,
+                /* Fallback color */
+                #2d3436;
             box-shadow: 
-                inset 0 2px 8px rgba(0, 0, 0, 0.02),
-                inset 0 -2px 8px rgba(0, 0, 0, 0.015);
+                inset 0 0 80px rgba(0, 0, 0, 0.15),
+                inset 0 2px 12px rgba(0, 0, 0, 0.08),
+                inset 0 -2px 12px rgba(0, 0, 0, 0.06);
         }
         
         :is(.dark .polaroid-wall-section) {
             background: 
-                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='texture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='15' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23texture)' opacity='0.05'/%3E%3C/svg%3E"),
-                #18181b;
+                url('/assets/images/lavagna.webp') center/contain no-repeat,
+                #1a1d1e;
             box-shadow: 
-                inset 0 2px 8px rgba(0, 0, 0, 0.15),
-                inset 0 -2px 8px rgba(0, 0, 0, 0.1);
+                inset 0 0 80px rgba(0, 0, 0, 0.25),
+                inset 0 2px 12px rgba(0, 0, 0, 0.15),
+                inset 0 -2px 12px rgba(0, 0, 0, 0.1);
         }
     </style>
 </div>

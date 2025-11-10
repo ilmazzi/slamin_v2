@@ -8,10 +8,10 @@
         
         {{-- Header --}}
         <div class="text-center mb-12">
-            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
                 {!! __('home.new_users_title') !!}
             </h2>
-            <p class="text-lg text-neutral-600 dark:text-neutral-400">
+            <p class="text-lg text-neutral-100">
                 {{ __('home.new_users_subtitle') }}
             </p>
         </div>
