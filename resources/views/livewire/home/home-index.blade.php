@@ -194,42 +194,40 @@
                 inset 0 -3px 15px rgba(0, 0, 0, 0.2);
         }
         
-        /* Polaroid Wall - Soft Anthracite Grey with Subtle Texture */
+        /* Polaroid Wall - Light Grey Wall (Clean & Airy) */
         .polaroid-wall-section {
             position: relative;
             background: 
-                /* Subtle concrete texture */
-                url("data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='concrete'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' seed='18' /%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23concrete)' opacity='0.06'/%3E%3C/svg%3E"),
-                /* Soft anthracite grey gradient */
+                /* Very subtle texture */
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='texture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='20' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23texture)' opacity='0.03'/%3E%3C/svg%3E"),
+                /* Light neutral grey */
                 linear-gradient(135deg, 
-                    #3e4345 0%,
-                    #383c3e 20%,
-                    #3b3f41 40%,
-                    #363a3c 60%,
-                    #3a3e40 80%,
-                    #3d4143 100%
+                    #e8e8e8 0%,
+                    #e3e3e3 25%,
+                    #e6e6e6 50%,
+                    #e1e1e1 75%,
+                    #e5e5e5 100%
                 );
             box-shadow: 
-                inset 0 0 100px rgba(0, 0, 0, 0.12),
-                inset 0 2px 10px rgba(0, 0, 0, 0.06),
-                inset 0 -2px 10px rgba(0, 0, 0, 0.04);
+                inset 0 0 60px rgba(0, 0, 0, 0.03),
+                inset 0 2px 6px rgba(0, 0, 0, 0.02),
+                inset 0 -2px 6px rgba(0, 0, 0, 0.015);
         }
         
         :is(.dark .polaroid-wall-section) {
             background: 
-                url("data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='concrete'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' seed='18' /%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23concrete)' opacity='0.08'/%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='texture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='20' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23texture)' opacity='0.05'/%3E%3C/svg%3E"),
                 linear-gradient(135deg, 
-                    #27292a 0%,
-                    #232527 20%,
-                    #262829 40%,
-                    #222426 60%,
-                    #252728 80%,
-                    #282a2b 100%
+                    #2a2a2a 0%,
+                    #262626 25%,
+                    #282828 50%,
+                    #242424 75%,
+                    #272727 100%
                 );
             box-shadow: 
-                inset 0 0 100px rgba(0, 0, 0, 0.2),
-                inset 0 2px 10px rgba(0, 0, 0, 0.12),
-                inset 0 -2px 10px rgba(0, 0, 0, 0.08);
+                inset 0 0 60px rgba(0, 0, 0, 0.15),
+                inset 0 2px 6px rgba(0, 0, 0, 0.1),
+                inset 0 -2px 6px rgba(0, 0, 0, 0.08);
         }
     </style>
 </div>
