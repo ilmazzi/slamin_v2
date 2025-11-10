@@ -9,9 +9,9 @@ class GigsSection extends Component
 {
     public function render()
     {
-        // Get top gigs: featured, open, with most applications, recent
+        // Get top gigs: featured, open (not closed), with most applications, recent
         $topGigs = Gig::with(['user', 'event'])
-            ->where('status', 'open')
+            ->where('is_closed', false)
             ->where(function($query) {
                 $query->where('deadline', '>', now())
                       ->orWhereNull('deadline');
