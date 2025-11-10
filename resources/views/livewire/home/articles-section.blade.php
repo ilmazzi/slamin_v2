@@ -155,12 +155,17 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .magazine-cover:hover {
+        /* Hover on wrapper - pin moves with card! */
+        .magazine-article-wrapper:hover .magazine-cover {
             transform: translateY(-8px) scale(1.02) !important;
             box-shadow: 
                 0 12px 20px rgba(0, 0, 0, 0.18),
                 0 20px 36px rgba(0, 0, 0, 0.12),
                 0 28px 48px rgba(0, 0, 0, 0.08);
+        }
+        
+        .magazine-article-wrapper:hover .thumbtack {
+            transform: translateX(-50%) translateY(-8px);
         }
         
         :is(.dark .magazine-cover) {
