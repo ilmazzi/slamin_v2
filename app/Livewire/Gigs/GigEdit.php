@@ -123,13 +123,8 @@ class GigEdit extends Component
 
     public function getGroupsProperty()
     {
-        if (!class_exists('App\Models\Group') || !Auth::check()) {
-            return collect();
-        }
-        
-        return Auth::user()->groups()
-            ->orderBy('name')
-            ->get();
+        // Group model not implemented yet
+        return collect();
     }
 
     public function render()

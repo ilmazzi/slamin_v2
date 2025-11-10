@@ -82,8 +82,12 @@ class Gig extends Model
         return $this->belongsTo(Event::class);
     }
 
-    public function group(): BelongsTo
+    public function group()
     {
+        // Group model not implemented yet - return null relation
+        if (!class_exists('App\Models\Group')) {
+            return $this->belongsTo(User::class, 'group_id')->whereRaw('0 = 1');
+        }
         return $this->belongsTo(Group::class);
     }
 

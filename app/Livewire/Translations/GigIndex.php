@@ -208,14 +208,8 @@ class GigIndex extends Component
 
     public function getGroupsProperty()
     {
-        if (!class_exists('App\Models\Group') || !auth()->check()) {
-            return collect();
-        }
-        
-        return auth()->user()->groups()
-            ->orderBy('name')
-            ->take(20)
-            ->get();
+        // Group model not implemented yet
+        return collect();
     }
 
     public function render()
