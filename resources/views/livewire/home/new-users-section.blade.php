@@ -16,10 +16,8 @@
             </p>
         </div>
 
-        {{-- Polaroid Grid - Native Scroll on Mobile, Grid on Desktop --}}
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 lg:gap-12 pt-8 pb-4
-                    md:grid md:overflow-visible
-                    overflow-x-auto scrollbar-hide snap-x snap-mandatory flex md:block"
+        {{-- Polaroid Wall - Horizontal Scroll (like Dashboard) --}}
+        <div class="flex gap-6 overflow-x-auto pb-4 pt-8 scrollbar-hide"
              style="-webkit-overflow-scrolling: touch;">
             @foreach($newUsers as $i => $user)
             <?php
@@ -44,7 +42,7 @@
                 ];
                 $selectedTape = $tapeColors[array_rand($tapeColors)];
             ?>
-            <div class="w-[85vw] md:w-auto flex-shrink-0 md:flex-shrink polaroid-wrapper fade-scale-item snap-center md:snap-align-none" 
+            <div class="w-72 md:w-80 flex-shrink-0 polaroid-wrapper fade-scale-item" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">

@@ -12,14 +12,14 @@
             </p>
         </div>
 
-        {{-- Poetry Cards - Native Horizontal Scroll --}}
-        <div class="flex gap-6 md:gap-8 lg:gap-10 overflow-x-auto pb-4 pt-8 scrollbar-hide snap-x snap-mandatory"
+        {{-- Poetry Cards - Horizontal Scroll (like Dashboard) --}}
+        <div class="flex gap-6 overflow-x-auto pb-4 pt-8 scrollbar-hide"
              style="-webkit-overflow-scrolling: touch;">
             @foreach($poems->take(3) as $i => $poem)
             <?php
                 $paperRotation = rand(-2, 2); // Slight random rotation
             ?>
-            <div class="w-[85vw] md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] flex-shrink-0 poetry-card-container fade-scale-item snap-center" 
+            <div class="w-80 md:w-96 flex-shrink-0 poetry-card-container fade-scale-item" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">

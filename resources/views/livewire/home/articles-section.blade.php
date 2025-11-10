@@ -1,9 +1,7 @@
 <div>
     @if($articles && $articles->count() > 0)
-    {{-- Articles Grid - Native Scroll on Mobile, Grid on Desktop --}}
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-12 lg:gap-16 md:gap-y-16 pt-12 pb-6 
-                md:grid md:overflow-visible
-                overflow-x-auto scrollbar-hide snap-x snap-mandatory flex md:block"
+    {{-- Articles - Horizontal Scroll (like Dashboard) --}}
+    <div class="flex gap-6 overflow-x-auto pb-4 pt-12 scrollbar-hide"
          style="-webkit-overflow-scrolling: touch;">
         @foreach($articles->take(3) as $i => $article)
         <?php
@@ -12,7 +10,7 @@
             $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
             $pinRotation = rand(-15, 15);
         ?>
-        <article class="w-[85vw] md:w-auto flex-shrink-0 md:flex-shrink magazine-article-wrapper fade-scale-item snap-center md:snap-align-none" 
+        <article class="w-80 md:w-96 flex-shrink-0 magazine-article-wrapper fade-scale-item" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
