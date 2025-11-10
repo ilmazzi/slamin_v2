@@ -10,105 +10,157 @@ use Illuminate\Support\Facades\Auth;
 class GigShow extends Component
 {
     public Gig $gig;
-    public bool $showApplicationForm = false;
+    public $showApplicationForm = false;
     
-    // Application Form
-    public string $coverLetter = '';
-    public string $proposedCompensation = '';
-    public string $estimatedDelivery = '';
-    
-    public function mount(Gig $gig)
+    // Application Form Fields
+    public $applicationMessage = '';
+    public $applicationExperience = '';
+    public $applicationPortfolio = '';
+    public $applicationPortfolioUrl = '';
+    public $applicationAvailability = '';
+    public $applicationCompensationExpectation = '';
+
+    public function mount($gigId)
     {
-        $this->gig = $gig->load(['poem.user', 'requester', 'applications.translator', 'acceptedTranslator']);
-        $this->proposedCompensation = (string) $gig->proposed_compensation;
+        $this->gig = Gig::with(['user', 'event', 'group', 'applications.user', 'poem', 'requester', 'acceptedTranslator'])
+            ->findOrFail($gigId);
     }
-    
+
     public function toggleApplicationForm()
     {
-        if (!$this->gig->canApply(Auth::user())) {
-            session()->flash('error', __('translations.cannot_apply'));
+        if (!Auth::check()) {
+            session()->flash('error', __('gigs.messages.login_to_interact'));
+            return redirect()->route('login');
+        }
+
+        if (Auth::user()->hasRole('audience')) {
+            session()->flash('error', __('gigs.messages.audience_not_allowed'));
             return;
         }
-        
+
         $this->showApplicationForm = !$this->showApplicationForm;
     }
-    
+
     public function submitApplication()
     {
-        if (!$this->gig->canApply(Auth::user())) {
-            session()->flash('error', __('translations.cannot_apply'));
+        if (!Auth::check()) {
+            session()->flash('error', __('gigs.messages.login_to_interact'));
+            return redirect()->route('login');
+        }
+
+        if (!$this->gig->canUserApply(Auth::user())) {
+            session()->flash('error', __('gigs.applications.cannot_apply'));
             return;
         }
-        
+
         $this->validate([
-            'coverLetter' => 'required|string|min:50|max:1000',
-            'proposedCompensation' => 'required|numeric|min:0',
-            'estimatedDelivery' => 'required|date|after:today',
+            'applicationMessage' => 'required|min:10|max:1000',
+            'applicationExperience' => 'nullable|max:1000',
+            'applicationPortfolio' => 'nullable|max:2000',
+            'applicationPortfolioUrl' => 'nullable|url|max:500',
+            'applicationAvailability' => 'nullable|max:500',
+            'applicationCompensationExpectation' => 'nullable|max:200',
         ]);
-        
+
         GigApplication::create([
             'gig_id' => $this->gig->id,
-            'user_id' => Auth::id(), // Campo corretto nella tabella gig_applications
-            'cover_letter' => $this->coverLetter,
-            'proposed_compensation' => $this->proposedCompensation,
-            'estimated_delivery' => $this->estimatedDelivery,
+            'user_id' => Auth::id(),
+            'message' => $this->applicationMessage,
+            'experience' => $this->applicationExperience,
+            'portfolio' => $this->applicationPortfolio,
+            'portfolio_url' => $this->applicationPortfolioUrl,
+            'availability' => $this->applicationAvailability,
+            'compensation_expectation' => $this->applicationCompensationExpectation,
             'status' => 'pending',
         ]);
+
+        $this->gig->increment('application_count');
+
+        session()->flash('success', __('gigs.applications.application_sent'));
         
-        session()->flash('success', __('translations.application_sent'));
-        $this->showApplicationForm = false;
-        $this->reset(['coverLetter', 'proposedCompensation', 'estimatedDelivery']);
+        $this->reset([
+            'applicationMessage',
+            'applicationExperience',
+            'applicationPortfolio',
+            'applicationPortfolioUrl',
+            'applicationAvailability',
+            'applicationCompensationExpectation',
+            'showApplicationForm'
+        ]);
         
-        // Reload gig to show updated applications count
         $this->gig->refresh();
     }
-    
-    public function acceptApplication($applicationId)
+
+    public function closeGig()
     {
-        $application = GigApplication::findOrFail($applicationId);
-        
-        // Solo il richiedente può accettare
-        if ($this->gig->requester_id !== Auth::id()) {
-            session()->flash('error', __('translations.unauthorized'));
+        if (!Auth::check() || !$this->gig->canBeEditedBy(Auth::user())) {
+            session()->flash('error', __('gigs.messages.unauthorized'));
             return;
         }
-        
-        if ($this->gig->acceptApplication($application)) {
-            session()->flash('success', __('translations.application_accepted'));
-            $this->gig->refresh();
-        } else {
-            session()->flash('error', __('translations.cannot_accept'));
-        }
+
+        $this->gig->close();
+        session()->flash('success', __('gigs.messages.gig_closed'));
+        $this->gig->refresh();
     }
-    
-    public function cancelGig()
+
+    public function reopenGig()
     {
-        // Solo il richiedente può cancellare
-        if ($this->gig->requester_id !== Auth::id()) {
-            session()->flash('error', __('translations.unauthorized'));
+        if (!Auth::check() || !$this->gig->canBeEditedBy(Auth::user())) {
+            session()->flash('error', __('gigs.messages.unauthorized'));
             return;
         }
-        
-        if ($this->gig->status === 'open') {
-            $this->gig->update(['status' => 'cancelled']);
-            session()->flash('success', __('translations.gig_cancelled'));
-            return $this->redirect(route('translations.my-gigs'), navigate: true);
-        }
+
+        $this->gig->reopen();
+        session()->flash('success', __('gigs.messages.gig_reopened'));
+        $this->gig->refresh();
     }
-    
+
+    public function shareGig()
+    {
+        if (!Auth::check() || !$this->gig->canBeEditedBy(Auth::user())) {
+            session()->flash('error', __('gigs.messages.unauthorized'));
+            return;
+        }
+
+        $count = $this->gig->share();
+        session()->flash('success', __('gigs.messages.gig_shared', ['count' => $count]));
+    }
+
+    public function deleteGig()
+    {
+        if (!Auth::check() || !$this->gig->canBeEditedBy(Auth::user())) {
+            session()->flash('error', __('gigs.messages.unauthorized'));
+            return;
+        }
+
+        $this->gig->delete();
+        session()->flash('success', __('gigs.messages.gig_deleted'));
+        return redirect()->route('gigs.index');
+    }
+
+    public function getUserApplicationProperty()
+    {
+        if (!Auth::check()) {
+            return null;
+        }
+
+        return $this->gig->applications()
+            ->where('user_id', Auth::id())
+            ->first();
+    }
+
     public function render()
     {
-        $userApplication = Auth::check() 
-            ? $this->gig->applications()->where('user_id', Auth::id())->first()
-            : null;
-        
-        $canApply = Auth::check() && $this->gig->canApply(Auth::user());
-        $isRequester = Auth::check() && $this->gig->requester_id === Auth::id();
-        
+        $canApply = Auth::check() && $this->gig->canUserApply(Auth::user());
+        $isOwner = Auth::check() && (
+            $this->gig->user_id === Auth::id() || 
+            $this->gig->requester_id === Auth::id()
+        );
+
         return view('livewire.translations.gig-show', [
-            'userApplication' => $userApplication,
+            'userApplication' => $this->userApplication,
             'canApply' => $canApply,
-            'isRequester' => $isRequester,
+            'isOwner' => $isOwner,
         ]);
     }
 }

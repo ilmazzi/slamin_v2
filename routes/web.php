@@ -89,12 +89,25 @@ Route::middleware('auth')->group(function () {
 // Poems Show - DOPO le route specifiche
 Route::get('/poems/{slug}', \App\Livewire\Poems\PoemShow::class)->name('poems.show');
 
-// Translation Gigs Routes
-Route::middleware('auth')->prefix('translations')->group(function () {
-    Route::get('/gigs', \App\Livewire\Translations\GigIndex::class)->name('translations.gigs.index');
-    Route::get('/gig/{gig}', \App\Livewire\Translations\GigShow::class)->name('translations.gig.show');
-    Route::get('/my-gigs', \App\Livewire\Translations\MyGigs::class)->name('translations.my-gigs');
-    Route::get('/my-applications', \App\Livewire\Translations\MyApplications::class)->name('translations.my-applications');
+// Gigs System Routes (Unified: Translations + Events)
+Route::middleware('auth')->group(function () {
+    // Gigs Index & Show
+    Route::get('/gigs', \App\Livewire\Translations\GigIndex::class)->name('gigs.index');
+    Route::get('/gigs/{gig}', \App\Livewire\Translations\GigShow::class)->name('gigs.show');
+    
+    // Gigs Management
+    Route::get('/gigs/{gig}/edit', \App\Livewire\Gigs\GigEdit::class)->name('gigs.edit');
+    Route::get('/gigs/{gig}/applications', \App\Livewire\Gigs\ApplicationsManagement::class)->name('gigs.applications');
+    
+    // My Gigs & Applications
+    Route::get('/my-gigs', \App\Livewire\Translations\MyGigs::class)->name('gigs.my-gigs');
+    Route::get('/my-applications', \App\Livewire\Translations\MyApplications::class)->name('gigs.my-applications');
+    
+    // Legacy aliases for backwards compatibility
+    Route::get('/translations/gigs', fn() => redirect()->route('gigs.index'));
+    Route::get('/translations/gig/{gig}', fn($gig) => redirect()->route('gigs.show', $gig));
+    Route::get('/translations/my-gigs', fn() => redirect()->route('gigs.my-gigs'));
+    Route::get('/translations/my-applications', fn() => redirect()->route('gigs.my-applications'));
 });
 
 // Articles Routes
