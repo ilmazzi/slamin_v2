@@ -13,7 +13,7 @@
         </div>
 
         {{-- Poetry Cards Grid --}}
-        <div class="grid md:grid-cols-2 gap-10 md:gap-12 lg:gap-14 pt-8 pb-4">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 pt-8 pb-4">
             @foreach($poems->take(3) as $i => $poem)
             <?php
                 $paperRotation = rand(-2, 2); // Slight random rotation
@@ -83,55 +83,74 @@
             padding-top: 20px;
         }
         
-        /* Realistic Paper Sheet on Desk */
+        /* ULTRA REALISTIC Paper Sheet */
         .paper-sheet {
             display: block;
             position: relative;
             background: 
-                /* Paper fiber texture (visible) */
-                url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' seed='2'/%3E%3CfeColorMatrix values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23paper)'/%3E%3C/svg%3E"),
-                /* Subtle paper stains */
-                radial-gradient(ellipse at 80% 20%, rgba(139, 115, 85, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 20% 80%, rgba(139, 115, 85, 0.02) 0%, transparent 50%),
-                /* Paper color - cream/aged white */
-                linear-gradient(145deg, #fffef9 0%, #faf7f0 30%, #f5f1e8 60%, #faf7f0 100%);
-            padding: 3rem 2.5rem 2.5rem 2.5rem;
-            min-height: 480px;
-            /* Irregular paper edges */
-            clip-path: polygon(
-                0% 0.3%, 0.5% 0%, 1% 0.2%, 2% 0.1%, 3% 0.3%, 5% 0.2%, 7% 0.4%, 10% 0.2%, 15% 0.3%, 20% 0.1%, 25% 0.4%, 30% 0.2%, 35% 0.5%, 40% 0.3%, 45% 0.2%, 50% 0.4%, 55% 0.1%, 60% 0.3%, 65% 0.2%, 70% 0.4%, 75% 0.3%, 80% 0.2%, 85% 0.4%, 90% 0.3%, 93% 0.2%, 95% 0.4%, 97% 0.2%, 99% 0.3%, 99.5% 0.5%, 100% 0.2%,
-                100% 2%, 99.8% 5%, 100% 8%, 99.7% 12%, 100% 15%, 99.9% 20%, 100% 25%, 99.8% 30%, 100% 35%, 99.6% 40%, 100% 45%, 99.8% 50%, 100% 55%, 99.7% 60%, 100% 65%, 99.9% 70%, 100% 75%, 99.8% 80%, 100% 85%, 99.7% 90%, 100% 93%, 99.8% 96%, 100% 99%,
-                99.7% 100%, 98% 99.8%, 96% 100%, 94% 99.7%, 92% 100%, 88% 99.8%, 85% 100%, 82% 99.6%, 78% 100%, 75% 99.8%, 70% 100%, 65% 99.7%, 60% 100%, 55% 99.8%, 50% 100%, 45% 99.6%, 40% 100%, 35% 99.8%, 30% 100%, 25% 99.7%, 20% 100%, 15% 99.9%, 12% 100%, 8% 99.8%, 5% 100%, 2% 99.7%, 0.5% 100%, 0% 99.8%,
-                0% 98%, 0.2% 95%, 0% 92%, 0.3% 88%, 0% 85%, 0.2% 80%, 0% 75%, 0.3% 70%, 0% 65%, 0.2% 60%, 0% 55%, 0.3% 50%, 0% 45%, 0.2% 40%, 0% 35%, 0.3% 30%, 0% 25%, 0.2% 20%, 0% 15%, 0.3% 12%, 0% 8%, 0.2% 5%, 0% 2%
-            );
-            /* Realistic layered shadow */
+                /* Fine paper grain */
+                repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.015) 1px, rgba(0,0,0,0.015) 2px),
+                repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(0,0,0,0.01) 1px, rgba(0,0,0,0.01) 2px),
+                /* Paper fiber texture */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='5' seed='4'/%3E%3CfeColorMatrix values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E"),
+                /* Coffee stains and marks */
+                radial-gradient(ellipse 60px 80px at 85% 15%, rgba(101, 67, 33, 0.04) 0%, transparent 70%),
+                radial-gradient(circle 40px at 12% 88%, rgba(101, 67, 33, 0.03) 0%, transparent 70%),
+                radial-gradient(ellipse 50px 40px at 70% 90%, rgba(101, 67, 33, 0.02) 0%, transparent 70%),
+                /* Aged paper color */
+                linear-gradient(140deg, 
+                    #fffffb 0%,
+                    #fffef8 25%,
+                    #fefcf4 50%,
+                    #fdfaf0 75%,
+                    #fcf8ec 100%
+                );
+            padding: 2.5rem 2rem 2rem 2rem;
+            min-height: 420px;
+            border-radius: 1px;
+            /* Real paper shadow on wood */
             box-shadow: 
-                /* Main shadow */
-                0 10px 25px rgba(0, 0, 0, 0.2),
-                0 6px 12px rgba(0, 0, 0, 0.15),
-                0 3px 6px rgba(0, 0, 0, 0.1),
-                /* Contact shadow (darker close to paper) */
-                0 1px 3px rgba(0, 0, 0, 0.25),
-                /* Paper edge highlight */
-                inset 0 0 0 1px rgba(255, 255, 255, 0.3),
-                inset 0 1px 2px rgba(255, 255, 255, 0.5);
+                0 1px 1px rgba(0, 0, 0, 0.08),
+                0 2px 4px rgba(0, 0, 0, 0.12),
+                0 4px 8px rgba(0, 0, 0, 0.14),
+                0 8px 16px rgba(0, 0, 0, 0.16),
+                0 12px 24px rgba(0, 0, 0, 0.18);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
-            overflow: hidden;
+            /* Paper thickness edge */
+            border-right: 1px solid rgba(210, 180, 140, 0.15);
+            border-bottom: 1px solid rgba(210, 180, 140, 0.2);
         }
         
-        /* Paper fold/crease effect */
+        /* Paper fold corner (dog-ear) */
         .paper-sheet::before {
             content: '';
             position: absolute;
             top: 0;
             right: 0;
-            width: 100%;
-            height: 100%;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 20px 20px 0;
+            border-color: transparent #f5f1e8 transparent transparent;
+            filter: drop-shadow(-1px 1px 1px rgba(0,0,0,0.1));
+            z-index: 1;
+        }
+        
+        /* Paper texture overlay */
+        .paper-sheet::after {
+            content: '';
+            position: absolute;
+            inset: 0;
             background: 
-                linear-gradient(135deg, transparent 0%, transparent 48%, rgba(139, 115, 85, 0.03) 49%, rgba(139, 115, 85, 0.02) 50%, transparent 51%),
-                linear-gradient(45deg, transparent 0%, transparent 48%, rgba(139, 115, 85, 0.02) 49%, rgba(139, 115, 85, 0.01) 50%, transparent 51%);
+                linear-gradient(
+                    to bottom,
+                    rgba(255,255,255,0.3) 0%,
+                    transparent 50%,
+                    rgba(0,0,0,0.02) 100%
+                );
             pointer-events: none;
+            z-index: 1;
         }
         
         .paper-sheet:hover {
