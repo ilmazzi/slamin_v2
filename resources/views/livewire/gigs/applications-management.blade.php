@@ -169,8 +169,11 @@
                         </div>
 
                         <!-- Actions -->
-                        @if($application->status === 'pending')
-                            <div class="flex flex-col gap-2 min-w-[180px]">
+                        <div class="flex flex-col gap-2 min-w-[180px]">
+                            <!-- Negotiation Chat Component -->
+                            <livewire:gigs.negotiation-chat :application="$application" :key="'negotiation-'.$application->id" />
+
+                            @if($application->status === 'pending')
                                 <button wire:click="acceptApplication({{ $application->id }})" 
                                         wire:confirm="{{ __('gigs.messages.confirm_accept') }}"
                                         class="px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold transition-colors">
@@ -182,8 +185,8 @@
                                         class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold transition-colors">
                                     ✗ {{ __('gigs.applications.reject') }}
                                 </button>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
 
                     </div>
                 </div>

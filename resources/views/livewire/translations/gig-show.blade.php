@@ -160,24 +160,33 @@
                 
                 @if($userApplication)
                     <!-- Already Applied -->
-                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
-                        <div class="flex items-start gap-3">
-                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <div class="flex-1">
-                                <h3 class="font-semibold text-blue-900 dark:text-blue-100 mb-1">
-                                    {{ __('gigs.applications.already_applied') }}
-                                </h3>
-                                <p class="text-sm text-blue-800 dark:text-blue-200">
-                                    {{ __('gigs.applications.status') }}: 
-                                    <span class="font-semibold">{{ __('gigs.applications.status_' . $userApplication->status) }}</span>
-                                </p>
-                                <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">
-                                    {{ __('gigs.applications.applied_at') }}: {{ $userApplication->created_at->format('d M Y H:i') }}
-                                </p>
+                    <div class="space-y-4">
+                        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                                        {{ __('gigs.applications.already_applied') }}
+                                    </h3>
+                                    <p class="text-sm text-blue-800 dark:text-blue-200">
+                                        {{ __('gigs.applications.status') }}: 
+                                        <span class="font-semibold">{{ __('gigs.applications.status_' . $userApplication->status) }}</span>
+                                    </p>
+                                    <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                                        {{ __('gigs.applications.applied_at') }}: {{ $userApplication->created_at->format('d M Y H:i') }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Negotiation Chat (for applicant to negotiate with requester) -->
+                        @if($userApplication->status === 'pending')
+                            <div class="flex justify-center">
+                                <livewire:gigs.negotiation-chat :application="$userApplication" :key="'negotiation-'.$userApplication->id" />
+                            </div>
+                        @endif
                     </div>
 
                 @elseif($isOwner)
