@@ -32,7 +32,7 @@
                     {{-- Spotlight Effect --}}
                     <div class="spotlight" style="opacity: {{ $spotlightIntensity }};"></div>
                     
-                    <a href="{{ route('events.show', $event->slug) }}" 
+                    <a href="{{ route('events.show', $event) }}" 
                        class="cinema-poster group">
                         
                         {{-- Poster Image --}}
