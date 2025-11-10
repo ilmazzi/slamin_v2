@@ -1,66 +1,93 @@
 <div>
     @if($articles && $articles->count() > 0)
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16 pt-12 pb-6">
         @foreach($articles->take(3) as $i => $article)
-        <article class="group h-full" x-data x-intersect.once="$el.classList.add('animate-fade-in')" style="animation-delay: {{ $i * 0.1 }}s">
+        <?php
+            // Random positioning for magazine covers
+            $rotation = rand(-3, 3);
+            $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
+            $pinRotation = rand(-15, 15);
+        ?>
+        <article class="magazine-article-wrapper" 
+                 x-data 
+                 x-intersect.once="$el.classList.add('animate-fade-in')" 
+                 style="animation-delay: {{ $i * 0.1 }}s">
             
-            {{-- Newspaper Page Container --}}
-            <div class="relative h-full newspaper-page">
+            {{-- Thumbtack/Puntina --}}
+            <div class="thumbtack" 
+                 style="background: {{ $pinColor }}; transform: rotate({{ $pinRotation }}deg);">
+                <div class="thumbtack-needle"></div>
+            </div>
+            
+            {{-- Magazine Cover --}}
+            <div class="magazine-cover" style="transform: rotate({{ $rotation }}deg);">
                 
-                <a href="{{ route('articles.show', $article->id) }}" class="block">
+                <a href="{{ route('articles.show', $article->id) }}" class="magazine-inner group">
                     
-                    {{-- Newspaper Header (Masthead) --}}
-                    <div class="newspaper-header">
-                        <div class="newspaper-masthead">Slamin Journal</div>
-                        <div class="newspaper-date">{{ $article->created_at->format('d M Y') }}</div>
+                    {{-- Magazine Header --}}
+                    <div class="magazine-header">
+                        <div class="magazine-logo">SLAMIN</div>
+                        <div class="magazine-issue">Vol. {{ date('Y') }} · N.{{ str_pad($article->id, 2, '0', STR_PAD_LEFT) }}</div>
                     </div>
                     
-                    {{-- Article Headline (newspaper style) --}}
-                    <h3 class="newspaper-headline group-hover:text-primary-600 transition-colors">
-                        {{ $article->title }}
-                    </h3>
-                    
-                    {{-- Byline (author) --}}
-                    <div class="newspaper-byline">
-                        <span class="font-bold">di {{ $article->user->name }}</span>
-                    </div>
-                    
-                    {{-- Article Body --}}
-                    <div class="newspaper-columns">
-                        <p class="newspaper-text">
-                            {{ $article->excerpt ?? Str::limit($article->content, 200) }}
-                        </p>
-                    </div>
-                    
-                    {{-- Image integrated in layout --}}
-                    @if($article->featured_image_url)
-                    <div class="newspaper-image">
-                        <img src="{{ $article->featured_image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                        <div class="newspaper-caption">{{ $article->user->name }}</div>
+                    {{-- Category Badge --}}
+                    @if($article->category)
+                    <div class="magazine-category">
+                        {{ $article->category->name ?? 'Cultura' }}
                     </div>
                     @endif
                     
+                    {{-- Featured Image --}}
+                    @if($article->featured_image_url)
+                    <div class="magazine-image">
+                        <img src="{{ $article->featured_image_url }}" 
+                             alt="{{ $article->title }}"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    @endif
+                    
+                    {{-- Article Title --}}
+                    <h3 class="magazine-title">
+                        {{ $article->title }}
+                    </h3>
+                    
+                    {{-- Excerpt --}}
+                    <p class="magazine-excerpt">
+                        {{ $article->excerpt ?? Str::limit(strip_tags($article->content), 120) }}
+                    </p>
+                    
+                    {{-- Author Info with Avatar --}}
+                    <div class="magazine-author">
+                        <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($article->user, 80) }}" 
+                             alt="{{ $article->user->name }}"
+                             class="magazine-avatar">
+                        <div class="magazine-author-info">
+                            <div class="magazine-author-name">{{ $article->user->name }}</div>
+                            <div class="magazine-author-date">{{ $article->created_at->format('d M Y') }}</div>
+                        </div>
+                    </div>
+                    
                 </a>
                 
-                <!-- Social Actions -->
-                <div class="flex items-center gap-4 pt-3 mt-3 border-t-2 border-neutral-800/80 dark:border-neutral-500" @click.stop>
-                <x-like-button 
-                    :itemId="$article->id"
-                    itemType="article"
-                    :isLiked="$article->is_liked ?? false"
-                    :likesCount="$article->like_count ?? 0"
-                    size="sm" />
-                
-                <x-comment-button 
-                    :itemId="$article->id"
-                    itemType="article"
-                    :commentsCount="$article->comment_count ?? 0"
-                    size="sm" />
-                
-                <x-share-button 
-                    :itemId="$article->id"
-                    itemType="article"
-                    size="sm" />
+                {{-- Social Actions --}}
+                <div class="magazine-actions" @click.stop>
+                    <x-like-button 
+                        :itemId="$article->id"
+                        itemType="article"
+                        :isLiked="$article->is_liked ?? false"
+                        :likesCount="$article->like_count ?? 0"
+                        size="sm" />
+                    
+                    <x-comment-button 
+                        :itemId="$article->id"
+                        itemType="article"
+                        :commentsCount="$article->comment_count ?? 0"
+                        size="sm" />
+                    
+                    <x-share-button 
+                        :itemId="$article->id"
+                        itemType="article"
+                        size="sm" />
                 </div>
                 
             </div>
@@ -75,195 +102,236 @@
     </div>
     
     <style>
-        @keyframes fade-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .animate-fade-in { animation: fade-in 0.5s ease-out forwards; opacity: 0; }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fade-in 0.6s ease-out forwards; opacity: 0; }
         
         /* ============================================
-           REAL NEWSPAPER PAGE EFFECT
+           LITERARY MAGAZINE WALL
            ============================================ */
         
-        .newspaper-page {
+        .magazine-article-wrapper {
             position: relative;
-            height: 100%;
-            /* Aged newspaper paper - cream/ivory with slight yellow tint */
-            background: 
-                /* Paper fiber texture (SVG noise) */
-                url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23paper)' opacity='0.12'/%3E%3C/svg%3E"),
-                /* Base newspaper color */
-                linear-gradient(140deg, 
-                    #f7f3ea 0%,
-                    #f0e9dc 30%,
-                    #ebe3d3 50%,
-                    #f0e9dc 70%,
-                    #f7f3ea 100%
-                );
-            padding: 1.25rem;
+            padding-top: 30px;
+        }
+        
+        /* Thumbtack/Puntina colorata */
+        .thumbtack {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            z-index: 10;
             box-shadow: 
-                /* Paper depth */
-                0 4px 12px rgba(0, 0, 0, 0.1),
-                0 8px 24px rgba(0, 0, 0, 0.06),
-                /* Subtle inner shadow for paper feel */
-                inset 0 0 40px rgba(139, 115, 85, 0.03);
-            border: 1px solid rgba(139, 115, 85, 0.2);
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.2),
+                inset 0 4px 8px rgba(255, 255, 255, 0.3);
+        }
+        
+        .thumbtack-needle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 3px;
+            height: 3px;
+            background: #2d2d2d;
+            border-radius: 50%;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Magazine Cover - Copertina Rivista */
+        .magazine-cover {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.12),
+                0 8px 16px rgba(0, 0, 0, 0.08),
+                0 12px 24px rgba(0, 0, 0, 0.06);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
         }
         
-        /* Dark mode - vintage newspaper at night */
-        :is(.dark .newspaper-page) {
-            background: 
-                url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23paper)' opacity='0.12'/%3E%3C/svg%3E"),
-                linear-gradient(140deg, 
-                    #3d3a32 0%,
-                    #34312a 30%,
-                    #2b2924 50%,
-                    #34312a 70%,
-                    #3d3a32 100%
-                );
-            border: 1px solid rgba(139, 115, 85, 0.3);
+        .magazine-cover:hover {
+            transform: translateY(-8px) scale(1.02) !important;
+            box-shadow: 
+                0 12px 20px rgba(0, 0, 0, 0.18),
+                0 20px 36px rgba(0, 0, 0, 0.12),
+                0 28px 48px rgba(0, 0, 0, 0.08);
         }
         
-        /* ============================================
-           NEWSPAPER TYPOGRAPHY
-           ============================================ */
+        :is(.dark .magazine-cover) {
+            background: #2a2724;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
         
-        /* Masthead (testata giornale) */
-        .newspaper-header {
-            padding-bottom: 0.75rem;
-            margin-bottom: 1rem;
-            border-bottom: 3px double rgba(0, 0, 0, 0.85);
+        .magazine-inner {
+            display: block;
+            padding: 1.5rem;
+            text-decoration: none;
+        }
+        
+        /* Magazine Header - Testata */
+        .magazine-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #000;
         }
         
-        :is(.dark .newspaper-header) {
-            border-bottom-color: rgba(255, 255, 255, 0.7);
+        :is(.dark .magazine-header) {
+            border-bottom-color: #fff;
         }
         
-        .newspaper-masthead {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.125rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            color: #1a1a1a;
-            font-style: italic;
-        }
-        
-        :is(.dark .newspaper-masthead) {
-            color: #f5f5f5;
-            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
-        }
-        
-        .newspaper-date {
-            font-family: 'Crimson Pro', serif;
-            font-size: 0.625rem;
-            font-weight: 700;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-        
-        :is(.dark .newspaper-date) {
-            color: #aaa;
-        }
-        
-        /* Headline (titolo articolo) */
-        .newspaper-headline {
+        .magazine-logo {
             font-family: 'Crimson Pro', serif;
             font-size: 1.5rem;
             font-weight: 900;
-            line-height: 1.15;
-            color: #0f0f0f;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: -0.01em;
+            letter-spacing: 0.15em;
+            color: #000;
         }
         
-        :is(.dark .newspaper-headline) {
-            color: #f5f5f5;
+        :is(.dark .magazine-logo) {
+            color: #fff;
         }
         
-        /* Byline (firma autore) */
-        .newspaper-byline {
+        .magazine-issue {
             font-family: 'Crimson Pro', serif;
-            font-size: 0.75rem;
-            color: #555;
-            margin-bottom: 1rem;
-            font-style: italic;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+            font-size: 0.625rem;
+            font-weight: 600;
+            color: #666;
+            letter-spacing: 0.05em;
         }
         
-        :is(.dark .newspaper-byline) {
+        :is(.dark .magazine-issue) {
             color: #aaa;
-            border-bottom-color: rgba(255, 255, 255, 0.2);
         }
         
-        /* Article body text */
-        .newspaper-columns {
+        /* Category Badge */
+        .magazine-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: #10b981;
+            color: #fff;
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             margin-bottom: 1rem;
         }
         
-        .newspaper-text {
-            font-family: 'Crimson Pro', serif;
-            font-size: 0.875rem;
-            line-height: 1.65;
-            color: #1f1f1f;
-            text-align: justify;
-            hyphens: auto;
-        }
-        
-        :is(.dark .newspaper-text) {
-            color: #d9d9d9;
-        }
-        
-        /* Newspaper image with caption */
-        .newspaper-image {
+        /* Featured Image */
+        .magazine-image {
             position: relative;
             aspect-ratio: 16/10;
             overflow: hidden;
-            margin-bottom: 0.5rem;
-            border: 2px solid rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
             background: #000;
         }
         
-        :is(.dark .newspaper-image) {
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        .newspaper-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.85);
-            color: white;
+        /* Title */
+        .magazine-title {
             font-family: 'Crimson Pro', serif;
-            font-size: 0.625rem;
-            padding: 0.375rem 0.625rem;
-            font-style: italic;
-            letter-spacing: 0.02em;
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s ease;
         }
         
-        /* ============================================
-           NEWSPAPER EFFECTS & INTERACTIONS
-           ============================================ */
-        
-        /* Simple hover: lift newspaper */
-        .newspaper-page:hover {
-            transform: translateY(-6px);
-            box-shadow: 
-                0 12px 24px rgba(0, 0, 0, 0.12),
-                0 6px 12px rgba(0, 0, 0, 0.08);
+        .group:hover .magazine-title {
+            color: #10b981;
         }
         
-        :is(.dark .newspaper-page:hover) {
-            box-shadow: 
-                0 12px 24px rgba(0, 0, 0, 0.6),
-                0 6px 12px rgba(0, 0, 0, 0.5);
+        :is(.dark .magazine-title) {
+            color: #f5f5f5;
+        }
+        
+        :is(.dark .group:hover .magazine-title) {
+            color: #34d399;
+        }
+        
+        /* Excerpt */
+        .magazine-excerpt {
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #4a4a4a;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        :is(.dark .magazine-excerpt) {
+            color: #c5c5c5;
+        }
+        
+        /* Author section with avatar */
+        .magazine-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        :is(.dark .magazine-author) {
+            border-top-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .magazine-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #10b981;
+            flex-shrink: 0;
+        }
+        
+        .magazine-author-info {
+            flex: 1;
+        }
+        
+        .magazine-author-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        :is(.dark .magazine-author-name) {
+            color: #f5f5f5;
+        }
+        
+        .magazine-author-date {
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        :is(.dark .magazine-author-date) {
+            color: #999;
+        }
+        
+        /* Social Actions */
+        .magazine-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        :is(.dark .magazine-actions) {
+            background: rgba(42, 39, 36, 0.9);
+            border-top-color: rgba(255, 255, 255, 0.1);
         }
     </style>
     @endif
