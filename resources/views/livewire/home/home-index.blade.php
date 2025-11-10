@@ -21,7 +21,9 @@
     </div>
 
     {{-- Decorative Separator --}}
-    <div class="section-separator"></div>
+    <div class="py-12 md:py-16 polaroid-wall-section">
+        <div class="section-separator"></div>
+    </div>
 
     {{-- Articoli - Newspaper Section --}}
     <div class="py-16 md:py-24 articles-newspaper-section">
@@ -268,52 +270,90 @@
                 inset -20px -20px 80px rgba(0, 0, 0, 0.08);
         }
         
-        /* Section Separator - Decorative divider between sections */
+        /* Section Separator - STRONG Decorative divider */
         .section-separator {
-            height: 3px;
+            height: 2px;
             background: linear-gradient(
                 90deg,
                 transparent 0%,
-                rgba(139, 115, 85, 0.15) 15%,
-                rgba(139, 115, 85, 0.25) 50%,
-                rgba(139, 115, 85, 0.15) 85%,
+                rgba(139, 115, 85, 0.3) 20%,
+                rgba(139, 115, 85, 0.5) 50%,
+                rgba(139, 115, 85, 0.3) 80%,
                 transparent 100%
             );
             margin: 0 auto;
-            max-width: 1200px;
+            max-width: 900px;
             position: relative;
+            box-shadow: 
+                0 1px 3px rgba(139, 115, 85, 0.2),
+                0 -1px 3px rgba(139, 115, 85, 0.15);
         }
         
+        /* Ornamental center piece */
         .section-separator::before {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: #10b981;
+            background: #f5f0e8;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 
+                0 0 0 8px rgba(245, 240, 232, 0.8),
+                0 0 20px rgba(16, 185, 129, 0.3),
+                0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Side ornaments */
+        .section-separator::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle, 
-                rgba(16, 185, 129, 0.15) 0%, 
-                rgba(16, 185, 129, 0.08) 50%, 
+            width: 120px;
+            height: 60px;
+            background: radial-gradient(ellipse, 
+                rgba(16, 185, 129, 0.12) 0%, 
+                rgba(16, 185, 129, 0.06) 40%, 
                 transparent 70%
             );
+            pointer-events: none;
         }
         
         .dark .section-separator {
             background: linear-gradient(
                 90deg,
                 transparent 0%,
-                rgba(100, 85, 70, 0.2) 15%,
-                rgba(100, 85, 70, 0.35) 50%,
-                rgba(100, 85, 70, 0.2) 85%,
+                rgba(100, 85, 70, 0.4) 20%,
+                rgba(100, 85, 70, 0.6) 50%,
+                rgba(100, 85, 70, 0.4) 80%,
                 transparent 100%
             );
+            box-shadow: 
+                0 1px 3px rgba(100, 85, 70, 0.3),
+                0 -1px 3px rgba(100, 85, 70, 0.25);
         }
         
         .dark .section-separator::before {
-            background: radial-gradient(circle, 
-                rgba(16, 185, 129, 0.2) 0%, 
-                rgba(16, 185, 129, 0.12) 50%, 
+            background: #3a3530;
+            box-shadow: 
+                0 0 0 8px rgba(58, 53, 48, 0.8),
+                0 0 25px rgba(16, 185, 129, 0.4),
+                0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dark .section-separator::after {
+            background: radial-gradient(ellipse, 
+                rgba(16, 185, 129, 0.18) 0%, 
+                rgba(16, 185, 129, 0.1) 40%, 
                 transparent 70%
             );
         }
