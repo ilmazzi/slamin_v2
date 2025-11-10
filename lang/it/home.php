@@ -26,7 +26,7 @@ return [
     'videos_section_subtitle' => 'Dalla community',
 
     // New Users Section
-    'new_users_title' => 'Nuovi Utenti',
+    'new_users_title' => 'Nuovi <span class="italic text-primary-600">Utenti</span>',
     'new_users_subtitle' => 'Dai il benvenuto ai nuovi membri',
 
     // Statistics Section
