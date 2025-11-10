@@ -34,10 +34,9 @@
                 <div class="polaroid-tape" 
                      style="background: {{ $tapeColor }}; transform: rotate({{ $tapeRotation }}deg);"></div>
                 
-                {{-- Polaroid Card --}}
-                <a href="{{ route('profile.show', $user) }}" 
-                   class="polaroid-card"
-                   style="transform: rotate({{ $rotation }}deg);">
+                {{-- Polaroid Card (link will be added when profile.show route exists) --}}
+                <div class="polaroid-card"
+                     style="transform: rotate({{ $rotation }}deg);">
                     
                     {{-- Photo --}}
                     <div class="polaroid-photo">
@@ -53,20 +52,19 @@
                             {{ $user->poems()->count() }} {{ $user->poems()->count() === 1 ? 'poesia' : 'poesie' }}
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
             @endforeach
         </div>
 
-        {{-- CTA Button --}}
+        {{-- CTA Button (route will be added later) --}}
         <div class="text-center mt-12">
-            <a href="{{ route('users.index') }}" 
-               class="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-500 text-white rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary-500/50 hover:scale-105">
+            <div class="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-500 text-white rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary-500/50 hover:scale-105 cursor-pointer">
                 {{ __('Scopri la Community') }}
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
-            </a>
+            </div>
         </div>
     </div>
     
@@ -111,6 +109,7 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             position: relative;
+            cursor: pointer;
         }
         
         :is(.dark .polaroid-card) {
