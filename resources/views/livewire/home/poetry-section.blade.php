@@ -104,6 +104,16 @@
                 #faf6ed;
             padding: 2.5rem 2rem 2rem 2rem;
             min-height: 420px;
+            /* Worn brown edges for aging effect */
+            border: 1px solid transparent;
+            border-image: linear-gradient(
+                135deg,
+                rgba(139, 115, 85, 0.3),
+                rgba(160, 130, 95, 0.4),
+                rgba(139, 115, 85, 0.35),
+                rgba(120, 100, 75, 0.4),
+                rgba(139, 115, 85, 0.3)
+            ) 1;
             /* Irregular torn edges */
             clip-path: polygon(
                 0% 1%, 2% 0.5%, 4% 1.5%, 6% 0.8%, 8% 1.2%, 10% 0.5%, 
@@ -124,13 +134,12 @@
                 0% 40%, 0.5% 35%, 0% 30%, 0.5% 25%, 0% 20%, 0.5% 15%,
                 0% 10%, 0.5% 5%
             );
-            /* Paper shadow on desk */
+            /* Shadow ONLY underneath - realistic paper on desk */
             box-shadow: 
-                0 2px 4px rgba(0, 0, 0, 0.1),
-                0 4px 8px rgba(0, 0, 0, 0.12),
-                0 8px 16px rgba(0, 0, 0, 0.15),
-                0 12px 24px rgba(0, 0, 0, 0.18),
-                inset 0 0 60px rgba(210, 180, 140, 0.08);
+                0 4px 6px rgba(0, 0, 0, 0.1),
+                0 8px 12px rgba(0, 0, 0, 0.12),
+                0 12px 20px rgba(0, 0, 0, 0.14),
+                0 16px 28px rgba(0, 0, 0, 0.15);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
         }
@@ -177,10 +186,12 @@
         
         .paper-sheet:hover {
             transform: translateY(-8px) scale(1.02);
+            /* Stronger shadow on hover - paper lifting */
             box-shadow: 
-                0 16px 32px rgba(0, 0, 0, 0.25),
-                0 8px 16px rgba(0, 0, 0, 0.2),
-                0 4px 8px rgba(0, 0, 0, 0.15);
+                0 12px 20px rgba(0, 0, 0, 0.18),
+                0 20px 36px rgba(0, 0, 0, 0.22),
+                0 28px 50px rgba(0, 0, 0, 0.25),
+                0 36px 70px rgba(0, 0, 0, 0.28);
         }
         
         :is(.dark .paper-sheet) {
@@ -195,10 +206,23 @@
                 radial-gradient(circle at 80% 70%, rgba(30,25,20,0.15) 0%, transparent 50%),
                 radial-gradient(circle at 40% 80%, rgba(25,20,15,0.12) 0%, transparent 40%),
                 #2a2520;
+            border-image: linear-gradient(
+                135deg,
+                rgba(80, 65, 50, 0.4),
+                rgba(95, 75, 55, 0.5),
+                rgba(80, 65, 50, 0.45),
+                rgba(70, 55, 40, 0.5),
+                rgba(80, 65, 50, 0.4)
+            ) 1;
         }
         
         :is(.dark .paper-sheet:hover) {
             transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 12px 20px rgba(0, 0, 0, 0.3),
+                0 20px 36px rgba(0, 0, 0, 0.35),
+                0 28px 50px rgba(0, 0, 0, 0.4),
+                0 36px 70px rgba(0, 0, 0, 0.45);
         }
         
         /* Author name */
