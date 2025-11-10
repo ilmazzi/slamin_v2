@@ -8,10 +8,10 @@
         
         {{-- Header --}}
         <div class="text-center mb-12">
-            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
                 {!! __('home.new_users_title') !!}
             </h2>
-            <p class="text-lg text-neutral-200">
+            <p class="text-lg text-neutral-600 dark:text-neutral-400">
                 {{ __('home.new_users_subtitle') }}
             </p>
         </div>
@@ -23,16 +23,16 @@
                 // Random rotation for each polaroid
                 $rotation = rand(-4, 4);
                 $tapeRotation = rand(-8, 8);
-                $tapeColor = ['rgba(255, 230, 100, 0.9)', 'rgba(200, 200, 200, 0.85)', 'rgba(255, 200, 100, 0.88)'][rand(0, 2)];
+                $tapeWidth = rand(50, 70);
             ?>
             <div class="polaroid-wrapper" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
                 
-                {{-- Tape on top --}}
-                <div class="polaroid-tape" 
-                     style="background: {{ $tapeColor }}; transform: rotate({{ $tapeRotation }}deg);"></div>
+                {{-- Yellow Washi Tape on top --}}
+                <div class="polaroid-tape tape-{{ $i }}" 
+                     style="width: {{ $tapeWidth }}px; --tape-rotation: {{ $tapeRotation }}deg; transform: translateX(-50%) rotate({{ $tapeRotation }}deg);"></div>
                 
                 {{-- Polaroid Card (link will be added when profile.show route exists) --}}
                 <div class="polaroid-card"
@@ -81,19 +81,46 @@
             padding-top: 20px;
         }
         
-        /* Tape on top (random colors) */
+        /* Washi Tape on top - YELLOW WITH SERRATED EDGES (like gigs) */
         .polaroid-tape {
             position: absolute;
-            top: -2px;
+            top: -8px;
             left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 18px;
-            z-index: 10;
-            opacity: 0.85;
+            /* Width is set inline per card (random 50-70px) */
+            height: 28px;
+            background: 
+                /* Subtle shine */
+                linear-gradient(
+                    105deg,
+                    rgba(255, 255, 255, 0.25) 0%,
+                    transparent 30%,
+                    transparent 70%,
+                    rgba(255, 255, 255, 0.25) 100%
+                ),
+                /* YELLOW scotch tape */
+                linear-gradient(180deg, 
+                    rgba(240, 210, 100, 0.92) 0%, 
+                    rgba(245, 220, 120, 0.90) 50%, 
+                    rgba(250, 230, 140, 0.92) 100%
+                );
             box-shadow: 
-                0 1px 2px rgba(0, 0, 0, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+                0 3px 8px rgba(0, 0, 0, 0.35),
+                0 1px 4px rgba(0, 0, 0, 0.25),
+                inset 0 2px 5px rgba(255, 255, 255, 0.9),
+                inset 0 -1px 3px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(200, 180, 100, 0.4);
+            /* SERRATED EDGES */
+            clip-path: polygon(
+                0% 0%, 2% 5%, 0% 10%, 2% 15%, 0% 20%, 2% 25%, 0% 30%, 2% 35%, 
+                0% 40%, 2% 45%, 0% 50%, 2% 55%, 0% 60%, 2% 65%, 0% 70%, 2% 75%, 
+                0% 80%, 2% 85%, 0% 90%, 2% 95%, 0% 100%,
+                100% 100%,
+                98% 95%, 100% 90%, 98% 85%, 100% 80%, 98% 75%, 100% 70%, 98% 65%, 
+                100% 60%, 98% 55%, 100% 50%, 98% 45%, 100% 40%, 98% 35%, 100% 30%, 
+                98% 25%, 100% 20%, 98% 15%, 100% 10%, 98% 5%, 100% 0%
+            );
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
@@ -126,7 +153,7 @@
         }
         
         .polaroid-wrapper:hover .polaroid-tape {
-            transform: translateX(-50%) translateY(-12px);
+            top: -20px;
         }
         
         /* Photo area - square */
