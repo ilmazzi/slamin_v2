@@ -298,7 +298,7 @@
             transform: translate(-50%, -50%);
             font-size: 20px;
             color: #10b981;
-            background: #f5f0e8;
+            background: #ffffff;
             width: 50px;
             height: 50px;
             display: flex;
@@ -306,7 +306,7 @@
             justify-content: center;
             border-radius: 50%;
             box-shadow: 
-                0 0 0 8px rgba(245, 240, 232, 0.8),
+                0 0 0 8px rgba(255, 255, 255, 0.9),
                 0 0 20px rgba(16, 185, 129, 0.3),
                 0 4px 12px rgba(0, 0, 0, 0.1);
         }
@@ -343,9 +343,9 @@
         }
         
         .dark .section-separator::before {
-            background: #3a3530;
+            background: #ffffff;
             box-shadow: 
-                0 0 0 8px rgba(58, 53, 48, 0.8),
+                0 0 0 8px rgba(255, 255, 255, 0.95),
                 0 0 25px rgba(16, 185, 129, 0.4),
                 0 4px 12px rgba(0, 0, 0, 0.3);
         }
