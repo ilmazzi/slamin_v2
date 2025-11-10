@@ -24,15 +24,34 @@
                 $rotation = rand(-4, 4);
                 $tapeRotation = rand(-8, 8);
                 $tapeWidth = rand(50, 70);
+                // Random tape colors
+                $tapeColors = [
+                    // Yellow
+                    ['rgba(240, 210, 100, 0.92)', 'rgba(245, 220, 120, 0.90)', 'rgba(250, 230, 140, 0.92)'],
+                    // Pink
+                    ['rgba(255, 182, 193, 0.90)', 'rgba(255, 192, 203, 0.88)', 'rgba(255, 202, 213, 0.90)'],
+                    // Light blue
+                    ['rgba(173, 216, 230, 0.88)', 'rgba(183, 226, 240, 0.86)', 'rgba(193, 236, 250, 0.88)'],
+                    // Mint green
+                    ['rgba(152, 255, 152, 0.85)', 'rgba(162, 255, 162, 0.83)', 'rgba(172, 255, 172, 0.85)'],
+                    // Lavender
+                    ['rgba(230, 230, 250, 0.88)', 'rgba(240, 240, 255, 0.86)', 'rgba(250, 240, 255, 0.88)'],
+                ];
+                $selectedTape = $tapeColors[array_rand($tapeColors)];
             ?>
             <div class="polaroid-wrapper" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
                 
-                {{-- Yellow Washi Tape on top --}}
+                {{-- Colorful Washi Tape on top --}}
                 <div class="polaroid-tape tape-{{ $i }}" 
-                     style="width: {{ $tapeWidth }}px; --tape-rotation: {{ $tapeRotation }}deg; transform: translateX(-50%) rotate({{ $tapeRotation }}deg);"></div>
+                     style="width: {{ $tapeWidth }}px; 
+                            --tape-rotation: {{ $tapeRotation }}deg; 
+                            transform: translateX(-50%) rotate({{ $tapeRotation }}deg);
+                            background: 
+                                linear-gradient(105deg, rgba(255, 255, 255, 0.25) 0%, transparent 30%, transparent 70%, rgba(255, 255, 255, 0.25) 100%),
+                                linear-gradient(180deg, {{ $selectedTape[0] }} 0%, {{ $selectedTape[1] }} 50%, {{ $selectedTape[2] }} 100%);"></div>
                 
                 {{-- Polaroid Card (link will be added when profile.show route exists) --}}
                 <div class="polaroid-card"
@@ -81,28 +100,13 @@
             padding-top: 20px;
         }
         
-        /* Washi Tape on top - YELLOW WITH SERRATED EDGES (like gigs) */
+        /* Washi Tape on top - COLORFUL WITH SERRATED EDGES */
         .polaroid-tape {
             position: absolute;
             top: -8px;
             left: 50%;
-            /* Width is set inline per card (random 50-70px) */
+            /* Width and background colors set inline (random) */
             height: 28px;
-            background: 
-                /* Subtle shine */
-                linear-gradient(
-                    105deg,
-                    rgba(255, 255, 255, 0.25) 0%,
-                    transparent 30%,
-                    transparent 70%,
-                    rgba(255, 255, 255, 0.25) 100%
-                ),
-                /* YELLOW scotch tape */
-                linear-gradient(180deg, 
-                    rgba(240, 210, 100, 0.92) 0%, 
-                    rgba(245, 220, 120, 0.90) 50%, 
-                    rgba(250, 230, 140, 0.92) 100%
-                );
             box-shadow: 
                 0 3px 8px rgba(0, 0, 0, 0.35),
                 0 1px 4px rgba(0, 0, 0, 0.25),
@@ -110,7 +114,7 @@
                 inset 0 -1px 3px rgba(0, 0, 0, 0.2);
             z-index: 10;
             border-top: 1px solid rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid rgba(200, 180, 100, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             /* SERRATED EDGES */
             clip-path: polygon(
                 0% 0%, 2% 5%, 0% 10%, 2% 15%, 0% 20%, 2% 25%, 0% 30%, 2% 35%, 
