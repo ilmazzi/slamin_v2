@@ -13,51 +13,15 @@
         </div>
 
         {{-- Poetry Cards Grid --}}
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 pt-8 pb-4">
+        <div class="grid md:grid-cols-2 gap-10 md:gap-12 lg:gap-14 pt-8 pb-4">
             @foreach($poems->take(3) as $i => $poem)
             <?php
-                // Random properties per card
-                $clipRotation = rand(-12, 12);
-                $clipOffsetX = rand(-20, 20);
-                $clipType = rand(0, 1) ? 'silver' : 'gold';
-                $paperRotation = rand(-3, 3); // Slight random rotation for paper
+                $paperRotation = rand(-2, 2); // Slight random rotation
             ?>
             <div class="poetry-card-container" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
-                
-                {{-- METAL Paper Clip at top --}}
-                <svg class="paper-clip paper-clip-{{ $clipType }}" 
-                     style="transform: translate(-50%, 0) rotate({{ $clipRotation }}deg) translateX({{ $clipOffsetX }}px);"
-                     viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="metal-{{ $clipType }}-{{ $i }}" x1="0%" y1="0%" x2="100%" y2="0%">
-                            @if($clipType === 'silver')
-                                <stop offset="0%" style="stop-color:#b0b8c0;stop-opacity:1" />
-                                <stop offset="30%" style="stop-color:#e8f0f8;stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:#c0c8d0;stop-opacity:1" />
-                                <stop offset="70%" style="stop-color:#e8f0f8;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#b0b8c0;stop-opacity:1" />
-                            @else
-                                <stop offset="0%" style="stop-color:#c89860;stop-opacity:1" />
-                                <stop offset="30%" style="stop-color:#f0d890;stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:#d8b070;stop-opacity:1" />
-                                <stop offset="70%" style="stop-color:#f0d890;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#c89860;stop-opacity:1" />
-                            @endif
-                        </linearGradient>
-                        <filter id="shadow-{{ $i }}">
-                            <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.4"/>
-                        </filter>
-                    </defs>
-                    <path d="M 15,10 Q 10,10 10,15 L 10,35 Q 10,45 15,45 L 25,45 Q 30,45 30,35 L 30,20 Q 30,10 20,10 L 18,10 Q 15,10 15,13 L 15,32 Q 15,37 18,37 L 22,37 Q 25,37 25,32 L 25,20" 
-                          fill="none" 
-                          stroke="url(#metal-{{ $clipType }}-{{ $i }})" 
-                          stroke-width="3.5" 
-                          stroke-linecap="round"
-                          filter="url(#shadow-{{ $i }})" />
-                </svg>
                 
                 {{-- Paper Sheet on Desk --}}
                 <a href="{{ route('poems.show', $poem->slug) }}" 
@@ -90,9 +54,13 @@
 
         {{-- CTA Button --}}
         <div class="text-center mt-12">
-            <x-ui.buttons.primary :href="route('poems.index')" variant="outline" size="md" icon="M9 5l7 7-7 7">
+            <a href="{{ route('poems.index') }}" 
+               class="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white border-2 border-neutral-800 dark:border-neutral-300 rounded-lg font-semibold text-lg hover:bg-neutral-800 hover:text-white dark:hover:bg-white dark:hover:text-neutral-900 transition-all duration-300 shadow-lg hover:shadow-xl">
                 {{ __('home.all_poems_button') }}
-            </x-ui.buttons.primary>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
         </div>
     </div>
     
@@ -112,29 +80,58 @@
         
         .poetry-card-container {
             position: relative;
-            padding-top: 40px;
+            padding-top: 20px;
         }
         
-        /* Paper Sheet on Desk */
+        /* Realistic Paper Sheet on Desk */
         .paper-sheet {
             display: block;
             position: relative;
             background: 
-                /* Paper texture */
-                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23paper)' opacity='0.04'/%3E%3C/svg%3E"),
-                /* Paper color - cream/white */
-                linear-gradient(145deg, #fffef9 0%, #fffcf5 50%, #fefbef 100%);
-            padding: 2.5rem 2rem 2rem 2rem;
-            min-height: 400px;
-            border-radius: 2px;
-            /* Realistic shadow like paper on desk */
+                /* Paper fiber texture (visible) */
+                url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' seed='2'/%3E%3CfeColorMatrix values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23paper)'/%3E%3C/svg%3E"),
+                /* Subtle paper stains */
+                radial-gradient(ellipse at 80% 20%, rgba(139, 115, 85, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(139, 115, 85, 0.02) 0%, transparent 50%),
+                /* Paper color - cream/aged white */
+                linear-gradient(145deg, #fffef9 0%, #faf7f0 30%, #f5f1e8 60%, #faf7f0 100%);
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+            min-height: 480px;
+            /* Irregular paper edges */
+            clip-path: polygon(
+                0% 0.3%, 0.5% 0%, 1% 0.2%, 2% 0.1%, 3% 0.3%, 5% 0.2%, 7% 0.4%, 10% 0.2%, 15% 0.3%, 20% 0.1%, 25% 0.4%, 30% 0.2%, 35% 0.5%, 40% 0.3%, 45% 0.2%, 50% 0.4%, 55% 0.1%, 60% 0.3%, 65% 0.2%, 70% 0.4%, 75% 0.3%, 80% 0.2%, 85% 0.4%, 90% 0.3%, 93% 0.2%, 95% 0.4%, 97% 0.2%, 99% 0.3%, 99.5% 0.5%, 100% 0.2%,
+                100% 2%, 99.8% 5%, 100% 8%, 99.7% 12%, 100% 15%, 99.9% 20%, 100% 25%, 99.8% 30%, 100% 35%, 99.6% 40%, 100% 45%, 99.8% 50%, 100% 55%, 99.7% 60%, 100% 65%, 99.9% 70%, 100% 75%, 99.8% 80%, 100% 85%, 99.7% 90%, 100% 93%, 99.8% 96%, 100% 99%,
+                99.7% 100%, 98% 99.8%, 96% 100%, 94% 99.7%, 92% 100%, 88% 99.8%, 85% 100%, 82% 99.6%, 78% 100%, 75% 99.8%, 70% 100%, 65% 99.7%, 60% 100%, 55% 99.8%, 50% 100%, 45% 99.6%, 40% 100%, 35% 99.8%, 30% 100%, 25% 99.7%, 20% 100%, 15% 99.9%, 12% 100%, 8% 99.8%, 5% 100%, 2% 99.7%, 0.5% 100%, 0% 99.8%,
+                0% 98%, 0.2% 95%, 0% 92%, 0.3% 88%, 0% 85%, 0.2% 80%, 0% 75%, 0.3% 70%, 0% 65%, 0.2% 60%, 0% 55%, 0.3% 50%, 0% 45%, 0.2% 40%, 0% 35%, 0.3% 30%, 0% 25%, 0.2% 20%, 0% 15%, 0.3% 12%, 0% 8%, 0.2% 5%, 0% 2%
+            );
+            /* Realistic layered shadow */
             box-shadow: 
-                0 8px 16px rgba(0, 0, 0, 0.15),
-                0 4px 8px rgba(0, 0, 0, 0.12),
-                0 2px 4px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+                /* Main shadow */
+                0 10px 25px rgba(0, 0, 0, 0.2),
+                0 6px 12px rgba(0, 0, 0, 0.15),
+                0 3px 6px rgba(0, 0, 0, 0.1),
+                /* Contact shadow (darker close to paper) */
+                0 1px 3px rgba(0, 0, 0, 0.25),
+                /* Paper edge highlight */
+                inset 0 0 0 1px rgba(255, 255, 255, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.5);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
+            overflow: hidden;
+        }
+        
+        /* Paper fold/crease effect */
+        .paper-sheet::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(135deg, transparent 0%, transparent 48%, rgba(139, 115, 85, 0.03) 49%, rgba(139, 115, 85, 0.02) 50%, transparent 51%),
+                linear-gradient(45deg, transparent 0%, transparent 48%, rgba(139, 115, 85, 0.02) 49%, rgba(139, 115, 85, 0.01) 50%, transparent 51%);
+            pointer-events: none;
         }
         
         .paper-sheet:hover {
@@ -160,6 +157,7 @@
             font-size: 0.75rem;
             color: #8b7355;
             font-style: italic;
+            z-index: 10;
         }
         
         :is(.dark .paper-author) {
@@ -168,6 +166,7 @@
         
         /* Title */
         .paper-title {
+            position: relative;
             font-family: 'Crimson Pro', serif;
             font-size: 1.5rem;
             font-weight: 600;
@@ -175,6 +174,7 @@
             margin-bottom: 1.5rem;
             line-height: 1.4;
             transition: color 0.3s ease;
+            z-index: 10;
         }
         
         .group:hover .paper-title {
@@ -191,6 +191,7 @@
         
         /* Content */
         .paper-content {
+            position: relative;
             font-family: 'Crimson Pro', serif;
             font-size: 1rem;
             line-height: 1.8;
@@ -201,6 +202,7 @@
             display: -webkit-box;
             -webkit-line-clamp: 6;
             -webkit-box-orient: vertical;
+            z-index: 10;
         }
         
         :is(.dark .paper-content) {
@@ -209,12 +211,14 @@
         
         /* Read more */
         .paper-readmore {
+            position: relative;
             font-size: 0.875rem;
             color: #6b5d4f;
             font-weight: 500;
             opacity: 0;
             transform: translateY(8px);
             transition: all 0.3s ease;
+            z-index: 10;
         }
         
         .group:hover .paper-readmore {
@@ -226,28 +230,6 @@
             color: #9d8f7f;
         }
         
-        /* SVG Paper Clip - OVERLAPPING CARD */
-        .paper-clip {
-            position: absolute;
-            top: 10px; /* Overlaps card top */
-            left: 50%;
-            width: 55px;
-            height: 75px;
-            z-index: 20; /* Above card */
-            pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
-        }
-        
-        .poetry-card-container:hover .paper-clip {
-            transform: translate(-50%, -2px) rotate(0deg) translateX(0px) scale(1.05) !important;
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
-        }
-        
-        /* Card z-index */
-        .archive-paper {
-            z-index: 10;
-        }
     </style>
     @endif
 </div>
