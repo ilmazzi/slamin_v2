@@ -29,7 +29,7 @@
     <div class="py-16 md:py-24 articles-newspaper-section">
         <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
             <div>
-                <div class="text-center mb-12">
+                <div class="text-center mb-12 section-title-fade">
                     <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(255,255,255,0.8);">
                         {!! __('home.articles_section_title') !!}
                     </h2>
@@ -81,9 +81,74 @@
         <livewire:home.personalized-feed />
     @endauth
     
+    <script>
+        // Fade & Scale on Scroll - Intersection Observer
+        document.addEventListener('DOMContentLoaded', function() {
+            // Options for Intersection Observer
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -100px 0px', // Trigger 100px before element enters viewport
+                threshold: 0.1 // 10% of element must be visible
+            };
+            
+            // Callback when element enters viewport
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        // Optional: stop observing after animation (one-time effect)
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
+            
+            // Create observer
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+            
+            // Observe all elements with fade-scale-item class
+            const fadeElements = document.querySelectorAll('.fade-scale-item, .section-title-fade');
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+    
     <style>
         @keyframes float-slow { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -30px) scale(1.1); } }
         .animate-float-slow { animation: float-slow 15s ease-in-out infinite; }
+        
+        /* Fade & Scale on Scroll Effect */
+        .fade-scale-item {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-scale-item.is-visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Preserve random rotations for cards */
+        .paper-sheet.fade-scale-item.is-visible,
+        .notice-paper.fade-scale-item.is-visible,
+        .magazine-article-wrapper.fade-scale-item.is-visible,
+        .polaroid-wrapper.fade-scale-item.is-visible {
+            /* Keep inline transform (rotation) and add scale */
+            transform: scale(1) !important;
+        }
+        
+        /* Section titles fade in */
+        .section-title-fade {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        
+        .section-title-fade.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
         
         /* Cork Board Background */
         .cork-board-section {

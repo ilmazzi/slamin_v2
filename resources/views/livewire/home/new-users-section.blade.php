@@ -7,7 +7,7 @@
     <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         
         {{-- Header --}}
-        <div class="text-center mb-12">
+        <div class="text-center mb-12 section-title-fade">
             <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(255,255,255,0.8);">
                 {!! __('home.new_users_title') !!}
             </h2>
@@ -41,7 +41,7 @@
                 ];
                 $selectedTape = $tapeColors[array_rand($tapeColors)];
             ?>
-            <div class="polaroid-wrapper" 
+            <div class="polaroid-wrapper fade-scale-item" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">

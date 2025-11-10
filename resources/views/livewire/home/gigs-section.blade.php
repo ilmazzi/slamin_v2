@@ -27,7 +27,7 @@
          ">
         
         <!-- Header con Navigation -->
-        <div class="flex items-center justify-between mb-10">
+        <div class="flex items-center justify-between mb-10 section-title-fade">
             <div class="flex-1">
                 <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
                     {!! __('home.gigs_section_title') !!}
@@ -74,7 +74,7 @@
                     $tapeBottomRotation = rand(-4, 4);
                     $tapeBottomOffsetX = rand(-10, 10);
                 ?>
-                <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-3"
+                <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-3 fade-scale-item"
                      x-data
                      x-intersect.once="$el.classList.add('animate-fade-in')"
                      style="animation-delay: {{ $i * 0.1 }}s">
