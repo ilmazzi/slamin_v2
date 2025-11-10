@@ -20,10 +20,9 @@ class GigShow extends Component
     public $applicationAvailability = '';
     public $applicationCompensationExpectation = '';
 
-    public function mount($gigId)
+    public function mount(Gig $gig)
     {
-        $this->gig = Gig::with(['user', 'event', 'group', 'applications.user', 'poem', 'requester', 'acceptedTranslator'])
-            ->findOrFail($gigId);
+        $this->gig = $gig->load(['user', 'event', 'group', 'applications.user', 'poem', 'requester', 'acceptedTranslator']);
     }
 
     public function toggleApplicationForm()

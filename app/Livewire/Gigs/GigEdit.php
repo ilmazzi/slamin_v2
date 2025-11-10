@@ -28,9 +28,9 @@ class GigEdit extends Component
     public $group_id;
     public $allow_group_admin_edit = false;
 
-    public function mount($gigId)
+    public function mount(Gig $gig)
     {
-        $this->gig = Gig::findOrFail($gigId);
+        $this->gig = $gig;
 
         if (!Auth::check() || !$this->gig->canBeEditedBy(Auth::user())) {
             session()->flash('error', __('gigs.messages.unauthorized'));

@@ -18,9 +18,9 @@ class ApplicationsManagement extends Component
     #[Url]
     public $status_filter = 'all';
 
-    public function mount($gigId)
+    public function mount(Gig $gig)
     {
-        $this->gig = Gig::with(['user', 'event', 'group'])->findOrFail($gigId);
+        $this->gig = $gig->load(['user', 'event', 'group']);
 
         if (!Auth::check() || !$this->gig->canBeEditedBy(Auth::user())) {
             session()->flash('error', __('gigs.messages.unauthorized'));
