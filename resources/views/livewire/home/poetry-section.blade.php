@@ -114,97 +114,145 @@
             overflow: hidden;
         }
         
-        /* Inkwell (calamaio) */
+        /* Inkwell (calamaio) - 3D REALISTIC */
         .inkwell {
             position: absolute;
-            top: 10%;
-            right: 8%;
-            width: 60px;
-            height: 70px;
+            top: 8%;
+            right: 10%;
+            width: 80px;
+            height: 90px;
             background: 
-                /* Glass reflection */
-                radial-gradient(ellipse 15px 20px at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
-                /* Ink inside */
-                radial-gradient(ellipse 20px 15px at 50% 60%, rgba(20, 30, 50, 0.9) 0%, rgba(30, 40, 60, 0.8) 100%),
-                /* Glass body */
+                /* Strong white reflection */
+                radial-gradient(ellipse 20px 25px at 35% 25%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.3) 40%, transparent 60%),
+                /* Dark ink inside (VERY visible) */
+                radial-gradient(ellipse 28px 20px at 50% 55%, rgba(10, 15, 30, 1) 0%, rgba(15, 20, 35, 0.95) 60%, transparent 80%),
+                /* Glass tint */
+                radial-gradient(ellipse 35px 40px at 50% 50%, rgba(100, 140, 180, 0.15) 0%, rgba(80, 120, 160, 0.2) 50%, transparent 100%),
+                /* Main glass body with borders */
                 linear-gradient(180deg, 
-                    rgba(100, 120, 140, 0.3) 0%,
-                    rgba(80, 100, 120, 0.4) 30%,
-                    rgba(60, 80, 100, 0.5) 70%,
-                    rgba(40, 60, 80, 0.6) 100%
+                    rgba(60, 80, 100, 0.7) 0%,
+                    rgba(70, 90, 110, 0.8) 20%,
+                    rgba(50, 70, 90, 0.85) 50%,
+                    rgba(40, 60, 80, 0.9) 80%,
+                    rgba(30, 50, 70, 0.95) 100%
                 );
-            border-radius: 30% 30% 40% 40% / 25% 25% 50% 50%;
+            border-radius: 35% 35% 45% 45% / 30% 30% 50% 50%;
             box-shadow: 
-                0 4px 8px rgba(0, 0, 0, 0.3),
-                inset 0 2px 4px rgba(255, 255, 255, 0.2);
-            opacity: 0.7;
+                0 6px 12px rgba(0, 0, 0, 0.5),
+                0 3px 6px rgba(0, 0, 0, 0.3),
+                inset 0 3px 8px rgba(255, 255, 255, 0.3),
+                inset 0 -3px 8px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(40, 60, 80, 0.6);
         }
         
-        /* Ink stains */
+        .inkwell::after {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 15%;
+            width: 25px;
+            height: 30px;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, transparent 60%);
+            border-radius: 50%;
+            transform: rotate(-20deg);
+        }
+        
+        /* Ink stains - VERY VISIBLE */
         .ink-stain {
             position: absolute;
-            background: radial-gradient(ellipse at center, 
-                rgba(20, 30, 50, 0.4) 0%, 
-                rgba(30, 40, 60, 0.25) 40%, 
-                rgba(40, 50, 70, 0.1) 70%, 
-                transparent 100%);
+            background: 
+                /* Dark core */
+                radial-gradient(ellipse at 40% 40%, 
+                    rgba(15, 20, 35, 0.85) 0%,
+                    rgba(20, 30, 50, 0.75) 25%,
+                    rgba(30, 40, 60, 0.55) 50%,
+                    rgba(40, 50, 70, 0.35) 70%,
+                    rgba(50, 60, 80, 0.15) 85%,
+                    transparent 100%
+                ),
+                /* Splatter texture */
+                radial-gradient(circle at 70% 30%, rgba(10, 15, 25, 0.6) 0%, transparent 40%),
+                radial-gradient(circle at 20% 70%, rgba(10, 15, 25, 0.5) 0%, transparent 35%);
             border-radius: 50%;
-            filter: blur(1px);
+            filter: blur(0.5px);
+        }
+        
+        .ink-stain::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            width: 35%;
+            height: 35%;
+            background: radial-gradient(circle, rgba(5, 10, 20, 0.7) 0%, transparent 60%);
+            border-radius: 50%;
         }
         
         .ink-stain-1 {
-            top: 25%;
-            left: 15%;
-            width: 40px;
-            height: 45px;
+            top: 20%;
+            left: 12%;
+            width: 55px;
+            height: 60px;
             transform: rotate(-25deg);
         }
         
         .ink-stain-2 {
-            bottom: 30%;
-            right: 20%;
-            width: 30px;
-            height: 35px;
+            bottom: 25%;
+            right: 18%;
+            width: 45px;
+            height: 50px;
             transform: rotate(40deg);
         }
         
         .ink-stain-3 {
-            top: 60%;
-            left: 10%;
-            width: 25px;
-            height: 30px;
+            top: 55%;
+            left: 8%;
+            width: 35px;
+            height: 40px;
             transform: rotate(-15deg);
         }
         
-        /* Quill pen */
+        /* Quill pen - MORE VISIBLE */
         .quill-pen {
             position: absolute;
-            bottom: 15%;
-            right: 12%;
-            width: 120px;
-            height: 8px;
+            bottom: 12%;
+            right: 10%;
+            width: 140px;
+            height: 10px;
             background: linear-gradient(90deg,
-                rgba(180, 140, 100, 0.6) 0%,
-                rgba(160, 120, 80, 0.5) 40%,
-                rgba(140, 100, 60, 0.4) 70%,
-                rgba(100, 70, 40, 0.3) 85%,
+                rgba(160, 120, 85, 0.85) 0%,
+                rgba(140, 100, 70, 0.75) 30%,
+                rgba(120, 85, 60, 0.65) 60%,
+                rgba(90, 65, 45, 0.5) 80%,
+                rgba(70, 50, 35, 0.3) 90%,
                 transparent 100%
             );
             border-radius: 50% 0 0 50%;
             transform: rotate(-35deg);
-            opacity: 0.6;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .quill-pen::before {
             content: '';
             position: absolute;
-            right: -10px;
-            top: -8px;
+            right: -12px;
+            top: -10px;
             width: 0;
             height: 0;
-            border-left: 12px solid rgba(100, 70, 40, 0.35);
-            border-top: 12px solid transparent;
-            border-bottom: 12px solid transparent;
+            border-left: 15px solid rgba(80, 60, 40, 0.65);
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+        }
+        
+        .quill-pen::after {
+            content: '';
+            position: absolute;
+            left: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(100, 70, 50, 0.4) 0%, transparent 100%);
         }
         
         /* ============================================
@@ -227,20 +275,27 @@
             filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.3));
         }
         
-        /* SVG Paper Clip */
+        /* SVG Paper Clip - OVERLAPPING CARD */
         .paper-clip {
             position: absolute;
-            top: -15px;
+            top: 10px; /* Overlaps card top */
             left: 50%;
-            width: 50px;
-            height: 70px;
-            z-index: 10;
+            width: 55px;
+            height: 75px;
+            z-index: 20; /* Above card */
             pointer-events: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
         }
         
         .poetry-card-container:hover .paper-clip {
-            transform: translate(-50%, -2px) rotate(0deg) translateX(0px) !important;
+            transform: translate(-50%, -2px) rotate(0deg) translateX(0px) scale(1.05) !important;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+        }
+        
+        /* Card z-index */
+        .archive-paper {
+            z-index: 10;
         }
     </style>
     @endif
