@@ -69,8 +69,8 @@
                         
                         {{-- Price Badge --}}
                         <div class="ticket-price">
-                            @if($event->price && $event->price > 0)
-                                {{ number_format($event->price, 2, ',', '.') }} €
+                            @if($event->entry_fee && $event->entry_fee > 0)
+                                {{ number_format($event->entry_fee, 2, ',', '.') }} €
                             @else
                                 {{ __('events.free') }}
                             @endif
