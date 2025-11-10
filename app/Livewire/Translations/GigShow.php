@@ -62,7 +62,7 @@ class GigShow extends Component
             'applicationCompensationExpectation' => 'nullable|max:200',
         ]);
 
-        GigApplication::create([
+        $application = GigApplication::create([
             'gig_id' => $this->gig->id,
             'user_id' => Auth::id(),
             'message' => $this->applicationMessage,
