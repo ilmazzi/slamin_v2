@@ -351,70 +351,72 @@
         font-family: 'Crimson Pro', serif;
     }
     
-    /* Price - Distressed Stamp Effect (Worn Rubber Stamp) */
+    /* Price - Distressed Stamp Effect (Very Worn Rubber Stamp) */
     .ticket-price {
         text-align: center;
-        font-size: 0.8125rem;
+        font-size: 0.6875rem;
         font-weight: 900;
         color: #b91c1c;
         font-family: Impact, 'Arial Black', sans-serif;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
-        padding: 0.25rem 0.75rem;
+        letter-spacing: 0.1em;
+        padding: 0.1875rem 0.625rem;
         margin: 0.5rem auto;
         width: fit-content;
-        border: 2.5px solid #b91c1c;
-        border-radius: 4px;
-        opacity: 0.75;
+        border: 2px solid #b91c1c;
+        border-radius: 3px;
+        opacity: 0.7;
         position: relative;
-        /* Distressed/worn stamp effects */
+        /* Heavy distressed/worn stamp effects */
         text-shadow: 
-            0 0 1px rgba(185, 28, 28, 0.8),
-            0.5px 0.5px 0 rgba(185, 28, 28, 0.6),
-            -0.5px -0.5px 0 rgba(185, 28, 28, 0.4),
-            1px 0 2px rgba(185, 28, 28, 0.3);
+            0 0 1.5px rgba(185, 28, 28, 0.9),
+            0.5px 0.5px 0 rgba(185, 28, 28, 0.7),
+            -0.5px -0.5px 0 rgba(185, 28, 28, 0.5),
+            1px 1px 0 rgba(185, 28, 28, 0.4),
+            -1px -1px 0 rgba(185, 28, 28, 0.3),
+            0 0 3px rgba(185, 28, 28, 0.4);
         box-shadow: 
-            0 0 0 1px rgba(185, 28, 28, 0.06),
-            0 1px 4px rgba(185, 28, 28, 0.12),
-            inset 0 0 8px rgba(185, 28, 28, 0.05);
+            0 0 0 1px rgba(185, 28, 28, 0.05),
+            0 1px 3px rgba(185, 28, 28, 0.1),
+            inset 0 0 10px rgba(185, 28, 28, 0.06);
         background: 
-            /* Worn stamp texture - more visible */
+            /* Strong worn texture */
             repeating-linear-gradient(
                 -45deg,
                 transparent,
                 transparent 0.5px,
-                rgba(185, 28, 28, 0.06) 0.5px,
-                rgba(185, 28, 28, 0.06) 1px
+                rgba(185, 28, 28, 0.08) 0.5px,
+                rgba(185, 28, 28, 0.08) 1px
             ),
             repeating-linear-gradient(
                 45deg,
                 transparent,
                 transparent 0.5px,
-                rgba(185, 28, 28, 0.05) 0.5px,
-                rgba(185, 28, 28, 0.05) 1px
+                rgba(185, 28, 28, 0.07) 0.5px,
+                rgba(185, 28, 28, 0.07) 1px
             ),
-            /* Random ink splotches */
-            radial-gradient(ellipse at 20% 30%, rgba(185, 28, 28, 0.04) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 60%, rgba(185, 28, 28, 0.03) 0%, transparent 40%);
-        /* Distressed filter for worn look */
+            /* Heavy ink splotches */
+            radial-gradient(ellipse at 20% 30%, rgba(185, 28, 28, 0.06) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 60%, rgba(185, 28, 28, 0.05) 0%, transparent 40%),
+            radial-gradient(ellipse at 50% 80%, rgba(185, 28, 28, 0.04) 0%, transparent 45%);
+        /* Strong distressed filter */
         filter: 
-            contrast(1.15)
-            brightness(1.05)
-            blur(0.15px);
+            contrast(1.2)
+            brightness(1.08)
+            blur(0.25px);
         pointer-events: none;
     }
     
-    /* Irregular border (worn edges) */
+    /* Very irregular border (heavily worn) */
     .ticket-price::before {
         content: '';
         position: absolute;
-        inset: -1.5px;
-        border: 1.5px solid rgba(185, 28, 28, 0.2);
-        border-radius: 3px;
+        inset: -1px;
+        border: 1px solid rgba(185, 28, 28, 0.15);
+        border-radius: 2px;
         pointer-events: none;
-        /* Irregular border effect */
         box-shadow: 
-            inset 0 0 2px rgba(185, 28, 28, 0.1);
+            inset 0 0 3px rgba(185, 28, 28, 0.12);
     }
     
     /* Barcode Wrapper */
