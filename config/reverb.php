@@ -34,13 +34,13 @@ return [
             'path' => env('REVERB_SERVER_PATH', ''),
             'hostname' => env('REVERB_HOST'),
             'options' => [
-                'tls' => [
-                    'local_cert' => $_SERVER['HOME'] . '/Library/Application Support/Herd/config/valet/Certificates/slamin_v2.test.crt',
-                    'local_pk' => $_SERVER['HOME'] . '/Library/Application Support/Herd/config/valet/Certificates/slamin_v2.test.key',
+                'tls' => env('REVERB_TLS_ENABLED', false) ? [
+                    'local_cert' => getenv('HOME') . '/Library/Application Support/Herd/config/valet/Certificates/slamin_v2.test.crt',
+                    'local_pk' => getenv('HOME') . '/Library/Application Support/Herd/config/valet/Certificates/slamin_v2.test.key',
                     'verify_peer' => false,
                     'verify_peer_name' => false,
                     'allow_self_signed' => true,
-                ],
+                ] : [],
             ],
             'max_request_size' => env('REVERB_MAX_REQUEST_SIZE', 10_000),
             'scaling' => [
