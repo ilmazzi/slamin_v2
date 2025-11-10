@@ -1,6 +1,53 @@
 <div>
     @if($articles && $articles->count() > 0)
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16 pt-12 pb-6">
+    <div x-data="{
+             currentPage: 0,
+             itemsPerPage: window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1),
+             totalItems: {{ $articles->take(3)->count() }},
+             get totalPages() {
+                 return Math.ceil(this.totalItems / this.itemsPerPage);
+             },
+             next() {
+                 if (this.currentPage < this.totalPages - 1) {
+                     this.currentPage++;
+                 }
+             },
+             prev() {
+                 if (this.currentPage > 0) {
+                     this.currentPage--;
+                 }
+             }
+         }"
+         x-init="
+             window.addEventListener('resize', () => {
+                 itemsPerPage = window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1);
+                 if (currentPage >= totalPages) currentPage = totalPages - 1;
+             });
+         ">
+        
+        <!-- Slider Controls (Desktop) -->
+        <div class="hidden md:flex justify-end items-center gap-3 mb-6">
+            <button @click="prev()" 
+                    :disabled="currentPage === 0"
+                    :class="currentPage === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-200 dark:hover:bg-neutral-700'"
+                    class="p-3 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-white transition-all">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <button @click="next()" 
+                    :disabled="currentPage === totalPages - 1"
+                    :class="currentPage === totalPages - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-200 dark:hover:bg-neutral-700'"
+                    class="p-3 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-white transition-all">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="relative overflow-hidden pt-12 pb-6">
+            <div class="flex transition-transform duration-500 ease-out gap-12 md:gap-16"
+                 :style="`transform: translateX(-${currentPage * 100}%)`">
         @foreach($articles->take(3) as $i => $article)
         <?php
             // Random positioning for magazine covers
@@ -8,7 +55,7 @@
             $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
             $pinRotation = rand(-15, 15);
         ?>
-        <article class="magazine-article-wrapper fade-scale-item" 
+        <article class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 magazine-article-wrapper fade-scale-item" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
@@ -91,6 +138,18 @@
             </div>
         </article>
         @endforeach
+            </div>
+        </div>
+        
+        <!-- Page Indicators (Mobile) -->
+        <div class="flex md:hidden justify-center items-center gap-2 mt-8">
+            <template x-for="i in totalPages" :key="i">
+                <button @click="currentPage = i - 1"
+                        :class="currentPage === i - 1 ? 'bg-neutral-800 dark:bg-white w-8' : 'bg-neutral-300 dark:bg-neutral-600 w-2'"
+                        class="h-2 rounded-full transition-all duration-300">
+                </button>
+            </template>
+        </div>
     </div>
 
     <div class="text-center mt-10">

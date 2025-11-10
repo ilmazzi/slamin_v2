@@ -4,20 +4,68 @@
     @endphp
     
     @if($newUsers && $newUsers->count() > 0)
-    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"
+         x-data="{
+             currentPage: 0,
+             itemsPerPage: window.innerWidth >= 1024 ? 4 : (window.innerWidth >= 768 ? 2 : 1),
+             totalItems: {{ $newUsers->count() }},
+             get totalPages() {
+                 return Math.ceil(this.totalItems / this.itemsPerPage);
+             },
+             next() {
+                 if (this.currentPage < this.totalPages - 1) {
+                     this.currentPage++;
+                 }
+             },
+             prev() {
+                 if (this.currentPage > 0) {
+                     this.currentPage--;
+                 }
+             }
+         }"
+         x-init="
+             window.addEventListener('resize', () => {
+                 itemsPerPage = window.innerWidth >= 1024 ? 4 : (window.innerWidth >= 768 ? 2 : 1);
+                 if (currentPage >= totalPages) currentPage = totalPages - 1;
+             });
+         ">
         
         {{-- Header --}}
-        <div class="text-center mb-12 section-title-fade">
-            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(255,255,255,0.8);">
-                {!! __('home.new_users_title') !!}
-            </h2>
-            <p class="text-lg text-neutral-800 dark:text-neutral-300 font-medium" style="text-shadow: 1px 1px 2px rgba(255,255,255,0.6);">
-                {{ __('home.new_users_subtitle') }}
-            </p>
+        <div class="flex items-center justify-between mb-10 section-title-fade">
+            <div class="flex-1">
+                <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(255,255,255,0.8);">
+                    {!! __('home.new_users_title') !!}
+                </h2>
+                <p class="text-lg text-neutral-800 dark:text-neutral-300 font-medium" style="text-shadow: 1px 1px 2px rgba(255,255,255,0.6);">
+                    {{ __('home.new_users_subtitle') }}
+                </p>
+            </div>
+
+            <!-- Slider Controls (Desktop) -->
+            <div class="hidden md:flex items-center gap-3">
+                <button @click="prev()" 
+                        :disabled="currentPage === 0"
+                        :class="currentPage === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-200 dark:hover:bg-neutral-700'"
+                        class="p-3 rounded-full bg-neutral-100/80 dark:bg-neutral-800/80 backdrop-blur-sm text-neutral-800 dark:text-white transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <button @click="next()" 
+                        :disabled="currentPage === totalPages - 1"
+                        :class="currentPage === totalPages - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-200 dark:hover:bg-neutral-700'"
+                        class="p-3 rounded-full bg-neutral-100/80 dark:bg-neutral-800/80 backdrop-blur-sm text-neutral-800 dark:text-white transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
         </div>
 
-        {{-- Polaroid Grid - LARGER CARDS --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 pt-8 pb-4">
+        {{-- Polaroid Slider --}}
+        <div class="relative overflow-hidden">
+            <div class="flex transition-transform duration-500 ease-out gap-10 md:gap-12 pt-8 pb-4"
+                 :style="`transform: translateX(-${currentPage * 100}%)`">
             @foreach($newUsers as $i => $user)
             <?php
                 // Random rotation for each polaroid
@@ -41,7 +89,7 @@
                 ];
                 $selectedTape = $tapeColors[array_rand($tapeColors)];
             ?>
-            <div class="polaroid-wrapper fade-scale-item" 
+            <div class="w-full md:w-1/2 lg:w-1/4 flex-shrink-0 polaroid-wrapper fade-scale-item" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
@@ -94,6 +142,17 @@
                 </div>
             </div>
             @endforeach
+            </div>
+        </div>
+
+        <!-- Page Indicators (Mobile) -->
+        <div class="flex md:hidden justify-center items-center gap-2 mt-8">
+            <template x-for="i in totalPages" :key="i">
+                <button @click="currentPage = i - 1"
+                        :class="currentPage === i - 1 ? 'bg-neutral-800 dark:bg-white w-8' : 'bg-neutral-300 dark:bg-neutral-600 w-2'"
+                        class="h-2 rounded-full transition-all duration-300">
+                </button>
+            </template>
         </div>
 
         {{-- CTA Button (route will be added later) --}}
