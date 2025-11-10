@@ -27,6 +27,10 @@
                     ['#fffaf0', '#fff5e6', '#fff0dc'], // Floral white
                 ];
                 $selectedColors = $ticketColors[array_rand($ticketColors)];
+                // Random stamp position
+                $stampRotation = rand(-8, 8);
+                $stampOffsetX = rand(-15, 15);
+                $stampOffsetY = rand(-10, 10);
             ?>
             <div class="w-80 md:w-96 flex-shrink-0 fade-scale-item"
                  x-data
@@ -67,8 +71,9 @@
                         {{-- Event Title --}}
                         <h3 class="ticket-title">{{ $event->title }}</h3>
                         
-                        {{-- Price Badge --}}
-                        <div class="ticket-price">
+                        {{-- Price Badge (Random Position) --}}
+                        <div class="ticket-price"
+                             style="transform: rotate({{ $stampRotation }}deg) translateX({{ $stampOffsetX }}px) translateY({{ $stampOffsetY }}px);">
                             @if($event->entry_fee && $event->entry_fee > 0)
                                 {{ number_format($event->entry_fee, 2, ',', '.') }} €
                             @else
@@ -346,51 +351,51 @@
         font-family: 'Crimson Pro', serif;
     }
     
-    /* Price - Stamp Effect (Red Stamp - Smaller) */
+    /* Price - Stamp Effect (Red Stamp - Random Position) */
     .ticket-price {
         text-align: center;
         font-size: 1rem;
         font-weight: 900;
-        color: #dc2626;
+        color: #b91c1c;
         font-family: 'Arial Black', 'Arial', sans-serif;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         padding: 0.375rem 1rem;
         margin: 0.5rem auto;
         width: fit-content;
-        border: 3px solid #dc2626;
+        border: 3px solid #b91c1c;
         border-radius: 6px;
-        transform: rotate(-2deg);
         opacity: 0.85;
         position: relative;
         box-shadow: 
-            0 0 0 2px rgba(220, 38, 38, 0.08),
-            0 2px 6px rgba(220, 38, 38, 0.15);
+            0 0 0 2px rgba(185, 28, 28, 0.08),
+            0 2px 6px rgba(185, 28, 28, 0.15);
         background: 
             /* Stamp texture */
             repeating-linear-gradient(
                 -45deg,
                 transparent,
                 transparent 1px,
-                rgba(220, 38, 38, 0.03) 1px,
-                rgba(220, 38, 38, 0.03) 2px
+                rgba(185, 28, 28, 0.03) 1px,
+                rgba(185, 28, 28, 0.03) 2px
             ),
             repeating-linear-gradient(
                 45deg,
                 transparent,
                 transparent 1px,
-                rgba(220, 38, 38, 0.03) 1px,
-                rgba(220, 38, 38, 0.03) 2px
+                rgba(185, 28, 28, 0.03) 1px,
+                rgba(185, 28, 28, 0.03) 2px
             );
         /* Ink effect */
         filter: contrast(1.1) brightness(1.05);
+        pointer-events: none;
     }
     
     .ticket-price::before {
         content: '';
         position: absolute;
         inset: -2px;
-        border: 2px solid rgba(220, 38, 38, 0.25);
+        border: 2px solid rgba(185, 28, 28, 0.25);
         border-radius: 4px;
         pointer-events: none;
     }
