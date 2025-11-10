@@ -22,7 +22,7 @@ class MyApplications extends Component
     {
         $application = GigApplication::findOrFail($applicationId);
         
-        if ($application->translator_id !== Auth::id()) {
+        if ($application->user_id !== Auth::id()) {
             session()->flash('error', __('translations.unauthorized'));
             return;
         }
@@ -36,7 +36,7 @@ class MyApplications extends Component
     public function render()
     {
         $query = GigApplication::with(['gig.poem.user', 'gig.requester'])
-            ->where('translator_id', Auth::id());
+            ->where('user_id', Auth::id());
         
         // Filter by status
         if ($this->filter !== 'all') {

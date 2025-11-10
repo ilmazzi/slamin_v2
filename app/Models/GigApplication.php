@@ -13,7 +13,7 @@ class GigApplication extends Model
 
     protected $fillable = [
         'gig_id',
-        'translator_id',
+        'user_id', // Campo corretto nella tabella gig_applications
         'cover_letter',
         'proposed_compensation',
         'estimated_delivery',
@@ -35,11 +35,19 @@ class GigApplication extends Model
     }
 
     /**
-     * Relazione con il traduttore
+     * Relazione con l'utente (traduttore)
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
+    /**
+     * Alias per compatibilità
      */
     public function translator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'translator_id');
+        return $this->user();
     }
 
     /**
@@ -79,6 +87,6 @@ class GigApplication extends Model
      */
     public function scopeByTranslator($query, $translatorId)
     {
-        return $query->where('translator_id', $translatorId);
+        return $query->where('user_id', $translatorId);
     }
 }

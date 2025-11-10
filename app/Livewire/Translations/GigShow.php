@@ -48,7 +48,7 @@ class GigShow extends Component
         
         GigApplication::create([
             'gig_id' => $this->gig->id,
-            'translator_id' => Auth::id(),
+            'user_id' => Auth::id(), // Campo corretto nella tabella gig_applications
             'cover_letter' => $this->coverLetter,
             'proposed_compensation' => $this->proposedCompensation,
             'estimated_delivery' => $this->estimatedDelivery,
@@ -99,7 +99,7 @@ class GigShow extends Component
     public function render()
     {
         $userApplication = Auth::check() 
-            ? $this->gig->applications()->where('translator_id', Auth::id())->first()
+            ? $this->gig->applications()->where('user_id', Auth::id())->first()
             : null;
         
         $canApply = Auth::check() && $this->gig->canApply(Auth::user());
