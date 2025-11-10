@@ -20,32 +20,26 @@ class NotificationCenter extends Component
     }
 
     /**
-     * Listen for Echo (Reverb) notification events
+     * Get the listeners for Echo events
+     * Livewire automatically listens to private channels with echo-private: prefix
      */
-    public function getListeners()
+    protected function getListeners()
     {
         if (!Auth::check()) {
             return [];
         }
 
         return [
-            "echo-notification:App.Models.User." . Auth::id() . ",notification" => 'notificationReceived',
+            "echo-private:App.Models.User." . Auth::id() . ",.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated" => 'notificationReceived',
         ];
     }
 
     /**
      * Handle incoming notification from broadcast
      */
-    #[On('notificationReceived')]
     public function notificationReceived($event)
     {
         $this->loadNotifications();
-        
-        // Show browser notification if supported
-        $this->dispatch('browser-notification', [
-            'title' => $event['title'] ?? 'New Notification',
-            'body' => $event['message'] ?? '',
-        ]);
     }
 
     /**
