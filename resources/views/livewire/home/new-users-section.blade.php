@@ -16,8 +16,10 @@
             </p>
         </div>
 
-        {{-- Polaroid Wall - Native Horizontal Scroll --}}
-        <div class="flex gap-6 md:gap-10 lg:gap-12 overflow-x-auto pb-4 pt-8 scrollbar-hide snap-x snap-mandatory"
+        {{-- Polaroid Grid - Native Scroll on Mobile, Grid on Desktop --}}
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 lg:gap-12 pt-8 pb-4
+                    md:grid md:overflow-visible
+                    overflow-x-auto scrollbar-hide snap-x snap-mandatory flex md:block"
              style="-webkit-overflow-scrolling: touch;">
             @foreach($newUsers as $i => $user)
             <?php
@@ -42,7 +44,7 @@
                 ];
                 $selectedTape = $tapeColors[array_rand($tapeColors)];
             ?>
-            <div class="w-[85vw] md:w-[calc(50%-1.25rem)] lg:w-[calc(25%-2.25rem)] flex-shrink-0 polaroid-wrapper fade-scale-item snap-center" 
+            <div class="w-[85vw] md:w-auto flex-shrink-0 md:flex-shrink polaroid-wrapper fade-scale-item snap-center md:snap-align-none" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
@@ -99,14 +101,129 @@
 
         {{-- CTA Button (route will be added later) --}}
         <div class="text-center mt-12">
-            {{-- TODO: Add route('users.index') when available --}}
             <div class="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-500 text-white rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary-500/50 hover:scale-105 cursor-pointer">
                 {{ __('home.all_users_button') }}
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
             </div>
         </div>
     </div>
+    
+    <style>
+        @keyframes fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fade-in 0.6s ease-out forwards; opacity: 0; }
+        
+        /* ============================================
+           POLAROID WALL
+           ============================================ */
+        
+        .polaroid-wrapper {
+            position: relative;
+            padding-top: 20px;
+        }
+        
+        /* Washi Tape on top - COLORFUL WITH SERRATED EDGES */
+        .polaroid-tape {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            /* Width and background colors set inline (random) */
+            height: 28px;
+            box-shadow: 
+                0 3px 8px rgba(0, 0, 0, 0.35),
+                0 1px 4px rgba(0, 0, 0, 0.25),
+                inset 0 2px 5px rgba(255, 255, 255, 0.9),
+                inset 0 -1px 3px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            /* SERRATED EDGES */
+            clip-path: polygon(
+                0% 0%, 2% 5%, 0% 10%, 2% 15%, 0% 20%, 2% 25%, 0% 30%, 2% 35%, 
+                0% 40%, 2% 45%, 0% 50%, 2% 55%, 0% 60%, 2% 65%, 0% 70%, 2% 75%, 
+                0% 80%, 2% 85%, 0% 90%, 2% 95%, 0% 100%,
+                100% 100%,
+                98% 95%, 100% 90%, 98% 85%, 100% 80%, 98% 75%, 100% 70%, 98% 65%, 
+                100% 60%, 98% 55%, 100% 50%, 98% 45%, 100% 40%, 98% 35%, 100% 30%, 
+                98% 25%, 100% 20%, 98% 15%, 100% 10%, 98% 5%, 100% 0%
+            );
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Polaroid Card */
+        .polaroid-card {
+            display: block;
+            background: #ffffff;
+            padding: 12px 12px 14px 12px;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.12),
+                0 8px 16px rgba(0, 0, 0, 0.08),
+                0 12px 24px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        :is(.dark .polaroid-card) {
+            background: #f8f8f8;
+        }
+        
+        /* Hover effect - lift polaroid + tape */
+        .polaroid-wrapper:hover .polaroid-card {
+            transform: translateY(-12px) scale(1.05) !important;
+            box-shadow: 
+                0 16px 28px rgba(0, 0, 0, 0.18),
+                0 24px 40px rgba(0, 0, 0, 0.12),
+                0 32px 56px rgba(0, 0, 0, 0.08);
+        }
+        
+        .polaroid-wrapper:hover .polaroid-tape {
+            top: -4px;
+        }
+        
+        /* Photo area - square */
+        .polaroid-photo {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            background: #f0f0f0;
+            margin-bottom: 12px;
+        }
+        
+        .polaroid-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .polaroid-wrapper:hover .polaroid-img {
+            transform: scale(1.08);
+        }
+        
+        /* Caption area - white space below photo */
+        .polaroid-caption {
+            text-align: center;
+            padding: 0.5rem 0.25rem;
+        }
+        
+        .polaroid-name {
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #2d2d2d;
+            margin-bottom: 0.25rem;
+            line-height: 1.3;
+        }
+        
+        .polaroid-info {
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.75rem;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
     @endif
 </div>
