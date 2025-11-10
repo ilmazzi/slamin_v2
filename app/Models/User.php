@@ -322,12 +322,10 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Notifications for this user
+     * Notifications are handled by Notifiable trait
+     * Uses Illuminate\Notifications\DatabaseNotification model
      */
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class, 'user_id');
-    }
+    // public function notifications() - Removed: Notifiable trait provides this
 
 
     /**

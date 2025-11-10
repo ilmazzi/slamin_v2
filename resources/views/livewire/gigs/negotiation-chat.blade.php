@@ -13,15 +13,14 @@
 
     <!-- Negotiation Modal/Panel -->
     @if($showNegotiation)
-        <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ show: true }">
-            <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                
-                <!-- Background overlay -->
-                <div class="fixed inset-0 transition-opacity bg-neutral-900/75 backdrop-blur-sm" 
-                     wire:click="toggleNegotiation"></div>
+        <div class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+            
+            <!-- Background overlay -->
+            <div class="fixed inset-0 bg-neutral-900/75 backdrop-blur-sm" 
+                 wire:click="toggleNegotiation"></div>
 
-                <!-- Modal panel -->
-                <div class="inline-block w-full max-w-3xl p-0 my-8 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-neutral-800 shadow-2xl rounded-3xl">
+            <!-- Modal panel -->
+            <div class="relative w-full max-w-3xl bg-white dark:bg-neutral-800 shadow-2xl rounded-3xl overflow-hidden">
                     
                     <!-- Header -->
                     <div class="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-700">
@@ -231,6 +230,7 @@
                     </div>
 
                 </div>
+
             </div>
         </div>
     @endif
