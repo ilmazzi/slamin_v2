@@ -87,7 +87,7 @@
         .paper-sheet {
             display: block;
             position: relative;
-            background: url('/assets/images/paper.webp') center/contain no-repeat;
+            background: url('/assets/images/paper.webp') center/cover no-repeat;
             padding: 2.5rem 2rem 2rem 2rem;
             min-height: 420px;
             border-radius: 1px;
@@ -100,9 +100,6 @@
                 0 12px 24px rgba(0, 0, 0, 0.18);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
-            /* Paper thickness edge */
-            border-right: 1px solid rgba(210, 180, 140, 0.15);
-            border-bottom: 1px solid rgba(210, 180, 140, 0.2);
         }
         
         
@@ -116,7 +113,7 @@
         }
         
         :is(.dark .paper-sheet) {
-            background: url('/assets/images/paper.webp') center/contain no-repeat;
+            background: url('/assets/images/paper.webp') center/cover no-repeat;
             /* Darken the paper for dark mode */
             filter: brightness(0.35) contrast(1.1);
         }
