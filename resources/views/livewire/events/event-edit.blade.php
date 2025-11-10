@@ -2,7 +2,59 @@
 <div class="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50/30 to-accent-50/20 dark:from-neutral-900 dark:via-primary-950/50 dark:to-accent-950/30 relative overflow-hidden" 
      x-data="{ 
          currentStep: @entangle('currentStep')
-     }">
+     }"
+     x-init="
+         $watch('currentStep', value => {
+             if (value === 2) {
+                 setTimeout(() => {
+                     if (typeof creationMap !== 'undefined' && creationMap) {
+                         console.log('🗺️ Step 2 active - invalidating map size');
+                         creationMap.invalidateSize();
+                     } else if ($wire.is_online === false) {
+                         console.log('🗺️ Step 2 active - initializing map');
+                         if (typeof initCreationMap === 'function') {
+                             initCreationMap();
+                         }
+                     }
+                 }, 300);
+             }
+         });
+     ">
+    
+    {{-- Flash Messages --}}
+    @if (session()->has('success'))
+        <div x-data="{ show: true }" 
+             x-show="show"
+             x-init="setTimeout(() => show = false, 5000)"
+             class="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span class="font-semibold">{{ session('success') }}</span>
+            <button @click="show = false" class="ml-2 hover:bg-white/20 rounded p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+    @endif
+    
+    @if (session()->has('error'))
+        <div x-data="{ show: true }" 
+             x-show="show"
+             x-init="setTimeout(() => show = false, 8000)"
+             class="fixed top-4 right-4 z-50 bg-red-500 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 max-w-md">
+            <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="font-semibold">{{ session('error') }}</span>
+            <button @click="show = false" class="ml-2 hover:bg-white/20 rounded p-1 flex-shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+    @endif
     
     {{-- ANIMATED BACKGROUND WITH SUBTLE BLOBS --}}
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -1747,13 +1799,26 @@
                             </button>
                         @else
                             <button type="submit"
+                                    wire:loading.attr="disabled"
                                     class="px-12 py-4 rounded-2xl bg-gradient-to-r from-primary-500 to-accent-600 text-white font-black text-xl shadow-xl shadow-primary-500/30
                                            hover:shadow-2xl hover:shadow-primary-500/50 hover:scale-105
-                                           active:scale-95 transition-all duration-200 flex items-center gap-3">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                           active:scale-95 transition-all duration-200 flex items-center gap-3
+                                           disabled:opacity-50 disabled:cursor-not-allowed">
+                                {{-- Loading Spinner --}}
+                                <svg wire:loading wire:target="save" class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                {{-- Check Icon (when not loading) --}}
+                                <svg wire:loading.remove wire:target="save" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                {{ $status === 'published' ? __('events.create.update_event') : __('events.create.save_changes') }}
+                                <span wire:loading.remove wire:target="save">
+                                    {{ $status === 'published' ? __('events.create.update_event') : __('events.create.save_changes') }}
+                                </span>
+                                <span wire:loading wire:target="save">
+                                    Salvataggio in corso...
+                                </span>
                             </button>
                         @endif
                     </div>

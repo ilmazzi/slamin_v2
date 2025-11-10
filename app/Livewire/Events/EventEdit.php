@@ -894,13 +894,19 @@ class EventEdit extends Component
             // Validation errors - let Livewire handle them
             throw $e;
         } catch (\Exception $e) {
-            Log::error('Event creation failed', [
+            Log::error('Event update failed', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
                 'user_id' => Auth::id(),
+                'event_id' => $this->eventId ?? null,
             ]);
 
-            session()->flash('error', 'Errore durante la creazione dell\'evento: ' . $e->getMessage());
+            session()->flash('error', 'Errore durante la modifica dell\'evento: ' . $e->getMessage());
+            
+            $this->dispatch('notify', [
+                'message' => 'Errore durante il salvataggio. Controlla i campi e riprova.',
+                'type' => 'error'
+            ]);
         }
     }
 
