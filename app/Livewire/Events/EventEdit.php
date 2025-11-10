@@ -875,6 +875,17 @@ class EventEdit extends Component
                 ]);
             }
 
+            // Update gigs from positions
+            // First, delete old event-related gigs (only if there are no applications)
+            $event->gigs()->where('gig_type', 'event')
+                ->whereDoesntHave('applications')
+                ->delete();
+            
+            // Then create new gigs from updated positions
+            if (!empty($this->gig_positions)) {
+                $event->createGigsFromPositions();
+            }
+
             session()->flash('success', 'Evento aggiornato con successo!');
             
             return redirect()->route('events.show', $event);

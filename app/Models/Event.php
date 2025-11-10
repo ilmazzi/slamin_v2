@@ -12,6 +12,7 @@ use App\Traits\HasLikes;
 use App\Traits\HasViews;
 use App\Traits\HasComments;
 use Carbon\Carbon;
+use App\Models\Gig;
 
 class Event extends Model
 {
@@ -992,5 +993,164 @@ class Event extends Model
     public function hasRankings(): bool
     {
         return $this->rankings()->exists();
+    }
+
+    /**
+     * Create gigs from event positions
+     * This method creates a Gig for each position defined in the event
+     */
+    public function createGigsFromPositions(): void
+    {
+        // Check if event has positions
+        if (!$this->gig_positions || !is_array($this->gig_positions) || empty($this->gig_positions)) {
+            return;
+        }
+
+        // Create a gig for each position
+        foreach ($this->gig_positions as $position) {
+            // Skip if essential fields are missing
+            if (empty($position['type']) || empty($position['quantity'])) {
+                continue;
+            }
+
+            // Prepare gig data
+            $gigData = [
+                // Relations
+                'event_id' => $this->id,
+                'user_id' => $this->organizer_id,
+                
+                // Basic info
+                'title' => $this->buildGigTitle($position['type']),
+                'description' => $this->buildGigDescription($position),
+                'requirements' => $this->requirements,
+                
+                // Position details
+                'category' => $this->mapPositionTypeToCategory($position['type']),
+                'type' => $position['has_cachet'] ?? false ? 'paid' : 'volunteer',
+                'language' => $position['language'] ?? 'it',
+                
+                // Location (inherit from event)
+                'location' => $this->city ?? $this->venue_name,
+                'is_remote' => $this->is_online,
+                
+                // Deadline (use registration deadline or event start)
+                'deadline' => $this->registration_deadline ?? $this->start_datetime,
+                
+                // Compensation
+                'compensation' => $this->buildCompensation($position),
+                
+                // Limits
+                'max_applications' => $position['quantity'] > 1 ? $position['quantity'] : null,
+                
+                // Status
+                'status' => 'open',
+                'gig_type' => 'event',
+            ];
+
+            // Create the gig
+            Gig::create($gigData);
+        }
+    }
+
+    /**
+     * Build gig title from position type
+     */
+    protected function buildGigTitle(string $positionType): string
+    {
+        $typeLabel = $this->getPositionTypeLabel($positionType);
+        return "{$typeLabel} - {$this->title}";
+    }
+
+    /**
+     * Build gig description from position
+     */
+    protected function buildGigDescription(array $position): string
+    {
+        $description = "Cerchiamo {$this->getPositionTypeLabel($position['type'])} per l'evento \"{$this->title}\".\n\n";
+        
+        if ($this->description) {
+            $description .= "**Descrizione Evento:**\n{$this->description}\n\n";
+        }
+        
+        if ($this->start_datetime) {
+            $description .= "**Data:** " . $this->start_datetime->format('d/m/Y H:i') . "\n";
+        }
+        
+        if ($this->venue_name || $this->city) {
+            $location = $this->venue_name ? "{$this->venue_name}, {$this->city}" : $this->city;
+            $description .= "**Luogo:** {$location}\n";
+        }
+        
+        if (!empty($position['language'])) {
+            $description .= "**Lingua richiesta:** " . strtoupper($position['language']) . "\n";
+        }
+        
+        return $description;
+    }
+
+    /**
+     * Build compensation string from position
+     */
+    protected function buildCompensation(array $position): ?string
+    {
+        $compensation = [];
+        
+        if (!empty($position['has_cachet']) && !empty($position['cachet_amount'])) {
+            $currency = $position['cachet_currency'] ?? 'EUR';
+            $compensation[] = "Cachet: {$position['cachet_amount']} {$currency}";
+        }
+        
+        if (!empty($position['has_travel']) && !empty($position['travel_max'])) {
+            $currency = $position['travel_currency'] ?? 'EUR';
+            $compensation[] = "Rimborso viaggio: max {$position['travel_max']} {$currency}";
+        }
+        
+        if (!empty($position['has_accommodation']) && !empty($position['accommodation_details'])) {
+            $compensation[] = "Alloggio: {$position['accommodation_details']}";
+        }
+        
+        return !empty($compensation) ? implode(' + ', $compensation) : null;
+    }
+
+    /**
+     * Map position type to gig category
+     */
+    protected function mapPositionTypeToCategory(string $positionType): string
+    {
+        $mapping = [
+            'performer' => 'performance',
+            'poet' => 'performance',
+            'artist' => 'performance',
+            'mc' => 'hosting',
+            'host' => 'hosting',
+            'judge' => 'judging',
+            'sound_engineer' => 'technical',
+            'photographer' => 'technical',
+            'videographer' => 'technical',
+            'translator' => 'translation',
+        ];
+
+        return $mapping[$positionType] ?? 'other';
+    }
+
+    /**
+     * Get human-readable label for position type
+     */
+    protected function getPositionTypeLabel(string $positionType): string
+    {
+        $labels = [
+            'performer' => 'Performer',
+            'poet' => 'Poeta',
+            'artist' => 'Artista',
+            'mc' => 'MC/Presentatore',
+            'host' => 'Host',
+            'judge' => 'Giudice',
+            'sound_engineer' => 'Fonico',
+            'photographer' => 'Fotografo',
+            'videographer' => 'Videomaker',
+            'translator' => 'Traduttore',
+        ];
+
+        return $labels[$positionType] ?? ucfirst($positionType);
     }
 }

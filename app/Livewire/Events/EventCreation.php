@@ -782,6 +782,11 @@ class EventCreation extends Component
                 ]);
             }
 
+            // Create gigs from positions
+            if (!empty($this->gig_positions)) {
+                $event->createGigsFromPositions();
+            }
+
             session()->flash('success', 'Evento creato con successo!');
             
             return redirect()->route('events.show', $event);
