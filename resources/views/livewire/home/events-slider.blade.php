@@ -12,133 +12,114 @@
             </p>
         </div>
 
-        {{-- Cinema Posters - Horizontal Scroll (like Dashboard) --}}
-        <div class="flex gap-8 overflow-x-auto pb-12 pt-8 scrollbar-hide"
+        {{-- Cinema Tickets - Horizontal Scroll --}}
+        <div class="flex gap-6 overflow-x-auto pb-12 pt-8 scrollbar-hide"
              style="-webkit-overflow-scrolling: touch;">
             @foreach($recentEvents->take(6) as $i => $event)
             <?php
-                // Random spotlight intensity and tilt
-                $tilt = rand(-2, 2);
-                $spotlightIntensity = rand(85, 100) / 100;
+                // Random ticket tilt
+                $tilt = rand(-3, 3);
+                // Random ticket color (vintage paper tones)
+                $ticketColors = [
+                    ['#fef7e6', '#fdf3d7', '#fcf0cc'], // Cream
+                    ['#fff5e1', '#fff0d4', '#ffecc7'], // Peach cream
+                    ['#f5f5dc', '#f0f0d0', '#ebebc4'], // Beige
+                    ['#fffaf0', '#fff5e6', '#fff0dc'], // Floral white
+                ];
+                $selectedColors = $ticketColors[array_rand($ticketColors)];
             ?>
             <div class="w-80 md:w-96 flex-shrink-0 fade-scale-item"
                  x-data
                  x-intersect.once="$el.classList.add('animate-fade-in')"
                  style="animation-delay: {{ $i * 0.1 }}s">
                 
-                {{-- Cinema Poster Frame --}}
-                <div class="cinema-poster-wrapper" style="transform: rotate({{ $tilt }}deg);">
+                {{-- Cinema Ticket --}}
+                <a href="{{ route('events.show', $event) }}" 
+                   class="cinema-ticket group"
+                   style="transform: rotate({{ $tilt }}deg); 
+                          background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
                     
-                    {{-- Spotlight Effect --}}
-                    <div class="spotlight" style="opacity: {{ $spotlightIntensity }};"></div>
+                    {{-- Perforated Left Edge --}}
+                    <div class="ticket-perforation"></div>
                     
-                    <a href="{{ route('events.show', $event) }}" 
-                       class="cinema-poster group">
+                    {{-- Ticket Main Content --}}
+                    <div class="ticket-content">
                         
-                        {{-- Poster Image --}}
-                        <div class="poster-image-container">
-                            @if($event->image)
-                                <img src="{{ $event->image }}" 
-                                     alt="{{ $event->title }}"
-                                     class="poster-image">
-                            @else
-                                {{-- Elegant vintage poster design (no image) --}}
-                                <div class="poster-vintage-design">
-                                    {{-- Decorative top border --}}
-                                    <div class="poster-vintage-top"></div>
-                                    
-                                    {{-- Main title area --}}
-                                    <div class="poster-vintage-title">
-                                        {{ $event->title }}
-                                    </div>
-                                    
-                                    {{-- Decorative line --}}
-                                    <div class="poster-vintage-line"></div>
-                                    
-                                    {{-- Event info --}}
-                                    <div class="poster-vintage-info">
-                                        @if($event->start_date)
-                                        <div class="poster-vintage-date">
-                                            {{ $event->start_date->locale('it')->isoFormat('D MMMM YYYY') }}
-                                        </div>
-                                        @endif
-                                        
-                                        @if($event->start_time)
-                                        <div class="poster-vintage-time">
-                                            {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}
-                                        </div>
-                                        @endif
-                                        
-                                        @if($event->city)
-                                        <div class="poster-vintage-location">
-                                            {{ strtoupper($event->city) }}
-                                        </div>
-                                        @endif
-                                    </div>
-                                    
-                                    {{-- Decorative bottom element --}}
-                                    <div class="poster-vintage-bottom">
-                                        <div class="poster-vintage-ornament">✦</div>
-                                    </div>
-                                </div>
+                        {{-- Ticket Header --}}
+                        <div class="ticket-header">
+                            <div class="ticket-admit">ADMIT ONE</div>
+                            @if($event->start_date)
+                            <div class="ticket-serial">#{{ str_pad($event->id, 4, '0', STR_PAD_LEFT) }}</div>
                             @endif
-                            
-                            {{-- Dark overlay ONLY for images --}}
-                            @if($event->image)
-                                <div class="poster-overlay"></div>
-                            @endif
-                            
-                            {{-- Event Date Badge (top right) - ONLY for images --}}
-                            @if($event->image && $event->start_date)
-                            <div class="poster-date-badge">
-                                <div class="poster-date-day">{{ $event->start_date->format('d') }}</div>
-                                <div class="poster-date-month">{{ $event->start_date->locale('it')->isoFormat('MMM') }}</div>
+                        </div>
+                        
+                        {{-- Event Image (if available) --}}
+                        @if($event->image)
+                        <div class="ticket-image">
+                            <img src="{{ $event->image }}" 
+                                 alt="{{ $event->title }}"
+                                 class="w-full h-full object-cover">
+                        </div>
+                        @endif
+                        
+                        {{-- Event Title --}}
+                        <h3 class="ticket-title">{{ $event->title }}</h3>
+                        
+                        {{-- Event Details Grid --}}
+                        <div class="ticket-details">
+                            @if($event->start_date)
+                            <div class="ticket-detail-item">
+                                <div class="ticket-detail-label">DATA</div>
+                                <div class="ticket-detail-value">{{ $event->start_date->locale('it')->isoFormat('D MMM YYYY') }}</div>
                             </div>
                             @endif
                             
-                            {{-- Event Title & Info - ONLY for images --}}
-                            @if($event->image)
-                            <div class="poster-content">
-                                <h3 class="poster-title">{{ $event->title }}</h3>
-                                
-                                {{-- Event Info --}}
-                                <div class="poster-info">
-                                    {{-- Location --}}
-                                    @if($event->city)
-                                    <div class="poster-info-item">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                        </svg>
-                                        <span>{{ $event->city }}</span>
-                                    </div>
-                                    @endif
-                                    
-                                    {{-- Time --}}
-                                    @if($event->start_time)
-                                    <div class="poster-info-item">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        <span>{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}</span>
-                                    </div>
-                                    @endif
-                                </div>
-                                
-                                {{-- Organizer --}}
-                                @if($event->user)
-                                <div class="poster-organizer">
-                                    <span class="poster-organizer-label">Organizzato da</span>
-                                    <span class="poster-organizer-name">{{ $event->user->name }}</span>
-                                </div>
-                                @endif
+                            @if($event->start_time)
+                            <div class="ticket-detail-item">
+                                <div class="ticket-detail-label">ORA</div>
+                                <div class="ticket-detail-value">{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}</div>
+                            </div>
+                            @endif
+                            
+                            @if($event->city)
+                            <div class="ticket-detail-item">
+                                <div class="ticket-detail-label">LUOGO</div>
+                                <div class="ticket-detail-value">{{ $event->city }}</div>
+                            </div>
+                            @endif
+                            
+                            @if($event->user)
+                            <div class="ticket-detail-item">
+                                <div class="ticket-detail-label">ORGANIZZATO DA</div>
+                                <div class="ticket-detail-value">{{ Str::limit($event->user->name, 20) }}</div>
                             </div>
                             @endif
                         </div>
                         
-                        {{-- Decorative Border Effect --}}
-                        <div class="poster-border"></div>
-                    </a>
-                </div>
+                        {{-- Barcode --}}
+                        <div class="ticket-barcode">
+                            <div class="barcode-lines">
+                                @for($j = 0; $j < 40; $j++)
+                                <div class="barcode-line" style="width: {{ rand(1, 3) }}px; height: {{ rand(35, 45) }}px;"></div>
+                                @endfor
+                            </div>
+                            <div class="barcode-number">{{ str_pad($event->id, 12, '0', STR_PAD_LEFT) }}</div>
+                        </div>
+                    </div>
+                    
+                    {{-- Stub Section (tear-off part) --}}
+                    <div class="ticket-stub">
+                        <div class="stub-perforation"></div>
+                        <div class="stub-content">
+                            <div class="stub-date">
+                                @if($event->start_date)
+                                {{ $event->start_date->format('d/m') }}
+                                @endif
+                            </div>
+                            <div class="stub-serial">#{{ str_pad($event->id, 4, '0', STR_PAD_LEFT) }}</div>
+                        </div>
+                    </div>
+                </a>
             </div>
             @endforeach
         </div>
@@ -153,355 +134,217 @@
     
     <style>
     /* ========================================
-       CINEMA / THEATRE WALL - EVENT POSTERS
+       CINEMA TICKETS - REALISTIC DESIGN
        ======================================== */
     
-    /* Poster Wrapper */
-    .cinema-poster-wrapper {
-        position: relative;
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    /* Spotlight from above */
-    .spotlight {
-        position: absolute;
-        top: -80px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 180%;
-        height: 120px;
-        background: radial-gradient(ellipse, 
-            rgba(255, 248, 220, 0.3) 0%, 
-            rgba(255, 248, 220, 0.15) 30%, 
-            transparent 70%
-        );
-        pointer-events: none;
-        z-index: 10;
-        transition: opacity 0.4s ease;
-    }
-    
-    .cinema-poster-wrapper:hover .spotlight {
-        opacity: 1 !important;
-    }
-    
-    /* Cinema Poster */
-    .cinema-poster {
-        display: block;
-        position: relative;
-        background: #0a0a0a;
-        padding: 0.75rem;
+    /* Cinema Ticket */
+    .cinema-ticket {
+        display: flex;
+        background: #fef7e6;
+        border-radius: 8px;
         box-shadow: 
-            0 8px 24px rgba(0, 0, 0, 0.6),
-            0 16px 48px rgba(0, 0, 0, 0.4),
-            inset 0 0 0 1px rgba(218, 165, 32, 0.3);
+            0 8px 24px rgba(0, 0, 0, 0.4),
+            0 16px 48px rgba(0, 0, 0, 0.3);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow: hidden;
-    }
-    
-    .cinema-poster-wrapper:hover .cinema-poster {
-        transform: translateY(-12px) scale(1.03);
-        box-shadow: 
-            0 16px 32px rgba(0, 0, 0, 0.7),
-            0 24px 64px rgba(0, 0, 0, 0.5),
-            0 0 0 2px rgba(218, 165, 32, 0.6),
-            inset 0 0 0 1px rgba(218, 165, 32, 0.5);
-    }
-    
-    :is(.dark .cinema-poster) {
-        background: #050505;
-    }
-    
-    /* Poster Image Container */
-    .poster-image-container {
         position: relative;
-        aspect-ratio: 2/3;
         overflow: hidden;
-        background: #1a1a1a;
     }
     
-    .poster-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    .cinema-ticket:hover {
+        transform: translateY(-12px) scale(1.02) !important;
+        box-shadow: 
+            0 16px 32px rgba(0, 0, 0, 0.5),
+            0 24px 64px rgba(0, 0, 0, 0.4),
+            0 0 0 2px rgba(218, 165, 32, 0.4);
     }
     
-    .group:hover .poster-image {
-        transform: scale(1.08);
-    }
-    
-    /* Dark overlay for text readability */
-    .poster-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-            to top,
-            rgba(0, 0, 0, 0.95) 0%,
-            rgba(0, 0, 0, 0.7) 40%,
-            rgba(0, 0, 0, 0.3) 70%,
-            transparent 100%
+    /* Perforated Left Edge */
+    .ticket-perforation {
+        width: 24px;
+        background: linear-gradient(135deg, 
+            rgba(139, 115, 85, 0.15) 0%,
+            rgba(160, 140, 110, 0.1) 100%
         );
+        position: relative;
+        flex-shrink: 0;
     }
     
-    /* Vintage Poster Design (no image) - Elegant Typography Poster */
-    .poster-vintage-design {
-        width: 100%;
-        height: 100%;
+    .ticket-perforation::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        bottom: -5px;
+        right: 0;
+        width: 12px;
         background: 
-            /* Art Deco pattern */
-            repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 20px,
-                rgba(218, 165, 32, 0.08) 20px,
-                rgba(218, 165, 32, 0.08) 40px
-            ),
-            /* Rich gradient */
-            linear-gradient(160deg, 
-                #1a1a2e 0%,
-                #16213e 30%,
-                #0f3460 60%,
-                #16213e 100%
-            );
+            radial-gradient(circle at 0 8px, transparent 4px, currentColor 4px) 0 0 / 12px 16px repeat-y;
+        color: inherit;
+    }
+    
+    /* Main Content Area */
+    .ticket-content {
+        flex: 1;
+        padding: 1.5rem;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding: 2rem 1.5rem;
-        position: relative;
-        overflow: hidden;
+        gap: 1rem;
     }
     
-    /* Decorative top border */
-    .poster-vintage-top {
-        height: 4px;
-        background: linear-gradient(90deg, 
-            transparent 0%,
-            rgba(218, 165, 32, 0.8) 20%,
-            rgba(255, 215, 0, 1) 50%,
-            rgba(218, 165, 32, 0.8) 80%,
-            transparent 100%
-        );
-        margin-bottom: 2rem;
-        box-shadow: 0 2px 8px rgba(218, 165, 32, 0.3);
-    }
-    
-    /* Title area */
-    .poster-vintage-title {
-        font-family: 'Crimson Pro', serif;
-        font-size: 2rem;
-        font-weight: 700;
-        color: #ffffff;
-        text-align: center;
-        line-height: 1.2;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        text-shadow: 
-            0 0 20px rgba(255, 215, 0, 0.4),
-            0 2px 8px rgba(0, 0, 0, 0.6);
-        margin-bottom: 1.5rem;
-    }
-    
-    /* Decorative line */
-    .poster-vintage-line {
-        height: 2px;
-        background: linear-gradient(90deg, 
-            transparent 0%,
-            rgba(255, 215, 0, 0.6) 30%,
-            rgba(255, 215, 0, 0.9) 50%,
-            rgba(255, 215, 0, 0.6) 70%,
-            transparent 100%
-        );
-        margin: 1.5rem 0;
-    }
-    
-    /* Info section */
-    .poster-vintage-info {
-        text-align: center;
-        space-y: 0.75rem;
-    }
-    
-    .poster-vintage-date {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: #ffd700;
-        margin-bottom: 0.5rem;
-        letter-spacing: 0.05em;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    }
-    
-    .poster-vintage-time {
-        font-size: 1.5rem;
-        font-weight: 900;
-        color: #ffffff;
-        margin-bottom: 0.75rem;
-        font-family: 'Crimson Pro', serif;
-        text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-    }
-    
-    .poster-vintage-location {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #daa520;
-        letter-spacing: 0.15em;
-        margin-top: 0.75rem;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    }
-    
-    /* Bottom decorative element */
-    .poster-vintage-bottom {
+    /* Header */
+    .ticket-header {
         display: flex;
-        justify-content: center;
-        margin-top: 2rem;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px dashed rgba(139, 115, 85, 0.3);
     }
     
-    .poster-vintage-ornament {
-        font-size: 2rem;
-        color: #ffd700;
-        text-shadow: 
-            0 0 20px rgba(255, 215, 0, 0.6),
-            0 2px 8px rgba(0, 0, 0, 0.6);
-        animation: pulse-glow 3s ease-in-out infinite;
-    }
-    
-    @keyframes pulse-glow {
-        0%, 100% { 
-            opacity: 0.8;
-            text-shadow: 
-                0 0 20px rgba(255, 215, 0, 0.6),
-                0 2px 8px rgba(0, 0, 0, 0.6);
-        }
-        50% { 
-            opacity: 1;
-            text-shadow: 
-                0 0 30px rgba(255, 215, 0, 0.9),
-                0 0 15px rgba(255, 215, 0, 0.6),
-                0 2px 8px rgba(0, 0, 0, 0.6);
-        }
-    }
-    
-    /* Date Badge */
-    .poster-date-badge {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: rgba(218, 165, 32, 0.95);
-        backdrop-filter: blur(8px);
-        padding: 0.5rem 0.75rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        text-align: center;
-        border: 2px solid rgba(255, 215, 0, 0.6);
-        z-index: 20;
-    }
-    
-    .poster-date-day {
-        font-size: 1.5rem;
+    .ticket-admit {
+        font-size: 0.75rem;
         font-weight: 900;
-        line-height: 1;
-        color: #1a1a1a;
-        font-family: 'Crimson Pro', serif;
+        letter-spacing: 0.1em;
+        color: #b91c1c;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
     
-    .poster-date-month {
-        font-size: 0.7rem;
+    .ticket-serial {
+        font-size: 0.65rem;
         font-weight: 700;
-        text-transform: uppercase;
-        color: #2d2d2d;
-        letter-spacing: 0.05em;
+        color: #8b7355;
+        font-family: 'Courier New', monospace;
     }
     
-    /* Content Area */
-    .poster-content {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 1.5rem 1rem;
-        z-index: 15;
+    /* Event Image */
+    .ticket-image {
+        width: 100%;
+        height: 140px;
+        border-radius: 4px;
+        overflow: hidden;
+        border: 2px solid rgba(139, 115, 85, 0.2);
+        margin: 0.5rem 0;
     }
     
     /* Title */
-    .poster-title {
-        font-size: 1.375rem;
-        font-weight: 700;
-        color: #ffffff;
-        margin-bottom: 0.75rem;
-        line-height: 1.3;
+    .ticket-title {
         font-family: 'Crimson Pro', serif;
-        text-shadow: 
-            0 2px 8px rgba(0, 0, 0, 0.8),
-            0 4px 16px rgba(0, 0, 0, 0.6);
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        line-height: 1.3;
+        text-align: center;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        margin: 0.5rem 0;
     }
     
-    /* Info Items */
-    .poster-info {
-        display: flex;
-        flex-wrap: wrap;
+    /* Details Grid */
+    .ticket-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 0.75rem;
+        padding: 1rem 0;
+        border-top: 1px dashed rgba(139, 115, 85, 0.25);
+        border-bottom: 1px dashed rgba(139, 115, 85, 0.25);
+    }
+    
+    .ticket-detail-item {
+        text-align: center;
+    }
+    
+    .ticket-detail-label {
+        font-size: 0.625rem;
+        font-weight: 700;
+        color: #8b7355;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.25rem;
+    }
+    
+    .ticket-detail-value {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #2d2d2d;
+        font-family: 'Crimson Pro', serif;
+    }
+    
+    /* Barcode */
+    .ticket-barcode {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.375rem;
+        margin-top: 0.5rem;
+    }
+    
+    .barcode-lines {
+        display: flex;
+        align-items: flex-end;
+        gap: 1px;
+        height: 45px;
+        padding: 0 1rem;
+    }
+    
+    .barcode-line {
+        background: #000;
+        align-self: flex-end;
+    }
+    
+    .barcode-number {
+        font-size: 0.625rem;
+        font-weight: 600;
+        color: #666;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.1em;
+    }
+    
+    /* Stub (tear-off section) */
+    .ticket-stub {
+        width: 80px;
+        background: linear-gradient(180deg, 
+            rgba(139, 115, 85, 0.08) 0%,
+            rgba(160, 140, 110, 0.05) 100%
+        );
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-left: 2px dashed rgba(139, 115, 85, 0.3);
+        flex-shrink: 0;
+    }
+    
+    .stub-perforation {
+        position: absolute;
+        top: -5px;
+        bottom: -5px;
+        left: -6px;
+        width: 12px;
+        background: 
+            radial-gradient(circle at 12px 8px, transparent 4px, currentColor 4px) 0 0 / 12px 16px repeat-y;
+    }
+    
+    .stub-content {
+        writing-mode: vertical-rl;
+        text-align: center;
+        transform: rotate(180deg);
+        padding: 1rem 0.5rem;
+    }
+    
+    .stub-date {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: #2d2d2d;
+        font-family: 'Crimson Pro', serif;
         margin-bottom: 0.75rem;
     }
     
-    .poster-info-item {
-        display: flex;
-        align-items: center;
-        gap: 0.375rem;
-        font-size: 0.875rem;
-        color: #ffd700;
-        font-weight: 600;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-    }
-    
-    .poster-info-item svg {
-        flex-shrink: 0;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
-    }
-    
-    /* Organizer */
-    .poster-organizer {
-        display: flex;
-        flex-direction: column;
-        gap: 0.125rem;
-    }
-    
-    .poster-organizer-label {
+    .stub-serial {
         font-size: 0.625rem;
-        color: rgba(255, 255, 255, 0.6);
-        text-transform: uppercase;
+        font-weight: 700;
+        color: #8b7355;
+        font-family: 'Courier New', monospace;
         letter-spacing: 0.05em;
-        font-weight: 600;
-    }
-    
-    .poster-organizer-name {
-        font-size: 0.875rem;
-        color: #ffffff;
-        font-weight: 600;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-    }
-    
-    /* Decorative Gold Border */
-    .poster-border {
-        position: absolute;
-        inset: 0;
-        border: 3px solid transparent;
-        border-image: linear-gradient(
-            135deg,
-            rgba(218, 165, 32, 0.8) 0%,
-            rgba(255, 215, 0, 0.6) 25%,
-            rgba(218, 165, 32, 0.5) 50%,
-            rgba(255, 215, 0, 0.6) 75%,
-            rgba(218, 165, 32, 0.8) 100%
-        ) 1;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.4s ease;
-    }
-    
-    .cinema-poster:hover .poster-border {
-        opacity: 1;
     }
     
     /* Fade-in animation */
