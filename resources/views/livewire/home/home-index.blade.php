@@ -11,16 +11,12 @@
     </div>
 
     {{-- Poesie - WOODEN DESK SECTION --}}
-    <div class="py-16 md:py-20 wooden-desk-section parallax-section" 
-         x-data="parallaxSection()" 
-         x-init="init()">
+    <div class="py-16 md:py-20 wooden-desk-section">
         <livewire:home.poetry-section />
     </div>
 
     {{-- Nuovi Utenti - POLAROID WALL --}}
-    <div class="py-16 md:py-24 polaroid-wall-section parallax-section" 
-         x-data="parallaxSection()" 
-         x-init="init()">
+    <div class="py-16 md:py-24 polaroid-wall-section">
         <livewire:home.new-users-section />
     </div>
 
@@ -30,9 +26,7 @@
     </div>
 
     {{-- Articoli - Newspaper Section --}}
-    <div class="py-16 md:py-24 articles-newspaper-section parallax-section" 
-         x-data="parallaxSection()" 
-         x-init="init()">
+    <div class="py-16 md:py-24 articles-newspaper-section">
         <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
             <div>
                 <div class="text-center mb-12">
@@ -47,9 +41,7 @@
     </div>
 
     {{-- Top Gigs - CORK BOARD SECTION --}}
-    <div class="py-16 md:py-20 cork-board-section parallax-section" 
-         x-data="parallaxSection()" 
-         x-init="init()">
+    <div class="py-16 md:py-20 cork-board-section">
         <livewire:home.gigs-section />
     </div>
 
@@ -89,115 +81,9 @@
         <livewire:home.personalized-feed />
     @endauth
     
-    <script>
-        // Layered Parallax Effect for Sections
-        function parallaxSection() {
-            return {
-                ticking: false,
-                
-                init() {
-                    // Only enable parallax on desktop (performance)
-                    if (window.innerWidth < 768) return;
-                    
-                    const element = this.$el;
-                    
-                    // Create background layer
-                    const bgLayer = document.createElement('div');
-                    bgLayer.className = 'parallax-bg-layer';
-                    
-                    // Copy background styles to the layer
-                    const computedStyle = window.getComputedStyle(element);
-                    bgLayer.style.backgroundImage = computedStyle.backgroundImage;
-                    bgLayer.style.backgroundSize = computedStyle.backgroundSize;
-                    bgLayer.style.backgroundPosition = computedStyle.backgroundPosition;
-                    bgLayer.style.backgroundColor = computedStyle.backgroundColor;
-                    
-                    // Make original element transparent
-                    element.style.backgroundColor = 'transparent';
-                    element.style.backgroundImage = 'none';
-                    
-                    element.insertBefore(bgLayer, element.firstChild);
-                    
-                    // Scroll handler with requestAnimationFrame
-                    const handleScroll = () => {
-                        if (!this.ticking) {
-                            window.requestAnimationFrame(() => {
-                                this.updateParallax(element, bgLayer);
-                                this.ticking = false;
-                            });
-                            this.ticking = true;
-                        }
-                    };
-                    
-                    window.addEventListener('scroll', handleScroll, { passive: true });
-                    
-                    // Initial update
-                    this.updateParallax(element, bgLayer);
-                },
-                
-                updateParallax(element, bgLayer) {
-                    const rect = element.getBoundingClientRect();
-                    const windowHeight = window.innerHeight;
-                    
-                    // Only apply parallax when section is in viewport
-                    if (rect.top < windowHeight && rect.bottom > 0) {
-                        // Calculate scroll progress for this section
-                        const scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
-                        
-                        // Background moves at 30% speed (slower)
-                        const bgOffset = scrollProgress * 150 * 0.3;
-                        bgLayer.style.transform = 'translateY(' + bgOffset + 'px)';
-                        
-                        // Decorative elements (tape, pins, clips) move at 50% speed
-                        const decorations = element.querySelectorAll('.washi-tape, .polaroid-tape, .thumbtack');
-                        decorations.forEach((decoration, index) => {
-                            const decorOffset = scrollProgress * 80 * 0.5;
-                            const currentTransform = decoration.getAttribute('style') || '';
-                            if (currentTransform.includes('transform:') && currentTransform.includes('rotate')) {
-                                // Preserve existing inline rotation
-                                const rotateMatch = currentTransform.match(/rotate\([^)]+\)/);
-                                if (rotateMatch) {
-                                    decoration.style.transform = rotateMatch[0] + ' translateY(' + decorOffset + 'px)';
-                                }
-                            } else {
-                                decoration.style.transform = 'translateY(' + decorOffset + 'px)';
-                            }
-                        });
-                    }
-                }
-            };
-        }
-        
-        // Initialize on page load
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('parallaxSection', parallaxSection);
-        });
-    </script>
-    
     <style>
         @keyframes float-slow { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -30px) scale(1.1); } }
         .animate-float-slow { animation: float-slow 15s ease-in-out infinite; }
-        
-        /* Parallax Section Styles */
-        .parallax-section {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .parallax-bg-layer {
-            position: absolute;
-            top: -100px;
-            left: 0;
-            right: 0;
-            bottom: -100px;
-            z-index: 0;
-            will-change: transform;
-        }
-        
-        .parallax-section > * {
-            position: relative;
-            z-index: 1;
-        }
         
         /* Cork Board Background */
         .cork-board-section {
