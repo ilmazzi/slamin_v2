@@ -62,7 +62,7 @@
         </div>
 
         <!-- Gigs Slider Container -->
-        <div class="relative overflow-x-hidden -mx-3 px-3 pt-6 pb-6">
+        <div class="relative overflow-x-hidden overflow-y-visible -mx-3 px-3 pt-12 pb-12">
             <div class="flex transition-transform duration-500 ease-out"
                  :style="`transform: translateX(-${currentPage * 100}%)`">
                 @foreach($topGigs as $i => $gig)
@@ -229,22 +229,19 @@
             /* Width is set inline per card (random) */
             height: 32px;
             background: 
-                /* Strong glossy shine */
+                /* Subtle shine (light yellow to slightly lighter) */
                 linear-gradient(
-                    100deg,
-                    rgba(255, 255, 255, 0.85) 0%,
-                    rgba(255, 255, 255, 0.5) 20%,
-                    rgba(255, 255, 255, 0.15) 40%,
-                    rgba(255, 255, 255, 0.08) 50%,
-                    rgba(255, 255, 255, 0.15) 60%,
-                    rgba(255, 255, 255, 0.5) 80%,
-                    rgba(255, 255, 255, 0.85) 100%
+                    105deg,
+                    rgba(255, 255, 255, 0.25) 0%,
+                    transparent 30%,
+                    transparent 70%,
+                    rgba(255, 255, 255, 0.25) 100%
                 ),
-                /* STRONG YELLOW scotch color */
+                /* YELLOW scotch - darker to lighter gradient */
                 linear-gradient(180deg, 
-                    rgba(255, 235, 100, 0.95) 0%, 
-                    rgba(255, 228, 80, 0.92) 50%, 
-                    rgba(255, 235, 100, 0.95) 100%
+                    rgba(255, 220, 60, 0.95) 0%, 
+                    rgba(255, 235, 90, 0.92) 50%, 
+                    rgba(255, 245, 120, 0.95) 100%
                 );
             box-shadow: 
                 /* Strong shadow for depth */
@@ -309,19 +306,16 @@
         :is(.dark .washi-tape) {
             background: 
                 linear-gradient(
-                    100deg,
-                    rgba(255, 255, 255, 0.4) 0%,
-                    rgba(255, 255, 255, 0.25) 20%,
-                    rgba(255, 255, 255, 0.1) 40%,
-                    rgba(255, 255, 255, 0.05) 50%,
-                    rgba(255, 255, 255, 0.1) 60%,
-                    rgba(255, 255, 255, 0.25) 80%,
-                    rgba(255, 255, 255, 0.4) 100%
+                    105deg,
+                    rgba(255, 255, 255, 0.15) 0%,
+                    transparent 30%,
+                    transparent 70%,
+                    rgba(255, 255, 255, 0.15) 100%
                 ),
                 linear-gradient(180deg, 
-                    rgba(230, 200, 80, 0.88) 0%, 
-                    rgba(220, 190, 60, 0.85) 50%, 
-                    rgba(230, 200, 80, 0.88) 100%
+                    rgba(210, 180, 50, 0.9) 0%, 
+                    rgba(220, 190, 70, 0.88) 50%, 
+                    rgba(230, 200, 90, 0.9) 100%
                 );
             box-shadow: 
                 0 3px 8px rgba(0, 0, 0, 0.6),
