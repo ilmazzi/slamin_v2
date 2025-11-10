@@ -1,3 +1,149 @@
-<div>
-    {{-- Close your eyes. Count to one. That is how long forever feels. --}}
+<div class="relative" x-data="{ show: @entangle('showPanel') }">
+    
+    <!-- Bell Icon with Badge -->
+    <button @click="$wire.togglePanel()" 
+            class="relative p-2 rounded-xl text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+        </svg>
+        
+        @if($unreadCount > 0)
+            <span class="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full animate-pulse">
+                {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+            </span>
+        @endif
+    </button>
+
+    <!-- Notification Panel -->
+    <div x-show="show" 
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         @click.away="show = false"
+         class="absolute right-0 mt-2 w-96 max-w-[calc(100vw-2rem)] bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl border border-neutral-200 dark:border-neutral-700 overflow-hidden z-50">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between p-4 border-b border-neutral-200 dark:border-neutral-700">
+            <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
+                🔔 {{ __('notifications.title') }}
+            </h3>
+            
+            <div class="flex items-center gap-2">
+                @if($unreadCount > 0)
+                    <button wire:click="markAllAsRead" 
+                            class="text-xs text-primary-600 dark:text-primary-400 hover:underline">
+                        {{ __('notifications.mark_all_read') }}
+                    </button>
+                @endif
+                
+                @if(count($notifications) > 0)
+                    <button wire:click="clearAll" 
+                            wire:confirm="{{ __('notifications.confirm_clear_all') }}"
+                            class="text-xs text-red-600 dark:text-red-400 hover:underline ml-2">
+                        {{ __('notifications.clear_all') }}
+                    </button>
+                @endif
+            </div>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="max-h-[32rem] overflow-y-auto">
+            @forelse($notifications as $notification)
+                <div class="p-4 border-b border-neutral-100 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-700/50 transition-colors {{ $notification->read_at ? '' : 'bg-blue-50 dark:bg-blue-900/10' }}">
+                    
+                    <div class="flex items-start gap-3">
+                        <!-- Icon based on notification type -->
+                        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center
+                                    {{ $notification->read_at 
+                                        ? 'bg-neutral-100 dark:bg-neutral-700' 
+                                        : 'bg-primary-100 dark:bg-primary-900 animate-pulse' }}">
+                            @php
+                                $icon = '🔔';
+                                if (isset($notification->data['type'])) {
+                                    $icon = match($notification->data['type']) {
+                                        'gig_application' => '📝',
+                                        'application_accepted' => '✅',
+                                        'application_rejected' => '❌',
+                                        'negotiation_message' => '💬',
+                                        'gig_created' => '✨',
+                                        default => '🔔'
+                                    };
+                                }
+                            @endphp
+                            <span class="text-xl">{{ $icon }}</span>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold text-neutral-900 dark:text-white mb-1">
+                                {{ $notification->data['title'] ?? __('notifications.new_notification') }}
+                            </p>
+                            
+                            @if(isset($notification->data['message']))
+                                <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">
+                                    {{ $notification->data['message'] }}
+                                </p>
+                            @endif
+
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="text-xs text-neutral-500 dark:text-neutral-400">
+                                    {{ $notification->created_at->diffForHumans() }}
+                                </span>
+
+                                @if(isset($notification->data['url']))
+                                    <a href="{{ $notification->data['url'] }}" 
+                                       wire:click="markAsRead('{{ $notification->id }}')"
+                                       class="text-xs text-primary-600 dark:text-primary-400 hover:underline">
+                                        {{ __('notifications.view') }}
+                                    </a>
+                                @endif
+
+                                @if(!$notification->read_at)
+                                    <button wire:click="markAsRead('{{ $notification->id }}')" 
+                                            class="text-xs text-neutral-500 dark:text-neutral-400 hover:underline ml-auto">
+                                        {{ __('notifications.mark_read') }}
+                                    </button>
+                                @endif
+
+                                <button wire:click="deleteNotification('{{ $notification->id }}')" 
+                                        class="text-xs text-red-600 dark:text-red-400 hover:underline">
+                                    {{ __('common.delete') }}
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Unread indicator -->
+                        @if(!$notification->read_at)
+                            <div class="flex-shrink-0 w-2 h-2 bg-primary-600 rounded-full"></div>
+                        @endif
+                    </div>
+
+                </div>
+            @empty
+                <div class="p-12 text-center">
+                    <div class="text-6xl mb-4">🔕</div>
+                    <h3 class="text-lg font-semibold text-neutral-900 dark:text-white mb-2">
+                        {{ __('notifications.no_notifications') }}
+                    </h3>
+                    <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                        {{ __('notifications.no_notifications_description') }}
+                    </p>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Footer -->
+        @if(count($notifications) > 0)
+            <div class="p-3 bg-neutral-50 dark:bg-neutral-900/50 border-t border-neutral-200 dark:border-neutral-700 text-center">
+                <a href="#" class="text-sm text-primary-600 dark:text-primary-400 hover:underline font-medium">
+                    {{ __('notifications.view_all') }}
+                </a>
+            </div>
+        @endif
+
+    </div>
+
 </div>

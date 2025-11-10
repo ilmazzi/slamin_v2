@@ -4,6 +4,7 @@ namespace App\Livewire\Translations;
 
 use App\Models\Gig;
 use App\Models\GigApplication;
+use App\Notifications\GigApplicationReceived;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
@@ -73,7 +74,14 @@ class GigShow extends Component
             'status' => 'pending',
         ]);
 
+        // Increment application count
         $this->gig->increment('application_count');
+
+        // Send notification to gig owner/requester
+        $recipient = $this->gig->requester ?? $this->gig->user;
+        if ($recipient) {
+            $recipient->notify(new GigApplicationReceived($application));
+        }
 
         session()->flash('success', __('gigs.applications.application_sent'));
         

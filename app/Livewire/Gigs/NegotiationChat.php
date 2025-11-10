@@ -4,6 +4,8 @@ namespace App\Livewire\Gigs;
 
 use App\Models\GigApplication;
 use App\Models\PoemTranslationNegotiation;
+use App\Notifications\NegotiationMessageReceived;
+use App\Notifications\GigApplicationAccepted;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
@@ -78,6 +80,15 @@ class NegotiationChat extends Component
             
             // Accetta la candidatura
             $this->application->gig->acceptApplication($this->application);
+            
+            // Notifica l'applicant
+            $this->application->user->notify(new GigApplicationAccepted($this->application));
+        }
+
+        // Send notification to the other party
+        $otherParty = $isRequester ? $this->application->user : ($this->application->gig->requester ?? $this->application->gig->user);
+        if ($otherParty) {
+            $otherParty->notify(new NegotiationMessageReceived($negotiation));
         }
 
         // Reset form
@@ -86,7 +97,6 @@ class NegotiationChat extends Component
         // Reload negotiations
         $this->application->load('negotiations.user');
 
-        // Broadcast notification (TODO: implementare con Reverb)
         session()->flash('success', __('negotiations.message_sent'));
     }
 

@@ -4,6 +4,7 @@ namespace App\Livewire\Gigs;
 
 use App\Models\Gig;
 use App\Models\GigApplication;
+use App\Notifications\GigApplicationAccepted;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
@@ -39,6 +40,9 @@ class ApplicationsManagement extends Component
         
         if ($application->gig_id === $this->gig->id) {
             if ($this->gig->acceptApplication($application)) {
+                // Send notification to applicant
+                $application->user->notify(new GigApplicationAccepted($application));
+                
                 session()->flash('success', __('gigs.messages.application_accepted'));
                 $this->gig->refresh();
             } else {
