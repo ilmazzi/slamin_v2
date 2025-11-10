@@ -156,11 +156,11 @@
         
         .newspaper-masthead {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.25rem;
-            font-weight: 900;
-            letter-spacing: 0.12em;
+            font-size: 1.125rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
             color: #1a1a1a;
-            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+            font-style: italic;
         }
         
         :is(.dark .newspaper-masthead) {
@@ -286,129 +286,195 @@
             z-index: 10;
         }
         
-        /* Top-left corner - folded page */
+        /* Top-left corner - realistic page fold */
         .crumpled-corner-tl {
             top: 0;
             left: 0;
             border-style: solid;
-            border-width: 45px 45px 0 0;
-            border-color: #d8d0c0 transparent transparent transparent;
-            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+            border-width: 40px 40px 0 0;
+            /* Gradient on the folded part (back of paper) */
+            border-color: transparent transparent transparent transparent;
+            border-top-color: #e0d8c8;
+            border-right-color: #d5cdb8;
+            filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.35));
+        }
+        
+        /* Fold line */
+        .crumpled-corner-tl::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 0;
+            width: 57px;
+            height: 2px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15), transparent);
+            transform: rotate(45deg);
+            transform-origin: top left;
         }
         
         /* Shadow under the fold */
         .crumpled-corner-tl::before {
             content: '';
             position: absolute;
-            top: -45px;
+            top: -40px;
             left: 0;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             background: 
                 linear-gradient(
                     135deg,
-                    rgba(0, 0, 0, 0.4) 0%,
-                    rgba(0, 0, 0, 0.2) 50%,
+                    rgba(0, 0, 0, 0.5) 0%,
+                    rgba(0, 0, 0, 0.3) 40%,
+                    rgba(0, 0, 0, 0.15) 70%,
                     transparent 100%
                 );
         }
         
         :is(.dark .crumpled-corner-tl) {
-            border-color: #2a2720 transparent transparent transparent;
-            filter: drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.8));
+            border-top-color: #38352e;
+            border-right-color: #2d2a24;
+            filter: drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.9));
         }
         
-        /* Top-right corner - folded page */
+        /* Top-right corner - realistic page fold */
         .crumpled-corner-tr {
             top: 0;
             right: 0;
             border-style: solid;
-            border-width: 0 45px 45px 0;
-            border-color: transparent #d8d0c0 transparent transparent;
-            filter: drop-shadow(-2px 2px 4px rgba(0, 0, 0, 0.3));
+            border-width: 0 40px 40px 0;
+            border-color: transparent transparent transparent transparent;
+            border-right-color: #e0d8c8;
+            border-bottom-color: #d5cdb8;
+            filter: drop-shadow(-3px 3px 5px rgba(0, 0, 0, 0.35));
+        }
+        
+        .crumpled-corner-tr::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -40px;
+            width: 57px;
+            height: 2px;
+            background: linear-gradient(225deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15), transparent);
+            transform: rotate(-45deg);
+            transform-origin: top right;
         }
         
         .crumpled-corner-tr::before {
             content: '';
             position: absolute;
             top: 0;
-            right: -45px;
-            width: 45px;
-            height: 45px;
+            right: -40px;
+            width: 40px;
+            height: 40px;
             background: 
                 linear-gradient(
                     225deg,
-                    rgba(0, 0, 0, 0.4) 0%,
-                    rgba(0, 0, 0, 0.2) 50%,
+                    rgba(0, 0, 0, 0.5) 0%,
+                    rgba(0, 0, 0, 0.3) 40%,
+                    rgba(0, 0, 0, 0.15) 70%,
                     transparent 100%
                 );
         }
         
         :is(.dark .crumpled-corner-tr) {
-            border-color: transparent #2a2720 transparent transparent;
-            filter: drop-shadow(-2px 2px 6px rgba(0, 0, 0, 0.8));
+            border-right-color: #38352e;
+            border-bottom-color: #2d2a24;
+            filter: drop-shadow(-3px 3px 8px rgba(0, 0, 0, 0.9));
         }
         
-        /* Bottom-left corner - folded page */
+        /* Bottom-left corner - realistic page fold */
         .crumpled-corner-bl {
             bottom: 0;
             left: 0;
             border-style: solid;
-            border-width: 0 0 45px 45px;
-            border-color: transparent transparent #d8d0c0 transparent;
-            filter: drop-shadow(2px -2px 4px rgba(0, 0, 0, 0.3));
+            border-width: 0 0 40px 40px;
+            border-color: transparent transparent transparent transparent;
+            border-bottom-color: #e0d8c8;
+            border-left-color: #d5cdb8;
+            filter: drop-shadow(3px -3px 5px rgba(0, 0, 0, 0.35));
+        }
+        
+        .crumpled-corner-bl::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            width: 57px;
+            height: 2px;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15), transparent);
+            transform: rotate(-45deg);
+            transform-origin: bottom left;
         }
         
         .crumpled-corner-bl::before {
             content: '';
             position: absolute;
-            bottom: -45px;
+            bottom: -40px;
             left: 0;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             background: 
                 linear-gradient(
                     45deg,
-                    rgba(0, 0, 0, 0.4) 0%,
-                    rgba(0, 0, 0, 0.2) 50%,
+                    rgba(0, 0, 0, 0.5) 0%,
+                    rgba(0, 0, 0, 0.3) 40%,
+                    rgba(0, 0, 0, 0.15) 70%,
                     transparent 100%
                 );
         }
         
         :is(.dark .crumpled-corner-bl) {
-            border-color: transparent transparent #2a2720 transparent;
-            filter: drop-shadow(2px -2px 6px rgba(0, 0, 0, 0.8));
+            border-bottom-color: #38352e;
+            border-left-color: #2d2a24;
+            filter: drop-shadow(3px -3px 8px rgba(0, 0, 0, 0.9));
         }
         
-        /* Bottom-right corner - folded page */
+        /* Bottom-right corner - realistic page fold */
         .crumpled-corner-br {
             bottom: 0;
             right: 0;
             border-style: solid;
-            border-width: 45px 0 0 45px;
-            border-color: transparent transparent transparent #d8d0c0;
-            filter: drop-shadow(-2px -2px 4px rgba(0, 0, 0, 0.3));
+            border-width: 40px 0 0 40px;
+            border-color: transparent transparent transparent transparent;
+            border-top-color: #e0d8c8;
+            border-left-color: #d5cdb8;
+            filter: drop-shadow(-3px -3px 5px rgba(0, 0, 0, 0.35));
+        }
+        
+        .crumpled-corner-br::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: -40px;
+            width: 57px;
+            height: 2px;
+            background: linear-gradient(315deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15), transparent);
+            transform: rotate(45deg);
+            transform-origin: bottom right;
         }
         
         .crumpled-corner-br::before {
             content: '';
             position: absolute;
             bottom: 0;
-            right: -45px;
-            width: 45px;
-            height: 45px;
+            right: -40px;
+            width: 40px;
+            height: 40px;
             background: 
                 linear-gradient(
                     315deg,
-                    rgba(0, 0, 0, 0.4) 0%,
-                    rgba(0, 0, 0, 0.2) 50%,
+                    rgba(0, 0, 0, 0.5) 0%,
+                    rgba(0, 0, 0, 0.3) 40%,
+                    rgba(0, 0, 0, 0.15) 70%,
                     transparent 100%
                 );
         }
         
         :is(.dark .crumpled-corner-br) {
-            border-color: transparent transparent transparent #2a2720;
-            filter: drop-shadow(-2px -2px 6px rgba(0, 0, 0, 0.8));
+            border-top-color: #38352e;
+            border-left-color: #2d2a24;
+            filter: drop-shadow(-3px -3px 8px rgba(0, 0, 0, 0.9));
         }
         
         /* Hover: lift newspaper clipping */
@@ -428,19 +494,23 @@
         
         /* Corners "unfold" slightly on hover */
         .newspaper-page:hover .crumpled-corner-tl {
-            border-width: 50px 50px 0 0;
+            border-width: 45px 45px 0 0;
+            filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.4));
         }
         
         .newspaper-page:hover .crumpled-corner-tr {
-            border-width: 0 50px 50px 0;
+            border-width: 0 45px 45px 0;
+            filter: drop-shadow(-4px 4px 6px rgba(0, 0, 0, 0.4));
         }
         
         .newspaper-page:hover .crumpled-corner-bl {
-            border-width: 0 0 50px 50px;
+            border-width: 0 0 45px 45px;
+            filter: drop-shadow(4px -4px 6px rgba(0, 0, 0, 0.4));
         }
         
         .newspaper-page:hover .crumpled-corner-br {
-            border-width: 50px 0 0 50px;
+            border-width: 45px 0 0 45px;
+            filter: drop-shadow(-4px -4px 6px rgba(0, 0, 0, 0.4));
         }
     </style>
     @endif
