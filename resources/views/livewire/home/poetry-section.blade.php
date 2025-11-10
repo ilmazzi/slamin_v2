@@ -59,14 +59,16 @@
         </div>
 
         {{-- Poetry Cards Slider --}}
-        <div class="relative overflow-hidden -mx-3 md:mx-0">
-            <div class="flex transition-transform duration-500 ease-out px-3 md:px-0 gap-3 md:gap-8 lg:gap-10 pt-8 pb-4"
-                 :style="`transform: translateX(-${currentPage * 100}%)`">
+        <div class="relative overflow-visible">
+            <div class="flex transition-transform duration-500 ease-out gap-6 md:gap-8 lg:gap-10 pt-8 pb-4"
+                 :style="`transform: translateX(-${currentPage * (100 / itemsPerPage)}%)`">
             @foreach($poems->take(3) as $i => $poem)
             <?php
                 $paperRotation = rand(-2, 2); // Slight random rotation
             ?>
-            <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 poetry-card-container fade-scale-item" 
+            <div class="flex-shrink-0 poetry-card-container fade-scale-item"
+                 style="width: calc(100% - 3rem);"
+                 :style="window.innerWidth >= 1024 ? 'width: calc(33.333% - 2rem)' : (window.innerWidth >= 768 ? 'width: calc(50% - 2rem)' : 'width: calc(100% - 3rem)')'" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">

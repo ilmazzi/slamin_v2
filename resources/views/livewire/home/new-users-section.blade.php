@@ -63,9 +63,9 @@
         </div>
 
         {{-- Polaroid Slider --}}
-        <div class="relative overflow-hidden -mx-3 md:mx-0">
-            <div class="flex transition-transform duration-500 ease-out px-3 md:px-0 gap-3 md:gap-10 lg:gap-12 pt-8 pb-4"
-                 :style="`transform: translateX(-${currentPage * 100}%)`">
+        <div class="relative overflow-visible">
+            <div class="flex transition-transform duration-500 ease-out gap-6 md:gap-10 lg:gap-12 pt-8 pb-4"
+                 :style="`transform: translateX(-${currentPage * (100 / itemsPerPage)}%)`">
             @foreach($newUsers as $i => $user)
             <?php
                 // Random rotation for each polaroid
@@ -89,7 +89,9 @@
                 ];
                 $selectedTape = $tapeColors[array_rand($tapeColors)];
             ?>
-            <div class="w-full md:w-1/2 lg:w-1/4 flex-shrink-0 polaroid-wrapper fade-scale-item" 
+            <div class="flex-shrink-0 polaroid-wrapper fade-scale-item"
+                 style="width: calc(100% - 3rem);"
+                 :style="window.innerWidth >= 1024 ? 'width: calc(25% - 2.25rem)' : (window.innerWidth >= 768 ? 'width: calc(50% - 2.5rem)' : 'width: calc(100% - 3rem)')'" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
