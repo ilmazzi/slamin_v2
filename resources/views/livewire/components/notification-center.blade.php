@@ -150,3 +150,28 @@
     </div>
 
 </div>
+
+@auth
+<script>
+    // Listen for real-time notifications via Echo
+    if (window.Echo) {
+        window.Echo.private('App.Models.User.{{ Auth::id() }}')
+            .notification((notification) => {
+                console.log('🔔 Notification received via Echo:', notification);
+                
+                // Refresh Livewire component
+                Livewire.dispatch('refresh-notifications');
+                
+                // Show browser notification if supported
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification(notification.title || 'New notification', {
+                        body: notification.message || '',
+                        icon: '/assets/images/logo.png',
+                    });
+                }
+            });
+            
+        console.log('✅ Echo listening on private channel: App.Models.User.{{ Auth::id() }}');
+    }
+</script>
+@endauth
