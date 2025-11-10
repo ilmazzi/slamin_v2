@@ -100,12 +100,12 @@
             box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
         }
         
-        /* Wooden Desk Background with REAL IMAGE - NO OVERLAY */
+        /* Wooden Desk Background with REAL IMAGE - NO OVERLAY (WebP optimized) */
         .wooden-desk-section {
             position: relative;
             background: 
-                /* Poetry desk with inkwell, ink splatters, and quill pen */
-                url('/assets/images/poetry-desk-background.png') center/cover no-repeat,
+                /* Poetry desk with inkwell, ink splatters, and quill pen - WebP (281KB) */
+                url('/assets/images/poetry-desk-background.webp') center/cover no-repeat,
                 /* Fallback color */
                 #8b7355;
             box-shadow: 
@@ -115,7 +115,7 @@
         
         :is(.dark .wooden-desk-section) {
             background: 
-                url('/assets/images/poetry-desk-background.png') center/cover no-repeat,
+                url('/assets/images/poetry-desk-background.webp') center/cover no-repeat,
                 #3a3128;
             box-shadow: 
                 inset 0 2px 12px rgba(0, 0, 0, 0.25),
