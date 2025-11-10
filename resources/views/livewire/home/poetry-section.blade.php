@@ -31,15 +31,9 @@
                         
                         {{-- Author Avatar & Name --}}
                         <div class="paper-author-info">
-                            @if($poem->user->profile_picture_url)
-                                <img src="{{ $poem->user->profile_picture_url }}" 
-                                     alt="{{ $poem->user->name }}"
-                                     class="paper-avatar">
-                            @else
-                                <div class="paper-avatar-placeholder">
-                                    {{ substr($poem->user->name, 0, 1) }}
-                                </div>
-                            @endif
+                            <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 80) }}" 
+                                 alt="{{ $poem->user->name }}"
+                                 class="paper-avatar">
                             <span class="paper-author-name">{{ $poem->user->name }}</span>
                         </div>
                         

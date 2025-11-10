@@ -760,22 +760,7 @@
     height: 2.5rem;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid rgba(139, 115, 85, 0.3);
-    flex-shrink: 0;
-}
-
-.paper-avatar-placeholder {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #b4785a, #8b7355);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: 600;
-    font-size: 1rem;
-    border: 2px solid rgba(139, 115, 85, 0.3);
+    border: 2px solid rgba(180, 120, 70, 0.4);
     flex-shrink: 0;
 }
 
@@ -787,12 +772,7 @@
 }
 
 .dark .paper-avatar {
-    border-color: rgba(180, 120, 70, 0.4);
-}
-
-.dark .paper-avatar-placeholder {
-    background: linear-gradient(135deg, #8b6f54, #6b5344);
-    border-color: rgba(180, 120, 70, 0.4);
+    border-color: rgba(180, 120, 70, 0.5);
 }
 
 .dark .paper-author-name {
