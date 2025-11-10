@@ -14,24 +14,29 @@ import Pusher from 'pusher-js';
 
 window.Pusher = Pusher;
 
-// Debug Pusher
+// Debug logging
 window.Pusher.logToConsole = true;
 
-// Configure Echo for local development (force ws:// not wss://)
-window.Echo = new Echo({
-    broadcaster: 'reverb',
+// CRITICAL: Create Pusher instance manually with correct config
+const pusherConfig = {
     key: 'local-key',
     wsHost: 'localhost',
     wsPort: 8080,
-    wssPort: null, // Disable secure port completely
+    wssPort: 8080,
+    enabledTransports: ['ws'],
+    disabledTransports: ['wss'],
     forceTLS: false,
     encrypted: false,
-    disableStats: true,
-    enabledTransports: ['ws'],
+    disableStats: false,
+    cluster: '',
     authEndpoint: '/broadcasting/auth',
-    cluster: '', // Prevent Pusher cloud fallback
-    // Pusher-specific options to disable TLS completely
-    useTLS: false,
+};
+
+console.log('🔧 Pusher config:', pusherConfig);
+
+window.Echo = new Echo({
+    broadcaster: 'reverb',
+    ...pusherConfig,
 });
 
-console.log('🔌 Echo configured for ws://localhost:8080 (no TLS, ws only)');
+console.log('✅ Echo initialized for ws://localhost:8080');
