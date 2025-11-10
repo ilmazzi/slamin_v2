@@ -127,9 +127,10 @@
             position: relative;
             background: 
                 /* Articles newspaper background with coffee stains and vintage paper */
-                url('/assets/images/articles-section-background.webp') center/cover no-repeat,
+                url('/assets/images/articles-section-background.webp') center/contain no-repeat,
                 /* Fallback color */
                 #e8e3d8;
+            background-attachment: local;
             box-shadow: 
                 inset 0 2px 12px rgba(0, 0, 0, 0.08),
                 inset 0 -2px 12px rgba(0, 0, 0, 0.06);
@@ -137,8 +138,9 @@
         
         :is(.dark .articles-newspaper-section) {
             background: 
-                url('/assets/images/articles-section-background.webp') center/cover no-repeat,
+                url('/assets/images/articles-section-background.webp') center/contain no-repeat,
                 #3a362d;
+            background-attachment: local;
             /* Darken for dark mode */
             filter: brightness(0.4) contrast(1.1);
             box-shadow: 
