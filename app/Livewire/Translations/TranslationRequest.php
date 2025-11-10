@@ -69,9 +69,9 @@ class TranslationRequest extends Component
             'poem_id' => $this->poem->id,
             'requester_id' => Auth::id(),
             'target_language' => $this->targetLanguage,
-            'requirements' => $this->requirements,
+            'requirements' => $this->requirements ?: null,
             'proposed_compensation' => $this->proposedCompensation,
-            'deadline' => $this->deadline,
+            'deadline' => $this->deadline ?: null, // Converti stringa vuota in null
             'status' => 'open',
         ]);
         
