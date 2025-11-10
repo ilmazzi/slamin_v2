@@ -592,12 +592,10 @@
     padding-top: 20px;
 }
 
-/* VINTAGE PAPER SHEET - TEST VERSION */
+/* VINTAGE PAPER SHEET */
 .paper-sheet {
     display: block;
     position: relative;
-    /* TEST: Big red border to verify CSS is loading */
-    border: 10px solid red !important;
     /* Vintage aged paper color */
     background: 
         /* Paper texture overlay */
