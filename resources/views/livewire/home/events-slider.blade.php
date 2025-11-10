@@ -41,22 +41,63 @@
                                 <img src="{{ $event->image }}" 
                                      alt="{{ $event->title }}"
                                      class="poster-image">
-                                {{-- Dark overlay for text readability --}}
-                                <div class="poster-overlay"></div>
                             @else
-                                {{-- Default gradient if no image --}}
-                                <div class="poster-default-bg"></div>
+                                {{-- Elegant vintage poster design (no image) --}}
+                                <div class="poster-vintage-design">
+                                    {{-- Decorative top border --}}
+                                    <div class="poster-vintage-top"></div>
+                                    
+                                    {{-- Main title area --}}
+                                    <div class="poster-vintage-title">
+                                        {{ $event->title }}
+                                    </div>
+                                    
+                                    {{-- Decorative line --}}
+                                    <div class="poster-vintage-line"></div>
+                                    
+                                    {{-- Event info --}}
+                                    <div class="poster-vintage-info">
+                                        @if($event->start_date)
+                                        <div class="poster-vintage-date">
+                                            {{ $event->start_date->locale('it')->isoFormat('D MMMM YYYY') }}
+                                        </div>
+                                        @endif
+                                        
+                                        @if($event->start_time)
+                                        <div class="poster-vintage-time">
+                                            {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}
+                                        </div>
+                                        @endif
+                                        
+                                        @if($event->city)
+                                        <div class="poster-vintage-location">
+                                            {{ strtoupper($event->city) }}
+                                        </div>
+                                        @endif
+                                    </div>
+                                    
+                                    {{-- Decorative bottom element --}}
+                                    <div class="poster-vintage-bottom">
+                                        <div class="poster-vintage-ornament">✦</div>
+                                    </div>
+                                </div>
                             @endif
                             
-                            {{-- Event Date Badge (top right) --}}
-                            @if($event->start_date)
+                            {{-- Dark overlay ONLY for images --}}
+                            @if($event->image)
+                                <div class="poster-overlay"></div>
+                            @endif
+                            
+                            {{-- Event Date Badge (top right) - ONLY for images --}}
+                            @if($event->image && $event->start_date)
                             <div class="poster-date-badge">
                                 <div class="poster-date-day">{{ $event->start_date->format('d') }}</div>
                                 <div class="poster-date-month">{{ $event->start_date->locale('it')->isoFormat('MMM') }}</div>
                             </div>
                             @endif
                             
-                            {{-- Event Title --}}
+                            {{-- Event Title & Info - ONLY for images --}}
+                            @if($event->image)
                             <div class="poster-content">
                                 <h3 class="poster-title">{{ $event->title }}</h3>
                                 
@@ -91,6 +132,7 @@
                                 </div>
                                 @endif
                             </div>
+                            @endif
                         </div>
                         
                         {{-- Decorative Border Effect --}}
@@ -201,15 +243,140 @@
         );
     }
     
-    /* Default background (no image) */
-    .poster-default-bg {
+    /* Vintage Poster Design (no image) - Elegant Typography Poster */
+    .poster-vintage-design {
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, 
-            #b91c1c 0%,
-            #991b1b 50%,
-            #7f1d1d 100%
+        background: 
+            /* Art Deco pattern */
+            repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(218, 165, 32, 0.08) 20px,
+                rgba(218, 165, 32, 0.08) 40px
+            ),
+            /* Rich gradient */
+            linear-gradient(160deg, 
+                #1a1a2e 0%,
+                #16213e 30%,
+                #0f3460 60%,
+                #16213e 100%
+            );
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Decorative top border */
+    .poster-vintage-top {
+        height: 4px;
+        background: linear-gradient(90deg, 
+            transparent 0%,
+            rgba(218, 165, 32, 0.8) 20%,
+            rgba(255, 215, 0, 1) 50%,
+            rgba(218, 165, 32, 0.8) 80%,
+            transparent 100%
         );
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(218, 165, 32, 0.3);
+    }
+    
+    /* Title area */
+    .poster-vintage-title {
+        font-family: 'Crimson Pro', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ffffff;
+        text-align: center;
+        line-height: 1.2;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-shadow: 
+            0 0 20px rgba(255, 215, 0, 0.4),
+            0 2px 8px rgba(0, 0, 0, 0.6);
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Decorative line */
+    .poster-vintage-line {
+        height: 2px;
+        background: linear-gradient(90deg, 
+            transparent 0%,
+            rgba(255, 215, 0, 0.6) 30%,
+            rgba(255, 215, 0, 0.9) 50%,
+            rgba(255, 215, 0, 0.6) 70%,
+            transparent 100%
+        );
+        margin: 1.5rem 0;
+    }
+    
+    /* Info section */
+    .poster-vintage-info {
+        text-align: center;
+        space-y: 0.75rem;
+    }
+    
+    .poster-vintage-date {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #ffd700;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+    
+    .poster-vintage-time {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: #ffffff;
+        margin-bottom: 0.75rem;
+        font-family: 'Crimson Pro', serif;
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    }
+    
+    .poster-vintage-location {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #daa520;
+        letter-spacing: 0.15em;
+        margin-top: 0.75rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Bottom decorative element */
+    .poster-vintage-bottom {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+    
+    .poster-vintage-ornament {
+        font-size: 2rem;
+        color: #ffd700;
+        text-shadow: 
+            0 0 20px rgba(255, 215, 0, 0.6),
+            0 2px 8px rgba(0, 0, 0, 0.6);
+        animation: pulse-glow 3s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-glow {
+        0%, 100% { 
+            opacity: 0.8;
+            text-shadow: 
+                0 0 20px rgba(255, 215, 0, 0.6),
+                0 2px 8px rgba(0, 0, 0, 0.6);
+        }
+        50% { 
+            opacity: 1;
+            text-shadow: 
+                0 0 30px rgba(255, 215, 0, 0.9),
+                0 0 15px rgba(255, 215, 0, 0.6),
+                0 2px 8px rgba(0, 0, 0, 0.6);
+        }
     }
     
     /* Date Badge */
