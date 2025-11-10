@@ -35,8 +35,8 @@ return [
             'hostname' => env('REVERB_HOST'),
             'options' => [
                 'tls' => [
-                    'local_cert' => $_SERVER['HOME'] . '/.config/valet/Certificates/slamin_v2.test.crt',
-                    'local_pk' => $_SERVER['HOME'] . '/.config/valet/Certificates/slamin_v2.test.key',
+                    'local_cert' => $_SERVER['HOME'] . '/Library/Application Support/Herd/config/valet/Certificates/slamin_v2.test.crt',
+                    'local_pk' => $_SERVER['HOME'] . '/Library/Application Support/Herd/config/valet/Certificates/slamin_v2.test.key',
                     'verify_peer' => false,
                     'verify_peer_name' => false,
                     'allow_self_signed' => true,
