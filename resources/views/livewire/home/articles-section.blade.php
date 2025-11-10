@@ -7,10 +7,15 @@
             {{-- Magazine Page Effect Container --}}
             <div class="relative h-full magazine-page-card">
                 
-                {{-- Red Margin Line (like notebooks) --}}
-                <div class="magazine-margin-line"></div>
+                {{-- Editorial Header Bar --}}
+                <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-primary-600 via-accent-600 to-primary-600 z-10"></div>
                 
-                <a href="{{ route('articles.show', $article->id) }}" class="block">
+                {{-- Article Label --}}
+                <div class="absolute top-3 left-3 px-3 py-1 bg-white/90 dark:bg-neutral-900/90 border border-neutral-300 dark:border-neutral-600 z-10">
+                    <span class="text-[10px] font-black uppercase tracking-widest text-neutral-600 dark:text-neutral-400">Articolo</span>
+                </div>
+                
+                <a href="{{ route('articles.show', $article->id) }}" class="block pt-10">
                     
                     <div>
                         {{-- Author Info in alto --}}
@@ -81,93 +86,100 @@
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
         
-        /* Magazine/Newspaper Page Effect - CRYSTAL CLEAR */
+        /* NEWSPAPER/MAGAZINE CLIPPING EFFECT - SUPER DISTINCTIVE */
         .magazine-page-card {
             position: relative;
             height: 100%;
-            /* Newspaper/magazine paper color - light blue-grey */
+            /* Newspaper aged paper - YELLOW-GREY tint */
             background: 
-                /* Horizontal ruled lines (like lined paper) */
+                /* Visible newspaper print lines */
                 repeating-linear-gradient(
                     180deg,
                     transparent 0px,
-                    transparent 23px,
-                    rgba(200, 210, 225, 0.3) 23px,
-                    rgba(200, 210, 225, 0.3) 24px,
-                    transparent 24px
+                    transparent 19px,
+                    rgba(0, 0, 0, 0.06) 19px,
+                    rgba(0, 0, 0, 0.06) 20px,
+                    transparent 20px
                 ),
-                /* Base paper color - cool newspaper grey */
-                linear-gradient(135deg, 
-                    #e8ecf1 0%,
-                    #dce3eb 100%
+                /* Base newspaper color - aged paper */
+                linear-gradient(145deg, 
+                    #f4f1e8 0%,
+                    #ebe5d8 50%,
+                    #f4f1e8 100%
                 );
             padding: 1.5rem;
-            padding-left: 3rem; /* Space for red margin line */
+            padding-left: 2.5rem;
             box-shadow: 
-                0 4px 12px rgba(0, 0, 0, 0.1),
-                0 8px 24px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(180, 190, 210, 0.4);
+                /* Strong shadows for depth */
+                0 6px 16px rgba(0, 0, 0, 0.15),
+                0 3px 6px rgba(0, 0, 0, 0.1),
+                /* Subtle edges */
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #dc2626;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            border-right: 1px solid rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: visible;
         }
         
-        /* Dark mode */
+        /* Dark mode - newspaper at night */
         :is(.dark .magazine-page-card) {
             background: 
                 repeating-linear-gradient(
                     180deg,
                     transparent 0px,
-                    transparent 23px,
-                    rgba(100, 120, 140, 0.15) 23px,
-                    rgba(100, 120, 140, 0.15) 24px,
-                    transparent 24px
+                    transparent 19px,
+                    rgba(255, 255, 255, 0.04) 19px,
+                    rgba(255, 255, 255, 0.04) 20px,
+                    transparent 20px
                 ),
-                linear-gradient(135deg, 
-                    #2d3440 0%,
-                    #252b36 100%
+                linear-gradient(145deg, 
+                    #3a3830 0%,
+                    #2d2a24 50%,
+                    #3a3830 100%
                 );
-            border: 1px solid rgba(100, 120, 140, 0.2);
+            border-left: 4px solid #ef4444;
             box-shadow: 
-                0 4px 12px rgba(0, 0, 0, 0.4),
-                0 8px 24px rgba(0, 0, 0, 0.5);
+                0 6px 16px rgba(0, 0, 0, 0.6),
+                0 3px 6px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
         }
         
-        /* RED MARGIN LINE (like notebooks/magazines) - SUPER VISIBLE */
+        /* RED MARGIN LINE - THICK AND OBVIOUS */
         .magazine-margin-line {
             position: absolute;
-            left: 2rem;
+            left: 0;
             top: 0;
             bottom: 0;
-            width: 2px;
-            background: linear-gradient(
-                to bottom,
-                transparent 0%,
-                #dc2626 2%,
-                #dc2626 98%,
-                transparent 100%
-            );
+            width: 4px;
+            background: #dc2626;
             z-index: 5;
+            box-shadow: 2px 0 4px rgba(220, 38, 38, 0.3);
         }
         
         :is(.dark .magazine-margin-line) {
-            background: linear-gradient(
-                to bottom,
-                transparent 0%,
-                #ef4444 2%,
-                #ef4444 98%,
-                transparent 100%
-            );
+            background: #ef4444;
+            box-shadow: 2px 0 6px rgba(239, 68, 68, 0.4);
         }
         
-        /* Paper texture overlay */
+        /* Newspaper texture - more visible */
         .magazine-page-card::before {
             content: '';
             position: absolute;
             inset: 0;
             background-image: 
-                url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
             pointer-events: none;
             z-index: 1;
+            mix-blend-mode: multiply;
+        }
+        
+        :is(.dark .magazine-page-card::before) {
+            mix-blend-mode: overlay;
+            opacity: 0.3;
         }
         
         /* Ensure content is above effects */
@@ -176,40 +188,35 @@
             z-index: 2;
         }
         
-        /* Subtle torn edges (magazine page) */
+        /* Slightly torn/cut edges */
         .magazine-page-card {
             clip-path: polygon(
-                0% 0.5%,
-                0.3% 0%,
-                99.7% 0%,
-                100% 0.5%,
+                0% 0%,
+                100% 0%,
                 100% 99.5%,
-                99.7% 100%,
-                0.3% 100%,
+                99.5% 100%,
+                0.5% 100%,
                 0% 99.5%
             );
         }
         
-        /* Hover effects - LIFT THE PAGE */
+        /* Hover effects - LIFT THE NEWSPAPER CLIPPING */
         .magazine-page-card:hover {
-            transform: translateY(-8px) rotate(-0.5deg);
+            transform: translateY(-6px) rotate(-1deg);
             box-shadow: 
-                0 8px 20px rgba(0, 0, 0, 0.15),
-                0 16px 40px rgba(0, 0, 0, 0.12);
-            border-color: rgba(180, 190, 210, 0.6);
+                0 10px 25px rgba(0, 0, 0, 0.2),
+                0 5px 10px rgba(0, 0, 0, 0.15),
+                inset 0 2px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+            border-left-width: 5px;
         }
         
         :is(.dark .magazine-page-card:hover) {
             box-shadow: 
-                0 8px 20px rgba(0, 0, 0, 0.6),
-                0 16px 40px rgba(0, 0, 0, 0.7);
-            border-color: rgba(100, 120, 140, 0.4);
-        }
-        
-        /* Red line intensifies on hover */
-        .magazine-page-card:hover .magazine-margin-line {
-            width: 3px;
-            box-shadow: 0 0 8px rgba(220, 38, 38, 0.4);
+                0 10px 25px rgba(0, 0, 0, 0.7),
+                0 5px 10px rgba(0, 0, 0, 0.6),
+                inset 0 2px 0 rgba(255, 255, 255, 0.05),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.4);
         }
     </style>
     @endif
