@@ -104,8 +104,8 @@
         .wooden-desk-section {
             position: relative;
             background: 
-                /* Poetry desk with inkwell, ink splatters, and quill pen - WebP (78KB) */
-                url('/assets/images/paper.webp') center/cover no-repeat,
+                /* Poetry desk with inkwell, ink splatters, and quill pen - WebP (281KB) */
+                url('/assets/images/poetry-desk-background.webp') center/cover no-repeat,
                 /* Fallback color */
                 #8b7355;
             box-shadow: 
@@ -115,7 +115,7 @@
         
         :is(.dark .wooden-desk-section) {
             background: 
-                url('/assets/images/paper.webp') center/cover no-repeat,
+                url('/assets/images/poetry-desk-background.webp') center/cover no-repeat,
                 #3a3128;
             box-shadow: 
                 inset 0 2px 12px rgba(0, 0, 0, 0.25),

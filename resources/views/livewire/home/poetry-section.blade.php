@@ -83,28 +83,15 @@
             padding-top: 20px;
         }
         
-        /* ULTRA REALISTIC Paper Sheet */
+        /* ULTRA REALISTIC Paper Sheet with REAL PAPER IMAGE */
         .paper-sheet {
             display: block;
             position: relative;
             background: 
-                /* Fine paper grain */
-                repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.015) 1px, rgba(0,0,0,0.015) 2px),
-                repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(0,0,0,0.01) 1px, rgba(0,0,0,0.01) 2px),
-                /* Paper fiber texture */
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='5' seed='4'/%3E%3CfeColorMatrix values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E"),
-                /* Coffee stains and marks */
-                radial-gradient(ellipse 60px 80px at 85% 15%, rgba(101, 67, 33, 0.04) 0%, transparent 70%),
-                radial-gradient(circle 40px at 12% 88%, rgba(101, 67, 33, 0.03) 0%, transparent 70%),
-                radial-gradient(ellipse 50px 40px at 70% 90%, rgba(101, 67, 33, 0.02) 0%, transparent 70%),
-                /* Aged paper color */
-                linear-gradient(140deg, 
-                    #fffffb 0%,
-                    #fffef8 25%,
-                    #fefcf4 50%,
-                    #fdfaf0 75%,
-                    #fcf8ec 100%
-                );
+                /* REAL paper texture image (WebP 78KB) */
+                url('/assets/images/paper.webp') center/cover no-repeat,
+                /* Fallback aged paper color */
+                #fdfaf0;
             padding: 2.5rem 2rem 2rem 2rem;
             min-height: 420px;
             border-radius: 1px;
@@ -156,16 +143,22 @@
         .paper-sheet:hover {
             transform: translateY(-8px) scale(1.02);
             box-shadow: 
-                0 16px 32px rgba(0, 0, 0, 0.2),
-                0 8px 16px rgba(0, 0, 0, 0.15),
-                0 4px 8px rgba(0, 0, 0, 0.12),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+                0 16px 32px rgba(0, 0, 0, 0.25),
+                0 8px 16px rgba(0, 0, 0, 0.2),
+                0 4px 8px rgba(0, 0, 0, 0.15);
         }
         
         :is(.dark .paper-sheet) {
             background: 
-                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23paper)' opacity='0.06'/%3E%3C/svg%3E"),
-                linear-gradient(145deg, #2a2520 0%, #241f1c 50%, #1f1a17 100%);
+                /* Same real paper texture for dark mode */
+                url('/assets/images/paper.webp') center/cover no-repeat,
+                #2a2520;
+            /* Darken the paper for dark mode */
+            filter: brightness(0.35) contrast(1.1);
+        }
+        
+        :is(.dark .paper-sheet:hover) {
+            filter: brightness(0.4) contrast(1.1);
         }
         
         /* Author name */
