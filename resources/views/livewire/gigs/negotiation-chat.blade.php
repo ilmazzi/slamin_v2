@@ -241,10 +241,31 @@
 
 <script>
     // Auto-scroll to bottom when new messages arrive
-    document.addEventListener('livewire:update', () => {
+    document.addEventListener('livewire:initialized', () => {
         const messagesContainer = document.getElementById('negotiation-messages');
         if (messagesContainer) {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
+    });
+
+    // Also scroll on updates
+    document.addEventListener('livewire:update', () => {
+        // Use setTimeout to ensure DOM is updated
+        setTimeout(() => {
+            const messagesContainer = document.getElementById('negotiation-messages');
+            if (messagesContainer) {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }, 100);
+    });
+
+    // Scroll when modal opens
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const messagesContainer = document.getElementById('negotiation-messages');
+            if (messagesContainer) {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }, 100);
     });
 </script>
