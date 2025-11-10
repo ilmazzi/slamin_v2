@@ -1,89 +1,102 @@
 <div>
     @if ($recentEvents && $recentEvents->count() > 0)
-    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"
-         x-data="{
-             currentPage: 0,
-             itemsPerPage: window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1),
-             totalItems: {{ $recentEvents->count() }},
-             get totalPages() {
-                 return Math.ceil(this.totalItems / this.itemsPerPage);
-             },
-             next() {
-                 if (this.currentPage < this.totalPages - 1) {
-                     this.currentPage++;
-                 }
-             },
-             prev() {
-                 if (this.currentPage > 0) {
-                     this.currentPage--;
-                 }
-             }
-         }"
-         x-init="
-             window.addEventListener('resize', () => {
-                 itemsPerPage = window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1);
-                 if (currentPage >= totalPages) currentPage = totalPages - 1;
-             });
-         ">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         
-        <!-- Header con Navigation -->
-        <div class="flex items-center justify-between mb-10">
-            <div class="flex-1">
-                <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
-                    {!! __('home.events_section_title') !!}
-                </h2>
-                <p class="text-lg text-neutral-600 dark:text-neutral-400">
-                    {{ __('home.events_section_subtitle') }}
-                </p>
-            </div>
-
-            <!-- Slider Controls (Desktop) -->
-            <div class="hidden md:flex items-center gap-3">
-                <button @click="prev()" 
-                        :disabled="currentPage === 0"
-                        :class="currentPage === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-primary-100'"
-                        class="w-12 h-12 rounded-full border-2 border-primary-600 flex items-center justify-center text-primary-600 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <span class="text-sm text-neutral-600 dark:text-neutral-400 font-medium min-w-[60px] text-center">
-                    <span x-text="currentPage + 1"></span> / <span x-text="totalPages"></span>
-                </span>
-                <button @click="next()" 
-                        :disabled="currentPage >= totalPages - 1"
-                        :class="currentPage >= totalPages - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-primary-100'"
-                        class="w-12 h-12 rounded-full border-2 border-primary-600 flex items-center justify-center text-primary-600 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </button>
-            </div>
+        {{-- Header --}}
+        <div class="text-center mb-12 section-title-fade">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                {!! __('home.events_section_title') !!}
+            </h2>
+            <p class="text-lg text-neutral-200">
+                {{ __('home.events_section_subtitle') }}
+            </p>
         </div>
 
-        <!-- Events Slider Container -->
-        <div class="relative overflow-x-hidden -mx-3 px-3">
-            <div class="flex transition-transform duration-500 ease-out pb-8"
-                 :style="`transform: translateX(-${currentPage * 100}%)`">
-                @foreach($recentEvents->take(6) as $i => $event)
-                <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-3"
-                     x-data
-                     x-intersect.once="$el.classList.add('animate-fade-in')"
-                     style="animation-delay: {{ $i * 0.1 }}s">
-                    <x-ui.cards.event :event="$event" :delay="0" />
+        {{-- Cinema Posters - Horizontal Scroll (like Dashboard) --}}
+        <div class="flex gap-8 overflow-x-auto pb-12 pt-8 scrollbar-hide"
+             style="-webkit-overflow-scrolling: touch;">
+            @foreach($recentEvents->take(6) as $i => $event)
+            <?php
+                // Random spotlight intensity and tilt
+                $tilt = rand(-2, 2);
+                $spotlightIntensity = rand(85, 100) / 100;
+            ?>
+            <div class="w-80 md:w-96 flex-shrink-0 fade-scale-item"
+                 x-data
+                 x-intersect.once="$el.classList.add('animate-fade-in')"
+                 style="animation-delay: {{ $i * 0.1 }}s">
+                
+                {{-- Cinema Poster Frame --}}
+                <div class="cinema-poster-wrapper" style="transform: rotate({{ $tilt }}deg);">
+                    
+                    {{-- Spotlight Effect --}}
+                    <div class="spotlight" style="opacity: {{ $spotlightIntensity }};"></div>
+                    
+                    <a href="{{ route('events.show', $event->slug) }}" 
+                       class="cinema-poster group">
+                        
+                        {{-- Poster Image --}}
+                        <div class="poster-image-container">
+                            @if($event->image)
+                                <img src="{{ $event->image }}" 
+                                     alt="{{ $event->title }}"
+                                     class="poster-image">
+                                {{-- Dark overlay for text readability --}}
+                                <div class="poster-overlay"></div>
+                            @else
+                                {{-- Default gradient if no image --}}
+                                <div class="poster-default-bg"></div>
+                            @endif
+                            
+                            {{-- Event Date Badge (top right) --}}
+                            <div class="poster-date-badge">
+                                <div class="poster-date-day">{{ $event->start_date->format('d') }}</div>
+                                <div class="poster-date-month">{{ $event->start_date->locale('it')->isoFormat('MMM') }}</div>
+                            </div>
+                            
+                            {{-- Event Title --}}
+                            <div class="poster-content">
+                                <h3 class="poster-title">{{ $event->title }}</h3>
+                                
+                                {{-- Event Info --}}
+                                <div class="poster-info">
+                                    {{-- Location --}}
+                                    @if($event->city)
+                                    <div class="poster-info-item">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        </svg>
+                                        <span>{{ $event->city }}</span>
+                                    </div>
+                                    @endif
+                                    
+                                    {{-- Time --}}
+                                    @if($event->start_time)
+                                    <div class="poster-info-item">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <span>{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}</span>
+                                    </div>
+                                    @endif
+                                </div>
+                                
+                                {{-- Organizer --}}
+                                @if($event->user)
+                                <div class="poster-organizer">
+                                    <span class="poster-organizer-label">Organizzato da</span>
+                                    <span class="poster-organizer-name">{{ $event->user->name }}</span>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                        
+                        {{-- Decorative Border Effect --}}
+                        <div class="poster-border"></div>
+                    </a>
                 </div>
-                @endforeach
             </div>
-        </div>
-
-        <!-- Dots Indicator (Mobile) -->
-        <div class="flex md:hidden justify-center gap-2 mt-8">
-            <template x-for="page in totalPages" :key="page">
-                <button @click="currentPage = page - 1"
-                        class="h-2 rounded-full transition-all"
-                        :class="currentPage === page - 1 ? 'w-8 bg-primary-600' : 'w-2 bg-neutral-300'">
-                </button>
-            </template>
+            @endforeach
         </div>
 
         <!-- CTA -->
@@ -93,10 +106,246 @@
             </x-ui.buttons.primary>
         </div>
     </div>
-    
-    <style>
-        @keyframes fade-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .animate-fade-in { animation: fade-in 0.5s ease-out forwards; opacity: 0; }
-    </style>
     @endif
+</div>
+
+<style>
+    /* ========================================
+       CINEMA / THEATRE WALL - EVENT POSTERS
+       ======================================== */
+    
+    /* Poster Wrapper */
+    .cinema-poster-wrapper {
+        position: relative;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Spotlight from above */
+    .spotlight {
+        position: absolute;
+        top: -80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 180%;
+        height: 120px;
+        background: radial-gradient(ellipse, 
+            rgba(255, 248, 220, 0.3) 0%, 
+            rgba(255, 248, 220, 0.15) 30%, 
+            transparent 70%
+        );
+        pointer-events: none;
+        z-index: 10;
+        transition: opacity 0.4s ease;
+    }
+    
+    .cinema-poster-wrapper:hover .spotlight {
+        opacity: 1 !important;
+    }
+    
+    /* Cinema Poster */
+    .cinema-poster {
+        display: block;
+        position: relative;
+        background: #0a0a0a;
+        padding: 0.75rem;
+        box-shadow: 
+            0 8px 24px rgba(0, 0, 0, 0.6),
+            0 16px 48px rgba(0, 0, 0, 0.4),
+            inset 0 0 0 1px rgba(218, 165, 32, 0.3);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+    }
+    
+    .cinema-poster-wrapper:hover .cinema-poster {
+        transform: translateY(-12px) scale(1.03);
+        box-shadow: 
+            0 16px 32px rgba(0, 0, 0, 0.7),
+            0 24px 64px rgba(0, 0, 0, 0.5),
+            0 0 0 2px rgba(218, 165, 32, 0.6),
+            inset 0 0 0 1px rgba(218, 165, 32, 0.5);
+    }
+    
+    :is(.dark .cinema-poster) {
+        background: #050505;
+    }
+    
+    /* Poster Image Container */
+    .poster-image-container {
+        position: relative;
+        aspect-ratio: 2/3;
+        overflow: hidden;
+        background: #1a1a1a;
+    }
+    
+    .poster-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .group:hover .poster-image {
+        transform: scale(1.08);
+    }
+    
+    /* Dark overlay for text readability */
+    .poster-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.95) 0%,
+            rgba(0, 0, 0, 0.7) 40%,
+            rgba(0, 0, 0, 0.3) 70%,
+            transparent 100%
+        );
+    }
+    
+    /* Default background (no image) */
+    .poster-default-bg {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, 
+            #b91c1c 0%,
+            #991b1b 50%,
+            #7f1d1d 100%
+        );
+    }
+    
+    /* Date Badge */
+    .poster-date-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(218, 165, 32, 0.95);
+        backdrop-filter: blur(8px);
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        text-align: center;
+        border: 2px solid rgba(255, 215, 0, 0.6);
+        z-index: 20;
+    }
+    
+    .poster-date-day {
+        font-size: 1.5rem;
+        font-weight: 900;
+        line-height: 1;
+        color: #1a1a1a;
+        font-family: 'Crimson Pro', serif;
+    }
+    
+    .poster-date-month {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #2d2d2d;
+        letter-spacing: 0.05em;
+    }
+    
+    /* Content Area */
+    .poster-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1.5rem 1rem;
+        z-index: 15;
+    }
+    
+    /* Title */
+    .poster-title {
+        font-size: 1.375rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 0.75rem;
+        line-height: 1.3;
+        font-family: 'Crimson Pro', serif;
+        text-shadow: 
+            0 2px 8px rgba(0, 0, 0, 0.8),
+            0 4px 16px rgba(0, 0, 0, 0.6);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    /* Info Items */
+    .poster-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .poster-info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 0.875rem;
+        color: #ffd700;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    }
+    
+    .poster-info-item svg {
+        flex-shrink: 0;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    }
+    
+    /* Organizer */
+    .poster-organizer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+    }
+    
+    .poster-organizer-label {
+        font-size: 0.625rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+    }
+    
+    .poster-organizer-name {
+        font-size: 0.875rem;
+        color: #ffffff;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    }
+    
+    /* Decorative Gold Border */
+    .poster-border {
+        position: absolute;
+        inset: 0;
+        border: 3px solid transparent;
+        border-image: linear-gradient(
+            135deg,
+            rgba(218, 165, 32, 0.8) 0%,
+            rgba(255, 215, 0, 0.6) 25%,
+            rgba(218, 165, 32, 0.5) 50%,
+            rgba(255, 215, 0, 0.6) 75%,
+            rgba(218, 165, 32, 0.8) 100%
+        ) 1;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+    
+    .cinema-poster:hover .poster-border {
+        opacity: 1;
+    }
+    
+    /* Fade-in animation */
+    @keyframes fade-in { 
+        from { opacity: 0; transform: scale(0.95); } 
+        to { opacity: 1; transform: scale(1); } 
+    }
+    .animate-fade-in { 
+        animation: fade-in 0.5s ease-out forwards; 
+        opacity: 0; 
+    }
+</style>
+@endif
 </div>

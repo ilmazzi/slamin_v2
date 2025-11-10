@@ -5,8 +5,8 @@
     {{-- Video/Foto Community - SEZIONE SEPARATA --}}
     <livewire:home.videos-section />
 
-    {{-- Eventi --}}
-    <div class="py-16 md:py-20 bg-gradient-to-b from-white via-primary-50/20 to-white dark:from-neutral-900 dark:via-primary-950/10 dark:to-neutral-900">
+    {{-- Eventi - CINEMA WALL --}}
+    <div class="py-16 md:py-20 cinema-wall-section">
         <livewire:home.events-slider />
     </div>
 
@@ -116,6 +116,59 @@
     <style>
         @keyframes float-slow { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -30px) scale(1.1); } }
         .animate-float-slow { animation: float-slow 15s ease-in-out infinite; }
+        
+        /* Cinema/Theatre Wall - Dark Elegant Background */
+        .cinema-wall-section {
+            position: relative;
+            background: 
+                /* Vintage theatre texture */
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='velvet'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' seed='15' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23velvet)' opacity='0.08'/%3E%3C/svg%3E"),
+                /* Subtle fabric lines */
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.015) 2px,
+                    rgba(255, 255, 255, 0.015) 3px
+                ),
+                /* Deep burgundy to dark grey gradient */
+                linear-gradient(135deg, 
+                    #1a1418 0%,
+                    #1f1820 20%,
+                    #1c151c 40%,
+                    #18131a 60%,
+                    #1d1722 80%,
+                    #1b1620 100%
+                );
+            box-shadow: 
+                inset 0 0 150px rgba(0, 0, 0, 0.4),
+                inset 0 4px 20px rgba(0, 0, 0, 0.3),
+                inset 0 -4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        :is(.dark .cinema-wall-section) {
+            background: 
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='velvet'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' seed='15' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23velvet)' opacity='0.12'/%3E%3C/svg%3E"),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.02) 2px,
+                    rgba(255, 255, 255, 0.02) 3px
+                ),
+                linear-gradient(135deg, 
+                    #0f0c0f 0%,
+                    #130f13 20%,
+                    #110d12 40%,
+                    #0d0a0f 60%,
+                    #120e15 80%,
+                    #0e0b11 100%
+                );
+            box-shadow: 
+                inset 0 0 180px rgba(0, 0, 0, 0.6),
+                inset 0 4px 20px rgba(0, 0, 0, 0.4),
+                inset 0 -4px 20px rgba(0, 0, 0, 0.4);
+        }
         
         /* Fade & Scale on Scroll Effect */
         .fade-scale-item {
