@@ -4,10 +4,10 @@
         
         {{-- Header --}}
         <div class="text-center mb-12">
-            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
                 {!! __('home.poetry_section_title') !!}
             </h2>
-            <p class="text-lg text-neutral-700 dark:text-neutral-300">
+            <p class="text-lg text-neutral-100">
                 {{ __('home.poetry_section_subtitle') }}
             </p>
         </div>
