@@ -122,7 +122,7 @@
                 inset 0 -2px 12px rgba(0, 0, 0, 0.2);
         }
         
-        /* Newspaper Section Background (WebP optimized 446KB - 1536x1024) */
+        /* Newspaper Section Background (WebP optimized 363KB - 1536x1024) */
         .articles-newspaper-section {
             position: relative;
             background: 
