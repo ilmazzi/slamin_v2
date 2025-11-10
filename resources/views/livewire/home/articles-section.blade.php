@@ -7,11 +7,17 @@
             {{-- Newspaper Page Container --}}
             <div class="relative h-full newspaper-page">
                 
+                {{-- Crumpled corners (angoli accartocciati) --}}
+                <div class="crumpled-corner crumpled-corner-tl"></div>
+                <div class="crumpled-corner crumpled-corner-tr"></div>
+                <div class="crumpled-corner crumpled-corner-bl"></div>
+                <div class="crumpled-corner crumpled-corner-br"></div>
+                
                 <a href="{{ route('articles.show', $article->id) }}" class="block">
                     
                     {{-- Newspaper Header (Masthead) --}}
                     <div class="newspaper-header">
-                        <div class="newspaper-masthead">SLAMIN</div>
+                        <div class="newspaper-masthead">Slamin Journal</div>
                         <div class="newspaper-date">{{ $article->created_at->format('d M Y') }}</div>
                     </div>
                     
@@ -145,11 +151,10 @@
         
         .newspaper-masthead {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.75rem;
+            font-size: 1.25rem;
             font-weight: 900;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.12em;
             color: #1a1a1a;
-            text-transform: uppercase;
             text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
         }
         
@@ -253,17 +258,110 @@
            NEWSPAPER EFFECTS & INTERACTIONS
            ============================================ */
         
-        /* Slightly irregular cut edges (like newspaper clipping) */
+        /* Irregular cut edges with crumpled corners */
         .newspaper-page {
             clip-path: polygon(
-                0% 0.3%,
-                0.5% 0%,
-                99.5% 0%,
-                100% 0.4%,
-                100% 99.6%,
-                99.5% 100%,
-                0.5% 100%,
-                0% 99.7%
+                0% 2%,
+                2% 0%,
+                98% 0%,
+                100% 2%,
+                100% 98%,
+                98% 100%,
+                2% 100%,
+                0% 98%
+            );
+        }
+        
+        /* Crumpled corners (angoli accartocciati) */
+        .crumpled-corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        /* Top-left corner */
+        .crumpled-corner-tl {
+            top: 0;
+            left: 0;
+            background: radial-gradient(
+                circle at 0% 0%,
+                rgba(0, 0, 0, 0.15) 0%,
+                rgba(0, 0, 0, 0.08) 40%,
+                transparent 70%
+            );
+        }
+        
+        :is(.dark .crumpled-corner-tl) {
+            background: radial-gradient(
+                circle at 0% 0%,
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 0, 0, 0.2) 40%,
+                transparent 70%
+            );
+        }
+        
+        /* Top-right corner */
+        .crumpled-corner-tr {
+            top: 0;
+            right: 0;
+            background: radial-gradient(
+                circle at 100% 0%,
+                rgba(0, 0, 0, 0.12) 0%,
+                rgba(0, 0, 0, 0.06) 40%,
+                transparent 70%
+            );
+        }
+        
+        :is(.dark .crumpled-corner-tr) {
+            background: radial-gradient(
+                circle at 100% 0%,
+                rgba(0, 0, 0, 0.35) 0%,
+                rgba(0, 0, 0, 0.18) 40%,
+                transparent 70%
+            );
+        }
+        
+        /* Bottom-left corner */
+        .crumpled-corner-bl {
+            bottom: 0;
+            left: 0;
+            background: radial-gradient(
+                circle at 0% 100%,
+                rgba(0, 0, 0, 0.18) 0%,
+                rgba(0, 0, 0, 0.1) 40%,
+                transparent 70%
+            );
+        }
+        
+        :is(.dark .crumpled-corner-bl) {
+            background: radial-gradient(
+                circle at 0% 100%,
+                rgba(0, 0, 0, 0.45) 0%,
+                rgba(0, 0, 0, 0.25) 40%,
+                transparent 70%
+            );
+        }
+        
+        /* Bottom-right corner */
+        .crumpled-corner-br {
+            bottom: 0;
+            right: 0;
+            background: radial-gradient(
+                circle at 100% 100%,
+                rgba(0, 0, 0, 0.16) 0%,
+                rgba(0, 0, 0, 0.08) 40%,
+                transparent 70%
+            );
+        }
+        
+        :is(.dark .crumpled-corner-br) {
+            background: radial-gradient(
+                circle at 100% 100%,
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 0, 0, 0.22) 40%,
+                transparent 70%
             );
         }
         
@@ -271,8 +369,8 @@
         .newspaper-page:hover {
             transform: translateY(-8px) rotate(-0.8deg);
             box-shadow: 
-                0 12px 30px rgba(0, 0, 0, 0.15),
-                0 6px 15px rgba(0, 0, 0, 0.1),
+                0 12px 30px rgba(0, 0, 0, 0.18),
+                0 6px 15px rgba(0, 0, 0, 0.12),
                 inset 0 0 50px rgba(139, 115, 85, 0.05);
         }
         
@@ -280,6 +378,25 @@
             box-shadow: 
                 0 12px 30px rgba(0, 0, 0, 0.8),
                 0 6px 15px rgba(0, 0, 0, 0.7);
+        }
+        
+        /* Corners more visible on hover */
+        .newspaper-page:hover .crumpled-corner-tl {
+            background: radial-gradient(
+                circle at 0% 0%,
+                rgba(0, 0, 0, 0.2) 0%,
+                rgba(0, 0, 0, 0.12) 40%,
+                transparent 70%
+            );
+        }
+        
+        .newspaper-page:hover .crumpled-corner-br {
+            background: radial-gradient(
+                circle at 100% 100%,
+                rgba(0, 0, 0, 0.22) 0%,
+                rgba(0, 0, 0, 0.12) 40%,
+                transparent 70%
+            );
         }
     </style>
     @endif
