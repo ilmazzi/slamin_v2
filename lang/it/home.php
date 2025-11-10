@@ -16,6 +16,11 @@ return [
     'events_section_subtitle' => 'Non perdere i prossimi appuntamenti poetici',
     'all_events_button' => 'Tutti gli Eventi',
 
+    // Gigs Section
+    'gigs_section_title' => 'Opportunità <span class="italic text-accent-600">Creative</span>',
+    'gigs_section_subtitle' => 'Trova la tua prossima collaborazione artistica',
+    'see_all_gigs' => 'Tutti gli Ingaggi',
+
     // Videos Section
     'videos_section_title' => 'Video & Foto',
     'videos_section_subtitle' => 'Dalla community',

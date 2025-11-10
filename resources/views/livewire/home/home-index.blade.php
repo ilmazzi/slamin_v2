@@ -10,6 +10,11 @@
         <livewire:home.events-slider />
     </div>
 
+    {{-- Top Gigs --}}
+    <div class="py-16 md:py-20 bg-gradient-to-b from-white via-accent-50/20 to-white dark:from-neutral-900 dark:via-accent-950/10 dark:to-neutral-900">
+        <livewire:home.gigs-section />
+    </div>
+
     {{-- Nuovi Poeti --}}
     <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
         <livewire:home.new-users-section />

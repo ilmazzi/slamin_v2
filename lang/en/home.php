@@ -16,6 +16,11 @@ return [
     'events_section_subtitle' => 'Don\'t miss the next poetry gatherings',
     'all_events_button' => 'All Events',
 
+    // Gigs Section
+    'gigs_section_title' => '<span class="italic text-accent-600">Creative</span> Opportunities',
+    'gigs_section_subtitle' => 'Find your next artistic collaboration',
+    'see_all_gigs' => 'All Gigs',
+
     // Videos Section
     'videos_section_title' => 'Videos & Photos',
     'videos_section_subtitle' => 'From the community',

@@ -16,6 +16,11 @@ return [
     'events_section_subtitle' => 'Ne manquez pas les prochains rendez-vous poétiques',
     'all_events_button' => 'Tous les Événements',
 
+    // Gigs Section
+    'gigs_section_title' => 'Opportunités <span class="italic text-accent-600">Créatives</span>',
+    'gigs_section_subtitle' => 'Trouvez votre prochaine collaboration artistique',
+    'see_all_gigs' => 'Tous les Engagements',
+
     // Videos Section
     'videos_section_title' => 'Vidéos & Photos',
     'videos_section_subtitle' => 'De la communauté',
