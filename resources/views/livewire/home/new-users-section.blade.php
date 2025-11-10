@@ -9,10 +9,10 @@
         {{-- Header --}}
         <div class="text-center mb-12">
             <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                {!! __('home.new_users_title') !!}
+                Nuovi Utenti
             </h2>
             <p class="text-lg text-neutral-100">
-                {{ __('home.new_users_subtitle') }}
+                Dai il benvenuto ai nuovi membri
             </p>
         </div>
 
@@ -24,18 +24,20 @@
                 $rotation = rand(-4, 4);
                 $tapeRotation = rand(-8, 8);
                 $tapeWidth = rand(50, 70);
-                // Random tape colors
+                // Random tape colors - VIVID/BRIGHT
                 $tapeColors = [
-                    // Yellow
-                    ['rgba(240, 210, 100, 0.92)', 'rgba(245, 220, 120, 0.90)', 'rgba(250, 230, 140, 0.92)'],
-                    // Pink
-                    ['rgba(255, 182, 193, 0.90)', 'rgba(255, 192, 203, 0.88)', 'rgba(255, 202, 213, 0.90)'],
-                    // Light blue
-                    ['rgba(173, 216, 230, 0.88)', 'rgba(183, 226, 240, 0.86)', 'rgba(193, 236, 250, 0.88)'],
-                    // Mint green
-                    ['rgba(152, 255, 152, 0.85)', 'rgba(162, 255, 162, 0.83)', 'rgba(172, 255, 172, 0.85)'],
-                    // Lavender
-                    ['rgba(230, 230, 250, 0.88)', 'rgba(240, 240, 255, 0.86)', 'rgba(250, 240, 255, 0.88)'],
+                    // Bright Yellow
+                    ['rgba(255, 220, 0, 0.95)', 'rgba(255, 230, 50, 0.93)', 'rgba(255, 240, 100, 0.95)'],
+                    // Hot Pink
+                    ['rgba(255, 105, 180, 0.92)', 'rgba(255, 130, 200, 0.90)', 'rgba(255, 150, 215, 0.92)'],
+                    // Electric Blue
+                    ['rgba(0, 150, 255, 0.90)', 'rgba(50, 170, 255, 0.88)', 'rgba(100, 190, 255, 0.90)'],
+                    // Lime Green
+                    ['rgba(50, 255, 50, 0.88)', 'rgba(80, 255, 80, 0.86)', 'rgba(110, 255, 110, 0.88)'],
+                    // Purple
+                    ['rgba(180, 100, 255, 0.90)', 'rgba(190, 130, 255, 0.88)', 'rgba(200, 160, 255, 0.90)'],
+                    // Orange
+                    ['rgba(255, 140, 0, 0.92)', 'rgba(255, 160, 50, 0.90)', 'rgba(255, 180, 100, 0.92)'],
                 ];
                 $selectedTape = $tapeColors[array_rand($tapeColors)];
             ?>
@@ -103,7 +105,7 @@
         /* Washi Tape on top - COLORFUL WITH SERRATED EDGES */
         .polaroid-tape {
             position: absolute;
-            top: -8px;
+            top: 8px;
             left: 50%;
             /* Width and background colors set inline (random) */
             height: 28px;
@@ -157,7 +159,7 @@
         }
         
         .polaroid-wrapper:hover .polaroid-tape {
-            top: -20px;
+            top: -4px;
         }
         
         /* Photo area - square */

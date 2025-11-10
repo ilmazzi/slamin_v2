@@ -198,8 +198,8 @@
         .polaroid-wall-section {
             position: relative;
             background: 
-                /* Real chalkboard image - contain to show full height */
-                url('/assets/images/lavagna.webp') center/contain no-repeat,
+                /* Real chalkboard image - cover for full screen */
+                url('/assets/images/lavagna.webp') center/cover no-repeat,
                 /* Fallback color */
                 #2d3436;
             box-shadow: 
@@ -210,7 +210,7 @@
         
         :is(.dark .polaroid-wall-section) {
             background: 
-                url('/assets/images/lavagna.webp') center/contain no-repeat,
+                url('/assets/images/lavagna.webp') center/cover no-repeat,
                 #1a1d1e;
             box-shadow: 
                 inset 0 0 80px rgba(0, 0, 0, 0.25),
