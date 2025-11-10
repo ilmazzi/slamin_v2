@@ -122,57 +122,76 @@
                 inset 0 -2px 12px rgba(0, 0, 0, 0.2);
         }
         
-        /* Whitewashed Wood Panel Background - Light & Elegant */
+        /* Whitewashed Wood Panel Background - VISIBLE TEXTURE */
         .articles-newspaper-section {
             position: relative;
             background: 
-                /* Wood grain texture (SVG) */
-                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' seed='5' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.08'/%3E%3C/svg%3E"),
-                /* Subtle wood planks */
+                /* Strong wood grain texture (SVG) */
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' seed='8' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.25'/%3E%3C/svg%3E"),
+                /* Visible wood planks */
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 150px,
+                    rgba(200, 180, 160, 0.15) 150px,
+                    rgba(200, 180, 160, 0.15) 152px
+                ),
+                /* Wood grain lines */
                 repeating-linear-gradient(
                     90deg,
                     transparent,
-                    transparent 200px,
-                    rgba(200, 180, 160, 0.04) 200px,
-                    rgba(200, 180, 160, 0.04) 202px
+                    transparent 4px,
+                    rgba(180, 160, 140, 0.08) 4px,
+                    rgba(180, 160, 140, 0.08) 5px
                 ),
-                /* Whitewashed wood gradient */
+                /* Whitewashed wood gradient with variation */
                 linear-gradient(180deg, 
-                    #f5f1ea 0%, 
-                    #ebe7dd 20%,
-                    #f0ece2 40%,
-                    #e8e4da 60%,
-                    #ede9df 80%,
-                    #f3efe5 100%
+                    #ebe5d9 0%, 
+                    #e0dace 15%,
+                    #ded8cc 30%,
+                    #dcd6ca 45%,
+                    #e2dcce 60%,
+                    #e4ded2 75%,
+                    #e8e2d6 90%,
+                    #ebe5d9 100%
                 );
             box-shadow: 
-                inset 0 0 80px rgba(139, 115, 85, 0.04),
-                inset 0 2px 12px rgba(0, 0, 0, 0.03),
-                inset 0 -2px 12px rgba(0, 0, 0, 0.02);
+                inset 0 0 120px rgba(139, 115, 85, 0.06),
+                inset 0 3px 15px rgba(0, 0, 0, 0.04),
+                inset 0 -3px 15px rgba(0, 0, 0, 0.03);
         }
         
         :is(.dark .articles-newspaper-section) {
             background: 
-                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' seed='5' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.08'/%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' seed='8' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.3'/%3E%3C/svg%3E"),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 150px,
+                    rgba(80, 70, 60, 0.2) 150px,
+                    rgba(80, 70, 60, 0.2) 152px
+                ),
                 repeating-linear-gradient(
                     90deg,
                     transparent,
-                    transparent 200px,
-                    rgba(80, 70, 60, 0.1) 200px,
-                    rgba(80, 70, 60, 0.1) 202px
+                    transparent 4px,
+                    rgba(60, 55, 50, 0.15) 4px,
+                    rgba(60, 55, 50, 0.15) 5px
                 ),
                 linear-gradient(180deg, 
                     #3a3632 0%, 
-                    #2f2d28 20%,
-                    #34322d 40%,
-                    #2d2b26 60%,
-                    #32302b 80%,
-                    #383630 100%
+                    #2f2d28 15%,
+                    #34322d 30%,
+                    #2d2b26 45%,
+                    #32302b 60%,
+                    #35332e 75%,
+                    #383630 90%,
+                    #3a3632 100%
                 );
             box-shadow: 
-                inset 0 0 80px rgba(0, 0, 0, 0.15),
-                inset 0 2px 12px rgba(0, 0, 0, 0.2),
-                inset 0 -2px 12px rgba(0, 0, 0, 0.15);
+                inset 0 0 120px rgba(0, 0, 0, 0.2),
+                inset 0 3px 15px rgba(0, 0, 0, 0.25),
+                inset 0 -3px 15px rgba(0, 0, 0, 0.2);
         }
     </style>
 </div>
