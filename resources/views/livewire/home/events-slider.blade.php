@@ -54,9 +54,9 @@
                         </div>
                         
                         {{-- Event Image (if available) --}}
-                        @if($event->image)
+                        @if($event->image_url)
                         <div class="ticket-image">
-                            <img src="{{ $event->image }}" 
+                            <img src="{{ $event->image_url }}" 
                                  alt="{{ $event->title }}"
                                  class="w-full h-full object-cover">
                         </div>
