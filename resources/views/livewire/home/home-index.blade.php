@@ -21,7 +21,7 @@
     </div>
 
     {{-- Decorative Separator --}}
-    <div class="py-12 md:py-16 polaroid-wall-section">
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
         <div class="section-separator"></div>
     </div>
 
