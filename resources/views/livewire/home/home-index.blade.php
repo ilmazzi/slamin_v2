@@ -10,8 +10,8 @@
         <livewire:home.events-slider />
     </div>
 
-    {{-- Top Gigs --}}
-    <div class="py-16 md:py-20 bg-gradient-to-b from-white via-accent-50/20 to-white dark:from-neutral-900 dark:via-accent-950/10 dark:to-neutral-900">
+    {{-- Top Gigs - CORK BOARD SECTION --}}
+    <div class="py-16 md:py-20 cork-board-section">
         <livewire:home.gigs-section />
     </div>
 
@@ -86,5 +86,25 @@
     <style>
         @keyframes float-slow { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -30px) scale(1.1); } }
         .animate-float-slow { animation: float-slow 15s ease-in-out infinite; }
+        
+        /* Cork Board Background */
+        .cork-board-section {
+            position: relative;
+            background: 
+                /* Cork texture pattern */
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='cork'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='5' seed='2' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23cork)' opacity='0.4'/%3E%3C/svg%3E"),
+                /* Cork color gradient */
+                radial-gradient(ellipse at center, #c19a6b 0%, #b08968 20%, #9d7a5e 40%, #8b6f54 60%, #7a5f47 80%, #6b4f3a 100%),
+                linear-gradient(180deg, #a68868 0%, #8f7459 50%, #a68868 100%);
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.15);
+        }
+        
+        :is(.dark .cork-board-section) {
+            background: 
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='cork'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='5' seed='2' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23cork)' opacity='0.4'/%3E%3C/svg%3E"),
+                radial-gradient(ellipse at center, #4a3f32 0%, #3d342a 20%, #352d24 40%, #2d261f 60%, #251f19 80%, #1d1814 100%),
+                linear-gradient(180deg, #3a3128 0%, #2d261e 50%, #3a3128 100%);
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+        }
     </style>
 </div>
