@@ -25,15 +25,15 @@
         <livewire:home.poetry-section />
     </div>
 
-    {{-- Articoli --}}
-    <div class="py-16 md:py-20 bg-gradient-to-b from-white via-neutral-50 to-primary-50/20 dark:from-neutral-900 dark:via-neutral-950 dark:to-primary-950/10">
+    {{-- Articoli - Newspaper Section --}}
+    <div class="py-16 md:py-20 articles-newspaper-section">
         <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
             <div>
                 <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(255,255,255,0.8);">
                         {!! __('home.articles_section_title') !!}
                     </h2>
-                    <p class="text-lg text-neutral-600 dark:text-neutral-400">{{ __('home.articles_section_subtitle') }}</p>
+                    <p class="text-lg text-neutral-800 dark:text-neutral-300 font-medium" style="text-shadow: 1px 1px 2px rgba(255,255,255,0.6);">{{ __('home.articles_section_subtitle') }}</p>
                 </div>
                 <livewire:home.articles-section />
             </div>
@@ -120,6 +120,30 @@
             box-shadow: 
                 inset 0 2px 12px rgba(0, 0, 0, 0.25),
                 inset 0 -2px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Newspaper Section Background (WebP optimized 235KB) */
+        .articles-newspaper-section {
+            position: relative;
+            background: 
+                /* Articles newspaper background with coffee stains and vintage paper */
+                url('/assets/images/articles-section-background.webp') center/cover no-repeat,
+                /* Fallback color */
+                #e8e3d8;
+            box-shadow: 
+                inset 0 2px 12px rgba(0, 0, 0, 0.08),
+                inset 0 -2px 12px rgba(0, 0, 0, 0.06);
+        }
+        
+        :is(.dark .articles-newspaper-section) {
+            background: 
+                url('/assets/images/articles-section-background.webp') center/cover no-repeat,
+                #3a362d;
+            /* Darken for dark mode */
+            filter: brightness(0.4) contrast(1.1);
+            box-shadow: 
+                inset 0 2px 12px rgba(0, 0, 0, 0.3),
+                inset 0 -2px 12px rgba(0, 0, 0, 0.25);
         }
     </style>
 </div>
