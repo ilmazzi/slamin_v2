@@ -25,6 +25,8 @@ return [
     'my_events' => 'Mes Événements',
     'reset' => 'Réinitialiser',
     'reset_filters' => 'Réinitialiser les filtres',
+    'event_details' => 'Détails de l\'Événement',
+    'venue' => 'Lieu',
     
     // Actions
     'create_event' => 'Créer un Événement',

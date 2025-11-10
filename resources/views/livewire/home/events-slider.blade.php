@@ -67,6 +67,15 @@
                         {{-- Event Title --}}
                         <h3 class="ticket-title">{{ $event->title }}</h3>
                         
+                        {{-- Price Badge --}}
+                        <div class="ticket-price">
+                            @if($event->price && $event->price > 0)
+                                {{ number_format($event->price, 2, ',', '.') }} €
+                            @else
+                                {{ __('events.free') }}
+                            @endif
+                        </div>
+                        
                         {{-- Event Details Grid --}}
                         <div class="ticket-details">
                             @if($event->start_date)
@@ -103,14 +112,46 @@
                             @endif
                         </div>
                         
-                        {{-- Barcode --}}
-                        <div class="ticket-barcode">
-                            <div class="barcode-lines">
-                                @for($j = 0; $j < 40; $j++)
-                                <div class="barcode-line" style="width: {{ rand(1, 3) }}px; height: {{ rand(35, 45) }}px;"></div>
-                                @endfor
+                        {{-- Interactive Barcode --}}
+                        <div class="ticket-barcode-wrapper" x-data="{ showDetails: false }">
+                            <div class="ticket-barcode" 
+                                 @mouseenter="showDetails = true" 
+                                 @mouseleave="showDetails = false">
+                                <div class="barcode-lines">
+                                    @for($j = 0; $j < 40; $j++)
+                                    <div class="barcode-line" style="width: {{ rand(1, 3) }}px; height: {{ rand(35, 45) }}px;"></div>
+                                    @endfor
+                                </div>
+                                <div class="barcode-number">{{ str_pad($event->id, 12, '0', STR_PAD_LEFT) }}</div>
                             </div>
-                            <div class="barcode-number">{{ str_pad($event->id, 12, '0', STR_PAD_LEFT) }}</div>
+                            
+                            {{-- Barcode Details Tooltip --}}
+                            <div class="barcode-tooltip" 
+                                 x-show="showDetails"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 style="display: none;">
+                                <div class="tooltip-title">{{ __('events.event_details') }}</div>
+                                @if($event->description)
+                                <div class="tooltip-description">{{ Str::limit(strip_tags($event->description), 120) }}</div>
+                                @endif
+                                @if($event->venue_name)
+                                <div class="tooltip-row">
+                                    <span class="tooltip-label">{{ __('events.venue') }}:</span>
+                                    <span class="tooltip-value">{{ $event->venue_name }}</span>
+                                </div>
+                                @endif
+                                @if($event->max_participants)
+                                <div class="tooltip-row">
+                                    <span class="tooltip-label">{{ __('events.max_participants') }}:</span>
+                                    <span class="tooltip-value">{{ $event->max_participants }}</span>
+                                </div>
+                                @endif
+                            </div>
                         </div>
                         </a>
                         
@@ -305,13 +346,39 @@
         font-family: 'Crimson Pro', serif;
     }
     
+    /* Price Badge */
+    .ticket-price {
+        text-align: center;
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: #059669;
+        font-family: 'Crimson Pro', serif;
+        padding: 0.5rem 1rem;
+        margin: 0.75rem 0;
+        background: rgba(5, 150, 105, 0.08);
+        border-radius: 6px;
+        border: 2px dashed rgba(5, 150, 105, 0.3);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Barcode Wrapper */
+    .ticket-barcode-wrapper {
+        position: relative;
+        margin-top: 0.5rem;
+    }
+    
     /* Barcode */
     .ticket-barcode {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 0.375rem;
-        margin-top: 0.5rem;
+        cursor: help;
+        transition: all 0.3s ease;
+    }
+    
+    .ticket-barcode:hover {
+        transform: scale(1.05);
     }
     
     .barcode-lines {
@@ -333,6 +400,69 @@
         color: #666;
         font-family: 'Courier New', monospace;
         letter-spacing: 0.1em;
+    }
+    
+    /* Barcode Tooltip */
+    .barcode-tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 0.5rem;
+        background: #2d3748;
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 
+            0 10px 25px rgba(0, 0, 0, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+        z-index: 50;
+        min-width: 280px;
+        max-width: 320px;
+    }
+    
+    .barcode-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 8px solid transparent;
+        border-top-color: #2d3748;
+    }
+    
+    .tooltip-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #ffd700;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .tooltip-description {
+        font-size: 0.8125rem;
+        line-height: 1.5;
+        color: #e2e8f0;
+        margin-bottom: 0.75rem;
+    }
+    
+    .tooltip-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        padding: 0.375rem 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .tooltip-label {
+        color: #cbd5e0;
+        font-weight: 600;
+    }
+    
+    .tooltip-value {
+        color: #ffffff;
+        font-weight: 700;
     }
     
     /* Social Actions */
