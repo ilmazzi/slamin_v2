@@ -109,23 +109,24 @@
         
         .magazine-article-wrapper {
             position: relative;
-            padding-top: 30px;
+            padding-top: 0;
         }
         
-        /* Thumbtack/Puntina colorata */
+        /* Thumbtack/Puntina colorata - PINNED INTO CARD */
         .thumbtack {
             position: absolute;
-            top: 0;
+            top: -8px;
             left: 50%;
             transform: translateX(-50%);
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            z-index: 10;
+            z-index: 100;
             box-shadow: 
-                0 2px 4px rgba(0, 0, 0, 0.3),
-                inset 0 -4px 8px rgba(0, 0, 0, 0.2),
-                inset 0 4px 8px rgba(255, 255, 255, 0.3);
+                0 3px 6px rgba(0, 0, 0, 0.35),
+                0 1px 3px rgba(0, 0, 0, 0.25),
+                inset 0 -6px 10px rgba(0, 0, 0, 0.25),
+                inset 0 6px 10px rgba(255, 255, 255, 0.4);
         }
         
         .thumbtack-needle {
@@ -133,11 +134,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 3px;
-            height: 3px;
-            background: #2d2d2d;
+            width: 4px;
+            height: 4px;
+            background: #1a1a1a;
             border-radius: 50%;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.6),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
         }
         
         /* Magazine Cover - Copertina Rivista */
