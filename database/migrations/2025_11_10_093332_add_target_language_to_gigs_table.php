@@ -32,6 +32,11 @@ return new class extends Migration
                 $table->decimal('proposed_compensation', 10, 2)->nullable();
             }
             
+            // Aggiungi status se non esiste
+            if (!Schema::hasColumn('gigs', 'status')) {
+                $table->string('status', 50)->default('open')->nullable();
+            }
+            
             // Aggiungi accepted_translator_id se non esiste
             if (!Schema::hasColumn('gigs', 'accepted_translator_id')) {
                 $table->foreignId('accepted_translator_id')->nullable()->constrained('users')->nullOnDelete();
@@ -63,6 +68,9 @@ return new class extends Migration
             }
             if (Schema::hasColumn('gigs', 'proposed_compensation')) {
                 $table->dropColumn('proposed_compensation');
+            }
+            if (Schema::hasColumn('gigs', 'status')) {
+                $table->dropColumn('status');
             }
             if (Schema::hasColumn('gigs', 'accepted_translator_id')) {
                 $table->dropForeign(['accepted_translator_id']);
