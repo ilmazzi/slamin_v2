@@ -69,7 +69,7 @@
     </div>
 
     <div class="text-center mt-10">
-        <x-ui.buttons.primary :href="route('articles.index')" variant="outline" size="md" icon="M9 5l7 7-7 7">
+        <x-ui.buttons.primary :href="route('articles.index')" size="md" icon="M9 5l7 7-7 7">
             {{ __('home.all_articles_button') }}
         </x-ui.buttons.primary>
     </div>

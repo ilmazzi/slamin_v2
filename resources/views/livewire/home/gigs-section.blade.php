@@ -177,7 +177,7 @@
         <!-- See All Button -->
         <div class="text-center mt-12">
             <a href="{{ route('gigs.index') }}" 
-               class="inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-neutral-100 text-neutral-900 font-black uppercase tracking-wider transition-all hover:shadow-2xl hover:scale-105 border-4 border-neutral-900">
+               class="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold uppercase tracking-wider transition-all hover:shadow-2xl hover:shadow-primary-500/50 hover:scale-105 rounded-lg shadow-lg">
                 <span>{{ __('home.see_all_gigs') }}</span>
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
