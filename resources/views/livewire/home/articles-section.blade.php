@@ -277,119 +277,124 @@
             );
         }
         
-        /* Crumpled corners (angoli accartocciati) - MUCH MORE VISIBLE */
+        /* Crumpled corners - EXTREMELY DARK AND VISIBLE */
         .crumpled-corner {
             position: absolute;
-            width: 55px;
-            height: 55px;
+            width: 80px;
+            height: 80px;
             pointer-events: none;
             z-index: 5;
+            filter: contrast(1.5);
         }
         
-        /* Top-left corner */
+        /* Top-left corner - HEAVY shadow */
         .crumpled-corner-tl {
-            top: 0;
-            left: 0;
+            top: -5px;
+            left: -5px;
             background: 
                 radial-gradient(
-                    circle at 0% 0%,
-                    rgba(0, 0, 0, 0.35) 0%,
-                    rgba(0, 0, 0, 0.25) 25%,
-                    rgba(0, 0, 0, 0.15) 45%,
-                    rgba(0, 0, 0, 0.08) 60%,
+                    circle at 15% 15%,
+                    rgba(0, 0, 0, 0.75) 0%,
+                    rgba(0, 0, 0, 0.6) 15%,
+                    rgba(0, 0, 0, 0.45) 30%,
+                    rgba(0, 0, 0, 0.3) 45%,
+                    rgba(0, 0, 0, 0.18) 60%,
                     transparent 75%
                 );
-            border-top-left-radius: 8px;
         }
         
         :is(.dark .crumpled-corner-tl) {
             background: radial-gradient(
-                circle at 0% 0%,
-                rgba(0, 0, 0, 0.7) 0%,
-                rgba(0, 0, 0, 0.5) 25%,
-                rgba(0, 0, 0, 0.3) 45%,
-                rgba(0, 0, 0, 0.15) 60%,
+                circle at 15% 15%,
+                rgba(0, 0, 0, 0.95) 0%,
+                rgba(0, 0, 0, 0.85) 15%,
+                rgba(0, 0, 0, 0.7) 30%,
+                rgba(0, 0, 0, 0.5) 45%,
+                rgba(0, 0, 0, 0.3) 60%,
                 transparent 75%
             );
         }
         
         /* Top-right corner */
         .crumpled-corner-tr {
-            top: 0;
-            right: 0;
+            top: -5px;
+            right: -5px;
             background: 
                 radial-gradient(
-                    circle at 100% 0%,
-                    rgba(0, 0, 0, 0.32) 0%,
-                    rgba(0, 0, 0, 0.22) 25%,
-                    rgba(0, 0, 0, 0.12) 45%,
-                    rgba(0, 0, 0, 0.06) 60%,
+                    circle at 85% 15%,
+                    rgba(0, 0, 0, 0.72) 0%,
+                    rgba(0, 0, 0, 0.58) 15%,
+                    rgba(0, 0, 0, 0.42) 30%,
+                    rgba(0, 0, 0, 0.28) 45%,
+                    rgba(0, 0, 0, 0.16) 60%,
                     transparent 75%
                 );
-            border-top-right-radius: 8px;
         }
         
         :is(.dark .crumpled-corner-tr) {
             background: radial-gradient(
-                circle at 100% 0%,
-                rgba(0, 0, 0, 0.65) 0%,
-                rgba(0, 0, 0, 0.45) 25%,
-                rgba(0, 0, 0, 0.25) 45%,
-                rgba(0, 0, 0, 0.12) 60%,
+                circle at 85% 15%,
+                rgba(0, 0, 0, 0.92) 0%,
+                rgba(0, 0, 0, 0.82) 15%,
+                rgba(0, 0, 0, 0.68) 30%,
+                rgba(0, 0, 0, 0.48) 45%,
+                rgba(0, 0, 0, 0.28) 60%,
                 transparent 75%
             );
         }
         
         /* Bottom-left corner */
         .crumpled-corner-bl {
-            bottom: 0;
-            left: 0;
+            bottom: -5px;
+            left: -5px;
             background: 
                 radial-gradient(
-                    circle at 0% 100%,
-                    rgba(0, 0, 0, 0.38) 0%,
-                    rgba(0, 0, 0, 0.28) 25%,
-                    rgba(0, 0, 0, 0.18) 45%,
-                    rgba(0, 0, 0, 0.1) 60%,
+                    circle at 15% 85%,
+                    rgba(0, 0, 0, 0.78) 0%,
+                    rgba(0, 0, 0, 0.62) 15%,
+                    rgba(0, 0, 0, 0.46) 30%,
+                    rgba(0, 0, 0, 0.32) 45%,
+                    rgba(0, 0, 0, 0.20) 60%,
                     transparent 75%
                 );
-            border-bottom-left-radius: 8px;
         }
         
         :is(.dark .crumpled-corner-bl) {
             background: radial-gradient(
-                circle at 0% 100%,
-                rgba(0, 0, 0, 0.75) 0%,
-                rgba(0, 0, 0, 0.55) 25%,
-                rgba(0, 0, 0, 0.35) 45%,
-                rgba(0, 0, 0, 0.18) 60%,
+                circle at 15% 85%,
+                rgba(0, 0, 0, 0.98) 0%,
+                rgba(0, 0, 0, 0.88) 15%,
+                rgba(0, 0, 0, 0.72) 30%,
+                rgba(0, 0, 0, 0.52) 45%,
+                rgba(0, 0, 0, 0.32) 60%,
                 transparent 75%
             );
         }
         
         /* Bottom-right corner */
         .crumpled-corner-br {
-            bottom: 0;
-            right: 0;
+            bottom: -5px;
+            right: -5px;
             background: 
                 radial-gradient(
-                    circle at 100% 100%,
-                    rgba(0, 0, 0, 0.36) 0%,
-                    rgba(0, 0, 0, 0.26) 25%,
-                    rgba(0, 0, 0, 0.16) 45%,
-                    rgba(0, 0, 0, 0.09) 60%,
+                    circle at 85% 85%,
+                    rgba(0, 0, 0, 0.76) 0%,
+                    rgba(0, 0, 0, 0.60) 15%,
+                    rgba(0, 0, 0, 0.44) 30%,
+                    rgba(0, 0, 0, 0.30) 45%,
+                    rgba(0, 0, 0, 0.18) 60%,
                     transparent 75%
                 );
-            border-bottom-right-radius: 8px;
         }
         
         :is(.dark .crumpled-corner-br) {
             background: radial-gradient(
-                circle at 100% 100%,
-                rgba(0, 0, 0, 0.72) 0%,
-                rgba(0, 0, 0, 0.52) 25%,
-                rgba(0, 0, 0, 0.32) 45%,
-                rgba(0, 0, 0, 0.16) 60%,
+                circle at 85% 85%,
+                rgba(0, 0, 0, 0.96) 0%,
+                rgba(0, 0, 0, 0.86) 15%,
+                rgba(0, 0, 0, 0.70) 30%,
+                rgba(0, 0, 0, 0.50) 45%,
+                rgba(0, 0, 0, 0.30) 60%,
                 transparent 75%
             );
         }
@@ -409,9 +414,9 @@
                 0 6px 15px rgba(0, 0, 0, 0.7);
         }
         
-        /* Corners MUCH more visible on hover */
+        /* Corners EVEN DARKER on hover */
         .newspaper-page:hover .crumpled-corner {
-            filter: brightness(0.85) contrast(1.3);
+            filter: brightness(0.7) contrast(2);
         }
     </style>
     @endif
