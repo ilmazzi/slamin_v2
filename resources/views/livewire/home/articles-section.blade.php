@@ -277,126 +277,138 @@
             );
         }
         
-        /* Crumpled corners - EXTREMELY DARK AND VISIBLE */
+        /* DOG-EAR / PAGE CURL EFFECT - Real folded corner */
         .crumpled-corner {
             position: absolute;
-            width: 80px;
-            height: 80px;
+            width: 0;
+            height: 0;
             pointer-events: none;
-            z-index: 5;
-            filter: contrast(1.5);
+            z-index: 10;
         }
         
-        /* Top-left corner - HEAVY shadow */
+        /* Top-left corner - folded page */
         .crumpled-corner-tl {
-            top: -5px;
-            left: -5px;
+            top: 0;
+            left: 0;
+            border-style: solid;
+            border-width: 45px 45px 0 0;
+            border-color: #d8d0c0 transparent transparent transparent;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        /* Shadow under the fold */
+        .crumpled-corner-tl::before {
+            content: '';
+            position: absolute;
+            top: -45px;
+            left: 0;
+            width: 45px;
+            height: 45px;
             background: 
-                radial-gradient(
-                    circle at 15% 15%,
-                    rgba(0, 0, 0, 0.75) 0%,
-                    rgba(0, 0, 0, 0.6) 15%,
-                    rgba(0, 0, 0, 0.45) 30%,
-                    rgba(0, 0, 0, 0.3) 45%,
-                    rgba(0, 0, 0, 0.18) 60%,
-                    transparent 75%
+                linear-gradient(
+                    135deg,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(0, 0, 0, 0.2) 50%,
+                    transparent 100%
                 );
         }
         
         :is(.dark .crumpled-corner-tl) {
-            background: radial-gradient(
-                circle at 15% 15%,
-                rgba(0, 0, 0, 0.95) 0%,
-                rgba(0, 0, 0, 0.85) 15%,
-                rgba(0, 0, 0, 0.7) 30%,
-                rgba(0, 0, 0, 0.5) 45%,
-                rgba(0, 0, 0, 0.3) 60%,
-                transparent 75%
-            );
+            border-color: #2a2720 transparent transparent transparent;
+            filter: drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.8));
         }
         
-        /* Top-right corner */
+        /* Top-right corner - folded page */
         .crumpled-corner-tr {
-            top: -5px;
-            right: -5px;
+            top: 0;
+            right: 0;
+            border-style: solid;
+            border-width: 0 45px 45px 0;
+            border-color: transparent #d8d0c0 transparent transparent;
+            filter: drop-shadow(-2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        .crumpled-corner-tr::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -45px;
+            width: 45px;
+            height: 45px;
             background: 
-                radial-gradient(
-                    circle at 85% 15%,
-                    rgba(0, 0, 0, 0.72) 0%,
-                    rgba(0, 0, 0, 0.58) 15%,
-                    rgba(0, 0, 0, 0.42) 30%,
-                    rgba(0, 0, 0, 0.28) 45%,
-                    rgba(0, 0, 0, 0.16) 60%,
-                    transparent 75%
+                linear-gradient(
+                    225deg,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(0, 0, 0, 0.2) 50%,
+                    transparent 100%
                 );
         }
         
         :is(.dark .crumpled-corner-tr) {
-            background: radial-gradient(
-                circle at 85% 15%,
-                rgba(0, 0, 0, 0.92) 0%,
-                rgba(0, 0, 0, 0.82) 15%,
-                rgba(0, 0, 0, 0.68) 30%,
-                rgba(0, 0, 0, 0.48) 45%,
-                rgba(0, 0, 0, 0.28) 60%,
-                transparent 75%
-            );
+            border-color: transparent #2a2720 transparent transparent;
+            filter: drop-shadow(-2px 2px 6px rgba(0, 0, 0, 0.8));
         }
         
-        /* Bottom-left corner */
+        /* Bottom-left corner - folded page */
         .crumpled-corner-bl {
-            bottom: -5px;
-            left: -5px;
+            bottom: 0;
+            left: 0;
+            border-style: solid;
+            border-width: 0 0 45px 45px;
+            border-color: transparent transparent #d8d0c0 transparent;
+            filter: drop-shadow(2px -2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        .crumpled-corner-bl::before {
+            content: '';
+            position: absolute;
+            bottom: -45px;
+            left: 0;
+            width: 45px;
+            height: 45px;
             background: 
-                radial-gradient(
-                    circle at 15% 85%,
-                    rgba(0, 0, 0, 0.78) 0%,
-                    rgba(0, 0, 0, 0.62) 15%,
-                    rgba(0, 0, 0, 0.46) 30%,
-                    rgba(0, 0, 0, 0.32) 45%,
-                    rgba(0, 0, 0, 0.20) 60%,
-                    transparent 75%
+                linear-gradient(
+                    45deg,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(0, 0, 0, 0.2) 50%,
+                    transparent 100%
                 );
         }
         
         :is(.dark .crumpled-corner-bl) {
-            background: radial-gradient(
-                circle at 15% 85%,
-                rgba(0, 0, 0, 0.98) 0%,
-                rgba(0, 0, 0, 0.88) 15%,
-                rgba(0, 0, 0, 0.72) 30%,
-                rgba(0, 0, 0, 0.52) 45%,
-                rgba(0, 0, 0, 0.32) 60%,
-                transparent 75%
-            );
+            border-color: transparent transparent #2a2720 transparent;
+            filter: drop-shadow(2px -2px 6px rgba(0, 0, 0, 0.8));
         }
         
-        /* Bottom-right corner */
+        /* Bottom-right corner - folded page */
         .crumpled-corner-br {
-            bottom: -5px;
-            right: -5px;
+            bottom: 0;
+            right: 0;
+            border-style: solid;
+            border-width: 45px 0 0 45px;
+            border-color: transparent transparent transparent #d8d0c0;
+            filter: drop-shadow(-2px -2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        .crumpled-corner-br::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: -45px;
+            width: 45px;
+            height: 45px;
             background: 
-                radial-gradient(
-                    circle at 85% 85%,
-                    rgba(0, 0, 0, 0.76) 0%,
-                    rgba(0, 0, 0, 0.60) 15%,
-                    rgba(0, 0, 0, 0.44) 30%,
-                    rgba(0, 0, 0, 0.30) 45%,
-                    rgba(0, 0, 0, 0.18) 60%,
-                    transparent 75%
+                linear-gradient(
+                    315deg,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(0, 0, 0, 0.2) 50%,
+                    transparent 100%
                 );
         }
         
         :is(.dark .crumpled-corner-br) {
-            background: radial-gradient(
-                circle at 85% 85%,
-                rgba(0, 0, 0, 0.96) 0%,
-                rgba(0, 0, 0, 0.86) 15%,
-                rgba(0, 0, 0, 0.70) 30%,
-                rgba(0, 0, 0, 0.50) 45%,
-                rgba(0, 0, 0, 0.30) 60%,
-                transparent 75%
-            );
+            border-color: transparent transparent transparent #2a2720;
+            filter: drop-shadow(-2px -2px 6px rgba(0, 0, 0, 0.8));
         }
         
         /* Hover: lift newspaper clipping */
@@ -414,9 +426,21 @@
                 0 6px 15px rgba(0, 0, 0, 0.7);
         }
         
-        /* Corners EVEN DARKER on hover */
-        .newspaper-page:hover .crumpled-corner {
-            filter: brightness(0.7) contrast(2);
+        /* Corners "unfold" slightly on hover */
+        .newspaper-page:hover .crumpled-corner-tl {
+            border-width: 50px 50px 0 0;
+        }
+        
+        .newspaper-page:hover .crumpled-corner-tr {
+            border-width: 0 50px 50px 0;
+        }
+        
+        .newspaper-page:hover .crumpled-corner-bl {
+            border-width: 0 0 50px 50px;
+        }
+        
+        .newspaper-page:hover .crumpled-corner-br {
+            border-width: 50px 0 0 50px;
         }
     </style>
     @endif
