@@ -106,10 +106,8 @@
             </x-ui.buttons.primary>
         </div>
     </div>
-    @endif
-</div>
-
-<style>
+    
+    <style>
     /* ========================================
        CINEMA / THEATRE WALL - EVENT POSTERS
        ======================================== */
@@ -346,6 +344,6 @@
         animation: fade-in 0.5s ease-out forwards; 
         opacity: 0; 
     }
-</style>
-@endif
+    </style>
+    @endif
 </div>
