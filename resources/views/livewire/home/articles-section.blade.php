@@ -45,9 +45,9 @@
             </button>
         </div>
         
-        <div class="relative overflow-visible pt-12 pb-6">
-            <div class="flex transition-transform duration-500 ease-out gap-6 md:gap-12 lg:gap-16"
-                 :style="`transform: translateX(-${currentPage * (100 / itemsPerPage)}%)`">
+        <div class="relative overflow-hidden pt-12 pb-6">
+            <div class="flex transition-transform duration-500 ease-out"
+                 :style="`transform: translateX(-${currentPage * 100}%)`">
         @foreach($articles->take(3) as $i => $article)
         <?php
             // Random positioning for magazine covers
@@ -55,9 +55,7 @@
             $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
             $pinRotation = rand(-15, 15);
         ?>
-        <article class="flex-shrink-0 magazine-article-wrapper fade-scale-item"
-                 style="width: calc(100% - 3rem);"
-                 :style="window.innerWidth >= 1024 ? 'width: calc(33.333% - 3rem)' : (window.innerWidth >= 768 ? 'width: calc(50% - 3rem)' : 'width: calc(100% - 3rem)')" 
+        <article class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 magazine-article-wrapper fade-scale-item px-3 md:px-6 lg:px-8" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
