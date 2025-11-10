@@ -3,125 +3,191 @@
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
         <!-- Header -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4 font-poem">
-                {{ __('translations.my_applications') }}
+        <div class="mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-2">
+                {{ __('gigs.applications.my_applications') }}
             </h1>
-            <p class="text-lg text-neutral-600 dark:text-neutral-400 font-poem italic">
-                {{ __('translations.track_your_applications') }}
+            <p class="text-lg text-neutral-600 dark:text-neutral-400">
+                {{ __('gigs.applications.my_applications_description') }}
             </p>
         </div>
-        
-        <!-- Filters -->
-        <div class="mb-8 flex gap-3 justify-center flex-wrap">
-            <button wire:click="$set('filter', 'all')"
-                    class="px-6 py-3 rounded-2xl font-medium transition-all duration-200
-                           {{ $filter === 'all' ? 'bg-primary-500 text-white shadow-lg' : 'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700' }}">
-                {{ __('common.all') }}
-            </button>
-            <button wire:click="$set('filter', 'pending')"
-                    class="px-6 py-3 rounded-2xl font-medium transition-all duration-200
-                           {{ $filter === 'pending' ? 'bg-primary-500 text-white shadow-lg' : 'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700' }}">
-                {{ __('translations.application_status.pending') }}
-            </button>
-            <button wire:click="$set('filter', 'accepted')"
-                    class="px-6 py-3 rounded-2xl font-medium transition-all duration-200
-                           {{ $filter === 'accepted' ? 'bg-primary-500 text-white shadow-lg' : 'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700' }}">
-                {{ __('translations.application_status.accepted') }}
-            </button>
-            <button wire:click="$set('filter', 'rejected')"
-                    class="px-6 py-3 rounded-2xl font-medium transition-all duration-200
-                           {{ $filter === 'rejected' ? 'bg-primary-500 text-white shadow-lg' : 'bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700' }}">
-                {{ __('translations.application_status.rejected') }}
-            </button>
-        </div>
-        
-        <!-- Applications List -->
-        @if($applications->count() > 0)
-            <div class="space-y-6 mb-12">
-                @foreach($applications as $application)
-                    <article class="backdrop-blur-xl bg-white/85 dark:bg-neutral-800/85 
-                                   rounded-3xl shadow-xl hover:shadow-2xl
-                                   border border-white/50 dark:border-neutral-700/50
-                                   p-6 md:p-8 cursor-pointer group
-                                   hover:-translate-y-1 transition-all duration-300"
-                            onclick="window.location='{{ route('translations.gig.show', $application->gig) }}'">
-                        
-                        <div class="flex items-start justify-between mb-4">
-                            <div class="flex-1">
-                                <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-2 font-poem
-                                           group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                                    "{{ $application->gig->poem->title ?: __('poems.untitled') }}"
-                                </h3>
-                                <p class="text-sm text-neutral-600 dark:text-neutral-400">
-                                    {{ config('poems.languages')[$application->gig->target_language] ?? $application->gig->target_language }} • 
-                                    {{ $application->created_at->diffForHumans() }}
-                                </p>
-                            </div>
-                            
-                            <span class="px-4 py-2 rounded-full text-sm font-bold
-                                         {{ $application->status === 'accepted' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 
-                                            ($application->status === 'rejected' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' : 
-                                            ($application->status === 'withdrawn' ? 'bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300' : 
-                                            'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300')) }}">
-                                {{ __('translations.application_status.' . $application->status) }}
-                            </span>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                            <div class="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-900">
-                                <p class="text-neutral-500 dark:text-neutral-400 mb-1">{{ __('translations.your_compensation') }}</p>
-                                <p class="font-bold text-primary-600 dark:text-primary-400">€{{ number_format($application->proposed_compensation, 2) }}</p>
-                            </div>
-                            <div class="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-900">
-                                <p class="text-neutral-500 dark:text-neutral-400 mb-1">{{ __('translations.requested_compensation') }}</p>
-                                <p class="font-medium">€{{ number_format($application->gig->proposed_compensation, 2) }}</p>
-                            </div>
-                            <div class="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-900">
-                                <p class="text-neutral-500 dark:text-neutral-400 mb-1">{{ __('translations.delivery') }}</p>
-                                <p class="font-medium">{{ $application->estimated_delivery->format('d/m/Y') }}</p>
-                            </div>
-                            <div class="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-900">
-                                <p class="text-neutral-500 dark:text-neutral-400 mb-1">{{ __('translations.gig_status') }}</p>
-                                <p class="font-medium">{{ __('translations.status.' . $application->gig->status) }}</p>
-                            </div>
-                        </div>
-                        
-                        @if($application->status === 'pending')
-                            <div class="mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-700" @click.stop>
-                                <button wire:click="withdrawApplication({{ $application->id }})"
-                                        wire:confirm="{{ __('translations.confirm_withdraw') }}"
-                                        class="px-4 py-2 rounded-xl font-medium text-sm
-                                               bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400
-                                               hover:bg-red-100 dark:hover:bg-red-900/30
-                                               border border-red-200 dark:border-red-800
-                                               transition-all duration-200">
-                                    {{ __('translations.withdraw_application') }}
-                                </button>
-                            </div>
-                        @endif
-                    </article>
-                @endforeach
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="backdrop-blur-xl bg-white/80 dark:bg-neutral-800/80 rounded-2xl p-6 border border-white/20 dark:border-neutral-700/50">
+                <div class="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-2">
+                    {{ number_format($stats['total_applications']) }}
+                </div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400">
+                    {{ __('gigs.applications.total_applications') }}
+                </div>
             </div>
             
-            {{ $applications->links() }}
-        @else
-            <div class="text-center py-20">
-                <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-4 font-poem">
-                    {{ __('translations.no_applications') }}
-                </h3>
-                <p class="text-neutral-600 dark:text-neutral-400 font-poem italic mb-8">
-                    {{ __('translations.browse_gigs_to_apply') }}
-                </p>
-                <a href="{{ route('translations.gigs.index') }}"
-                   class="inline-flex items-center gap-2 px-8 py-4 rounded-2xl
-                          bg-gradient-to-r from-primary-500 to-primary-600
-                          hover:from-primary-600 hover:to-primary-700
-                          text-white font-semibold shadow-lg hover:shadow-xl
-                          hover:-translate-y-1 transition-all duration-300">
-                    {{ __('translations.browse_gigs') }}
-                </a>
+            <div class="backdrop-blur-xl bg-white/80 dark:bg-neutral-800/80 rounded-2xl p-6 border border-white/20 dark:border-neutral-700/50">
+                <div class="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">
+                    {{ number_format($stats['pending']) }}
+                </div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400">
+                    {{ __('gigs.applications.status_pending') }}
+                </div>
             </div>
-        @endif
+            
+            <div class="backdrop-blur-xl bg-white/80 dark:bg-neutral-800/80 rounded-2xl p-6 border border-white/20 dark:border-neutral-700/50">
+                <div class="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
+                    {{ number_format($stats['accepted']) }}
+                </div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400">
+                    {{ __('gigs.applications.status_accepted') }}
+                </div>
+            </div>
+            
+            <div class="backdrop-blur-xl bg-white/80 dark:bg-neutral-800/80 rounded-2xl p-6 border border-white/20 dark:border-neutral-700/50">
+                <div class="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">
+                    {{ number_format($stats['rejected']) }}
+                </div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400">
+                    {{ __('gigs.applications.status_rejected') }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="backdrop-blur-xl bg-white/80 dark:bg-neutral-800/80 rounded-2xl p-6 border border-white/20 dark:border-neutral-700/50 mb-8">
+            <div class="flex flex-wrap items-center gap-4">
+                <button wire:click="$set('status_filter', 'all')" 
+                        class="px-4 py-2 rounded-xl font-medium transition-colors {{ $status_filter === 'all' ? 'bg-primary-600 text-white' : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600' }}">
+                    {{ __('gigs.filters.all') }}
+                </button>
+
+                <button wire:click="$set('status_filter', 'pending')" 
+                        class="px-4 py-2 rounded-xl font-medium transition-colors {{ $status_filter === 'pending' ? 'bg-primary-600 text-white' : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600' }}">
+                    {{ __('gigs.applications.status_pending') }}
+                </button>
+
+                <button wire:click="$set('status_filter', 'accepted')" 
+                        class="px-4 py-2 rounded-xl font-medium transition-colors {{ $status_filter === 'accepted' ? 'bg-primary-600 text-white' : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600' }}">
+                    {{ __('gigs.applications.status_accepted') }}
+                </button>
+
+                <button wire:click="$set('status_filter', 'rejected')" 
+                        class="px-4 py-2 rounded-xl font-medium transition-colors {{ $status_filter === 'rejected' ? 'bg-primary-600 text-white' : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600' }}">
+                    {{ __('gigs.applications.status_rejected') }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Applications List -->
+        <div class="space-y-4">
+            @forelse($applications as $application)
+                <div class="backdrop-blur-xl bg-white/80 dark:bg-neutral-800/80 rounded-2xl p-6 border border-white/20 dark:border-neutral-700/50">
+                    
+                    <div class="flex flex-col md:flex-row gap-6">
+                        
+                        <!-- Content -->
+                        <div class="flex-1">
+                            <!-- Status Badge -->
+                            <div class="mb-3">
+                                @if($application->status === 'pending')
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200">
+                                        {{ __('gigs.applications.status_pending') }}
+                                    </span>
+                                @elseif($application->status === 'accepted')
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                                        ✓ {{ __('gigs.applications.status_accepted') }}
+                                    </span>
+                                @elseif($application->status === 'rejected')
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200">
+                                        ✗ {{ __('gigs.applications.status_rejected') }}
+                                    </span>
+                                @elseif($application->status === 'withdrawn')
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200">
+                                        {{ __('gigs.applications.status_withdrawn') }}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <!-- Gig Title -->
+                            <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+                                {{ $application->gig->title }}
+                            </h3>
+
+                            <!-- Meta Info -->
+                            <div class="flex flex-wrap items-center gap-4 text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+                                <span>{{ __('gigs.categories.' . $application->gig->category) }}</span>
+                                <span>•</span>
+                                <span>{{ __('gigs.applications.applied_at') }}: {{ $application->created_at->format('d M Y') }}</span>
+                                
+                                @if($application->gig->user)
+                                    <span>•</span>
+                                    <span>{{ __('gigs.organizer') }}: {{ $application->gig->user->name }}</span>
+                                @elseif($application->gig->requester)
+                                    <span>•</span>
+                                    <span>{{ __('gigs.organizer') }}: {{ $application->gig->requester->name }}</span>
+                                @endif
+                            </div>
+
+                            <!-- Message Preview -->
+                            <div class="bg-neutral-50 dark:bg-neutral-900/50 rounded-xl p-4">
+                                <p class="text-sm text-neutral-700 dark:text-neutral-300 line-clamp-3">
+                                    {{ $application->message }}
+                                </p>
+                            </div>
+
+                            <!-- Additional Info -->
+                            @if($application->compensation_expectation)
+                                <div class="mt-3 text-sm text-neutral-600 dark:text-neutral-400">
+                                    <span class="font-semibold">{{ __('gigs.applications.compensation_expectation') }}:</span>
+                                    {{ $application->compensation_expectation }}
+                                </div>
+                            @endif
+
+                            @if($application->status === 'rejected' && $application->rejection_reason)
+                                <div class="mt-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg text-sm text-red-800 dark:text-red-200">
+                                    <span class="font-semibold">{{ __('gigs.applications.rejection_reason') }}:</span>
+                                    {{ $application->rejection_reason }}
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-col gap-2 min-w-[180px]">
+                            <a href="{{ route('gigs.show', $application->gig) }}" 
+                               class="px-4 py-2 rounded-xl bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 text-neutral-900 dark:text-white text-center font-medium transition-colors">
+                                {{ __('gigs.view_gig') }}
+                            </a>
+
+                            @if($application->status === 'pending')
+                                <button wire:click="withdrawApplication({{ $application->id }})" 
+                                        wire:confirm="{{ __('gigs.applications.confirm_withdraw') }}"
+                                        class="px-4 py-2 rounded-xl bg-red-100 dark:bg-red-900 hover:bg-red-200 dark:hover:bg-red-800 text-red-900 dark:text-red-100 font-medium transition-colors">
+                                    {{ __('gigs.applications.withdraw') }}
+                                </button>
+                            @endif
+                        </div>
+
+                    </div>
+                </div>
+            @empty
+                <div class="backdrop-blur-xl bg-white/80 dark:bg-neutral-800/80 rounded-2xl p-12 border border-white/20 dark:border-neutral-700/50 text-center">
+                    <div class="text-6xl mb-4">📋</div>
+                    <h3 class="text-xl font-semibold text-neutral-900 dark:text-white mb-2">
+                        {{ __('gigs.applications.no_applications') }}
+                    </h3>
+                    <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                        {{ __('gigs.applications.no_applications_description') }}
+                    </p>
+                    <a href="{{ route('gigs.index') }}" 
+                       class="inline-block px-6 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-semibold transition-colors">
+                        {{ __('gigs.browse_gigs') }}
+                    </a>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-8">
+            {{ $applications->links() }}
+        </div>
+
     </div>
 </div>
