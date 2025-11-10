@@ -15,8 +15,8 @@
         <livewire:home.poetry-section />
     </div>
 
-    {{-- Nuovi Poeti --}}
-    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+    {{-- Nuovi Utenti - POLAROID WALL --}}
+    <div class="py-16 md:py-20 polaroid-wall-section">
         <livewire:home.new-users-section />
     </div>
 
@@ -192,6 +192,42 @@
                 inset 0 0 120px rgba(0, 0, 0, 0.2),
                 inset 0 3px 15px rgba(0, 0, 0, 0.25),
                 inset 0 -3px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Polaroid Wall - Dark Grey Background */
+        .polaroid-wall-section {
+            position: relative;
+            background: 
+                /* Concrete/plaster texture */
+                url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='concrete'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='6' seed='12' /%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23concrete)' opacity='0.15'/%3E%3C/svg%3E"),
+                /* Dark grey wall gradient */
+                linear-gradient(135deg, 
+                    #4a4a4a 0%,
+                    #3f3f3f 25%,
+                    #444444 50%,
+                    #3a3a3a 75%,
+                    #454545 100%
+                );
+            box-shadow: 
+                inset 0 0 100px rgba(0, 0, 0, 0.15),
+                inset 0 2px 12px rgba(0, 0, 0, 0.08),
+                inset 0 -2px 12px rgba(0, 0, 0, 0.06);
+        }
+        
+        :is(.dark .polaroid-wall-section) {
+            background: 
+                url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='concrete'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='6' seed='12' /%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23concrete)' opacity='0.2'/%3E%3C/svg%3E"),
+                linear-gradient(135deg, 
+                    #2a2a2a 0%,
+                    #252525 25%,
+                    #282828 50%,
+                    #232323 75%,
+                    #272727 100%
+                );
+            box-shadow: 
+                inset 0 0 100px rgba(0, 0, 0, 0.3),
+                inset 0 2px 12px rgba(0, 0, 0, 0.2),
+                inset 0 -2px 12px rgba(0, 0, 0, 0.15);
         }
     </style>
 </div>
