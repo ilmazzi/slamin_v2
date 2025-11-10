@@ -24,30 +24,62 @@
                  style="animation-delay: {{ $i * 0.1 }}s">
                 
                 {{-- Paper Sheet on Desk --}}
-                <a href="{{ route('poems.show', $poem->slug) }}" 
-                   class="paper-sheet group"
-                   style="transform: rotate({{ $paperRotation }}deg);">
+                <div class="paper-sheet-wrapper" style="transform: rotate({{ $paperRotation }}deg);">
                     
-                    {{-- Author name (small, top right) --}}
-                    <div class="paper-author">
-                        {{ $poem->user->name }}
+                    <a href="{{ route('poems.show', $poem->slug) }}" 
+                       class="paper-sheet group">
+                        
+                        {{-- Author Avatar & Name --}}
+                        <div class="paper-author-info">
+                            @if($poem->user->profile_picture_url)
+                                <img src="{{ $poem->user->profile_picture_url }}" 
+                                     alt="{{ $poem->user->name }}"
+                                     class="paper-avatar">
+                            @else
+                                <div class="paper-avatar-placeholder">
+                                    {{ substr($poem->user->name, 0, 1) }}
+                                </div>
+                            @endif
+                            <span class="paper-author-name">{{ $poem->user->name }}</span>
+                        </div>
+                        
+                        {{-- Poem Title --}}
+                        <h3 class="paper-title">
+                            "{{ $poem->title ?: __('poems.untitled') }}"
+                        </h3>
+                        
+                        {{-- Poem Content --}}
+                        <div class="paper-content">
+                            {{ $poem->description ?? Str::limit(strip_tags($poem->content), 180) }}
+                        </div>
+                        
+                        {{-- Read more hint --}}
+                        <div class="paper-readmore">
+                            {{ __('common.read_more') }} →
+                        </div>
+                    </a>
+                    
+                    {{-- Social Actions --}}
+                    <div class="paper-actions" @click.stop>
+                        <x-like-button 
+                            :itemId="$poem->id"
+                            itemType="poem"
+                            :isLiked="$poem->is_liked ?? false"
+                            :likesCount="$poem->like_count ?? 0"
+                            size="sm" />
+                        
+                        <x-comment-button 
+                            :itemId="$poem->id"
+                            itemType="poem"
+                            :commentsCount="$poem->comment_count ?? 0"
+                            size="sm" />
+                        
+                        <x-share-button 
+                            :itemId="$poem->id"
+                            itemType="poem"
+                            size="sm" />
                     </div>
-                    
-                    {{-- Poem Title --}}
-                    <h3 class="paper-title">
-                        "{{ $poem->title ?: __('poems.untitled') }}"
-                    </h3>
-                    
-                    {{-- Poem Content --}}
-                    <div class="paper-content">
-                        {{ $poem->description ?? Str::limit(strip_tags($poem->content), 180) }}
-                    </div>
-                    
-                    {{-- Read more hint --}}
-                    <div class="paper-readmore">
-                        {{ __('common.read_more') }} →
-                    </div>
-                </a>
+                </div>
             </div>
             @endforeach
         </div>

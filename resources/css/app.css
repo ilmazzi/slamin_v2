@@ -592,6 +592,11 @@
     padding-top: 20px;
 }
 
+/* Paper wrapper with rotation */
+.paper-sheet-wrapper {
+    position: relative;
+}
+
 /* VINTAGE PAPER SHEET */
 .paper-sheet {
     display: block;
@@ -633,12 +638,12 @@
         0% 40%, 0.5% 35%, 0% 30%, 0.5% 25%, 0% 20%, 0.5% 15%,
         0% 10%, 0.5% 5%
     );
-    /* Worn VISIBLE brown edges + shadow underneath */
+    /* SUPER VISIBLE orange-brown worn edges + shadow */
     box-shadow: 
-        /* Brown worn edges (inset) - MUCH MORE VISIBLE */
-        inset 0 0 0 2px rgba(139, 115, 85, 0.6),
-        inset 0 0 12px 4px rgba(139, 115, 85, 0.35),
-        inset 0 0 20px 8px rgba(120, 100, 75, 0.2),
+        /* THICK orange-brown burnt border - VERY VISIBLE */
+        inset 0 0 0 4px rgba(180, 120, 70, 0.9),
+        inset 0 0 20px 8px rgba(160, 100, 60, 0.6),
+        inset 0 0 30px 12px rgba(140, 90, 50, 0.4),
         /* Shadow underneath - realistic paper on desk */
         0 4px 6px rgba(0, 0, 0, 0.1),
         0 8px 12px rgba(0, 0, 0, 0.12),
@@ -688,12 +693,12 @@
 
 .paper-sheet:hover {
     transform: translateY(-8px) scale(1.02);
-    /* Brown worn edges + stronger shadow on hover */
+    /* SUPER VISIBLE orange-brown edges + stronger shadow on hover */
     box-shadow: 
-        /* Brown worn edges (inset) - SAME VISIBLE */
-        inset 0 0 0 2px rgba(139, 115, 85, 0.6),
-        inset 0 0 12px 4px rgba(139, 115, 85, 0.35),
-        inset 0 0 20px 8px rgba(120, 100, 75, 0.2),
+        /* THICK orange-brown burnt border - VERY VISIBLE */
+        inset 0 0 0 4px rgba(180, 120, 70, 0.9),
+        inset 0 0 20px 8px rgba(160, 100, 60, 0.6),
+        inset 0 0 30px 12px rgba(140, 90, 50, 0.4),
         /* Stronger shadow - paper lifting */
         0 12px 20px rgba(0, 0, 0, 0.18),
         0 20px 36px rgba(0, 0, 0, 0.22),
@@ -713,12 +718,12 @@
         radial-gradient(circle at 80% 70%, rgba(30,25,20,0.15) 0%, transparent 50%),
         radial-gradient(circle at 40% 80%, rgba(25,20,15,0.12) 0%, transparent 40%),
         #2a2520;
-    /* Dark mode brown worn edges + shadow - MORE VISIBLE */
+    /* SUPER VISIBLE dark mode orange-brown edges */
     box-shadow: 
-        /* Darker brown worn edges (inset) - MORE VISIBLE */
-        inset 0 0 0 2px rgba(80, 65, 50, 0.7),
-        inset 0 0 12px 4px rgba(80, 65, 50, 0.45),
-        inset 0 0 20px 8px rgba(70, 55, 40, 0.3),
+        /* THICK darker orange-brown burnt border - VERY VISIBLE */
+        inset 0 0 0 4px rgba(150, 90, 50, 0.95),
+        inset 0 0 20px 8px rgba(130, 75, 40, 0.7),
+        inset 0 0 30px 12px rgba(110, 60, 30, 0.5),
         /* Shadow underneath */
         0 4px 6px rgba(0, 0, 0, 0.2),
         0 8px 12px rgba(0, 0, 0, 0.22),
@@ -729,10 +734,10 @@
 .dark .paper-sheet:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 
-        /* Darker brown worn edges (inset) - SAME VISIBLE */
-        inset 0 0 0 2px rgba(80, 65, 50, 0.7),
-        inset 0 0 12px 4px rgba(80, 65, 50, 0.45),
-        inset 0 0 20px 8px rgba(70, 55, 40, 0.3),
+        /* THICK darker orange-brown burnt border - VERY VISIBLE */
+        inset 0 0 0 4px rgba(150, 90, 50, 0.95),
+        inset 0 0 20px 8px rgba(130, 75, 40, 0.7),
+        inset 0 0 30px 12px rgba(110, 60, 30, 0.5),
         /* Stronger shadow on hover */
         0 12px 20px rgba(0, 0, 0, 0.3),
         0 20px 36px rgba(0, 0, 0, 0.35),
@@ -740,18 +745,57 @@
         0 36px 70px rgba(0, 0, 0, 0.45);
 }
 
-/* Author name */
-.paper-author {
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-    font-size: 0.75rem;
-    color: #8b7355;
-    font-style: italic;
+/* Author info with avatar */
+.paper-author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    position: relative;
     z-index: 10;
 }
 
-.dark .paper-author {
+.paper-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(139, 115, 85, 0.3);
+    flex-shrink: 0;
+}
+
+.paper-avatar-placeholder {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b4785a, #8b7355);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 2px solid rgba(139, 115, 85, 0.3);
+    flex-shrink: 0;
+}
+
+.paper-author-name {
+    color: #8b7355;
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.dark .paper-avatar {
+    border-color: rgba(180, 120, 70, 0.4);
+}
+
+.dark .paper-avatar-placeholder {
+    background: linear-gradient(135deg, #8b6f54, #6b5344);
+    border-color: rgba(180, 120, 70, 0.4);
+}
+
+.dark .paper-author-name {
     color: #a89580;
 }
 
@@ -819,4 +863,24 @@
 
 .dark .paper-readmore {
     color: #9d8f7f;
+}
+
+/* Social actions below paper */
+.paper-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    margin-top: 0.5rem;
+    background: rgba(250, 246, 237, 0.8);
+    backdrop-filter: blur(4px);
+    border-radius: 0.5rem;
+    border: 1px solid rgba(139, 115, 85, 0.2);
+    position: relative;
+    z-index: 10;
+}
+
+.dark .paper-actions {
+    background: rgba(42, 37, 32, 0.8);
+    border-color: rgba(180, 120, 70, 0.3);
 }
