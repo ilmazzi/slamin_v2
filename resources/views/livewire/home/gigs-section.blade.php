@@ -1,70 +1,20 @@
 <div>
     @if ($topGigs && $topGigs->count() > 0)
-    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8"
-         x-data="{
-             currentPage: 0,
-             itemsPerPage: window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1),
-             totalItems: {{ $topGigs->count() }},
-             get totalPages() {
-                 return Math.ceil(this.totalItems / this.itemsPerPage);
-             },
-             next() {
-                 if (this.currentPage < this.totalPages - 1) {
-                     this.currentPage++;
-                 }
-             },
-             prev() {
-                 if (this.currentPage > 0) {
-                     this.currentPage--;
-                 }
-             }
-         }"
-         x-init="
-             window.addEventListener('resize', () => {
-                 itemsPerPage = window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1);
-                 if (currentPage >= totalPages) currentPage = totalPages - 1;
-             });
-         ">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         
-        <!-- Header con Navigation -->
-        <div class="flex items-center justify-between mb-10 section-title-fade">
-            <div class="flex-1">
-                <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                    {!! __('home.gigs_section_title') !!}
-                </h2>
-                <p class="text-lg text-neutral-100">
-                    {{ __('home.gigs_section_subtitle') }}
-                </p>
-            </div>
-
-            <!-- Slider Controls (Desktop) -->
-            <div class="hidden md:flex items-center gap-3">
-                <button @click="prev()" 
-                        :disabled="currentPage === 0"
-                        :class="currentPage === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/20'"
-                        class="w-12 h-12 rounded-full border-2 border-white/60 flex items-center justify-center text-white transition-all backdrop-blur-sm bg-black/20">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <span class="text-sm text-white font-medium min-w-[60px] text-center backdrop-blur-sm bg-black/20 px-3 py-1 rounded-full">
-                    <span x-text="currentPage + 1"></span> / <span x-text="totalPages"></span>
-                </span>
-                <button @click="next()" 
-                        :disabled="currentPage >= totalPages - 1"
-                        :class="currentPage >= totalPages - 1 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/20'"
-                        class="w-12 h-12 rounded-full border-2 border-white/60 flex items-center justify-center text-white transition-all backdrop-blur-sm bg-black/20">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </button>
-            </div>
+        <!-- Header -->
+        <div class="text-center mb-12 section-title-fade">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                {!! __('home.gigs_section_title') !!}
+            </h2>
+            <p class="text-lg text-neutral-100">
+                {{ __('home.gigs_section_subtitle') }}
+            </p>
         </div>
 
-        <!-- Gigs Slider Container -->
-        <div class="relative overflow-x-hidden overflow-y-visible -mx-3 px-3 pt-12 pb-12">
-            <div class="flex transition-transform duration-500 ease-out"
-                 :style="`transform: translateX(-${currentPage * 100}%)`">
+        <!-- Gigs - Horizontal Scroll (like Dashboard) -->
+        <div class="flex gap-6 overflow-x-auto pb-12 pt-12 scrollbar-hide"
+             style="-webkit-overflow-scrolling: touch;">
                 @foreach($topGigs as $i => $gig)
                 <?php
                     // Random tape properties per card
@@ -74,7 +24,7 @@
                     $tapeBottomRotation = rand(-4, 4);
                     $tapeBottomOffsetX = rand(-10, 10);
                 ?>
-                <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-3 fade-scale-item"
+                <div class="w-80 md:w-96 flex-shrink-0 fade-scale-item"
                      x-data
                      x-intersect.once="$el.classList.add('animate-fade-in')"
                      style="animation-delay: {{ $i * 0.1 }}s">
@@ -162,20 +112,10 @@
                     </a>
                 </div>
                 @endforeach
-            </div>
-        </div>
-
-        <!-- Dots Indicator (Mobile) -->
-        <div class="flex md:hidden justify-center gap-2 mt-8">
-            <template x-for="i in totalPages" :key="i">
-                <button @click="currentPage = i - 1"
-                        :class="currentPage === i - 1 ? 'bg-white w-8' : 'bg-white/40 w-3'"
-                        class="h-3 rounded-full transition-all duration-300"></button>
-            </template>
         </div>
 
         <!-- See All Button -->
-        <div class="text-center mt-12">
+        <div class="text-center mt-8">
             <a href="{{ route('gigs.index') }}" 
                class="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold uppercase tracking-wider transition-all hover:shadow-2xl hover:shadow-primary-500/50 hover:scale-105 rounded-lg shadow-lg">
                 <span>{{ __('home.see_all_gigs') }}</span>
