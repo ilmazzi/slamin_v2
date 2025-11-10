@@ -124,12 +124,12 @@
                 0% 40%, 0.5% 35%, 0% 30%, 0.5% 25%, 0% 20%, 0.5% 15%,
                 0% 10%, 0.5% 5%
             );
-            /* Worn brown edges + shadow underneath */
+            /* Worn VISIBLE brown edges + shadow underneath */
             box-shadow: 
-                /* Brown worn edges (inset) */
-                inset 0 0 0 1px rgba(139, 115, 85, 0.3),
-                inset 0 0 8px 2px rgba(139, 115, 85, 0.15),
-                inset 0 0 15px 4px rgba(120, 100, 75, 0.08),
+                /* Brown worn edges (inset) - MUCH MORE VISIBLE */
+                inset 0 0 0 2px rgba(139, 115, 85, 0.6),
+                inset 0 0 12px 4px rgba(139, 115, 85, 0.35),
+                inset 0 0 20px 8px rgba(120, 100, 75, 0.2),
                 /* Shadow underneath - realistic paper on desk */
                 0 4px 6px rgba(0, 0, 0, 0.1),
                 0 8px 12px rgba(0, 0, 0, 0.12),
@@ -183,10 +183,10 @@
             transform: translateY(-8px) scale(1.02);
             /* Brown worn edges + stronger shadow on hover */
             box-shadow: 
-                /* Brown worn edges (inset) - same as normal */
-                inset 0 0 0 1px rgba(139, 115, 85, 0.3),
-                inset 0 0 8px 2px rgba(139, 115, 85, 0.15),
-                inset 0 0 15px 4px rgba(120, 100, 75, 0.08),
+                /* Brown worn edges (inset) - SAME VISIBLE */
+                inset 0 0 0 2px rgba(139, 115, 85, 0.6),
+                inset 0 0 12px 4px rgba(139, 115, 85, 0.35),
+                inset 0 0 20px 8px rgba(120, 100, 75, 0.2),
                 /* Stronger shadow - paper lifting */
                 0 12px 20px rgba(0, 0, 0, 0.18),
                 0 20px 36px rgba(0, 0, 0, 0.22),
@@ -206,12 +206,12 @@
                 radial-gradient(circle at 80% 70%, rgba(30,25,20,0.15) 0%, transparent 50%),
                 radial-gradient(circle at 40% 80%, rgba(25,20,15,0.12) 0%, transparent 40%),
                 #2a2520;
-            /* Dark mode brown worn edges + shadow */
+            /* Dark mode brown worn edges + shadow - MORE VISIBLE */
             box-shadow: 
-                /* Darker brown worn edges (inset) */
-                inset 0 0 0 1px rgba(80, 65, 50, 0.4),
-                inset 0 0 8px 2px rgba(80, 65, 50, 0.25),
-                inset 0 0 15px 4px rgba(70, 55, 40, 0.15),
+                /* Darker brown worn edges (inset) - MORE VISIBLE */
+                inset 0 0 0 2px rgba(80, 65, 50, 0.7),
+                inset 0 0 12px 4px rgba(80, 65, 50, 0.45),
+                inset 0 0 20px 8px rgba(70, 55, 40, 0.3),
                 /* Shadow underneath */
                 0 4px 6px rgba(0, 0, 0, 0.2),
                 0 8px 12px rgba(0, 0, 0, 0.22),
@@ -222,10 +222,10 @@
         :is(.dark .paper-sheet:hover) {
             transform: translateY(-8px) scale(1.02);
             box-shadow: 
-                /* Darker brown worn edges (inset) - same as normal */
-                inset 0 0 0 1px rgba(80, 65, 50, 0.4),
-                inset 0 0 8px 2px rgba(80, 65, 50, 0.25),
-                inset 0 0 15px 4px rgba(70, 55, 40, 0.15),
+                /* Darker brown worn edges (inset) - SAME VISIBLE */
+                inset 0 0 0 2px rgba(80, 65, 50, 0.7),
+                inset 0 0 12px 4px rgba(80, 65, 50, 0.45),
+                inset 0 0 20px 8px rgba(70, 55, 40, 0.3),
                 /* Stronger shadow on hover */
                 0 12px 20px rgba(0, 0, 0, 0.3),
                 0 20px 36px rgba(0, 0, 0, 0.35),
