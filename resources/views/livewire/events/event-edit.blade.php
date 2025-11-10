@@ -609,7 +609,7 @@
 
                                     <div class="relative group">
                                         <input type="text"
-                                               wire:model="venue_address"
+                                               wire:model.live.debounce.1500ms="venue_address"
                                                id="venue_address"
                                                placeholder=" "
                                                class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
@@ -627,7 +627,7 @@
                                     <div class="grid md:grid-cols-3 gap-4">
                                         <div class="relative group">
                                             <input type="text"
-                                                   wire:model="city"
+                                                   wire:model.live.debounce.1500ms="city"
                                                    id="city"
                                                    placeholder=" "
                                                    class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
@@ -1990,7 +1990,9 @@ function initCreationMap() {
             zIndexOffset: 1000
         }).addTo(creationMap);
 
-        console.log('✅ Marker added at:', lat, lng);
+        console.log('✅ Marker created:', creationMarker);
+        console.log('✅ Marker added to map at:', lat, lng);
+        console.log('✅ Marker element:', creationMarker.getElement());
 
         // Center map on marker
         creationMap.setView([lat, lng], creationMap.getZoom());
@@ -2140,8 +2142,16 @@ let geocodeTimeout = null;
 
 // Listen for Livewire updates (when is_online changes)
 document.addEventListener('livewire:init', () => {
-    // Watch for address changes
-    Livewire.on('livewire:update', () => {
+    // Listen for geocoding trigger from PHP
+    Livewire.on('trigger-geocoding', () => {
+        console.log('🔔 Geocoding triggered from PHP');
+        if (creationMap && !@this.get('is_online')) {
+            geocodeAddress();
+        }
+    });
+    
+    Livewire.on('address-changed', () => {
+        console.log('🔔 Address changed - will geocode');
         // Clear existing timeout
         if (geocodeTimeout) {
             clearTimeout(geocodeTimeout);
@@ -2152,7 +2162,7 @@ document.addEventListener('livewire:init', () => {
             const address = @this.get('venue_address') || '';
             const city = @this.get('city') || '';
             
-            if ((address.length > 3 || city.length > 2) && creationMap) {
+            if ((address.length > 3 || city.length > 2) && creationMap && !@this.get('is_online')) {
                 console.log('🔄 Auto-geocoding address...');
                 geocodeAddress();
             }

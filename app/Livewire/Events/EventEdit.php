@@ -460,6 +460,21 @@ class EventEdit extends Component
         if ($propertyName === 'is_online') {
             $this->dispatch('location-mode-changed', isOnline: $this->is_online);
         }
+        
+        // Trigger geocoding when address fields change
+        if (in_array($propertyName, ['venue_address', 'city', 'country'])) {
+            $this->dispatch('address-changed');
+        }
+    }
+    
+    public function updatedVenueAddress()
+    {
+        $this->dispatch('trigger-geocoding');
+    }
+    
+    public function updatedCity()
+    {
+        $this->dispatch('trigger-geocoding');
     }
 
     #[On('map-clicked')]
