@@ -1,105 +1,72 @@
 <div>
     @if($poems && $poems->count() > 0)
-    {{-- Wooden Desk Background Section --}}
-    <div class="wooden-desk-section -mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8 py-12">
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 pt-8 pb-4">
-        @foreach($poems->take(3) as $i => $poem)
-        <?php
-            // Random clip properties per card
-            $clipRotation = rand(-8, 8);
-            $clipOffsetX = rand(-15, 15);
-            $clipType = rand(0, 1) ? 'silver' : 'gold'; // Alternate silver/gold clips
-        ?>
-        <div class="h-full poetry-card-container" 
-             x-data 
-             x-intersect.once="$el.classList.add('animate-fade-in')" 
-             style="animation-delay: {{ $i * 0.1 }}s">
-            
-            {{-- Paper Clip at top --}}
-            <div class="paper-clip paper-clip-{{ $clipType }}" 
-                 style="transform: translate(calc(-50% + {{ $clipOffsetX }}px), 0) rotate({{ $clipRotation }}deg);"></div>
-            
-            {{-- Poem Card with archive paper effect --}}
-            <div class="archive-paper">
-                <livewire:poems.poem-card 
-                    :poem="$poem" 
-                    :show-actions="true"
-                    :key="'home-poem-'.$poem->id" 
-                    wire:key="home-poem-{{ $poem->id }}" />
-            </div>
+    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        
+        {{-- Header --}}
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+                {!! __('home.poetry_section_title') !!}
+            </h2>
+            <p class="text-lg text-neutral-700 dark:text-neutral-300">
+                {{ __('home.poetry_section_subtitle') }}
+            </p>
         </div>
-        @endforeach
-    </div>
-    
-    <div class="text-center mt-10">
-        <x-ui.buttons.primary :href="route('poems.index')" variant="outline" size="md" icon="M9 5l7 7-7 7">
-            {{ __('home.all_poems_button') }}
-        </x-ui.buttons.primary>
-    </div>
+
+        {{-- Poetry Cards Grid --}}
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 pt-8 pb-4">
+            @foreach($poems->take(3) as $i => $poem)
+            <?php
+                // Random clip properties per card
+                $clipRotation = rand(-12, 12);
+                $clipOffsetX = rand(-20, 20);
+                $clipType = rand(0, 1) ? 'silver' : 'gold'; // Alternate silver/gold clips
+            ?>
+            <div class="poetry-card-container" 
+                 x-data 
+                 x-intersect.once="$el.classList.add('animate-fade-in')" 
+                 style="animation-delay: {{ $i * 0.1 }}s">
+                
+                {{-- REALISTIC Paper Clip at top --}}
+                <div class="paper-clip paper-clip-{{ $clipType }}" 
+                     style="transform: translate(-50%, 0) rotate({{ $clipRotation }}deg) translateX({{ $clipOffsetX }}px);"></div>
+                
+                {{-- Poem Card with archive paper effect --}}
+                <div class="archive-paper">
+                    <livewire:poems.poem-card 
+                        :poem="$poem" 
+                        :show-actions="true"
+                        :key="'home-poem-'.$poem->id" 
+                        wire:key="home-poem-{{ $poem->id }}" />
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        {{-- CTA Button --}}
+        <div class="text-center mt-12">
+            <x-ui.buttons.primary :href="route('poems.index')" variant="outline" size="md" icon="M9 5l7 7-7 7">
+                {{ __('home.all_poems_button') }}
+            </x-ui.buttons.primary>
+        </div>
     </div>
     
     <style>
-        @keyframes fade-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .animate-fade-in { animation: fade-in 0.5s ease-out forwards; opacity: 0; }
-        
-        /* ============================================
-           WOODEN DESK BACKGROUND
-           ============================================ */
-        
-        .wooden-desk-section {
-            position: relative;
-            background: 
-                /* Wood grain texture (SVG pattern) */
-                url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02 0.8' numOctaves='5' seed='2' /%3E%3CfeColorMatrix type='saturate' values='0.3'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23wood)' opacity='0.15'/%3E%3C/svg%3E"),
-                /* Fine wood texture overlay */
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(120, 90, 60, 0.03) 0px,
-                    transparent 1px,
-                    transparent 2px,
-                    rgba(120, 90, 60, 0.03) 3px
-                ),
-                /* Wood color gradient */
-                linear-gradient(160deg,
-                    #c9a87c 0%,
-                    #b89968 20%,
-                    #a88a5c 40%,
-                    #b89968 60%,
-                    #c9a87c 80%,
-                    #d4b58a 100%
-                );
-            box-shadow: 
-                inset 0 4px 12px rgba(0, 0, 0, 0.1),
-                inset 0 -4px 12px rgba(0, 0, 0, 0.08);
+        @keyframes fade-in { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
-        
-        :is(.dark .wooden-desk-section) {
-            background: 
-                url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02 0.8' numOctaves='5' seed='2' /%3E%3CfeColorMatrix type='saturate' values='0.3'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23wood)' opacity='0.2'/%3E%3C/svg%3E"),
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(80, 60, 40, 0.05) 0px,
-                    transparent 1px,
-                    transparent 2px,
-                    rgba(80, 60, 40, 0.05) 3px
-                ),
-                linear-gradient(160deg,
-                    #6b5542 0%,
-                    #5a4636 20%,
-                    #4a3a2e 40%,
-                    #5a4636 60%,
-                    #6b5542 80%,
-                    #7a6450 100%
-                );
+        .animate-fade-in { 
+            animation: fade-in 0.6s ease-out forwards; 
+            opacity: 0; 
         }
         
         /* ============================================
-           ARCHIVE PERSONAL EFFECT - PAPER CLIPS
+           POETRY CARDS WITH METAL CLIPS
            ============================================ */
         
         .poetry-card-container {
             position: relative;
-            padding-top: 32px;
+            padding-top: 40px;
         }
         
         .archive-paper {
@@ -109,94 +76,107 @@
         }
         
         .poetry-card-container:hover .archive-paper {
-            transform: translateY(-8px);
-            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.25));
+            transform: translateY(-12px) scale(1.02);
+            filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.3));
         }
         
-        /* Paper Clip Effect - LARGE & VISIBLE */
+        /* REALISTIC Paper Clip Effect */
         .paper-clip {
             position: absolute;
             top: -8px;
             left: 50%;
-            width: 70px;
-            height: 90px;
+            width: 80px;
+            height: 100px;
             z-index: 10;
             pointer-events: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 40% 40% 50% 50% / 30% 30% 70% 70%;
         }
         
         .poetry-card-container:hover .paper-clip {
-            transform: translate(-50%, 0) rotate(0deg) !important;
+            transform: translate(-50%, -2px) rotate(0deg) translateX(0px) !important;
         }
         
-        /* Silver Clip - LARGE & BRIGHT */
+        /* SILVER CLIP - Realistic metal */
         .paper-clip-silver {
             background: 
-                /* Inner wire loop (darker) */
-                radial-gradient(ellipse 12px 26px at 50% 28%, transparent 70%, rgba(110, 120, 135, 1) 71%, rgba(110, 120, 135, 1) 100%),
-                radial-gradient(ellipse 12px 26px at 50% 72%, transparent 70%, rgba(110, 120, 135, 1) 71%, rgba(110, 120, 135, 1) 100%),
-                /* Outer wire body */
-                radial-gradient(ellipse 20px 32px at 50% 28%, transparent 65%, rgba(170, 180, 195, 0.98) 66%, rgba(210, 220, 235, 1) 80%, rgba(170, 180, 195, 0.98) 100%),
-                radial-gradient(ellipse 20px 32px at 50% 72%, transparent 65%, rgba(170, 180, 195, 0.98) 66%, rgba(210, 220, 235, 1) 80%, rgba(170, 180, 195, 0.98) 100%),
-                /* Center bar */
+                /* Top loop shadow */
+                radial-gradient(ellipse 14px 30px at 50% 25%, transparent 65%, rgba(80, 90, 105, 1) 66%, rgba(80, 90, 105, 1) 100%),
+                /* Bottom loop shadow */
+                radial-gradient(ellipse 14px 30px at 50% 75%, transparent 65%, rgba(80, 90, 105, 1) 66%, rgba(80, 90, 105, 1) 100%),
+                /* Top loop metal */
+                radial-gradient(ellipse 24px 38px at 50% 25%, transparent 60%, rgba(150, 160, 175, 1) 61%, rgba(210, 220, 235, 1) 75%, rgba(180, 190, 205, 1) 90%, rgba(150, 160, 175, 1) 100%),
+                /* Bottom loop metal */
+                radial-gradient(ellipse 24px 38px at 50% 75%, transparent 60%, rgba(150, 160, 175, 1) 61%, rgba(210, 220, 235, 1) 75%, rgba(180, 190, 205, 1) 90%, rgba(150, 160, 175, 1) 100%),
+                /* Center bar with gradient */
                 linear-gradient(180deg,
-                    rgba(190, 200, 215, 1) 0%,
-                    rgba(220, 230, 245, 1) 20%,
-                    rgba(160, 170, 185, 0.98) 50%,
-                    rgba(220, 230, 245, 1) 80%,
-                    rgba(190, 200, 215, 1) 100%
+                    rgba(170, 180, 195, 1) 0%,
+                    rgba(220, 230, 245, 1) 15%,
+                    rgba(190, 200, 215, 1) 30%,
+                    rgba(160, 170, 185, 1) 50%,
+                    rgba(190, 200, 215, 1) 70%,
+                    rgba(220, 230, 245, 1) 85%,
+                    rgba(170, 180, 195, 1) 100%
                 );
-            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
         
-        /* Gold/Brass Clip - LARGE & BRIGHT */
+        /* GOLD CLIP - Realistic brass/gold */
         .paper-clip-gold {
             background: 
-                /* Inner wire loop */
-                radial-gradient(ellipse 12px 26px at 50% 28%, transparent 70%, rgba(145, 115, 55, 1) 71%, rgba(145, 115, 55, 1) 100%),
-                radial-gradient(ellipse 12px 26px at 50% 72%, transparent 70%, rgba(145, 115, 55, 1) 71%, rgba(145, 115, 55, 1) 100%),
-                /* Outer wire body */
-                radial-gradient(ellipse 20px 32px at 50% 28%, transparent 65%, rgba(200, 165, 80, 0.98) 66%, rgba(235, 200, 115, 1) 80%, rgba(200, 165, 80, 0.98) 100%),
-                radial-gradient(ellipse 20px 32px at 50% 72%, transparent 65%, rgba(200, 165, 80, 0.98) 66%, rgba(235, 200, 115, 1) 80%, rgba(200, 165, 80, 0.98) 100%),
-                /* Center bar */
+                /* Top loop shadow */
+                radial-gradient(ellipse 14px 30px at 50% 25%, transparent 65%, rgba(110, 85, 45, 1) 66%, rgba(110, 85, 45, 1) 100%),
+                /* Bottom loop shadow */
+                radial-gradient(ellipse 14px 30px at 50% 75%, transparent 65%, rgba(110, 85, 45, 1) 66%, rgba(110, 85, 45, 1) 100%),
+                /* Top loop metal */
+                radial-gradient(ellipse 24px 38px at 50% 25%, transparent 60%, rgba(180, 145, 75, 1) 61%, rgba(240, 210, 130, 1) 75%, rgba(210, 175, 95, 1) 90%, rgba(180, 145, 75, 1) 100%),
+                /* Bottom loop metal */
+                radial-gradient(ellipse 24px 38px at 50% 75%, transparent 60%, rgba(180, 145, 75, 1) 61%, rgba(240, 210, 130, 1) 75%, rgba(210, 175, 95, 1) 90%, rgba(180, 145, 75, 1) 100%),
+                /* Center bar with gradient */
                 linear-gradient(180deg,
-                    rgba(215, 175, 90, 1) 0%,
-                    rgba(240, 205, 125, 1) 20%,
-                    rgba(185, 150, 70, 0.98) 50%,
-                    rgba(240, 205, 125, 1) 80%,
-                    rgba(215, 175, 90, 1) 100%
+                    rgba(200, 165, 85, 1) 0%,
+                    rgba(245, 215, 135, 1) 15%,
+                    rgba(215, 180, 100, 1) 30%,
+                    rgba(185, 150, 75, 1) 50%,
+                    rgba(215, 180, 100, 1) 70%,
+                    rgba(245, 215, 135, 1) 85%,
+                    rgba(200, 165, 85, 1) 100%
                 );
-            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
         
         /* Dark mode adjustments */
         :is(.dark .paper-clip-silver) {
             background: 
-                radial-gradient(ellipse 12px 26px at 50% 28%, transparent 70%, rgba(100, 110, 125, 0.95) 71%, rgba(100, 110, 125, 0.95) 100%),
-                radial-gradient(ellipse 12px 26px at 50% 72%, transparent 70%, rgba(100, 110, 125, 0.95) 71%, rgba(100, 110, 125, 0.95) 100%),
-                radial-gradient(ellipse 20px 32px at 50% 28%, transparent 65%, rgba(150, 160, 175, 0.92) 66%, rgba(180, 190, 205, 0.95) 80%, rgba(150, 160, 175, 0.92) 100%),
-                radial-gradient(ellipse 20px 32px at 50% 72%, transparent 65%, rgba(150, 160, 175, 0.92) 66%, rgba(180, 190, 205, 0.95) 80%, rgba(150, 160, 175, 0.92) 100%),
+                radial-gradient(ellipse 14px 30px at 50% 25%, transparent 65%, rgba(70, 80, 95, 0.98) 66%, rgba(70, 80, 95, 0.98) 100%),
+                radial-gradient(ellipse 14px 30px at 50% 75%, transparent 65%, rgba(70, 80, 95, 0.98) 66%, rgba(70, 80, 95, 0.98) 100%),
+                radial-gradient(ellipse 24px 38px at 50% 25%, transparent 60%, rgba(130, 140, 155, 0.95) 61%, rgba(190, 200, 215, 0.98) 75%, rgba(160, 170, 185, 0.96) 90%, rgba(130, 140, 155, 0.95) 100%),
+                radial-gradient(ellipse 24px 38px at 50% 75%, transparent 60%, rgba(130, 140, 155, 0.95) 61%, rgba(190, 200, 215, 0.98) 75%, rgba(160, 170, 185, 0.96) 90%, rgba(130, 140, 155, 0.95) 100%),
                 linear-gradient(180deg,
-                    rgba(170, 180, 195, 0.95) 0%,
-                    rgba(200, 210, 225, 0.95) 20%,
-                    rgba(150, 160, 175, 0.92) 50%,
-                    rgba(200, 210, 225, 0.95) 80%,
-                    rgba(170, 180, 195, 0.95) 100%
+                    rgba(150, 160, 175, 0.96) 0%,
+                    rgba(200, 210, 225, 0.98) 15%,
+                    rgba(170, 180, 195, 0.96) 30%,
+                    rgba(140, 150, 165, 0.95) 50%,
+                    rgba(170, 180, 195, 0.96) 70%,
+                    rgba(200, 210, 225, 0.98) 85%,
+                    rgba(150, 160, 175, 0.96) 100%
                 );
         }
         
         :is(.dark .paper-clip-gold) {
             background: 
-                radial-gradient(ellipse 12px 26px at 50% 28%, transparent 70%, rgba(125, 95, 50, 0.95) 71%, rgba(125, 95, 50, 0.95) 100%),
-                radial-gradient(ellipse 12px 26px at 50% 72%, transparent 70%, rgba(125, 95, 50, 0.95) 71%, rgba(125, 95, 50, 0.95) 100%),
-                radial-gradient(ellipse 20px 32px at 50% 28%, transparent 65%, rgba(170, 140, 70, 0.92) 66%, rgba(200, 170, 95, 0.95) 80%, rgba(170, 140, 70, 0.92) 100%),
-                radial-gradient(ellipse 20px 32px at 50% 72%, transparent 65%, rgba(170, 140, 70, 0.92) 66%, rgba(200, 170, 95, 0.95) 80%, rgba(170, 140, 70, 0.92) 100%),
+                radial-gradient(ellipse 14px 30px at 50% 25%, transparent 65%, rgba(95, 75, 40, 0.98) 66%, rgba(95, 75, 40, 0.98) 100%),
+                radial-gradient(ellipse 14px 30px at 50% 75%, transparent 65%, rgba(95, 75, 40, 0.98) 66%, rgba(95, 75, 40, 0.98) 100%),
+                radial-gradient(ellipse 24px 38px at 50% 25%, transparent 60%, rgba(160, 130, 65, 0.95) 61%, rgba(220, 190, 115, 0.98) 75%, rgba(190, 155, 85, 0.96) 90%, rgba(160, 130, 65, 0.95) 100%),
+                radial-gradient(ellipse 24px 38px at 50% 75%, transparent 60%, rgba(160, 130, 65, 0.95) 61%, rgba(220, 190, 115, 0.98) 75%, rgba(190, 155, 85, 0.96) 90%, rgba(160, 130, 65, 0.95) 100%),
                 linear-gradient(180deg,
-                    rgba(180, 150, 80, 0.95) 0%,
-                    rgba(210, 180, 105, 0.95) 20%,
-                    rgba(160, 130, 65, 0.92) 50%,
-                    rgba(210, 180, 105, 0.95) 80%,
-                    rgba(180, 150, 80, 0.95) 100%
+                    rgba(180, 150, 75, 0.96) 0%,
+                    rgba(225, 195, 120, 0.98) 15%,
+                    rgba(195, 165, 90, 0.96) 30%,
+                    rgba(165, 135, 65, 0.95) 50%,
+                    rgba(195, 165, 90, 0.96) 70%,
+                    rgba(225, 195, 120, 0.98) 85%,
+                    rgba(180, 150, 75, 0.96) 100%
                 );
         }
     </style>
