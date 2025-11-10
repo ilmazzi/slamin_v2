@@ -117,7 +117,7 @@
                 @auth
                 <!-- Gigs -->
                 <li class="relative" x-data="{ tooltip: false }">
-                    <a href="#" 
+                    <a href="{{ route('gigs.index') }}" 
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="gigsLink"
@@ -393,7 +393,7 @@
                 @auth
                 <!-- Gigs -->
                 <li>
-                    <a href="#" 
+                    <a href="{{ route('gigs.index') }}" 
                        @click="mobileOpen = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
