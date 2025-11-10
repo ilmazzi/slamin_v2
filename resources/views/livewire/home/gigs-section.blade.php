@@ -211,56 +211,80 @@
                 linear-gradient(160deg, #3f3f3a 0%, #38382f 30%, #323229 70%, #3f3f3a 100%);
         }
         
-        /* Washi tape (scotch colorato) */
+        /* Scotch tape - SUPER VISIBLE AND REALISTIC */
         .washi-tape {
             position: absolute;
             left: 50%;
-            width: 100px;
-            height: 28px;
+            width: 140px;
+            height: 40px;
             background: 
-                /* Tape texture */
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(255, 255, 255, 0.1) 0px,
-                    transparent 1px,
-                    transparent 2px
+                /* Strong glossy shine (makes tape visible) */
+                linear-gradient(
+                    95deg,
+                    rgba(255, 255, 255, 0.9) 0%,
+                    rgba(255, 255, 255, 0.6) 15%,
+                    rgba(255, 255, 255, 0.2) 30%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    rgba(255, 255, 255, 0.2) 70%,
+                    rgba(255, 255, 255, 0.6) 85%,
+                    rgba(255, 255, 255, 0.9) 100%
                 ),
-                /* Tape color - varied */
+                /* Semi-transparent yellowish scotch */
                 linear-gradient(180deg, 
-                    rgba(255, 245, 200, 0.9) 0%, 
-                    rgba(250, 240, 195, 0.85) 50%, 
-                    rgba(255, 245, 200, 0.9) 100%
+                    rgba(255, 255, 240, 0.95) 0%, 
+                    rgba(255, 252, 230, 0.85) 30%,
+                    rgba(254, 250, 220, 0.8) 50%,
+                    rgba(255, 252, 230, 0.85) 70%,
+                    rgba(255, 255, 240, 0.95) 100%
                 );
             box-shadow: 
-                0 2px 6px rgba(0, 0, 0, 0.25),
-                inset 0 1px 3px rgba(255, 255, 255, 0.6),
-                inset 0 -1px 2px rgba(0, 0, 0, 0.15);
+                /* Strong drop shadow */
+                0 4px 10px rgba(0, 0, 0, 0.4),
+                0 2px 5px rgba(0, 0, 0, 0.3),
+                /* Glossy top highlight (very visible) */
+                inset 0 3px 6px rgba(255, 255, 255, 0.95),
+                /* Dark bottom edge */
+                inset 0 -2px 4px rgba(0, 0, 0, 0.25);
             z-index: 5;
-            border-left: 1px solid rgba(255, 255, 255, 0.4);
-            border-right: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-top: 2px solid rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(200, 180, 140, 0.5);
+            backdrop-filter: blur(1px);
         }
         
         :is(.dark .washi-tape) {
             background: 
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(255, 255, 255, 0.05) 0px,
-                    transparent 1px,
-                    transparent 2px
+                linear-gradient(
+                    95deg,
+                    rgba(255, 255, 255, 0.4) 0%,
+                    rgba(255, 255, 255, 0.25) 15%,
+                    rgba(255, 255, 255, 0.1) 30%,
+                    rgba(255, 255, 255, 0.05) 50%,
+                    rgba(255, 255, 255, 0.1) 70%,
+                    rgba(255, 255, 255, 0.25) 85%,
+                    rgba(255, 255, 255, 0.4) 100%
                 ),
                 linear-gradient(180deg, 
-                    rgba(100, 90, 70, 0.9) 0%, 
-                    rgba(90, 80, 60, 0.85) 50%, 
-                    rgba(100, 90, 70, 0.9) 100%
+                    rgba(220, 210, 180, 0.75) 0%, 
+                    rgba(210, 200, 170, 0.65) 30%,
+                    rgba(200, 190, 160, 0.6) 50%,
+                    rgba(210, 200, 170, 0.65) 70%,
+                    rgba(220, 210, 180, 0.75) 100%
                 );
+            box-shadow: 
+                0 4px 10px rgba(0, 0, 0, 0.7),
+                0 2px 5px rgba(0, 0, 0, 0.6),
+                inset 0 3px 6px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.5);
+            border-top: 2px solid rgba(255, 255, 255, 0.5);
         }
         
         .washi-top {
-            top: -14px;
+            top: -20px;
         }
         
         .washi-bottom {
-            bottom: -14px;
+            bottom: -20px;
         }
         
         /* Typography */
