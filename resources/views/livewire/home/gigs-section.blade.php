@@ -209,7 +209,7 @@
                 url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' /%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23paper)' opacity='0.08'/%3E%3C/svg%3E"),
                 /* White/cream paper */
                 linear-gradient(160deg, #fffef9 0%, #fffcf5 30%, #fefbef 70%, #fffef9 100%);
-            padding: 2.5rem 1.5rem 2rem 1.5rem;
+            padding: 2.25rem 1.5rem 2.25rem 1.5rem;
             box-shadow: 
                 0 6px 18px rgba(0, 0, 0, 0.2),
                 0 3px 8px rgba(0, 0, 0, 0.15);
@@ -237,11 +237,11 @@
                     transparent 70%,
                     rgba(255, 255, 255, 0.25) 100%
                 ),
-                /* YELLOW scotch - darker to lighter gradient */
+                /* SOFT YELLOW scotch - darker to lighter gradient */
                 linear-gradient(180deg, 
-                    rgba(255, 220, 60, 0.95) 0%, 
-                    rgba(255, 235, 90, 0.92) 50%, 
-                    rgba(255, 245, 120, 0.95) 100%
+                    rgba(240, 210, 100, 0.92) 0%, 
+                    rgba(245, 220, 120, 0.90) 50%, 
+                    rgba(250, 230, 140, 0.92) 100%
                 );
             box-shadow: 
                 /* Strong shadow for depth */
@@ -313,9 +313,9 @@
                     rgba(255, 255, 255, 0.15) 100%
                 ),
                 linear-gradient(180deg, 
-                    rgba(210, 180, 50, 0.9) 0%, 
-                    rgba(220, 190, 70, 0.88) 50%, 
-                    rgba(230, 200, 90, 0.9) 100%
+                    rgba(210, 185, 90, 0.88) 0%, 
+                    rgba(220, 195, 110, 0.86) 50%, 
+                    rgba(230, 205, 130, 0.88) 100%
                 );
             box-shadow: 
                 0 3px 8px rgba(0, 0, 0, 0.6),
@@ -325,11 +325,11 @@
         }
         
         .washi-top {
-            top: 5px;
+            top: -12px;
         }
         
         .washi-bottom {
-            bottom: 5px;
+            bottom: -12px;
         }
         
         /* Typography */
