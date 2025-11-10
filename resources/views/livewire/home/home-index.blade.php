@@ -10,19 +10,14 @@
         <livewire:home.events-slider />
     </div>
 
-    {{-- Top Gigs - CORK BOARD SECTION --}}
-    <div class="py-16 md:py-20 cork-board-section">
-        <livewire:home.gigs-section />
+    {{-- Poesie - WOODEN DESK SECTION --}}
+    <div class="py-16 md:py-20 wooden-desk-section">
+        <livewire:home.poetry-section />
     </div>
 
     {{-- Nuovi Poeti --}}
     <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
         <livewire:home.new-users-section />
-    </div>
-
-    {{-- Poesie - WOODEN DESK SECTION --}}
-    <div class="py-16 md:py-20 wooden-desk-section">
-        <livewire:home.poetry-section />
     </div>
 
     {{-- Articoli - Newspaper Section --}}
@@ -38,6 +33,11 @@
                 <livewire:home.articles-section />
             </div>
         </div>
+    </div>
+
+    {{-- Top Gigs - CORK BOARD SECTION --}}
+    <div class="py-16 md:py-20 cork-board-section">
+        <livewire:home.gigs-section />
     </div>
 
     {{-- Statistiche Prima del Footer --}}
