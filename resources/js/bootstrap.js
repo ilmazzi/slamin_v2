@@ -17,26 +17,34 @@ window.Pusher = Pusher;
 // Debug logging
 window.Pusher.logToConsole = true;
 
-// CRITICAL: Create Pusher instance manually with correct config
+// Detect if site is using HTTPS
+const isHttps = window.location.protocol === 'https:';
+
+// Configure based on page protocol
 const pusherConfig = {
     key: 'local-key',
-    wsHost: 'localhost',
-    wsPort: 8080,
-    wssPort: 8080,
-    enabledTransports: ['ws'],
-    disabledTransports: ['wss'],
-    forceTLS: false,
-    encrypted: false,
+    wsHost: window.location.hostname, // Use same host as site
+    wsPort: isHttps ? 8080 : 8080,
+    wssPort: isHttps ? 8080 : 8080,
+    enabledTransports: isHttps ? ['wss'] : ['ws'], // Match page protocol
+    forceTLS: isHttps, // Use TLS if page is HTTPS
+    encrypted: isHttps,
     disableStats: false,
     cluster: '',
     authEndpoint: '/broadcasting/auth',
 };
 
-console.log('🔧 Pusher config:', pusherConfig);
+console.log('🔧 Pusher config:', {
+    pageProtocol: window.location.protocol,
+    wsProtocol: isHttps ? 'wss://' : 'ws://',
+    host: window.location.hostname,
+    port: 8080,
+    config: pusherConfig
+});
 
 window.Echo = new Echo({
     broadcaster: 'reverb',
     ...pusherConfig,
 });
 
-console.log('✅ Echo initialized for ws://localhost:8080');
+console.log('✅ Echo initialized for', isHttps ? 'wss://' : 'ws://', window.location.hostname + ':8080');
