@@ -2,16 +2,21 @@
     @if($articles && $articles->count() > 0)
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         @foreach($articles->take(3) as $i => $article)
+        <?php
+            // Random corner effects for each card (more natural/varied)
+            $corners = ['tl', 'tr', 'bl', 'br'];
+            $randomCorners = array_rand(array_flip($corners), rand(1, 2)); // 1 or 2 random corners
+            if (!is_array($randomCorners)) $randomCorners = [$randomCorners];
+        ?>
         <article class="group h-full" x-data x-intersect.once="$el.classList.add('animate-fade-in')" style="animation-delay: {{ $i * 0.1 }}s">
             
             {{-- Newspaper Page Container --}}
             <div class="relative h-full newspaper-page">
                 
-                {{-- Crumpled corners (angoli accartocciati) --}}
-                <div class="crumpled-corner crumpled-corner-tl"></div>
-                <div class="crumpled-corner crumpled-corner-tr"></div>
-                <div class="crumpled-corner crumpled-corner-bl"></div>
-                <div class="crumpled-corner crumpled-corner-br"></div>
+                {{-- Crumpled corners (random per card) --}}
+                @foreach($randomCorners as $corner)
+                    <div class="crumpled-corner crumpled-corner-{{ $corner }}"></div>
+                @endforeach
                 
                 <a href="{{ route('articles.show', $article->id) }}" class="block">
                     
@@ -272,11 +277,11 @@
             );
         }
         
-        /* Crumpled corners (angoli accartocciati) */
+        /* Crumpled corners (angoli accartocciati) - MUCH MORE VISIBLE */
         .crumpled-corner {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 55px;
+            height: 55px;
             pointer-events: none;
             z-index: 5;
         }
@@ -285,20 +290,26 @@
         .crumpled-corner-tl {
             top: 0;
             left: 0;
-            background: radial-gradient(
-                circle at 0% 0%,
-                rgba(0, 0, 0, 0.15) 0%,
-                rgba(0, 0, 0, 0.08) 40%,
-                transparent 70%
-            );
+            background: 
+                radial-gradient(
+                    circle at 0% 0%,
+                    rgba(0, 0, 0, 0.35) 0%,
+                    rgba(0, 0, 0, 0.25) 25%,
+                    rgba(0, 0, 0, 0.15) 45%,
+                    rgba(0, 0, 0, 0.08) 60%,
+                    transparent 75%
+                );
+            border-top-left-radius: 8px;
         }
         
         :is(.dark .crumpled-corner-tl) {
             background: radial-gradient(
                 circle at 0% 0%,
-                rgba(0, 0, 0, 0.4) 0%,
-                rgba(0, 0, 0, 0.2) 40%,
-                transparent 70%
+                rgba(0, 0, 0, 0.7) 0%,
+                rgba(0, 0, 0, 0.5) 25%,
+                rgba(0, 0, 0, 0.3) 45%,
+                rgba(0, 0, 0, 0.15) 60%,
+                transparent 75%
             );
         }
         
@@ -306,20 +317,26 @@
         .crumpled-corner-tr {
             top: 0;
             right: 0;
-            background: radial-gradient(
-                circle at 100% 0%,
-                rgba(0, 0, 0, 0.12) 0%,
-                rgba(0, 0, 0, 0.06) 40%,
-                transparent 70%
-            );
+            background: 
+                radial-gradient(
+                    circle at 100% 0%,
+                    rgba(0, 0, 0, 0.32) 0%,
+                    rgba(0, 0, 0, 0.22) 25%,
+                    rgba(0, 0, 0, 0.12) 45%,
+                    rgba(0, 0, 0, 0.06) 60%,
+                    transparent 75%
+                );
+            border-top-right-radius: 8px;
         }
         
         :is(.dark .crumpled-corner-tr) {
             background: radial-gradient(
                 circle at 100% 0%,
-                rgba(0, 0, 0, 0.35) 0%,
-                rgba(0, 0, 0, 0.18) 40%,
-                transparent 70%
+                rgba(0, 0, 0, 0.65) 0%,
+                rgba(0, 0, 0, 0.45) 25%,
+                rgba(0, 0, 0, 0.25) 45%,
+                rgba(0, 0, 0, 0.12) 60%,
+                transparent 75%
             );
         }
         
@@ -327,20 +344,26 @@
         .crumpled-corner-bl {
             bottom: 0;
             left: 0;
-            background: radial-gradient(
-                circle at 0% 100%,
-                rgba(0, 0, 0, 0.18) 0%,
-                rgba(0, 0, 0, 0.1) 40%,
-                transparent 70%
-            );
+            background: 
+                radial-gradient(
+                    circle at 0% 100%,
+                    rgba(0, 0, 0, 0.38) 0%,
+                    rgba(0, 0, 0, 0.28) 25%,
+                    rgba(0, 0, 0, 0.18) 45%,
+                    rgba(0, 0, 0, 0.1) 60%,
+                    transparent 75%
+                );
+            border-bottom-left-radius: 8px;
         }
         
         :is(.dark .crumpled-corner-bl) {
             background: radial-gradient(
                 circle at 0% 100%,
-                rgba(0, 0, 0, 0.45) 0%,
-                rgba(0, 0, 0, 0.25) 40%,
-                transparent 70%
+                rgba(0, 0, 0, 0.75) 0%,
+                rgba(0, 0, 0, 0.55) 25%,
+                rgba(0, 0, 0, 0.35) 45%,
+                rgba(0, 0, 0, 0.18) 60%,
+                transparent 75%
             );
         }
         
@@ -348,20 +371,26 @@
         .crumpled-corner-br {
             bottom: 0;
             right: 0;
-            background: radial-gradient(
-                circle at 100% 100%,
-                rgba(0, 0, 0, 0.16) 0%,
-                rgba(0, 0, 0, 0.08) 40%,
-                transparent 70%
-            );
+            background: 
+                radial-gradient(
+                    circle at 100% 100%,
+                    rgba(0, 0, 0, 0.36) 0%,
+                    rgba(0, 0, 0, 0.26) 25%,
+                    rgba(0, 0, 0, 0.16) 45%,
+                    rgba(0, 0, 0, 0.09) 60%,
+                    transparent 75%
+                );
+            border-bottom-right-radius: 8px;
         }
         
         :is(.dark .crumpled-corner-br) {
             background: radial-gradient(
                 circle at 100% 100%,
-                rgba(0, 0, 0, 0.4) 0%,
-                rgba(0, 0, 0, 0.22) 40%,
-                transparent 70%
+                rgba(0, 0, 0, 0.72) 0%,
+                rgba(0, 0, 0, 0.52) 25%,
+                rgba(0, 0, 0, 0.32) 45%,
+                rgba(0, 0, 0, 0.16) 60%,
+                transparent 75%
             );
         }
         
@@ -380,23 +409,9 @@
                 0 6px 15px rgba(0, 0, 0, 0.7);
         }
         
-        /* Corners more visible on hover */
-        .newspaper-page:hover .crumpled-corner-tl {
-            background: radial-gradient(
-                circle at 0% 0%,
-                rgba(0, 0, 0, 0.2) 0%,
-                rgba(0, 0, 0, 0.12) 40%,
-                transparent 70%
-            );
-        }
-        
-        .newspaper-page:hover .crumpled-corner-br {
-            background: radial-gradient(
-                circle at 100% 100%,
-                rgba(0, 0, 0, 0.22) 0%,
-                rgba(0, 0, 0, 0.12) 40%,
-                transparent 70%
-            );
+        /* Corners MUCH more visible on hover */
+        .newspaper-page:hover .crumpled-corner {
+            filter: brightness(0.85) contrast(1.3);
         }
     </style>
     @endif
