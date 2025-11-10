@@ -1117,17 +1117,28 @@ class Event extends Model
      */
     protected function mapPositionTypeToCategory(string $positionType): string
     {
+        // Normalize position type to lowercase for case-insensitive matching
+        $positionType = strtolower($positionType);
+        
         $mapping = [
             'performer' => 'performance',
             'poet' => 'performance',
+            'poeta' => 'performance',
             'artist' => 'performance',
+            'artista' => 'performance',
             'mc' => 'hosting',
             'host' => 'hosting',
+            'presentatore' => 'hosting',
             'judge' => 'judging',
+            'giudice' => 'judging',
             'sound_engineer' => 'technical',
+            'fonico' => 'technical',
             'photographer' => 'technical',
+            'fotografo' => 'technical',
             'videographer' => 'technical',
+            'videomaker' => 'technical',
             'translator' => 'translation',
+            'traduttore' => 'translation',
         ];
 
         return $mapping[$positionType] ?? 'other';
