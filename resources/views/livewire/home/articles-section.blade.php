@@ -11,29 +11,34 @@
                 <div class="magazine-corner"></div>
                 
                 <a href="{{ route('articles.show', $article->id) }}" class="block">
-                    @if($article->featured_image_url)
-                    <div class="aspect-[16/10] overflow-hidden mb-4 relative -mx-6 -mt-6">
-                        <img src="{{ $article->featured_image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    </div>
-                    @endif
                     
                     <div>
-                        <div class="flex items-center gap-3 mb-3">
-                            <img src="{{ $article->user->profile_photo_url }}" alt="{{ $article->user->name }}" class="w-10 h-10 rounded-full object-cover ring-2 ring-primary-200">
+                        {{-- Author Info in alto --}}
+                        <div class="flex items-center gap-3 mb-4">
+                            <img src="{{ $article->user->profile_photo_url }}" alt="{{ $article->user->name }}" class="w-10 h-10 rounded-full object-cover ring-2 ring-primary-300 dark:ring-primary-600">
                             <div>
                                 <p class="font-semibold text-sm text-neutral-900 dark:text-white">{{ $article->user->name }}</p>
-                                <p class="text-xs text-neutral-500 dark:text-neutral-400">{{ $article->created_at->diffForHumans() }}</p>
+                                <p class="text-xs text-neutral-600 dark:text-neutral-400">{{ $article->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
 
-                        <h3 class="text-xl font-bold mb-2 text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors" style="font-family: 'Crimson Pro', serif;">
+                        {{-- Title (più grande e prominente) --}}
+                        <h3 class="text-2xl font-bold mb-3 text-neutral-900 dark:text-white group-hover:text-primary-600 transition-colors leading-tight" style="font-family: 'Crimson Pro', serif;">
                             {{ $article->title }}
                         </h3>
                         
-                        <p class="text-neutral-600 dark:text-neutral-400 line-clamp-2 text-sm mb-4">
-                            {{ $article->excerpt ?? Str::limit($article->content, 100) }}
+                        {{-- Descrizione (più lunga) --}}
+                        <p class="text-neutral-700 dark:text-neutral-300 line-clamp-3 text-base mb-4 leading-relaxed">
+                            {{ $article->excerpt ?? Str::limit($article->content, 150) }}
                         </p>
+                        
+                        {{-- Immagine PICCOLA come preview --}}
+                        @if($article->featured_image_url)
+                        <div class="aspect-[16/7] overflow-hidden mb-4 relative rounded-sm">
+                            <img src="{{ $article->featured_image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                        </div>
+                        @endif
                     </div>
                 </a>
                 
@@ -74,101 +79,111 @@
         @keyframes fade-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .animate-fade-in { animation: fade-in 0.5s ease-out forwards; opacity: 0; }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
         
-        /* Magazine Page Effect - MORE VISIBLE */
+        /* Magazine Page Effect - SUPER VISIBLE & DISTINCT */
         .magazine-page-card {
             position: relative;
             height: 100%;
             background: 
-                /* Paper grain texture */
+                /* Strong paper grain */
                 repeating-linear-gradient(
                     0deg,
-                    rgba(0, 0, 0, 0.03) 0px,
+                    rgba(0, 0, 0, 0.08) 0px,
                     transparent 1px,
-                    transparent 2px
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.08) 3px
                 ),
-                /* Column pattern */
+                /* Bold column lines (3 columns) */
                 repeating-linear-gradient(
                     90deg,
                     transparent 0px,
-                    transparent 47%,
-                    rgba(0, 0, 0, 0.02) 47%,
-                    rgba(0, 0, 0, 0.02) 53%,
-                    transparent 53%
+                    transparent 32%,
+                    rgba(0, 0, 0, 0.06) 32.5%,
+                    rgba(0, 0, 0, 0.06) 33%,
+                    transparent 33%,
+                    transparent 65%,
+                    rgba(0, 0, 0, 0.06) 65.5%,
+                    rgba(0, 0, 0, 0.06) 66%,
+                    transparent 66%
                 ),
-                /* Base gradient - cooler tones (blue-grey) */
-                linear-gradient(145deg, 
-                    #e8eef4 0%,
-                    #dce4ec 25%,
-                    #d4dde6 50%,
-                    #dce4ec 75%,
-                    #e8eef4 100%
+                /* Base gradient - STRONG blue-grey magazine paper */
+                linear-gradient(160deg, 
+                    #d8e3f0 0%,
+                    #c8d5e3 20%,
+                    #b8c8d8 40%,
+                    #c0cfe0 60%,
+                    #cad9e8 80%,
+                    #d8e3f0 100%
                 );
             padding: 1.5rem;
             box-shadow: 
-                /* Outer shadows */
-                0 3px 6px rgba(0, 0, 0, 0.08),
-                0 10px 20px rgba(0, 0, 0, 0.12),
-                /* Central fold shadow */
-                inset -4px 0 8px rgba(0, 0, 0, 0.08),
-                inset 4px 0 8px rgba(0, 0, 0, 0.04),
-                /* Subtle top/bottom edges */
-                inset 0 2px 4px rgba(255, 255, 255, 0.5),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.03);
+                /* Deep outer shadows */
+                0 4px 8px rgba(0, 0, 0, 0.12),
+                0 12px 24px rgba(0, 0, 0, 0.15),
+                /* STRONG central fold */
+                inset -6px 0 12px rgba(0, 0, 0, 0.15),
+                inset 6px 0 12px rgba(0, 0, 0, 0.08),
+                /* Edge highlights */
+                inset 0 3px 6px rgba(255, 255, 255, 0.7),
+                inset 0 -3px 6px rgba(0, 0, 0, 0.08);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            border: 2px solid rgba(100, 130, 160, 0.2);
         }
         
-        /* Dark mode - darker but still distinct */
+        /* Dark mode - blue-tinted dark */
         :is(.dark .magazine-page-card) {
             background: 
-                /* Paper grain texture */
                 repeating-linear-gradient(
                     0deg,
-                    rgba(255, 255, 255, 0.02) 0px,
+                    rgba(255, 255, 255, 0.05) 0px,
                     transparent 1px,
-                    transparent 2px
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.05) 3px
                 ),
-                /* Column pattern */
                 repeating-linear-gradient(
                     90deg,
                     transparent 0px,
-                    transparent 47%,
-                    rgba(255, 255, 255, 0.015) 47%,
-                    rgba(255, 255, 255, 0.015) 53%,
-                    transparent 53%
+                    transparent 32%,
+                    rgba(255, 255, 255, 0.04) 32.5%,
+                    rgba(255, 255, 255, 0.04) 33%,
+                    transparent 33%,
+                    transparent 65%,
+                    rgba(255, 255, 255, 0.04) 65.5%,
+                    rgba(255, 255, 255, 0.04) 66%,
+                    transparent 66%
                 ),
-                /* Base gradient - blue-grey dark */
-                linear-gradient(145deg, 
-                    #374151 0%,
-                    #2d3748 25%,
-                    #1f2937 50%,
-                    #2d3748 75%,
-                    #374151 100%
+                linear-gradient(160deg, 
+                    #3a4556 0%,
+                    #2e3947 20%,
+                    #252d3a 40%,
+                    #2a3440 60%,
+                    #323d4d 80%,
+                    #3a4556 100%
                 );
             box-shadow: 
-                0 3px 6px rgba(0, 0, 0, 0.5),
-                0 10px 20px rgba(0, 0, 0, 0.6),
-                inset -4px 0 8px rgba(0, 0, 0, 0.4),
-                inset 4px 0 8px rgba(0, 0, 0, 0.2),
-                inset 0 2px 4px rgba(255, 255, 255, 0.03),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+                0 4px 8px rgba(0, 0, 0, 0.6),
+                0 12px 24px rgba(0, 0, 0, 0.7),
+                inset -6px 0 12px rgba(0, 0, 0, 0.5),
+                inset 6px 0 12px rgba(0, 0, 0, 0.3),
+                inset 0 3px 6px rgba(255, 255, 255, 0.05),
+                inset 0 -3px 6px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(100, 130, 160, 0.1);
         }
         
-        /* Additional shine effect (glossy magazine) */
+        /* STRONG glossy shine effect on left */
         .magazine-page-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 50%;
+            width: 40%;
             height: 100%;
             background: linear-gradient(
                 to right,
-                rgba(255, 255, 255, 0.15) 0%,
-                rgba(255, 255, 255, 0.05) 50%,
+                rgba(255, 255, 255, 0.25) 0%,
+                rgba(255, 255, 255, 0.1) 70%,
                 transparent 100%
             );
             pointer-events: none;
@@ -178,8 +193,8 @@
         :is(.dark .magazine-page-card::before) {
             background: linear-gradient(
                 to right,
-                rgba(255, 255, 255, 0.04) 0%,
-                rgba(255, 255, 255, 0.01) 50%,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.03) 70%,
                 transparent 100%
             );
         }
@@ -190,7 +205,7 @@
             z-index: 2;
         }
         
-        /* Page corner marker (folded corner effect) - BIGGER AND MORE VISIBLE */
+        /* Page corner marker - MASSIVE AND SUPER VISIBLE */
         .magazine-corner {
             position: absolute;
             top: 0;
@@ -198,27 +213,33 @@
             width: 0;
             height: 0;
             border-style: solid;
-            border-width: 0 50px 50px 0;
-            border-color: transparent rgba(255, 255, 255, 0.8) transparent transparent;
-            filter: drop-shadow(-2px 2px 4px rgba(0, 0, 0, 0.2));
+            border-width: 0 55px 55px 0;
+            border-color: transparent #ffffff transparent transparent;
+            filter: drop-shadow(-3px 3px 6px rgba(0, 0, 0, 0.3));
             transition: all 0.3s ease;
             z-index: 10;
         }
         
         :is(.dark .magazine-corner) {
-            border-color: transparent rgba(0, 0, 0, 0.5) transparent transparent;
-            filter: drop-shadow(-2px 2px 4px rgba(0, 0, 0, 0.6));
+            border-color: transparent #1a1f2e transparent transparent;
+            filter: drop-shadow(-3px 3px 8px rgba(0, 0, 0, 0.8));
         }
         
-        /* Add fold line to corner */
-        .magazine-corner::after {
+        /* Diagonal fold line on corner */
+        .magazine-corner::before {
             content: '';
             position: absolute;
-            top: -50px;
+            top: -55px;
             right: 0;
-            width: 70px;
-            height: 1px;
-            background: linear-gradient(135deg, transparent, rgba(0, 0, 0, 0.15), transparent);
+            width: 78px;
+            height: 2px;
+            background: linear-gradient(135deg, 
+                transparent 0%, 
+                rgba(0, 0, 0, 0.2) 30%, 
+                rgba(0, 0, 0, 0.25) 50%, 
+                rgba(0, 0, 0, 0.2) 70%, 
+                transparent 100%
+            );
             transform: rotate(45deg);
             transform-origin: right;
         }
@@ -245,37 +266,40 @@
             );
         }
         
-        /* Hover effects - dramatic lift */
+        /* Hover effects - SUPER DRAMATIC */
         .magazine-page-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-10px) scale(1.03);
             box-shadow: 
-                /* Enhanced outer shadows */
-                0 8px 16px rgba(0, 0, 0, 0.15),
-                0 20px 40px rgba(0, 0, 0, 0.2),
-                /* Deeper fold */
-                inset -6px 0 12px rgba(0, 0, 0, 0.12),
-                inset 6px 0 12px rgba(0, 0, 0, 0.06),
-                inset 0 3px 6px rgba(255, 255, 255, 0.6),
-                inset 0 -3px 6px rgba(0, 0, 0, 0.05);
+                /* Much deeper outer shadows */
+                0 10px 20px rgba(0, 0, 0, 0.2),
+                0 25px 50px rgba(0, 0, 0, 0.25),
+                /* VERY deep central fold */
+                inset -8px 0 16px rgba(0, 0, 0, 0.2),
+                inset 8px 0 16px rgba(0, 0, 0, 0.12),
+                /* Strong edge highlights */
+                inset 0 4px 8px rgba(255, 255, 255, 0.8),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.12);
+            border-color: rgba(100, 130, 160, 0.3);
         }
         
         :is(.dark .magazine-page-card:hover) {
             box-shadow: 
-                0 8px 16px rgba(0, 0, 0, 0.6),
-                0 20px 40px rgba(0, 0, 0, 0.7),
-                inset -6px 0 12px rgba(0, 0, 0, 0.5),
-                inset 6px 0 12px rgba(0, 0, 0, 0.3),
-                inset 0 3px 6px rgba(255, 255, 255, 0.05),
-                inset 0 -3px 6px rgba(0, 0, 0, 0.4);
+                0 10px 20px rgba(0, 0, 0, 0.7),
+                0 25px 50px rgba(0, 0, 0, 0.8),
+                inset -8px 0 16px rgba(0, 0, 0, 0.6),
+                inset 8px 0 16px rgba(0, 0, 0, 0.4),
+                inset 0 4px 8px rgba(255, 255, 255, 0.08),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.5);
+            border-color: rgba(100, 130, 160, 0.15);
         }
         
         .magazine-page-card:hover .magazine-corner {
-            border-width: 0 60px 60px 0;
-            filter: drop-shadow(-3px 3px 6px rgba(0, 0, 0, 0.3));
+            border-width: 0 65px 65px 0;
+            filter: drop-shadow(-4px 4px 8px rgba(0, 0, 0, 0.4));
         }
         
         :is(.dark .magazine-page-card:hover .magazine-corner) {
-            filter: drop-shadow(-3px 3px 6px rgba(0, 0, 0, 0.8));
+            filter: drop-shadow(-4px 4px 10px rgba(0, 0, 0, 0.9));
         }
     </style>
     @endif
