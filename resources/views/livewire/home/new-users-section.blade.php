@@ -9,10 +9,10 @@
         {{-- Header --}}
         <div class="text-center mb-12">
             <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                Nuovi Utenti
+                {!! __('home.new_users_title') !!}
             </h2>
             <p class="text-lg text-neutral-100">
-                Dai il benvenuto ai nuovi membri
+                {{ __('home.new_users_subtitle') }}
             </p>
         </div>
 
@@ -81,7 +81,7 @@
         {{-- CTA Button (route will be added later) --}}
         <div class="text-center mt-12">
             <div class="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-500 text-white rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary-500/50 hover:scale-105 cursor-pointer">
-                {{ __('Scopri la Community') }}
+                {{ __('home.all_users_button') }}
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
