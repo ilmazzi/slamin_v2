@@ -13,17 +13,32 @@ class GigApplication extends Model
 
     protected $fillable = [
         'gig_id',
-        'user_id', // Campo corretto nella tabella gig_applications
+        'user_id',
+        // Campi originali sistema gigs
+        'message',
+        'experience',
+        'portfolio',
+        'portfolio_url',
+        'availability',
+        'compensation_expectation',
+        // Campi sistema traduzioni (retrocompatibilità)
         'cover_letter',
         'proposed_compensation',
         'estimated_delivery',
+        // Status e timestamps
         'status',
         'rejection_reason',
+        'accepted_at',
+        'rejected_at',
+        'withdrawn_at',
     ];
 
     protected $casts = [
         'proposed_compensation' => 'decimal:2',
         'estimated_delivery' => 'date',
+        'accepted_at' => 'datetime',
+        'rejected_at' => 'datetime',
+        'withdrawn_at' => 'datetime',
     ];
 
     /**

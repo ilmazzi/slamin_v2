@@ -3,77 +3,228 @@
 namespace App\Livewire\Translations;
 
 use App\Models\Gig;
+use App\Models\Event;
+use App\Models\Group;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Url;
 
 class GigIndex extends Component
 {
     use WithPagination;
+
+    #[Url]
+    public $search = '';
     
-    public string $search = '';
-    public string $language = '';
-    public string $sort = 'recent';
+    #[Url]
+    public $category = '';
     
-    public function updatingSearch()
+    #[Url]
+    public $type = '';
+    
+    #[Url]
+    public $language = '';
+    
+    #[Url]
+    public $location = '';
+    
+    #[Url]
+    public $event_id = '';
+    
+    #[Url]
+    public $group_id = '';
+    
+    #[Url]
+    public $show_featured = false;
+    
+    #[Url]
+    public $show_urgent = false;
+    
+    #[Url]
+    public $show_remote = false;
+    
+    #[Url]
+    public $sort_by = 'created_at';
+    
+    #[Url]
+    public $sort_direction = 'desc';
+
+    public function updatedSearch()
     {
         $this->resetPage();
     }
-    
-    public function updatingLanguage()
+
+    public function updatedCategory()
     {
         $this->resetPage();
     }
-    
-    public function updatingSortChanged()
+
+    public function updatedType()
     {
         $this->resetPage();
     }
-    
-    public function resetFilters()
+
+    public function updatedLanguage()
     {
-        $this->reset(['search', 'language', 'sort']);
+        $this->resetPage();
     }
-    
-    public function render()
+
+    public function updatedLocation()
     {
-        $query = Gig::with(['poem.user', 'requester', 'applications'])
-            ->where('status', 'open');
-        
+        $this->resetPage();
+    }
+
+    public function updatedEventId()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedGroupId()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedShowFeatured()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedShowUrgent()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedShowRemote()
+    {
+        $this->resetPage();
+    }
+
+    public function clearFilters()
+    {
+        $this->reset([
+            'search',
+            'category',
+            'type',
+            'language',
+            'location',
+            'event_id',
+            'group_id',
+            'show_featured',
+            'show_urgent',
+            'show_remote'
+        ]);
+        $this->resetPage();
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sort_by === $field) {
+            $this->sort_direction = $this->sort_direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sort_by = $field;
+            $this->sort_direction = 'asc';
+        }
+    }
+
+    public function getGigsProperty()
+    {
+        $query = Gig::query()
+            ->with(['user', 'event', 'group', 'applications'])
+            ->open();
+
         // Search
         if ($this->search) {
-            $query->whereHas('poem', function ($q) {
+            $query->where(function($q) {
                 $q->where('title', 'like', '%' . $this->search . '%')
-                  ->orWhere('content', 'like', '%' . $this->search . '%');
+                  ->orWhere('description', 'like', '%' . $this->search . '%')
+                  ->orWhere('location', 'like', '%' . $this->search . '%');
             });
         }
-        
-        // Language filter
+
+        // Filters
+        if ($this->category) {
+            $query->where('category', $this->category);
+        }
+
+        if ($this->type) {
+            $query->where('type', $this->type);
+        }
+
         if ($this->language) {
-            $query->where('target_language', $this->language);
+            $query->where('language', $this->language);
         }
-        
+
+        if ($this->location) {
+            $query->where('location', 'like', '%' . $this->location . '%');
+        }
+
+        if ($this->event_id) {
+            $query->where('event_id', $this->event_id);
+        }
+
+        if ($this->group_id) {
+            $query->where('group_id', $this->group_id);
+        }
+
+        if ($this->show_featured) {
+            $query->where('is_featured', true);
+        }
+
+        if ($this->show_urgent) {
+            $query->where('is_urgent', true);
+        }
+
+        if ($this->show_remote) {
+            $query->where('is_remote', true);
+        }
+
         // Sort
-        switch ($this->sort) {
-            case 'compensation_high':
-                $query->orderBy('proposed_compensation', 'desc');
-                break;
-            case 'compensation_low':
-                $query->orderBy('proposed_compensation', 'asc');
-                break;
-            case 'deadline':
-                $query->orderBy('deadline', 'asc');
-                break;
-            default: // recent
-                $query->orderBy('created_at', 'desc');
+        $query->orderBy($this->sort_by, $this->sort_direction);
+
+        return $query->paginate(12);
+    }
+
+    public function getStatsProperty()
+    {
+        return [
+            'total_gigs' => Gig::count(),
+            'open_gigs_count' => Gig::open()->count(),
+            'urgent_gigs_count' => Gig::urgent()->count(),
+            'featured_gigs_count' => Gig::featured()->count(),
+        ];
+    }
+
+    public function getEventsProperty()
+    {
+        if (!class_exists('App\Models\Event')) {
+            return collect();
         }
         
-        $gigs = $query->paginate(12);
+        return Event::where('start_datetime', '>=', now())
+            ->orderBy('start_datetime')
+            ->take(20)
+            ->get();
+    }
+
+    public function getGroupsProperty()
+    {
+        if (!class_exists('App\Models\Group') || !auth()->check()) {
+            return collect();
+        }
         
-        $languages = config('poems.languages', []);
-        
+        return auth()->user()->groups()
+            ->orderBy('name')
+            ->take(20)
+            ->get();
+    }
+
+    public function render()
+    {
         return view('livewire.translations.gig-index', [
-            'gigs' => $gigs,
-            'languages' => $languages,
+            'gigs' => $this->gigs,
+            'stats' => $this->stats,
+            'events' => $this->events,
+            'groups' => $this->groups,
         ]);
     }
 }
