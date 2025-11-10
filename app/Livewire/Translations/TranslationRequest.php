@@ -64,15 +64,25 @@ class TranslationRequest extends Component
             return;
         }
         
+        // Prepara dati per il gig
+        $languageName = config("poems.languages.{$this->targetLanguage}") ?? $this->targetLanguage;
+        $poemTitle = $this->poem->title ?: __('poems.untitled');
+        
         // Crea il gig
         $gig = Gig::create([
             'poem_id' => $this->poem->id,
             'requester_id' => Auth::id(),
+            'title' => "Traduzione: {$poemTitle} → {$languageName}",
+            'description' => "Richiesta di traduzione della poesia \"{$poemTitle}\" in {$languageName}",
             'target_language' => $this->targetLanguage,
             'requirements' => $this->requirements ?: null,
             'proposed_compensation' => $this->proposedCompensation,
-            'deadline' => $this->deadline ?: null, // Converti stringa vuota in null
+            'deadline' => $this->deadline ?: null,
             'status' => 'open',
+            'category' => 'translation',
+            'type' => 'translation',
+            'language' => $this->poem->language ?? 'it',
+            'is_remote' => true,
         ]);
         
         session()->flash('success', __('translations.request_created'));

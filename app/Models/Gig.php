@@ -14,6 +14,8 @@ class Gig extends Model
     protected $fillable = [
         'poem_id',
         'requester_id',
+        'title',
+        'description',
         'target_language',
         'requirements',
         'proposed_compensation',
@@ -22,6 +24,11 @@ class Gig extends Model
         'accepted_translator_id',
         'accepted_at',
         'completed_at',
+        'category',
+        'type',
+        'language',
+        'is_remote',
+        'gig_type',
     ];
 
     protected $casts = [
