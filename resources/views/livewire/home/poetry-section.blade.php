@@ -87,11 +87,7 @@
         .paper-sheet {
             display: block;
             position: relative;
-            background: 
-                /* REAL paper texture image (WebP 78KB) */
-                url('/assets/images/paper.webp') center/cover no-repeat,
-                /* Fallback aged paper color */
-                #fdfaf0;
+            background: url('/assets/images/paper.webp') center/cover no-repeat;
             padding: 2.5rem 2rem 2rem 2rem;
             min-height: 420px;
             border-radius: 1px;
@@ -109,36 +105,7 @@
             border-bottom: 1px solid rgba(210, 180, 140, 0.2);
         }
         
-        /* Paper fold corner (dog-ear) */
-        .paper-sheet::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 0 20px 20px 0;
-            border-color: transparent #f5f1e8 transparent transparent;
-            filter: drop-shadow(-1px 1px 1px rgba(0,0,0,0.1));
-            z-index: 1;
-        }
         
-        /* Paper texture overlay */
-        .paper-sheet::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: 
-                linear-gradient(
-                    to bottom,
-                    rgba(255,255,255,0.3) 0%,
-                    transparent 50%,
-                    rgba(0,0,0,0.02) 100%
-                );
-            pointer-events: none;
-            z-index: 1;
-        }
         
         .paper-sheet:hover {
             transform: translateY(-8px) scale(1.02);
@@ -149,10 +116,7 @@
         }
         
         :is(.dark .paper-sheet) {
-            background: 
-                /* Same real paper texture for dark mode */
-                url('/assets/images/paper.webp') center/cover no-repeat,
-                #2a2520;
+            background: url('/assets/images/paper.webp') center/cover no-repeat;
             /* Darken the paper for dark mode */
             filter: brightness(0.35) contrast(1.1);
         }
