@@ -31,11 +31,9 @@
                     </div>
                     
                     {{-- Category Badge --}}
-                    @if($article->category)
                     <div class="magazine-category">
-                        {{ $article->category->name ?? 'Cultura' }}
+                        Cultura
                     </div>
-                    @endif
                     
                     {{-- Featured Image --}}
                     @if($article->featured_image_url)
