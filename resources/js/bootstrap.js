@@ -14,17 +14,17 @@ import Pusher from 'pusher-js';
 
 window.Pusher = Pusher;
 
-// Configure Echo based on environment
-const isProduction = import.meta.env.PROD;
-const reverbScheme = import.meta.env.VITE_REVERB_SCHEME || (isProduction ? 'https' : 'http');
-
+// Configure Echo for local development (force ws:// not wss://)
 window.Echo = new Echo({
     broadcaster: 'reverb',
-    key: import.meta.env.VITE_REVERB_APP_KEY || 'local-key',
-    wsHost: import.meta.env.VITE_REVERB_HOST || 'localhost',
-    wsPort: import.meta.env.VITE_REVERB_PORT || 8080,
-    wssPort: import.meta.env.VITE_REVERB_PORT || 8080,
-    forceTLS: reverbScheme === 'https',
+    key: 'local-key',
+    wsHost: 'localhost',
+    wsPort: 8080,
+    wssPort: 8080,
+    forceTLS: false, // FORCE ws:// not wss:// for local development
     enabledTransports: ['ws', 'wss'],
     disableStats: true,
+    encrypted: false,
 });
+
+console.log('Echo configured for ws://localhost:8080 (no TLS)');
