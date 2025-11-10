@@ -2,21 +2,10 @@
     @if($articles && $articles->count() > 0)
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         @foreach($articles->take(3) as $i => $article)
-        <?php
-            // Random corner effects for each card (more natural/varied)
-            $corners = ['tl', 'tr', 'bl', 'br'];
-            $randomCorners = array_rand(array_flip($corners), rand(1, 2)); // 1 or 2 random corners
-            if (!is_array($randomCorners)) $randomCorners = [$randomCorners];
-        ?>
         <article class="group h-full" x-data x-intersect.once="$el.classList.add('animate-fade-in')" style="animation-delay: {{ $i * 0.1 }}s">
             
             {{-- Newspaper Page Container --}}
             <div class="relative h-full newspaper-page">
-                
-                {{-- Crumpled corners (random per card) --}}
-                @foreach($randomCorners as $corner)
-                    <div class="crumpled-corner crumpled-corner-{{ $corner }}"></div>
-                @endforeach
                 
                 <a href="{{ route('articles.show', $article->id) }}" class="block">
                     
@@ -263,254 +252,18 @@
            NEWSPAPER EFFECTS & INTERACTIONS
            ============================================ */
         
-        /* Irregular cut edges with crumpled corners */
-        .newspaper-page {
-            clip-path: polygon(
-                0% 2%,
-                2% 0%,
-                98% 0%,
-                100% 2%,
-                100% 98%,
-                98% 100%,
-                2% 100%,
-                0% 98%
-            );
-        }
-        
-        /* DOG-EAR / PAGE CURL EFFECT - Real folded corner */
-        .crumpled-corner {
-            position: absolute;
-            width: 0;
-            height: 0;
-            pointer-events: none;
-            z-index: 10;
-        }
-        
-        /* Top-left corner - realistic page fold */
-        .crumpled-corner-tl {
-            top: 0;
-            left: 0;
-            border-style: solid;
-            border-width: 40px 40px 0 0;
-            /* Gradient on the folded part (back of paper) */
-            border-color: transparent transparent transparent transparent;
-            border-top-color: #e0d8c8;
-            border-right-color: #d5cdb8;
-            filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.35));
-        }
-        
-        /* Fold line */
-        .crumpled-corner-tl::after {
-            content: '';
-            position: absolute;
-            top: -40px;
-            left: 0;
-            width: 57px;
-            height: 2px;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15), transparent);
-            transform: rotate(45deg);
-            transform-origin: top left;
-        }
-        
-        /* Shadow under the fold */
-        .crumpled-corner-tl::before {
-            content: '';
-            position: absolute;
-            top: -40px;
-            left: 0;
-            width: 40px;
-            height: 40px;
-            background: 
-                linear-gradient(
-                    135deg,
-                    rgba(0, 0, 0, 0.5) 0%,
-                    rgba(0, 0, 0, 0.3) 40%,
-                    rgba(0, 0, 0, 0.15) 70%,
-                    transparent 100%
-                );
-        }
-        
-        :is(.dark .crumpled-corner-tl) {
-            border-top-color: #38352e;
-            border-right-color: #2d2a24;
-            filter: drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.9));
-        }
-        
-        /* Top-right corner - realistic page fold */
-        .crumpled-corner-tr {
-            top: 0;
-            right: 0;
-            border-style: solid;
-            border-width: 0 40px 40px 0;
-            border-color: transparent transparent transparent transparent;
-            border-right-color: #e0d8c8;
-            border-bottom-color: #d5cdb8;
-            filter: drop-shadow(-3px 3px 5px rgba(0, 0, 0, 0.35));
-        }
-        
-        .crumpled-corner-tr::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -40px;
-            width: 57px;
-            height: 2px;
-            background: linear-gradient(225deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15), transparent);
-            transform: rotate(-45deg);
-            transform-origin: top right;
-        }
-        
-        .crumpled-corner-tr::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -40px;
-            width: 40px;
-            height: 40px;
-            background: 
-                linear-gradient(
-                    225deg,
-                    rgba(0, 0, 0, 0.5) 0%,
-                    rgba(0, 0, 0, 0.3) 40%,
-                    rgba(0, 0, 0, 0.15) 70%,
-                    transparent 100%
-                );
-        }
-        
-        :is(.dark .crumpled-corner-tr) {
-            border-right-color: #38352e;
-            border-bottom-color: #2d2a24;
-            filter: drop-shadow(-3px 3px 8px rgba(0, 0, 0, 0.9));
-        }
-        
-        /* Bottom-left corner - realistic page fold */
-        .crumpled-corner-bl {
-            bottom: 0;
-            left: 0;
-            border-style: solid;
-            border-width: 0 0 40px 40px;
-            border-color: transparent transparent transparent transparent;
-            border-bottom-color: #e0d8c8;
-            border-left-color: #d5cdb8;
-            filter: drop-shadow(3px -3px 5px rgba(0, 0, 0, 0.35));
-        }
-        
-        .crumpled-corner-bl::after {
-            content: '';
-            position: absolute;
-            bottom: -40px;
-            left: 0;
-            width: 57px;
-            height: 2px;
-            background: linear-gradient(45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15), transparent);
-            transform: rotate(-45deg);
-            transform-origin: bottom left;
-        }
-        
-        .crumpled-corner-bl::before {
-            content: '';
-            position: absolute;
-            bottom: -40px;
-            left: 0;
-            width: 40px;
-            height: 40px;
-            background: 
-                linear-gradient(
-                    45deg,
-                    rgba(0, 0, 0, 0.5) 0%,
-                    rgba(0, 0, 0, 0.3) 40%,
-                    rgba(0, 0, 0, 0.15) 70%,
-                    transparent 100%
-                );
-        }
-        
-        :is(.dark .crumpled-corner-bl) {
-            border-bottom-color: #38352e;
-            border-left-color: #2d2a24;
-            filter: drop-shadow(3px -3px 8px rgba(0, 0, 0, 0.9));
-        }
-        
-        /* Bottom-right corner - realistic page fold */
-        .crumpled-corner-br {
-            bottom: 0;
-            right: 0;
-            border-style: solid;
-            border-width: 40px 0 0 40px;
-            border-color: transparent transparent transparent transparent;
-            border-top-color: #e0d8c8;
-            border-left-color: #d5cdb8;
-            filter: drop-shadow(-3px -3px 5px rgba(0, 0, 0, 0.35));
-        }
-        
-        .crumpled-corner-br::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: -40px;
-            width: 57px;
-            height: 2px;
-            background: linear-gradient(315deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.15), transparent);
-            transform: rotate(45deg);
-            transform-origin: bottom right;
-        }
-        
-        .crumpled-corner-br::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: -40px;
-            width: 40px;
-            height: 40px;
-            background: 
-                linear-gradient(
-                    315deg,
-                    rgba(0, 0, 0, 0.5) 0%,
-                    rgba(0, 0, 0, 0.3) 40%,
-                    rgba(0, 0, 0, 0.15) 70%,
-                    transparent 100%
-                );
-        }
-        
-        :is(.dark .crumpled-corner-br) {
-            border-top-color: #38352e;
-            border-left-color: #2d2a24;
-            filter: drop-shadow(-3px -3px 8px rgba(0, 0, 0, 0.9));
-        }
-        
-        /* Hover: lift newspaper clipping */
+        /* Simple hover: lift newspaper */
         .newspaper-page:hover {
-            transform: translateY(-8px) rotate(-0.8deg);
+            transform: translateY(-6px);
             box-shadow: 
-                0 12px 30px rgba(0, 0, 0, 0.18),
-                0 6px 15px rgba(0, 0, 0, 0.12),
-                inset 0 0 50px rgba(139, 115, 85, 0.05);
+                0 12px 24px rgba(0, 0, 0, 0.12),
+                0 6px 12px rgba(0, 0, 0, 0.08);
         }
         
         :is(.dark .newspaper-page:hover) {
             box-shadow: 
-                0 12px 30px rgba(0, 0, 0, 0.8),
-                0 6px 15px rgba(0, 0, 0, 0.7);
-        }
-        
-        /* Corners "unfold" slightly on hover */
-        .newspaper-page:hover .crumpled-corner-tl {
-            border-width: 45px 45px 0 0;
-            filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.4));
-        }
-        
-        .newspaper-page:hover .crumpled-corner-tr {
-            border-width: 0 45px 45px 0;
-            filter: drop-shadow(-4px 4px 6px rgba(0, 0, 0, 0.4));
-        }
-        
-        .newspaper-page:hover .crumpled-corner-bl {
-            border-width: 0 0 45px 45px;
-            filter: drop-shadow(4px -4px 6px rgba(0, 0, 0, 0.4));
-        }
-        
-        .newspaper-page:hover .crumpled-corner-br {
-            border-width: 45px 0 0 45px;
-            filter: drop-shadow(-4px -4px 6px rgba(0, 0, 0, 0.4));
+                0 12px 24px rgba(0, 0, 0, 0.6),
+                0 6px 12px rgba(0, 0, 0, 0.5);
         }
     </style>
     @endif
