@@ -71,6 +71,7 @@ class TranslationRequest extends Component
         // Crea il gig
         $gig = Gig::create([
             'poem_id' => $this->poem->id,
+            'user_id' => Auth::id(), // Campo originale della tabella gigs
             'requester_id' => Auth::id(),
             'title' => "Traduzione: {$poemTitle} → {$languageName}",
             'description' => "Richiesta di traduzione della poesia \"{$poemTitle}\" in {$languageName}",

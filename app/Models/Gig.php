@@ -13,6 +13,7 @@ class Gig extends Model
 
     protected $fillable = [
         'poem_id',
+        'user_id', // Campo originale tabella gigs
         'requester_id',
         'title',
         'description',
