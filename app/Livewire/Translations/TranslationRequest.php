@@ -79,7 +79,7 @@ class TranslationRequest extends Component
             'requirements' => $this->requirements ?: null,
             'proposed_compensation' => $this->proposedCompensation,
             'deadline' => $this->deadline ?: null,
-            'status' => 'open',
+            'is_closed' => false,
             'category' => 'translation',
             'type' => 'translation',
             'language' => $this->poem->language ?? 'it',

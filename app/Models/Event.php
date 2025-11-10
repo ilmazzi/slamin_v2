@@ -1042,8 +1042,8 @@ class Event extends Model
                 // Limits
                 'max_applications' => $position['quantity'] > 1 ? $position['quantity'] : null,
                 
-                // Status
-                'status' => 'open',
+                // Metadata
+                'is_closed' => false,
                 'gig_type' => 'event',
             ];
 
