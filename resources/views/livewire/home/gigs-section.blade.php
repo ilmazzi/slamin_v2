@@ -62,8 +62,8 @@
         </div>
 
         <!-- Gigs Slider Container -->
-        <div class="relative overflow-x-hidden -mx-3 px-3">
-            <div class="flex transition-transform duration-500 ease-out pb-8"
+        <div class="relative overflow-x-hidden -mx-3 px-3 pt-6 pb-6">
+            <div class="flex transition-transform duration-500 ease-out"
                  :style="`transform: translateX(-${currentPage * 100}%)`">
                 @foreach($topGigs as $i => $gig)
                 <?php
@@ -209,7 +209,7 @@
                 url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' /%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23paper)' opacity='0.08'/%3E%3C/svg%3E"),
                 /* White/cream paper */
                 linear-gradient(160deg, #fffef9 0%, #fffcf5 30%, #fefbef 70%, #fffef9 100%);
-            padding: 1.75rem 1.5rem 1.5rem 1.5rem;
+            padding: 2.5rem 1.5rem 2rem 1.5rem;
             box-shadow: 
                 0 6px 18px rgba(0, 0, 0, 0.2),
                 0 3px 8px rgba(0, 0, 0, 0.15);
@@ -240,11 +240,11 @@
                     rgba(255, 255, 255, 0.5) 80%,
                     rgba(255, 255, 255, 0.85) 100%
                 ),
-                /* YELLOW scotch color */
+                /* STRONG YELLOW scotch color */
                 linear-gradient(180deg, 
-                    rgba(255, 248, 180, 0.92) 0%, 
-                    rgba(255, 245, 170, 0.88) 50%, 
-                    rgba(255, 248, 180, 0.92) 100%
+                    rgba(255, 235, 100, 0.95) 0%, 
+                    rgba(255, 228, 80, 0.92) 50%, 
+                    rgba(255, 235, 100, 0.95) 100%
                 );
             box-shadow: 
                 /* Strong shadow for depth */
@@ -319,9 +319,9 @@
                     rgba(255, 255, 255, 0.4) 100%
                 ),
                 linear-gradient(180deg, 
-                    rgba(220, 200, 120, 0.85) 0%, 
-                    rgba(210, 190, 110, 0.8) 50%, 
-                    rgba(220, 200, 120, 0.85) 100%
+                    rgba(230, 200, 80, 0.88) 0%, 
+                    rgba(220, 190, 60, 0.85) 50%, 
+                    rgba(230, 200, 80, 0.88) 100%
                 );
             box-shadow: 
                 0 3px 8px rgba(0, 0, 0, 0.6),
@@ -331,11 +331,11 @@
         }
         
         .washi-top {
-            top: -10px;
+            top: 5px;
         }
         
         .washi-bottom {
-            bottom: -10px;
+            bottom: 5px;
         }
         
         /* Typography */
