@@ -127,6 +127,7 @@ return [
     
     'filters' => [
         'title' => 'Filters',
+        'advanced' => 'Advanced Filters',
         'all' => 'All',
         'open' => 'Open',
         'closed' => 'Closed',

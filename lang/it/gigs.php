@@ -180,6 +180,7 @@ return array (
   'filters' => 
   array (
     'title' => 'Filtri',
+    'advanced' => 'Filtri Avanzati',
     'all' => 'Tutti',
     'search' => 'Cerca per titolo, descrizione o luogo...',
     'filter_by_category' => 'Filtra per Categoria',

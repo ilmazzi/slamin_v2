@@ -129,11 +129,11 @@
                     <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
                     </svg>
-                    Filtri Avanzati
+                    {{ __('gigs.filters.advanced') }}
                 </h3>
                 
                 <div class="flex items-center gap-2 text-primary-600 dark:text-primary-400">
-                    <span class="text-sm font-semibold" x-text="showAdvanced ? 'Nascondi' : 'Mostra'"></span>
+                    <span class="text-sm font-semibold" x-text="showAdvanced ? '{{ __('common.hide') }}' : '{{ __('common.show') }}'"></span>
                     <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" 
                          :class="showAdvanced ? 'rotate-180' : ''"
                          fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,7 +305,7 @@
                                                 {{ $gig->days_until_deadline <= 3 
                                                     ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 animate-pulse' 
                                                     : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300' }}">
-                                                {{ $gig->days_until_deadline }} {{ $gig->days_until_deadline == 1 ? 'giorno' : 'giorni' }}
+                                                {{ $gig->days_until_deadline }} {{ $gig->days_until_deadline == 1 ? __('common.day') : __('common.days') }}
                                             </span>
                                         @endif
                                     </div>
