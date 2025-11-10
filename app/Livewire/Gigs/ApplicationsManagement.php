@@ -43,6 +43,12 @@ class ApplicationsManagement extends Component
                 // Send notification to applicant
                 $application->user->notify(new GigApplicationAccepted($application));
                 
+                // Refresh notifications globally
+                $this->dispatch('refresh-notifications');
+                
+                // Dispatch browser event for instant UI update
+                $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+                
                 session()->flash('success', __('gigs.messages.application_accepted'));
                 $this->gig->refresh();
             } else {

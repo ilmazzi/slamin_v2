@@ -3,6 +3,7 @@
 namespace App\Livewire\Components;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationCenter extends Component
@@ -18,6 +19,39 @@ class NotificationCenter extends Component
         }
     }
 
+    /**
+     * Listen for Echo (Reverb) notification events
+     */
+    public function getListeners()
+    {
+        if (!Auth::check()) {
+            return [];
+        }
+
+        return [
+            "echo-notification:App.Models.User." . Auth::id() . ",notification" => 'notificationReceived',
+        ];
+    }
+
+    /**
+     * Handle incoming notification from broadcast
+     */
+    #[On('notificationReceived')]
+    public function notificationReceived($event)
+    {
+        $this->loadNotifications();
+        
+        // Show browser notification if supported
+        $this->dispatch('browser-notification', [
+            'title' => $event['title'] ?? 'New Notification',
+            'body' => $event['message'] ?? '',
+        ]);
+    }
+
+    /**
+     * Refresh notifications (can be called from other components)
+     */
+    #[On('refresh-notifications')]
     public function loadNotifications()
     {
         if (!Auth::check()) {
@@ -26,6 +60,7 @@ class NotificationCenter extends Component
 
         $this->notifications = Auth::user()
             ->notifications()
+            ->orderBy('created_at', 'desc')
             ->take(10)
             ->get();
 

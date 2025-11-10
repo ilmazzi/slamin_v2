@@ -1,4 +1,7 @@
-<div class="relative" x-data="{ show: @entangle('showPanel') }">
+<div class="relative" 
+     x-data="{ show: @entangle('showPanel') }"
+     wire:poll.10s="loadNotifications"
+     x-on:notification-received.window="$wire.loadNotifications()">
     
     <!-- Bell Icon with Badge -->
     <button @click="$wire.togglePanel()" 

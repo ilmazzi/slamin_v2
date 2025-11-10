@@ -83,6 +83,12 @@ class GigShow extends Component
             $recipient->notify(new GigApplicationReceived($application));
         }
 
+        // Refresh notifications globally
+        $this->dispatch('refresh-notifications');
+        
+        // Dispatch browser event for instant UI update
+        $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+
         session()->flash('success', __('gigs.applications.application_sent'));
         
         $this->reset([

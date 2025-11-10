@@ -91,6 +91,12 @@ class NegotiationChat extends Component
             $otherParty->notify(new NegotiationMessageReceived($negotiation));
         }
 
+        // Dispatch event to refresh notifications globally (Livewire)
+        $this->dispatch('refresh-notifications');
+        
+        // Dispatch browser event for instant UI update (JavaScript)
+        $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+
         // Reset form
         $this->reset(['message', 'proposedCompensation', 'proposedDeadline', 'messageType']);
         
