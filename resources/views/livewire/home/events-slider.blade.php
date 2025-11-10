@@ -34,16 +34,18 @@
                  style="animation-delay: {{ $i * 0.1 }}s">
                 
                 {{-- Cinema Ticket --}}
-                <a href="{{ route('events.show', $event) }}" 
-                   class="cinema-ticket group"
-                   style="transform: rotate({{ $tilt }}deg); 
-                          background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
+                <div class="cinema-ticket group"
+                     style="transform: rotate({{ $tilt }}deg); 
+                            background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
                     
                     {{-- Perforated Left Edge --}}
                     <div class="ticket-perforation"></div>
                     
                     {{-- Ticket Main Content --}}
                     <div class="ticket-content">
+                        
+                        {{-- Clickable Content Area --}}
+                        <a href="{{ route('events.show', $event) }}" class="ticket-clickable-area">
                         
                         {{-- Ticket Header --}}
                         <div class="ticket-header">
@@ -105,9 +107,10 @@
                             </div>
                             <div class="barcode-number">{{ str_pad($event->id, 12, '0', STR_PAD_LEFT) }}</div>
                         </div>
+                        </a>
                         
-                        {{-- Social Actions --}}
-                        <div class="ticket-social" @click.stop>
+                        {{-- Social Actions (outside link) --}}
+                        <div class="ticket-social">
                             <x-like-button 
                                 :itemId="$event->id"
                                 itemType="event"
@@ -140,7 +143,7 @@
                             <div class="stub-serial">#{{ str_pad($event->id, 4, '0', STR_PAD_LEFT) }}</div>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
             @endforeach
         </div>
@@ -177,6 +180,13 @@
             0 16px 32px rgba(0, 0, 0, 0.5),
             0 24px 64px rgba(0, 0, 0, 0.4),
             0 0 0 2px rgba(218, 165, 32, 0.4);
+    }
+    
+    /* Clickable area (link) */
+    .ticket-clickable-area {
+        display: block;
+        color: inherit;
+        text-decoration: none;
     }
     
     /* Perforated Left Edge */
