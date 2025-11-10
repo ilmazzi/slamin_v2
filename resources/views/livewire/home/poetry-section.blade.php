@@ -104,16 +104,6 @@
                 #faf6ed;
             padding: 2.5rem 2rem 2rem 2rem;
             min-height: 420px;
-            /* Worn brown edges for aging effect */
-            border: 1px solid transparent;
-            border-image: linear-gradient(
-                135deg,
-                rgba(139, 115, 85, 0.3),
-                rgba(160, 130, 95, 0.4),
-                rgba(139, 115, 85, 0.35),
-                rgba(120, 100, 75, 0.4),
-                rgba(139, 115, 85, 0.3)
-            ) 1;
             /* Irregular torn edges */
             clip-path: polygon(
                 0% 1%, 2% 0.5%, 4% 1.5%, 6% 0.8%, 8% 1.2%, 10% 0.5%, 
@@ -134,8 +124,13 @@
                 0% 40%, 0.5% 35%, 0% 30%, 0.5% 25%, 0% 20%, 0.5% 15%,
                 0% 10%, 0.5% 5%
             );
-            /* Shadow ONLY underneath - realistic paper on desk */
+            /* Worn brown edges + shadow underneath */
             box-shadow: 
+                /* Brown worn edges (inset) */
+                inset 0 0 0 1px rgba(139, 115, 85, 0.3),
+                inset 0 0 8px 2px rgba(139, 115, 85, 0.15),
+                inset 0 0 15px 4px rgba(120, 100, 75, 0.08),
+                /* Shadow underneath - realistic paper on desk */
                 0 4px 6px rgba(0, 0, 0, 0.1),
                 0 8px 12px rgba(0, 0, 0, 0.12),
                 0 12px 20px rgba(0, 0, 0, 0.14),
@@ -186,8 +181,13 @@
         
         .paper-sheet:hover {
             transform: translateY(-8px) scale(1.02);
-            /* Stronger shadow on hover - paper lifting */
+            /* Brown worn edges + stronger shadow on hover */
             box-shadow: 
+                /* Brown worn edges (inset) - same as normal */
+                inset 0 0 0 1px rgba(139, 115, 85, 0.3),
+                inset 0 0 8px 2px rgba(139, 115, 85, 0.15),
+                inset 0 0 15px 4px rgba(120, 100, 75, 0.08),
+                /* Stronger shadow - paper lifting */
                 0 12px 20px rgba(0, 0, 0, 0.18),
                 0 20px 36px rgba(0, 0, 0, 0.22),
                 0 28px 50px rgba(0, 0, 0, 0.25),
@@ -206,19 +206,27 @@
                 radial-gradient(circle at 80% 70%, rgba(30,25,20,0.15) 0%, transparent 50%),
                 radial-gradient(circle at 40% 80%, rgba(25,20,15,0.12) 0%, transparent 40%),
                 #2a2520;
-            border-image: linear-gradient(
-                135deg,
-                rgba(80, 65, 50, 0.4),
-                rgba(95, 75, 55, 0.5),
-                rgba(80, 65, 50, 0.45),
-                rgba(70, 55, 40, 0.5),
-                rgba(80, 65, 50, 0.4)
-            ) 1;
+            /* Dark mode brown worn edges + shadow */
+            box-shadow: 
+                /* Darker brown worn edges (inset) */
+                inset 0 0 0 1px rgba(80, 65, 50, 0.4),
+                inset 0 0 8px 2px rgba(80, 65, 50, 0.25),
+                inset 0 0 15px 4px rgba(70, 55, 40, 0.15),
+                /* Shadow underneath */
+                0 4px 6px rgba(0, 0, 0, 0.2),
+                0 8px 12px rgba(0, 0, 0, 0.22),
+                0 12px 20px rgba(0, 0, 0, 0.24),
+                0 16px 28px rgba(0, 0, 0, 0.26);
         }
         
         :is(.dark .paper-sheet:hover) {
             transform: translateY(-8px) scale(1.02);
             box-shadow: 
+                /* Darker brown worn edges (inset) - same as normal */
+                inset 0 0 0 1px rgba(80, 65, 50, 0.4),
+                inset 0 0 8px 2px rgba(80, 65, 50, 0.25),
+                inset 0 0 15px 4px rgba(70, 55, 40, 0.15),
+                /* Stronger shadow on hover */
                 0 12px 20px rgba(0, 0, 0, 0.3),
                 0 20px 36px rgba(0, 0, 0, 0.35),
                 0 28px 50px rgba(0, 0, 0, 0.4),
