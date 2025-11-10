@@ -194,6 +194,9 @@ return array (
     'title' => 'Filtri',
     'advanced' => 'Filtri Avanzati',
     'all' => 'Tutti',
+    'open' => 'Aperti',
+    'closed' => 'Chiusi',
+    'expired' => 'Scaduti',
     'search' => 'Cerca per titolo, descrizione o luogo...',
     'filter_by_category' => 'Filtra per Categoria',
     'filter_by_type' => 'Filtra per Tipo',
@@ -247,6 +250,6 @@ return array (
     'login_required' => 'Devi effettuare il login',
     'audience_not_allowed' => 'Gli utenti audience non possono interagire con gli ingaggi',
     'unauthorized' => 'Non sei autorizzato a compiere questa azione',
+    'confirm_delete' => 'Sei sicuro di voler eliminare questo ingaggio?',
   ),
-  'confirm_delete' => 'Sei sicuro di voler eliminare questo ingaggio?',
 );
