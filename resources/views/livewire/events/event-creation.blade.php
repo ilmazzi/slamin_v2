@@ -2060,26 +2060,58 @@ function geocodeAddress() {
 // Debounce timer for geocoding
 let geocodeTimeout = null;
 
-// Listen for Livewire updates (when is_online changes)
-document.addEventListener('livewire:init', () => {
-    // Watch for address changes
-    Livewire.on('livewire:update', () => {
-        // Clear existing timeout
-        if (geocodeTimeout) {
-            clearTimeout(geocodeTimeout);
-        }
-        
-        // Debounce geocoding (wait 1.5 seconds after user stops typing)
-        geocodeTimeout = setTimeout(() => {
-            const address = @this.get('venue_address') || '';
-            const city = @this.get('city') || '';
-            
-            if ((address.length > 3 || city.length > 2) && creationMap) {
-                console.log('🔄 Auto-geocoding address...');
-                geocodeAddress();
+// Function to trigger geocoding when address fields change
+function setupAddressGeocoding() {
+    const addressInput = document.getElementById('venue_address');
+    const cityInput = document.getElementById('city');
+    
+    if (addressInput) {
+        addressInput.addEventListener('input', () => {
+            // Clear existing timeout
+            if (geocodeTimeout) {
+                clearTimeout(geocodeTimeout);
             }
-        }, 1500);
-    });
+            
+            // Debounce geocoding (wait 1.5 seconds after user stops typing)
+            geocodeTimeout = setTimeout(() => {
+                const address = addressInput.value || '';
+                const city = cityInput?.value || '';
+                
+                if ((address.length > 3 || city.length > 2) && creationMap) {
+                    console.log('🔄 Auto-geocoding address...');
+                    geocodeAddress();
+                }
+            }, 1500);
+        });
+    }
+    
+    if (cityInput) {
+        cityInput.addEventListener('input', () => {
+            // Clear existing timeout
+            if (geocodeTimeout) {
+                clearTimeout(geocodeTimeout);
+            }
+            
+            // Debounce geocoding (wait 1.5 seconds after user stops typing)
+            geocodeTimeout = setTimeout(() => {
+                const address = addressInput?.value || '';
+                const city = cityInput.value || '';
+                
+                if ((address.length > 3 || city.length > 2) && creationMap) {
+                    console.log('🔄 Auto-geocoding address from city...');
+                    geocodeAddress();
+                }
+            }, 1500);
+        });
+    }
+}
+
+// Listen for Livewire initialization
+document.addEventListener('livewire:init', () => {
+    // Setup address geocoding after a delay to ensure DOM is ready
+    setTimeout(() => {
+        setupAddressGeocoding();
+    }, 500);
     
     Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
         succeed(({ snapshot, effect }) => {
@@ -2088,6 +2120,8 @@ document.addEventListener('livewire:init', () => {
                 if (mapContainer && mapContainer.offsetParent !== null && !creationMap) {
                     console.log('🔄 Livewire updated, map container visible, initializing...');
                     initCreationMap();
+                    // Setup geocoding listeners again after map init
+                    setupAddressGeocoding();
                 }
             }, 500);
         });
@@ -2101,8 +2135,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mapContainer && mapContainer.offsetParent !== null) {
             console.log('📍 DOMContentLoaded, map visible, initializing...');
             initCreationMap();
+            setupAddressGeocoding();
         }
     }, 1000);
+});
+
+// Watch for Livewire updates (step changes, etc.)
+document.addEventListener('livewire:navigated', () => {
+    setTimeout(() => {
+        setupAddressGeocoding();
+        const mapContainer = document.getElementById('eventCreationMap');
+        if (mapContainer && mapContainer.offsetParent !== null && !creationMap) {
+            initCreationMap();
+        }
+    }, 500);
 });
 </script>
 @endpush
