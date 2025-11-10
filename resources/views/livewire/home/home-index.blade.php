@@ -100,39 +100,26 @@
             box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
         }
         
-        /* Wooden Desk Background with REAL IMAGE */
+        /* Wooden Desk Background with REAL IMAGE - NO OVERLAY */
         .wooden-desk-section {
             position: relative;
             background: 
-                /* Subtle overlay for text readability */
-                linear-gradient(180deg, 
-                    rgba(201, 168, 124, 0.75) 0%, 
-                    rgba(184, 153, 104, 0.70) 30%,
-                    rgba(168, 138, 92, 0.65) 60%,
-                    rgba(184, 153, 104, 0.70) 100%
-                ),
                 /* Poetry desk with inkwell, ink splatters, and quill pen */
                 url('/assets/images/poetry-desk-background.png') center/cover no-repeat,
                 /* Fallback color */
                 #8b7355;
             box-shadow: 
-                inset 0 4px 20px rgba(0, 0, 0, 0.2),
-                inset 0 -4px 20px rgba(0, 0, 0, 0.15);
+                inset 0 2px 12px rgba(0, 0, 0, 0.1),
+                inset 0 -2px 12px rgba(0, 0, 0, 0.08);
         }
         
         :is(.dark .wooden-desk-section) {
             background: 
-                linear-gradient(180deg, 
-                    rgba(58, 49, 40, 0.85) 0%, 
-                    rgba(48, 39, 32, 0.80) 30%,
-                    rgba(42, 35, 28, 0.75) 60%,
-                    rgba(48, 39, 32, 0.80) 100%
-                ),
                 url('/assets/images/poetry-desk-background.png') center/cover no-repeat,
                 #3a3128;
             box-shadow: 
-                inset 0 4px 20px rgba(0, 0, 0, 0.4),
-                inset 0 -4px 20px rgba(0, 0, 0, 0.35);
+                inset 0 2px 12px rgba(0, 0, 0, 0.25),
+                inset 0 -2px 12px rgba(0, 0, 0, 0.2);
         }
     </style>
 </div>
