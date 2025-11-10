@@ -194,24 +194,40 @@
                 inset 0 -3px 15px rgba(0, 0, 0, 0.2);
         }
         
-        /* Polaroid Wall - Light Grey Wall (Clean & Airy) */
+        /* Polaroid Wall - Light Grey Wall with VISIBLE Texture */
         .polaroid-wall-section {
             position: relative;
             background: 
-                /* Very subtle texture */
-                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='texture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='20' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23texture)' opacity='0.03'/%3E%3C/svg%3E"),
-                /* Light neutral grey */
+                /* STRONGER concrete/plaster texture */
+                url("data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='texture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='5' seed='22' /%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23texture)' opacity='0.12'/%3E%3C/svg%3E"),
+                /* Subtle grain lines */
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(0, 0, 0, 0.015) 3px,
+                    rgba(0, 0, 0, 0.015) 4px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(0, 0, 0, 0.012) 3px,
+                    rgba(0, 0, 0, 0.012) 4px
+                ),
+                /* Light neutral grey with variation */
                 linear-gradient(135deg, 
-                    #e8e8e8 0%,
-                    #e3e3e3 25%,
-                    #e6e6e6 50%,
-                    #e1e1e1 75%,
-                    #e5e5e5 100%
+                    #ececec 0%,
+                    #e5e5e5 20%,
+                    #e9e9e9 40%,
+                    #e3e3e3 60%,
+                    #e7e7e7 80%,
+                    #eaeaea 100%
                 );
             box-shadow: 
-                inset 0 0 60px rgba(0, 0, 0, 0.03),
-                inset 0 2px 6px rgba(0, 0, 0, 0.02),
-                inset 0 -2px 6px rgba(0, 0, 0, 0.015);
+                inset 0 0 80px rgba(0, 0, 0, 0.04),
+                inset 0 2px 8px rgba(0, 0, 0, 0.03),
+                inset 0 -2px 8px rgba(0, 0, 0, 0.025);
         }
         
         :is(.dark .polaroid-wall-section) {

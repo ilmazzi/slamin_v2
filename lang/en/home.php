@@ -26,7 +26,7 @@ return [
     'videos_section_subtitle' => 'From the community',
 
     // New Users Section
-    'new_users_title' => 'New Poets',
+    'new_users_title' => 'New Users',
     'new_users_subtitle' => 'Welcome our new members',
 
     // Statistics Section
