@@ -29,9 +29,9 @@ class ArticleFactory extends Factory
 
         return [
             'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
-            'title' => json_encode(['it' => $title]),
-            'content' => json_encode(['it' => $this->faker->paragraphs(5, true)]),
-            'excerpt' => json_encode(['it' => $this->faker->sentence(20)]),
+            'title' => $title,
+            'content' => $this->faker->paragraphs(5, true),
+            'excerpt' => $this->faker->sentence(20),
             'featured_image' => 'https://images.unsplash.com/photo-' . $this->faker->randomElement([
                 '1516589178581-6cd7833ae3b2',
                 '1506157786151-b8491531f063',
