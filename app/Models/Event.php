@@ -1039,8 +1039,10 @@ class Event extends Model
                 // Compensation
                 'compensation' => $this->buildCompensation($position),
                 
-                // Limits
-                'max_applications' => $position['quantity'] > 1 ? $position['quantity'] : null,
+                // Limits (default 10 if not specified)
+                'max_applications' => isset($position['quantity']) && $position['quantity'] > 0 
+                    ? (int)$position['quantity'] 
+                    : 10,
                 
                 // Metadata
                 'is_closed' => false,
