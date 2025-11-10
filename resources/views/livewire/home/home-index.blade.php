@@ -100,58 +100,39 @@
             box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
         }
         
-        /* Wooden Desk Background */
+        /* Wooden Desk Background with REAL IMAGE */
         .wooden-desk-section {
             position: relative;
             background: 
-                /* Wood grain texture (more visible) */
-                url("data:image/svg+xml,%3Csvg width='600' height='600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015 1.2' numOctaves='6' seed='3' /%3E%3CfeColorMatrix type='saturate' values='0.4'/%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23wood)' opacity='0.35'/%3E%3C/svg%3E"),
-                /* Horizontal wood grain lines */
-                repeating-linear-gradient(
-                    180deg,
-                    transparent 0px,
-                    rgba(90, 70, 50, 0.08) 1px,
-                    transparent 2px,
-                    transparent 80px
+                /* Overlay for text readability */
+                linear-gradient(180deg, 
+                    rgba(201, 168, 124, 0.85) 0%, 
+                    rgba(184, 153, 104, 0.80) 30%,
+                    rgba(168, 138, 92, 0.75) 60%,
+                    rgba(184, 153, 104, 0.80) 100%
                 ),
-                /* Fine vertical texture */
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(120, 90, 60, 0.04) 0px,
-                    transparent 1px,
-                    transparent 3px
-                ),
-                /* Rich wood color gradient */
-                radial-gradient(ellipse at 50% 50%, #d4b896 0%, #c9a87c 20%, #b89968 40%, #a88a5c 60%, #9d7a50 80%, #8f6f48 100%),
-                linear-gradient(160deg, #c9a87c 0%, #b89968 25%, #a88a5c 50%, #b89968 75%, #c9a87c 100%);
+                /* Wood desk image (placeholder - replace with your image) */
+                url('https://images.unsplash.com/photo-1604881991720-f91add269bed?w=1920&q=80&auto=format') center/cover no-repeat,
+                /* Fallback color */
+                #b89968;
             box-shadow: 
-                inset 0 6px 20px rgba(0, 0, 0, 0.12),
-                inset 0 -6px 20px rgba(0, 0, 0, 0.1),
-                inset 0 0 80px rgba(120, 90, 60, 0.15);
+                inset 0 4px 20px rgba(0, 0, 0, 0.15),
+                inset 0 -4px 20px rgba(0, 0, 0, 0.1);
         }
         
         :is(.dark .wooden-desk-section) {
             background: 
-                url("data:image/svg+xml,%3Csvg width='600' height='600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015 1.2' numOctaves='6' seed='3' /%3E%3CfeColorMatrix type='saturate' values='0.4'/%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23wood)' opacity='0.45'/%3E%3C/svg%3E"),
-                repeating-linear-gradient(
-                    180deg,
-                    transparent 0px,
-                    rgba(40, 30, 20, 0.15) 1px,
-                    transparent 2px,
-                    transparent 80px
+                linear-gradient(180deg, 
+                    rgba(58, 49, 40, 0.90) 0%, 
+                    rgba(48, 39, 32, 0.85) 30%,
+                    rgba(42, 35, 28, 0.80) 60%,
+                    rgba(48, 39, 32, 0.85) 100%
                 ),
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(60, 45, 30, 0.08) 0px,
-                    transparent 1px,
-                    transparent 3px
-                ),
-                radial-gradient(ellipse at 50% 50%, #544638 0%, #4a3f32 20%, #3d342a 40%, #352d24 60%, #2d261f 80%, #251f19 100%),
-                linear-gradient(160deg, #4a3f32 0%, #3d342a 25%, #352d24 50%, #3d342a 75%, #4a3f32 100%);
+                url('https://images.unsplash.com/photo-1604881991720-f91add269bed?w=1920&q=80&auto=format') center/cover no-repeat,
+                #3a3128;
             box-shadow: 
-                inset 0 6px 20px rgba(0, 0, 0, 0.3),
-                inset 0 -6px 20px rgba(0, 0, 0, 0.25),
-                inset 0 0 80px rgba(0, 0, 0, 0.4);
+                inset 0 4px 20px rgba(0, 0, 0, 0.4),
+                inset 0 -4px 20px rgba(0, 0, 0, 0.3);
         }
     </style>
 </div>
