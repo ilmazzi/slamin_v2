@@ -20,11 +20,11 @@ window.Echo = new Echo({
     key: 'local-key',
     wsHost: 'localhost',
     wsPort: 8080,
-    wssPort: 8080,
-    forceTLS: false, // FORCE ws:// not wss:// for local development
-    enabledTransports: ['ws', 'wss'],
+    forceTLS: false, // Disable TLS for local development
+    enabledTransports: ['ws'], // ONLY ws, NOT wss (no secure websocket)
     disableStats: true,
     encrypted: false,
+    authEndpoint: '/broadcasting/auth',
 });
 
-console.log('Echo configured for ws://localhost:8080 (no TLS)');
+console.log('🔌 Echo configured for ws://localhost:8080 (no TLS, ws only)');
