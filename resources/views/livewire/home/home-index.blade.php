@@ -122,28 +122,57 @@
                 inset 0 -2px 12px rgba(0, 0, 0, 0.2);
         }
         
-        /* Newspaper Section Background (WebP optimized 363KB - 1536x1024) */
+        /* Whitewashed Wood Panel Background - Light & Elegant */
         .articles-newspaper-section {
             position: relative;
             background: 
-                /* Articles newspaper background with coffee stains and vintage paper */
-                url('/assets/images/articles-section-background.webp') center/cover no-repeat,
-                /* Fallback color */
-                #e8e3d8;
+                /* Wood grain texture (SVG) */
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' seed='5' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.08'/%3E%3C/svg%3E"),
+                /* Subtle wood planks */
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 200px,
+                    rgba(200, 180, 160, 0.04) 200px,
+                    rgba(200, 180, 160, 0.04) 202px
+                ),
+                /* Whitewashed wood gradient */
+                linear-gradient(180deg, 
+                    #f5f1ea 0%, 
+                    #ebe7dd 20%,
+                    #f0ece2 40%,
+                    #e8e4da 60%,
+                    #ede9df 80%,
+                    #f3efe5 100%
+                );
             box-shadow: 
-                inset 0 2px 12px rgba(0, 0, 0, 0.08),
-                inset 0 -2px 12px rgba(0, 0, 0, 0.06);
+                inset 0 0 80px rgba(139, 115, 85, 0.04),
+                inset 0 2px 12px rgba(0, 0, 0, 0.03),
+                inset 0 -2px 12px rgba(0, 0, 0, 0.02);
         }
         
         :is(.dark .articles-newspaper-section) {
             background: 
-                url('/assets/images/articles-section-background.webp') center/cover no-repeat,
-                #3a362d;
-            /* Darken for dark mode */
-            filter: brightness(0.4) contrast(1.1);
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' seed='5' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.08'/%3E%3C/svg%3E"),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 200px,
+                    rgba(80, 70, 60, 0.1) 200px,
+                    rgba(80, 70, 60, 0.1) 202px
+                ),
+                linear-gradient(180deg, 
+                    #3a3632 0%, 
+                    #2f2d28 20%,
+                    #34322d 40%,
+                    #2d2b26 60%,
+                    #32302b 80%,
+                    #383630 100%
+                );
             box-shadow: 
-                inset 0 2px 12px rgba(0, 0, 0, 0.3),
-                inset 0 -2px 12px rgba(0, 0, 0, 0.25);
+                inset 0 0 80px rgba(0, 0, 0, 0.15),
+                inset 0 2px 12px rgba(0, 0, 0, 0.2),
+                inset 0 -2px 12px rgba(0, 0, 0, 0.15);
         }
     </style>
 </div>
