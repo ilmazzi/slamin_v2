@@ -16,12 +16,15 @@
     </div>
 
     {{-- Nuovi Utenti - POLAROID WALL --}}
-    <div class="py-16 md:py-20 polaroid-wall-section">
+    <div class="py-16 md:py-24 polaroid-wall-section">
         <livewire:home.new-users-section />
     </div>
 
+    {{-- Decorative Separator --}}
+    <div class="section-separator"></div>
+
     {{-- Articoli - Newspaper Section --}}
-    <div class="py-16 md:py-20 articles-newspaper-section">
+    <div class="py-16 md:py-24 articles-newspaper-section">
         <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
             <div>
                 <div class="text-center mb-12">
@@ -263,6 +266,56 @@
                 inset 0 -3px 12px rgba(0, 0, 0, 0.12),
                 inset 20px 20px 80px rgba(0, 0, 0, 0.08),
                 inset -20px -20px 80px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Section Separator - Decorative divider between sections */
+        .section-separator {
+            height: 3px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(139, 115, 85, 0.15) 15%,
+                rgba(139, 115, 85, 0.25) 50%,
+                rgba(139, 115, 85, 0.15) 85%,
+                transparent 100%
+            );
+            margin: 0 auto;
+            max-width: 1200px;
+            position: relative;
+        }
+        
+        .section-separator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, 
+                rgba(16, 185, 129, 0.15) 0%, 
+                rgba(16, 185, 129, 0.08) 50%, 
+                transparent 70%
+            );
+        }
+        
+        .dark .section-separator {
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(100, 85, 70, 0.2) 15%,
+                rgba(100, 85, 70, 0.35) 50%,
+                rgba(100, 85, 70, 0.2) 85%,
+                transparent 100%
+            );
+        }
+        
+        .dark .section-separator::before {
+            background: radial-gradient(circle, 
+                rgba(16, 185, 129, 0.2) 0%, 
+                rgba(16, 185, 129, 0.12) 50%, 
+                transparent 70%
+            );
         }
     </style>
 </div>
