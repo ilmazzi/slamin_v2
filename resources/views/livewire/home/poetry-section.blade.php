@@ -87,7 +87,7 @@
         .paper-sheet {
             display: block;
             position: relative;
-            background: url('/assets/images/paper.webp') center/cover no-repeat;
+            background: url('/assets/images/paper.webp') center/contain no-repeat;
             padding: 2.5rem 2rem 2rem 2rem;
             min-height: 420px;
             border-radius: 1px;
@@ -116,7 +116,7 @@
         }
         
         :is(.dark .paper-sheet) {
-            background: url('/assets/images/paper.webp') center/cover no-repeat;
+            background: url('/assets/images/paper.webp') center/contain no-repeat;
             /* Darken the paper for dark mode */
             filter: brightness(0.35) contrast(1.1);
         }
