@@ -49,10 +49,12 @@
                             @endif
                             
                             {{-- Event Date Badge (top right) --}}
+                            @if($event->start_date)
                             <div class="poster-date-badge">
                                 <div class="poster-date-day">{{ $event->start_date->format('d') }}</div>
                                 <div class="poster-date-month">{{ $event->start_date->locale('it')->isoFormat('MMM') }}</div>
                             </div>
+                            @endif
                             
                             {{-- Event Title --}}
                             <div class="poster-content">
