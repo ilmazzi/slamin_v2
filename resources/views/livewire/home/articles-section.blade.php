@@ -1,8 +1,9 @@
 <div>
     @if($articles && $articles->count() > 0)
-    {{-- Articles - Native Horizontal Scroll --}}
-    <div class="flex gap-6 md:gap-12 lg:gap-16 overflow-x-auto pb-4 pt-12 scrollbar-hide snap-x snap-mandatory"
-         style="-webkit-overflow-scrolling: touch;">
+    <div>
+        {{-- Articles - Native Horizontal Scroll --}}
+        <div class="flex gap-6 md:gap-12 lg:gap-16 overflow-x-auto pb-4 pt-12 scrollbar-hide snap-x snap-mandatory"
+             style="-webkit-overflow-scrolling: touch;">
         @foreach($articles->take(3) as $i => $article)
         <?php
             // Random positioning for magazine covers
@@ -92,17 +93,17 @@
             </div>
         </article>
         @endforeach
-    </div>
+        </div>
 
-    <div class="text-center mt-10">
-        <x-ui.buttons.primary :href="route('articles.index')" size="md" icon="M9 5l7 7-7 7">
-            {{ __('home.all_articles_button') }}
-        </x-ui.buttons.primary>
+        <div class="text-center mt-10">
+            <x-ui.buttons.primary :href="route('articles.index')" size="md" icon="M9 5l7 7-7 7">
+                {{ __('home.all_articles_button') }}
+            </x-ui.buttons.primary>
+        </div>
     </div>
     @endif
-</div>
 
-<style>
+    <style>
     /* MAGAZINE WALL STYLING 
        ============================================ */
     
