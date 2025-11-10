@@ -12,6 +12,18 @@
             </p>
         </div>
 
+        {{-- Decorative Elements (Inkwell & Ink Stains) --}}
+        <div class="decorative-elements">
+            {{-- Inkwell --}}
+            <div class="inkwell"></div>
+            {{-- Ink stains scattered --}}
+            <div class="ink-stain ink-stain-1"></div>
+            <div class="ink-stain ink-stain-2"></div>
+            <div class="ink-stain ink-stain-3"></div>
+            {{-- Quill pen --}}
+            <div class="quill-pen"></div>
+        </div>
+
         {{-- Poetry Cards Grid --}}
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 pt-8 pb-4">
             @foreach($poems->take(3) as $i => $poem)
@@ -26,9 +38,37 @@
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
                 
-                {{-- REALISTIC Paper Clip at top --}}
-                <div class="paper-clip paper-clip-{{ $clipType }}" 
-                     style="transform: translate(-50%, 0) rotate({{ $clipRotation }}deg) translateX({{ $clipOffsetX }}px);"></div>
+                {{-- METAL Paper Clip at top --}}
+                <svg class="paper-clip paper-clip-{{ $clipType }}" 
+                     style="transform: translate(-50%, 0) rotate({{ $clipRotation }}deg) translateX({{ $clipOffsetX }}px);"
+                     viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="metal-{{ $clipType }}-{{ $i }}" x1="0%" y1="0%" x2="100%" y2="0%">
+                            @if($clipType === 'silver')
+                                <stop offset="0%" style="stop-color:#b0b8c0;stop-opacity:1" />
+                                <stop offset="30%" style="stop-color:#e8f0f8;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#c0c8d0;stop-opacity:1" />
+                                <stop offset="70%" style="stop-color:#e8f0f8;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#b0b8c0;stop-opacity:1" />
+                            @else
+                                <stop offset="0%" style="stop-color:#c89860;stop-opacity:1" />
+                                <stop offset="30%" style="stop-color:#f0d890;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#d8b070;stop-opacity:1" />
+                                <stop offset="70%" style="stop-color:#f0d890;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#c89860;stop-opacity:1" />
+                            @endif
+                        </linearGradient>
+                        <filter id="shadow-{{ $i }}">
+                            <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.4"/>
+                        </filter>
+                    </defs>
+                    <path d="M 15,10 Q 10,10 10,15 L 10,35 Q 10,45 15,45 L 25,45 Q 30,45 30,35 L 30,20 Q 30,10 20,10 L 18,10 Q 15,10 15,13 L 15,32 Q 15,37 18,37 L 22,37 Q 25,37 25,32 L 25,20" 
+                          fill="none" 
+                          stroke="url(#metal-{{ $clipType }}-{{ $i }})" 
+                          stroke-width="3.5" 
+                          stroke-linecap="round"
+                          filter="url(#shadow-{{ $i }})" />
+                </svg>
                 
                 {{-- Poem Card with archive paper effect --}}
                 <div class="archive-paper">
@@ -61,6 +101,113 @@
         }
         
         /* ============================================
+           DECORATIVE POETIC ELEMENTS
+           ============================================ */
+        
+        .decorative-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        /* Inkwell (calamaio) */
+        .inkwell {
+            position: absolute;
+            top: 10%;
+            right: 8%;
+            width: 60px;
+            height: 70px;
+            background: 
+                /* Glass reflection */
+                radial-gradient(ellipse 15px 20px at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+                /* Ink inside */
+                radial-gradient(ellipse 20px 15px at 50% 60%, rgba(20, 30, 50, 0.9) 0%, rgba(30, 40, 60, 0.8) 100%),
+                /* Glass body */
+                linear-gradient(180deg, 
+                    rgba(100, 120, 140, 0.3) 0%,
+                    rgba(80, 100, 120, 0.4) 30%,
+                    rgba(60, 80, 100, 0.5) 70%,
+                    rgba(40, 60, 80, 0.6) 100%
+                );
+            border-radius: 30% 30% 40% 40% / 25% 25% 50% 50%;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            opacity: 0.7;
+        }
+        
+        /* Ink stains */
+        .ink-stain {
+            position: absolute;
+            background: radial-gradient(ellipse at center, 
+                rgba(20, 30, 50, 0.4) 0%, 
+                rgba(30, 40, 60, 0.25) 40%, 
+                rgba(40, 50, 70, 0.1) 70%, 
+                transparent 100%);
+            border-radius: 50%;
+            filter: blur(1px);
+        }
+        
+        .ink-stain-1 {
+            top: 25%;
+            left: 15%;
+            width: 40px;
+            height: 45px;
+            transform: rotate(-25deg);
+        }
+        
+        .ink-stain-2 {
+            bottom: 30%;
+            right: 20%;
+            width: 30px;
+            height: 35px;
+            transform: rotate(40deg);
+        }
+        
+        .ink-stain-3 {
+            top: 60%;
+            left: 10%;
+            width: 25px;
+            height: 30px;
+            transform: rotate(-15deg);
+        }
+        
+        /* Quill pen */
+        .quill-pen {
+            position: absolute;
+            bottom: 15%;
+            right: 12%;
+            width: 120px;
+            height: 8px;
+            background: linear-gradient(90deg,
+                rgba(180, 140, 100, 0.6) 0%,
+                rgba(160, 120, 80, 0.5) 40%,
+                rgba(140, 100, 60, 0.4) 70%,
+                rgba(100, 70, 40, 0.3) 85%,
+                transparent 100%
+            );
+            border-radius: 50% 0 0 50%;
+            transform: rotate(-35deg);
+            opacity: 0.6;
+        }
+        
+        .quill-pen::before {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: -8px;
+            width: 0;
+            height: 0;
+            border-left: 12px solid rgba(100, 70, 40, 0.35);
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+        }
+        
+        /* ============================================
            POETRY CARDS WITH METAL CLIPS
            ============================================ */
         
@@ -80,104 +227,20 @@
             filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.3));
         }
         
-        /* REALISTIC Paper Clip Effect */
+        /* SVG Paper Clip */
         .paper-clip {
             position: absolute;
-            top: -8px;
+            top: -15px;
             left: 50%;
-            width: 80px;
-            height: 100px;
+            width: 50px;
+            height: 70px;
             z-index: 10;
             pointer-events: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 40% 40% 50% 50% / 30% 30% 70% 70%;
         }
         
         .poetry-card-container:hover .paper-clip {
             transform: translate(-50%, -2px) rotate(0deg) translateX(0px) !important;
-        }
-        
-        /* SILVER CLIP - Realistic metal */
-        .paper-clip-silver {
-            background: 
-                /* Top loop shadow */
-                radial-gradient(ellipse 14px 30px at 50% 25%, transparent 65%, rgba(80, 90, 105, 1) 66%, rgba(80, 90, 105, 1) 100%),
-                /* Bottom loop shadow */
-                radial-gradient(ellipse 14px 30px at 50% 75%, transparent 65%, rgba(80, 90, 105, 1) 66%, rgba(80, 90, 105, 1) 100%),
-                /* Top loop metal */
-                radial-gradient(ellipse 24px 38px at 50% 25%, transparent 60%, rgba(150, 160, 175, 1) 61%, rgba(210, 220, 235, 1) 75%, rgba(180, 190, 205, 1) 90%, rgba(150, 160, 175, 1) 100%),
-                /* Bottom loop metal */
-                radial-gradient(ellipse 24px 38px at 50% 75%, transparent 60%, rgba(150, 160, 175, 1) 61%, rgba(210, 220, 235, 1) 75%, rgba(180, 190, 205, 1) 90%, rgba(150, 160, 175, 1) 100%),
-                /* Center bar with gradient */
-                linear-gradient(180deg,
-                    rgba(170, 180, 195, 1) 0%,
-                    rgba(220, 230, 245, 1) 15%,
-                    rgba(190, 200, 215, 1) 30%,
-                    rgba(160, 170, 185, 1) 50%,
-                    rgba(190, 200, 215, 1) 70%,
-                    rgba(220, 230, 245, 1) 85%,
-                    rgba(170, 180, 195, 1) 100%
-                );
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-        }
-        
-        /* GOLD CLIP - Realistic brass/gold */
-        .paper-clip-gold {
-            background: 
-                /* Top loop shadow */
-                radial-gradient(ellipse 14px 30px at 50% 25%, transparent 65%, rgba(110, 85, 45, 1) 66%, rgba(110, 85, 45, 1) 100%),
-                /* Bottom loop shadow */
-                radial-gradient(ellipse 14px 30px at 50% 75%, transparent 65%, rgba(110, 85, 45, 1) 66%, rgba(110, 85, 45, 1) 100%),
-                /* Top loop metal */
-                radial-gradient(ellipse 24px 38px at 50% 25%, transparent 60%, rgba(180, 145, 75, 1) 61%, rgba(240, 210, 130, 1) 75%, rgba(210, 175, 95, 1) 90%, rgba(180, 145, 75, 1) 100%),
-                /* Bottom loop metal */
-                radial-gradient(ellipse 24px 38px at 50% 75%, transparent 60%, rgba(180, 145, 75, 1) 61%, rgba(240, 210, 130, 1) 75%, rgba(210, 175, 95, 1) 90%, rgba(180, 145, 75, 1) 100%),
-                /* Center bar with gradient */
-                linear-gradient(180deg,
-                    rgba(200, 165, 85, 1) 0%,
-                    rgba(245, 215, 135, 1) 15%,
-                    rgba(215, 180, 100, 1) 30%,
-                    rgba(185, 150, 75, 1) 50%,
-                    rgba(215, 180, 100, 1) 70%,
-                    rgba(245, 215, 135, 1) 85%,
-                    rgba(200, 165, 85, 1) 100%
-                );
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-        }
-        
-        /* Dark mode adjustments */
-        :is(.dark .paper-clip-silver) {
-            background: 
-                radial-gradient(ellipse 14px 30px at 50% 25%, transparent 65%, rgba(70, 80, 95, 0.98) 66%, rgba(70, 80, 95, 0.98) 100%),
-                radial-gradient(ellipse 14px 30px at 50% 75%, transparent 65%, rgba(70, 80, 95, 0.98) 66%, rgba(70, 80, 95, 0.98) 100%),
-                radial-gradient(ellipse 24px 38px at 50% 25%, transparent 60%, rgba(130, 140, 155, 0.95) 61%, rgba(190, 200, 215, 0.98) 75%, rgba(160, 170, 185, 0.96) 90%, rgba(130, 140, 155, 0.95) 100%),
-                radial-gradient(ellipse 24px 38px at 50% 75%, transparent 60%, rgba(130, 140, 155, 0.95) 61%, rgba(190, 200, 215, 0.98) 75%, rgba(160, 170, 185, 0.96) 90%, rgba(130, 140, 155, 0.95) 100%),
-                linear-gradient(180deg,
-                    rgba(150, 160, 175, 0.96) 0%,
-                    rgba(200, 210, 225, 0.98) 15%,
-                    rgba(170, 180, 195, 0.96) 30%,
-                    rgba(140, 150, 165, 0.95) 50%,
-                    rgba(170, 180, 195, 0.96) 70%,
-                    rgba(200, 210, 225, 0.98) 85%,
-                    rgba(150, 160, 175, 0.96) 100%
-                );
-        }
-        
-        :is(.dark .paper-clip-gold) {
-            background: 
-                radial-gradient(ellipse 14px 30px at 50% 25%, transparent 65%, rgba(95, 75, 40, 0.98) 66%, rgba(95, 75, 40, 0.98) 100%),
-                radial-gradient(ellipse 14px 30px at 50% 75%, transparent 65%, rgba(95, 75, 40, 0.98) 66%, rgba(95, 75, 40, 0.98) 100%),
-                radial-gradient(ellipse 24px 38px at 50% 25%, transparent 60%, rgba(160, 130, 65, 0.95) 61%, rgba(220, 190, 115, 0.98) 75%, rgba(190, 155, 85, 0.96) 90%, rgba(160, 130, 65, 0.95) 100%),
-                radial-gradient(ellipse 24px 38px at 50% 75%, transparent 60%, rgba(160, 130, 65, 0.95) 61%, rgba(220, 190, 115, 0.98) 75%, rgba(190, 155, 85, 0.96) 90%, rgba(160, 130, 65, 0.95) 100%),
-                linear-gradient(180deg,
-                    rgba(180, 150, 75, 0.96) 0%,
-                    rgba(225, 195, 120, 0.98) 15%,
-                    rgba(195, 165, 90, 0.96) 30%,
-                    rgba(165, 135, 65, 0.95) 50%,
-                    rgba(195, 165, 90, 0.96) 70%,
-                    rgba(225, 195, 120, 0.98) 85%,
-                    rgba(180, 150, 75, 0.96) 100%
-                );
         }
     </style>
     @endif
