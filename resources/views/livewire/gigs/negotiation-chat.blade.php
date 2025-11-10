@@ -10,17 +10,20 @@
             </span>
         @endif
     </button>
+</div>
 
-    <!-- Negotiation Modal/Panel -->
-    @if($showNegotiation)
-        <div class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+<!-- Negotiation Modal/Panel - Outside main div for proper z-index -->
+@if($showNegotiation)
+    @teleport('body')
+        <div class="fixed inset-0 z-[9999] overflow-y-auto flex items-center justify-center p-4"
+             style="margin: 0 !important; padding: 1rem !important;">
             
             <!-- Background overlay -->
             <div class="fixed inset-0 bg-neutral-900/75 backdrop-blur-sm" 
                  wire:click="toggleNegotiation"></div>
 
             <!-- Modal panel -->
-            <div class="relative w-full max-w-3xl bg-white dark:bg-neutral-800 shadow-2xl rounded-3xl overflow-hidden">
+            <div class="relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-neutral-800 shadow-2xl rounded-3xl overflow-hidden flex flex-col">
                     
                     <!-- Header -->
                     <div class="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-700">
@@ -54,7 +57,7 @@
                     </div>
 
                     <!-- Messages -->
-                    <div class="p-6 space-y-4 max-h-96 overflow-y-auto" id="negotiation-messages">
+                    <div class="flex-1 p-6 space-y-4 overflow-y-auto" id="negotiation-messages" style="min-height: 200px; max-height: 400px;">
                         @forelse($negotiations as $negotiation)
                             <div class="flex {{ $negotiation->user_id === Auth::id() ? 'justify-end' : 'justify-start' }}">
                                 <div class="max-w-md">
@@ -126,7 +129,7 @@
                     </div>
 
                     <!-- Message Input Form -->
-                    <div class="p-6 border-t border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900/50">
+                    <div class="flex-shrink-0 p-6 border-t border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900/50">
                         
                         <!-- Message Type Selector -->
                         <div class="flex flex-wrap gap-2 mb-4">
@@ -233,8 +236,8 @@
 
             </div>
         </div>
-    @endif
-</div>
+    @endteleport
+@endif
 
 <script>
     // Auto-scroll to bottom when new messages arrive
