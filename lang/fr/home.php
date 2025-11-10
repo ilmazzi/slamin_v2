@@ -12,7 +12,7 @@ return [
     'all_articles_button' => 'Tous les Articles',
 
     // Events Section
-    'events_section_title' => 'Événements <span class="italic text-amber-400">à Venir</span>',
+    'events_section_title' => 'Événements <span class="italic text-primary-600">à Venir</span>',
     'events_section_subtitle' => 'Ne manquez pas les prochains rendez-vous poétiques',
     'all_events_button' => 'Tous les Événements',
 
