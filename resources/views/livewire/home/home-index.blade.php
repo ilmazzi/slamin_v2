@@ -104,35 +104,35 @@
         .wooden-desk-section {
             position: relative;
             background: 
-                /* Overlay for text readability */
+                /* Subtle overlay for text readability */
                 linear-gradient(180deg, 
-                    rgba(201, 168, 124, 0.85) 0%, 
-                    rgba(184, 153, 104, 0.80) 30%,
-                    rgba(168, 138, 92, 0.75) 60%,
-                    rgba(184, 153, 104, 0.80) 100%
+                    rgba(201, 168, 124, 0.75) 0%, 
+                    rgba(184, 153, 104, 0.70) 30%,
+                    rgba(168, 138, 92, 0.65) 60%,
+                    rgba(184, 153, 104, 0.70) 100%
                 ),
-                /* Wood desk image (placeholder - replace with your image) */
-                url('https://images.unsplash.com/photo-1604881991720-f91add269bed?w=1920&q=80&auto=format') center/cover no-repeat,
+                /* Poetry desk with inkwell, ink splatters, and quill pen */
+                url('/images/poetry-desk-background.jpg') center/cover no-repeat,
                 /* Fallback color */
-                #b89968;
+                #8b7355;
             box-shadow: 
-                inset 0 4px 20px rgba(0, 0, 0, 0.15),
-                inset 0 -4px 20px rgba(0, 0, 0, 0.1);
+                inset 0 4px 20px rgba(0, 0, 0, 0.2),
+                inset 0 -4px 20px rgba(0, 0, 0, 0.15);
         }
         
         :is(.dark .wooden-desk-section) {
             background: 
                 linear-gradient(180deg, 
-                    rgba(58, 49, 40, 0.90) 0%, 
-                    rgba(48, 39, 32, 0.85) 30%,
-                    rgba(42, 35, 28, 0.80) 60%,
-                    rgba(48, 39, 32, 0.85) 100%
+                    rgba(58, 49, 40, 0.85) 0%, 
+                    rgba(48, 39, 32, 0.80) 30%,
+                    rgba(42, 35, 28, 0.75) 60%,
+                    rgba(48, 39, 32, 0.80) 100%
                 ),
-                url('https://images.unsplash.com/photo-1604881991720-f91add269bed?w=1920&q=80&auto=format') center/cover no-repeat,
+                url('/images/poetry-desk-background.jpg') center/cover no-repeat,
                 #3a3128;
             box-shadow: 
                 inset 0 4px 20px rgba(0, 0, 0, 0.4),
-                inset 0 -4px 20px rgba(0, 0, 0, 0.3);
+                inset 0 -4px 20px rgba(0, 0, 0, 0.35);
         }
     </style>
 </div>
