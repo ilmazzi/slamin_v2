@@ -198,6 +198,7 @@
             position: relative;
             height: 100%;
             display: block;
+            overflow: visible;
         }
         
         .notice-paper {
@@ -330,11 +331,11 @@
         }
         
         .washi-top {
-            top: 12px;
+            top: -10px;
         }
         
         .washi-bottom {
-            bottom: 12px;
+            bottom: -10px;
         }
         
         /* Typography */
