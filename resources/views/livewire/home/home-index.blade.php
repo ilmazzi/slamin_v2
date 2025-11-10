@@ -194,28 +194,42 @@
                 inset 0 -3px 15px rgba(0, 0, 0, 0.2);
         }
         
-        /* Polaroid Wall - Chalkboard Background (WebP 1.0 MB) */
+        /* Polaroid Wall - Soft Anthracite Grey with Subtle Texture */
         .polaroid-wall-section {
             position: relative;
             background: 
-                /* Real chalkboard image - cover for full screen */
-                url('/assets/images/lavagna.webp') center/cover no-repeat,
-                /* Fallback color */
-                #2d3436;
+                /* Subtle concrete texture */
+                url("data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='concrete'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' seed='18' /%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23concrete)' opacity='0.06'/%3E%3C/svg%3E"),
+                /* Soft anthracite grey gradient */
+                linear-gradient(135deg, 
+                    #3e4345 0%,
+                    #383c3e 20%,
+                    #3b3f41 40%,
+                    #363a3c 60%,
+                    #3a3e40 80%,
+                    #3d4143 100%
+                );
             box-shadow: 
-                inset 0 0 80px rgba(0, 0, 0, 0.15),
-                inset 0 2px 12px rgba(0, 0, 0, 0.08),
-                inset 0 -2px 12px rgba(0, 0, 0, 0.06);
+                inset 0 0 100px rgba(0, 0, 0, 0.12),
+                inset 0 2px 10px rgba(0, 0, 0, 0.06),
+                inset 0 -2px 10px rgba(0, 0, 0, 0.04);
         }
         
         :is(.dark .polaroid-wall-section) {
             background: 
-                url('/assets/images/lavagna.webp') center/cover no-repeat,
-                #1a1d1e;
+                url("data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='concrete'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' seed='18' /%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23concrete)' opacity='0.08'/%3E%3C/svg%3E"),
+                linear-gradient(135deg, 
+                    #27292a 0%,
+                    #232527 20%,
+                    #262829 40%,
+                    #222426 60%,
+                    #252728 80%,
+                    #282a2b 100%
+                );
             box-shadow: 
-                inset 0 0 80px rgba(0, 0, 0, 0.25),
-                inset 0 2px 12px rgba(0, 0, 0, 0.15),
-                inset 0 -2px 12px rgba(0, 0, 0, 0.1);
+                inset 0 0 100px rgba(0, 0, 0, 0.2),
+                inset 0 2px 10px rgba(0, 0, 0, 0.12),
+                inset 0 -2px 10px rgba(0, 0, 0, 0.08);
         }
     </style>
 </div>
