@@ -63,8 +63,8 @@
         </div>
 
         {{-- Polaroid Slider --}}
-        <div class="relative overflow-hidden">
-            <div class="flex transition-transform duration-500 ease-out gap-10 md:gap-12 pt-8 pb-4"
+        <div class="relative overflow-hidden -mx-3 md:mx-0">
+            <div class="flex transition-transform duration-500 ease-out px-3 md:px-0 gap-3 md:gap-10 lg:gap-12 pt-8 pb-4"
                  :style="`transform: translateX(-${currentPage * 100}%)`">
             @foreach($newUsers as $i => $user)
             <?php

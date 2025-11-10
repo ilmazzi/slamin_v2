@@ -59,8 +59,8 @@
         </div>
 
         {{-- Poetry Cards Slider --}}
-        <div class="relative overflow-hidden">
-            <div class="flex transition-transform duration-500 ease-out gap-8 md:gap-10 pt-8 pb-4"
+        <div class="relative overflow-hidden -mx-3 md:mx-0">
+            <div class="flex transition-transform duration-500 ease-out px-3 md:px-0 gap-3 md:gap-8 lg:gap-10 pt-8 pb-4"
                  :style="`transform: translateX(-${currentPage * 100}%)`">
             @foreach($poems->take(3) as $i => $poem)
             <?php
