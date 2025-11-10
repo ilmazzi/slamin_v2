@@ -58,26 +58,38 @@
                 <div class="p-4 border-b border-neutral-100 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-700/50 transition-colors {{ $notification->read_at ? '' : 'bg-blue-50 dark:bg-blue-900/10' }}">
                     
                     <div class="flex items-start gap-3">
-                        <!-- Icon based on notification type -->
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center
-                                    {{ $notification->read_at 
-                                        ? 'bg-neutral-100 dark:bg-neutral-700' 
-                                        : 'bg-primary-100 dark:bg-primary-900 animate-pulse' }}">
-                            @php
-                                $icon = '🔔';
-                                if (isset($notification->data['type'])) {
-                                    $icon = match($notification->data['type']) {
-                                        'gig_application' => '📝',
-                                        'application_accepted' => '✅',
-                                        'application_rejected' => '❌',
-                                        'negotiation_message' => '💬',
-                                        'gig_created' => '✨',
-                                        default => '🔔'
-                                    };
-                                }
-                            @endphp
-                            <span class="text-xl">{{ $icon }}</span>
-                        </div>
+                        <!-- User Avatar -->
+                        @php
+                            $senderUserId = $notification->data['sender_id'] ?? null;
+                            $senderUser = $senderUserId ? \App\Models\User::find($senderUserId) : null;
+                        @endphp
+                        
+                        @if($senderUser)
+                            <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($senderUser, 80) }}" 
+                                 alt="{{ $senderUser->name }}"
+                                 class="flex-shrink-0 w-10 h-10 rounded-full object-cover {{ $notification->read_at ? 'opacity-75' : 'ring-2 ring-primary-500' }}">
+                        @else
+                            <!-- Fallback icon based on notification type -->
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center
+                                        {{ $notification->read_at 
+                                            ? 'bg-neutral-100 dark:bg-neutral-700' 
+                                            : 'bg-primary-100 dark:bg-primary-900 animate-pulse' }}">
+                                @php
+                                    $icon = '🔔';
+                                    if (isset($notification->data['type'])) {
+                                        $icon = match($notification->data['type']) {
+                                            'gig_application' => '📝',
+                                            'application_accepted' => '✅',
+                                            'application_rejected' => '❌',
+                                            'negotiation_message' => '💬',
+                                            'gig_created' => '✨',
+                                            default => '🔔'
+                                        };
+                                    }
+                                @endphp
+                                <span class="text-xl">{{ $icon }}</span>
+                            </div>
+                        @endif
 
                         <!-- Content -->
                         <div class="flex-1 min-w-0">
@@ -91,7 +103,7 @@
                                 </p>
                             @endif
 
-                            <div class="flex items-center gap-2 mt-2">
+                            <div class="flex items-center flex-wrap gap-x-3 gap-y-1 mt-2">
                                 <span class="text-xs text-neutral-500 dark:text-neutral-400">
                                     {{ $notification->created_at->diffForHumans() }}
                                 </span>
@@ -99,21 +111,21 @@
                                 @if(isset($notification->data['url']))
                                     <a href="{{ $notification->data['url'] }}" 
                                        wire:click="markAsRead('{{ $notification->id }}')"
-                                       class="text-xs text-primary-600 dark:text-primary-400 hover:underline">
+                                       class="text-xs font-medium text-primary-600 dark:text-primary-400 hover:underline">
                                         {{ __('notifications.view') }}
                                     </a>
                                 @endif
 
                                 @if(!$notification->read_at)
                                     <button wire:click="markAsRead('{{ $notification->id }}')" 
-                                            class="text-xs text-neutral-500 dark:text-neutral-400 hover:underline ml-auto">
+                                            class="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 hover:underline">
                                         {{ __('notifications.mark_read') }}
                                     </button>
                                 @endif
 
                                 <button wire:click="deleteNotification('{{ $notification->id }}')" 
-                                        class="text-xs text-red-600 dark:text-red-400 hover:underline">
-                                    {{ __('common.delete') }}
+                                        class="text-xs text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:underline ml-auto">
+                                    {{ __('notifications.delete') }}
                                 </button>
                             </div>
                         </div>

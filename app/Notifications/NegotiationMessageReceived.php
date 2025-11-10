@@ -3,11 +3,14 @@
 namespace App\Notifications;
 
 use App\Models\PoemTranslationNegotiation;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class NegotiationMessageReceived extends Notification
+class NegotiationMessageReceived extends Notification implements ShouldQueue
 {
+    use Queueable;
 
     public function __construct(
         public PoemTranslationNegotiation $negotiation
@@ -31,6 +34,7 @@ class NegotiationMessageReceived extends Notification
             'negotiation_id' => $this->negotiation->id,
             'application_id' => $this->negotiation->gig_application_id,
             'gig_id' => $this->negotiation->gigApplication->gig->id,
+            'sender_id' => $this->negotiation->user_id, // For avatar display
         ];
     }
 

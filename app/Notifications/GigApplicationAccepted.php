@@ -23,6 +23,8 @@ class GigApplicationAccepted extends Notification implements ShouldQueue
 
     public function toArray(object $notifiable): array
     {
+        $gigOwner = $this->application->gig->requester ?? $this->application->gig->user;
+        
         return [
             'type' => 'application_accepted',
             'title' => __('notifications.application_accepted_title'),
@@ -32,6 +34,7 @@ class GigApplicationAccepted extends Notification implements ShouldQueue
             'url' => route('gigs.show', $this->application->gig),
             'application_id' => $this->application->id,
             'gig_id' => $this->application->gig->id,
+            'sender_id' => $gigOwner?->id, // Gig owner who accepted
         ];
     }
 

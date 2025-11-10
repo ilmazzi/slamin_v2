@@ -6,6 +6,7 @@ return [
     'no_notifications_description' => 'When you receive notifications, they will appear here',
     'mark_all_read' => 'Mark all as read',
     'mark_read' => 'Mark as read',
+    'delete' => 'Delete',
     'clear_all' => 'Clear all',
     'confirm_clear_all' => 'Are you sure you want to clear all notifications?',
     'view' => 'View',

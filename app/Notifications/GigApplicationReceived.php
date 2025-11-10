@@ -33,6 +33,7 @@ class GigApplicationReceived extends Notification implements ShouldQueue
             'url' => route('gigs.applications', $this->application->gig),
             'application_id' => $this->application->id,
             'gig_id' => $this->application->gig->id,
+            'sender_id' => $this->application->user_id, // For avatar display
         ];
     }
 

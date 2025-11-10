@@ -6,6 +6,7 @@ return [
     'no_notifications_description' => 'Quando riceverai notifiche, appariranno qui',
     'mark_all_read' => 'Segna tutte come lette',
     'mark_read' => 'Segna come letta',
+    'delete' => 'Elimina',
     'clear_all' => 'Cancella tutto',
     'confirm_clear_all' => 'Sei sicuro di voler cancellare tutte le notifiche?',
     'view' => 'Visualizza',

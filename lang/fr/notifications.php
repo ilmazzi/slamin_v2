@@ -6,6 +6,7 @@ return [
     'no_notifications_description' => 'Lorsque vous recevrez des notifications, elles apparaîtront ici',
     'mark_all_read' => 'Tout marquer comme lu',
     'mark_read' => 'Marquer comme lu',
+    'delete' => 'Supprimer',
     'clear_all' => 'Tout effacer',
     'confirm_clear_all' => 'Êtes-vous sûr de vouloir effacer toutes les notifications?',
     'view' => 'Voir',
