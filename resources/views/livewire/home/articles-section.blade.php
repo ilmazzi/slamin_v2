@@ -45,8 +45,8 @@
             </button>
         </div>
         
-        <div class="relative overflow-hidden pt-12 pb-6">
-            <div class="flex transition-transform duration-500 ease-out gap-12 md:gap-16"
+        <div class="relative overflow-hidden pt-12 pb-6 -mx-3 md:mx-0">
+            <div class="flex transition-transform duration-500 ease-out px-3 md:px-0 gap-3 md:gap-12 lg:gap-16"
                  :style="`transform: translateX(-${currentPage * 100}%)`">
         @foreach($articles->take(3) as $i => $article)
         <?php
