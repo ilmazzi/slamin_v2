@@ -112,7 +112,7 @@
                     rgba(184, 153, 104, 0.70) 100%
                 ),
                 /* Poetry desk with inkwell, ink splatters, and quill pen */
-                url('/images/poetry-desk-background.jpg') center/cover no-repeat,
+                url('/images/poetry-desk-background.png') center/cover no-repeat,
                 /* Fallback color */
                 #8b7355;
             box-shadow: 
@@ -128,7 +128,7 @@
                     rgba(42, 35, 28, 0.75) 60%,
                     rgba(48, 39, 32, 0.80) 100%
                 ),
-                url('/images/poetry-desk-background.jpg') center/cover no-repeat,
+                url('/images/poetry-desk-background.png') center/cover no-repeat,
                 #3a3128;
             box-shadow: 
                 inset 0 4px 20px rgba(0, 0, 0, 0.4),
