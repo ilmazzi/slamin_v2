@@ -346,26 +346,26 @@
         font-family: 'Crimson Pro', serif;
     }
     
-    /* Price - Stamp Effect (Red Stamp) */
+    /* Price - Stamp Effect (Red Stamp - Smaller) */
     .ticket-price {
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 1rem;
         font-weight: 900;
         color: #dc2626;
         font-family: 'Arial Black', 'Arial', sans-serif;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        padding: 0.5rem 1.25rem;
-        margin: 0.75rem auto;
+        padding: 0.375rem 1rem;
+        margin: 0.5rem auto;
         width: fit-content;
-        border: 4px solid #dc2626;
-        border-radius: 8px;
-        transform: rotate(-3deg);
+        border: 3px solid #dc2626;
+        border-radius: 6px;
+        transform: rotate(-2deg);
         opacity: 0.85;
         position: relative;
         box-shadow: 
-            0 0 0 2px rgba(220, 38, 38, 0.1),
-            0 2px 8px rgba(220, 38, 38, 0.2);
+            0 0 0 2px rgba(220, 38, 38, 0.08),
+            0 2px 6px rgba(220, 38, 38, 0.15);
         background: 
             /* Stamp texture */
             repeating-linear-gradient(
@@ -390,8 +390,8 @@
         content: '';
         position: absolute;
         inset: -2px;
-        border: 2px solid rgba(220, 38, 38, 0.3);
-        border-radius: 6px;
+        border: 2px solid rgba(220, 38, 38, 0.25);
+        border-radius: 4px;
         pointer-events: none;
     }
     
@@ -436,23 +436,38 @@
         letter-spacing: 0.1em;
     }
     
-    /* Barcode Tooltip */
+    /* Barcode Tooltip - Vintage Paper Style */
     .barcode-tooltip {
         position: absolute;
         bottom: 100%;
         left: 50%;
         transform: translateX(-50%);
-        margin-bottom: 0.5rem;
-        background: #2d3748;
-        color: white;
-        padding: 1rem;
-        border-radius: 8px;
+        margin-bottom: 0.75rem;
+        background: linear-gradient(135deg, 
+            #fef9f0 0%,
+            #fdf5e6 50%,
+            #fcf1dc 100%
+        );
+        color: #2d2d2d;
+        padding: 1rem 1.25rem;
+        border-radius: 6px;
+        border: 2px solid rgba(139, 115, 85, 0.3);
         box-shadow: 
-            0 10px 25px rgba(0, 0, 0, 0.5),
-            0 0 0 1px rgba(255, 255, 255, 0.1);
+            0 8px 20px rgba(0, 0, 0, 0.3),
+            0 4px 12px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5);
         z-index: 50;
-        min-width: 280px;
-        max-width: 320px;
+        min-width: 260px;
+        max-width: 300px;
+    }
+    
+    .barcode-tooltip::before {
+        content: '';
+        position: absolute;
+        inset: 4px;
+        border: 1px solid rgba(139, 115, 85, 0.15);
+        border-radius: 4px;
+        pointer-events: none;
     }
     
     .barcode-tooltip::after {
@@ -462,41 +477,52 @@
         left: 50%;
         transform: translateX(-50%);
         border: 8px solid transparent;
-        border-top-color: #2d3748;
+        border-top-color: #fdf5e6;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
     }
     
     .tooltip-title {
-        font-size: 0.875rem;
-        font-weight: 700;
-        color: #ffd700;
-        margin-bottom: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 900;
+        color: #b91c1c;
+        margin-bottom: 0.625rem;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.08em;
+        text-align: center;
+        border-bottom: 2px solid rgba(185, 28, 28, 0.2);
+        padding-bottom: 0.5rem;
     }
     
     .tooltip-description {
-        font-size: 0.8125rem;
+        font-size: 0.75rem;
         line-height: 1.5;
-        color: #e2e8f0;
+        color: #4a4035;
         margin-bottom: 0.75rem;
+        font-style: italic;
+        text-align: center;
     }
     
     .tooltip-row {
         display: flex;
         justify-content: space-between;
-        font-size: 0.75rem;
-        padding: 0.375rem 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        align-items: center;
+        font-size: 0.6875rem;
+        padding: 0.5rem 0;
+        border-top: 1px dashed rgba(139, 115, 85, 0.2);
     }
     
     .tooltip-label {
-        color: #cbd5e0;
-        font-weight: 600;
+        color: #8b7355;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-size: 0.625rem;
     }
     
     .tooltip-value {
-        color: #ffffff;
-        font-weight: 700;
+        color: #2d2d2d;
+        font-weight: 600;
+        font-family: 'Crimson Pro', serif;
     }
     
     /* Social Actions */
