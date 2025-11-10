@@ -194,56 +194,75 @@
                 inset 0 -3px 15px rgba(0, 0, 0, 0.2);
         }
         
-        /* Polaroid Wall - Light Grey Wall with VISIBLE Texture */
+        /* Polaroid Wall - Vintage Painted Wall (Warm Beige with Character) */
         .polaroid-wall-section {
             position: relative;
             background: 
-                /* STRONGER concrete/plaster texture */
-                url("data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='texture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='5' seed='22' /%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23texture)' opacity='0.12'/%3E%3C/svg%3E"),
-                /* Subtle grain lines */
+                /* Paint imperfections & age marks */
+                radial-gradient(ellipse at 20% 30%, rgba(180, 150, 120, 0.08) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 70%, rgba(160, 140, 110, 0.06) 0%, transparent 35%),
+                radial-gradient(ellipse at 40% 80%, rgba(200, 170, 140, 0.07) 0%, transparent 38%),
+                /* Strong plaster/stucco texture */
+                url("data:image/svg+xml,%3Csvg width='280' height='280' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='stucco'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='6' seed='28' /%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23stucco)' opacity='0.15'/%3E%3C/svg%3E"),
+                /* Fine grain texture */
                 repeating-linear-gradient(
-                    90deg,
+                    45deg,
                     transparent,
-                    transparent 3px,
-                    rgba(0, 0, 0, 0.015) 3px,
-                    rgba(0, 0, 0, 0.015) 4px
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.012) 2px,
+                    rgba(0, 0, 0, 0.012) 3px
                 ),
                 repeating-linear-gradient(
-                    0deg,
+                    -45deg,
                     transparent,
-                    transparent 3px,
-                    rgba(0, 0, 0, 0.012) 3px,
-                    rgba(0, 0, 0, 0.012) 4px
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.01) 2px,
+                    rgba(0, 0, 0, 0.01) 3px
                 ),
-                /* Light neutral grey with variation */
+                /* Warm beige base with subtle variation */
                 linear-gradient(135deg, 
-                    #ececec 0%,
-                    #e5e5e5 20%,
-                    #e9e9e9 40%,
-                    #e3e3e3 60%,
-                    #e7e7e7 80%,
-                    #eaeaea 100%
+                    #f5f0e8 0%,
+                    #f0ebe1 15%,
+                    #f3ede5 30%,
+                    #eee8df 45%,
+                    #f1ebe3 60%,
+                    #ede7dd 75%,
+                    #f2ece4 90%,
+                    #f4eee6 100%
                 );
             box-shadow: 
-                inset 0 0 80px rgba(0, 0, 0, 0.04),
-                inset 0 2px 8px rgba(0, 0, 0, 0.03),
-                inset 0 -2px 8px rgba(0, 0, 0, 0.025);
+                inset 0 0 120px rgba(139, 115, 85, 0.06),
+                inset 0 3px 12px rgba(0, 0, 0, 0.04),
+                inset 0 -3px 12px rgba(0, 0, 0, 0.035),
+                inset 20px 20px 80px rgba(180, 150, 120, 0.03),
+                inset -20px -20px 80px rgba(160, 130, 100, 0.03);
         }
         
         :is(.dark .polaroid-wall-section) {
             background: 
-                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='texture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='20' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23texture)' opacity='0.05'/%3E%3C/svg%3E"),
+                /* Dark paint imperfections */
+                radial-gradient(ellipse at 20% 30%, rgba(80, 70, 60, 0.12) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 70%, rgba(70, 60, 50, 0.1) 0%, transparent 35%),
+                radial-gradient(ellipse at 40% 80%, rgba(90, 75, 65, 0.11) 0%, transparent 38%),
+                /* Strong texture */
+                url("data:image/svg+xml,%3Csvg width='280' height='280' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='stucco'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='6' seed='28' /%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23stucco)' opacity='0.18'/%3E%3C/svg%3E"),
+                /* Dark warm grey */
                 linear-gradient(135deg, 
-                    #2a2a2a 0%,
-                    #262626 25%,
-                    #282828 50%,
-                    #242424 75%,
-                    #272727 100%
+                    #3a3530 0%,
+                    #353128 15%,
+                    #38342c 30%,
+                    #332f26 45%,
+                    #36322a 60%,
+                    #312d24 75%,
+                    #35312b 90%,
+                    #37332d 100%
                 );
             box-shadow: 
-                inset 0 0 60px rgba(0, 0, 0, 0.15),
-                inset 0 2px 6px rgba(0, 0, 0, 0.1),
-                inset 0 -2px 6px rgba(0, 0, 0, 0.08);
+                inset 0 0 120px rgba(0, 0, 0, 0.25),
+                inset 0 3px 12px rgba(0, 0, 0, 0.15),
+                inset 0 -3px 12px rgba(0, 0, 0, 0.12),
+                inset 20px 20px 80px rgba(0, 0, 0, 0.08),
+                inset -20px -20px 80px rgba(0, 0, 0, 0.08);
         }
     </style>
 </div>
