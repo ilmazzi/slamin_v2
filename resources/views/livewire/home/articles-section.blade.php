@@ -1,53 +1,8 @@
 <div>
     @if($articles && $articles->count() > 0)
-    <div x-data="{
-             currentPage: 0,
-             itemsPerPage: window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1),
-             totalItems: {{ $articles->take(3)->count() }},
-             get totalPages() {
-                 return Math.ceil(this.totalItems / this.itemsPerPage);
-             },
-             next() {
-                 if (this.currentPage < this.totalPages - 1) {
-                     this.currentPage++;
-                 }
-             },
-             prev() {
-                 if (this.currentPage > 0) {
-                     this.currentPage--;
-                 }
-             }
-         }"
-         x-init="
-             window.addEventListener('resize', () => {
-                 itemsPerPage = window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1);
-                 if (currentPage >= totalPages) currentPage = totalPages - 1;
-             });
-         ">
-        
-        <!-- Slider Controls (Desktop) -->
-        <div class="hidden md:flex justify-end items-center gap-3 mb-6">
-            <button @click="prev()" 
-                    :disabled="currentPage === 0"
-                    :class="currentPage === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-200 dark:hover:bg-neutral-700'"
-                    class="p-3 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-white transition-all">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-            </button>
-            <button @click="next()" 
-                    :disabled="currentPage === totalPages - 1"
-                    :class="currentPage === totalPages - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-200 dark:hover:bg-neutral-700'"
-                    class="p-3 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-white transition-all">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                </svg>
-            </button>
-        </div>
-        
-        <div class="relative overflow-hidden pt-12 pb-6">
-            <div class="flex transition-transform duration-500 ease-out"
-                 :style="`transform: translateX(-${currentPage * 100}%)`">
+    {{-- Articles - Native Horizontal Scroll --}}
+    <div class="flex gap-6 md:gap-12 lg:gap-16 overflow-x-auto pb-4 pt-12 scrollbar-hide snap-x snap-mandatory"
+         style="-webkit-overflow-scrolling: touch;">
         @foreach($articles->take(3) as $i => $article)
         <?php
             // Random positioning for magazine covers
@@ -55,7 +10,7 @@
             $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
             $pinRotation = rand(-15, 15);
         ?>
-        <article class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 magazine-article-wrapper fade-scale-item px-3 md:px-6 lg:px-8" 
+        <article class="w-[85vw] md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)] flex-shrink-0 magazine-article-wrapper fade-scale-item snap-center" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
@@ -69,50 +24,49 @@
             {{-- Magazine Cover --}}
             <div class="magazine-cover" style="transform: rotate({{ $rotation }}deg);">
                 
-                <a href="{{ route('articles.show', $article->id) }}" class="magazine-inner group">
-                    
-                    {{-- Magazine Header --}}
-                    <div class="magazine-header">
-                        <div class="magazine-logo">SLAMIN</div>
-                        <div class="magazine-issue">Vol. {{ date('Y') }} · N.{{ str_pad($article->id, 2, '0', STR_PAD_LEFT) }}</div>
+                {{-- Magazine Header --}}
+                <div class="magazine-header">
+                    <div class="magazine-logo">SLAMIN</div>
+                    <div class="magazine-issue">Vol. {{ date('Y') }} . N.{{ 18 + $i }}</div>
+                </div>
+                
+                {{-- Horizontal Line --}}
+                <div style="width: 100%; height: 1px; background: #1a1a1a; margin-bottom: 0.75rem;"></div>
+                
+                {{-- Category Badge --}}
+                <div class="magazine-category">
+                    Cultura
+                </div>
+                
+                {{-- Featured Image --}}
+                @if($article->image)
+                <div class="magazine-image">
+                    <img src="{{ $article->image }}" 
+                         alt="{{ $article->title }}"
+                         class="w-full h-full object-cover">
+                </div>
+                @endif
+                
+                {{-- Article Title --}}
+                <h3 class="magazine-title">
+                    {{ $article->title }}
+                </h3>
+                
+                {{-- Article Excerpt --}}
+                <p class="magazine-excerpt">
+                    {{ Str::limit(strip_tags($article->excerpt ?? $article->content), 120) }}
+                </p>
+                
+                {{-- Author Info with Avatar --}}
+                <div class="magazine-author">
+                    <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($article->user, 80) }}" 
+                         alt="{{ $article->user->name }}"
+                         class="magazine-avatar">
+                    <div class="magazine-author-info">
+                        <div class="magazine-author-name">{{ $article->user->name }}</div>
+                        <div class="magazine-author-date">{{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}</div>
                     </div>
-                    
-                    {{-- Category Badge --}}
-                    <div class="magazine-category">
-                        Cultura
-                    </div>
-                    
-                    {{-- Featured Image --}}
-                    @if($article->featured_image_url)
-                    <div class="magazine-image">
-                        <img src="{{ $article->featured_image_url }}" 
-                             alt="{{ $article->title }}"
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                    </div>
-                    @endif
-                    
-                    {{-- Article Title --}}
-                    <h3 class="magazine-title">
-                        {{ $article->title }}
-                    </h3>
-                    
-                    {{-- Excerpt --}}
-                    <p class="magazine-excerpt">
-                        {{ $article->excerpt ?? Str::limit(strip_tags($article->content), 120) }}
-                    </p>
-                    
-                    {{-- Author Info with Avatar --}}
-                    <div class="magazine-author">
-                        <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($article->user, 80) }}" 
-                             alt="{{ $article->user->name }}"
-                             class="magazine-avatar">
-                        <div class="magazine-author-info">
-                            <div class="magazine-author-name">{{ $article->user->name }}</div>
-                            <div class="magazine-author-date">{{ $article->created_at->format('d M Y') }}</div>
-                        </div>
-                    </div>
-                    
-                </a>
+                </div>
                 
                 {{-- Social Actions --}}
                 <div class="magazine-actions" @click.stop>
@@ -138,18 +92,6 @@
             </div>
         </article>
         @endforeach
-            </div>
-        </div>
-        
-        <!-- Page Indicators (Mobile) -->
-        <div class="flex md:hidden justify-center items-center gap-2 mt-8">
-            <template x-for="i in totalPages" :key="i">
-                <button @click="currentPage = i - 1"
-                        :class="currentPage === i - 1 ? 'bg-neutral-800 dark:bg-white w-8' : 'bg-neutral-300 dark:bg-neutral-600 w-2'"
-                        class="h-2 rounded-full transition-all duration-300">
-                </button>
-            </template>
-        </div>
     </div>
 
     <div class="text-center mt-10">
@@ -157,248 +99,210 @@
             {{ __('home.all_articles_button') }}
         </x-ui.buttons.primary>
     </div>
-    
-    <style>
-        @keyframes fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fade-in 0.6s ease-out forwards; opacity: 0; }
-        
-        /* ============================================
-           LITERARY MAGAZINE WALL
-           ============================================ */
-        
-        .magazine-article-wrapper {
-            position: relative;
-            padding-top: 0;
-        }
-        
-        /* Thumbtack/Puntina colorata - PINNED INTO CARD */
-        .thumbtack {
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            z-index: 100;
-            box-shadow: 
-                0 3px 6px rgba(0, 0, 0, 0.35),
-                0 1px 3px rgba(0, 0, 0, 0.25),
-                inset 0 -6px 10px rgba(0, 0, 0, 0.25),
-                inset 0 6px 10px rgba(255, 255, 255, 0.4);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .thumbtack-needle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 4px;
-            height: 4px;
-            background: #1a1a1a;
-            border-radius: 50%;
-            box-shadow: 
-                0 1px 3px rgba(0, 0, 0, 0.6),
-                inset 0 1px 1px rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Magazine Cover - Copertina Rivista */
-        .magazine-cover {
-            position: relative;
-            background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            box-shadow: 
-                0 4px 8px rgba(0, 0, 0, 0.12),
-                0 8px 16px rgba(0, 0, 0, 0.08),
-                0 12px 24px rgba(0, 0, 0, 0.06);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Hover on wrapper - pin moves with card! */
-        .magazine-article-wrapper:hover .magazine-cover {
-            transform: translateY(-8px) scale(1.02) !important;
-            box-shadow: 
-                0 12px 20px rgba(0, 0, 0, 0.18),
-                0 20px 36px rgba(0, 0, 0, 0.12),
-                0 28px 48px rgba(0, 0, 0, 0.08);
-        }
-        
-        .magazine-article-wrapper:hover .thumbtack {
-            transform: translateX(-50%) translateY(-8px);
-        }
-        
-        :is(.dark .magazine-cover) {
-            background: #2a2724;
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .magazine-inner {
-            display: block;
-            padding: 1.5rem;
-            text-decoration: none;
-        }
-        
-        /* Magazine Header - Testata */
-        .magazine-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 0.75rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #000;
-        }
-        
-        :is(.dark .magazine-header) {
-            border-bottom-color: #fff;
-        }
-        
-        .magazine-logo {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            letter-spacing: 0.15em;
-            color: #000;
-        }
-        
-        :is(.dark .magazine-logo) {
-            color: #fff;
-        }
-        
-        .magazine-issue {
-            font-family: 'Crimson Pro', serif;
-            font-size: 0.625rem;
-            font-weight: 600;
-            color: #666;
-            letter-spacing: 0.05em;
-        }
-        
-        :is(.dark .magazine-issue) {
-            color: #aaa;
-        }
-        
-        /* Category Badge */
-        .magazine-category {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: #10b981;
-            color: #fff;
-            font-size: 0.625rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
-        }
-        
-        /* Featured Image */
-        .magazine-image {
-            position: relative;
-            aspect-ratio: 16/10;
-            overflow: hidden;
-            margin-bottom: 1rem;
-            background: #000;
-        }
-        
-        /* Title */
-        .magazine-title {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            line-height: 1.3;
-            color: #1a1a1a;
-            margin-bottom: 0.75rem;
-            transition: color 0.3s ease;
-        }
-        
-        .group:hover .magazine-title {
-            color: #10b981;
-        }
-        
-        :is(.dark .magazine-title) {
-            color: #f5f5f5;
-        }
-        
-        :is(.dark .group:hover .magazine-title) {
-            color: #34d399;
-        }
-        
-        /* Excerpt */
-        .magazine-excerpt {
-            font-family: 'Crimson Pro', serif;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            color: #4a4a4a;
-            margin-bottom: 1rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        :is(.dark .magazine-excerpt) {
-            color: #c5c5c5;
-        }
-        
-        /* Author section with avatar */
-        .magazine-author {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 0;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        
-        :is(.dark .magazine-author) {
-            border-top-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .magazine-avatar {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #10b981;
-            flex-shrink: 0;
-        }
-        
-        .magazine-author-info {
-            flex: 1;
-        }
-        
-        .magazine-author-name {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-        
-        :is(.dark .magazine-author-name) {
-            color: #f5f5f5;
-        }
-        
-        .magazine-author-date {
-            font-size: 0.75rem;
-            color: #666;
-        }
-        
-        :is(.dark .magazine-author-date) {
-            color: #999;
-        }
-        
-        /* Social Actions */
-        .magazine-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(4px);
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        
-        :is(.dark .magazine-actions) {
-            background: rgba(42, 39, 36, 0.9);
-            border-top-color: rgba(255, 255, 255, 0.1);
-        }
-    </style>
     @endif
 </div>
+
+<style>
+    /* MAGAZINE WALL STYLING 
+       ============================================ */
+    
+    .magazine-article-wrapper {
+        position: relative;
+        padding-top: 0;
+        min-height: 500px;
+    }
+    
+    /* Thumbtack */
+    .thumbtack {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        box-shadow: 
+            0 2px 4px rgba(0, 0, 0, 0.2),
+            inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        z-index: 30;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .thumbtack-needle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 3px;
+        height: 3px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Magazine Cover */
+    .magazine-cover {
+        background: white;
+        padding: 1.5rem;
+        box-shadow: 
+            0 4px 12px rgba(0, 0, 0, 0.15),
+            0 8px 24px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        z-index: 20;
+    }
+    
+    :is(.dark .magazine-cover) {
+        background: #2d3748;
+    }
+    
+    /* Hover on wrapper - pin moves with card! */
+    .magazine-article-wrapper:hover .magazine-cover {
+        transform: translateY(-8px) scale(1.02) !important;
+        box-shadow: 
+            0 12px 20px rgba(0, 0, 0, 0.18),
+            0 20px 36px rgba(0, 0, 0, 0.12),
+            0 28px 48px rgba(0, 0, 0, 0.08);
+    }
+    
+    .magazine-article-wrapper:hover .thumbtack {
+        transform: translateX(-50%) translateY(-8px);
+    }
+    
+    /* Magazine Header */
+    .magazine-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .magazine-logo {
+        font-size: 1.5rem;
+        font-weight: 900;
+        letter-spacing: 0.05em;
+        color: #1a1a1a;
+    }
+    
+    :is(.dark .magazine-logo) {
+        color: #e2e8f0;
+    }
+    
+    .magazine-issue {
+        font-size: 0.75rem;
+        color: #666;
+        font-weight: 500;
+    }
+    
+    :is(.dark .magazine-issue) {
+        color: #a0aec0;
+    }
+    
+    /* Category Badge */
+    .magazine-category {
+        display: inline-block;
+        background: #10b981;
+        color: white;
+        font-size: 0.625rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Feature Image */
+    .magazine-image {
+        width: 100%;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        border-radius: 0.25rem;
+    }
+    
+    /* Title */
+    .magazine-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 0.75rem;
+        line-height: 1.4;
+        font-family: 'Crimson Pro', serif;
+    }
+    
+    :is(.dark .magazine-title) {
+        color: #e2e8f0;
+    }
+    
+    /* Excerpt */
+    .magazine-excerpt {
+        font-size: 0.875rem;
+        color: #4a5568;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+    
+    :is(.dark .magazine-excerpt) {
+        color: #cbd5e0;
+    }
+    
+    /* Author Section */
+    .magazine-author {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    
+    :is(.dark .magazine-author) {
+        border-top-color: rgba(255, 255, 255, 0.08);
+    }
+    
+    .magazine-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #10b981;
+    }
+    
+    .magazine-author-info {
+        flex: 1;
+    }
+    
+    .magazine-author-name {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #2d3748;
+    }
+    
+    :is(.dark .magazine-author-name) {
+        color: #e2e8f0;
+    }
+    
+    .magazine-author-date {
+        font-size: 0.75rem;
+        color: #718096;
+    }
+    
+    :is(.dark .magazine-author-date) {
+        color: #a0aec0;
+    }
+    
+    /* Social Actions */
+    .magazine-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    :is(.dark .magazine-actions) {
+        border-top-color: rgba(255, 255, 255, 0.05);
+    }
+</style>
