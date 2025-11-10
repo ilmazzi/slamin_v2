@@ -346,19 +346,53 @@
         font-family: 'Crimson Pro', serif;
     }
     
-    /* Price Badge */
+    /* Price - Stamp Effect (Red Stamp) */
     .ticket-price {
         text-align: center;
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         font-weight: 900;
-        color: #059669;
-        font-family: 'Crimson Pro', serif;
-        padding: 0.5rem 1rem;
-        margin: 0.75rem 0;
-        background: rgba(5, 150, 105, 0.08);
+        color: #dc2626;
+        font-family: 'Arial Black', 'Arial', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.5rem 1.25rem;
+        margin: 0.75rem auto;
+        width: fit-content;
+        border: 4px solid #dc2626;
+        border-radius: 8px;
+        transform: rotate(-3deg);
+        opacity: 0.85;
+        position: relative;
+        box-shadow: 
+            0 0 0 2px rgba(220, 38, 38, 0.1),
+            0 2px 8px rgba(220, 38, 38, 0.2);
+        background: 
+            /* Stamp texture */
+            repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 1px,
+                rgba(220, 38, 38, 0.03) 1px,
+                rgba(220, 38, 38, 0.03) 2px
+            ),
+            repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 1px,
+                rgba(220, 38, 38, 0.03) 1px,
+                rgba(220, 38, 38, 0.03) 2px
+            );
+        /* Ink effect */
+        filter: contrast(1.1) brightness(1.05);
+    }
+    
+    .ticket-price::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border: 2px solid rgba(220, 38, 38, 0.3);
         border-radius: 6px;
-        border: 2px dashed rgba(5, 150, 105, 0.3);
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        pointer-events: none;
     }
     
     /* Barcode Wrapper */
