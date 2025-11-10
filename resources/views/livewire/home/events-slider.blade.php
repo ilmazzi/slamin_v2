@@ -49,7 +49,7 @@
                         
                         {{-- Ticket Header --}}
                         <div class="ticket-header">
-                            <div class="ticket-admit">ADMIT ONE</div>
+                            <div class="ticket-admit">{{ strtoupper($event->category ?? 'Evento') }}</div>
                             @if($event->start_date)
                             <div class="ticket-serial">#{{ str_pad($event->id, 4, '0', STR_PAD_LEFT) }}</div>
                             @endif
@@ -78,8 +78,13 @@
                             
                             @if($event->start_time)
                             <div class="ticket-detail-item">
-                                <div class="ticket-detail-label">ORA</div>
-                                <div class="ticket-detail-value">{{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}</div>
+                                <div class="ticket-detail-label">ORARIO</div>
+                                <div class="ticket-detail-value">
+                                    {{ \Carbon\Carbon::parse($event->start_time)->format('H:i') }}
+                                    @if($event->end_time)
+                                    - {{ \Carbon\Carbon::parse($event->end_time)->format('H:i') }}
+                                    @endif
+                                </div>
                             </div>
                             @endif
                             
