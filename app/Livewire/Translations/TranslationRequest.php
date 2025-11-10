@@ -89,8 +89,8 @@ class TranslationRequest extends Component
         session()->flash('success', __('translations.request_created'));
         $this->closeModal();
         
-        // Redirect alla pagina gig
-        return $this->redirect(route('translations.gig.show', $gig), navigate: true);
+        // Redirect alla pagina gig (unified route)
+        return $this->redirect(route('gigs.show', $gig), navigate: true);
     }
     
     public function render()
