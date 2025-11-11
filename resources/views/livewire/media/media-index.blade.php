@@ -1,41 +1,60 @@
 <div class="min-h-screen">
     
-    {{-- HERO con Film Card Singola --}}
-    <section class="relative py-20 overflow-hidden film-studio-section">
+    {{-- HERO con Film Card + Titolo --}}
+    <section class="relative py-16 md:py-20 overflow-hidden film-studio-section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-center">
-                <!-- SINGLE FILM CARD -->
-                <div class="media-hero-film-card">
-                    <!-- Film Perforations Left -->
-                    <div class="media-film-perf media-film-perf-left">
-                        @for($h = 0; $h < 12; $h++)
-                        <div class="media-perf-hole"></div>
-                        @endfor
-                    </div>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
+                
+                <!-- FILM CARD (come homepage, ma più grande) -->
+                <div class="media-page-film-card">
+                    <!-- Film codes -->
+                    <div class="media-page-film-code-top">SLAMIN</div>
+                    <div class="media-page-film-code-bottom">ISO 400</div>
                     
-                    <!-- Film Perforations Right -->
-                    <div class="media-film-perf media-film-perf-right">
-                        @for($h = 0; $h < 12; $h++)
-                        <div class="media-perf-hole"></div>
-                        @endfor
-                    </div>
-                    
-                    <!-- Film Edge Codes -->
-                    <div class="media-film-code-top">SLAMIN</div>
-                    <div class="media-film-code-bottom">MEDIA</div>
-                    
-                    <!-- Content -->
-                    <div class="media-film-content">
-                        <div class="media-frame-number media-frame-number-tl">///01</div>
-                        <div class="media-frame-number media-frame-number-tr">01A</div>
+                    <!-- Film frame -->
+                    <div class="media-page-film-frame">
+                        <!-- Perforations -->
+                        <div class="media-page-film-perf-left">
+                            @for($h = 0; $h < 10; $h++)
+                            <div class="media-page-perf-hole"></div>
+                            @endfor
+                        </div>
                         
-                        <h1 class="text-5xl md:text-7xl font-black text-white text-center leading-tight" style="font-family: 'Crimson Pro', serif;">
-                            Video & <span class="italic text-primary-400">Foto</span>
-                        </h1>
-                        <p class="text-xl md:text-2xl text-white/80 text-center mt-6 font-medium">
-                            Dalla community Slamin
-                        </p>
+                        <div class="media-page-film-perf-right">
+                            @for($h = 0; $h < 10; $h++)
+                            <div class="media-page-perf-hole"></div>
+                            @endfor
+                        </div>
+                        
+                        <!-- Frame numbers -->
+                        <div class="media-page-frame-number-tl">///01</div>
+                        <div class="media-page-frame-number-tr">01A</div>
+                        <div class="media-page-frame-number-bl">35MM</div>
+                        <div class="media-page-frame-number-br">1</div>
+                        
+                        <!-- Thumbnail with random image -->
+                        <div class="media-page-film-thumbnail" style="background: url('<?php echo [
+                            'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600',
+                            'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600',
+                            'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=600',
+                            'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600'
+                        ][rand(0, 3)]; ?>') center/cover;"></div>
+                        
+                        <!-- Media text overlay -->
+                        <div class="media-page-film-text">
+                            Media
+                        </div>
                     </div>
+                </div>
+                
+                <!-- TITOLO A FIANCO -->
+                <div class="text-center md:text-left">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-neutral-900 dark:text-white leading-tight" style="font-family: 'Crimson Pro', serif;">
+                        Video & <span class="italic text-primary-600 dark:text-primary-400">Foto</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-neutral-600 dark:text-neutral-300 mt-4 font-medium">
+                        Dalla community Slamin
+                    </p>
                 </div>
             </div>
         </div>
@@ -403,143 +422,183 @@
 
     <style>
         /* ========================================
-           MEDIA HERO - Single Film Card
+           MEDIA PAGE HERO - Film Card (come homepage)
            ======================================== */
         
-        .media-hero-film-card {
+        .media-page-film-card {
             position: relative;
-            padding: 3.5rem 5rem;
-            max-width: 800px;
-            background: 
-                linear-gradient(180deg, 
-                    rgba(255, 255, 255, 0.15) 0%,
-                    transparent 15%,
-                    transparent 85%,
-                    rgba(0, 0, 0, 0.2) 100%
-                ),
-                linear-gradient(120deg, 
-                    transparent 0%,
-                    transparent 40%,
-                    rgba(255, 255, 255, 0.08) 48%,
-                    rgba(255, 255, 255, 0.12) 50%,
-                    rgba(255, 255, 255, 0.08) 52%,
-                    transparent 60%,
-                    transparent 100%
-                ),
-                linear-gradient(135deg, 
-                    rgba(120, 80, 50, 0.85) 0%,
-                    rgba(100, 65, 40, 0.88) 25%,
-                    rgba(110, 72, 45, 0.86) 50%,
-                    rgba(95, 60, 38, 0.89) 75%,
-                    rgba(115, 75, 48, 0.87) 100%
-                );
-            border-radius: 8px;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.08) 0%,
+                transparent 30%
+            ),
+            linear-gradient(180deg, 
+                rgba(80, 55, 35, 0.95) 0%,
+                rgba(70, 48, 30, 0.97) 50%,
+                rgba(80, 55, 35, 0.95) 100%
+            );
+            padding: 1.75rem 0.75rem;
+            height: 250px;
+            width: 200px;
+            border-radius: 6px;
             box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                0 10px 30px rgba(0, 0, 0, 0.3);
+                0 8px 16px rgba(0, 0, 0, 0.35),
+                0 16px 32px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
         }
         
-        .media-film-perf {
+        .media-page-film-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 
+                0 12px 24px rgba(0, 0, 0, 0.4),
+                0 20px 40px rgba(0, 0, 0, 0.35);
+        }
+        
+        /* Film codes */
+        .media-page-film-code-top,
+        .media-page-film-code-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.1em;
+            z-index: 2;
+        }
+        
+        .media-page-film-code-top { top: 0.4rem; }
+        .media-page-film-code-bottom { bottom: 0.4rem; }
+        
+        /* Film frame */
+        .media-page-film-frame {
+            position: relative;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        /* Perforations */
+        .media-page-film-perf-left,
+        .media-page-film-perf-right {
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 3.5rem;
+            width: 1.25rem;
             display: flex;
             flex-direction: column;
             justify-content: space-evenly;
             align-items: center;
-            padding: 1.5rem 0;
-            background: 
-                linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0%, transparent 30%),
-                linear-gradient(180deg, rgba(80, 55, 35, 0.95) 0%, rgba(70, 48, 30, 0.97) 50%, rgba(80, 55, 35, 0.95) 100%);
+            background: linear-gradient(180deg, 
+                rgba(80, 55, 35, 0.98) 0%,
+                rgba(70, 48, 30, 1) 50%,
+                rgba(80, 55, 35, 0.98) 100%
+            );
+            z-index: 3;
         }
         
-        .media-film-perf-left {
-            left: 0;
-        }
+        .media-page-film-perf-left { left: 0; }
+        .media-page-film-perf-right { right: 0; }
         
-        .media-film-perf-right {
-            right: 0;
-        }
-        
-        .media-perf-hole {
-            width: 24px;
-            height: 20px;
-            background: #f0ebe8;
-            border-radius: 2px;
-            flex-shrink: 0;
+        .media-page-perf-hole {
+            width: 14px;
+            height: 12px;
+            background: rgba(240, 235, 228, 0.95);
+            border-radius: 1px;
             box-shadow: 
-                inset 0 3px 6px rgba(0, 0, 0, 0.3),
-                inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+                inset 0 2px 3px rgba(0, 0, 0, 0.4),
+                inset 0 1px 2px rgba(0, 0, 0, 0.3);
         }
         
-        .dark .media-perf-hole {
+        .dark .media-page-perf-hole {
             background: #1a1a1a;
         }
         
-        .media-film-code-top,
-        .media-film-code-bottom {
+        /* Thumbnail */
+        .media-page-film-thumbnail {
             position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+        
+        /* Media text overlay */
+        .media-page-film-text {
+            position: absolute;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.35);
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.4em;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            z-index: 3;
+            transform: translate(-50%, -50%);
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 
+                0 0 25px rgba(16, 185, 129, 0.9),
+                0 0 50px rgba(16, 185, 129, 0.7),
+                0 0 75px rgba(16, 185, 129, 0.5),
+                0 4px 8px rgba(0, 0, 0, 0.9);
+            z-index: 10;
+            white-space: nowrap;
+            letter-spacing: 0.05em;
+            animation: media-glow 2s ease-in-out infinite alternate;
         }
         
-        .media-film-code-top {
-            top: 1rem;
+        @keyframes media-glow {
+            0% {
+                text-shadow: 
+                    0 0 25px rgba(16, 185, 129, 0.9),
+                    0 0 50px rgba(16, 185, 129, 0.7),
+                    0 0 75px rgba(16, 185, 129, 0.5),
+                    0 4px 8px rgba(0, 0, 0, 0.9);
+            }
+            100% {
+                text-shadow: 
+                    0 0 35px rgba(16, 185, 129, 1),
+                    0 0 60px rgba(16, 185, 129, 0.9),
+                    0 0 95px rgba(16, 185, 129, 0.7),
+                    0 6px 12px rgba(0, 0, 0, 0.9);
+            }
         }
         
-        .media-film-code-bottom {
-            bottom: 1rem;
-        }
-        
-        .media-film-content {
-            position: relative;
-            z-index: 2;
-            padding: 3rem 2rem;
-        }
-        
-        .media-frame-number {
+        /* Frame numbers */
+        .media-page-frame-number-tl,
+        .media-page-frame-number-tr,
+        .media-page-frame-number-bl,
+        .media-page-frame-number-br {
             position: absolute;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
+            font-size: 0.65rem;
             font-weight: 700;
-            font-family: 'Courier New', monospace;
+            color: white;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            z-index: 3;
+            z-index: 4;
         }
         
-        .media-frame-number-tl {
-            top: 1.5rem;
-            left: 4rem;
-        }
-        
-        .media-frame-number-tr {
-            top: 1.5rem;
-            right: 4rem;
-        }
+        .media-page-frame-number-tl { top: 0.4rem; left: 1.5rem; }
+        .media-page-frame-number-tr { top: 0.4rem; right: 1.5rem; }
+        .media-page-frame-number-bl { bottom: 0.4rem; left: 1.5rem; }
+        .media-page-frame-number-br { bottom: 0.4rem; right: 1.5rem; }
         
         @media (max-width: 768px) {
-            .media-hero-film-card {
-                padding: 2.5rem 3.5rem;
+            .media-page-film-card {
+                width: 160px;
+                height: 200px;
+                padding: 1.5rem 0.65rem;
             }
             
-            .media-film-perf {
-                width: 2.5rem;
+            .media-page-film-perf-left,
+            .media-page-film-perf-right {
+                width: 1rem;
             }
             
-            .media-perf-hole {
-                width: 18px;
-                height: 16px;
+            .media-page-perf-hole {
+                width: 11px;
+                height: 10px;
             }
             
-            .media-film-content {
-                padding: 2rem 1rem;
+            .media-page-film-text {
+                font-size: 1.5rem;
             }
         }
         
