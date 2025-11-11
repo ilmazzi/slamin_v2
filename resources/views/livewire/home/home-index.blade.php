@@ -158,13 +158,46 @@
                         </div>
                     </a>
                     
-                    {{-- Videos --}}
-                    <div class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px] cursor-pointer"
-                         onclick="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })">
-                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                        </svg>
-                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_videos') }}</span>
+                    {{-- Videos - Mini Film Strip --}}
+                    <?php $tilt = rand(-2, 2); ?>
+                    <div class="hero-film-wrapper cursor-pointer"
+                         onclick="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })"
+                         style="transform: rotate({{ $tilt }}deg);">
+                        <div class="hero-film-strip">
+                            <!-- Left perforation -->
+                            <div class="hero-film-perf-left">
+                                @for($h = 0; $h < 8; $h++)
+                                <div class="hero-perf-hole"></div>
+                                @endfor
+                            </div>
+                            
+                            <!-- Right perforation -->
+                            <div class="hero-film-perf-right">
+                                @for($h = 0; $h < 8; $h++)
+                                <div class="hero-perf-hole"></div>
+                                @endfor
+                            </div>
+                            
+                            <!-- Film codes -->
+                            <div class="hero-film-code-top">SLAMIN</div>
+                            <div class="hero-film-code-bottom">ISO 400</div>
+                            
+                            <!-- Film frame -->
+                            <div class="hero-film-frame">
+                                <div class="hero-frame-number-tl">///01</div>
+                                <div class="hero-frame-number-tr">01A</div>
+                                <div class="hero-frame-number-bl">35MM</div>
+                                <div class="hero-frame-number-br">{{ rand(1, 9) }}</div>
+                                
+                                <div class="flex items-center justify-center h-full">
+                                    <div class="text-center">
+                                        <div class="text-white/90 font-bold text-sm" style="font-family: 'Crimson Pro', serif;">
+                                            {{ __('home.hero_category_videos') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     {{-- Community --}}

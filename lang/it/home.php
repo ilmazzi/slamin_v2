@@ -12,7 +12,7 @@ return [
     'hero_category_articles' => 'Articoli',
     'hero_category_gigs' => 'Gigs',
     'hero_category_events' => 'Eventi',
-    'hero_category_videos' => 'Video',
+    'hero_category_videos' => 'Media',
     'hero_category_community' => 'Community',
 
     // Poetry Section
