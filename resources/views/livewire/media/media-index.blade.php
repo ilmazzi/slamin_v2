@@ -518,9 +518,8 @@
         .film-strip-horizontal {
             position: relative;
             width: 100%;
-            padding: 4rem 2rem;
-            min-height: 300px;
-            /* Film marrone lucido */
+            min-height: 320px;
+            /* Film marrone lucido CONTINUO */
             background: 
                 /* Glossy highlight */
                 linear-gradient(to bottom, 
@@ -620,52 +619,67 @@
             right: 1.5rem;
         }
         
-        /* FOTOGRAMMI lungo la striscia */
+        /* FOTOGRAMMI INTEGRATI nella striscia */
         .film-frames-row {
-            position: relative;
+            position: absolute;
+            top: 3rem;
+            bottom: 3rem;
+            left: 0;
+            right: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 1.5rem;
+            align-items: stretch;
+            gap: 0.75rem;
             padding: 0 6rem;
-            min-height: 200px;
-            z-index: 2;
+            z-index: 1;
+            /* Sotto le perforazioni! */
         }
         
         .film-frame-box {
             position: relative;
             width: 140px;
-            height: 180px;
             flex-shrink: 0;
-            background: rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(0, 0, 0, 0.4);
-            border-radius: 2px;
+            /* Background scuro per frame */
+            background: 
+                linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(0, 0, 0, 0.5) 50%,
+                    rgba(0, 0, 0, 0.4) 100%
+                );
+            border-left: 1px solid rgba(0, 0, 0, 0.5);
+            border-right: 1px solid rgba(0, 0, 0, 0.5);
             box-shadow: 
-                inset 0 2px 6px rgba(0, 0, 0, 0.4),
-                inset 0 -2px 6px rgba(0, 0, 0, 0.3);
+                inset 0 2px 8px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 8px rgba(0, 0, 0, 0.4);
             transition: all 0.3s ease;
         }
         
         .film-frame-active {
-            width: 280px;
-            height: 200px;
-            background: rgba(0, 0, 0, 0.4);
-            border-color: rgba(255, 255, 255, 0.2);
+            width: 300px;
+            background: 
+                linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.5) 0%,
+                    rgba(0, 0, 0, 0.6) 50%,
+                    rgba(0, 0, 0, 0.5) 100%
+                );
+            border-left: 2px solid rgba(255, 255, 255, 0.15);
+            border-right: 2px solid rgba(255, 255, 255, 0.15);
             box-shadow: 
-                0 8px 24px rgba(0, 0, 0, 0.5),
-                inset 0 2px 6px rgba(0, 0, 0, 0.3);
+                inset 0 0 20px rgba(0, 0, 0, 0.6),
+                0 0 30px rgba(0, 0, 0, 0.4);
         }
         
         .film-frame-number-box,
         .film-frame-number-box-small {
             position: absolute;
-            top: 0.5rem;
-            left: 0.5rem;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.65rem;
+            top: 0.75rem;
+            left: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.7rem;
             font-weight: 700;
             font-family: 'Courier New', monospace;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+            z-index: 3;
         }
         
         .film-frame-content-box {
@@ -675,45 +689,43 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
+            padding: 2rem 1.5rem;
+            z-index: 2;
         }
         
         .film-frame-placeholder {
             position: absolute;
-            inset: 8px;
+            inset: 12px;
             background: 
-                linear-gradient(45deg, 
-                    rgba(0, 0, 0, 0.2) 25%, 
-                    transparent 25%, 
-                    transparent 75%, 
-                    rgba(0, 0, 0, 0.2) 75%
-                ),
-                linear-gradient(45deg, 
-                    rgba(0, 0, 0, 0.2) 25%, 
-                    transparent 25%, 
-                    transparent 75%, 
-                    rgba(0, 0, 0, 0.2) 75%
+                /* Diagonal stripes for empty frame */
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(0, 0, 0, 0.25) 0px,
+                    rgba(0, 0, 0, 0.25) 2px,
+                    transparent 2px,
+                    transparent 10px,
+                    rgba(0, 0, 0, 0.25) 10px,
+                    rgba(0, 0, 0, 0.25) 12px,
+                    transparent 12px,
+                    transparent 20px
                 );
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
-            border: 1px solid rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.3);
             border-radius: 1px;
+            opacity: 0.5;
         }
         
         @media (max-width: 768px) {
             .film-frames-row {
-                gap: 1rem;
-                padding: 0 3rem;
+                gap: 0.5rem;
+                padding: 0 4rem;
             }
             
             .film-frame-box {
-                width: 80px;
-                height: 100px;
+                width: 70px;
             }
             
             .film-frame-active {
-                width: 180px;
-                height: 140px;
+                width: 160px;
             }
         }
         
