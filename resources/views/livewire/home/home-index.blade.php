@@ -13,7 +13,7 @@
         <div class="absolute top-0 right-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
         
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24" x-data="{ activeSection: '', sectionTitle: '' }">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
             <div class="text-center space-y-8">
                 
                 {{-- Welcome Text with Typewriter Effect --}}
@@ -26,37 +26,24 @@
                     </p>
                 </div>
                 
-                {{-- Dynamic Section Title Display --}}
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-50"
-                     x-show="activeSection"
-                     x-transition:enter="transition ease-out duration-500"
-                     x-transition:enter-start="opacity-0 scale-50 rotate-12"
-                     x-transition:enter-end="opacity-100 scale-100 rotate-0"
-                     x-transition:leave="transition ease-in duration-300"
-                     x-transition:leave-start="opacity-100 scale-100 rotate-0"
-                     x-transition:leave-end="opacity-0 scale-50 -rotate-12">
-                    <div class="hero-section-display">
-                        <div class="hero-section-title" x-text="sectionTitle"></div>
-                    </div>
-                </div>
-                
                 {{-- Categories Grid - Simple Icons with Section Themes --}}
                 <div class="pt-8 flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
                     
                     {{-- Poetry - Mini Paper Sheet --}}
                     <?php $paperRotation = rand(-2, 2); ?>
-                    <div class="hero-paper-wrapper cursor-pointer"
-                         @mouseenter="activeSection = 'poetry'; sectionTitle = '{{ str_replace("'", "\\'", strip_tags(__('home.poetry_section_title'))) }}'"
-                         @mouseleave="activeSection = ''; sectionTitle = ''"
-                         @click="document.querySelector('.wooden-desk-section').scrollIntoView({ behavior: 'smooth' })"
-                         style="transform: rotate({{ $paperRotation }}deg);">
-                        <div class="hero-paper-sheet">
-                            <div class="flex items-center justify-center h-full">
-                                <h3 class="hero-paper-title">
-                                    "{{ __('home.hero_category_poems') }}"
-                                </h3>
+                    <div class="hero-card-container">
+                        <div class="hero-paper-wrapper cursor-pointer"
+                             @click="document.querySelector('.wooden-desk-section').scrollIntoView({ behavior: 'smooth' })"
+                             style="transform: rotate({{ $paperRotation }}deg);">
+                            <div class="hero-paper-sheet">
+                                <div class="flex items-center justify-center h-full">
+                                    <h3 class="hero-paper-title">
+                                        "{{ __('home.hero_category_poems') }}"
+                                    </h3>
+                                </div>
                             </div>
                         </div>
+                        <div class="hero-card-label">{{ strip_tags(__('home.poetry_section_title')) }}</div>
                     </div>
                     
                     {{-- Articles - Mini Magazine --}}
@@ -65,36 +52,37 @@
                         $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
                         $pinRotation = rand(-15, 15);
                     ?>
-                    <div class="hero-magazine-wrapper cursor-pointer"
-                         @mouseenter="activeSection = 'articles'; sectionTitle = '{{ str_replace("'", "\\'", strip_tags(__('home.articles_section_title'))) }}'"
-                         @mouseleave="activeSection = ''; sectionTitle = ''"
-                         @click="document.querySelector('.articles-newspaper-section').scrollIntoView({ behavior: 'smooth' })">
-                        <div class="hero-thumbtack" 
-                             style="background: {{ $pinColor }}; transform: rotate({{ $pinRotation }}deg);">
-                            <div class="hero-thumbtack-needle"></div>
-                        </div>
-                        <div class="hero-magazine-cover" style="transform: rotate({{ $rotation }}deg);">
-                            <div class="hero-magazine-inner">
-                                <div class="flex justify-between items-start mb-1">
-                                    <div class="text-xs font-bold text-neutral-900">SLAMIN</div>
-                                    <div class="text-[8px] text-neutral-600">Vol. {{ date('Y') }} · N.{{ rand(10, 99) }}</div>
+                    <div class="hero-card-container">
+                        <div class="hero-magazine-wrapper cursor-pointer"
+                             @click="document.querySelector('.articles-newspaper-section').scrollIntoView({ behavior: 'smooth' })">
+                            <div class="hero-thumbtack" 
+                                 style="background: {{ $pinColor }}; transform: rotate({{ $pinRotation }}deg);">
+                                <div class="hero-thumbtack-needle"></div>
+                            </div>
+                            <div class="hero-magazine-cover" style="transform: rotate({{ $rotation }}deg);">
+                                <div class="hero-magazine-inner">
+                                    <div class="flex justify-between items-start mb-1">
+                                        <div class="text-xs font-bold text-neutral-900">SLAMIN</div>
+                                        <div class="text-[8px] text-neutral-600">Vol. {{ date('Y') }} · N.{{ rand(10, 99) }}</div>
+                                    </div>
+                                    <div class="hero-magazine-image-area" style="background: url('<?php echo [
+                                        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+                                        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+                                        'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400',
+                                        'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400'
+                                    ][rand(0, 3)]; ?>') center/cover;">
+                                    </div>
+                                    <h3 class="hero-magazine-title mt-2">
+                                        {{ __('home.hero_category_articles') }}
+                                    </h3>
+                                    <div class="h-[1px] bg-neutral-300 my-1"></div>
+                                    <p class="text-[7px] text-neutral-500 leading-[0.6rem]">
+                                        Prtn b nsnt st ps dlrs dcms vntr
+                                    </p>
                                 </div>
-                                <div class="hero-magazine-image-area" style="background: url('<?php echo [
-                                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-                                    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-                                    'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400',
-                                    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400'
-                                ][rand(0, 3)]; ?>') center/cover;">
-                                </div>
-                                <h3 class="hero-magazine-title mt-2">
-                                    {{ __('home.hero_category_articles') }}
-                                </h3>
-                                <div class="h-[1px] bg-neutral-300 my-1"></div>
-                                <p class="text-[7px] text-neutral-500 leading-[0.6rem]">
-                                    Prtn b nsnt st ps dlrs dcms vntr
-                                </p>
                             </div>
                         </div>
+                        <div class="hero-card-label">{{ strip_tags(__('home.articles_section_title')) }}</div>
                     </div>
                     
                     {{-- Gigs - Mini Notice Board --}}
@@ -104,21 +92,22 @@
                         $paperRotation = rand(-2, 2);
                         $tapeBottomRotation = rand(-4, 4);
                     ?>
-                    <div class="hero-notice-wrapper cursor-pointer"
-                         @mouseenter="activeSection = 'gigs'; sectionTitle = '{{ str_replace("'", "\\'", strip_tags(__('home.gigs_section_title'))) }}'"
-                         @mouseleave="activeSection = ''; sectionTitle = ''"
-                         @click="document.querySelector('.cork-board-section').scrollIntoView({ behavior: 'smooth' })">
-                        <div class="hero-washi-tape hero-washi-top" 
-                             style="width: {{ $tapeWidth }}px; 
-                                    transform: translate(calc(-50%), 0) rotate({{ $tapeRotation }}deg);"></div>
-                        <div class="hero-notice-paper" style="transform: rotate({{ $paperRotation }}deg);">
-                            <div class="flex items-center justify-center h-full">
-                                <div class="hero-notice-badge">{{ strtoupper(__('home.hero_category_gigs')) }}</div>
+                    <div class="hero-card-container">
+                        <div class="hero-notice-wrapper cursor-pointer"
+                             @click="document.querySelector('.cork-board-section').scrollIntoView({ behavior: 'smooth' })">
+                            <div class="hero-washi-tape hero-washi-top" 
+                                 style="width: {{ $tapeWidth }}px; 
+                                        transform: translate(calc(-50%), 0) rotate({{ $tapeRotation }}deg);"></div>
+                            <div class="hero-notice-paper" style="transform: rotate({{ $paperRotation }}deg);">
+                                <div class="flex items-center justify-center h-full">
+                                    <div class="hero-notice-badge">{{ strtoupper(__('home.hero_category_gigs')) }}</div>
+                                </div>
                             </div>
+                            <div class="hero-washi-tape hero-washi-bottom" 
+                                 style="width: {{ $tapeWidth }}px; 
+                                        transform: translate(calc(-50%), 0) rotate({{ $tapeBottomRotation }}deg);"></div>
                         </div>
-                        <div class="hero-washi-tape hero-washi-bottom" 
-                             style="width: {{ $tapeWidth }}px; 
-                                    transform: translate(calc(-50%), 0) rotate({{ $tapeBottomRotation }}deg);"></div>
+                        <div class="hero-card-label">{{ strip_tags(__('home.gigs_section_title')) }}</div>
                     </div>
                     
                     {{-- Events - Mini Cinema Ticket --}}
@@ -130,83 +119,85 @@
                             ['#fffbf5', '#fef9f3', '#fdf7f1']
                         ][rand(0, 2)];
                     ?>
-                    <div class="hero-ticket-wrapper cursor-pointer"
-                         @mouseenter="activeSection = 'events'; sectionTitle = '{{ str_replace("'", "\\'", strip_tags(__('home.events_section_title'))) }}'"
-                         @mouseleave="activeSection = ''; sectionTitle = ''"
-                         @click="document.querySelector('.cinema-wall-section').scrollIntoView({ behavior: 'smooth' })"
-                         style="transform: rotate({{ $tilt }}deg);">
-                        <div class="hero-cinema-ticket"
-                             style="background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
-                            <div class="hero-ticket-perforation"></div>
-                            <div class="hero-ticket-content">
-                                <div class="ticket-mini-header">
-                                    <div class="text-[8px] font-black tracking-wider text-red-700">TICKET</div>
-                                    <div class="text-[7px] font-bold text-amber-700">#0{{ rand(1, 9) }}{{ rand(0, 9) }}{{ rand(0, 9) }}</div>
-                                </div>
-                                <div class="flex-1 flex items-center justify-center">
-                                    <div class="hero-ticket-stamp">{{ strtoupper(__('home.hero_category_events')) }}</div>
-                                </div>
-                                <div class="ticket-mini-barcode">
-                                    <div class="flex justify-center gap-[1px]">
-                                        @for($j = 0; $j < 20; $j++)
-                                        <div style="width: {{ rand(1, 2) }}px; height: {{ rand(12, 18) }}px; background: #2d2520;"></div>
-                                        @endfor
+                    <div class="hero-card-container">
+                        <div class="hero-ticket-wrapper cursor-pointer"
+                             @click="document.querySelector('.cinema-wall-section').scrollIntoView({ behavior: 'smooth' })"
+                             style="transform: rotate({{ $tilt }}deg);">
+                            <div class="hero-cinema-ticket"
+                                 style="background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
+                                <div class="hero-ticket-perforation"></div>
+                                <div class="hero-ticket-content">
+                                    <div class="ticket-mini-header">
+                                        <div class="text-[8px] font-black tracking-wider text-red-700">TICKET</div>
+                                        <div class="text-[7px] font-bold text-amber-700">#0{{ rand(1, 9) }}{{ rand(0, 9) }}{{ rand(0, 9) }}</div>
+                                    </div>
+                                    <div class="flex-1 flex items-center justify-center">
+                                        <div class="hero-ticket-stamp">{{ strtoupper(__('home.hero_category_events')) }}</div>
+                                    </div>
+                                    <div class="ticket-mini-barcode">
+                                        <div class="flex justify-center gap-[1px]">
+                                            @for($j = 0; $j < 20; $j++)
+                                            <div style="width: {{ rand(1, 2) }}px; height: {{ rand(12, 18) }}px; background: #2d2520;"></div>
+                                            @endfor
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="hero-card-label">{{ strip_tags(__('home.events_section_title')) }}</div>
                     </div>
                     
                     {{-- Videos - Mini Film Strip --}}
                     <?php $tilt = rand(-2, 2); ?>
-                    <div class="hero-film-wrapper cursor-pointer"
-                         @mouseenter="activeSection = 'videos'; sectionTitle = '{{ str_replace("'", "\\'", strip_tags(__('home.videos_section_title'))) }}'"
-                         @mouseleave="activeSection = ''; sectionTitle = ''"
-                         @click="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })"
-                         style="transform: rotate({{ $tilt }}deg);">
-                        <div class="hero-film-strip">
-                            <!-- Film codes -->
-                            <div class="hero-film-code-top">SLAMIN</div>
-                            <div class="hero-film-code-bottom">ISO 400</div>
-                            
-                            <!-- Film frame with thumbnail -->
-                            <div class="hero-film-frame">
-                                <!-- Left perforation -->
-                                <div class="hero-film-perf-left">
-                                    @for($h = 0; $h < 8; $h++)
-                                    <div class="hero-perf-hole"></div>
-                                    @endfor
-                                </div>
+                    <div class="hero-card-container">
+                        <div class="hero-film-wrapper cursor-pointer"
+                             @click="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })"
+                             style="transform: rotate({{ $tilt }}deg);">
+                            <div class="hero-film-strip">
+                                <!-- Film codes -->
+                                <div class="hero-film-code-top">SLAMIN</div>
+                                <div class="hero-film-code-bottom">ISO 400</div>
                                 
-                                <!-- Right perforation -->
-                                <div class="hero-film-perf-right">
-                                    @for($h = 0; $h < 8; $h++)
-                                    <div class="hero-perf-hole"></div>
-                                    @endfor
-                                </div>
-                                
-                                <div class="hero-frame-number-tl">///01</div>
-                                <div class="hero-frame-number-tr">01A</div>
-                                <div class="hero-frame-number-bl">35MM</div>
-                                <div class="hero-frame-number-br">{{ rand(1, 9) }}</div>
-                                
-                                <!-- Thumbnail background with random image -->
-                                <div class="hero-film-thumbnail" style="background: url('<?php echo [
-                                    'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400',
-                                    'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400',
-                                    'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400',
-                                    'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400',
-                                    'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400',
-                                    'https://images.unsplash.com/photo-1501612780327-45045538702b?w=400'
-                                ][rand(0, 5)]; ?>') center/cover;">
-                                </div>
-                                
-                                <!-- Media text overlay -->
-                                <div class="hero-film-text">
-                                    {{ __('home.hero_category_videos') }}
+                                <!-- Film frame with thumbnail -->
+                                <div class="hero-film-frame">
+                                    <!-- Left perforation -->
+                                    <div class="hero-film-perf-left">
+                                        @for($h = 0; $h < 8; $h++)
+                                        <div class="hero-perf-hole"></div>
+                                        @endfor
+                                    </div>
+                                    
+                                    <!-- Right perforation -->
+                                    <div class="hero-film-perf-right">
+                                        @for($h = 0; $h < 8; $h++)
+                                        <div class="hero-perf-hole"></div>
+                                        @endfor
+                                    </div>
+                                    
+                                    <div class="hero-frame-number-tl">///01</div>
+                                    <div class="hero-frame-number-tr">01A</div>
+                                    <div class="hero-frame-number-bl">35MM</div>
+                                    <div class="hero-frame-number-br">{{ rand(1, 9) }}</div>
+                                    
+                                    <!-- Thumbnail background with random image -->
+                                    <div class="hero-film-thumbnail" style="background: url('<?php echo [
+                                        'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400',
+                                        'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400',
+                                        'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400',
+                                        'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400',
+                                        'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400',
+                                        'https://images.unsplash.com/photo-1501612780327-45045538702b?w=400'
+                                    ][rand(0, 5)]; ?>') center/cover;">
+                                    </div>
+                                    
+                                    <!-- Media text overlay -->
+                                    <div class="hero-film-text">
+                                        {{ __('home.hero_category_videos') }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="hero-card-label">{{ strip_tags(__('home.videos_section_title')) }}</div>
                     </div>
                     
                 </div>
@@ -1367,88 +1358,60 @@
         .hero-frame-number-bl { bottom: 0.25rem; left: 1.1rem; }
         .hero-frame-number-br { bottom: 0.25rem; right: 1.1rem; }
         
-        /* Hero Section Display - Big Title in Header */
-        .hero-section-display {
-            position: relative;
-            padding: 3rem 4rem;
-            background: 
-                linear-gradient(135deg, 
-                    rgba(0, 0, 0, 0.95) 0%,
-                    rgba(16, 185, 129, 0.2) 50%,
-                    rgba(0, 0, 0, 0.95) 100%
-                );
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            border: 3px solid rgba(16, 185, 129, 0.5);
-            box-shadow: 
-                0 0 40px rgba(16, 185, 129, 0.6),
-                0 0 80px rgba(16, 185, 129, 0.4),
-                0 20px 60px rgba(0, 0, 0, 0.8),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: hero-display-pulse 3s ease-in-out infinite;
+        /* Hero Card Container with Label */
+        .hero-card-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
         }
         
-        @keyframes hero-display-pulse {
-            0%, 100% {
-                box-shadow: 
-                    0 0 40px rgba(16, 185, 129, 0.6),
-                    0 0 80px rgba(16, 185, 129, 0.4),
-                    0 20px 60px rgba(0, 0, 0, 0.8),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-                border-color: rgba(16, 185, 129, 0.5);
-            }
-            50% {
-                box-shadow: 
-                    0 0 60px rgba(16, 185, 129, 0.8),
-                    0 0 120px rgba(16, 185, 129, 0.6),
-                    0 20px 60px rgba(0, 0, 0, 0.8),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-                border-color: rgba(16, 185, 129, 0.8);
-            }
+        .hero-card-container:hover > div:first-child {
+            transform: scale(1.15) translateY(-8px) !important;
+            z-index: 10;
         }
         
-        .hero-section-title {
+        /* Hero Card Label - Appears below on hover */
+        .hero-card-label {
             font-family: 'Crimson Pro', serif;
-            font-size: 3.5rem;
-            font-weight: 900;
+            font-size: 1.25rem;
+            font-weight: 700;
             color: white;
             text-align: center;
-            line-height: 1.2;
-            letter-spacing: 0.02em;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-shadow: 
-                0 0 30px rgba(16, 185, 129, 1),
-                0 0 60px rgba(16, 185, 129, 0.8),
-                0 0 90px rgba(16, 185, 129, 0.6),
-                0 4px 12px rgba(0, 0, 0, 1);
-            animation: hero-title-glow 2s ease-in-out infinite alternate;
+                0 0 20px rgba(16, 185, 129, 0.8),
+                0 0 40px rgba(16, 185, 129, 0.6),
+                0 2px 4px rgba(0, 0, 0, 0.9);
+            white-space: nowrap;
+            pointer-events: none;
         }
         
-        @keyframes hero-title-glow {
-            0% {
-                text-shadow: 
-                    0 0 30px rgba(16, 185, 129, 1),
-                    0 0 60px rgba(16, 185, 129, 0.8),
-                    0 0 90px rgba(16, 185, 129, 0.6),
-                    0 4px 12px rgba(0, 0, 0, 1);
-            }
-            100% {
-                text-shadow: 
-                    0 0 50px rgba(16, 185, 129, 1),
-                    0 0 100px rgba(16, 185, 129, 1),
-                    0 0 150px rgba(16, 185, 129, 0.8),
-                    0 6px 18px rgba(0, 0, 0, 1);
-            }
+        .hero-card-container:hover .hero-card-label {
+            opacity: 1;
+            transform: translateY(0);
         }
         
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-section-display {
-                padding: 2rem 2.5rem;
-            }
-            
-            .hero-section-title {
-                font-size: 2.5rem;
-            }
+        /* Enhanced hover for all card wrappers */
+        .hero-paper-wrapper,
+        .hero-magazine-wrapper,
+        .hero-notice-wrapper,
+        .hero-ticket-wrapper,
+        .hero-film-wrapper {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+        }
+        
+        .hero-card-container:hover .hero-paper-wrapper,
+        .hero-card-container:hover .hero-magazine-wrapper,
+        .hero-card-container:hover .hero-notice-wrapper,
+        .hero-card-container:hover .hero-ticket-wrapper,
+        .hero-card-container:hover .hero-film-wrapper {
+            filter: drop-shadow(0 20px 40px rgba(16, 185, 129, 0.4)) 
+                    drop-shadow(0 0 30px rgba(16, 185, 129, 0.3));
         }
         
     </style>
