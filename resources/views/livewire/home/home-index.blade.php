@@ -27,11 +27,12 @@
                 </div>
                 
                 {{-- Categories Grid - Simple Icons with Section Themes --}}
-                <div class="pt-8 flex flex-wrap justify-center gap-4 max-w-6xl mx-auto">
+                <div class="pt-8 flex md:flex-wrap justify-center md:justify-center gap-4 max-w-6xl mx-auto overflow-x-auto md:overflow-x-visible scrollbar-hide px-4 md:px-0"
+                     style="-webkit-overflow-scrolling: touch;">
                     
                     {{-- Poetry - Mini Paper Sheet --}}
                     <?php $paperRotation = rand(-2, 2); ?>
-                    <div class="hero-card-container">
+                    <div class="hero-card-container flex-shrink-0">
                         <div class="hero-paper-wrapper cursor-pointer"
                              @click="document.querySelector('.wooden-desk-section').scrollIntoView({ behavior: 'smooth' })"
                              style="transform: rotate({{ $paperRotation }}deg);">
@@ -52,7 +53,7 @@
                         $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
                         $pinRotation = rand(-15, 15);
                     ?>
-                    <div class="hero-card-container">
+                    <div class="hero-card-container flex-shrink-0">
                         <div class="hero-magazine-wrapper cursor-pointer"
                              @click="document.querySelector('.articles-newspaper-section').scrollIntoView({ behavior: 'smooth' })">
                             <div class="hero-thumbtack" 
@@ -92,7 +93,7 @@
                         $paperRotation = rand(-2, 2);
                         $tapeBottomRotation = rand(-4, 4);
                     ?>
-                    <div class="hero-card-container">
+                    <div class="hero-card-container flex-shrink-0">
                         <div class="hero-notice-wrapper cursor-pointer"
                              @click="document.querySelector('.cork-board-section').scrollIntoView({ behavior: 'smooth' })">
                             <div class="hero-washi-tape hero-washi-top" 
@@ -119,7 +120,7 @@
                             ['#fffbf5', '#fef9f3', '#fdf7f1']
                         ][rand(0, 2)];
                     ?>
-                    <div class="hero-card-container">
+                    <div class="hero-card-container flex-shrink-0">
                         <div class="hero-ticket-wrapper cursor-pointer"
                              @click="document.querySelector('.cinema-wall-section').scrollIntoView({ behavior: 'smooth' })"
                              style="transform: rotate({{ $tilt }}deg);">
@@ -149,7 +150,7 @@
                     
                     {{-- Videos - Mini Film Strip --}}
                     <?php $tilt = rand(-2, 2); ?>
-                    <div class="hero-card-container">
+                    <div class="hero-card-container flex-shrink-0">
                         <div class="hero-film-wrapper cursor-pointer"
                              @click="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })"
                              style="transform: rotate({{ $tilt }}deg);">
@@ -213,7 +214,7 @@
                         ];
                         $selectedTape = $tapeColors[array_rand($tapeColors)];
                     ?>
-                    <div class="hero-card-container">
+                    <div class="hero-card-container flex-shrink-0">
                         <div class="hero-polaroid-wrapper cursor-pointer"
                              @click="document.querySelector('.polaroid-wall-section').scrollIntoView({ behavior: 'smooth' })"
                              style="transform: rotate({{ $rotation }}deg);">
