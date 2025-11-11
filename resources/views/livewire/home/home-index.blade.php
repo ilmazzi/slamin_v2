@@ -49,146 +49,61 @@
                     @endguest
                 </div>
                 
-                {{-- Categories Grid with EXACT Section Cards (scaled) --}}
-                <div class="pt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 max-w-6xl mx-auto">
+                {{-- Categories Grid - Simple Icons with Section Themes --}}
+                <div class="pt-8 flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
                     
-                    {{-- Poetry - EXACT Paper Sheet (scaled) --}}
-                    <?php $paperRotation = rand(-2, 2); ?>
+                    {{-- Poetry --}}
                     <a href="{{ route('poems.index') }}" 
-                       class="hero-card-wrapper">
-                        <div class="paper-sheet-wrapper" style="transform: rotate({{ $paperRotation }}deg) scale(0.35); transform-origin: center;">
-                            <div class="paper-sheet group">
-                                <div class="paper-author-info" style="margin-bottom: 1rem;">
-                                    <svg class="w-12 h-12" style="color: #8b7355;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="paper-title text-center" style="font-size: 2rem;">
-                                    {{ __('home.hero_category_poems') }}
-                                </h3>
-                            </div>
-                        </div>
+                       class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px]">
+                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_poems') }}</span>
                     </a>
                     
-                    {{-- Articles - EXACT Magazine (scaled) --}}
-                    <?php 
-                        $rotation = rand(-3, 3);
-                        $pinColor = ['#e53e3e', '#3182ce', '#38a169'][rand(0, 2)];
-                        $pinRotation = rand(-15, 15);
-                    ?>
+                    {{-- Articles --}}
                     <a href="{{ route('articles.index') }}" 
-                       class="hero-card-wrapper">
-                        <div style="transform: scale(0.35); transform-origin: center;">
-                            <div class="thumbtack" style="background: {{ $pinColor }}; transform: rotate({{ $pinRotation }}deg);">
-                                <div class="thumbtack-needle"></div>
-                            </div>
-                            <div class="magazine-cover" style="transform: rotate({{ $rotation }}deg);">
-                                <div class="magazine-inner">
-                                    <div class="magazine-header">
-                                        <div class="magazine-logo">SLAMIN</div>
-                                    </div>
-                                    <div class="magazine-category">CULTURA</div>
-                                    <div class="flex items-center justify-center" style="height: 200px; background: linear-gradient(135deg, #4a7c59 0%, #2d5a3f 100%);">
-                                        <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                                        </svg>
-                                    </div>
-                                    <h3 class="magazine-title">{{ __('home.hero_category_articles') }}</h3>
-                                </div>
-                            </div>
-                        </div>
+                       class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px]">
+                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                        </svg>
+                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_articles') }}</span>
                     </a>
                     
-                    {{-- Gigs - EXACT Notice Board (scaled) --}}
-                    <?php
-                        $tapeWidth = rand(110, 150);
-                        $tapeRotation = rand(-4, 4);
-                        $tapeOffsetX = rand(-10, 10);
-                    ?>
+                    {{-- Gigs --}}
                     <a href="{{ route('gigs.index') }}" 
-                       class="hero-card-wrapper">
-                        <div style="transform: scale(0.35); transform-origin: center;">
-                            <div class="notice-card">
-                                <div class="washi-tape washi-top" 
-                                     style="width: {{ $tapeWidth }}px; transform: translate(calc(-50% + {{ $tapeOffsetX }}px), 0) rotate({{ $tapeRotation }}deg);"></div>
-                                <div class="notice-paper" style="transform: rotate({{ rand(-2, 2) }}deg);">
-                                    <div class="flex items-center justify-center" style="height: 200px;">
-                                        <svg class="w-16 h-16 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                        </svg>
-                                    </div>
-                                    <h3 class="notice-title text-center">{{ __('home.hero_category_gigs') }}</h3>
-                                </div>
-                            </div>
-                        </div>
+                       class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px]">
+                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_gigs') }}</span>
                     </a>
                     
-                    {{-- Events - EXACT Cinema Ticket (scaled) --}}
-                    <?php 
-                        $tilt = rand(-3, 3);
-                        $ticketColor = ['#fefaf3', '#fdf8f0', '#fcf7ef'][rand(0, 2)];
-                    ?>
+                    {{-- Events --}}
                     <a href="{{ route('events.index') }}" 
-                       class="hero-card-wrapper">
-                        <div style="transform: scale(0.35); transform-origin: center;">
-                            <div class="cinema-ticket" style="transform: rotate({{ $tilt }}deg); background: linear-gradient(135deg, {{ $ticketColor }} 0%, #faf5ec 100%);">
-                                <div class="ticket-perforations-left"></div>
-                                <div class="ticket-perforations-right"></div>
-                                <div class="flex items-center justify-center" style="height: 200px;">
-                                    <svg class="w-16 h-16 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                </div>
-                                <div class="ticket-title text-center">{{ __('home.hero_category_events') }}</div>
-                            </div>
-                        </div>
+                       class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px]">
+                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_events') }}</span>
                     </a>
                     
-                    {{-- Videos - EXACT Film Strip (scaled) --}}
-                    <div class="hero-card-wrapper cursor-pointer"
+                    {{-- Videos --}}
+                    <div class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px] cursor-pointer"
                          onclick="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })">
-                        <div style="transform: scale(0.35); transform-origin: center;">
-                            <div class="film-strip-container">
-                                <div class="film-perforation film-perforation-left"></div>
-                                <div class="film-perforation film-perforation-right"></div>
-                                <div class="film-frame" style="height: 200px; display: flex; align-items: center; justify-center;">
-                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                                    </svg>
-                                </div>
-                                <div class="film-edge-code-bottom text-center" style="font-size: 1.2rem;">{{ __('home.hero_category_videos') }}</div>
-                            </div>
-                        </div>
+                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_videos') }}</span>
                     </div>
                     
-                    {{-- Community - EXACT Polaroid (scaled) --}}
-                    <?php
-                        $rotation = rand(-3, 3);
-                        $tapeRotation = rand(-8, 8);
-                        $tapeColors = [
-                            ['rgba(255, 107, 107, 0.92)', 'rgba(255, 130, 130, 0.90)', 'rgba(255, 150, 150, 0.92)'],
-                            ['rgba(78, 205, 196, 0.92)', 'rgba(100, 220, 210, 0.90)', 'rgba(120, 230, 220, 0.92)'],
-                        ];
-                        $selectedTape = $tapeColors[array_rand($tapeColors)];
-                    ?>
+                    {{-- Community --}}
                     <a href="{{ route('dashboard.index') }}" 
-                       class="hero-card-wrapper">
-                        <div style="transform: scale(0.35); transform-origin: center;">
-                            <div class="polaroid-wrapper" style="transform: rotate({{ $rotation }}deg);">
-                                <div class="washi-tape-top" 
-                                     style="background: linear-gradient(135deg, {{ $selectedTape[0] }} 0%, {{ $selectedTape[1] }} 50%, {{ $selectedTape[2] }} 100%); 
-                                            width: <?php echo rand(110, 150); ?>px; 
-                                            transform: translate(calc(-50%), -50%) rotate({{ $tapeRotation }}deg);"></div>
-                                <div class="polaroid-card">
-                                    <div class="polaroid-photo" style="height: 200px; display: flex; align-items: center; justify-center; background: linear-gradient(135deg, #e8e8e8 0%, #d5d5d5 100%);">
-                                        <svg class="w-16 h-16 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                        </svg>
-                                    </div>
-                                    <div class="polaroid-caption text-center" style="font-size: 1.8rem;">{{ __('home.hero_category_community') }}</div>
-                                </div>
-                            </div>
-                        </div>
+                       class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px]">
+                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_community') }}</span>
                     </a>
                 </div>
                 
@@ -759,20 +674,5 @@
                 inset 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
-        /* ========================================
-           HERO CATEGORY CARDS - Scaled Versions
-           ======================================== */
-        
-        .hero-card-wrapper {
-            display: block;
-            width: 140px;
-            height: 140px;
-            overflow: visible;
-            transition: all 0.3s ease;
-        }
-        
-        .hero-card-wrapper:hover {
-            transform: translateY(-8px);
-        }
     </style>
 </div>
