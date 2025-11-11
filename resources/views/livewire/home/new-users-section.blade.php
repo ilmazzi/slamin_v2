@@ -8,10 +8,10 @@
         
         {{-- Header --}}
         <div class="text-center mb-12 section-title-fade">
-            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif; text-shadow: 2px 2px 4px rgba(255,255,255,0.8);">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
                 {!! __('home.new_users_title') !!}
             </h2>
-            <p class="text-lg text-neutral-800 dark:text-neutral-300 font-medium" style="text-shadow: 1px 1px 2px rgba(255,255,255,0.6);">
+            <p class="text-lg text-neutral-800 dark:text-neutral-300 font-medium">
                 {{ __('home.new_users_subtitle') }}
             </p>
         </div>
