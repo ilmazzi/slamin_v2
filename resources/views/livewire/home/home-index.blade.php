@@ -108,12 +108,8 @@
                              style="width: {{ $tapeWidth }}px; 
                                     transform: translate(calc(-50%), 0) rotate({{ $tapeRotation }}deg);"></div>
                         <div class="hero-notice-paper" style="transform: rotate({{ $paperRotation }}deg);">
-                            <div class="flex flex-col items-center justify-center gap-3 h-full">
-                                <div class="hero-notice-badge">CREATIVE</div>
-                                <svg class="w-10 h-10 text-neutral-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                </svg>
-                                <span class="text-xs font-bold text-neutral-900">{{ __('home.hero_category_gigs') }}</span>
+                            <div class="flex items-center justify-center h-full">
+                                <div class="hero-notice-badge">{{ strtoupper(__('home.hero_category_gigs')) }}</div>
                             </div>
                         </div>
                         <div class="hero-washi-tape hero-washi-bottom" 
@@ -1008,15 +1004,17 @@
         /* Gigs Category Badge */
         .hero-notice-badge {
             display: inline-block;
-            font-size: 0.625rem;
+            font-size: 0.875rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
             color: white;
             background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
-            padding: 0.375rem 0.625rem;
-            border-radius: 0.25rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            box-shadow: 
+                0 3px 6px rgba(0, 0, 0, 0.25),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
         }
         
         /* Events - Mini Cinema Ticket */
