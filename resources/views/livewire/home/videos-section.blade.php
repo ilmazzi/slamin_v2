@@ -238,8 +238,12 @@
             );
         border-radius: 2px;
         box-shadow: 
-            /* Inner shadow on holes */
-            inset 0 0 3px rgba(0, 0, 0, 0.2);
+            /* DEEP inner shadows for hole/recessed effect */
+            inset 0 4px 8px rgba(0, 0, 0, 0.6),
+            inset 0 2px 4px rgba(0, 0, 0, 0.5),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+            /* Dark border around each hole */
+            inset 0 0 0 1px rgba(0, 0, 0, 0.4);
     }
     
     /* Dark mode - darker hole color */
