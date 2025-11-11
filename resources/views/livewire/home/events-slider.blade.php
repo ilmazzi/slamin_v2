@@ -370,7 +370,7 @@
     .ticket-watermark {
         position: absolute;
         top: 30%;
-        right: -1rem;
+        right: -2rem;
         transform: translateY(-50%) rotate(-90deg);
         transform-origin: center;
         z-index: 3;
