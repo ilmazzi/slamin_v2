@@ -132,7 +132,7 @@
                                 </button>
                                 
                                 <!-- Title Only - Top -->
-                                <div class="absolute top-0 left-0 right-0 p-3 md:p-4">
+                                <div class="absolute top-0 left-0 right-0 pt-8 px-3 md:pt-4 md:px-4">
                                     <h3 class="text-sm md:text-lg font-bold text-white drop-shadow-lg line-clamp-2" 
                                         style="font-family: 'Crimson Pro', serif;">
                                         {{ $video->title }}
