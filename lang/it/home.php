@@ -39,6 +39,7 @@ return [
     // Videos Section
     'videos_section_title' => 'Video & <span class="italic text-primary-600">Foto</span>',
     'videos_section_subtitle' => 'Dalla community',
+    'all_videos_button' => 'Tutti i Media',
 
     // New Users Section
     'new_users_title' => 'Nuovi <span class="italic text-primary-600">Utenti</span>',

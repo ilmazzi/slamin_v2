@@ -39,6 +39,7 @@ return [
     // Videos Section
     'videos_section_title' => 'Vidéos & <span class="italic text-primary-600">Photos</span>',
     'videos_section_subtitle' => 'De la communauté',
+    'all_videos_button' => 'Tous les Médias',
 
     // New Users Section
     'new_users_title' => 'Nouveaux <span class="italic text-primary-600">Utilisateurs</span>',
