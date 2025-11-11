@@ -680,6 +680,88 @@
             letter-spacing: 0.2em;
         }
         
+        .film-perforation {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 1rem 0;
+            background: 
+                linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0%, transparent 30%),
+                linear-gradient(180deg, rgba(80, 55, 35, 0.95) 0%, rgba(70, 48, 30, 0.97) 50%, rgba(80, 55, 35, 0.95) 100%);
+        }
+        
+        .film-perforation-left {
+            left: 0;
+        }
+        
+        .film-perforation-right {
+            right: 0;
+        }
+        
+        .perforation-hole {
+            width: 22px;
+            height: 18px;
+            background: #f0ebe8;
+            border-radius: 2px;
+            flex-shrink: 0;
+            box-shadow: 
+                inset 0 3px 6px rgba(0, 0, 0, 0.3),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+                inset 2px 0 4px rgba(0, 0, 0, 0.15),
+                inset -2px 0 4px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dark .perforation-hole {
+            background: #1a1a1a;
+        }
+        
+        .film-edge-code-top,
+        .film-edge-code-bottom {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.35em;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            z-index: 3;
+        }
+        
+        .film-edge-code-top {
+            top: 0.5rem;
+        }
+        
+        .film-edge-code-bottom {
+            bottom: 0.5rem;
+        }
+        
+        .film-frame-number {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            padding: 0.25rem 0.5rem;
+            z-index: 3;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .film-frame-number-tl {
+            top: 1rem;
+            left: 3.5rem;
+        }
+        
+        .film-frame-number-tr {
+            top: 1rem;
+            right: 3.5rem;
+        }
+        
         .film-frame-hero,
         .film-frame-grid {
             position: relative;
