@@ -259,12 +259,10 @@
     
     .film-perforation-left {
         left: 0;
-        border-right: 1px solid rgba(0, 0, 0, 0.5);
     }
     
     .film-perforation-right {
         right: 0;
-        border-left: 1px solid rgba(0, 0, 0, 0.5);
     }
     
     /* Film Frame (negative area) */
