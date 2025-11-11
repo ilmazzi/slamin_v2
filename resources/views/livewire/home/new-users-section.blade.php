@@ -78,36 +78,6 @@
                 </div>
             </div>
             
-            <!-- FILO CON CURVATURA SVG -->
-            <div class="clothesline-container">
-                <svg class="clothesline-svg" viewBox="0 0 1200 80" preserveAspectRatio="none">
-                    <defs>
-                        <linearGradient id="ropeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#8B7355;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#6B563F;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#5A4A35;stop-opacity:1" />
-                        </linearGradient>
-                        <filter id="ropeShadow">
-                            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
-                            <feOffset dx="0" dy="2" result="offsetblur"/>
-                            <feComponentTransfer>
-                                <feFuncA type="linear" slope="0.4"/>
-                            </feComponentTransfer>
-                            <feMerge>
-                                <feMergeNode/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <!-- Filo curvo naturale (parabola) -->
-                    <path d="M 0,20 Q 300,50 600,55 T 1200,20" 
-                          stroke="url(#ropeGradient)" 
-                          stroke-width="4" 
-                          fill="none"
-                          stroke-linecap="round"
-                          filter="url(#ropeShadow)"/>
-                </svg>
-            </div>
             
             <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-16 px-8 md:px-12 scrollbar-hide"
                  style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
@@ -149,12 +119,6 @@
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
                 
-                {{-- Molletta da bucato --}}
-                <div class="clothespin">
-                    <div class="clothespin-top"></div>
-                    <div class="clothespin-bottom"></div>
-                    <div class="clothespin-spring"></div>
-                </div>
                 
                 {{-- Polaroid Card (link will be added when profile.show route exists) --}}
                 <div class="polaroid-card"
@@ -223,117 +187,7 @@
         
         .polaroid-wrapper {
             position: relative;
-            /* Spazio per filo, molletta e connessione */
-            padding-top: 100px;
-        }
-        
-        /* FILO SVG - VISIBILMENTE CURVO */
-        .clothesline-container {
-            position: absolute;
-            top: 0;
-            left: -50px;
-            right: -50px;
-            z-index: 5;
-            height: 70px;
-            pointer-events: none;
-            overflow: visible;
-        }
-        
-        .clothesline-svg {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        
-        /* Molletta da bucato - AGGANCIATA AL FILO */
-        .clothespin {
-            position: absolute;
-            /* Posizione che segue la curvatura del filo */
-            top: 30px; /* Circa al centro della curvatura */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 36px;
-            height: 60px;
-            z-index: 15;
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-        }
-        
-        /* Filo virtuale che connette molletta al filo principale */
-        .clothespin::before {
-            content: '';
-            position: absolute;
-            top: -18px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 18px;
-            background: linear-gradient(to bottom,
-                #8B7355 0%,
-                #6B563F 100%
-            );
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            z-index: -1;
-        }
-        
-        .clothespin-top,
-        .clothespin-bottom {
-            position: absolute;
-            width: 16px;
-            height: 32px;
-            left: 50%;
-            /* Legno chiaro realistico */
-            background: 
-                linear-gradient(135deg, 
-                    #E8C9A0 0%,
-                    #D4A574 25%,
-                    #C89968 50%,
-                    #B88B5C 75%,
-                    #A67B4F 100%
-                );
-            border-radius: 3px 3px 8px 8px;
-            box-shadow: 
-                0 4px 8px rgba(0, 0, 0, 0.3),
-                inset 2px 0 2px rgba(255, 255, 255, 0.4),
-                inset -2px 0 2px rgba(0, 0, 0, 0.25);
-        }
-        
-        .clothespin-top {
-            top: 0;
-            transform: translateX(-56%) rotate(-12deg);
-            transform-origin: bottom center;
-        }
-        
-        .clothespin-bottom {
-            top: 0;
-            transform: translateX(-44%) rotate(12deg);
-            transform-origin: bottom center;
-        }
-        
-        /* Molla centrale metallica */
-        .clothespin-spring {
-            position: absolute;
-            width: 18px;
-            height: 12px;
-            left: 50%;
-            top: 12px;
-            transform: translateX(-50%);
-            background: 
-                repeating-linear-gradient(
-                    to bottom,
-                    #999 0px,
-                    #bbb 1.5px,
-                    #888 3px,
-                    #aaa 4.5px,
-                    #999 6px
-                );
-            border-radius: 3px;
-            box-shadow: 
-                0 2px 4px rgba(0, 0, 0, 0.3),
-                inset 0 1px 2px rgba(255, 255, 255, 0.5),
-                inset 0 -1px 1px rgba(0, 0, 0, 0.3);
+            padding-top: 20px;
         }
         
         /* ============================================
@@ -363,33 +217,14 @@
             background: #fafafa;
         }
         
-        /* HOVER - Oscillazione naturale */
+        /* HOVER - Lift delicato */
         .polaroid-wrapper:hover .polaroid-card {
-            /* Leggera oscillazione come se fosse appesa */
-            transform: translateY(-6px) scale(1.02) rotate(0deg) !important;
+            transform: translateY(-12px) scale(1.03) !important;
             box-shadow: 
-                0 6px 12px rgba(0, 0, 0, 0.15),
-                0 12px 24px rgba(0, 0, 0, 0.12),
-                0 20px 40px rgba(0, 0, 0, 0.09);
-            animation: swing 0.5s ease-in-out;
-        }
-        
-        @keyframes swing {
-            0%, 100% { transform: translateY(-6px) rotate(0deg); }
-            25% { transform: translateY(-8px) rotate(1deg); }
-            75% { transform: translateY(-8px) rotate(-1deg); }
-        }
-        
-        .polaroid-wrapper:hover .clothespin-top {
-            transform: translateX(-55%) rotate(-15deg);
-        }
-        
-        .polaroid-wrapper:hover .clothespin-bottom {
-            transform: translateX(-45%) rotate(15deg);
-        }
-        
-        .polaroid-wrapper:hover .clothespin {
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+                0 4px 8px rgba(0, 0, 0, 0.12),
+                0 8px 16px rgba(0, 0, 0, 0.1),
+                0 16px 32px rgba(0, 0, 0, 0.08),
+                0 32px 64px rgba(0, 0, 0, 0.06);
         }
         
         /* FOTO - Stile pulito */
