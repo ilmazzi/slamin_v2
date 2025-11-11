@@ -25,17 +25,29 @@
             <!-- Edge Codes Right -->
             <div class="film-edge-code-right">MEDIA</div>
             
-            <!-- Content Centered -->
-            <div class="film-strip-horizontal-content">
-                <div class="film-frame-number-horizontal film-frame-number-horizontal-l">///01</div>
-                <div class="film-frame-number-horizontal film-frame-number-horizontal-r">01A</div>
-                
-                <h1 class="text-5xl md:text-7xl font-black text-white text-center" style="font-family: 'Crimson Pro', serif;">
-                    Video & <span class="italic text-primary-400">Foto</span>
-                </h1>
-                <p class="text-xl text-white/80 text-center mt-4 font-medium">
-                    Dalla community Slamin
-                </p>
+            <!-- FOTOGRAMMI lungo la striscia -->
+            <div class="film-frames-row">
+                @for($f = 0; $f < 7; $f++)
+                <div class="film-frame-box {{ $f === 3 ? 'film-frame-active' : '' }}">
+                    @if($f === 3)
+                        <!-- Frame centrale ATTIVO con contenuto -->
+                        <div class="film-frame-number-box">{{ str_pad($f + 1, 2, '0', STR_PAD_LEFT) }}</div>
+                        
+                        <div class="film-frame-content-box">
+                            <h1 class="text-3xl md:text-5xl font-black text-white text-center leading-tight" style="font-family: 'Crimson Pro', serif;">
+                                Video & <span class="italic text-primary-400">Foto</span>
+                            </h1>
+                            <p class="text-sm md:text-base text-white/80 text-center mt-3 font-medium">
+                                Dalla community Slamin
+                            </p>
+                        </div>
+                    @else
+                        <!-- Frame vuoto decorativo -->
+                        <div class="film-frame-number-box-small">{{ str_pad($f + 1, 2, '0', STR_PAD_LEFT) }}</div>
+                        <div class="film-frame-placeholder"></div>
+                    @endif
+                </div>
+                @endfor
             </div>
         </div>
     </section>
@@ -608,35 +620,101 @@
             right: 1.5rem;
         }
         
-        /* Content centrale */
-        .film-strip-horizontal-content {
+        /* FOTOGRAMMI lungo la striscia */
+        .film-frames-row {
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0 6rem;
+            min-height: 200px;
             z-index: 2;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
         }
         
-        .film-frame-number-horizontal {
+        .film-frame-box {
+            position: relative;
+            width: 140px;
+            height: 180px;
+            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 0, 0, 0.4);
+            border-radius: 2px;
+            box-shadow: 
+                inset 0 2px 6px rgba(0, 0, 0, 0.4),
+                inset 0 -2px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .film-frame-active {
+            width: 280px;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 24px rgba(0, 0, 0, 0.5),
+                inset 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .film-frame-number-box,
+        .film-frame-number-box-small {
             position: absolute;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
+            top: 0.5rem;
+            left: 0.5rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.65rem;
             font-weight: 700;
             font-family: 'Courier New', monospace;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            z-index: 3;
         }
         
-        .film-frame-number-horizontal-l {
-            top: 50%;
-            left: 5rem;
-            transform: translateY(-50%);
+        .film-frame-content-box {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
         }
         
-        .film-frame-number-horizontal-r {
-            top: 50%;
-            right: 5rem;
-            transform: translateY(-50%);
+        .film-frame-placeholder {
+            position: absolute;
+            inset: 8px;
+            background: 
+                linear-gradient(45deg, 
+                    rgba(0, 0, 0, 0.2) 25%, 
+                    transparent 25%, 
+                    transparent 75%, 
+                    rgba(0, 0, 0, 0.2) 75%
+                ),
+                linear-gradient(45deg, 
+                    rgba(0, 0, 0, 0.2) 25%, 
+                    transparent 25%, 
+                    transparent 75%, 
+                    rgba(0, 0, 0, 0.2) 75%
+                );
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 1px;
+        }
+        
+        @media (max-width: 768px) {
+            .film-frames-row {
+                gap: 1rem;
+                padding: 0 3rem;
+            }
+            
+            .film-frame-box {
+                width: 80px;
+                height: 100px;
+            }
+            
+            .film-frame-active {
+                width: 180px;
+                height: 140px;
+            }
         }
         
         /* ========================================
