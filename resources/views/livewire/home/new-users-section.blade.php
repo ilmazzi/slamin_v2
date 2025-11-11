@@ -392,45 +392,70 @@
             line-height: 1.3;
         }
         
-        /* Larger name for enhanced cards */
+        /* Nome - Scritto a mano sulla Polaroid */
         .polaroid-name-large {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.125rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            color: #2d2d2d;
-            margin-bottom: 0.5rem;
-            line-height: 1.2;
+            color: #1a1a1a;
+            line-height: 1.1;
+            margin: 0;
+            padding: 0;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
-        /* User bio */
+        /* Bio - NASCOSTA per mancanza spazio */
         .polaroid-bio {
-            font-size: 0.75rem;
-            color: #4a4a4a;
-            line-height: 1.4;
-            margin-bottom: 0.75rem;
-            font-style: italic;
+            display: none;
         }
         
-        /* Follow button */
+        /* Follow button - PIÙ PICCOLO */
         .polaroid-follow-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.375rem;
-            padding: 0.5rem 1rem;
+            gap: 0.25rem;
+            padding: 0.35rem 0.75rem;
             background: #10b981;
             color: white;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: 600;
-            border-radius: 0.375rem;
+            border-radius: 0.3rem;
             transition: all 0.3s ease;
-            margin-bottom: 0.75rem;
-            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 1px 3px rgba(16, 185, 129, 0.3);
+        }
+        
+        .polaroid-follow-btn svg {
+            width: 0.75rem;
+            height: 0.75rem;
         }
         
         .polaroid-follow-btn:hover {
             background: #059669;
-            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
             transform: translateY(-1px);
+        }
+        
+        /* Stats row - PIÙ PICCOLI */
+        .polaroid-stats {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            color: #666666;
+            font-size: 0.65rem;
+        }
+        
+        .polaroid-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .polaroid-stat svg {
+            width: 0.75rem;
+            height: 0.75rem;
         }
         
         .polaroid-info {
