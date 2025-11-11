@@ -1,43 +1,41 @@
 <div class="min-h-screen">
     
-    {{-- HERO con Film Strip Header --}}
-    <section class="relative py-20 overflow-hidden film-studio-section">
+    {{-- HERO con Film Strip Orizzontale --}}
+    <section class="relative overflow-hidden film-studio-section">
         
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Film Strip Header -->
-            <div class="flex items-center justify-center mb-12">
-                <div class="film-strip-header">
-                    <!-- Film Perforations Left -->
-                    <div class="film-perforation-header film-perforation-left-header">
-                        @for($h = 0; $h < 8; $h++)
-                        <div class="perforation-hole-header"></div>
-                        @endfor
-                    </div>
-                    
-                    <!-- Film Perforations Right -->
-                    <div class="film-perforation-header film-perforation-right-header">
-                        @for($h = 0; $h < 8; $h++)
-                        <div class="perforation-hole-header"></div>
-                        @endfor
-                    </div>
-                    
-                    <!-- Film Edge Codes -->
-                    <div class="film-edge-code-header-top">SLAMIN</div>
-                    <div class="film-edge-code-header-bottom">MEDIA</div>
-                    
-                    <!-- Content -->
-                    <div class="film-strip-header-content">
-                        <div class="film-frame-number-header film-frame-number-header-tl">///01</div>
-                        <div class="film-frame-number-header film-frame-number-header-tr">01A</div>
-                        
-                        <h1 class="text-5xl md:text-7xl font-black text-white text-center" style="font-family: 'Crimson Pro', serif;">
-                            Video & <span class="italic text-primary-400">Foto</span>
-                        </h1>
-                        <p class="text-xl text-white/80 text-center mt-4 font-medium">
-                            Dalla community Slamin
-                        </p>
-                    </div>
-                </div>
+        <!-- FILM STRIP ORIZZONTALE - Attraversa tutto -->
+        <div class="film-strip-horizontal">
+            <!-- Perforations Top -->
+            <div class="film-perforation-horizontal film-perforation-top">
+                @for($h = 0; $h < 40; $h++)
+                <div class="perforation-hole-horizontal"></div>
+                @endfor
+            </div>
+            
+            <!-- Perforations Bottom -->
+            <div class="film-perforation-horizontal film-perforation-bottom">
+                @for($h = 0; $h < 40; $h++)
+                <div class="perforation-hole-horizontal"></div>
+                @endfor
+            </div>
+            
+            <!-- Edge Codes Left -->
+            <div class="film-edge-code-left">SLAMIN</div>
+            
+            <!-- Edge Codes Right -->
+            <div class="film-edge-code-right">MEDIA</div>
+            
+            <!-- Content Centered -->
+            <div class="film-strip-horizontal-content">
+                <div class="film-frame-number-horizontal film-frame-number-horizontal-l">///01</div>
+                <div class="film-frame-number-horizontal film-frame-number-horizontal-r">01A</div>
+                
+                <h1 class="text-5xl md:text-7xl font-black text-white text-center" style="font-family: 'Crimson Pro', serif;">
+                    Video & <span class="italic text-primary-400">Foto</span>
+                </h1>
+                <p class="text-xl text-white/80 text-center mt-4 font-medium">
+                    Dalla community Slamin
+                </p>
             </div>
         </div>
     </section>
@@ -502,122 +500,143 @@
     @push('styles')
     <style>
         /* ========================================
-           FILM STRIP HEADER
+           FILM STRIP ORIZZONTALE - FULL WIDTH
            ======================================== */
         
-        .film-strip-header {
+        .film-strip-horizontal {
             position: relative;
-            padding: 3rem 4rem;
-            max-width: 900px;
+            width: 100%;
+            padding: 4rem 2rem;
+            min-height: 300px;
+            /* Film marrone lucido */
             background: 
-                linear-gradient(180deg, 
+                /* Glossy highlight */
+                linear-gradient(to bottom, 
                     rgba(255, 255, 255, 0.15) 0%,
-                    transparent 15%,
-                    transparent 85%,
+                    transparent 20%,
+                    transparent 80%,
                     rgba(0, 0, 0, 0.2) 100%
                 ),
-                linear-gradient(120deg, 
+                /* Diagonal light streak */
+                linear-gradient(135deg, 
                     transparent 0%,
-                    transparent 40%,
-                    rgba(255, 255, 255, 0.08) 48%,
-                    rgba(255, 255, 255, 0.12) 50%,
-                    rgba(255, 255, 255, 0.08) 52%,
-                    transparent 60%,
+                    transparent 45%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    transparent 55%,
                     transparent 100%
                 ),
-                linear-gradient(135deg, 
+                /* Film base */
+                linear-gradient(to bottom, 
                     rgba(120, 80, 50, 0.85) 0%,
-                    rgba(100, 65, 40, 0.88) 25%,
-                    rgba(110, 72, 45, 0.86) 50%,
-                    rgba(95, 60, 38, 0.89) 75%,
-                    rgba(115, 75, 48, 0.87) 100%
+                    rgba(100, 65, 40, 0.88) 50%,
+                    rgba(120, 80, 50, 0.85) 100%
                 );
-            border-radius: 8px;
             box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.4),
-                0 10px 30px rgba(0, 0, 0, 0.3);
+                0 10px 40px rgba(0, 0, 0, 0.4),
+                inset 0 2px 4px rgba(255, 255, 255, 0.1),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
         }
         
-        .film-perforation-header {
+        /* Perforazioni ORIZZONTALI (top e bottom) */
+        .film-perforation-horizontal {
             position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 2.5rem;
-            background: transparent;
+            left: 0;
+            right: 0;
+            height: 3rem;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: space-evenly;
             align-items: center;
-            padding: 1rem 0;
+            padding: 0 1rem;
+            /* Brown strip matching film */
+            background: 
+                linear-gradient(to bottom, 
+                    rgba(255, 255, 255, 0.12) 0%,
+                    transparent 50%
+                ),
+                linear-gradient(to bottom, 
+                    rgba(80, 55, 35, 0.95) 0%,
+                    rgba(70, 48, 30, 0.97) 50%,
+                    rgba(80, 55, 35, 0.95) 100%
+                );
         }
         
-        .film-perforation-left-header {
-            left: 0;
+        .film-perforation-top {
+            top: 0;
         }
         
-        .film-perforation-right-header {
-            right: 0;
+        .film-perforation-bottom {
+            bottom: 0;
         }
         
-        .perforation-hole-header {
-            width: 20px;
-            height: 16px;
-            background: #e8e5dc;
+        .perforation-hole-horizontal {
+            width: 18px;
+            height: 22px;
+            background: #f0ebe8;
             border-radius: 2px;
+            flex-shrink: 0;
             box-shadow: 
-                inset 0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 3px 6px rgba(0, 0, 0, 0.3),
                 inset 0 -1px 2px rgba(0, 0, 0, 0.2),
-                inset 2px 0 3px rgba(0, 0, 0, 0.15),
-                inset -2px 0 3px rgba(0, 0, 0, 0.15);
+                inset 2px 0 4px rgba(0, 0, 0, 0.15),
+                inset -2px 0 4px rgba(0, 0, 0, 0.15);
         }
         
-        .dark .perforation-hole-header {
+        .dark .perforation-hole-horizontal {
             background: #1a1a1a;
         }
         
-        .film-edge-code-header-top,
-        .film-edge-code-header-bottom {
+        /* Edge Codes LATERALI */
+        .film-edge-code-left,
+        .film-edge-code-right {
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.65rem;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.7rem;
             font-weight: 700;
-            letter-spacing: 0.3em;
+            letter-spacing: 0.4em;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            z-index: 3;
         }
         
-        .film-edge-code-header-top {
-            top: 0.75rem;
+        .film-edge-code-left {
+            left: 1.5rem;
         }
         
-        .film-edge-code-header-bottom {
-            bottom: 0.75rem;
+        .film-edge-code-right {
+            right: 1.5rem;
         }
         
-        .film-strip-header-content {
+        /* Content centrale */
+        .film-strip-horizontal-content {
             position: relative;
             z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
             padding: 2rem;
         }
         
-        .film-frame-number-header {
+        .film-frame-number-horizontal {
             position: absolute;
             color: rgba(255, 255, 255, 0.5);
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             font-weight: 700;
             font-family: 'Courier New', monospace;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            z-index: 3;
         }
         
-        .film-frame-number-header-tl {
-            top: 2.5rem;
-            left: 4.5rem;
+        .film-frame-number-horizontal-l {
+            top: 50%;
+            left: 5rem;
+            transform: translateY(-50%);
         }
         
-        .film-frame-number-header-tr {
-            top: 2.5rem;
-            right: 4.5rem;
+        .film-frame-number-horizontal-r {
+            top: 50%;
+            right: 5rem;
+            transform: translateY(-50%);
         }
         
         /* ========================================
