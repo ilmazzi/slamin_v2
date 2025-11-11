@@ -195,32 +195,23 @@
             padding-top: 20px;
         }
         
-        /* Washi Tape bianco trasparente */
+        /* Washi Tape bianco VERAMENTE trasparente */
         .polaroid-tape-white {
             position: absolute;
             top: -8px;
             left: 50%;
             height: 30px;
-            background: 
-                /* Texture sottile */
-                linear-gradient(90deg, 
-                    rgba(255, 255, 255, 0.7) 0%, 
-                    rgba(255, 255, 255, 0.85) 50%, 
-                    rgba(255, 255, 255, 0.7) 100%
-                ),
-                /* Leggera sfumatura grigia */
-                linear-gradient(180deg,
-                    rgba(240, 240, 240, 0.6) 0%,
-                    rgba(250, 250, 250, 0.75) 50%,
-                    rgba(240, 240, 240, 0.6) 100%
-                );
+            /* Solo un leggero bianco trasparente */
+            background: rgba(255, 255, 255, 0.35);
+            /* Bordo molto sottile */
+            border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: 
                 0 2px 6px rgba(0, 0, 0, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.9),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.03);
             z-index: 10;
             transition: all 0.3s ease;
-            /* Bordi seghettati semi-trasparenti */
+            /* Bordi seghettati */
             clip-path: polygon(
                 0% 0%, 2% 5%, 0% 10%, 2% 15%, 0% 20%, 2% 25%, 0% 30%, 2% 35%, 
                 0% 40%, 2% 45%, 0% 50%, 2% 55%, 0% 60%, 2% 65%, 0% 70%, 2% 75%, 
@@ -230,8 +221,8 @@
                 100% 60%, 98% 55%, 100% 50%, 98% 45%, 100% 40%, 98% 35%, 100% 30%, 
                 98% 25%, 100% 20%, 98% 15%, 100% 10%, 98% 5%, 100% 0%
             );
-            /* Effetto frosted glass */
-            backdrop-filter: blur(2px);
+            /* Effetto frosted glass leggero */
+            backdrop-filter: blur(1px);
         }
         
         .polaroid-wrapper:hover .polaroid-tape-white {
