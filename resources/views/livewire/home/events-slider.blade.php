@@ -94,7 +94,7 @@
                 $stampOffsetY = rand(-10, 10);
                 
                 // Random wear/damage effects
-                $wearOpacity = rand(4, 8) / 10; // 0.4 to 0.8 (more intense)
+                $wearOpacity = rand(4, 8) / 10; // 0.4 to 0.8
                 $spot1X = rand(5, 95);
                 $spot1Y = rand(5, 95);
                 $spot2X = rand(5, 95);
@@ -103,15 +103,6 @@
                 $spot3Y = rand(5, 95);
                 $spot4X = rand(5, 95);
                 $spot4Y = rand(5, 95);
-                // Multiple random crease lines
-                $crease1Rotation = rand(-55, 55);
-                $crease1Top = rand(20, 40);
-                $crease2Rotation = rand(-65, 65);
-                $crease2Top = rand(45, 65);
-                $crease3Rotation = rand(-50, 50);
-                $crease3Top = rand(70, 85);
-                $crease4Rotation = rand(-40, 40);
-                $crease4Top = rand(10, 30);
             ?>
             <div class="w-80 md:w-96 flex-shrink-0 fade-scale-item"
                  x-data
@@ -130,15 +121,7 @@
                             --spot3-x: {{ $spot3X }}%;
                             --spot3-y: {{ $spot3Y }}%;
                             --spot4-x: {{ $spot4X }}%;
-                            --spot4-y: {{ $spot4Y }}%;
-                            --crease1-rotation: {{ $crease1Rotation }}deg;
-                            --crease1-top: {{ $crease1Top }}%;
-                            --crease2-rotation: {{ $crease2Rotation }}deg;
-                            --crease2-top: {{ $crease2Top }}%;
-                            --crease3-rotation: {{ $crease3Rotation }}deg;
-                            --crease3-top: {{ $crease3Top }}%;
-                            --crease4-rotation: {{ $crease4Rotation }}deg;
-                            --crease4-top: {{ $crease4Top }}%;">
+                            --spot4-y: {{ $spot4Y }}%;">
                     
                     {{-- Perforated Left Edge --}}
                     <div class="ticket-perforation"></div>
@@ -359,50 +342,19 @@
         z-index: 1;
     }
     
-    /* Multiple Random Crease Lines - Complex Network */
+    /* Single Central Crease - Simple and Clean */
     .ticket-worn::after {
         content: '';
         position: absolute;
-        inset: 0;
-        background-image: 
-            /* Crease 1 */
-            linear-gradient(
-                calc(90deg + var(--crease1-rotation)),
-                transparent 0%,
-                transparent calc(var(--crease1-top) - 0.5%),
-                rgba(120, 100, 75, calc(var(--wear-opacity) * 0.7)) var(--crease1-top),
-                transparent calc(var(--crease1-top) + 0.5%),
-                transparent 100%
-            ),
-            /* Crease 2 */
-            linear-gradient(
-                calc(90deg + var(--crease2-rotation)),
-                transparent 0%,
-                transparent calc(var(--crease2-top) - 0.5%),
-                rgba(130, 105, 80, calc(var(--wear-opacity) * 0.6)) var(--crease2-top),
-                transparent calc(var(--crease2-top) + 0.5%),
-                transparent 100%
-            ),
-            /* Crease 3 */
-            linear-gradient(
-                calc(90deg + var(--crease3-rotation)),
-                transparent 0%,
-                transparent calc(var(--crease3-top) - 0.4%),
-                rgba(140, 115, 85, calc(var(--wear-opacity) * 0.5)) var(--crease3-top),
-                transparent calc(var(--crease3-top) + 0.4%),
-                transparent 100%
-            ),
-            /* Crease 4 */
-            linear-gradient(
-                calc(90deg + var(--crease4-rotation)),
-                transparent 0%,
-                transparent calc(var(--crease4-top) - 0.4%),
-                rgba(135, 110, 82, calc(var(--wear-opacity) * 0.4)) var(--crease4-top),
-                transparent calc(var(--crease4-top) + 0.4%),
-                transparent 100%
-            );
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: rgba(139, 115, 85, calc(var(--wear-opacity) * 0.5));
+        transform: translateY(-50%);
         box-shadow: 
-            inset 0 0 30px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.1));
+            0 1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.3)),
+            0 -1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.3));
         pointer-events: none;
         z-index: 1;
     }
