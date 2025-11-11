@@ -189,22 +189,22 @@
             inset 0 0 40px rgba(0, 0, 0, 0.25);
     }
     
-    /* Film Edge Markers - Dark strips */
+    /* Film Edge Markers - Dark BROWN strips (not black!) */
     .film-perforation {
         position: absolute;
         top: -20px;
         bottom: -20px;
         width: 3rem;
-        /* Dark edge strip */
+        /* Dark BROWN edge strip matching film */
         background: 
             linear-gradient(90deg, 
-                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.12) 0%,
                 transparent 30%
             ),
             linear-gradient(180deg, 
-                rgba(0, 0, 0, 0.5) 0%,
-                rgba(0, 0, 0, 0.4) 50%,
-                rgba(0, 0, 0, 0.5) 100%
+                rgba(80, 55, 35, 0.95) 0%,
+                rgba(70, 48, 30, 0.97) 50%,
+                rgba(80, 55, 35, 0.95) 100%
             );
         display: flex;
         flex-direction: column;
