@@ -157,67 +157,10 @@
                         </div>
                     </div>
 
-                    {{-- Video Grid (6 video) - Film Strip Style --}}
+                    {{-- Video Grid (6 video) - COMPONENTE LEGGERO --}}
                     @php $videos = $videoType === 'popular' ? $popularVideos : $recentVideos; @endphp
                     @foreach($videos->take(6) as $index => $video)
-                        <?php $tilt = rand(-2, 2); ?>
-                        <div class="group cursor-pointer"
-                             onclick="Livewire.dispatch('openVideoModal', { videoId: {{ $video->id }} })"
-                             x-data="{ visible: false }" 
-                             x-intersect.once="visible = true">
-                            <div x-show="visible"
-                                 x-transition:enter="transition ease-out duration-700"
-                                 x-transition:enter-start="opacity-0 translate-y-8"
-                                 x-transition:enter-end="opacity-100 translate-y-0"
-                                 style="transition-delay: {{ $index * 100 }}ms">
-                                
-                                <div class="film-strip-container-grid" style="transform: rotate({{ $tilt }}deg);">
-                                    <!-- Perforations -->
-                                    <div class="film-perforation-small film-perforation-left">
-                                        @for($h = 0; $h < 10; $h++)
-                                        <div class="perforation-hole-small"></div>
-                                        @endfor
-                                    </div>
-                                    
-                                    <div class="film-perforation-small film-perforation-right">
-                                        @for($h = 0; $h < 10; $h++)
-                                        <div class="perforation-hole-small"></div>
-                                        @endfor
-                                    </div>
-                                    
-                                    <div class="film-edge-code-small-top">{{ str_pad($index + 2, 2, '0', STR_PAD_LEFT) }}</div>
-                                    
-                                    <div class="film-frame-grid">
-                                        <div class="relative aspect-[4/3] overflow-hidden bg-black">
-                                            <img src="{{ $video->thumbnail_url }}" 
-                                                 onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800&q=80'"
-                                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
-
-                                            {{-- Play Icon --}}
-                                            <div class="absolute inset-0 flex items-center justify-center">
-                                                <svg class="w-12 h-12 text-white group-hover:scale-125 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M8 5v14l11-7z"/>
-                                                </svg>
-                                            </div>
-
-                                            {{-- Title --}}
-                                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent">
-                                                <h4 class="text-white font-bold text-sm md:text-base line-clamp-2 mb-1">
-                                                    {{ $video->title }}
-                                                </h4>
-                                                @if($video->user)
-                                                    <div class="flex items-center gap-2">
-                                                        <span class="text-white/80 text-xs">{{ $video->user->name }}</span>
-                                                        <span class="text-white/60 text-xs">• {{ number_format($video->view_count ?? 0) }}</span>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <x-video-frame-light :video="$video" :index="$index + 2" />
                     @endforeach
                 </div>
             @endif
