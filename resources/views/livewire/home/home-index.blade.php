@@ -100,15 +100,6 @@
                         $tapeWidth = rand(80, 100);
                         $tapeRotation = rand(-4, 4);
                         $paperRotation = rand(-2, 2);
-                        // Random tape color
-                        $tapeColors = [
-                            ['rgba(255, 107, 107, 0.92)', 'rgba(255, 130, 130, 0.90)', 'rgba(255, 150, 150, 0.92)'],
-                            ['rgba(78, 205, 196, 0.92)', 'rgba(100, 220, 210, 0.90)', 'rgba(120, 230, 220, 0.92)'],
-                            ['rgba(255, 195, 0, 0.92)', 'rgba(255, 210, 50, 0.90)', 'rgba(255, 225, 100, 0.92)'],
-                            ['rgba(156, 136, 255, 0.92)', 'rgba(170, 150, 255, 0.90)', 'rgba(185, 165, 255, 0.92)'],
-                            ['rgba(255, 140, 0, 0.92)', 'rgba(255, 160, 50, 0.90)', 'rgba(255, 180, 100, 0.92)'],
-                        ];
-                        $selectedTape = $tapeColors[array_rand($tapeColors)];
                     ?>
                     <a href="{{ route('gigs.index') }}" 
                        class="hero-notice-wrapper">
