@@ -13,7 +13,7 @@
         <div class="absolute top-0 right-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
         
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24" x-data="{ activeSection: '', sectionTitle: '' }">
             <div class="text-center space-y-8">
                 
                 {{-- Welcome Text with Typewriter Effect --}}
@@ -26,13 +26,29 @@
                     </p>
                 </div>
                 
+                {{-- Dynamic Section Title Display --}}
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-50"
+                     x-show="activeSection"
+                     x-transition:enter="transition ease-out duration-500"
+                     x-transition:enter-start="opacity-0 scale-50 rotate-12"
+                     x-transition:enter-end="opacity-100 scale-100 rotate-0"
+                     x-transition:leave="transition ease-in duration-300"
+                     x-transition:leave-start="opacity-100 scale-100 rotate-0"
+                     x-transition:leave-end="opacity-0 scale-50 -rotate-12">
+                    <div class="hero-section-display">
+                        <div class="hero-section-title" x-html="sectionTitle"></div>
+                    </div>
+                </div>
+                
                 {{-- Categories Grid - Simple Icons with Section Themes --}}
                 <div class="pt-8 flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
                     
                     {{-- Poetry - Mini Paper Sheet --}}
                     <?php $paperRotation = rand(-2, 2); ?>
                     <div class="hero-paper-wrapper cursor-pointer"
-                         onclick="document.querySelector('.wooden-desk-section').scrollIntoView({ behavior: 'smooth' })"
+                         @mouseenter="activeSection = 'poetry'; sectionTitle = `{!! addslashes(__('home.poetry_section_title')) !!}`"
+                         @mouseleave="activeSection = ''; sectionTitle = ''"
+                         @click="document.querySelector('.wooden-desk-section').scrollIntoView({ behavior: 'smooth' })"
                          style="transform: rotate({{ $paperRotation }}deg);">
                         <div class="hero-paper-sheet">
                             <div class="flex items-center justify-center h-full">
@@ -40,10 +56,6 @@
                                     "{{ __('home.hero_category_poems') }}"
                                 </h3>
                             </div>
-                        </div>
-                        <!-- Hover Overlay -->
-                        <div class="hero-card-overlay">
-                            <div class="hero-overlay-text">{!! __('home.poetry_section_title') !!}</div>
                         </div>
                     </div>
                     
@@ -54,7 +66,9 @@
                         $pinRotation = rand(-15, 15);
                     ?>
                     <div class="hero-magazine-wrapper cursor-pointer"
-                         onclick="document.querySelector('.articles-newspaper-section').scrollIntoView({ behavior: 'smooth' })">
+                         @mouseenter="activeSection = 'articles'; sectionTitle = `{!! addslashes(__('home.articles_section_title')) !!}`"
+                         @mouseleave="activeSection = ''; sectionTitle = ''"
+                         @click="document.querySelector('.articles-newspaper-section').scrollIntoView({ behavior: 'smooth' })">
                         <div class="hero-thumbtack" 
                              style="background: {{ $pinColor }}; transform: rotate({{ $pinRotation }}deg);">
                             <div class="hero-thumbtack-needle"></div>
@@ -81,10 +95,6 @@
                                 </p>
                             </div>
                         </div>
-                        <!-- Hover Overlay -->
-                        <div class="hero-card-overlay">
-                            <div class="hero-overlay-text">{!! __('home.articles_section_title') !!}</div>
-                        </div>
                     </div>
                     
                     {{-- Gigs - Mini Notice Board --}}
@@ -95,7 +105,9 @@
                         $tapeBottomRotation = rand(-4, 4);
                     ?>
                     <div class="hero-notice-wrapper cursor-pointer"
-                         onclick="document.querySelector('.cork-board-section').scrollIntoView({ behavior: 'smooth' })">
+                         @mouseenter="activeSection = 'gigs'; sectionTitle = `{!! addslashes(__('home.gigs_section_title')) !!}`"
+                         @mouseleave="activeSection = ''; sectionTitle = ''"
+                         @click="document.querySelector('.cork-board-section').scrollIntoView({ behavior: 'smooth' })">
                         <div class="hero-washi-tape hero-washi-top" 
                              style="width: {{ $tapeWidth }}px; 
                                     transform: translate(calc(-50%), 0) rotate({{ $tapeRotation }}deg);"></div>
@@ -107,10 +119,6 @@
                         <div class="hero-washi-tape hero-washi-bottom" 
                              style="width: {{ $tapeWidth }}px; 
                                     transform: translate(calc(-50%), 0) rotate({{ $tapeBottomRotation }}deg);"></div>
-                        <!-- Hover Overlay -->
-                        <div class="hero-card-overlay">
-                            <div class="hero-overlay-text">{!! __('home.gigs_section_title') !!}</div>
-                        </div>
                     </div>
                     
                     {{-- Events - Mini Cinema Ticket --}}
@@ -123,7 +131,9 @@
                         ][rand(0, 2)];
                     ?>
                     <div class="hero-ticket-wrapper cursor-pointer"
-                         onclick="document.querySelector('.cinema-wall-section').scrollIntoView({ behavior: 'smooth' })"
+                         @mouseenter="activeSection = 'events'; sectionTitle = `{!! addslashes(__('home.events_section_title')) !!}`"
+                         @mouseleave="activeSection = ''; sectionTitle = ''"
+                         @click="document.querySelector('.cinema-wall-section').scrollIntoView({ behavior: 'smooth' })"
                          style="transform: rotate({{ $tilt }}deg);">
                         <div class="hero-cinema-ticket"
                              style="background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
@@ -145,16 +155,14 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Hover Overlay -->
-                        <div class="hero-card-overlay">
-                            <div class="hero-overlay-text">{!! __('home.events_section_title') !!}</div>
-                        </div>
                     </div>
                     
                     {{-- Videos - Mini Film Strip --}}
                     <?php $tilt = rand(-2, 2); ?>
                     <div class="hero-film-wrapper cursor-pointer"
-                         onclick="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })"
+                         @mouseenter="activeSection = 'videos'; sectionTitle = `{!! addslashes(__('home.videos_section_title')) !!}`"
+                         @mouseleave="activeSection = ''; sectionTitle = ''"
+                         @click="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })"
                          style="transform: rotate({{ $tilt }}deg);">
                         <div class="hero-film-strip">
                             <!-- Film codes -->
@@ -198,10 +206,6 @@
                                     {{ __('home.hero_category_videos') }}
                                 </div>
                             </div>
-                        </div>
-                        <!-- Hover Overlay -->
-                        <div class="hero-card-overlay">
-                            <div class="hero-overlay-text">{!! __('home.videos_section_title') !!}</div>
                         </div>
                     </div>
                     
@@ -1363,141 +1367,87 @@
         .hero-frame-number-bl { bottom: 0.25rem; left: 1.1rem; }
         .hero-frame-number-br { bottom: 0.25rem; right: 1.1rem; }
         
-        /* Hero Card Hover Overlay - Slide & Sparkle Effect */
-        .hero-card-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to top,
-                rgba(0, 0, 0, 0.95) 0%,
-                rgba(16, 185, 129, 0.1) 50%,
-                rgba(0, 0, 0, 0.95) 100%
-            );
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            clip-path: inset(100% 0 0 0);
-            transition: clip-path 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-            border-radius: 4px;
-            z-index: 100;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        
-        /* Sparkle particles */
-        .hero-card-overlay::before,
-        .hero-card-overlay::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
+        /* Hero Section Display - Big Title in Header */
+        .hero-section-display {
+            position: relative;
+            padding: 3rem 4rem;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(0, 0, 0, 0.95) 0%,
+                    rgba(16, 185, 129, 0.2) 50%,
+                    rgba(0, 0, 0, 0.95) 100%
+                );
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 3px solid rgba(16, 185, 129, 0.5);
             box-shadow: 
-                0 0 10px 2px rgba(16, 185, 129, 0.8),
-                0 0 20px 4px rgba(16, 185, 129, 0.6),
-                20px 30px 0 0 white,
-                40px 10px 0 0 rgba(16, 185, 129, 0.8),
-                -20px 40px 0 0 white,
-                -30px 15px 0 0 rgba(16, 185, 129, 0.8),
-                60px 50px 0 0 white,
-                -40px 60px 0 0 rgba(16, 185, 129, 0.6),
-                70px 20px 0 0 white,
-                80px 40px 0 0 rgba(16, 185, 129, 0.8);
-            animation: hero-sparkle 2s ease-in-out infinite;
-            opacity: 0;
+                0 0 40px rgba(16, 185, 129, 0.6),
+                0 0 80px rgba(16, 185, 129, 0.4),
+                0 20px 60px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: hero-display-pulse 3s ease-in-out infinite;
         }
         
-        .hero-card-overlay::before {
-            top: 10%;
-            left: 20%;
-        }
-        
-        .hero-card-overlay::after {
-            bottom: 15%;
-            right: 25%;
-            animation-delay: 1s;
-        }
-        
-        @keyframes hero-sparkle {
+        @keyframes hero-display-pulse {
             0%, 100% {
-                opacity: 0;
-                transform: scale(0);
+                box-shadow: 
+                    0 0 40px rgba(16, 185, 129, 0.6),
+                    0 0 80px rgba(16, 185, 129, 0.4),
+                    0 20px 60px rgba(0, 0, 0, 0.8),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                border-color: rgba(16, 185, 129, 0.5);
             }
             50% {
-                opacity: 1;
-                transform: scale(1);
+                box-shadow: 
+                    0 0 60px rgba(16, 185, 129, 0.8),
+                    0 0 120px rgba(16, 185, 129, 0.6),
+                    0 20px 60px rgba(0, 0, 0, 0.8),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                border-color: rgba(16, 185, 129, 0.8);
             }
         }
         
-        .hero-paper-wrapper:hover .hero-card-overlay,
-        .hero-magazine-wrapper:hover .hero-card-overlay,
-        .hero-notice-wrapper:hover .hero-card-overlay,
-        .hero-ticket-wrapper:hover .hero-card-overlay,
-        .hero-film-wrapper:hover .hero-card-overlay {
-            clip-path: inset(0 0 0 0);
-        }
-        
-        .hero-overlay-text {
+        .hero-section-title {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.35rem;
-            font-weight: 800;
+            font-size: 3.5rem;
+            font-weight: 900;
             color: white;
             text-align: center;
-            padding: 1.5rem;
-            position: relative;
-            z-index: 2;
-            letter-spacing: 0.03em;
-            line-height: 1.3;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
             text-shadow: 
-                0 0 30px rgba(16, 185, 129, 0.9),
-                0 0 50px rgba(16, 185, 129, 0.7),
-                0 0 70px rgba(16, 185, 129, 0.5),
-                0 3px 6px rgba(0, 0, 0, 1),
-                0 6px 12px rgba(0, 0, 0, 0.9);
-            opacity: 0;
-            transform: translateY(30px);
-            animation: hero-text-slide-up 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards,
-                       hero-text-breathe 3s ease-in-out infinite 1s;
+                0 0 30px rgba(16, 185, 129, 1),
+                0 0 60px rgba(16, 185, 129, 0.8),
+                0 0 90px rgba(16, 185, 129, 0.6),
+                0 4px 12px rgba(0, 0, 0, 1);
+            animation: hero-title-glow 2s ease-in-out infinite alternate;
         }
         
-        .hero-paper-wrapper:hover .hero-overlay-text,
-        .hero-magazine-wrapper:hover .hero-overlay-text,
-        .hero-notice-wrapper:hover .hero-overlay-text,
-        .hero-ticket-wrapper:hover .hero-overlay-text,
-        .hero-film-wrapper:hover .hero-overlay-text {
-            animation: hero-text-slide-up 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards,
-                       hero-text-breathe 3s ease-in-out infinite 1s;
-        }
-        
-        @keyframes hero-text-slide-up {
+        @keyframes hero-title-glow {
             0% {
-                opacity: 0;
-                transform: translateY(30px);
+                text-shadow: 
+                    0 0 30px rgba(16, 185, 129, 1),
+                    0 0 60px rgba(16, 185, 129, 0.8),
+                    0 0 90px rgba(16, 185, 129, 0.6),
+                    0 4px 12px rgba(0, 0, 0, 1);
             }
             100% {
-                opacity: 1;
-                transform: translateY(0);
+                text-shadow: 
+                    0 0 50px rgba(16, 185, 129, 1),
+                    0 0 100px rgba(16, 185, 129, 1),
+                    0 0 150px rgba(16, 185, 129, 0.8),
+                    0 6px 18px rgba(0, 0, 0, 1);
             }
         }
         
-        @keyframes hero-text-breathe {
-            0%, 100% {
-                text-shadow: 
-                    0 0 30px rgba(16, 185, 129, 0.9),
-                    0 0 50px rgba(16, 185, 129, 0.7),
-                    0 0 70px rgba(16, 185, 129, 0.5),
-                    0 3px 6px rgba(0, 0, 0, 1),
-                    0 6px 12px rgba(0, 0, 0, 0.9);
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section-display {
+                padding: 2rem 2.5rem;
             }
-            50% {
-                text-shadow: 
-                    0 0 40px rgba(16, 185, 129, 1),
-                    0 0 70px rgba(16, 185, 129, 0.9),
-                    0 0 100px rgba(16, 185, 129, 0.7),
-                    0 4px 8px rgba(0, 0, 0, 1),
-                    0 8px 16px rgba(0, 0, 0, 0.9);
+            
+            .hero-section-title {
+                font-size: 2.5rem;
             }
         }
         
