@@ -1,5 +1,5 @@
 <div>
-    @if($videos && $videos->count() > 0)
+    @if($media && $media->count() > 0)
     <section>
         <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
             <!-- Header -->
@@ -74,9 +74,9 @@
             
             <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-16 pt-12 px-8 md:px-12 scrollbar-hide"
                  style="-webkit-overflow-scrolling: touch;">
-                @foreach($videos as $i => $video)
+                @foreach($media as $i => $item)
                 <?php
-                    // Random film strip tilt
+                    // Random tilt
                     $tilt = rand(-1, 1);
                 ?>
                 <div class="w-[92vw] md:w-[700px] flex-shrink-0 fade-scale-item"
@@ -84,7 +84,8 @@
                      x-intersect.once="$el.classList.add('animate-fade-in')"
                      style="animation-delay: {{ $i * 0.1 }}s;">
                     
-                    <!-- Film Strip Container -->
+                    @if($item->media_type === 'video')
+                    <!-- Film Strip Container (VIDEO) -->
                     <div class="film-strip-container" style="transform: rotate({{ $tilt }}deg);">
                         <!-- Film Perforations Left - Brown strip -->
                         <div class="film-perforation film-perforation-left">
@@ -113,8 +114,8 @@
                             <!-- Video Container -->
                             <div class="relative aspect-[4/3] md:aspect-video overflow-hidden bg-black">
                                 <!-- Video Thumbnail -->
-                                <img src="{{ $video->thumbnail_url }}" 
-                                     alt="{{ $video->title }}" 
+                                <img src="{{ $item->thumbnail_url }}" 
+                                     alt="{{ $item->title }}" 
                                      class="w-full h-full object-cover"
                                      onerror="this.src='{{ asset('assets/images/placeholder/placholder-1.jpg') }}'">
                                 
@@ -123,7 +124,7 @@
                                 
                                 <!-- Play Button - Smaller -->
                                 <button class="absolute inset-0 flex items-center justify-center group"
-                                        onclick="window.open('{{ route('videos.show', $video) }}', '_blank')">
+                                        onclick="window.open('{{ route('videos.show', $item) }}', '_blank')">
                                     <div class="w-14 h-14 md:w-16 md:h-16 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-300">
                                         <svg class="w-6 h-6 md:w-7 md:h-7 text-primary-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M8 5v14l11-7z"/>
@@ -135,7 +136,7 @@
                                 <div class="absolute top-0 left-0 right-0 pt-8 px-3 md:pt-4 md:px-4">
                                     <h3 class="text-sm md:text-lg font-bold text-white drop-shadow-lg line-clamp-2" 
                                         style="font-family: 'Crimson Pro', serif;">
-                                        {{ $video->title }}
+                                        {{ $item->title }}
                                     </h3>
                                 </div>
                             </div>
@@ -144,10 +145,10 @@
                             <div class="mt-3 px-3 pb-3 space-y-2">
                                 <!-- User Info -->
                                 <div class="flex items-center gap-2">
-                                    <img src="{{ $video->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($video->user->name) . '&background=059669&color=fff' }}" 
-                                         alt="{{ $video->user->name }}"
+                                    <img src="{{ $item->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($item->user->name) . '&background=059669&color=fff' }}" 
+                                         alt="{{ $item->user->name }}"
                                          class="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover ring-1 ring-white/30">
-                                    <p class="font-semibold text-xs md:text-sm text-white/90">{{ $video->user->name }}</p>
+                                    <p class="font-semibold text-xs md:text-sm text-white/90">{{ $item->user->name }}</p>
                                 </div>
                                 
                                 <!-- Social Buttons -->
@@ -158,29 +159,29 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
-                                        <span class="text-xs md:text-sm">{{ $video->view_count ?? 0 }}</span>
+                                        <span class="text-xs md:text-sm">{{ $item->view_count ?? 0 }}</span>
                                     </div>
                                     
                                     <!-- Like -->
                                     <x-like-button 
-                                        :itemId="$video->id"
+                                        :itemId="$item->id"
                                         itemType="video"
                                         :isLiked="false"
-                                        :likesCount="$video->like_count ?? 0"
+                                        :likesCount="$item->like_count ?? 0"
                                         size="sm"
                                         class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4" />
                                     
                                     <!-- Comment -->
                                     <x-comment-button 
-                                        :itemId="$video->id"
+                                        :itemId="$item->id"
                                         itemType="video"
-                                        :commentsCount="$video->comment_count ?? 0"
+                                        :commentsCount="$item->comment_count ?? 0"
                                         size="sm"
                                         class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
                                     
                                     <!-- Share -->
                                     <x-share-button 
-                                        :itemId="$video->id"
+                                        :itemId="$item->id"
                                         itemType="video"
                                         size="sm"
                                         class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
@@ -188,6 +189,33 @@
                             </div>
                         </div>
                     </div>
+                    
+                    @else
+                    <!-- PHOTO Frame - Simple Vintage Style -->
+                    <div class="photo-frame-container" style="transform: rotate({{ $tilt }}deg);">
+                        <div class="photo-frame">
+                            <!-- Photo Image -->
+                            <a href="{{ route('photos.show', $item) }}" class="block">
+                                <img src="{{ $item->image_url }}" 
+                                     alt="{{ $item->title }}" 
+                                     class="w-full h-full object-cover">
+                            </a>
+                            
+                            <!-- Photo Info Overlay -->
+                            <div class="photo-info">
+                                <h3 class="photo-title">{{ $item->title }}</h3>
+                                <div class="photo-author">{{ $item->user->name }}</div>
+                                
+                                <!-- Social Stats -->
+                                <div class="photo-stats">
+                                    <span>👁️ {{ $item->view_count ?? 0 }}</span>
+                                    <span>❤️ {{ $item->like_count ?? 0 }}</span>
+                                    <span>💬 {{ $item->comment_count ?? 0 }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
                 @endforeach
                 </div>
@@ -604,6 +632,84 @@
     .film-frame .plyr__control--overlaid:hover {
         transform: scale(0.55) !important;
         opacity: 1 !important;
+    }
+    
+    /* ========================================
+       PHOTO FRAME - Vintage Style
+       ======================================== */
+    
+    .photo-frame-container {
+        width: 100%;
+        transition: transform 0.3s ease;
+    }
+    
+    .photo-frame {
+        position: relative;
+        background: #ffffff;
+        padding: 20px 20px 60px 20px;
+        box-shadow: 
+            0 2px 4px rgba(0, 0, 0, 0.1),
+            0 4px 8px rgba(0, 0, 0, 0.08),
+            0 8px 16px rgba(0, 0, 0, 0.06),
+            0 16px 32px rgba(0, 0, 0, 0.04);
+        border-radius: 2px;
+        aspect-ratio: 4/5;
+    }
+    
+    .dark .photo-frame {
+        background: #fafafa;
+    }
+    
+    .photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(100%);
+        transition: filter 0.5s ease;
+    }
+    
+    .photo-frame:hover img {
+        filter: grayscale(0%);
+    }
+    
+    .photo-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+    
+    .photo-title {
+        font-family: 'Crimson Pro', serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 0.25rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .photo-author {
+        font-size: 0.75rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+    
+    .photo-stats {
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.75rem;
+        color: #888;
+    }
+    
+    .photo-stats span {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
     }
     </style>
     @endif
