@@ -134,10 +134,12 @@
                             <div class="hero-ticket-perforation"></div>
                             <div class="hero-ticket-content">
                                 <div class="ticket-mini-header">
-                                    <div class="text-[8px] font-black tracking-wider text-red-700">{{ strtoupper(__('home.hero_category_events')) }}</div>
+                                    <div class="text-[8px] font-black tracking-wider text-red-700">TICKET</div>
                                     <div class="text-[7px] font-bold text-amber-700">#0{{ rand(1, 9) }}{{ rand(0, 9) }}{{ rand(0, 9) }}</div>
                                 </div>
-                                <div class="flex-1"></div>
+                                <div class="flex-1 flex items-center justify-center">
+                                    <div class="hero-ticket-stamp">{{ strtoupper(__('home.hero_category_events')) }}</div>
+                                </div>
                                 <div class="ticket-mini-barcode">
                                     <div class="flex justify-center gap-[1px]">
                                         @for($j = 0; $j < 20; $j++)
@@ -1086,6 +1088,35 @@
             margin-top: 0.5rem;
             padding-top: 0.5rem;
             border-top: 1px dashed rgba(139, 115, 85, 0.3);
+        }
+        
+        /* Events Stamp in Center */
+        .hero-ticket-stamp {
+            font-family: 'Special Elite', 'Courier New', monospace;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 400;
+            color: #b91c1c;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.5rem 1rem;
+            border: 2px solid #b91c1c;
+            border-radius: 3px;
+            opacity: 0.7;
+            position: relative;
+            transform: rotate(<?php echo rand(-8, 8); ?>deg);
+            box-shadow: 
+                0 2px 4px rgba(185, 28, 28, 0.2),
+                inset 0 1px 2px rgba(185, 28, 28, 0.1);
+        }
+        
+        .hero-ticket-stamp::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border: 1px solid rgba(185, 28, 28, 0.12);
+            border-radius: 2px;
+            pointer-events: none;
         }
         
     </style>
