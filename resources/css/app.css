@@ -769,13 +769,7 @@
     font-style: italic;
 }
 
-.dark .paper-avatar {
-    border-color: rgba(180, 120, 70, 0.5);
-}
-
-.dark .paper-author-name {
-    color: #a89580;
-}
+/* Removed dark mode styles - paper sheets stay light on dark wooden background */
 
 /* Title */
 .paper-title {
@@ -794,13 +788,7 @@
     color: #4a7c59;
 }
 
-.dark .paper-title {
-    color: #e8e0d5;
-}
-
-.dark .group:hover .paper-title {
-    color: #6fa881;
-}
+/* Removed dark mode styles - keep same light colors */
 
 /* Content */
 .paper-content {
@@ -818,9 +806,7 @@
     z-index: 10;
 }
 
-.dark .paper-content {
-    color: #c8bfb0;
-}
+/* Removed dark mode styles - keep same light colors */
 
 /* Read more */
 .paper-readmore {
@@ -839,9 +825,7 @@
     transform: translateY(0);
 }
 
-.dark .paper-readmore {
-    color: #9d8f7f;
-}
+/* Removed dark mode styles - keep same light colors */
 
 /* Social actions below paper (OLD - kept for compatibility) */
 .paper-actions {
@@ -858,10 +842,7 @@
     z-index: 10;
 }
 
-.dark .paper-actions {
-    background: rgba(42, 37, 32, 0.8);
-    border-color: rgba(180, 120, 70, 0.3);
-}
+/* Removed dark mode styles - keep same light colors */
 
 /* Social actions integrated INSIDE paper */
 .paper-actions-integrated {
@@ -876,9 +857,7 @@
     z-index: 10;
 }
 
-.dark .paper-actions-integrated {
-    border-top-color: rgba(180, 120, 70, 0.2);
-}
+/* Removed dark mode styles - keep same light colors */
 
 /* ========================================
    POLAROID WALL - NEW USERS SECTION
