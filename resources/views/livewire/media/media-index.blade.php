@@ -1,33 +1,44 @@
 <div class="min-h-screen">
     
-    {{-- HERO FULL-WIDTH con Parallax --}}
-    <section class="relative h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900"
-             x-data="{ scrollY: 0 }"
-             @scroll.window="scrollY = window.pageYOffset">
+    {{-- HERO con Film Strip Header --}}
+    <section class="relative py-20 overflow-hidden film-studio-section">
         
-        {{-- Animated Orbs --}}
-        <div class="absolute inset-0 overflow-hidden opacity-30">
-            <div class="absolute top-0 left-1/4 w-96 h-96 bg-primary-600 rounded-full blur-3xl animate-blob"></div>
-            <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-accent-600 rounded-full blur-3xl animate-blob-slow"></div>
-        </div>
-
-        <div class="relative z-10 text-center px-4" :style="`transform: translateY(${scrollY * 0.3}px)`">
-            <div class="inline-block px-8 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full mb-8">
-                <span class="text-white/90 text-sm font-black tracking-[0.3em] uppercase">Gallery</span>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Film Strip Header -->
+            <div class="flex items-center justify-center mb-12">
+                <div class="film-strip-header">
+                    <!-- Film Perforations Left -->
+                    <div class="film-perforation-header film-perforation-left-header">
+                        @for($h = 0; $h < 8; $h++)
+                        <div class="perforation-hole-header"></div>
+                        @endfor
+                    </div>
+                    
+                    <!-- Film Perforations Right -->
+                    <div class="film-perforation-header film-perforation-right-header">
+                        @for($h = 0; $h < 8; $h++)
+                        <div class="perforation-hole-header"></div>
+                        @endfor
+                    </div>
+                    
+                    <!-- Film Edge Codes -->
+                    <div class="film-edge-code-header-top">SLAMIN</div>
+                    <div class="film-edge-code-header-bottom">MEDIA</div>
+                    
+                    <!-- Content -->
+                    <div class="film-strip-header-content">
+                        <div class="film-frame-number-header film-frame-number-header-tl">///01</div>
+                        <div class="film-frame-number-header film-frame-number-header-tr">01A</div>
+                        
+                        <h1 class="text-5xl md:text-7xl font-black text-white text-center" style="font-family: 'Crimson Pro', serif;">
+                            Video & <span class="italic text-primary-400">Foto</span>
+                        </h1>
+                        <p class="text-xl text-white/80 text-center mt-4 font-medium">
+                            Dalla community Slamin
+                        </p>
+                    </div>
+                </div>
             </div>
-            <h1 class="text-7xl md:text-9xl font-black text-white mb-6 leading-none" style="font-family: 'Crimson Pro', serif;">
-                Media
-            </h1>
-            <p class="text-xl md:text-2xl text-white/70 max-w-2xl mx-auto font-light">
-                Video e fotografia dalla community
-            </p>
-        </div>
-
-        {{-- Scroll Arrow --}}
-        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
-            <svg class="w-8 h-8 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-            </svg>
         </div>
     </section>
 
@@ -63,8 +74,8 @@
             @if($mostPopularVideo)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto">
                     
-                    {{-- Video Hero (span 2 cols + 2 rows) --}}
-                    <div class="md:col-span-2 md:row-span-2 group cursor-pointer relative overflow-hidden bg-neutral-900"
+                    {{-- Video Hero (span 2 cols + 2 rows) - Film Strip Style --}}
+                    <div class="md:col-span-2 md:row-span-2 group cursor-pointer"
                          onclick="Livewire.dispatch('openVideoModal', { videoId: {{ $mostPopularVideo->id }} })"
                          x-data="{ visible: false }" 
                          x-intersect.once="visible = true">
@@ -72,55 +83,75 @@
                              x-transition:enter="transition ease-out duration-1000"
                              x-transition:enter-start="opacity-0 scale-95"
                              x-transition:enter-end="opacity-100 scale-100"
-                             class="h-full relative">
+                             class="h-full">
                             
-                            <img src="{{ $mostPopularVideo->thumbnail_url }}" 
-                                 onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1200&q=80'"
-                                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-black/90 via-black/40 to-transparent"></div>
-
-                            {{-- Play Overlay --}}
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="transform group-hover:scale-110 transition-all duration-500">
-                                    <div class="w-28 h-28 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
-                                        <svg class="w-14 h-14 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M8 5v14l11-7z"/>
-                                        </svg>
-                                    </div>
+                            <div class="film-strip-container-hero">
+                                <!-- Film Perforations -->
+                                <div class="film-perforation film-perforation-left">
+                                    @for($h = 0; $h < 16; $h++)
+                                    <div class="perforation-hole"></div>
+                                    @endfor
                                 </div>
-                            </div>
-
-                            {{-- Content --}}
-                            <div class="absolute bottom-0 left-0 right-0 p-10">
-                                <div class="inline-block px-4 py-1.5 bg-primary-600 rounded-full mb-4">
-                                    <span class="text-white text-xs font-black tracking-wider">IN EVIDENZA</span>
+                                
+                                <div class="film-perforation film-perforation-right">
+                                    @for($h = 0; $h < 16; $h++)
+                                    <div class="perforation-hole"></div>
+                                    @endfor
                                 </div>
-                                <h3 class="text-4xl md:text-5xl font-black text-white mb-4 leading-tight" style="font-family: 'Crimson Pro', serif;">
-                                    {{ $mostPopularVideo->title }}
-                                </h3>
-                                @if($mostPopularVideo->user)
-                                    <div class="flex items-center gap-3">
-                                        <x-ui.user-avatar :user="$mostPopularVideo->user" size="md" :showName="false" />
-                                        <div>
-                                            <div class="text-white font-bold">{{ $mostPopularVideo->user->name }}</div>
-                                            <div class="text-white/70 text-sm flex items-center gap-2">
-                                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                
+                                <!-- Film Edge Codes -->
+                                <div class="film-edge-code-top">SLAMIN</div>
+                                <div class="film-edge-code-bottom">HERO</div>
+                                
+                                <!-- Film Frame -->
+                                <div class="film-frame-hero">
+                                    <div class="film-frame-number film-frame-number-tl">///HE</div>
+                                    <div class="film-frame-number film-frame-number-tr">ROA</div>
+                                    
+                                    <div class="relative aspect-video overflow-hidden bg-black">
+                                        <img src="{{ $mostPopularVideo->thumbnail_url }}" 
+                                             onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1200&q=80'"
+                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                        <div class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/30 to-transparent"></div>
+
+                                        {{-- Play Button --}}
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <div class="w-20 h-20 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all">
+                                                <svg class="w-10 h-10 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z"/>
                                                 </svg>
-                                                <span>{{ number_format($mostPopularVideo->view_count ?? 0) }} {{ __('media.views') }}</span>
                                             </div>
                                         </div>
+
+                                        {{-- Content Overlay --}}
+                                        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent">
+                                            <div class="inline-block px-3 py-1 bg-primary-600 rounded-full mb-3">
+                                                <span class="text-white text-xs font-bold tracking-wider">IN EVIDENZA</span>
+                                            </div>
+                                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-3 line-clamp-2" style="font-family: 'Crimson Pro', serif;">
+                                                {{ $mostPopularVideo->title }}
+                                            </h3>
+                                            @if($mostPopularVideo->user)
+                                                <div class="flex items-center gap-2">
+                                                    <img src="{{ $mostPopularVideo->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($mostPopularVideo->user->name) . '&background=059669&color=fff' }}" 
+                                                         alt="{{ $mostPopularVideo->user->name }}"
+                                                         class="w-8 h-8 rounded-full object-cover ring-2 ring-white/30">
+                                                    <span class="text-white font-semibold">{{ $mostPopularVideo->user->name }}</span>
+                                                    <span class="text-white/70 text-sm ml-2">{{ number_format($mostPopularVideo->view_count ?? 0) }} views</span>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
-                                @endif
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Video Grid (6 video) --}}
+                    {{-- Video Grid (6 video) - Film Strip Style --}}
                     @php $videos = $videoType === 'popular' ? $popularVideos : $recentVideos; @endphp
                     @foreach($videos->take(6) as $index => $video)
-                        <div class="group cursor-pointer relative overflow-hidden bg-neutral-900"
+                        <?php $tilt = rand(-2, 2); ?>
+                        <div class="group cursor-pointer"
                              onclick="Livewire.dispatch('openVideoModal', { videoId: {{ $video->id }} })"
                              x-data="{ visible: false }" 
                              x-intersect.once="visible = true">
@@ -128,38 +159,51 @@
                                  x-transition:enter="transition ease-out duration-700"
                                  x-transition:enter-start="opacity-0 translate-y-8"
                                  x-transition:enter-end="opacity-100 translate-y-0"
-                                 style="transition-delay: {{ $index * 100 }}ms"
-                                 class="aspect-[4/3] relative">
+                                 style="transition-delay: {{ $index * 100 }}ms">
                                 
-                                <img src="{{ $video->thumbnail_url }}" 
-                                     onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800&q=80'"
-                                     class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors"></div>
+                                <div class="film-strip-container-grid" style="transform: rotate({{ $tilt }}deg);">
+                                    <!-- Perforations -->
+                                    <div class="film-perforation-small film-perforation-left">
+                                        @for($h = 0; $h < 10; $h++)
+                                        <div class="perforation-hole-small"></div>
+                                        @endfor
+                                    </div>
+                                    
+                                    <div class="film-perforation-small film-perforation-right">
+                                        @for($h = 0; $h < 10; $h++)
+                                        <div class="perforation-hole-small"></div>
+                                        @endfor
+                                    </div>
+                                    
+                                    <div class="film-edge-code-small-top">{{ str_pad($index + 2, 2, '0', STR_PAD_LEFT) }}</div>
+                                    
+                                    <div class="film-frame-grid">
+                                        <div class="relative aspect-[4/3] overflow-hidden bg-black">
+                                            <img src="{{ $video->thumbnail_url }}" 
+                                                 onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800&q=80'"
+                                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
 
-                                {{-- Play Icon Small --}}
-                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                                    <svg class="w-12 h-12 text-white group-hover:scale-125 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M8 5v14l11-7z"/>
-                                    </svg>
-                                </div>
+                                            {{-- Play Icon --}}
+                                            <div class="absolute inset-0 flex items-center justify-center">
+                                                <svg class="w-12 h-12 text-white group-hover:scale-125 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z"/>
+                                                </svg>
+                                            </div>
 
-                                {{-- Title Bottom --}}
-                                <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 to-transparent">
-                                    <h4 class="text-white font-black text-lg line-clamp-2 mb-2">
-                                        {{ $video->title }}
-                                    </h4>
-                                    @if($video->user)
-                                        <div class="flex items-center gap-2 mb-2">
-                                            <x-ui.user-avatar :user="$video->user" size="xs" :showName="false" />
-                                            <span class="text-white/90 text-sm font-medium">{{ $video->user->name }}</span>
+                                            {{-- Title --}}
+                                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent">
+                                                <h4 class="text-white font-bold text-sm md:text-base line-clamp-2 mb-1">
+                                                    {{ $video->title }}
+                                                </h4>
+                                                @if($video->user)
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="text-white/80 text-xs">{{ $video->user->name }}</span>
+                                                        <span class="text-white/60 text-xs">• {{ number_format($video->view_count ?? 0) }}</span>
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
-                                    @endif
-                                    <div class="flex items-center gap-2 text-white/70 text-sm">
-                                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                        </svg>
-                                        <span>{{ number_format($video->view_count ?? 0) }} {{ __('media.views') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -202,8 +246,13 @@
             @if($mostPopularPhoto)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto">
                     
-                    {{-- Foto Hero (span 2 cols + 2 rows) --}}
-                    <div class="md:col-span-2 md:row-span-2 group cursor-pointer relative overflow-hidden bg-neutral-100 dark:bg-neutral-800"
+                    {{-- Foto Hero (span 2 cols + 2 rows) - Polaroid Style --}}
+                    <?php 
+                        $heroRotation = rand(-2, 2);
+                        $heroTapeWidth = rand(80, 120);
+                        $heroTapeRotation = rand(-8, 8);
+                    ?>
+                    <div class="md:col-span-2 md:row-span-2 group cursor-pointer"
                          onclick="Livewire.dispatch('openPhotoModal', { photoId: {{ $mostPopularPhoto->id }} })"
                          x-data="{ visible: false }" 
                          x-intersect.once="visible = true">
@@ -211,53 +260,47 @@
                              x-transition:enter="transition ease-out duration-1000"
                              x-transition:enter-start="opacity-0 scale-95"
                              x-transition:enter-end="opacity-100 scale-100"
-                             class="h-full relative">
+                             class="h-full flex items-center justify-center">
                             
-                            <img src="{{ $mostPopularPhoto->image_url }}" 
-                                 onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80'"
-                                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000">
-                            <div class="absolute inset-0 bg-gradient-to-tl from-black/90 via-black/40 to-transparent"></div>
-
-                            {{-- Zoom Overlay --}}
-                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                <div class="w-28 h-28 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
-                                    <svg class="w-14 h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            {{-- Content --}}
-                            <div class="absolute bottom-0 left-0 right-0 p-10">
-                                <div class="inline-block px-4 py-1.5 bg-accent-600 rounded-full mb-4">
-                                    <span class="text-white text-xs font-black tracking-wider">{{ __('media.featured') }}</span>
-                                </div>
-                                <h3 class="text-4xl md:text-5xl font-black text-white mb-4 leading-tight" style="font-family: 'Crimson Pro', serif;">
-                                    {{ $mostPopularPhoto->title ?? __('media.untitled') }}
-                                </h3>
-                                @if($mostPopularPhoto->user)
-                                    <div class="flex items-center gap-3">
-                                        <x-ui.user-avatar :user="$mostPopularPhoto->user" size="md" :showName="false" />
-                                        <div>
-                                            <div class="text-white font-bold">{{ $mostPopularPhoto->user->name }}</div>
-                                            <div class="text-white/70 text-sm flex items-center gap-2">
-                                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                                </svg>
-                                                <span>{{ number_format($mostPopularPhoto->view_count ?? 0) }} {{ __('media.views') }}</span>
-                                            </div>
-                                        </div>
+                            <div class="polaroid-wrapper-hero">
+                                <!-- Washi Tape bianco trasparente -->
+                                <div class="polaroid-tape-white-hero" 
+                                     style="width: {{ $heroTapeWidth }}px; 
+                                            transform: translateX(-50%) rotate({{ $heroTapeRotation }}deg);"></div>
+                                
+                                <div class="polaroid-card-hero" style="transform: rotate({{ $heroRotation }}deg);">
+                                    <div class="polaroid-photo-hero">
+                                        <img src="{{ $mostPopularPhoto->image_url }}" 
+                                             onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80'"
+                                             class="polaroid-img-hero">
                                     </div>
-                                @endif
+                                    
+                                    <div class="polaroid-caption-hero">
+                                        <div class="inline-block px-3 py-1 bg-accent-600 rounded-full mb-2">
+                                            <span class="text-white text-xs font-bold tracking-wider">IN EVIDENZA</span>
+                                        </div>
+                                        <div class="text-lg md:text-xl font-bold text-neutral-900 line-clamp-2 mb-2" style="font-family: 'Crimson Pro', serif;">
+                                            {{ $mostPopularPhoto->title ?? __('media.untitled') }}
+                                        </div>
+                                        @if($mostPopularPhoto->user)
+                                            <div class="text-sm text-neutral-600 mb-2">{{ $mostPopularPhoto->user->name }}</div>
+                                            <div class="text-xs text-neutral-500">{{ number_format($mostPopularPhoto->view_count ?? 0) }} views</div>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Foto Grid --}}
+                    {{-- Foto Grid - Polaroid Style --}}
                     @php $photos = $photoType === 'popular' ? $popularPhotos : $recentPhotos; @endphp
                     @foreach($photos->take(6) as $index => $photo)
-                        <div class="group cursor-pointer relative overflow-hidden bg-neutral-100 dark:bg-neutral-800"
+                        <?php 
+                            $rotation = rand(-3, 3);
+                            $tapeWidth = rand(60, 90);
+                            $tapeRotation = rand(-8, 8);
+                        ?>
+                        <div class="group cursor-pointer"
                              onclick="Livewire.dispatch('openPhotoModal', { photoId: {{ $photo->id }} })"
                              x-data="{ visible: false }" 
                              x-intersect.once="visible = true">
@@ -265,38 +308,30 @@
                                  x-transition:enter="transition ease-out duration-700"
                                  x-transition:enter-start="opacity-0 translate-y-8"
                                  x-transition:enter-end="opacity-100 translate-y-0"
-                                 style="transition-delay: {{ $index * 100 }}ms"
-                                 class="aspect-square relative">
+                                 style="transition-delay: {{ $index * 100 }}ms">
                                 
-                                <img src="{{ $photo->image_url }}" 
-                                     onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80'"
-                                     class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
-
-                                {{-- Zoom Icon --}}
-                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                    </svg>
-                                </div>
-
-                                {{-- Title Bottom --}}
-                                <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/90 to-transparent">
-                                    <h4 class="text-white font-black text-lg line-clamp-2 mb-2">
-                                        {{ $photo->title ?? __('media.untitled') }}
-                                    </h4>
-                                    @if($photo->user)
-                                        <div class="flex items-center gap-2 mb-2">
-                                            <x-ui.user-avatar :user="$photo->user" size="xs" :showName="false" />
-                                            <span class="text-white/90 text-sm font-medium">{{ $photo->user->name }}</span>
+                                <div class="polaroid-wrapper-grid">
+                                    <!-- Washi Tape bianco -->
+                                    <div class="polaroid-tape-white-grid" 
+                                         style="width: {{ $tapeWidth }}px; 
+                                                transform: translateX(-50%) rotate({{ $tapeRotation }}deg);"></div>
+                                    
+                                    <div class="polaroid-card-grid" style="transform: rotate({{ $rotation }}deg);">
+                                        <div class="polaroid-photo-grid">
+                                            <img src="{{ $photo->image_url }}" 
+                                                 onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80'"
+                                                 class="polaroid-img-grid">
                                         </div>
-                                    @endif
-                                    <div class="flex items-center gap-2 text-white/70 text-sm">
-                                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                        </svg>
-                                        <span>{{ number_format($photo->view_count ?? 0) }} {{ __('media.views') }}</span>
+                                        
+                                        <div class="polaroid-caption-grid">
+                                            <div class="text-base font-bold text-neutral-900 line-clamp-2 mb-1" style="font-family: 'Crimson Pro', serif;">
+                                                {{ $photo->title ?? __('media.untitled') }}
+                                            </div>
+                                            @if($photo->user)
+                                                <div class="text-xs text-neutral-600 mb-1">{{ $photo->user->name }}</div>
+                                                <div class="text-xs text-neutral-500">{{ number_format($photo->view_count ?? 0) }} views</div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -466,14 +501,292 @@
 
     @push('styles')
     <style>
-        @keyframes blob {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.05); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
+        /* ========================================
+           FILM STRIP HEADER
+           ======================================== */
+        
+        .film-strip-header {
+            position: relative;
+            padding: 3rem 4rem;
+            max-width: 900px;
+            background: 
+                linear-gradient(180deg, 
+                    rgba(255, 255, 255, 0.15) 0%,
+                    transparent 15%,
+                    transparent 85%,
+                    rgba(0, 0, 0, 0.2) 100%
+                ),
+                linear-gradient(120deg, 
+                    transparent 0%,
+                    transparent 40%,
+                    rgba(255, 255, 255, 0.08) 48%,
+                    rgba(255, 255, 255, 0.12) 50%,
+                    rgba(255, 255, 255, 0.08) 52%,
+                    transparent 60%,
+                    transparent 100%
+                ),
+                linear-gradient(135deg, 
+                    rgba(120, 80, 50, 0.85) 0%,
+                    rgba(100, 65, 40, 0.88) 25%,
+                    rgba(110, 72, 45, 0.86) 50%,
+                    rgba(95, 60, 38, 0.89) 75%,
+                    rgba(115, 75, 48, 0.87) 100%
+                );
+            border-radius: 8px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 10px 30px rgba(0, 0, 0, 0.3);
         }
         
-        .animate-blob { animation: blob 8s ease-in-out infinite; }
-        .animate-blob-slow { animation: blob 12s ease-in-out infinite; }
+        .film-perforation-header {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2.5rem;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .film-perforation-left-header {
+            left: 0;
+        }
+        
+        .film-perforation-right-header {
+            right: 0;
+        }
+        
+        .perforation-hole-header {
+            width: 20px;
+            height: 16px;
+            background: #e8e5dc;
+            border-radius: 2px;
+            box-shadow: 
+                inset 0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+                inset 2px 0 3px rgba(0, 0, 0, 0.15),
+                inset -2px 0 3px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dark .perforation-hole-header {
+            background: #1a1a1a;
+        }
+        
+        .film-edge-code-header-top,
+        .film-edge-code-header-bottom {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .film-edge-code-header-top {
+            top: 0.75rem;
+        }
+        
+        .film-edge-code-header-bottom {
+            bottom: 0.75rem;
+        }
+        
+        .film-strip-header-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+        }
+        
+        .film-frame-number-header {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .film-frame-number-header-tl {
+            top: 2.5rem;
+            left: 4.5rem;
+        }
+        
+        .film-frame-number-header-tr {
+            top: 2.5rem;
+            right: 4.5rem;
+        }
+        
+        /* ========================================
+           FILM STRIP - VIDEO CARDS
+           ======================================== */
+        
+        .film-strip-container-hero,
+        .film-strip-container-grid {
+            position: relative;
+            background: 
+                linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 15%, transparent 85%, rgba(0, 0, 0, 0.2) 100%),
+                linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255, 255, 255, 0.08) 48%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.08) 52%, transparent 60%, transparent 100%),
+                linear-gradient(135deg, rgba(120, 80, 50, 0.85) 0%, rgba(100, 65, 40, 0.88) 25%, rgba(110, 72, 45, 0.86) 50%, rgba(95, 60, 38, 0.89) 75%, rgba(115, 75, 48, 0.87) 100%);
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .film-strip-container-hero {
+            padding: 2.5rem 3.5rem;
+        }
+        
+        .film-strip-container-grid {
+            padding: 2rem 3rem;
+        }
+        
+        .film-perforation-small {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2rem;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 0.75rem 0;
+        }
+        
+        .perforation-hole-small {
+            width: 16px;
+            height: 14px;
+            background: #e8e5dc;
+            border-radius: 2px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dark .perforation-hole-small {
+            background: #1a1a1a;
+        }
+        
+        .film-edge-code-small-top {
+            position: absolute;
+            top: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+        }
+        
+        .film-frame-hero,
+        .film-frame-grid {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* ========================================
+           POLAROID - PHOTO CARDS
+           ======================================== */
+        
+        .polaroid-wrapper-hero,
+        .polaroid-wrapper-grid {
+            position: relative;
+            padding-top: 20px;
+        }
+        
+        .polaroid-tape-white-hero,
+        .polaroid-tape-white-grid {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+            transition: all 0.3s ease;
+            clip-path: polygon(
+                0% 0%, 2% 5%, 0% 10%, 2% 15%, 0% 20%, 2% 25%, 0% 30%, 2% 35%, 
+                0% 40%, 2% 45%, 0% 50%, 2% 55%, 0% 60%, 2% 65%, 0% 70%, 2% 75%, 
+                0% 80%, 2% 85%, 0% 90%, 2% 95%, 0% 100%,
+                100% 100%,
+                98% 95%, 100% 90%, 98% 85%, 100% 80%, 98% 75%, 100% 70%, 98% 65%, 
+                100% 60%, 98% 55%, 100% 50%, 98% 45%, 100% 40%, 98% 35%, 100% 30%, 
+                98% 25%, 100% 20%, 98% 15%, 100% 10%, 98% 5%, 100% 0%
+            );
+            backdrop-filter: blur(1px);
+        }
+        
+        .polaroid-card-hero,
+        .polaroid-card-grid {
+            display: block;
+            position: relative;
+            background: #ffffff;
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                0 4px 8px rgba(0, 0, 0, 0.08),
+                0 8px 16px rgba(0, 0, 0, 0.06),
+                0 16px 32px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .polaroid-card-hero {
+            padding: 25px 25px 100px 25px;
+            max-width: 600px;
+        }
+        
+        .polaroid-card-grid {
+            padding: 16px 16px 70px 16px;
+        }
+        
+        .dark .polaroid-card-hero,
+        .dark .polaroid-card-grid {
+            background: #fafafa;
+        }
+        
+        .polaroid-photo-hero,
+        .polaroid-photo-grid {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            background: #f5f5f5;
+            border-radius: 1px;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .polaroid-img-hero,
+        .polaroid-img-grid {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: all 0.5s ease;
+        }
+        
+        .polaroid-card-hero:hover .polaroid-img-hero,
+        .polaroid-card-grid:hover .polaroid-img-grid {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+        
+        .polaroid-caption-hero,
+        .polaroid-caption-grid {
+            text-align: center;
+            padding-top: 1rem;
+        }
+        
+        .polaroid-wrapper-hero:hover .polaroid-card-hero,
+        .polaroid-wrapper-grid:hover .polaroid-card-grid {
+            transform: translateY(-8px) scale(1.02) !important;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.12),
+                0 8px 16px rgba(0, 0, 0, 0.1),
+                0 16px 32px rgba(0, 0, 0, 0.08),
+                0 32px 64px rgba(0, 0, 0, 0.06);
+        }
     </style>
     @endpush
 </div>
