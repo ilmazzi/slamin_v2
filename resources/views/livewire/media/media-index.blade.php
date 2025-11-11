@@ -629,7 +629,7 @@
             display: flex;
             justify-content: center;
             align-items: stretch;
-            gap: 0.75rem;
+            gap: 0;
             padding: 0 6rem;
             z-index: 1;
             /* Sotto le perforazioni! */
@@ -646,12 +646,34 @@
                     rgba(0, 0, 0, 0.5) 50%,
                     rgba(0, 0, 0, 0.4) 100%
                 );
-            border-left: 1px solid rgba(0, 0, 0, 0.5);
-            border-right: 1px solid rgba(0, 0, 0, 0.5);
             box-shadow: 
                 inset 0 2px 8px rgba(0, 0, 0, 0.5),
                 inset 0 -2px 8px rgba(0, 0, 0, 0.4);
             transition: all 0.3s ease;
+        }
+        
+        /* STRISCIA NERA tra i fotogrammi */
+        .film-frame-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -6px;
+            bottom: 0;
+            width: 6px;
+            background: 
+                linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.9) 0%,
+                    rgba(0, 0, 0, 0.95) 50%,
+                    rgba(0, 0, 0, 0.9) 100%
+                );
+            box-shadow: 
+                inset 2px 0 4px rgba(0, 0, 0, 0.8),
+                inset -1px 0 2px rgba(0, 0, 0, 0.6);
+        }
+        
+        /* Ultimo frame non ha striscia a destra */
+        .film-frame-box:last-child::after {
+            display: none;
         }
         
         .film-frame-active {
@@ -662,11 +684,10 @@
                     rgba(0, 0, 0, 0.6) 50%,
                     rgba(0, 0, 0, 0.5) 100%
                 );
-            border-left: 2px solid rgba(255, 255, 255, 0.15);
-            border-right: 2px solid rgba(255, 255, 255, 0.15);
             box-shadow: 
                 inset 0 0 20px rgba(0, 0, 0, 0.6),
-                0 0 30px rgba(0, 0, 0, 0.4);
+                0 0 30px rgba(0, 0, 0, 0.4),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
         }
         
         .film-frame-number-box,
