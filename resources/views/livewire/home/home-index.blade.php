@@ -43,7 +43,7 @@
                         </div>
                         <!-- Hover Overlay -->
                         <div class="hero-card-overlay">
-                            <div class="hero-overlay-text">{{ __('home.poetry_section_title') }}</div>
+                            <div class="hero-overlay-text">{!! __('home.poetry_section_title') !!}</div>
                         </div>
                     </div>
                     
@@ -1363,21 +1363,46 @@
         .hero-frame-number-bl { bottom: 0.25rem; left: 1.1rem; }
         .hero-frame-number-br { bottom: 0.25rem; right: 1.1rem; }
         
-        /* Hero Card Hover Overlay - Universal */
+        /* Hero Card Hover Overlay - WOW Effect */
         .hero-card-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
+            background: 
+                radial-gradient(circle at center, 
+                    rgba(16, 185, 129, 0.15) 0%,
+                    rgba(0, 0, 0, 0.92) 60%,
+                    rgba(0, 0, 0, 0.95) 100%
+                );
+            backdrop-filter: blur(12px);
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(0.8) rotateY(90deg);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             border-radius: 4px;
             z-index: 100;
             pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .hero-card-overlay::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg 90deg,
+                rgba(16, 185, 129, 0.3) 90deg 180deg,
+                transparent 180deg 270deg,
+                rgba(16, 185, 129, 0.3) 270deg 360deg
+            );
+            animation: hero-overlay-rotate 4s linear infinite;
+        }
+        
+        @keyframes hero-overlay-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .hero-paper-wrapper:hover .hero-card-overlay,
@@ -1386,35 +1411,59 @@
         .hero-ticket-wrapper:hover .hero-card-overlay,
         .hero-film-wrapper:hover .hero-card-overlay {
             opacity: 1;
-            transform: scale(1);
+            transform: scale(1) rotateY(0deg);
         }
         
         .hero-overlay-text {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.25rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 900;
             color: white;
             text-align: center;
-            padding: 1rem;
+            padding: 1.5rem;
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             text-shadow: 
-                0 0 20px rgba(16, 185, 129, 0.8),
-                0 0 40px rgba(16, 185, 129, 0.6),
-                0 4px 8px rgba(0, 0, 0, 0.9);
-            animation: hero-overlay-pulse 2s ease-in-out infinite alternate;
+                0 0 20px rgba(16, 185, 129, 1),
+                0 0 40px rgba(16, 185, 129, 0.8),
+                0 0 60px rgba(16, 185, 129, 0.6),
+                0 0 80px rgba(16, 185, 129, 0.4),
+                0 4px 8px rgba(0, 0, 0, 0.9),
+                0 8px 16px rgba(0, 0, 0, 0.8);
+            animation: hero-overlay-pulse 2s ease-in-out infinite alternate,
+                       hero-text-float 3s ease-in-out infinite;
+            transform-style: preserve-3d;
         }
         
         @keyframes hero-overlay-pulse {
             0% {
                 text-shadow: 
-                    0 0 20px rgba(16, 185, 129, 0.8),
-                    0 0 40px rgba(16, 185, 129, 0.6),
-                    0 4px 8px rgba(0, 0, 0, 0.9);
+                    0 0 20px rgba(16, 185, 129, 1),
+                    0 0 40px rgba(16, 185, 129, 0.8),
+                    0 0 60px rgba(16, 185, 129, 0.6),
+                    0 0 80px rgba(16, 185, 129, 0.4),
+                    0 4px 8px rgba(0, 0, 0, 0.9),
+                    0 8px 16px rgba(0, 0, 0, 0.8);
             }
             100% {
                 text-shadow: 
                     0 0 30px rgba(16, 185, 129, 1),
-                    0 0 60px rgba(16, 185, 129, 0.8),
-                    0 6px 12px rgba(0, 0, 0, 0.9);
+                    0 0 60px rgba(16, 185, 129, 1),
+                    0 0 90px rgba(16, 185, 129, 0.8),
+                    0 0 120px rgba(16, 185, 129, 0.6),
+                    0 6px 12px rgba(0, 0, 0, 0.9),
+                    0 12px 24px rgba(0, 0, 0, 0.8);
+            }
+        }
+        
+        @keyframes hero-text-float {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.05);
             }
         }
         
