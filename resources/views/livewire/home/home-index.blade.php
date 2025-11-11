@@ -1200,5 +1200,111 @@
             pointer-events: none;
         }
         
+        /* Videos - Mini Film Strip */
+        .hero-film-wrapper {
+            display: block;
+            width: 130px;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-film-wrapper:hover {
+            transform: translateY(-6px) scale(1.02);
+        }
+        
+        .hero-film-strip {
+            position: relative;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.08) 0%,
+                transparent 30%
+            ),
+            linear-gradient(180deg, 
+                rgba(80, 55, 35, 0.95) 0%,
+                rgba(70, 48, 30, 0.97) 50%,
+                rgba(80, 55, 35, 0.95) 100%
+            );
+            padding: 1.5rem 1.25rem;
+            border-radius: 4px;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                0 8px 16px rgba(0, 0, 0, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Perforations */
+        .hero-film-perf-left,
+        .hero-film-perf-right {
+            position: absolute;
+            top: -8px;
+            bottom: -8px;
+            width: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            background: linear-gradient(180deg, 
+                rgba(80, 55, 35, 0.95) 0%,
+                rgba(70, 48, 30, 0.97) 50%,
+                rgba(80, 55, 35, 0.95) 100%
+            );
+        }
+        
+        .hero-film-perf-left { left: 0.25rem; }
+        .hero-film-perf-right { right: 0.25rem; }
+        
+        .hero-perf-hole {
+            width: 12px;
+            height: 10px;
+            background: rgba(240, 235, 228, 0.9);
+            border-radius: 1px;
+            box-shadow: 
+                inset 0 2px 4px rgba(0, 0, 0, 0.35),
+                inset 0 1px 2px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Film codes */
+        .hero-film-code-top,
+        .hero-film-code-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.1em;
+        }
+        
+        .hero-film-code-top { top: 0.25rem; }
+        .hero-film-code-bottom { bottom: 0.25rem; }
+        
+        /* Film frame */
+        .hero-film-frame {
+            position: relative;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Frame numbers */
+        .hero-frame-number-tl,
+        .hero-frame-number-tr,
+        .hero-frame-number-bl,
+        .hero-frame-number-br {
+            position: absolute;
+            font-size: 0.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-frame-number-tl { top: 0.25rem; left: 0.25rem; }
+        .hero-frame-number-tr { top: 0.25rem; right: 0.25rem; }
+        .hero-frame-number-bl { bottom: 0.25rem; left: 0.25rem; }
+        .hero-frame-number-br { bottom: 0.25rem; right: 0.25rem; }
+        
     </style>
 </div>
