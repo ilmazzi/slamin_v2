@@ -84,12 +84,11 @@
                                     <div class="text-xs font-bold text-neutral-900">SLAMIN</div>
                                     <div class="px-2 py-0.5 bg-primary-600 text-white text-[10px] font-bold rounded inline-block">CULTURA</div>
                                 </div>
-                                <div class="flex items-center justify-center h-20 mt-2 bg-gradient-to-br from-primary-600 to-primary-700 rounded">
-                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                                    </svg>
+                                <div class="flex-1 flex items-center justify-center mt-2">
+                                    <h3 class="hero-magazine-title">
+                                        {{ __('home.hero_category_articles') }}
+                                    </h3>
                                 </div>
-                                <p class="text-xs font-bold text-neutral-900 mt-2">{{ __('home.hero_category_articles') }}</p>
                             </div>
                         </div>
                     </a>
@@ -879,6 +878,21 @@
                 0 30px 48px rgba(0, 0, 0, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.6),
                 inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Magazine Title - Same as sections */
+        .hero-magazine-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #1a1a1a;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+        
+        .hero-magazine-wrapper:hover .hero-magazine-title {
+            color: #10b981;
         }
         
         /* Gigs - Mini Notice Board */
