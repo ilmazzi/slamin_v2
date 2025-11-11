@@ -92,8 +92,8 @@
             @if($mostPopularVideo)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto">
                     
-                    {{-- Video Hero (span 2 cols + 2 rows) - Film Strip Style --}}
-                    <div class="md:col-span-2 md:row-span-2 group cursor-pointer"
+                    {{-- Video Hero (span 2 cols + 2 rows) - SOLO PIÙ GRANDE --}}
+                    <div class="md:col-span-2 md:row-span-2 group cursor-pointer rounded-lg overflow-hidden bg-black"
                          onclick="Livewire.dispatch('openVideoModal', { videoId: {{ $mostPopularVideo->id }} })"
                          x-data="{ visible: false }" 
                          x-intersect.once="visible = true">
@@ -101,66 +101,63 @@
                              x-transition:enter="transition ease-out duration-1000"
                              x-transition:enter-start="opacity-0 scale-95"
                              x-transition:enter-end="opacity-100 scale-100"
-                             class="h-full">
+                             class="h-full relative aspect-video md:aspect-auto">
                             
-                            <div class="film-strip-container-hero">
-                                <!-- Film Perforations -->
-                                <div class="film-perforation film-perforation-left">
-                                    @for($h = 0; $h < 16; $h++)
-                                    <div class="perforation-hole"></div>
-                                    @endfor
-                                </div>
-                                
-                                <div class="film-perforation film-perforation-right">
-                                    @for($h = 0; $h < 16; $h++)
-                                    <div class="perforation-hole"></div>
-                                    @endfor
-                                </div>
-                                
-                                <!-- Film Edge Codes -->
-                                <div class="film-edge-code-top">SLAMIN</div>
-                                <div class="film-edge-code-bottom">HERO</div>
-                                
-                                <!-- Film Frame -->
-                                <div class="film-frame-hero">
-                                    <div class="film-frame-number film-frame-number-tl">///HE</div>
-                                    <div class="film-frame-number film-frame-number-tr">ROA</div>
-                                    
-                                    <div class="relative aspect-video overflow-hidden bg-black">
-                                        <img src="{{ $mostPopularVideo->thumbnail_url }}" 
-                                             onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1200&q=80'"
-                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                                        <div class="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/30 to-transparent"></div>
+                            <img src="{{ $mostPopularVideo->thumbnail_url }}" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1200&q=80'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/40 to-transparent"></div>
 
-                                        {{-- Play Button --}}
-                                        <div class="absolute inset-0 flex items-center justify-center">
-                                            <div class="w-20 h-20 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all">
-                                                <svg class="w-10 h-10 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M8 5v14l11-7z"/>
-                                                </svg>
-                                            </div>
-                                        </div>
+                            {{-- Play Button --}}
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-20 h-20 md:w-24 md:h-24 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all">
+                                    <svg class="w-10 h-10 md:w-12 md:h-12 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                            </div>
 
-                                        {{-- Content Overlay --}}
-                                        <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent">
-                                            <div class="inline-block px-3 py-1 bg-primary-600 rounded-full mb-3">
-                                                <span class="text-white text-xs font-bold tracking-wider">IN EVIDENZA</span>
-                                            </div>
-                                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-3 line-clamp-2" style="font-family: 'Crimson Pro', serif;">
-                                                {{ $mostPopularVideo->title }}
-                                            </h3>
-                                            @if($mostPopularVideo->user)
-                                                <div class="flex items-center gap-2">
-                                                    <img src="{{ $mostPopularVideo->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($mostPopularVideo->user->name) . '&background=059669&color=fff' }}" 
-                                                         alt="{{ $mostPopularVideo->user->name }}"
-                                                         class="w-8 h-8 rounded-full object-cover ring-2 ring-white/30">
-                                                    <span class="text-white font-semibold">{{ $mostPopularVideo->user->name }}</span>
-                                                    <span class="text-white/70 text-sm ml-2">{{ number_format($mostPopularVideo->view_count ?? 0) }} views</span>
-                                                </div>
-                                            @endif
-                                        </div>
+                            {{-- Content Overlay --}}
+                            <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-black/95 to-transparent">
+                                <div class="inline-block px-3 py-1 bg-primary-600 rounded-full mb-2 md:mb-3">
+                                    <span class="text-white text-xs font-bold tracking-wider">IN EVIDENZA</span>
+                                </div>
+                                <h3 class="text-xl md:text-3xl font-bold text-white mb-2 md:mb-3 line-clamp-2" style="font-family: 'Crimson Pro', serif;">
+                                    {{ $mostPopularVideo->title }}
+                                </h3>
+                                @if($mostPopularVideo->user)
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <img src="{{ $mostPopularVideo->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($mostPopularVideo->user->name) . '&background=059669&color=fff' }}" 
+                                             alt="{{ $mostPopularVideo->user->name }}"
+                                             class="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover ring-2 ring-white/30">
+                                        <span class="text-white font-semibold text-sm md:text-base">{{ $mostPopularVideo->user->name }}</span>
+                                        <span class="text-white/70 text-xs md:text-sm ml-1">{{ number_format($mostPopularVideo->view_count ?? 0) }} views</span>
                                     </div>
-                                </div>
+                                    
+                                    {{-- Social Buttons --}}
+                                    <div class="flex items-center gap-3">
+                                        <x-like-button 
+                                            :itemId="$mostPopularVideo->id"
+                                            itemType="video"
+                                            :isLiked="false"
+                                            :likesCount="$mostPopularVideo->like_count ?? 0"
+                                            size="sm"
+                                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4" />
+                                        
+                                        <x-comment-button 
+                                            :itemId="$mostPopularVideo->id"
+                                            itemType="video"
+                                            :commentsCount="$mostPopularVideo->comment_count ?? 0"
+                                            size="sm"
+                                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                        
+                                        <x-share-button 
+                                            :itemId="$mostPopularVideo->id"
+                                            itemType="video"
+                                            size="sm"
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
