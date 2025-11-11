@@ -378,9 +378,7 @@
     }
     
     .ticket-watermark img {
-        filter: grayscale(100%) brightness(0.9) contrast(1.8);
-        mix-blend-mode: multiply;
-        opacity: 0.25;
+        /* No filters - use image as-is */
     }
     
     /* Make sure content is above wear effects */
