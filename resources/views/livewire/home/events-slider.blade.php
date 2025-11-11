@@ -128,9 +128,9 @@
                     
                     {{-- Watermark Logo (Top Right) --}}
                     <div class="ticket-watermark">
-                        <img src="{{ asset('assets/images/logo.svg') }}" 
+                        <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
                              alt="Slamin" 
-                             class="w-16 h-16 md:w-20 md:h-20 opacity-15">
+                             class="w-32 h-auto md:w-40">
                     </div>
                     
                     {{-- Ticket Main Content --}}
@@ -369,16 +369,18 @@
     /* Watermark Logo - Stamp Effect */
     .ticket-watermark {
         position: absolute;
-        top: 1rem;
-        right: 1rem;
+        top: 50%;
+        right: 0.5rem;
+        transform: translateY(-50%) rotate(-90deg);
+        transform-origin: center;
         z-index: 3;
         pointer-events: none;
     }
     
     .ticket-watermark img {
-        filter: grayscale(100%) brightness(1.2) contrast(1.5);
+        filter: grayscale(100%) brightness(0.9) contrast(1.8);
         mix-blend-mode: multiply;
-        opacity: 0.15;
+        opacity: 0.25;
     }
     
     /* Make sure content is above wear effects */
