@@ -36,7 +36,7 @@
                      x-transition:leave-start="opacity-100 scale-100 rotate-0"
                      x-transition:leave-end="opacity-0 scale-50 -rotate-12">
                     <div class="hero-section-display">
-                        <div class="hero-section-title" x-html="sectionTitle"></div>
+                        <div class="hero-section-title" x-text="sectionTitle"></div>
                     </div>
                 </div>
                 
@@ -46,7 +46,7 @@
                     {{-- Poetry - Mini Paper Sheet --}}
                     <?php $paperRotation = rand(-2, 2); ?>
                     <div class="hero-paper-wrapper cursor-pointer"
-                         @mouseenter="activeSection = 'poetry'; sectionTitle = `{!! addslashes(__('home.poetry_section_title')) !!}`"
+                         @mouseenter="activeSection = 'poetry'; sectionTitle = '{{ str_replace("'", "\\'", strip_tags(__('home.poetry_section_title'))) }}'"
                          @mouseleave="activeSection = ''; sectionTitle = ''"
                          @click="document.querySelector('.wooden-desk-section').scrollIntoView({ behavior: 'smooth' })"
                          style="transform: rotate({{ $paperRotation }}deg);">
@@ -66,7 +66,7 @@
                         $pinRotation = rand(-15, 15);
                     ?>
                     <div class="hero-magazine-wrapper cursor-pointer"
-                         @mouseenter="activeSection = 'articles'; sectionTitle = `{!! addslashes(__('home.articles_section_title')) !!}`"
+                         @mouseenter="activeSection = 'articles'; sectionTitle = '{{ str_replace("'", "\\'", strip_tags(__('home.articles_section_title'))) }}'"
                          @mouseleave="activeSection = ''; sectionTitle = ''"
                          @click="document.querySelector('.articles-newspaper-section').scrollIntoView({ behavior: 'smooth' })">
                         <div class="hero-thumbtack" 
@@ -105,7 +105,7 @@
                         $tapeBottomRotation = rand(-4, 4);
                     ?>
                     <div class="hero-notice-wrapper cursor-pointer"
-                         @mouseenter="activeSection = 'gigs'; sectionTitle = `{!! addslashes(__('home.gigs_section_title')) !!}`"
+                         @mouseenter="activeSection = 'gigs'; sectionTitle = '{{ str_replace("'", "\\'", strip_tags(__('home.gigs_section_title'))) }}'"
                          @mouseleave="activeSection = ''; sectionTitle = ''"
                          @click="document.querySelector('.cork-board-section').scrollIntoView({ behavior: 'smooth' })">
                         <div class="hero-washi-tape hero-washi-top" 
@@ -131,7 +131,7 @@
                         ][rand(0, 2)];
                     ?>
                     <div class="hero-ticket-wrapper cursor-pointer"
-                         @mouseenter="activeSection = 'events'; sectionTitle = `{!! addslashes(__('home.events_section_title')) !!}`"
+                         @mouseenter="activeSection = 'events'; sectionTitle = '{{ str_replace("'", "\\'", strip_tags(__('home.events_section_title'))) }}'"
                          @mouseleave="activeSection = ''; sectionTitle = ''"
                          @click="document.querySelector('.cinema-wall-section').scrollIntoView({ behavior: 'smooth' })"
                          style="transform: rotate({{ $tilt }}deg);">
@@ -160,7 +160,7 @@
                     {{-- Videos - Mini Film Strip --}}
                     <?php $tilt = rand(-2, 2); ?>
                     <div class="hero-film-wrapper cursor-pointer"
-                         @mouseenter="activeSection = 'videos'; sectionTitle = `{!! addslashes(__('home.videos_section_title')) !!}`"
+                         @mouseenter="activeSection = 'videos'; sectionTitle = '{{ str_replace("'", "\\'", strip_tags(__('home.videos_section_title'))) }}'"
                          @mouseleave="activeSection = ''; sectionTitle = ''"
                          @click="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })"
                          style="transform: rotate({{ $tilt }}deg);">
