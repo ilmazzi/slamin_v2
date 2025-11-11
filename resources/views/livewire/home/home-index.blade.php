@@ -121,18 +121,37 @@
                     </a>
                     
                     {{-- Events - Mini Cinema Ticket --}}
-                    <?php $tilt = rand(-3, 3); ?>
+                    <?php 
+                        $tilt = rand(-3, 3);
+                        $selectedColors = [
+                            ['#fefaf3', '#fdf8f0', '#faf5ec'],
+                            ['#fef9f1', '#fdf7ef', '#faf4ea'],
+                            ['#fffbf5', '#fef9f3', '#fdf7f1']
+                        ][rand(0, 2)];
+                    ?>
                     <a href="{{ route('events.index') }}" 
                        class="hero-ticket-wrapper"
                        style="transform: rotate({{ $tilt }}deg);">
-                        <div class="hero-cinema-ticket">
+                        <div class="hero-cinema-ticket"
+                             style="background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
                             <div class="hero-ticket-perforation"></div>
                             <div class="hero-ticket-content">
-                                <div class="flex flex-col items-center justify-center gap-2 h-full">
-                                    <svg class="w-8 h-8 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="ticket-mini-header">
+                                    <div class="text-[8px] font-black tracking-wider text-red-700">EVENTO</div>
+                                    <div class="text-[7px] font-bold text-amber-700">#0{{ rand(1, 9) }}{{ rand(0, 9) }}{{ rand(0, 9) }}</div>
+                                </div>
+                                <div class="flex-1 flex items-center justify-center">
+                                    <svg class="w-10 h-10 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
-                                    <span class="text-xs font-bold text-amber-900">{{ __('home.hero_category_events') }}</span>
+                                </div>
+                                <div class="text-[10px] font-bold text-amber-900 text-center">{{ __('home.hero_category_events') }}</div>
+                                <div class="ticket-mini-barcode">
+                                    <div class="flex justify-center gap-[1px]">
+                                        @for($j = 0; $j < 20; $j++)
+                                        <div style="width: {{ rand(1, 2) }}px; height: {{ rand(12, 18) }}px; background: #2d2520;"></div>
+                                        @endfor
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1042,9 +1061,23 @@
         .hero-ticket-content {
             flex: 1;
             display: flex;
+            flex-direction: column;
+            padding: 0.75rem 0.5rem;
+        }
+        
+        .ticket-mini-header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            padding: 1rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px dashed rgba(139, 115, 85, 0.3);
+            margin-bottom: 0.5rem;
+        }
+        
+        .ticket-mini-barcode {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed rgba(139, 115, 85, 0.3);
         }
         
     </style>
