@@ -97,7 +97,7 @@
                 rgba(95, 60, 38, 0.89) 75%,
                 rgba(115, 75, 48, 0.87) 100%
             );
-        padding: 2.5rem 2.5rem;
+        padding: 2.5rem 4rem; /* Increased horizontal padding from 2.5rem to 4rem to accommodate wider strips */
         /* Irregular torn/cut edges at top and bottom */
         clip-path: polygon(
             0% 2%,
@@ -398,7 +398,7 @@
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .film-strip-container {
-            padding: 2rem 2rem;
+            padding: 2rem 3rem; /* Increased horizontal padding from 2rem to 3rem for mobile */
         }
         
         .film-perforation {
