@@ -43,6 +43,8 @@ return [
     // New Users Section
     'new_users_title' => 'New <span class="italic text-primary-600">Users</span>',
     'new_users_subtitle' => 'Welcome our new members',
+    'all_users_button' => 'Discover all Users',
+    'follow_user' => 'Follow',
 
     // Statistics Section
     'stats_section_title' => 'Community in Numbers',

@@ -43,6 +43,8 @@ return [
     // New Users Section
     'new_users_title' => 'Nuovi <span class="italic text-primary-600">Utenti</span>',
     'new_users_subtitle' => 'Dai il benvenuto ai nuovi membri',
+    'all_users_button' => 'Scopri tutti gli Utenti',
+    'follow_user' => 'Segui',
 
     // Statistics Section
     'stats_section_title' => 'La Community in Numeri',

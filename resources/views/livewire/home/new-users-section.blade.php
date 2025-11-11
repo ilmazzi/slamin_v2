@@ -102,6 +102,16 @@
                     ['rgba(255, 140, 0, 0.92)', 'rgba(255, 160, 50, 0.90)', 'rgba(255, 180, 100, 0.92)'],
                 ];
                 $selectedTape = $tapeColors[array_rand($tapeColors)];
+                
+                // Fake bio for users without one
+                $fakeBios = [
+                    'Appassionato di poesia e letteratura 📖',
+                    'Scrittore emergente e lettore vorace 🖋️',
+                    'Amante delle parole e dell\'arte ✨',
+                    'Poeta urbano e sognatore notturno 🌙',
+                    'Creativo multimediale e storyteller 🎨',
+                ];
+                $userBio = $user->bio ?? $fakeBios[array_rand($fakeBios)];
             ?>
             <div class="w-72 md:w-80 flex-shrink-0 polaroid-wrapper fade-scale-item" 
                  x-data 
@@ -128,9 +138,20 @@
                              class="polaroid-img">
                     </div>
                     
-                    {{-- Caption with MORE INFO --}}
+                    {{-- Caption with Enhanced INFO --}}
                     <div class="polaroid-caption">
-                        <div class="polaroid-name">{{ $user->name }}</div>
+                        <div class="polaroid-name-large">{{ $user->name }}</div>
+                        
+                        {{-- Bio --}}
+                        <div class="polaroid-bio">{{ $userBio }}</div>
+                        
+                        {{-- Follow Button --}}
+                        <button class="polaroid-follow-btn">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            {{ __('home.follow_user') }}
+                        </button>
                         
                         {{-- Stats Grid --}}
                         <div class="polaroid-stats">
@@ -146,11 +167,6 @@
                                 </svg>
                                 <span>{{ $user->articles()->count() }}</span>
                             </div>
-                        </div>
-                        
-                        {{-- Member Since --}}
-                        <div class="polaroid-date">
-                            Membro da {{ $user->created_at->locale('it')->diffForHumans() }}
                         </div>
                     </div>
                 </div>
@@ -274,6 +290,47 @@
             color: #2d2d2d;
             margin-bottom: 0.25rem;
             line-height: 1.3;
+        }
+        
+        /* Larger name for enhanced cards */
+        .polaroid-name-large {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #2d2d2d;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+        
+        /* User bio */
+        .polaroid-bio {
+            font-size: 0.75rem;
+            color: #4a4a4a;
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+            font-style: italic;
+        }
+        
+        /* Follow button */
+        .polaroid-follow-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 1rem;
+            background: #10b981;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+        }
+        
+        .polaroid-follow-btn:hover {
+            background: #059669;
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+            transform: translateY(-1px);
         }
         
         .polaroid-info {
