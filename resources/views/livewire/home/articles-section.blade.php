@@ -24,7 +24,7 @@
             </svg>
         </button>
         
-        <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-20 scrollbar-hide border-4 border-green-500"
+        <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-20 px-8 md:px-12 scrollbar-hide border-4 border-green-500"
              style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
         @foreach($articles->take(3) as $i => $article)
         <?php
