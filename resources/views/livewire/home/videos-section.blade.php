@@ -190,66 +190,56 @@
             inset 0 0 40px rgba(0, 0, 0, 0.25);
     }
     
-    /* Film Edge Markers - TRANSPARENT with dark strips pattern (holes show background!) */
+    /* Film Edge Markers - Dark strips with ACTUAL CUT-OUT holes using mask */
     .film-perforation {
         position: absolute;
         top: -20px; /* Extend beyond top */
         bottom: -20px; /* Extend beyond bottom */
         width: 2rem;
-        /* TRANSPARENT background - holes will show through completely */
-        background: transparent;
+        /* Dark strip background */
+        background: 
+            linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.08) 0%,
+                transparent 30%
+            ),
+            linear-gradient(180deg, 
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(0, 0, 0, 0.4) 50%,
+                rgba(0, 0, 0, 0.5) 100%
+            );
+        /* MASK to cut out holes - this creates REAL transparent holes */
+        -webkit-mask-image: repeating-linear-gradient(
+            to bottom,
+            black 0px,
+            black 10px,
+            transparent 10px,
+            transparent 18px,
+            black 18px,
+            black 35px
+        );
+        mask-image: repeating-linear-gradient(
+            to bottom,
+            black 0px,
+            black 10px,
+            transparent 10px,
+            transparent 18px,
+            black 18px,
+            black 35px
+        );
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
     
-    /* Dark strips BETWEEN holes (holes stay transparent!) */
-    .film-perforation::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 10px;
-        height: 100%;
-        /* Pattern: dark strips where film is, TRANSPARENT where holes are */
-        background: 
-            /* Glossy highlight on strips */
-            linear-gradient(90deg, 
-                rgba(255, 255, 255, 0.1) 0%,
-                transparent 50%
-            ),
-            /* Dark strips pattern (holes are transparent gaps) */
-            repeating-linear-gradient(
-                to bottom,
-                rgba(0, 0, 0, 0.5) 0px,
-                rgba(0, 0, 0, 0.5) 10px,
-                /* HOLES - completely transparent! */
-                transparent 10px,
-                transparent 18px,
-                /* Dark strips continue */
-                rgba(0, 0, 0, 0.5) 18px,
-                rgba(0, 0, 0, 0.5) 35px
-            );
-        border-radius: 1px;
-        /* Shadow on dark strips only */
-        box-shadow: 
-            inset 0 0 2px rgba(0, 0, 0, 0.2);
-    }
-    
     .film-perforation-left {
         left: 0;
         border-right: 1px solid rgba(0, 0, 0, 0.5);
-        /* Glossy left edge */
-        box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.1);
     }
     
     .film-perforation-right {
         right: 0;
         border-left: 1px solid rgba(0, 0, 0, 0.5);
-        /* Glossy right edge */
-        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.1);
     }
     
     /* Film Frame (negative area) */
