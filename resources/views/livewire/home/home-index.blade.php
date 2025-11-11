@@ -52,13 +52,19 @@
                 {{-- Categories Grid - Simple Icons with Section Themes --}}
                 <div class="pt-8 flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
                     
-                    {{-- Poetry --}}
+                    {{-- Poetry - Mini Paper Sheet --}}
+                    <?php $paperRotation = rand(-2, 2); ?>
                     <a href="{{ route('poems.index') }}" 
-                       class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px]">
-                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                        </svg>
-                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_poems') }}</span>
+                       class="hero-paper-wrapper"
+                       style="transform: rotate({{ $paperRotation }}deg);">
+                        <div class="hero-paper-sheet">
+                            <div class="flex flex-col items-center justify-center gap-2 h-full">
+                                <svg class="w-10 h-10 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                                <span class="text-sm font-semibold text-neutral-800 font-serif">{{ __('home.hero_category_poems') }}</span>
+                            </div>
+                        </div>
                     </a>
                     
                     {{-- Articles --}}
@@ -672,6 +678,58 @@
             box-shadow: 
                 inset 0 0 100px rgba(0, 0, 0, 0.4),
                 inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* ========================================
+           HERO MINI CARDS - One by One
+           ======================================== */
+        
+        /* Poetry - Mini Paper Sheet */
+        .hero-paper-wrapper {
+            display: block;
+            width: 130px;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-paper-wrapper:hover {
+            transform: translateY(-6px) scale(1.05);
+        }
+        
+        .hero-paper-sheet {
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,253,245,0) 0%, 
+                    rgba(250,240,220,0.4) 25%, 
+                    rgba(245,235,215,0.3) 50%, 
+                    rgba(240,230,210,0.4) 75%, 
+                    rgba(255,250,240,0) 100%),
+                radial-gradient(circle at 20% 30%, rgba(210,180,140,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(205,175,135,0.12) 0%, transparent 50%),
+                #faf6ed;
+            padding: 1.5rem 1rem;
+            height: 150px;
+            border-radius: 3px;
+            box-shadow: 
+                /* Inset border (aged paper edge) */
+                inset 0 0 0 3px rgba(180, 120, 70, 0.85),
+                inset 0 0 18px 7px rgba(160, 100, 60, 0.55),
+                inset 0 0 28px 11px rgba(140, 90, 50, 0.35),
+                /* External shadows (3D depth) */
+                0 5px 8px rgba(0, 0, 0, 0.25),
+                0 10px 15px rgba(0, 0, 0, 0.2),
+                0 15px 22px rgba(0, 0, 0, 0.15),
+                0 20px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hero-paper-wrapper:hover .hero-paper-sheet {
+            box-shadow: 
+                inset 0 0 0 3px rgba(180, 120, 70, 0.85),
+                inset 0 0 18px 7px rgba(160, 100, 60, 0.55),
+                inset 0 0 28px 11px rgba(140, 90, 50, 0.35),
+                0 10px 16px rgba(0, 0, 0, 0.3),
+                0 20px 30px rgba(0, 0, 0, 0.25),
+                0 30px 45px rgba(0, 0, 0, 0.2);
         }
         
     </style>
