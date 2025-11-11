@@ -42,16 +42,40 @@ $sizeClasses = [
                 </div>
 
                 {{-- Title Overlay --}}
-                <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent">
-                    <h4 class="text-white font-bold text-sm md:text-base line-clamp-2 mb-1" style="font-family: 'Crimson Pro', serif;">
+                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/95 to-transparent">
+                    <h4 class="text-white font-bold text-sm md:text-base line-clamp-2 mb-2" style="font-family: 'Crimson Pro', serif;">
                         {{ $video->title }}
                     </h4>
                     @if($video->user)
-                        <div class="flex items-center gap-2 text-xs">
+                        <div class="flex items-center gap-2 text-xs mb-2">
                             <span class="text-white/80">{{ $video->user->name }}</span>
                             <span class="text-white/60">• {{ number_format($video->view_count ?? 0) }}</span>
                         </div>
                     @endif
+                    
+                    {{-- Social Buttons --}}
+                    <div class="flex items-center gap-2.5">
+                        <x-like-button 
+                            :itemId="$video->id"
+                            itemType="video"
+                            :isLiked="false"
+                            :likesCount="$video->like_count ?? 0"
+                            size="sm"
+                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
+                        
+                        <x-comment-button 
+                            :itemId="$video->id"
+                            itemType="video"
+                            :commentsCount="$video->comment_count ?? 0"
+                            size="sm"
+                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
+                        
+                        <x-share-button 
+                            :itemId="$video->id"
+                            itemType="video"
+                            size="sm"
+                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-3.5 [&_svg]:h-3.5" />
+                    </div>
                 </div>
             </div>
         </div>
