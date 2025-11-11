@@ -155,12 +155,14 @@
             /* Inner shadows */
             inset 0 0 40px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
-        border: none; /* Remove border to show torn edges */
+        border: none;
         border-left: 2px solid rgba(70, 45, 28, 0.6);
         border-right: 2px solid rgba(70, 45, 28, 0.6);
-        /* Light background to show transparency */
         backdrop-filter: blur(1px);
-        overflow: visible; /* Allow perforations to extend beyond */
+        overflow: visible;
+        /* 3D ELEVATION - makes entire film strip appear raised */
+        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4))
+                drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     }
     
     /* Light background behind film to show transparency */
@@ -190,7 +192,7 @@
             inset 0 0 40px rgba(0, 0, 0, 0.25);
     }
     
-    /* Film Edge Markers - Dark strips with REAL transparent holes + 3D shadow */
+    /* Film Edge Markers - Dark strips */
     .film-perforation {
         position: absolute;
         top: -20px;
@@ -199,40 +201,59 @@
         /* Dark edge strip */
         background: 
             linear-gradient(90deg, 
-                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.08) 0%,
                 transparent 30%
             ),
             linear-gradient(180deg, 
-                rgba(0, 0, 0, 0.6) 0%,
-                rgba(0, 0, 0, 0.5) 50%,
-                rgba(0, 0, 0, 0.6) 100%
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(0, 0, 0, 0.4) 50%,
+                rgba(0, 0, 0, 0.5) 100%
             );
-        /* CSS MASK to cut out holes - creates REAL transparent holes */
-        -webkit-mask-image: repeating-linear-gradient(
-            to bottom,
-            black 0px,
-            black 6px,
-            transparent 6px,
-            transparent 22px,
-            black 22px,
-            black 35px
-        );
-        mask-image: repeating-linear-gradient(
-            to bottom,
-            black 0px,
-            black 6px,
-            transparent 6px,
-            transparent 22px,
-            black 22px,
-            black 35px
-        );
-        /* 3D DROP SHADOW - makes strips appear raised */
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))
-                drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+    
+    /* Light holes OVER the dark strip - simulating transparent perforations */
+    .film-perforation::before {
+        content: '';
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: calc(100% - 24px);
+        /* Light rectangles pattern simulating holes */
+        background-image: 
+            repeating-linear-gradient(
+                to bottom,
+                transparent 0px,
+                transparent 6px,
+                /* LIGHT color (background color) to simulate holes */
+                rgba(240, 235, 228, 0.95) 6px,
+                rgba(240, 235, 228, 0.95) 22px,
+                transparent 22px,
+                transparent 35px
+            );
+        border-radius: 2px;
+        box-shadow: 
+            /* Inner shadow on holes */
+            inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Dark mode - darker hole color */
+    :is(.dark .film-perforation::before) {
+        background-image: 
+            repeating-linear-gradient(
+                to bottom,
+                transparent 0px,
+                transparent 6px,
+                rgba(40, 38, 35, 0.95) 6px,
+                rgba(40, 38, 35, 0.95) 22px,
+                transparent 22px,
+                transparent 35px
+            );
     }
     
     .film-perforation-left {
