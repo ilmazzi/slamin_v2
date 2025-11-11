@@ -40,8 +40,8 @@
                 </svg>
             </button>
             
-            <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-8 pt-12 scrollbar-hide"
-                 style="-webkit-overflow-scrolling: touch;">
+            <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-16 scrollbar-hide"
+                 style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
             @foreach($newUsers as $i => $user)
             <?php
                 // Random rotation for each polaroid

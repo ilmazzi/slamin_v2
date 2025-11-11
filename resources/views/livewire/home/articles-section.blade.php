@@ -24,8 +24,8 @@
             </svg>
         </button>
         
-        <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-8 pt-16 scrollbar-hide"
-             style="-webkit-overflow-scrolling: touch;">
+        <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-20 scrollbar-hide"
+             style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
         @foreach($articles->take(3) as $i => $article)
         <?php
             // Random positioning for magazine covers
