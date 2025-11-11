@@ -31,9 +31,9 @@
                     
                     {{-- Poetry - Mini Paper Sheet --}}
                     <?php $paperRotation = rand(-2, 2); ?>
-                    <a href="{{ route('poems.index') }}" 
-                       class="hero-paper-wrapper"
-                       style="transform: rotate({{ $paperRotation }}deg);">
+                    <div class="hero-paper-wrapper cursor-pointer"
+                         onclick="document.querySelector('.wooden-desk-section').scrollIntoView({ behavior: 'smooth' })"
+                         style="transform: rotate({{ $paperRotation }}deg);">
                         <div class="hero-paper-sheet">
                             <div class="flex items-center justify-center h-full">
                                 <h3 class="hero-paper-title">
@@ -41,7 +41,11 @@
                                 </h3>
                             </div>
                         </div>
-                    </a>
+                        <!-- Hover Overlay -->
+                        <div class="hero-card-overlay">
+                            <div class="hero-overlay-text">{{ __('home.poetry_section_title') }}</div>
+                        </div>
+                    </div>
                     
                     {{-- Articles - Mini Magazine --}}
                     <?php 
@@ -49,8 +53,8 @@
                         $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
                         $pinRotation = rand(-15, 15);
                     ?>
-                    <a href="{{ route('articles.index') }}" 
-                       class="hero-magazine-wrapper">
+                    <div class="hero-magazine-wrapper cursor-pointer"
+                         onclick="document.querySelector('.articles-newspaper-section').scrollIntoView({ behavior: 'smooth' })">
                         <div class="hero-thumbtack" 
                              style="background: {{ $pinColor }}; transform: rotate({{ $pinRotation }}deg);">
                             <div class="hero-thumbtack-needle"></div>
@@ -77,7 +81,11 @@
                                 </p>
                             </div>
                         </div>
-                    </a>
+                        <!-- Hover Overlay -->
+                        <div class="hero-card-overlay">
+                            <div class="hero-overlay-text">{!! __('home.articles_section_title') !!}</div>
+                        </div>
+                    </div>
                     
                     {{-- Gigs - Mini Notice Board --}}
                     <?php
@@ -86,8 +94,8 @@
                         $paperRotation = rand(-2, 2);
                         $tapeBottomRotation = rand(-4, 4);
                     ?>
-                    <a href="{{ route('gigs.index') }}" 
-                       class="hero-notice-wrapper">
+                    <div class="hero-notice-wrapper cursor-pointer"
+                         onclick="document.querySelector('.cork-board-section').scrollIntoView({ behavior: 'smooth' })">
                         <div class="hero-washi-tape hero-washi-top" 
                              style="width: {{ $tapeWidth }}px; 
                                     transform: translate(calc(-50%), 0) rotate({{ $tapeRotation }}deg);"></div>
@@ -99,7 +107,11 @@
                         <div class="hero-washi-tape hero-washi-bottom" 
                              style="width: {{ $tapeWidth }}px; 
                                     transform: translate(calc(-50%), 0) rotate({{ $tapeBottomRotation }}deg);"></div>
-                    </a>
+                        <!-- Hover Overlay -->
+                        <div class="hero-card-overlay">
+                            <div class="hero-overlay-text">{!! __('home.gigs_section_title') !!}</div>
+                        </div>
+                    </div>
                     
                     {{-- Events - Mini Cinema Ticket --}}
                     <?php 
@@ -110,9 +122,9 @@
                             ['#fffbf5', '#fef9f3', '#fdf7f1']
                         ][rand(0, 2)];
                     ?>
-                    <a href="{{ route('events.index') }}" 
-                       class="hero-ticket-wrapper"
-                       style="transform: rotate({{ $tilt }}deg);">
+                    <div class="hero-ticket-wrapper cursor-pointer"
+                         onclick="document.querySelector('.cinema-wall-section').scrollIntoView({ behavior: 'smooth' })"
+                         style="transform: rotate({{ $tilt }}deg);">
                         <div class="hero-cinema-ticket"
                              style="background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
                             <div class="hero-ticket-perforation"></div>
@@ -133,7 +145,11 @@
                                 </div>
                             </div>
                         </div>
-                    </a>
+                        <!-- Hover Overlay -->
+                        <div class="hero-card-overlay">
+                            <div class="hero-overlay-text">{!! __('home.events_section_title') !!}</div>
+                        </div>
+                    </div>
                     
                     {{-- Videos - Mini Film Strip --}}
                     <?php $tilt = rand(-2, 2); ?>
@@ -182,6 +198,10 @@
                                     {{ __('home.hero_category_videos') }}
                                 </div>
                             </div>
+                        </div>
+                        <!-- Hover Overlay -->
+                        <div class="hero-card-overlay">
+                            <div class="hero-overlay-text">{!! __('home.videos_section_title') !!}</div>
                         </div>
                     </div>
                     
@@ -1342,6 +1362,61 @@
         .hero-frame-number-tr { top: 0.25rem; right: 1.1rem; }
         .hero-frame-number-bl { bottom: 0.25rem; left: 1.1rem; }
         .hero-frame-number-br { bottom: 0.25rem; right: 1.1rem; }
+        
+        /* Hero Card Hover Overlay - Universal */
+        .hero-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+            z-index: 100;
+            pointer-events: none;
+        }
+        
+        .hero-paper-wrapper:hover .hero-card-overlay,
+        .hero-magazine-wrapper:hover .hero-card-overlay,
+        .hero-notice-wrapper:hover .hero-card-overlay,
+        .hero-ticket-wrapper:hover .hero-card-overlay,
+        .hero-film-wrapper:hover .hero-card-overlay {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .hero-overlay-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            text-shadow: 
+                0 0 20px rgba(16, 185, 129, 0.8),
+                0 0 40px rgba(16, 185, 129, 0.6),
+                0 4px 8px rgba(0, 0, 0, 0.9);
+            animation: hero-overlay-pulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes hero-overlay-pulse {
+            0% {
+                text-shadow: 
+                    0 0 20px rgba(16, 185, 129, 0.8),
+                    0 0 40px rgba(16, 185, 129, 0.6),
+                    0 4px 8px rgba(0, 0, 0, 0.9);
+            }
+            100% {
+                text-shadow: 
+                    0 0 30px rgba(16, 185, 129, 1),
+                    0 0 60px rgba(16, 185, 129, 0.8),
+                    0 6px 12px rgba(0, 0, 0, 0.9);
+            }
+        }
         
     </style>
 </div>
