@@ -118,14 +118,12 @@
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
                 
-                {{-- Colorful Washi Tape on top --}}
-                <div class="polaroid-tape tape-{{ $i }}" 
-                     style="width: {{ $tapeWidth }}px; 
-                            --tape-rotation: {{ $tapeRotation }}deg; 
-                            transform: translateX(-50%) rotate({{ $tapeRotation }}deg);
-                            background: 
-                                linear-gradient(105deg, rgba(255, 255, 255, 0.25) 0%, transparent 30%, transparent 70%, rgba(255, 255, 255, 0.25) 100%),
-                                linear-gradient(180deg, {{ $selectedTape[0] }} 0%, {{ $selectedTape[1] }} 50%, {{ $selectedTape[2] }} 100%);"></div>
+                {{-- Molletta da bucato --}}
+                <div class="clothespin">
+                    <div class="clothespin-top"></div>
+                    <div class="clothespin-bottom"></div>
+                    <div class="clothespin-spring"></div>
+                </div>
                 
                 {{-- Polaroid Card (link will be added when profile.show route exists) --}}
                 <div class="polaroid-card"
@@ -252,9 +250,9 @@
             background: #fafafa;
         }
         
-        /* HOVER - Lift delicato */
+        /* HOVER - Lift delicato con oscillazione */
         .polaroid-wrapper:hover .polaroid-card {
-            transform: translateY(-12px) scale(1.03) !important;
+            transform: translateY(-8px) scale(1.02) rotate(0deg) !important;
             box-shadow: 
                 0 4px 8px rgba(0, 0, 0, 0.12),
                 0 8px 16px rgba(0, 0, 0, 0.1),
@@ -262,8 +260,12 @@
                 0 32px 64px rgba(0, 0, 0, 0.06);
         }
         
-        .polaroid-wrapper:hover .polaroid-tape {
-            top: -6px;
+        .polaroid-wrapper:hover .clothespin-top {
+            transform: translateX(-50%) rotate(-12deg);
+        }
+        
+        .polaroid-wrapper:hover .clothespin-bottom {
+            transform: translateX(-50%) rotate(12deg);
         }
         
         /* FOTO - Stile pulito */
