@@ -49,71 +49,111 @@
                     @endguest
                 </div>
                 
-                {{-- Categories Grid --}}
-                <div class="pt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
-                    {{-- Poetry --}}
+                {{-- Categories Grid with Themed Cards --}}
+                <div class="pt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
+                    
+                    {{-- Poetry - Paper Sheet Mini --}}
                     <a href="{{ route('poems.index') }}" 
-                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
-                        <div class="flex flex-col items-center gap-3">
-                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                            </svg>
-                            <span class="text-white font-medium">{{ __('home.hero_category_poems') }}</span>
+                       class="group relative transform hover:scale-105 transition-all duration-300"
+                       style="transform: rotate(<?php echo rand(-2, 2); ?>deg);">
+                        <div class="paper-sheet-mini">
+                            <div class="text-center space-y-2">
+                                <svg class="w-8 h-8 mx-auto text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                                <span class="text-sm font-semibold text-neutral-800">{{ __('home.hero_category_poems') }}</span>
+                            </div>
                         </div>
                     </a>
                     
-                    {{-- Articles --}}
+                    {{-- Articles - Magazine Mini --}}
                     <a href="{{ route('articles.index') }}" 
-                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
-                        <div class="flex flex-col items-center gap-3">
-                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                            </svg>
-                            <span class="text-white font-medium">{{ __('home.hero_category_articles') }}</span>
+                       class="group relative transform hover:scale-105 transition-all duration-300"
+                       style="transform: rotate(<?php echo rand(-3, 3); ?>deg);">
+                        {{-- Thumbtack --}}
+                        <div class="thumbtack-mini" style="background: <?php echo ['#e53e3e', '#3182ce', '#38a169'][rand(0, 2)]; ?>; transform: rotate(<?php echo rand(-15, 15); ?>deg);"></div>
+                        <div class="magazine-cover-mini">
+                            <div class="text-center space-y-2 p-4">
+                                <svg class="w-8 h-8 mx-auto text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                                </svg>
+                                <span class="text-xs font-bold text-neutral-900">{{ __('home.hero_category_articles') }}</span>
+                            </div>
                         </div>
                     </a>
                     
-                    {{-- Gigs --}}
+                    {{-- Gigs - Notice Board Mini --}}
                     <a href="{{ route('gigs.index') }}" 
-                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
-                        <div class="flex flex-col items-center gap-3">
-                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                            <span class="text-white font-medium">{{ __('home.hero_category_gigs') }}</span>
+                       class="group relative transform hover:scale-105 transition-all duration-300">
+                        {{-- Top Washi Tape --}}
+                        <div class="washi-tape-mini-top" style="<?php 
+                            $colors = [
+                                ['rgba(255, 107, 107, 0.85)', 'rgba(255, 140, 140, 0.83)'],
+                                ['rgba(78, 205, 196, 0.85)', 'rgba(110, 220, 210, 0.83)'],
+                                ['rgba(255, 195, 0, 0.85)', 'rgba(255, 210, 50, 0.83)'],
+                            ];
+                            $selectedTape = $colors[array_rand($colors)];
+                            echo 'background: linear-gradient(135deg, ' . $selectedTape[0] . ' 0%, ' . $selectedTape[1] . ' 100%);';
+                            echo 'transform: rotate(' . rand(-4, 4) . 'deg);';
+                        ?>"></div>
+                        <div class="notice-board-card-mini">
+                            <div class="text-center space-y-2 p-4">
+                                <svg class="w-8 h-8 mx-auto text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                <span class="text-xs font-bold text-neutral-900">{{ __('home.hero_category_gigs') }}</span>
+                            </div>
                         </div>
                     </a>
                     
-                    {{-- Events --}}
+                    {{-- Events - Cinema Ticket Mini --}}
                     <a href="{{ route('events.index') }}" 
-                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
-                        <div class="flex flex-col items-center gap-3">
-                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            <span class="text-white font-medium">{{ __('home.hero_category_events') }}</span>
+                       class="group relative transform hover:scale-105 transition-all duration-300"
+                       style="transform: rotate(<?php echo rand(-3, 3); ?>deg);">
+                        <div class="cinema-ticket-mini">
+                            <div class="text-center space-y-2 p-4">
+                                <svg class="w-8 h-8 mx-auto text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <span class="text-xs font-bold text-amber-900">{{ __('home.hero_category_events') }}</span>
+                            </div>
                         </div>
                     </a>
                     
-                    {{-- Videos --}}
-                    <div class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 cursor-pointer"
+                    {{-- Videos - Film Strip Mini --}}
+                    <div class="group relative transform hover:scale-105 transition-all duration-300 cursor-pointer"
                          onclick="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })">
-                        <div class="flex flex-col items-center gap-3">
-                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                            </svg>
-                            <span class="text-white font-medium">{{ __('home.hero_category_videos') }}</span>
+                        <div class="film-strip-mini">
+                            <div class="text-center space-y-2 p-4">
+                                <svg class="w-8 h-8 mx-auto text-amber-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                                <span class="text-xs font-bold text-amber-900">{{ __('home.hero_category_videos') }}</span>
+                            </div>
                         </div>
                     </div>
                     
-                    {{-- Community --}}
+                    {{-- Community - Polaroid Mini --}}
                     <a href="{{ route('dashboard.index') }}" 
-                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
-                        <div class="flex flex-col items-center gap-3">
-                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                            </svg>
-                            <span class="text-white font-medium">{{ __('home.hero_category_community') }}</span>
+                       class="group relative transform hover:scale-105 transition-all duration-300"
+                       style="transform: rotate(<?php echo rand(-3, 3); ?>deg);">
+                        {{-- Washi Tape --}}
+                        <div class="washi-tape-mini-polaroid" style="<?php 
+                            $colors = [
+                                ['rgba(255, 107, 107, 0.85)', 'rgba(255, 140, 140, 0.83)'],
+                                ['rgba(78, 205, 196, 0.85)', 'rgba(110, 220, 210, 0.83)'],
+                            ];
+                            $selectedTape = $colors[array_rand($colors)];
+                            echo 'background: linear-gradient(135deg, ' . $selectedTape[0] . ' 0%, ' . $selectedTape[1] . ' 100%);';
+                            echo 'transform: rotate(' . rand(-8, 8) . 'deg);';
+                        ?>"></div>
+                        <div class="polaroid-mini">
+                            <div class="text-center space-y-2 p-4">
+                                <svg class="w-8 h-8 mx-auto text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                <span class="text-xs font-bold text-neutral-800">{{ __('home.hero_category_community') }}</span>
+                            </div>
                         </div>
                     </a>
                 </div>
@@ -683,6 +723,257 @@
             box-shadow: 
                 inset 0 0 100px rgba(0, 0, 0, 0.4),
                 inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* ========================================
+           HERO MINI CARDS - Themed Category Cards
+           ======================================== */
+        
+        /* Poetry - Paper Sheet Mini */
+        .paper-sheet-mini {
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,253,245,0) 0%, 
+                    rgba(250,240,220,0.4) 25%, 
+                    rgba(245,235,215,0.3) 50%, 
+                    rgba(240,230,210,0.4) 75%, 
+                    rgba(255,250,240,0) 100%),
+                radial-gradient(circle at 20% 30%, rgba(210,180,140,0.15) 0%, transparent 50%),
+                #faf6ed;
+            padding: 1.5rem 1rem;
+            border-radius: 4px;
+            box-shadow: 
+                inset 0 0 0 3px rgba(180, 120, 70, 0.8),
+                inset 0 0 15px 6px rgba(160, 100, 60, 0.5),
+                0 4px 8px rgba(0, 0, 0, 0.15),
+                0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .paper-sheet-mini:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 
+                inset 0 0 0 3px rgba(180, 120, 70, 0.8),
+                inset 0 0 15px 6px rgba(160, 100, 60, 0.5),
+                0 8px 16px rgba(0, 0, 0, 0.2),
+                0 16px 32px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Articles - Magazine Cover Mini */
+        .magazine-cover-mini {
+            background: linear-gradient(135deg, #fefefe 0%, #f8f8f8 100%);
+            border: 2px solid #2d2d2d;
+            border-radius: 4px;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                0 8px 16px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .magazine-cover-mini:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.25),
+                0 16px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .thumbtack-mini {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.4);
+            z-index: 10;
+        }
+        
+        .thumbtack-mini::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 4px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), transparent);
+        }
+        
+        /* Gigs - Notice Board Card Mini */
+        .notice-board-card-mini {
+            background: linear-gradient(135deg, #fffef5 0%, #fefce8 100%);
+            border-radius: 4px;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.15),
+                0 8px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+        
+        .notice-board-card-mini:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.2),
+                0 16px 32px rgba(0, 0, 0, 0.15);
+        }
+        
+        .washi-tape-mini-top {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 12px;
+            border-radius: 1px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            clip-path: polygon(
+                2% 0%, 5% 30%, 8% 0%, 12% 35%, 15% 0%, 
+                18% 40%, 22% 0%, 25% 30%, 28% 0%, 32% 35%, 
+                35% 0%, 38% 40%, 42% 0%, 45% 30%, 48% 0%, 
+                52% 35%, 55% 0%, 58% 40%, 62% 0%, 65% 30%, 
+                68% 0%, 72% 35%, 75% 0%, 78% 40%, 82% 0%, 
+                85% 30%, 88% 0%, 92% 35%, 95% 0%, 98% 40%,
+                100% 0%, 100% 100%, 0% 100%, 0% 0%
+            );
+        }
+        
+        /* Events - Cinema Ticket Mini */
+        .cinema-ticket-mini {
+            background: linear-gradient(135deg, 
+                #fefaf3 0%,
+                #fdf8f0 25%,
+                #fcf7ef 50%,
+                #fbf6ed 75%,
+                #faf5ec 100%
+            );
+            border-radius: 4px;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                0 8px 16px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .cinema-ticket-mini:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.35),
+                0 16px 32px rgba(0, 0, 0, 0.25);
+        }
+        
+        .cinema-ticket-mini::before,
+        .cinema-ticket-mini::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #2d2520 0%, #2d2520 45%, transparent 45%);
+            border-radius: 50%;
+        }
+        
+        .cinema-ticket-mini::before { left: -6px; }
+        .cinema-ticket-mini::after { right: -6px; }
+        
+        /* Videos - Film Strip Mini */
+        .film-strip-mini {
+            background: 
+                linear-gradient(90deg, 
+                    rgba(255, 255, 255, 0.12) 0%,
+                    transparent 30%
+                ),
+                linear-gradient(180deg, 
+                    rgba(80, 55, 35, 0.95) 0%,
+                    rgba(70, 48, 30, 0.97) 50%,
+                    rgba(80, 55, 35, 0.95) 100%
+                );
+            border-radius: 4px;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.15);
+            position: relative;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .film-strip-mini:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.4),
+                inset 0 2px 4px rgba(255, 255, 255, 0.15);
+        }
+        
+        .film-strip-mini::before,
+        .film-strip-mini::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 80%;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent 0px,
+                transparent 3px,
+                rgba(240, 235, 228, 0.8) 3px,
+                rgba(240, 235, 228, 0.8) 8px,
+                transparent 8px,
+                transparent 14px
+            );
+        }
+        
+        .film-strip-mini::before { left: 2px; }
+        .film-strip-mini::after { right: 2px; }
+        
+        /* Community - Polaroid Mini */
+        .polaroid-mini {
+            background: linear-gradient(to bottom, 
+                #ffffff 0%,
+                #fafafa 70%,
+                #f0f0f0 100%
+            );
+            padding: 0.75rem 0.75rem 1.25rem 0.75rem;
+            border-radius: 4px;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.2),
+                0 8px 16px rgba(0, 0, 0, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+        
+        .polaroid-mini:hover {
+            transform: translateY(-4px) rotate(2deg);
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.25),
+                0 16px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .washi-tape-mini-polaroid {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 12px;
+            border-radius: 1px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            clip-path: polygon(
+                2% 0%, 5% 30%, 8% 0%, 12% 35%, 15% 0%, 
+                18% 40%, 22% 0%, 25% 30%, 28% 0%, 32% 35%, 
+                35% 0%, 38% 40%, 42% 0%, 45% 30%, 48% 0%, 
+                52% 35%, 55% 0%, 58% 40%, 62% 0%, 65% 30%, 
+                68% 0%, 72% 35%, 75% 0%, 78% 40%, 82% 0%, 
+                85% 30%, 88% 0%, 92% 35%, 95% 0%, 98% 40%,
+                100% 0%, 100% 100%, 0% 100%, 0% 0%
+            );
         }
     </style>
 </div>
