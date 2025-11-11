@@ -78,6 +78,11 @@
                 </div>
             </div>
             
+            <!-- FILO per appendere le Polaroid -->
+            <div class="clothesline-container">
+                <div class="clothesline"></div>
+            </div>
+            
             <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-16 px-8 md:px-12 scrollbar-hide"
                  style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
             @foreach($newUsers as $i => $user)
@@ -195,32 +200,97 @@
             padding-top: 20px;
         }
         
-        /* Washi Tape on top - COLORFUL WITH SERRATED EDGES */
-        .polaroid-tape {
+        /* FILO per appendere le Polaroid */
+        .clothesline-container {
             position: absolute;
-            top: 8px;
-            left: 50%;
-            /* Width and background colors set inline (random) */
-            height: 28px;
-            box-shadow: 
-                0 3px 8px rgba(0, 0, 0, 0.35),
-                0 1px 4px rgba(0, 0, 0, 0.25),
-                inset 0 2px 5px rgba(255, 255, 255, 0.9),
-                inset 0 -1px 3px rgba(0, 0, 0, 0.2);
-            z-index: 10;
-            border-top: 1px solid rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            /* SERRATED EDGES */
-            clip-path: polygon(
-                0% 0%, 2% 5%, 0% 10%, 2% 15%, 0% 20%, 2% 25%, 0% 30%, 2% 35%, 
-                0% 40%, 2% 45%, 0% 50%, 2% 55%, 0% 60%, 2% 65%, 0% 70%, 2% 75%, 
-                0% 80%, 2% 85%, 0% 90%, 2% 95%, 0% 100%,
-                100% 100%,
-                98% 95%, 100% 90%, 98% 85%, 100% 80%, 98% 75%, 100% 70%, 98% 65%, 
-                100% 60%, 98% 55%, 100% 50%, 98% 45%, 100% 40%, 98% 35%, 100% 30%, 
-                98% 25%, 100% 20%, 98% 15%, 100% 10%, 98% 5%, 100% 0%
+            top: 10px;
+            left: 0;
+            right: 0;
+            z-index: 5;
+            height: 3px;
+            pointer-events: none;
+        }
+        
+        .clothesline {
+            position: absolute;
+            left: -100px;
+            right: -100px;
+            top: 0;
+            height: 3px;
+            background: linear-gradient(to bottom, 
+                #8B7355 0%,
+                #6B563F 50%,
+                #5A4A35 100%
             );
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.3),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Molletta da bucato */
+        .clothespin {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 50px;
+            z-index: 15;
+            transition: all 0.3s ease;
+        }
+        
+        .clothespin-top,
+        .clothespin-bottom {
+            position: absolute;
+            width: 12px;
+            height: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to right,
+                #D4A574 0%,
+                #C89968 50%,
+                #B88B5C 100%
+            );
+            border-radius: 2px 2px 6px 6px;
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 1px 0 1px rgba(255, 255, 255, 0.3),
+                inset -1px 0 1px rgba(0, 0, 0, 0.2);
+        }
+        
+        .clothespin-top {
+            top: 0;
+            transform: translateX(-50%) rotate(-8deg);
+            transform-origin: bottom center;
+        }
+        
+        .clothespin-bottom {
+            top: 0;
+            transform: translateX(-50%) rotate(8deg);
+            transform-origin: bottom center;
+        }
+        
+        /* Molla centrale */
+        .clothespin-spring {
+            position: absolute;
+            width: 14px;
+            height: 8px;
+            left: 50%;
+            top: 8px;
+            transform: translateX(-50%);
+            background: 
+                linear-gradient(to bottom,
+                    #888 0%,
+                    #aaa 30%,
+                    #888 50%,
+                    #aaa 70%,
+                    #888 100%
+                );
+            border-radius: 2px;
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
         }
         
         /* ============================================
