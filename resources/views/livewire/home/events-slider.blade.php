@@ -318,18 +318,15 @@
         background: 
             /* Paper texture/grain */
             url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E"),
-            /* Random age spots */
-            radial-gradient(circle at var(--spot1-x) var(--spot1-y), 
-                rgba(139, 115, 85, var(--wear-opacity)) 0%, 
-                transparent 8%),
-            radial-gradient(circle at var(--spot2-x) var(--spot2-y), 
-                rgba(139, 115, 85, calc(var(--wear-opacity) * 0.7)) 0%, 
-                transparent 5%),
-            radial-gradient(circle at var(--spot3-x) var(--spot3-y), 
-                rgba(139, 115, 85, calc(var(--wear-opacity) * 0.5)) 0%, 
-                transparent 10%);
+            /* Fingerprint 1 - Partial */
+            url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(139,115,85,0.25)' stroke-width='0.8'%3E%3Cellipse cx='40' cy='40' rx='35' ry='38' /%3E%3Cellipse cx='40' cy='40' rx='30' ry='33' /%3E%3Cellipse cx='40' cy='40' rx='25' ry='28' /%3E%3Cellipse cx='40' cy='40' rx='20' ry='23' /%3E%3Cellipse cx='40' cy='40' rx='15' ry='18' /%3E%3Cellipse cx='40' cy='40' rx='10' ry='13' /%3E%3C/g%3E%3C/svg%3E") var(--spot1-x) var(--spot1-y) / 60px 60px no-repeat,
+            /* Fingerprint 2 - Partial, lighter */
+            url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(139,115,85,0.18)' stroke-width='0.7'%3E%3Cellipse cx='40' cy='40' rx='32' ry='36' /%3E%3Cellipse cx='40' cy='40' rx='27' ry='31' /%3E%3Cellipse cx='40' cy='40' rx='22' ry='26' /%3E%3Cellipse cx='40' cy='40' rx='17' ry='21' /%3E%3Cellipse cx='40' cy='40' rx='12' ry='16' /%3E%3C/g%3E%3C/svg%3E") var(--spot2-x) var(--spot2-y) / 50px 50px no-repeat,
+            /* Fingerprint 3 - Partial, more faded */
+            url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(139,115,85,0.12)' stroke-width='0.6'%3E%3Cellipse cx='40' cy='40' rx='28' ry='32' /%3E%3Cellipse cx='40' cy='40' rx='23' ry='27' /%3E%3Cellipse cx='40' cy='40' rx='18' ry='22' /%3E%3Cellipse cx='40' cy='40' rx='13' ry='17' /%3E%3C/g%3E%3C/svg%3E") var(--spot3-x) var(--spot3-y) / 45px 45px no-repeat;
         pointer-events: none;
         z-index: 1;
+        opacity: calc(var(--wear-opacity) + 0.3);
     }
     
     /* Crease/Fold effect */
