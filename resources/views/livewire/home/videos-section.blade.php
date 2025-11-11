@@ -98,7 +98,53 @@
                 rgba(115, 75, 48, 0.87) 100%
             );
         padding: 2.5rem 2.5rem;
-        border-radius: 0.5rem;
+        /* Irregular torn/cut edges at top and bottom */
+        clip-path: polygon(
+            0% 2%,
+            3% 0.5%,
+            6% 1.5%,
+            10% 0.8%,
+            15% 1.2%,
+            20% 0.5%,
+            25% 1%,
+            30% 0.3%,
+            35% 0.8%,
+            40% 0.5%,
+            45% 1%,
+            50% 0.4%,
+            55% 0.9%,
+            60% 0.6%,
+            65% 1.2%,
+            70% 0.5%,
+            75% 0.8%,
+            80% 0.4%,
+            85% 1%,
+            90% 0.6%,
+            95% 1.2%,
+            100% 0.8%,
+            100% 99.2%,
+            97% 100%,
+            94% 99.5%,
+            90% 99.8%,
+            85% 100%,
+            80% 99.4%,
+            75% 99.6%,
+            70% 100%,
+            65% 99.5%,
+            60% 99.8%,
+            55% 100%,
+            50% 99.4%,
+            45% 99.7%,
+            40% 100%,
+            35% 99.6%,
+            30% 99.9%,
+            25% 100%,
+            20% 99.5%,
+            15% 99.8%,
+            10% 100%,
+            5% 99.6%,
+            0% 98.5%
+        );
         box-shadow: 
             /* Strong shadows for depth */
             0 20px 50px rgba(0, 0, 0, 0.7),
@@ -109,9 +155,12 @@
             /* Inner shadows */
             inset 0 0 40px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
-        border: 2px solid rgba(70, 45, 28, 0.9);
+        border: none; /* Remove border to show torn edges */
+        border-left: 2px solid rgba(70, 45, 28, 0.6);
+        border-right: 2px solid rgba(70, 45, 28, 0.6);
         /* Light background to show transparency */
         backdrop-filter: blur(1px);
+        overflow: visible; /* Allow perforations to extend beyond */
     }
     
     /* Light background behind film to show transparency */
@@ -141,11 +190,11 @@
             inset 0 0 40px rgba(0, 0, 0, 0.25);
     }
     
-    /* Film Edge Markers - Darker transparent areas with sprocket holes */
+    /* Film Edge Markers - Darker transparent areas with sprocket holes EXTENDING BEYOND */
     .film-perforation {
         position: absolute;
-        top: 0;
-        bottom: 0;
+        top: -20px; /* Extend beyond top */
+        bottom: -20px; /* Extend beyond bottom */
         width: 2rem;
         /* Slightly darker, still transparent */
         background: 
@@ -166,7 +215,7 @@
         align-items: center;
     }
     
-    /* Sprocket holes - actual perforations (more transparent) */
+    /* Sprocket holes - CONTINUOUS pattern extending beyond edges */
     .film-perforation::before {
         content: '';
         position: absolute;
@@ -195,8 +244,6 @@
     
     .film-perforation-left {
         left: 0;
-        border-top-left-radius: 0.5rem;
-        border-bottom-left-radius: 0.5rem;
         border-right: 1px solid rgba(0, 0, 0, 0.5);
         /* Glossy left edge */
         box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.1);
@@ -204,8 +251,6 @@
     
     .film-perforation-right {
         right: 0;
-        border-top-right-radius: 0.5rem;
-        border-bottom-right-radius: 0.5rem;
         border-left: 1px solid rgba(0, 0, 0, 0.5);
         /* Glossy right edge */
         box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.1);
