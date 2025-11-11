@@ -1,7 +1,7 @@
 <div class="min-h-screen">
     
     {{-- HERO con Film Strip Orizzontale --}}
-    <section class="relative overflow-hidden film-studio-section">
+    <section class="relative overflow-hidden bg-neutral-900 dark:bg-black">
         
         <!-- FILM STRIP ORIZZONTALE - Attraversa tutto -->
         <div class="film-strip-horizontal">
