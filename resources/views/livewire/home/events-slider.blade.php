@@ -293,22 +293,12 @@
             </div>
         </div>
 
-        <!-- CTA - Cinema Ticket Style -->
+        <!-- CTA - Simple Text -->
         <div class="text-center mt-12">
-            <a href="{{ route('events.index') }}" class="inline-block group">
-                <div class="cinema-cta-button">
-                    <!-- Perforated left edge -->
-                    <div class="cta-perforation"></div>
-                    
-                    <!-- Button content -->
-                    <div class="cta-content">
-                        <div class="cta-text">
-                            <span class="cta-icon">🎬</span>
-                            <span class="cta-label">{{ __('home.all_events_button') }}</span>
-                        </div>
-                        <div class="cta-serial">#TUTTI</div>
-                    </div>
-                </div>
+            <a href="{{ route('events.index') }}" 
+               class="inline-block text-2xl md:text-3xl font-bold text-white hover:text-primary-400 transition-colors duration-300"
+               style="font-family: 'Crimson Pro', serif;">
+                → {{ __('home.all_events_button') }}
             </a>
         </div>
     </div>
@@ -397,93 +387,6 @@
     .ticket-content {
         position: relative;
         z-index: 2;
-    }
-    
-    /* Cinema CTA Button - Ticket Style */
-    .cinema-cta-button {
-        display: flex;
-        background: linear-gradient(135deg, 
-            #fffbf5 0%, 
-            #fef9f3 50%, 
-            #fdf7f1 100%
-        );
-        border-radius: 12px;
-        box-shadow: 
-            0 8px 20px rgba(0, 0, 0, 0.3),
-            0 4px 10px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        overflow: hidden;
-        position: relative;
-    }
-    
-    .cinema-cta-button:hover {
-        transform: translateY(-4px);
-        box-shadow: 
-            0 12px 30px rgba(0, 0, 0, 0.4),
-            0 6px 15px rgba(0, 0, 0, 0.3),
-            0 0 0 3px rgba(16, 185, 129, 0.4);
-    }
-    
-    .cta-perforation {
-        width: 20px;
-        background: linear-gradient(135deg, 
-            rgba(139, 115, 85, 0.15) 0%,
-            rgba(160, 140, 110, 0.1) 100%
-        );
-        position: relative;
-        flex-shrink: 0;
-    }
-    
-    .cta-perforation::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-image: radial-gradient(
-            circle at 50% 0%,
-            rgba(0, 0, 0, 0.3) 0%,
-            rgba(0, 0, 0, 0.2) 25%,
-            transparent 50%
-        );
-        background-size: 100% 20px;
-        background-position: center;
-        background-repeat: repeat-y;
-        color: inherit;
-    }
-    
-    .cta-content {
-        flex: 1;
-        padding: 1.25rem 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 2rem;
-    }
-    
-    .cta-text {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    
-    .cta-icon {
-        font-size: 1.5rem;
-    }
-    
-    .cta-label {
-        font-family: 'Crimson Pro', serif;
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #2d2520;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    
-    .cta-serial {
-        font-family: 'Special Elite', cursive;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #b91c1c;
-        letter-spacing: 0.1em;
     }
     
     .cinema-ticket:hover {
