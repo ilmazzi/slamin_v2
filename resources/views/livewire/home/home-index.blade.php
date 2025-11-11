@@ -100,20 +100,24 @@
                         $tapeWidth = rand(80, 100);
                         $tapeRotation = rand(-4, 4);
                         $paperRotation = rand(-2, 2);
+                        $tapeBottomRotation = rand(-4, 4);
                     ?>
                     <a href="{{ route('gigs.index') }}" 
                        class="hero-notice-wrapper">
-                        <div class="hero-washi-tape" 
+                        <div class="hero-washi-tape hero-washi-top" 
                              style="width: {{ $tapeWidth }}px; 
                                     transform: translate(calc(-50%), 0) rotate({{ $tapeRotation }}deg);"></div>
                         <div class="hero-notice-paper" style="transform: rotate({{ $paperRotation }}deg);">
                             <div class="flex flex-col items-center justify-center gap-2 h-full">
-                                <svg class="w-10 h-10 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-10 h-10 text-neutral-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                 </svg>
                                 <span class="text-xs font-bold text-neutral-900">{{ __('home.hero_category_gigs') }}</span>
                             </div>
                         </div>
+                        <div class="hero-washi-tape hero-washi-bottom" 
+                             style="width: {{ $tapeWidth }}px; 
+                                    transform: translate(calc(-50%), 0) rotate({{ $tapeBottomRotation }}deg);"></div>
                     </a>
                     
                     {{-- Events --}}
@@ -855,7 +859,6 @@
         
         .hero-washi-tape {
             position: absolute;
-            top: -12px;
             left: 50%;
             height: 24px;
             border-radius: 1px;
@@ -932,6 +935,14 @@
                 98% 5%,
                 100% 0%
             );
+        }
+        
+        .hero-washi-top {
+            top: -12px;
+        }
+        
+        .hero-washi-bottom {
+            bottom: -12px;
         }
         
         .hero-notice-paper {
