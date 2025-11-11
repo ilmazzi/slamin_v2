@@ -94,14 +94,17 @@
                 $stampOffsetY = rand(-10, 10);
                 
                 // Random wear/damage effects
-                $wearOpacity = rand(2, 5) / 10; // 0.2 to 0.5
-                $spot1X = rand(10, 90);
-                $spot1Y = rand(10, 90);
-                $spot2X = rand(10, 90);
-                $spot2Y = rand(10, 90);
-                $spot3X = rand(10, 90);
-                $spot3Y = rand(10, 90);
+                $wearOpacity = rand(4, 8) / 10; // 0.4 to 0.8 (more intense)
+                $spot1X = rand(5, 95);
+                $spot1Y = rand(5, 95);
+                $spot2X = rand(5, 95);
+                $spot2Y = rand(5, 95);
+                $spot3X = rand(5, 95);
+                $spot3Y = rand(5, 95);
+                $spot4X = rand(5, 95);
+                $spot4Y = rand(5, 95);
                 $creaseRotation = rand(-45, 45);
+                $crease2Rotation = rand(-60, 60);
             ?>
             <div class="w-80 md:w-96 flex-shrink-0 fade-scale-item"
                  x-data
@@ -119,7 +122,10 @@
                             --spot2-y: {{ $spot2Y }}%;
                             --spot3-x: {{ $spot3X }}%;
                             --spot3-y: {{ $spot3Y }}%;
-                            --crease-rotation: {{ $creaseRotation }}deg;">
+                            --spot4-x: {{ $spot4X }}%;
+                            --spot4-y: {{ $spot4Y }}%;
+                            --crease-rotation: {{ $creaseRotation }}deg;
+                            --crease2-rotation: {{ $crease2Rotation }}deg;">
                     
                     {{-- Perforated Left Edge --}}
                     <div class="ticket-perforation"></div>
@@ -310,47 +316,87 @@
         overflow: hidden;
     }
     
-    /* Worn/Vintage Effect - Random per ticket */
+    /* Heavy Worn/Vintage Effect - No fingerprints */
     .ticket-worn::before {
         content: '';
         position: absolute;
         inset: 0;
         background: 
-            /* Paper texture/grain */
-            url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E"),
-            /* Fingerprint 1 - Partial whorl pattern with breaks */
-            url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(139,115,85,0.3)' stroke-width='0.9' stroke-linecap='round'%3E%3Cpath d='M30,50 Q35,35 50,30 Q65,35 70,50' /%3E%3Cpath d='M28,55 Q32,38 50,32 Q68,38 72,55' /%3E%3Cpath d='M26,58 Q30,40 50,35 Q70,42 74,60' /%3E%3Cpath d='M35,65 Q40,48 50,42 Q62,50 68,68' /%3E%3Cpath d='M38,70 Q42,52 50,46 Q58,54 65,72' /%3E%3Cpath d='M45,25 Q48,20 52,20' /%3E%3Cpath d='M25,48 Q28,45 32,45' /%3E%3C/g%3E%3C/svg%3E") var(--spot1-x) var(--spot1-y) / 55px 70px no-repeat,
-            /* Fingerprint 2 - Partial loop pattern */
-            url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(139,115,85,0.22)' stroke-width='0.8' stroke-linecap='round'%3E%3Cpath d='M40,30 Q30,40 30,55 Q30,70 45,75' /%3E%3Cpath d='M45,28 Q33,38 33,55 Q33,68 48,73' /%3E%3Cpath d='M50,27 Q36,36 36,55 Q36,66 52,71' /%3E%3Cpath d='M55,28 Q40,35 40,55 Q40,64 56,70' /%3E%3Cpath d='M35,45 Q32,50 33,58' /%3E%3C/g%3E%3C/svg%3E") var(--spot2-x) var(--spot2-y) / 45px 60px no-repeat,
-            /* Fingerprint 3 - Partial arch pattern, very faded */
-            url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(139,115,85,0.15)' stroke-width='0.7' stroke-linecap='round'%3E%3Cpath d='M20,60 Q50,35 80,60' /%3E%3Cpath d='M22,65 Q50,38 78,65' /%3E%3Cpath d='M25,68 Q50,42 75,68' /%3E%3Cpath d='M28,72 Q50,46 72,72' /%3E%3Cpath d='M32,75 Q50,50 68,75' /%3E%3C/g%3E%3C/svg%3E") var(--spot3-x) var(--spot3-y) / 40px 50px no-repeat;
+            /* Heavy paper texture/grain */
+            url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.25'/%3E%3C/svg%3E"),
+            /* Age spots - larger and more visible */
+            radial-gradient(ellipse at var(--spot1-x) var(--spot1-y), 
+                rgba(139, 115, 85, var(--wear-opacity)) 0%, 
+                rgba(150, 120, 90, calc(var(--wear-opacity) * 0.6)) 15%,
+                transparent 25%),
+            radial-gradient(circle at var(--spot2-x) var(--spot2-y), 
+                rgba(160, 130, 95, calc(var(--wear-opacity) * 0.7)) 0%, 
+                transparent 18%),
+            radial-gradient(ellipse at var(--spot3-x) var(--spot3-y), 
+                rgba(145, 120, 88, calc(var(--wear-opacity) * 0.5)) 0%, 
+                transparent 20%),
+            radial-gradient(circle at var(--spot4-x) var(--spot4-y), 
+                rgba(155, 125, 92, calc(var(--wear-opacity) * 0.4)) 0%, 
+                transparent 12%),
+            /* Vignette effect (darker edges) */
+            radial-gradient(ellipse at center, 
+                transparent 40%,
+                rgba(139, 115, 85, calc(var(--wear-opacity) * 0.15)) 100%);
         pointer-events: none;
         z-index: 1;
-        opacity: calc(var(--wear-opacity) + 0.3);
     }
     
-    /* Crease/Fold effect */
+    /* Primary Crease/Fold effect - more visible */
     .ticket-worn::after {
         content: '';
         position: absolute;
         top: 50%;
         left: -10%;
         right: -10%;
-        height: 1px;
+        height: 2px;
         background: linear-gradient(
             90deg,
             transparent 0%,
-            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.6)) 20%,
-            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.4)) 50%,
-            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.6)) 80%,
+            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.8)) 15%,
+            rgba(120, 100, 75, calc(var(--wear-opacity) * 0.6)) 50%,
+            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.8)) 85%,
             transparent 100%
         );
         transform: rotate(var(--crease-rotation)) translateY(-50%);
         box-shadow: 
-            0 1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.3)),
-            0 -1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.3));
+            0 2px 4px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.4)),
+            0 -2px 4px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.4)),
+            0 0 8px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.2));
         pointer-events: none;
         z-index: 1;
+    }
+    
+    /* Secondary crease for more worn look */
+    .ticket-worn {
+        position: relative;
+    }
+    
+    .ticket-worn .ticket-content::before {
+        content: '';
+        position: absolute;
+        top: 30%;
+        left: -5%;
+        right: -5%;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.4)) 25%,
+            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.3)) 50%,
+            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.4)) 75%,
+            transparent 100%
+        );
+        transform: rotate(var(--crease2-rotation));
+        box-shadow: 
+            0 1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.2)),
+            0 -1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.2));
+        pointer-events: none;
+        z-index: 0;
     }
     
     /* Make sure content is above wear effects */
