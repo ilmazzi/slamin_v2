@@ -142,14 +142,12 @@
             </div>
         </div>
 
-        {{-- CTA Button --}}
+        {{-- CTA - Simple Text --}}
         <div class="text-center mt-12">
             <a href="{{ route('poems.index') }}" 
-               class="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-500 text-white rounded-lg font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary-500/50 hover:scale-105">
-                {{ __('home.all_poems_button') }}
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                </svg>
+               class="inline-block text-2xl md:text-3xl font-bold text-white hover:text-primary-400 transition-colors duration-300"
+               style="font-family: 'Crimson Pro', serif;">
+                → {{ __('home.all_poems_button') }}
             </a>
         </div>
     </div>

@@ -157,10 +157,13 @@
         </div>
     </div>
 
+    {{-- CTA - Simple Text --}}
     <div class="text-center mt-10">
-        <x-ui.buttons.primary :href="route('articles.index')" size="md" icon="M9 5l7 7-7 7">
-            {{ __('home.all_articles_button') }}
-        </x-ui.buttons.primary>
+        <a href="{{ route('articles.index') }}" 
+           class="inline-block text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300"
+           style="font-family: 'Crimson Pro', serif;">
+            → {{ __('home.all_articles_button') }}
+        </a>
     </div>
     
     <style>
