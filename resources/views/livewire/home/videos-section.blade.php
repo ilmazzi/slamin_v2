@@ -301,35 +301,29 @@
         z-index: 10;
     }
     
-    /* Frame Numbers - Printed on semi-transparent film */
+    /* Frame Numbers - Stamped/Marked on film (NO BACKGROUND BOX) */
     .film-frame-number {
         position: absolute;
         font-family: 'Courier New', monospace;
         font-size: 0.7rem;
-        font-weight: 700;
-        color: rgba(0, 0, 0, 0.7);
-        letter-spacing: 0.05em;
+        font-weight: 900;
+        /* White text stamped on film */
+        color: rgba(255, 255, 255, 0.95);
+        letter-spacing: 0.1em;
         z-index: 20;
-        /* Semi-transparent brown like film */
-        background: 
-            /* Top highlight (glossy) */
-            linear-gradient(180deg, 
-                rgba(255, 255, 255, 0.15) 0%,
-                transparent 50%
-            ),
-            /* Base color */
-            linear-gradient(135deg, 
-                rgba(110, 72, 45, 0.9) 0%,
-                rgba(95, 60, 38, 0.92) 100%
-            );
-        padding: 0.25rem 0.5rem;
-        border-radius: 2px;
-        box-shadow: 
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            /* Glossy top edge */
-            inset 0 1px 0 rgba(255, 255, 255, 0.2),
-            inset 0 0 8px rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(0, 0, 0, 0.4);
+        /* NO background - just stamped text */
+        background: none;
+        padding: 0;
+        border: none;
+        /* Stamped/embossed effect */
+        text-shadow: 
+            /* Main shadow for legibility */
+            0 1px 3px rgba(0, 0, 0, 0.8),
+            /* Subtle emboss effect */
+            0 -1px 1px rgba(0, 0, 0, 0.3),
+            1px 0 1px rgba(0, 0, 0, 0.2),
+            /* Glow for visibility */
+            0 0 8px rgba(255, 255, 255, 0.3);
     }
     
     .film-frame-number-tl {
@@ -356,19 +350,23 @@
         opacity: 0.8;
     }
     
-    /* Film edge codes - need separate elements to not conflict with backlight */
+    /* Film edge codes - White stamped text (NO BACKGROUND) */
     .film-strip-container .film-edge-code-top {
         position: absolute;
         top: 0.5rem;
         left: 50%;
         transform: translateX(-50%);
         font-family: 'Arial', sans-serif;
-        font-size: 0.65rem;
+        font-size: 0.7rem;
         font-weight: 900;
-        color: rgba(0, 0, 0, 0.5);
+        /* White stamped text */
+        color: rgba(255, 255, 255, 0.9);
         letter-spacing: 0.3em;
         z-index: 5;
-        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+        /* Stamped effect */
+        text-shadow: 
+            0 1px 3px rgba(0, 0, 0, 0.8),
+            0 0 6px rgba(255, 255, 255, 0.2);
     }
     
     .film-strip-container .film-edge-code-bottom {
@@ -377,12 +375,16 @@
         left: 50%;
         transform: translateX(-50%);
         font-family: 'Arial', sans-serif;
-        font-size: 0.6rem;
-        font-weight: 700;
-        color: rgba(0, 0, 0, 0.5);
-        letter-spacing: 0.2em;
+        font-size: 0.65rem;
+        font-weight: 900;
+        /* White stamped text */
+        color: rgba(255, 255, 255, 0.9);
+        letter-spacing: 0.25em;
         z-index: 5;
-        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+        /* Stamped effect */
+        text-shadow: 
+            0 1px 3px rgba(0, 0, 0, 0.8),
+            0 0 6px rgba(255, 255, 255, 0.2);
     }
     
     /* Responsive adjustments */
