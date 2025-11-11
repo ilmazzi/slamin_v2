@@ -44,8 +44,32 @@ $sizeClasses = [
                     </div>
                     @if($photo->user)
                         <div class="text-xs text-neutral-600 mb-1">{{ $photo->user->name }}</div>
-                        <div class="text-xs text-neutral-500">{{ number_format($photo->view_count ?? 0) }} views</div>
+                        <div class="text-xs text-neutral-500 mb-2">{{ number_format($photo->view_count ?? 0) }} views</div>
                     @endif
+                    
+                    {{-- Social Buttons --}}
+                    <div class="flex items-center justify-center gap-2.5 mt-1">
+                        <x-like-button 
+                            :itemId="$photo->id"
+                            itemType="photo"
+                            :isLiked="false"
+                            :likesCount="$photo->like_count ?? 0"
+                            size="sm"
+                            class="[&_span]:!text-neutral-700 [&_svg]:!text-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
+                        
+                        <x-comment-button 
+                            :itemId="$photo->id"
+                            itemType="photo"
+                            :commentsCount="$photo->comment_count ?? 0"
+                            size="sm"
+                            class="[&_button]:!text-neutral-700 [&_span]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
+                        
+                        <x-share-button 
+                            :itemId="$photo->id"
+                            itemType="photo"
+                            size="sm"
+                            class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5" />
+                    </div>
                 </div>
             </div>
         </div>
