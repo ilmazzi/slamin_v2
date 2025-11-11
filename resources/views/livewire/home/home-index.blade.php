@@ -1049,10 +1049,12 @@
         
         .hero-washi-top {
             top: -12px;
+            left: 50%;
         }
         
         .hero-washi-bottom {
             bottom: -12px;
+            left: 50%;
         }
         
         .hero-notice-paper {
