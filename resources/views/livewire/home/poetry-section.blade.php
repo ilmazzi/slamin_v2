@@ -36,7 +36,7 @@
                 </svg>
             </button>
             
-            <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-16 scrollbar-hide"
+            <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-16 px-8 md:px-12 scrollbar-hide"
                  style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
             @foreach($poems->take(3) as $i => $poem)
             <?php
