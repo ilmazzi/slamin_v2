@@ -1094,12 +1094,12 @@
         .hero-ticket-stamp {
             font-family: 'Special Elite', 'Courier New', monospace;
             text-align: center;
-            font-size: 0.875rem;
+            font-size: 0.7rem;
             font-weight: 400;
             color: #b91c1c;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            padding: 0.5rem 1rem;
+            padding: 0.375rem 0.75rem;
             border: 2px solid #b91c1c;
             border-radius: 3px;
             opacity: 0.7;
