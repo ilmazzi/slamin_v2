@@ -1232,7 +1232,8 @@
                 rgba(70, 48, 30, 0.97) 50%,
                 rgba(80, 55, 35, 0.95) 100%
             );
-            padding: 1.5rem 0.5rem;
+            padding: 1rem 0.5rem;
+            height: 150px;
             border-radius: 4px;
             box-shadow: 
                 0 4px 8px rgba(0, 0, 0, 0.3),
@@ -1261,7 +1262,7 @@
         /* Film frame */
         .hero-film-frame {
             position: relative;
-            height: 130px;
+            height: 100%;
             background: rgba(0, 0, 0, 0.5);
             border-radius: 2px;
             overflow: hidden;
