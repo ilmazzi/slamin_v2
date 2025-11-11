@@ -164,37 +164,41 @@
                          onclick="document.querySelector('.film-studio-section').scrollIntoView({ behavior: 'smooth' })"
                          style="transform: rotate({{ $tilt }}deg);">
                         <div class="hero-film-strip">
-                            <!-- Left perforation -->
-                            <div class="hero-film-perf-left">
-                                @for($h = 0; $h < 8; $h++)
-                                <div class="hero-perf-hole"></div>
-                                @endfor
-                            </div>
-                            
-                            <!-- Right perforation -->
-                            <div class="hero-film-perf-right">
-                                @for($h = 0; $h < 8; $h++)
-                                <div class="hero-perf-hole"></div>
-                                @endfor
-                            </div>
-                            
                             <!-- Film codes -->
                             <div class="hero-film-code-top">SLAMIN</div>
                             <div class="hero-film-code-bottom">ISO 400</div>
                             
-                            <!-- Film frame -->
+                            <!-- Film frame with thumbnail -->
                             <div class="hero-film-frame">
+                                <!-- Left perforation -->
+                                <div class="hero-film-perf-left">
+                                    @for($h = 0; $h < 8; $h++)
+                                    <div class="hero-perf-hole"></div>
+                                    @endfor
+                                </div>
+                                
+                                <!-- Right perforation -->
+                                <div class="hero-film-perf-right">
+                                    @for($h = 0; $h < 8; $h++)
+                                    <div class="hero-perf-hole"></div>
+                                    @endfor
+                                </div>
+                                
                                 <div class="hero-frame-number-tl">///01</div>
                                 <div class="hero-frame-number-tr">01A</div>
                                 <div class="hero-frame-number-bl">35MM</div>
                                 <div class="hero-frame-number-br">{{ rand(1, 9) }}</div>
                                 
-                                <div class="flex items-center justify-center h-full">
-                                    <div class="text-center">
-                                        <div class="text-white/90 font-bold text-sm" style="font-family: 'Crimson Pro', serif;">
-                                            {{ __('home.hero_category_videos') }}
-                                        </div>
-                                    </div>
+                                <!-- Thumbnail background -->
+                                <div class="hero-film-thumbnail" style="background: linear-gradient(135deg, <?php echo ['#4a7c59 0%, #2d5a3f 100%', '#0369a1 0%, #0284c7 100%', '#d97706 0%, #ea580c 100%', '#7c3aed 0%, #5b21b6 100%'][rand(0, 3)]; ?>);">
+                                    <svg class="w-10 h-10 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                
+                                <!-- Media text overlay -->
+                                <div class="hero-film-text">
+                                    {{ __('home.hero_category_videos') }}
                                 </div>
                             </div>
                         </div>
@@ -1222,43 +1226,12 @@
                 rgba(70, 48, 30, 0.97) 50%,
                 rgba(80, 55, 35, 0.95) 100%
             );
-            padding: 1.5rem 1.25rem;
+            padding: 1.5rem 0.5rem;
             border-radius: 4px;
             box-shadow: 
                 0 4px 8px rgba(0, 0, 0, 0.3),
                 0 8px 16px rgba(0, 0, 0, 0.25),
                 inset 0 2px 4px rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Perforations */
-        .hero-film-perf-left,
-        .hero-film-perf-right {
-            position: absolute;
-            top: -8px;
-            bottom: -8px;
-            width: 1rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-            background: linear-gradient(180deg, 
-                rgba(80, 55, 35, 0.95) 0%,
-                rgba(70, 48, 30, 0.97) 50%,
-                rgba(80, 55, 35, 0.95) 100%
-            );
-        }
-        
-        .hero-film-perf-left { left: 0.25rem; }
-        .hero-film-perf-right { right: 0.25rem; }
-        
-        .hero-perf-hole {
-            width: 12px;
-            height: 10px;
-            background: rgba(240, 235, 228, 0.9);
-            border-radius: 1px;
-            box-shadow: 
-                inset 0 2px 4px rgba(0, 0, 0, 0.35),
-                inset 0 1px 2px rgba(0, 0, 0, 0.25);
         }
         
         /* Film codes */
@@ -1273,6 +1246,7 @@
             color: white;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
             letter-spacing: 0.1em;
+            z-index: 2;
         }
         
         .hero-film-code-top { top: 0.25rem; }
@@ -1281,12 +1255,69 @@
         /* Film frame */
         .hero-film-frame {
             position: relative;
-            height: 100px;
-            background: rgba(0, 0, 0, 0.4);
+            height: 130px;
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        /* Perforations - INSIDE frame */
+        .hero-film-perf-left,
+        .hero-film-perf-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            background: linear-gradient(180deg, 
+                rgba(80, 55, 35, 0.98) 0%,
+                rgba(70, 48, 30, 1) 50%,
+                rgba(80, 55, 35, 0.98) 100%
+            );
+            z-index: 3;
+        }
+        
+        .hero-film-perf-left { left: 0; }
+        .hero-film-perf-right { right: 0; }
+        
+        .hero-perf-hole {
+            width: 10px;
+            height: 8px;
+            background: rgba(240, 235, 228, 0.95);
+            border-radius: 1px;
+            box-shadow: 
+                inset 0 2px 3px rgba(0, 0, 0, 0.4),
+                inset 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Thumbnail background */
+        .hero-film-thumbnail {
+            position: absolute;
+            inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 1;
+        }
+        
+        /* Media text overlay */
+        .hero-film-text {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.8),
+                0 1px 2px rgba(0, 0, 0, 0.6);
+            z-index: 2;
+            white-space: nowrap;
         }
         
         /* Frame numbers */
@@ -1299,12 +1330,13 @@
             font-weight: 700;
             color: white;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            z-index: 4;
         }
         
-        .hero-frame-number-tl { top: 0.25rem; left: 0.25rem; }
-        .hero-frame-number-tr { top: 0.25rem; right: 0.25rem; }
-        .hero-frame-number-bl { bottom: 0.25rem; left: 0.25rem; }
-        .hero-frame-number-br { bottom: 0.25rem; right: 0.25rem; }
+        .hero-frame-number-tl { top: 0.25rem; left: 1.1rem; }
+        .hero-frame-number-tr { top: 0.25rem; right: 1.1rem; }
+        .hero-frame-number-bl { bottom: 0.25rem; left: 1.1rem; }
+        .hero-frame-number-br { bottom: 0.25rem; right: 1.1rem; }
         
     </style>
 </div>
