@@ -27,7 +27,7 @@
                 </div>
                 
                 {{-- Categories Grid - Simple Icons with Section Themes --}}
-                <div class="pt-8 flex md:flex-wrap justify-center md:justify-center gap-4 max-w-6xl mx-auto overflow-x-auto md:overflow-x-visible scrollbar-hide px-4 md:px-0"
+                <div class="pt-8 flex md:flex-wrap justify-start md:justify-center gap-4 max-w-6xl mx-auto overflow-x-auto md:overflow-x-visible scrollbar-hide px-4 md:px-0"
                      style="-webkit-overflow-scrolling: touch;">
                     
                     {{-- Poetry - Mini Paper Sheet --}}
@@ -227,10 +227,10 @@
                             <!-- Polaroid Card -->
                             <div class="hero-polaroid-card">
                                 <div class="hero-polaroid-photo" style="background: url('<?php echo [
-                                    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
-                                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-                                    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-                                    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400'
+                                    'https://images.unsplash.com/photo-1557683316-973673baf926?w=400',
+                                    'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400',
+                                    'https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?w=400',
+                                    'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=400'
                                 ][rand(0, 3)]; ?>') center/cover;"></div>
                                 <div class="hero-polaroid-caption">
                                     {{ __('home.hero_category_users') }}
