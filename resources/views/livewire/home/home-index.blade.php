@@ -27,7 +27,7 @@
                 </div>
                 
                 {{-- Categories Grid - Simple Icons with Section Themes --}}
-                <div class="pt-8 flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
+                <div class="pt-8 flex flex-wrap justify-center gap-4 max-w-6xl mx-auto">
                     
                     {{-- Poetry - Mini Paper Sheet --}}
                     <?php $paperRotation = rand(-2, 2); ?>
