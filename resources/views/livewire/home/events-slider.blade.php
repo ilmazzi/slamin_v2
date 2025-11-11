@@ -378,7 +378,7 @@
     }
     
     .ticket-watermark img {
-        /* No filters - use image as-is */
+        opacity: 0.3;
     }
     
     /* Make sure content is above wear effects */
