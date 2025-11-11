@@ -160,9 +160,6 @@
         border-right: 2px solid rgba(70, 45, 28, 0.6);
         backdrop-filter: blur(1px);
         overflow: visible;
-        /* 3D ELEVATION - makes entire film strip appear raised */
-        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4))
-                drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     }
     
     /* Light background behind film to show transparency */
