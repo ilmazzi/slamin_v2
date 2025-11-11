@@ -199,8 +199,8 @@
             position: relative;
             /* Bianco puro come vera Polaroid */
             background: #ffffff;
-            /* Bordi bianchi - proporzioni classiche Polaroid */
-            padding: 20px 20px 70px 20px;
+            /* Bordi bianchi - più spazio per la bio */
+            padding: 20px 20px 85px 20px;
             /* Ombra elegante e realistica */
             box-shadow: 
                 0 2px 4px rgba(0, 0, 0, 0.1),
@@ -244,21 +244,25 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: all 0.5s ease;
+            /* Filtro bianco e nero per effetto vintage */
+            filter: grayscale(100%);
         }
         
         .polaroid-wrapper:hover .polaroid-img {
             transform: scale(1.08);
+            /* Al hover leggero colore */
+            filter: grayscale(80%);
         }
         
-        /* Caption area - elegante e spaziosa */
+        /* Caption area - con bio */
         .polaroid-caption {
             text-align: center;
             padding: 1rem 0.75rem 0 0.75rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.625rem;
+            gap: 0.5rem;
         }
         
         .polaroid-name {
@@ -285,9 +289,14 @@
             white-space: nowrap;
         }
         
-        /* Bio - Nascosta */
+        /* Bio - Visibile */
         .polaroid-bio {
-            display: none;
+            font-size: 0.75rem;
+            color: #4a4a4a;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+            font-style: italic;
+            display: block;
         }
         
         /* Follow button - Elegante */
