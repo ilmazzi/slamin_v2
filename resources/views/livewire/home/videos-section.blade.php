@@ -32,7 +32,7 @@
                         <div class="film-perforation film-perforation-right"></div>
                         
                         <!-- Film Edge Codes -->
-                        <div class="film-edge-code-top">KODAK</div>
+                        <div class="film-edge-code-top">SLAMIN</div>
                         <div class="film-edge-code-bottom">ISO 400</div>
                         
                         <!-- Film Frame -->
@@ -215,7 +215,7 @@
         align-items: center;
     }
     
-    /* Sprocket holes - CONTINUOUS pattern extending beyond edges */
+    /* Sprocket holes - ACTUAL TRANSPARENT HOLES (you see through to background!) */
     .film-perforation::before {
         content: '';
         position: absolute;
@@ -224,22 +224,22 @@
         transform: translateX(-50%);
         width: 10px;
         height: 100%;
-        background-image: 
+        /* Holes pattern - using mask to cut out transparent areas */
+        background: 
             repeating-linear-gradient(
                 to bottom,
-                transparent 0px,
+                rgba(0, 0, 0, 0.4) 0px,
+                rgba(0, 0, 0, 0.4) 10px,
+                /* TRANSPARENT holes (not black!) - see background through */
                 transparent 10px,
-                /* Holes are more transparent (you can see through) */
-                rgba(0, 0, 0, 0.75) 10px,
-                rgba(0, 0, 0, 0.75) 18px,
                 transparent 18px,
-                transparent 35px
+                rgba(0, 0, 0, 0.4) 18px,
+                rgba(0, 0, 0, 0.4) 35px
             );
         border-radius: 1px;
-        /* Glossy edges on holes */
+        /* Shadow on edges of holes */
         box-shadow: 
-            inset 0 0 2px rgba(255, 255, 255, 0.1),
-            0 0 1px rgba(0, 0, 0, 0.3);
+            inset 0 0 2px rgba(0, 0, 0, 0.3);
     }
     
     .film-perforation-left {
@@ -463,6 +463,17 @@
     .animate-fade-in { 
         animation: fade-in 0.5s ease-out forwards; 
         opacity: 0; 
+    }
+    
+    /* Smaller play button for film strips */
+    .film-frame .plyr__control--overlaid {
+        transform: scale(0.7) !important;
+        opacity: 0.9 !important;
+    }
+    
+    .film-frame .plyr__control--overlaid:hover {
+        transform: scale(0.75) !important;
+        opacity: 1 !important;
     }
     </style>
     @endif
