@@ -3,22 +3,22 @@
     <livewire:home.hero-carousel />
 
     {{-- Video/Foto Community - FILM STUDIO SECTION --}}
-    <div class="py-20 md:py-24 film-studio-section overflow-hidden">
+    <div class="py-20 md:py-24 film-studio-section">
         <livewire:home.videos-section />
     </div>
 
     {{-- Eventi - CINEMA WALL --}}
-    <div class="py-20 md:py-24 cinema-wall-section overflow-hidden">
+    <div class="py-20 md:py-24 cinema-wall-section">
         <livewire:home.events-slider />
     </div>
 
     {{-- Poesie - WOODEN DESK SECTION --}}
-    <div class="py-20 md:py-24 wooden-desk-section overflow-hidden">
+    <div class="py-20 md:py-24 wooden-desk-section">
         <livewire:home.poetry-section />
     </div>
 
     {{-- Nuovi Utenti - POLAROID WALL --}}
-    <div class="py-20 md:py-28 polaroid-wall-section overflow-hidden">
+    <div class="py-20 md:py-28 polaroid-wall-section">
         <livewire:home.new-users-section />
     </div>
 
@@ -28,7 +28,7 @@
     </div>
 
     {{-- Articoli - Newspaper Section --}}
-    <div class="py-20 md:py-28 articles-newspaper-section overflow-hidden">
+    <div class="py-20 md:py-28 articles-newspaper-section">
         <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
             <div>
                 <div class="text-center mb-12 section-title-fade">
@@ -43,7 +43,7 @@
     </div>
 
     {{-- Top Gigs - CORK BOARD SECTION --}}
-    <div class="py-20 md:py-24 cork-board-section overflow-hidden">
+    <div class="py-20 md:py-24 cork-board-section">
         <livewire:home.gigs-section />
     </div>
 
