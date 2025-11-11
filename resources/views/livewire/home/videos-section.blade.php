@@ -190,32 +190,21 @@
             inset 0 0 40px rgba(0, 0, 0, 0.25);
     }
     
-    /* Film Edge Markers - Darker transparent areas with sprocket holes EXTENDING BEYOND */
+    /* Film Edge Markers - TRANSPARENT with dark strips pattern (holes show background!) */
     .film-perforation {
         position: absolute;
         top: -20px; /* Extend beyond top */
         bottom: -20px; /* Extend beyond bottom */
         width: 2rem;
-        /* Slightly darker, still transparent */
-        background: 
-            /* Glossy edge highlight */
-            linear-gradient(90deg, 
-                rgba(255, 255, 255, 0.08) 0%,
-                transparent 30%
-            ),
-            /* Base darker area */
-            linear-gradient(180deg, 
-                rgba(0, 0, 0, 0.35) 0%,
-                rgba(0, 0, 0, 0.25) 50%,
-                rgba(0, 0, 0, 0.35) 100%
-            );
+        /* TRANSPARENT background - holes will show through completely */
+        background: transparent;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
     
-    /* Sprocket holes - ACTUAL TRANSPARENT HOLES (you see through to background!) */
+    /* Dark strips BETWEEN holes (holes stay transparent!) */
     .film-perforation::before {
         content: '';
         position: absolute;
@@ -224,22 +213,29 @@
         transform: translateX(-50%);
         width: 10px;
         height: 100%;
-        /* Holes pattern - using mask to cut out transparent areas */
+        /* Pattern: dark strips where film is, TRANSPARENT where holes are */
         background: 
+            /* Glossy highlight on strips */
+            linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.1) 0%,
+                transparent 50%
+            ),
+            /* Dark strips pattern (holes are transparent gaps) */
             repeating-linear-gradient(
                 to bottom,
-                rgba(0, 0, 0, 0.4) 0px,
-                rgba(0, 0, 0, 0.4) 10px,
-                /* TRANSPARENT holes (not black!) - see background through */
+                rgba(0, 0, 0, 0.5) 0px,
+                rgba(0, 0, 0, 0.5) 10px,
+                /* HOLES - completely transparent! */
                 transparent 10px,
                 transparent 18px,
-                rgba(0, 0, 0, 0.4) 18px,
-                rgba(0, 0, 0, 0.4) 35px
+                /* Dark strips continue */
+                rgba(0, 0, 0, 0.5) 18px,
+                rgba(0, 0, 0, 0.5) 35px
             );
         border-radius: 1px;
-        /* Shadow on edges of holes */
+        /* Shadow on dark strips only */
         box-shadow: 
-            inset 0 0 2px rgba(0, 0, 0, 0.3);
+            inset 0 0 2px rgba(0, 0, 0, 0.2);
     }
     
     .film-perforation-left {
