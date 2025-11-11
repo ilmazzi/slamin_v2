@@ -60,127 +60,130 @@
     
     <style>
     /* ========================================
-       FILM STRIP V2 - MORE VISIBLE & REALISTIC
+       PHOTO NEGATIVE FILM ROLL / RULLINO FOTOGRAFICO
        ======================================== */
     
-    /* Main Film Strip Container */
+    /* Main Film Strip Container - Orange/Amber Film Border */
     .film-strip-container {
         position: relative;
-        background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
-        padding: 3rem 4rem;
-        border-radius: 0.75rem;
+        background: 
+            /* Film base gradient (orange/amber) */
+            linear-gradient(135deg, 
+                #d97a2c 0%,
+                #c86820 25%,
+                #d97a2c 50%,
+                #c86820 75%,
+                #d97a2c 100%
+            );
+        padding: 2.5rem 2.5rem;
+        border-radius: 0.5rem;
         box-shadow: 
-            0 20px 50px rgba(0, 0, 0, 0.8),
-            0 10px 25px rgba(0, 0, 0, 0.6);
+            0 20px 50px rgba(0, 0, 0, 0.7),
+            0 10px 25px rgba(217, 122, 44, 0.2),
+            inset 0 0 40px rgba(0, 0, 0, 0.15);
         transition: all 0.3s ease;
-        border: 1px solid #2a2a2a;
+        border: 3px solid #a85818;
+        /* Subtle film texture */
+        background-size: 100% 100%;
     }
     
     .film-strip-container:hover {
         transform: translateY(-4px);
         box-shadow: 
-            0 25px 60px rgba(0, 0, 0, 0.9),
-            0 15px 30px rgba(0, 0, 0, 0.7);
+            0 25px 60px rgba(0, 0, 0, 0.8),
+            0 15px 30px rgba(217, 122, 44, 0.3),
+            inset 0 0 40px rgba(0, 0, 0, 0.2);
     }
     
-    /* Film Perforations - LARGER & MORE VISIBLE */
+    /* Film Edge Markers (simulating sprocket holes area) */
     .film-perforation {
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 3rem;
-        background: #2a2a2a;
+        width: 2rem;
+        background: linear-gradient(180deg, 
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0.3) 100%
+        );
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
-        justify-content: space-around;
-        padding: 1rem 0;
     }
     
-    /* Create actual hole elements */
+    /* Sprocket holes pattern */
     .film-perforation::before {
         content: '';
         position: absolute;
         top: 0;
         left: 50%;
         transform: translateX(-50%);
-        width: 100%;
+        width: 10px;
         height: 100%;
         background-image: 
             repeating-linear-gradient(
                 to bottom,
                 transparent 0px,
-                transparent 8px,
-                rgba(0, 0, 0, 0.9) 8px,
-                rgba(0, 0, 0, 0.9) 10px,
                 transparent 10px,
-                transparent 25px
+                rgba(0, 0, 0, 0.6) 10px,
+                rgba(0, 0, 0, 0.6) 18px,
+                transparent 18px,
+                transparent 35px
             );
-    }
-    
-    .film-perforation::after {
-        content: '';
-        position: absolute;
-        top: 12.5px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 14px;
-        height: calc(100% - 25px);
-        background-image: 
-            repeating-linear-gradient(
-                to bottom,
-                #0a0a0a 0px,
-                #0a0a0a 6px,
-                transparent 6px,
-                transparent 25px
-            );
-        border-radius: 2px;
-        box-shadow: 
-            inset 0 0 3px rgba(0, 0, 0, 0.8),
-            0 0 0 1px rgba(255, 255, 255, 0.05);
+        border-radius: 1px;
     }
     
     .film-perforation-left {
         left: 0;
-        border-top-left-radius: 0.75rem;
-        border-bottom-left-radius: 0.75rem;
-        border-right: 2px solid #0a0a0a;
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+        border-right: 1px solid rgba(0, 0, 0, 0.4);
     }
     
     .film-perforation-right {
         right: 0;
-        border-top-right-radius: 0.75rem;
-        border-bottom-right-radius: 0.75rem;
-        border-left: 2px solid #0a0a0a;
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        border-left: 1px solid rgba(0, 0, 0, 0.4);
     }
     
-    /* Film Frame (central area) */
+    /* Film Frame (negative area) */
     .film-frame {
         position: relative;
-        border: 4px solid #2a2a2a;
-        border-radius: 0.5rem;
+        border: 2px solid rgba(0, 0, 0, 0.5);
+        border-radius: 0.25rem;
         background: #000;
         box-shadow: 
-            0 0 0 2px #1a1a1a,
-            inset 0 0 30px rgba(0, 0, 0, 0.9);
+            inset 0 0 20px rgba(0, 0, 0, 0.8),
+            0 4px 12px rgba(0, 0, 0, 0.4);
         overflow: hidden;
     }
     
-    /* Add film grain overlay */
+    /* Film grain and scratches overlay */
     .film-frame::before {
         content: '';
         position: absolute;
         inset: 0;
         background: 
+            /* Fine scratches */
             repeating-linear-gradient(
-                0deg,
+                45deg,
                 transparent,
-                transparent 2px,
-                rgba(255, 255, 255, 0.02) 2px,
-                rgba(255, 255, 255, 0.02) 4px
+                transparent 100px,
+                rgba(255, 255, 255, 0.02) 100px,
+                rgba(255, 255, 255, 0.02) 101px
             ),
             repeating-linear-gradient(
-                90deg,
+                -45deg,
+                transparent,
+                transparent 150px,
+                rgba(255, 255, 255, 0.015) 150px,
+                rgba(255, 255, 255, 0.015) 151px
+            ),
+            /* Film grain */
+            repeating-linear-gradient(
+                0deg,
                 transparent,
                 transparent 2px,
                 rgba(255, 255, 255, 0.01) 2px,
@@ -190,91 +193,125 @@
         z-index: 10;
     }
     
-    /* Frame Numbers - LARGER & MORE VISIBLE */
+    /* Frame Numbers - Photo Negative Style */
     .film-frame-number {
         position: absolute;
         font-family: 'Courier New', monospace;
-        font-size: 0.875rem;
-        font-weight: 900;
-        color: #ff8c00;
-        letter-spacing: 0.15em;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #000;
+        letter-spacing: 0.05em;
         z-index: 20;
-        text-shadow: 
-            0 0 8px rgba(255, 140, 0, 0.8),
-            0 0 4px rgba(255, 140, 0, 0.6),
-            0 2px 4px rgba(0, 0, 0, 0.8);
-        padding: 0.4rem 0.7rem;
-        background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.7) 100%);
-        border-radius: 4px;
-        border: 1px solid rgba(255, 140, 0, 0.3);
-        backdrop-filter: blur(4px);
+        background: linear-gradient(135deg, 
+            rgba(217, 122, 44, 0.95) 0%,
+            rgba(200, 104, 32, 0.95) 100%
+        );
+        padding: 0.25rem 0.5rem;
+        border-radius: 2px;
+        box-shadow: 
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 0 0 8px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.3);
     }
     
     .film-frame-number-tl {
-        top: 0.75rem;
-        left: 0.75rem;
+        top: 0.5rem;
+        left: 0.5rem;
     }
     
     .film-frame-number-tr {
-        top: 0.75rem;
-        right: 0.75rem;
+        top: 0.5rem;
+        right: 0.5rem;
     }
     
     .film-frame-number-bl {
-        bottom: 0.75rem;
-        left: 0.75rem;
+        bottom: 0.5rem;
+        left: 0.5rem;
+        font-size: 0.65rem;
+        opacity: 0.8;
     }
     
     .film-frame-number-br {
-        bottom: 0.75rem;
-        right: 0.75rem;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        font-size: 0.65rem;
+        opacity: 0.8;
+    }
+    
+    /* Film edge codes (like real negatives) */
+    .film-strip-container::before {
+        content: 'KODAK';
+        position: absolute;
+        top: 0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: 'Arial', sans-serif;
+        font-size: 0.65rem;
+        font-weight: 900;
+        color: rgba(0, 0, 0, 0.4);
+        letter-spacing: 0.3em;
+    }
+    
+    .film-strip-container::after {
+        content: 'ISO 400';
+        position: absolute;
+        bottom: 0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: 'Arial', sans-serif;
+        font-size: 0.6rem;
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.4);
+        letter-spacing: 0.2em;
     }
     
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .film-strip-container {
-            padding: 2.5rem 3rem;
+            padding: 2rem 2rem;
         }
         
         .film-perforation {
-            width: 2.5rem;
+            width: 1.5rem;
         }
         
-        .film-perforation::after {
-            width: 12px;
-            background-size: 100% 20px;
+        .film-perforation::before {
+            width: 8px;
         }
         
         .film-frame-number {
-            font-size: 0.75rem;
-            padding: 0.3rem 0.5rem;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+        }
+        
+        .film-strip-container::before,
+        .film-strip-container::after {
+            font-size: 0.55rem;
         }
     }
     
-    /* Dark mode adjustments */
+    /* Dark mode - slightly different amber tone */
     :is(.dark .film-strip-container) {
-        background: linear-gradient(135deg, #0a0a0a 0%, #000000 100%);
-        border-color: #1a1a1a;
+        background: 
+            linear-gradient(135deg, 
+                #b86820 0%,
+                #a85818 25%,
+                #b86820 50%,
+                #a85818 75%,
+                #b86820 100%
+            );
+        border-color: #8a4810;
         box-shadow: 
             0 20px 50px rgba(0, 0, 0, 0.95),
-            0 10px 25px rgba(0, 0, 0, 0.8);
+            0 10px 25px rgba(184, 104, 32, 0.3),
+            inset 0 0 40px rgba(0, 0, 0, 0.25);
     }
     
     :is(.dark .film-strip-container:hover) {
         box-shadow: 
             0 25px 60px rgba(0, 0, 0, 1),
-            0 15px 30px rgba(0, 0, 0, 0.9);
-    }
-    
-    :is(.dark .film-perforation) {
-        background: #1a1a1a;
-    }
-    
-    :is(.dark .film-frame) {
-        border-color: #1a1a1a;
-        box-shadow: 
-            0 0 0 2px #0a0a0a,
-            inset 0 0 30px rgba(0, 0, 0, 0.95);
+            0 15px 30px rgba(184, 104, 32, 0.4),
+            inset 0 0 40px rgba(0, 0, 0, 0.3);
     }
     
     /* Fade-in animation */
