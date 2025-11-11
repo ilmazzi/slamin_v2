@@ -78,9 +78,35 @@
                 </div>
             </div>
             
-            <!-- FILO per appendere le Polaroid -->
+            <!-- FILO CON CURVATURA SVG -->
             <div class="clothesline-container">
-                <div class="clothesline"></div>
+                <svg class="clothesline-svg" viewBox="0 0 1200 80" preserveAspectRatio="none">
+                    <defs>
+                        <linearGradient id="ropeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#8B7355;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#6B563F;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#5A4A35;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="ropeShadow">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+                            <feOffset dx="0" dy="2" result="offsetblur"/>
+                            <feComponentTransfer>
+                                <feFuncA type="linear" slope="0.4"/>
+                            </feComponentTransfer>
+                            <feMerge>
+                                <feMergeNode/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- Filo curvo naturale (parabola) -->
+                    <path d="M 0,20 Q 300,50 600,55 T 1200,20" 
+                          stroke="url(#ropeGradient)" 
+                          stroke-width="4" 
+                          fill="none"
+                          stroke-linecap="round"
+                          filter="url(#ropeShadow)"/>
+                </svg>
             </div>
             
             <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-16 px-8 md:px-12 scrollbar-hide"
@@ -197,76 +223,66 @@
         
         .polaroid-wrapper {
             position: relative;
-            /* Spazio per filo e molletta */
-            padding-top: 80px;
+            /* Spazio per filo, molletta e connessione */
+            padding-top: 100px;
         }
         
-        /* FILO per appendere le Polaroid - CON CURVATURA */
+        /* FILO SVG - VISIBILMENTE CURVO */
         .clothesline-container {
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
+            left: -50px;
+            right: -50px;
             z-index: 5;
-            height: 80px;
+            height: 70px;
             pointer-events: none;
             overflow: visible;
         }
         
-        .clothesline {
-            position: absolute;
-            left: -100px;
-            right: -100px;
-            top: 0;
+        .clothesline-svg {
+            width: 100%;
             height: 100%;
-            /* SVG path per curvatura naturale del filo */
-        }
-        
-        .clothesline::after {
-            content: '';
             position: absolute;
+            top: 0;
             left: 0;
-            right: 0;
-            top: 20px;
-            height: 4px;
-            /* Curvatura naturale usando border-radius e transform */
-            background: linear-gradient(to bottom, 
-                #8B7355 0%,
-                #6B563F 50%,
-                #5A4A35 100%
-            );
-            border-radius: 50%;
-            /* Curva verso il basso (effetto gravità) */
-            transform: translateY(0);
-            box-shadow: 
-                0 2px 4px rgba(0, 0, 0, 0.3),
-                0 1px 2px rgba(0, 0, 0, 0.2);
-            /* Simula curvatura con border-bottom-left/right-radius */
-            border-bottom-left-radius: 100% 40px;
-            border-bottom-right-radius: 100% 40px;
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
         }
         
-        /* Molletta da bucato - ATTACCATA AL FILO */
+        /* Molletta da bucato - AGGANCIATA AL FILO */
         .clothespin {
             position: absolute;
-            /* Posizionata SUL filo, non sopra la card */
-            top: 8px;
+            /* Posizione che segue la curvatura del filo */
+            top: 30px; /* Circa al centro della curvatura */
             left: 50%;
             transform: translateX(-50%);
-            width: 32px;
-            height: 56px;
+            width: 36px;
+            height: 60px;
             z-index: 15;
             transition: all 0.3s ease;
-            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25));
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+        
+        /* Filo virtuale che connette molletta al filo principale */
+        .clothespin::before {
+            content: '';
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 18px;
+            background: linear-gradient(to bottom,
+                #8B7355 0%,
+                #6B563F 100%
+            );
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            z-index: -1;
         }
         
         .clothespin-top,
         .clothespin-bottom {
             position: absolute;
-            width: 14px;
-            height: 28px;
+            width: 16px;
+            height: 32px;
             left: 50%;
             /* Legno chiaro realistico */
             background: 
@@ -279,40 +295,39 @@
                 );
             border-radius: 3px 3px 8px 8px;
             box-shadow: 
-                0 3px 6px rgba(0, 0, 0, 0.25),
+                0 4px 8px rgba(0, 0, 0, 0.3),
                 inset 2px 0 2px rgba(255, 255, 255, 0.4),
                 inset -2px 0 2px rgba(0, 0, 0, 0.25);
         }
         
         .clothespin-top {
             top: 0;
-            transform: translateX(-55%) rotate(-10deg);
+            transform: translateX(-56%) rotate(-12deg);
             transform-origin: bottom center;
         }
         
         .clothespin-bottom {
             top: 0;
-            transform: translateX(-45%) rotate(10deg);
+            transform: translateX(-44%) rotate(12deg);
             transform-origin: bottom center;
         }
         
-        /* Molla centrale - più realistica */
+        /* Molla centrale metallica */
         .clothespin-spring {
             position: absolute;
-            width: 16px;
-            height: 10px;
+            width: 18px;
+            height: 12px;
             left: 50%;
-            top: 10px;
+            top: 12px;
             transform: translateX(-50%);
             background: 
-                /* Effetto spirale metallica */
                 repeating-linear-gradient(
                     to bottom,
                     #999 0px,
-                    #bbb 1px,
-                    #888 2px,
-                    #aaa 3px,
-                    #999 4px
+                    #bbb 1.5px,
+                    #888 3px,
+                    #aaa 4.5px,
+                    #999 6px
                 );
             border-radius: 3px;
             box-shadow: 
