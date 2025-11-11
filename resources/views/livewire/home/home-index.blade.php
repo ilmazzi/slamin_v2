@@ -57,6 +57,11 @@
         </div>
     </div>
 
+    {{-- Decorative Separator --}}
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+        <div class="section-separator"></div>
+    </div>
+
     {{-- Top Gigs - CORK BOARD SECTION --}}
     <div class="py-20 md:py-24 cork-board-section">
         <livewire:home.gigs-section />
