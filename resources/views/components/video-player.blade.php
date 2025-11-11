@@ -191,68 +191,78 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
         </div>
         
         @if($showAuthor || $showStats)
-        <!-- Video Info Overlay -->
-        <div class="absolute bottom-0 left-0 right-0 p-5 md:p-7 text-white pointer-events-none">
-            <h3 class="text-xl md:text-2xl font-bold mb-3 drop-shadow-lg line-clamp-2" 
-                style="font-family: 'Crimson Pro', serif;"
-                x-text="videoData.title"></h3>
+        <!-- Video Info Overlay - Reorganized for Mobile -->
+        <div class="absolute bottom-0 left-0 right-0 text-white pointer-events-none">
+            <!-- Background gradient for better readability -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
             
-            @if($showAuthor)
-            <!-- Author Info -->
-            <div class="flex items-center gap-3 mb-4">
-                <img :src="videoData.user.avatar" 
-                     :alt="videoData.user.name"
-                     class="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover ring-2 ring-white/50">
-                <div>
-                    <p class="font-semibold text-base md:text-lg drop-shadow" x-text="videoData.user.name"></p>
-                    <p class="text-sm md:text-base text-white/80 drop-shadow" x-text="videoData.created_at"></p>
+            <div class="relative p-4 md:p-7 space-y-3 md:space-y-4">
+                <h3 class="text-lg md:text-2xl font-bold drop-shadow-lg line-clamp-2" 
+                    style="font-family: 'Crimson Pro', serif;"
+                    x-text="videoData.title"></h3>
+                
+                @if($showAuthor)
+                <!-- Author Info -->
+                <div class="flex items-center gap-2.5 md:gap-3">
+                    <img :src="videoData.user.avatar" 
+                         :alt="videoData.user.name"
+                         class="w-9 h-9 md:w-12 md:h-12 rounded-full object-cover ring-2 ring-white/50">
+                    <div>
+                        <p class="font-semibold text-sm md:text-lg drop-shadow" x-text="videoData.user.name"></p>
+                        <p class="text-xs md:text-base text-white/80 drop-shadow" x-text="videoData.created_at"></p>
+                    </div>
                 </div>
+                @endif
+                
+                @if($showStats)
+                <!-- Stats - Two Rows on Mobile -->
+                <div class="space-y-2 md:space-y-0">
+                    <!-- First Row: Views -->
+                    <div class="flex items-center gap-4">
+                        <div class="inline-flex items-center gap-2">
+                            <svg class="w-5 h-5 md:w-6 md:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            <span class="font-medium text-sm md:text-lg" x-text="videoData.stats.views.toLocaleString()"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Second Row: Social Buttons -->
+                    <div class="flex items-center gap-4 md:gap-5 pointer-events-auto">
+                        <!-- Like Button Component -->
+                        <div @click.stop>
+                            <x-like-button 
+                                :itemId="$video->id"
+                                itemType="video"
+                                :isLiked="$isLiked"
+                                :likesCount="$video->like_count ?? 0"
+                                size="md"
+                                class="[&_span]:!text-white/90 [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
+                        </div>
+                        
+                        <!-- Comment Button Component -->
+                        <div @click.stop>
+                            <x-comment-button 
+                                :itemId="$video->id"
+                                itemType="video"
+                                :commentsCount="$video->comment_count ?? 0"
+                                size="md"
+                                class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
+                        </div>
+                        
+                        <!-- Share Button Component -->
+                        <div @click.stop>
+                            <x-share-button 
+                                :itemId="$video->id"
+                                itemType="video"
+                                size="md"
+                                class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_svg]:!stroke-white [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
-            @endif
-            
-            @if($showStats)
-            <!-- Stats - Using Reusable Components -->
-            <div class="flex items-center gap-4 md:gap-5 text-base text-white/90 pointer-events-auto">
-                <!-- Views -->
-                <div class="inline-flex items-center gap-2">
-                    <svg class="w-5 h-5 md:w-6 md:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
-                    <span class="font-medium text-base md:text-lg" x-text="videoData.stats.views.toLocaleString()"></span>
-                </div>
-                
-                <!-- Like Button Component -->
-                <div @click.stop>
-                    <x-like-button 
-                        :itemId="$video->id"
-                        itemType="video"
-                        :isLiked="$isLiked"
-                        :likesCount="$video->like_count ?? 0"
-                        size="md"
-                        class="[&_span]:!text-white/90 [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
-                </div>
-                
-                <!-- Comment Button Component -->
-                <div @click.stop>
-                    <x-comment-button 
-                        :itemId="$video->id"
-                        itemType="video"
-                        :commentsCount="$video->comment_count ?? 0"
-                        size="md"
-                        class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
-                </div>
-                
-                <!-- Share Button Component -->
-                <div @click.stop>
-                    <x-share-button 
-                        :itemId="$video->id"
-                        itemType="video"
-                        size="md"
-                        class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_svg]:!stroke-white [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
-                </div>
-            </div>
-            @endif
         </div>
         @endif
     </div>
