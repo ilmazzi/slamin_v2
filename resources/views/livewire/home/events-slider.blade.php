@@ -128,7 +128,7 @@
                     
                     {{-- Watermark Logo (Top Right) --}}
                     <div class="ticket-watermark">
-                        <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
+                        <img src="{{ asset('assets/images/filigrana.png') }}" 
                              alt="Slamin" 
                              class="w-32 h-auto md:w-40">
                     </div>
@@ -370,7 +370,7 @@
     .ticket-watermark {
         position: absolute;
         top: 30%;
-        right: -0.25rem;
+        right: -1rem;
         transform: translateY(-50%) rotate(-90deg);
         transform-origin: center;
         z-index: 3;
