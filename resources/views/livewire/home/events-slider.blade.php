@@ -74,9 +74,6 @@
                 </div>
             </div>
             
-            <!-- Gradient Fade Right (Mobile Only) -->
-            <div class="md:hidden absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-neutral-950 to-transparent pointer-events-none z-10"></div>
-            
         <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-16 pt-12 px-8 md:px-12 scrollbar-hide"
              style="-webkit-overflow-scrolling: touch;">
             @foreach($recentEvents->take(6) as $i => $event)

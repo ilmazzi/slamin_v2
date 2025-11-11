@@ -62,9 +62,6 @@
                 </div>
             </div>
             
-            <!-- Gradient Fade Right (Mobile Only) -->
-            <div class="md:hidden absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-neutral-100 dark:from-neutral-900 to-transparent pointer-events-none z-10"></div>
-            
             <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-20 px-8 md:px-12 scrollbar-hide"
                  style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
         @foreach($articles->take(3) as $i => $article)
