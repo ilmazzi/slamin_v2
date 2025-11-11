@@ -200,6 +200,45 @@
                         <div class="hero-card-label">{{ strip_tags(__('home.videos_section_title')) }}</div>
                     </div>
                     
+                    {{-- New Users - Mini Polaroid --}}
+                    <?php 
+                        $rotation = rand(-3, 3);
+                        $tapeRotation = rand(-8, 8);
+                        $tapeWidth = rand(60, 80);
+                        $tapeColors = [
+                            ['rgba(255, 220, 0, 0.95)', 'rgba(255, 230, 50, 0.93)', 'rgba(255, 240, 100, 0.95)'],
+                            ['rgba(255, 105, 180, 0.92)', 'rgba(255, 130, 200, 0.90)', 'rgba(255, 150, 215, 0.92)'],
+                            ['rgba(0, 150, 255, 0.90)', 'rgba(50, 170, 255, 0.88)', 'rgba(100, 190, 255, 0.90)'],
+                            ['rgba(50, 255, 50, 0.88)', 'rgba(80, 255, 80, 0.86)', 'rgba(110, 255, 110, 0.88)'],
+                        ];
+                        $selectedTape = $tapeColors[array_rand($tapeColors)];
+                    ?>
+                    <div class="hero-card-container">
+                        <div class="hero-polaroid-wrapper cursor-pointer"
+                             @click="document.querySelector('.polaroid-wall-section').scrollIntoView({ behavior: 'smooth' })"
+                             style="transform: rotate({{ $rotation }}deg);">
+                            <!-- Tape -->
+                            <div class="hero-polaroid-tape" 
+                                 style="width: {{ $tapeWidth }}px; 
+                                        transform: rotate({{ $tapeRotation }}deg);
+                                        background: linear-gradient(135deg, {{ $selectedTape[0] }}, {{ $selectedTape[1] }}, {{ $selectedTape[2] }});"></div>
+                            
+                            <!-- Polaroid Card -->
+                            <div class="hero-polaroid-card">
+                                <div class="hero-polaroid-photo" style="background: url('<?php echo [
+                                    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
+                                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+                                    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+                                    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400'
+                                ][rand(0, 3)]; ?>') center/cover;"></div>
+                                <div class="hero-polaroid-caption">
+                                    {{ __('home.hero_category_users') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-card-label">{{ strip_tags(__('home.new_users_title')) }}</div>
+                    </div>
+                    
                 </div>
                 
             </div>
@@ -1409,9 +1448,63 @@
         .hero-card-container:hover .hero-magazine-wrapper,
         .hero-card-container:hover .hero-notice-wrapper,
         .hero-card-container:hover .hero-ticket-wrapper,
-        .hero-card-container:hover .hero-film-wrapper {
+        .hero-card-container:hover .hero-film-wrapper,
+        .hero-card-container:hover .hero-polaroid-wrapper {
             filter: drop-shadow(0 20px 40px rgba(16, 185, 129, 0.4)) 
                     drop-shadow(0 0 30px rgba(16, 185, 129, 0.3));
+        }
+        
+        /* New Users - Mini Polaroid */
+        .hero-polaroid-wrapper {
+            display: block;
+            width: 130px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+        }
+        
+        .hero-polaroid-tape {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform-origin: center;
+            height: 20px;
+            border-radius: 2px;
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            z-index: 2;
+        }
+        
+        .hero-polaroid-card {
+            background: linear-gradient(135deg, 
+                #ffffff 0%,
+                #fafafa 50%,
+                #f5f5f5 100%
+            );
+            padding: 0.5rem 0.5rem 0.75rem 0.5rem;
+            border-radius: 4px;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.15),
+                0 8px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+        
+        .hero-polaroid-photo {
+            width: 100%;
+            height: 110px;
+            background-color: #e5e5e5;
+            border-radius: 2px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-polaroid-caption {
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2d2d2d;
+            text-align: center;
+            line-height: 1.2;
         }
         
     </style>

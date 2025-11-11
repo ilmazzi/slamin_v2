@@ -13,6 +13,7 @@ return [
     'hero_category_gigs' => 'Gigs',
     'hero_category_events' => 'Events',
     'hero_category_videos' => 'Media',
+    'hero_category_users' => 'Community',
     'hero_category_community' => 'Community',
 
     // Poetry Section
