@@ -4,6 +4,7 @@ namespace App\Livewire\Home;
 
 use Livewire\Component;
 use App\Models\Video;
+use App\Models\Photo;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -42,22 +43,41 @@ class VideosSection extends Component
     
     public function render()
     {
-        // Get top 5 most popular videos by total interactions (views + likes + comments)
+        // Get top 3 most popular videos
         $videos = Video::where('moderation_status', 'approved')
             ->where('is_public', true)
             ->with('user')
             ->selectRaw('videos.*, (COALESCE(view_count, 0) + COALESCE(like_count, 0) + COALESCE(comment_count, 0)) as total_interactions')
             ->orderByDesc('total_interactions')
-            ->limit(5)
+            ->limit(3)
             ->get();
         
         // Get direct URLs for PeerTube videos
         foreach ($videos as $video) {
             $video->direct_url = $this->getDirectVideoUrl($video);
+            $video->media_type = 'video';
         }
         
+        // Get top 2 most popular photos
+        $photos = Photo::where('moderation_status', 'approved')
+            ->where('status', 'approved')
+            ->with('user')
+            ->selectRaw('photos.*, (COALESCE(view_count, 0) + COALESCE(like_count, 0) + COALESCE(comment_count, 0)) as total_interactions')
+            ->orderByDesc('total_interactions')
+            ->limit(2)
+            ->get();
+        
+        // Add media_type to photos
+        foreach ($photos as $photo) {
+            $photo->media_type = 'photo';
+        }
+        
+        // Merge and shuffle videos and photos
+        $media = $videos->concat($photos)->shuffle()->take(5);
+        
         return view('livewire.home.videos-section', [
-            'videos' => $videos
+            'videos' => $videos, // Keep for backward compatibility
+            'media' => $media   // Mixed media collection
         ]);
     }
 }
