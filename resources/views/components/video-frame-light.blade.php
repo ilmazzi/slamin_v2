@@ -24,21 +24,7 @@ $sizeClasses = [
          style="transition-delay: {{ $index * 100 }}ms">
         
         <div class="video-frame-light" style="transform: rotate({{ $tilt }}deg);">
-            <!-- Mini Perforations Left -->
-            <div class="video-perf-left">
-                @for($h = 0; $h < 5; $h++)
-                <div class="video-perf-hole"></div>
-                @endfor
-            </div>
-            
-            <!-- Mini Perforations Right -->
-            <div class="video-perf-right">
-                @for($h = 0; $h < 5; $h++)
-                <div class="video-perf-hole"></div>
-                @endfor
-            </div>
-            
-            <!-- Frame Number Top-Left -->
+            <!-- SOLO frame number, NO perforazioni -->
             <div class="video-frame-num">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
             
             <!-- Video Content -->
@@ -73,78 +59,41 @@ $sizeClasses = [
 </div>
 
 <style>
-    /* Video Frame Light - Minimal Film Border */
+    /* Video Frame Light - ESSENZIALE */
     .video-frame-light {
         position: relative;
-        padding: 8px;
-        background: 
-            /* Film texture */
-            linear-gradient(135deg, 
-                rgba(120, 80, 50, 0.9) 0%,
-                rgba(100, 65, 40, 0.92) 50%,
-                rgba(120, 80, 50, 0.9) 100%
-            );
-        border-radius: 4px;
+        background: transparent;
+        border-radius: 8px;
+        overflow: hidden;
         box-shadow: 
-            0 4px 12px rgba(0, 0, 0, 0.3),
-            inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            0 4px 16px rgba(0, 0, 0, 0.15),
+            0 2px 8px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
     }
     
     .video-frame-light:hover {
-        transform: translateY(-4px) scale(1.02) !important;
+        transform: translateY(-6px) scale(1.03) !important;
         box-shadow: 
-            0 8px 20px rgba(0, 0, 0, 0.4),
-            inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            0 8px 24px rgba(0, 0, 0, 0.2),
+            0 4px 12px rgba(0, 0, 0, 0.15);
     }
     
-    /* Mini Perforations */
-    .video-perf-left,
-    .video-perf-right {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 8px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-        padding: 0.5rem 0;
-        background: rgba(80, 55, 35, 0.95);
-    }
-    
-    .video-perf-left {
-        left: 0;
-    }
-    
-    .video-perf-right {
-        right: 0;
-    }
-    
-    .video-perf-hole {
-        width: 6px;
-        height: 10px;
-        background: #f0ebe8;
-        border-radius: 1px;
-        flex-shrink: 0;
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
-    }
-    
-    .dark .video-perf-hole {
-        background: #1a1a1a;
-    }
-    
-    /* Frame Number */
+    /* Frame Number - Badge minimal */
     .video-frame-num {
         position: absolute;
-        top: 0.5rem;
+        top: 1rem;
         left: 1rem;
-        color: rgba(255, 255, 255, 0.35);
+        color: white;
         font-size: 0.7rem;
         font-weight: 700;
         font-family: 'Courier New', monospace;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
         z-index: 3;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        padding: 0.35rem 0.65rem;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 </style>
 

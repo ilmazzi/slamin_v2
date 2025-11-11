@@ -53,7 +53,7 @@
     </section>
 
     {{-- VIDEO MASONRY LAYOUT --}}
-    <section class="relative py-20 bg-white dark:bg-neutral-900">
+    <section class="relative py-20 film-studio-section">
         <div class="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- Header con Toggle Floating --}}
@@ -168,7 +168,7 @@
     </section>
 
     {{-- PHOTO SECTION - Alternated Layout --}}
-    <section class="relative py-20 bg-gradient-to-br from-neutral-50 via-primary-50/20 to-accent-50/20 dark:from-neutral-800 dark:via-neutral-900 dark:to-neutral-900">
+    <section class="relative py-20 bg-white dark:bg-neutral-900">
         <div class="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- Header --}}
@@ -799,6 +799,80 @@
         .film-frame-grid {
             position: relative;
             z-index: 2;
+        }
+        
+        /* ========================================
+           BACKGROUND - Lightbox per Film
+           ======================================== */
+        
+        .film-studio-section {
+            position: relative;
+            background: 
+                /* Lightbox pattern */
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(240, 240, 235, 0.5),
+                    rgba(240, 240, 235, 0.5) 1px,
+                    rgba(230, 230, 225, 0.4) 1px,
+                    rgba(230, 230, 225, 0.4) 2px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(240, 240, 235, 0.5),
+                    rgba(240, 240, 235, 0.5) 1px,
+                    rgba(230, 230, 225, 0.4) 1px,
+                    rgba(230, 230, 225, 0.4) 2px
+                ),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' seed='5' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23grain)' opacity='0.05'/%3E%3C/svg%3E"),
+                radial-gradient(ellipse at center, 
+                    rgba(255, 250, 240, 0.8) 0%,
+                    rgba(245, 240, 230, 0.7) 50%,
+                    rgba(235, 230, 220, 0.6) 100%
+                ),
+                linear-gradient(135deg, 
+                    #f0ede8 0%,
+                    #e8e5e0 25%,
+                    #ece9e4 50%,
+                    #e5e2dd 75%,
+                    #eae7e2 100%
+                );
+            box-shadow: 
+                inset 0 0 100px rgba(255, 250, 240, 0.3),
+                inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        :is(.dark .film-studio-section) {
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(40, 40, 38, 0.6),
+                    rgba(40, 40, 38, 0.6) 1px,
+                    rgba(35, 35, 33, 0.5) 1px,
+                    rgba(35, 35, 33, 0.5) 2px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(40, 40, 38, 0.6),
+                    rgba(40, 40, 38, 0.6) 1px,
+                    rgba(35, 35, 33, 0.5) 1px,
+                    rgba(35, 35, 33, 0.5) 2px
+                ),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' seed='5' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23grain)' opacity='0.08'/%3E%3C/svg%3E"),
+                radial-gradient(ellipse at center, 
+                    rgba(60, 58, 55, 0.7) 0%,
+                    rgba(50, 48, 45, 0.6) 50%,
+                    rgba(40, 38, 35, 0.5) 100%
+                ),
+                linear-gradient(135deg, 
+                    #2a2826 0%,
+                    #252321 25%,
+                    #282624 50%,
+                    #232120 75%,
+                    #272523 100%
+                );
+            box-shadow: 
+                inset 0 0 80px rgba(0, 0, 0, 0.4),
+                inset 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
         /* ========================================
