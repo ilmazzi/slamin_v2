@@ -197,18 +197,20 @@
         
         .polaroid-wrapper {
             position: relative;
-            padding-top: 20px;
+            /* Spazio per filo e molletta */
+            padding-top: 80px;
         }
         
-        /* FILO per appendere le Polaroid */
+        /* FILO per appendere le Polaroid - CON CURVATURA */
         .clothesline-container {
             position: absolute;
-            top: 10px;
+            top: 0;
             left: 0;
             right: 0;
             z-index: 5;
-            height: 3px;
+            height: 80px;
             pointer-events: none;
+            overflow: visible;
         }
         
         .clothesline {
@@ -216,81 +218,107 @@
             left: -100px;
             right: -100px;
             top: 0;
-            height: 3px;
+            height: 100%;
+            /* SVG path per curvatura naturale del filo */
+        }
+        
+        .clothesline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 20px;
+            height: 4px;
+            /* Curvatura naturale usando border-radius e transform */
             background: linear-gradient(to bottom, 
                 #8B7355 0%,
                 #6B563F 50%,
                 #5A4A35 100%
             );
-            border-radius: 2px;
+            border-radius: 50%;
+            /* Curva verso il basso (effetto gravità) */
+            transform: translateY(0);
             box-shadow: 
-                0 1px 2px rgba(0, 0, 0, 0.3),
-                inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                0 1px 2px rgba(0, 0, 0, 0.2);
+            /* Simula curvatura con border-bottom-left/right-radius */
+            border-bottom-left-radius: 100% 40px;
+            border-bottom-right-radius: 100% 40px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
         }
         
-        /* Molletta da bucato */
+        /* Molletta da bucato - ATTACCATA AL FILO */
         .clothespin {
             position: absolute;
-            top: -18px;
+            /* Posizionata SUL filo, non sopra la card */
+            top: 8px;
             left: 50%;
             transform: translateX(-50%);
-            width: 28px;
-            height: 50px;
+            width: 32px;
+            height: 56px;
             z-index: 15;
             transition: all 0.3s ease;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25));
         }
         
         .clothespin-top,
         .clothespin-bottom {
             position: absolute;
-            width: 12px;
-            height: 24px;
+            width: 14px;
+            height: 28px;
             left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(to right,
-                #D4A574 0%,
-                #C89968 50%,
-                #B88B5C 100%
-            );
-            border-radius: 2px 2px 6px 6px;
+            /* Legno chiaro realistico */
+            background: 
+                linear-gradient(135deg, 
+                    #E8C9A0 0%,
+                    #D4A574 25%,
+                    #C89968 50%,
+                    #B88B5C 75%,
+                    #A67B4F 100%
+                );
+            border-radius: 3px 3px 8px 8px;
             box-shadow: 
-                0 2px 4px rgba(0, 0, 0, 0.2),
-                inset 1px 0 1px rgba(255, 255, 255, 0.3),
-                inset -1px 0 1px rgba(0, 0, 0, 0.2);
+                0 3px 6px rgba(0, 0, 0, 0.25),
+                inset 2px 0 2px rgba(255, 255, 255, 0.4),
+                inset -2px 0 2px rgba(0, 0, 0, 0.25);
         }
         
         .clothespin-top {
             top: 0;
-            transform: translateX(-50%) rotate(-8deg);
+            transform: translateX(-55%) rotate(-10deg);
             transform-origin: bottom center;
         }
         
         .clothespin-bottom {
             top: 0;
-            transform: translateX(-50%) rotate(8deg);
+            transform: translateX(-45%) rotate(10deg);
             transform-origin: bottom center;
         }
         
-        /* Molla centrale */
+        /* Molla centrale - più realistica */
         .clothespin-spring {
             position: absolute;
-            width: 14px;
-            height: 8px;
+            width: 16px;
+            height: 10px;
             left: 50%;
-            top: 8px;
+            top: 10px;
             transform: translateX(-50%);
             background: 
-                linear-gradient(to bottom,
-                    #888 0%,
-                    #aaa 30%,
-                    #888 50%,
-                    #aaa 70%,
-                    #888 100%
+                /* Effetto spirale metallica */
+                repeating-linear-gradient(
+                    to bottom,
+                    #999 0px,
+                    #bbb 1px,
+                    #888 2px,
+                    #aaa 3px,
+                    #999 4px
                 );
-            border-radius: 2px;
+            border-radius: 3px;
             box-shadow: 
-                0 1px 2px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 2px rgba(255, 255, 255, 0.5),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.3);
         }
         
         /* ============================================
@@ -320,22 +348,33 @@
             background: #fafafa;
         }
         
-        /* HOVER - Lift delicato con oscillazione */
+        /* HOVER - Oscillazione naturale */
         .polaroid-wrapper:hover .polaroid-card {
-            transform: translateY(-8px) scale(1.02) rotate(0deg) !important;
+            /* Leggera oscillazione come se fosse appesa */
+            transform: translateY(-6px) scale(1.02) rotate(0deg) !important;
             box-shadow: 
-                0 4px 8px rgba(0, 0, 0, 0.12),
-                0 8px 16px rgba(0, 0, 0, 0.1),
-                0 16px 32px rgba(0, 0, 0, 0.08),
-                0 32px 64px rgba(0, 0, 0, 0.06);
+                0 6px 12px rgba(0, 0, 0, 0.15),
+                0 12px 24px rgba(0, 0, 0, 0.12),
+                0 20px 40px rgba(0, 0, 0, 0.09);
+            animation: swing 0.5s ease-in-out;
+        }
+        
+        @keyframes swing {
+            0%, 100% { transform: translateY(-6px) rotate(0deg); }
+            25% { transform: translateY(-8px) rotate(1deg); }
+            75% { transform: translateY(-8px) rotate(-1deg); }
         }
         
         .polaroid-wrapper:hover .clothespin-top {
-            transform: translateX(-50%) rotate(-12deg);
+            transform: translateX(-55%) rotate(-15deg);
         }
         
         .polaroid-wrapper:hover .clothespin-bottom {
-            transform: translateX(-50%) rotate(12deg);
+            transform: translateX(-45%) rotate(15deg);
+        }
+        
+        .polaroid-wrapper:hover .clothespin {
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
         }
         
         /* FOTO - Stile pulito */
