@@ -1,6 +1,20 @@
 <?php
 
 return [
+    // Hero Section
+    'hero_welcome' => 'Welcome to',
+    'hero_subtitle' => 'The community where art comes to life. Share your creativity, discover new talents.',
+    'hero_cta_join' => 'Join Now',
+    'hero_cta_explore' => 'Explore the Community',
+    'hero_cta_dashboard' => 'Go to Dashboard',
+    'hero_cta_discover' => 'Discover Content',
+    'hero_category_poems' => 'Poems',
+    'hero_category_articles' => 'Articles',
+    'hero_category_gigs' => 'Gigs',
+    'hero_category_events' => 'Events',
+    'hero_category_videos' => 'Videos',
+    'hero_category_community' => 'Community',
+
     // Poetry Section
     'poetry_section_title' => 'Community <span class="italic text-primary-600">Verses</span>',
     'poetry_section_subtitle' => 'The most recent and loved poems',

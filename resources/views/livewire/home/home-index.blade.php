@@ -19,10 +19,10 @@
                 {{-- Welcome Text with Typewriter Effect --}}
                 <div class="space-y-4">
                     <h1 class="text-5xl md:text-7xl font-bold text-white" style="font-family: 'Crimson Pro', serif;">
-                        Benvenuto su <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">Slamin</span>
+                        {{ __('home.hero_welcome') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">Slamin</span>
                     </h1>
                     <p class="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto">
-                        La community dove l'arte prende vita. Condividi la tua creatività, scopri nuovi talenti.
+                        {{ __('home.hero_subtitle') }}
                     </p>
                 </div>
                 
@@ -31,20 +31,20 @@
                     @guest
                     <a href="{{ route('register') }}" 
                        class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                        Unisciti Ora
+                        {{ __('home.hero_cta_join') }}
                     </a>
                     <a href="#explore" 
                        class="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl border-2 border-white/20 hover:border-white/40 transition-all duration-300">
-                        Esplora la Community
+                        {{ __('home.hero_cta_explore') }}
                     </a>
                     @else
                     <a href="{{ route('dashboard.index') }}" 
                        class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                        Vai alla Dashboard
+                        {{ __('home.hero_cta_dashboard') }}
                     </a>
                     <a href="#explore" 
                        class="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl border-2 border-white/20 hover:border-white/40 transition-all duration-300">
-                        Scopri Contenuti
+                        {{ __('home.hero_cta_discover') }}
                     </a>
                     @endguest
                 </div>
@@ -58,7 +58,7 @@
                             <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
-                            <span class="text-white font-medium">Poesie</span>
+                            <span class="text-white font-medium">{{ __('home.hero_category_poems') }}</span>
                         </div>
                     </a>
                     
@@ -69,7 +69,7 @@
                             <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
                             </svg>
-                            <span class="text-white font-medium">Articoli</span>
+                            <span class="text-white font-medium">{{ __('home.hero_category_articles') }}</span>
                         </div>
                     </a>
                     
@@ -80,7 +80,7 @@
                             <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
-                            <span class="text-white font-medium">Gigs</span>
+                            <span class="text-white font-medium">{{ __('home.hero_category_gigs') }}</span>
                         </div>
                     </a>
                     
@@ -91,7 +91,7 @@
                             <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                             </svg>
-                            <span class="text-white font-medium">Eventi</span>
+                            <span class="text-white font-medium">{{ __('home.hero_category_events') }}</span>
                         </div>
                     </a>
                     
@@ -102,7 +102,7 @@
                             <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                             </svg>
-                            <span class="text-white font-medium">Video</span>
+                            <span class="text-white font-medium">{{ __('home.hero_category_videos') }}</span>
                         </div>
                     </div>
                     
@@ -113,7 +113,7 @@
                             <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                             </svg>
-                            <span class="text-white font-medium">Community</span>
+                            <span class="text-white font-medium">{{ __('home.hero_category_community') }}</span>
                         </div>
                     </a>
                 </div>
