@@ -189,11 +189,15 @@
                                 <div class="hero-frame-number-bl">35MM</div>
                                 <div class="hero-frame-number-br">{{ rand(1, 9) }}</div>
                                 
-                                <!-- Thumbnail background -->
-                                <div class="hero-film-thumbnail" style="background: linear-gradient(135deg, <?php echo ['#4a7c59 0%, #2d5a3f 100%', '#0369a1 0%, #0284c7 100%', '#d97706 0%, #ea580c 100%', '#7c3aed 0%, #5b21b6 100%'][rand(0, 3)]; ?>);">
-                                    <svg class="w-10 h-10 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                                    </svg>
+                                <!-- Thumbnail background with random image -->
+                                <div class="hero-film-thumbnail" style="background: url('<?php echo [
+                                    'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400',
+                                    'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400',
+                                    'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400',
+                                    'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400',
+                                    'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400',
+                                    'https://images.unsplash.com/photo-1501612780327-45045538702b?w=400'
+                                ][rand(0, 5)]; ?>') center/cover;">
                                 </div>
                                 
                                 <!-- Media text overlay -->
