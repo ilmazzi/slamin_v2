@@ -1,6 +1,6 @@
 <div>
     @if($poems && $poems->count() > 0)
-    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+    <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
         
         {{-- Header --}}
         <div class="text-center mb-12 section-title-fade">
