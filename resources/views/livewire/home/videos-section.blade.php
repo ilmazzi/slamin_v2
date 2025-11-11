@@ -213,25 +213,25 @@
         align-items: center;
     }
     
-    /* Light holes OVER the dark strip to simulate transparent perforations */
+    /* Light holes OVER the dark strip to simulate transparent perforations - WIDER */
     .film-perforation::before {
         content: '';
         position: absolute;
         top: 12px;
         left: 50%;
         transform: translateX(-50%);
-        width: 12px;
+        width: 16px; /* Increased from 12px to 16px */
         height: calc(100% - 24px);
-        /* Light rectangles pattern simulating holes */
+        /* Light rectangles pattern simulating holes - BIGGER */
         background-image: 
             repeating-linear-gradient(
                 to bottom,
                 transparent 0px,
-                transparent 10px,
-                /* LIGHT color (background color) to simulate holes */
-                rgba(240, 235, 228, 0.95) 10px,
-                rgba(240, 235, 228, 0.95) 18px,
-                transparent 18px,
+                transparent 8px,  /* Reduced gap from 10px to 8px */
+                /* LIGHT color (background color) to simulate holes - TALLER */
+                rgba(240, 235, 228, 0.95) 8px,
+                rgba(240, 235, 228, 0.95) 20px,  /* Increased from 18px to 20px (12px tall holes) */
+                transparent 20px,
                 transparent 35px
             );
         border-radius: 2px;
@@ -246,10 +246,10 @@
             repeating-linear-gradient(
                 to bottom,
                 transparent 0px,
-                transparent 10px,
-                rgba(40, 38, 35, 0.95) 10px,
-                rgba(40, 38, 35, 0.95) 18px,
-                transparent 18px,
+                transparent 8px,
+                rgba(40, 38, 35, 0.95) 8px,
+                rgba(40, 38, 35, 0.95) 20px,  /* Same increase */
+                transparent 20px,
                 transparent 35px
             );
     }
