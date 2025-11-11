@@ -79,7 +79,7 @@
                     // Random film strip tilt
                     $tilt = rand(-1, 1);
                 ?>
-                <div class="w-[85vw] md:w-[600px] flex-shrink-0 fade-scale-item"
+                <div class="w-[92vw] md:w-[700px] flex-shrink-0 fade-scale-item"
                      x-data
                      x-intersect.once="$el.classList.add('animate-fade-in')"
                      style="animation-delay: {{ $i * 0.1 }}s;">
@@ -140,6 +140,7 @@
     /* Main Film Strip Container - Brown Amber Semi-Transparent with Glossy Finish */
     .film-strip-container {
         position: relative;
+        padding: 3rem 4.5rem;
         /* Semi-transparent brown/amber film with glossy highlights */
         background: 
             /* Glossy highlight (top light reflection) */
@@ -448,7 +449,7 @@
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .film-strip-container {
-            padding: 2rem 3rem; /* Increased horizontal padding from 2rem to 3rem for mobile */
+            padding: 2.5rem 3.5rem;
         }
         
         .film-perforation {

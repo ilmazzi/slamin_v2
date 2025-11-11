@@ -192,34 +192,34 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
         
         @if($showAuthor || $showStats)
         <!-- Video Info Overlay -->
-        <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white pointer-events-none">
-            <h3 class="text-lg md:text-xl font-bold mb-2 drop-shadow-lg line-clamp-2" 
+        <div class="absolute bottom-0 left-0 right-0 p-5 md:p-7 text-white pointer-events-none">
+            <h3 class="text-xl md:text-2xl font-bold mb-3 drop-shadow-lg line-clamp-2" 
                 style="font-family: 'Crimson Pro', serif;"
                 x-text="videoData.title"></h3>
             
             @if($showAuthor)
             <!-- Author Info -->
-            <div class="flex items-center gap-2 mb-3">
+            <div class="flex items-center gap-3 mb-4">
                 <img :src="videoData.user.avatar" 
                      :alt="videoData.user.name"
-                     class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover ring-2 ring-white/50">
+                     class="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover ring-2 ring-white/50">
                 <div>
-                    <p class="font-semibold text-sm drop-shadow" x-text="videoData.user.name"></p>
-                    <p class="text-xs text-white/80 drop-shadow" x-text="videoData.created_at"></p>
+                    <p class="font-semibold text-base md:text-lg drop-shadow" x-text="videoData.user.name"></p>
+                    <p class="text-sm md:text-base text-white/80 drop-shadow" x-text="videoData.created_at"></p>
                 </div>
             </div>
             @endif
             
             @if($showStats)
             <!-- Stats - Using Reusable Components -->
-            <div class="flex items-center gap-3 md:gap-4 text-sm text-white/90 pointer-events-auto">
+            <div class="flex items-center gap-4 md:gap-5 text-base text-white/90 pointer-events-auto">
                 <!-- Views -->
-                <div class="inline-flex items-center gap-1.5">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="inline-flex items-center gap-2">
+                    <svg class="w-5 h-5 md:w-6 md:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                     </svg>
-                    <span class="font-medium" x-text="videoData.stats.views.toLocaleString()"></span>
+                    <span class="font-medium text-base md:text-lg" x-text="videoData.stats.views.toLocaleString()"></span>
                 </div>
                 
                 <!-- Like Button Component -->
