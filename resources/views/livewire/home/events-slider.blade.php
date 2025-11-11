@@ -126,6 +126,13 @@
                     {{-- Perforated Left Edge --}}
                     <div class="ticket-perforation"></div>
                     
+                    {{-- Watermark Logo (Top Right) --}}
+                    <div class="ticket-watermark">
+                        <img src="{{ asset('assets/images/logo.svg') }}" 
+                             alt="Slamin" 
+                             class="w-16 h-16 md:w-20 md:h-20 opacity-15">
+                    </div>
+                    
                     {{-- Ticket Main Content --}}
                     <div class="ticket-content">
                         
@@ -357,6 +364,21 @@
             0 -1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.3));
         pointer-events: none;
         z-index: 1;
+    }
+    
+    /* Watermark Logo - Stamp Effect */
+    .ticket-watermark {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 3;
+        pointer-events: none;
+    }
+    
+    .ticket-watermark img {
+        filter: grayscale(100%) brightness(1.2) contrast(1.5);
+        mix-blend-mode: multiply;
+        opacity: 0.15;
     }
     
     /* Make sure content is above wear effects */
