@@ -95,13 +95,35 @@
                         </div>
                     </a>
                     
-                    {{-- Gigs --}}
+                    {{-- Gigs - Mini Notice Board --}}
+                    <?php
+                        $tapeWidth = rand(80, 100);
+                        $tapeRotation = rand(-4, 4);
+                        $paperRotation = rand(-2, 2);
+                        // Random tape color
+                        $tapeColors = [
+                            ['rgba(255, 107, 107, 0.92)', 'rgba(255, 130, 130, 0.90)', 'rgba(255, 150, 150, 0.92)'],
+                            ['rgba(78, 205, 196, 0.92)', 'rgba(100, 220, 210, 0.90)', 'rgba(120, 230, 220, 0.92)'],
+                            ['rgba(255, 195, 0, 0.92)', 'rgba(255, 210, 50, 0.90)', 'rgba(255, 225, 100, 0.92)'],
+                            ['rgba(156, 136, 255, 0.92)', 'rgba(170, 150, 255, 0.90)', 'rgba(185, 165, 255, 0.92)'],
+                            ['rgba(255, 140, 0, 0.92)', 'rgba(255, 160, 50, 0.90)', 'rgba(255, 180, 100, 0.92)'],
+                        ];
+                        $selectedTape = $tapeColors[array_rand($tapeColors)];
+                    ?>
                     <a href="{{ route('gigs.index') }}" 
-                       class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px]">
-                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_gigs') }}</span>
+                       class="hero-notice-wrapper">
+                        <div class="hero-washi-tape" 
+                             style="width: {{ $tapeWidth }}px; 
+                                    transform: translate(calc(-50%), 0) rotate({{ $tapeRotation }}deg);
+                                    background: linear-gradient(135deg, {{ $selectedTape[0] }} 0%, {{ $selectedTape[1] }} 50%, {{ $selectedTape[2] }} 100%);"></div>
+                        <div class="hero-notice-paper" style="transform: rotate({{ $paperRotation }}deg);">
+                            <div class="flex flex-col items-center justify-center gap-2 h-full">
+                                <svg class="w-10 h-10 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                <span class="text-xs font-bold text-neutral-900">{{ __('home.hero_category_gigs') }}</span>
+                            </div>
+                        </div>
                     </a>
                     
                     {{-- Events --}}
@@ -827,6 +849,79 @@
                 0 30px 48px rgba(0, 0, 0, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.6),
                 inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Gigs - Mini Notice Board */
+        .hero-notice-wrapper {
+            display: block;
+            width: 130px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-notice-wrapper:hover {
+            transform: translateY(-6px);
+        }
+        
+        .hero-washi-tape {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            height: 14px;
+            border-radius: 1px;
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            z-index: 10;
+            /* Serrated edge (same as sections) */
+            clip-path: polygon(
+                /* Top serrated edge */
+                2% 0%, 5% 30%, 8% 0%, 12% 35%, 15% 0%, 
+                18% 40%, 22% 0%, 25% 30%, 28% 0%, 32% 35%, 
+                35% 0%, 38% 40%, 42% 0%, 45% 30%, 48% 0%, 
+                52% 35%, 55% 0%, 58% 40%, 62% 0%, 65% 30%, 
+                68% 0%, 72% 35%, 75% 0%, 78% 40%, 82% 0%, 
+                85% 30%, 88% 0%, 92% 35%, 95% 0%, 98% 40%,
+                /* Close top edge */
+                100% 0%,
+                /* Right edge */
+                100% 100%,
+                /* Bottom edge (smooth) */
+                0% 100%,
+                /* Left edge */
+                0% 0%
+            );
+        }
+        
+        .hero-notice-paper {
+            background: linear-gradient(135deg, 
+                #fffef5 0%,
+                #fffdf2 25%,
+                #fefce8 50%,
+                #fefbe5 75%,
+                #fdfae3 100%
+            );
+            padding: 1.5rem 1rem;
+            height: 150px;
+            border-radius: 4px;
+            box-shadow: 
+                /* Paper shadows */
+                0 5px 8px rgba(0, 0, 0, 0.2),
+                0 10px 15px rgba(0, 0, 0, 0.15),
+                0 15px 22px rgba(0, 0, 0, 0.1),
+                /* Subtle inset highlight */
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                inset 0 2px 4px rgba(255, 255, 255, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hero-notice-wrapper:hover .hero-notice-paper {
+            box-shadow: 
+                0 8px 14px rgba(0, 0, 0, 0.25),
+                0 16px 28px rgba(0, 0, 0, 0.2),
+                0 24px 40px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                inset 0 2px 4px rgba(255, 255, 255, 0.4);
         }
         
     </style>
