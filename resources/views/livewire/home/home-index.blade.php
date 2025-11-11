@@ -1,6 +1,133 @@
 <div>
-    {{-- Hero Carousel --}}
-    <livewire:home.hero-carousel />
+    {{-- Hero Welcome Section --}}
+    <section class="relative overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 dark:from-black dark:via-neutral-900 dark:to-black">
+        <!-- Animated Background Pattern -->
+        <div class="absolute inset-0 opacity-5">
+            <div class="absolute inset-0" style="background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.03) 35px, rgba(255,255,255,.03) 70px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,255,255,.03) 35px, rgba(255,255,255,.03) 70px);
+            "></div>
+        </div>
+        
+        <!-- Animated Green Glow -->
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div class="text-center space-y-8">
+                
+                {{-- Welcome Text with Typewriter Effect --}}
+                <div class="space-y-4">
+                    <h1 class="text-5xl md:text-7xl font-bold text-white" style="font-family: 'Crimson Pro', serif;">
+                        Benvenuto su <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">Slamin</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto">
+                        La community dove l'arte prende vita. Condividi la tua creatività, scopri nuovi talenti.
+                    </p>
+                </div>
+                
+                {{-- CTA Buttons --}}
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    @guest
+                    <a href="{{ route('register') }}" 
+                       class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                        Unisciti Ora
+                    </a>
+                    <a href="#explore" 
+                       class="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl border-2 border-white/20 hover:border-white/40 transition-all duration-300">
+                        Esplora la Community
+                    </a>
+                    @else
+                    <a href="{{ route('dashboard.index') }}" 
+                       class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                        Vai alla Dashboard
+                    </a>
+                    <a href="#explore" 
+                       class="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl border-2 border-white/20 hover:border-white/40 transition-all duration-300">
+                        Scopri Contenuti
+                    </a>
+                    @endguest
+                </div>
+                
+                {{-- Categories Grid --}}
+                <div class="pt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
+                    {{-- Poetry --}}
+                    <a href="{{ route('poems.index') }}" 
+                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
+                        <div class="flex flex-col items-center gap-3">
+                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                            <span class="text-white font-medium">Poesie</span>
+                        </div>
+                    </a>
+                    
+                    {{-- Articles --}}
+                    <a href="{{ route('articles.index') }}" 
+                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
+                        <div class="flex flex-col items-center gap-3">
+                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                            </svg>
+                            <span class="text-white font-medium">Articoli</span>
+                        </div>
+                    </a>
+                    
+                    {{-- Gigs --}}
+                    <a href="{{ route('gigs.index') }}" 
+                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
+                        <div class="flex flex-col items-center gap-3">
+                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <span class="text-white font-medium">Gigs</span>
+                        </div>
+                    </a>
+                    
+                    {{-- Events --}}
+                    <a href="{{ route('events.index') }}" 
+                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
+                        <div class="flex flex-col items-center gap-3">
+                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span class="text-white font-medium">Eventi</span>
+                        </div>
+                    </a>
+                    
+                    {{-- Videos --}}
+                    <a href="{{ route('videos.index') }}" 
+                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
+                        <div class="flex flex-col items-center gap-3">
+                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                            </svg>
+                            <span class="text-white font-medium">Video</span>
+                        </div>
+                    </a>
+                    
+                    {{-- Gallery --}}
+                    <a href="{{ route('gallery.index') }}" 
+                       class="group p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105">
+                        <div class="flex flex-col items-center gap-3">
+                            <svg class="w-10 h-10 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span class="text-white font-medium">Galleria</span>
+                        </div>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+        
+        {{-- Scroll Indicator --}}
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
 
     {{-- Video/Foto Community - FILM STUDIO SECTION --}}
     <div class="py-20 md:py-24 film-studio-section">
