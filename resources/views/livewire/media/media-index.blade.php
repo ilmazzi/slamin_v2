@@ -1,9 +1,9 @@
 <div class="min-h-screen">
     
     {{-- HERO con Film Card + Titolo --}}
-    <section class="relative py-16 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
+    <section class="relative py-12 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
+            <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
                 
                 <!-- FILM CARD (come homepage, ma più grande) -->
                 <div class="media-page-film-card">
@@ -165,9 +165,9 @@
                         </div>
                     </div>
 
-                    {{-- Video Grid (6 video) - COMPONENTE LEGGERO --}}
+                    {{-- Video Grid (5 video) - COMPONENTE LEGGERO --}}
                     @php $videos = $videoType === 'popular' ? $popularVideos : $recentVideos; @endphp
-                    @foreach($videos->take(6) as $index => $video)
+                    @foreach($videos->take(5) as $index => $video)
                         <x-video-frame-light :video="$video" :index="$index + 2" />
                     @endforeach
                 </div>
@@ -582,23 +582,23 @@
         
         @media (max-width: 768px) {
             .media-page-film-card {
-                width: 160px;
-                height: 200px;
-                padding: 1.5rem 0.65rem;
+                width: 180px;
+                height: 220px;
+                padding: 1.5rem 0.7rem;
             }
             
             .media-page-film-perf-left,
             .media-page-film-perf-right {
-                width: 1rem;
+                width: 1.1rem;
             }
             
             .media-page-perf-hole {
-                width: 11px;
+                width: 12px;
                 height: 10px;
             }
             
             .media-page-film-text {
-                font-size: 1.5rem;
+                font-size: 1.75rem;
             }
         }
         
