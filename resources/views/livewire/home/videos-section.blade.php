@@ -213,25 +213,25 @@
         align-items: center;
     }
     
-    /* Light holes OVER the dark strip to simulate transparent perforations - WIDER */
+    /* Light holes OVER the dark strip to simulate transparent perforations - EVEN WIDER */
     .film-perforation::before {
         content: '';
         position: absolute;
         top: 12px;
         left: 50%;
         transform: translateX(-50%);
-        width: 16px; /* Increased from 12px to 16px */
+        width: 20px; /* Increased from 16px to 20px */
         height: calc(100% - 24px);
-        /* Light rectangles pattern simulating holes - BIGGER */
+        /* Light rectangles pattern simulating holes - EVEN BIGGER */
         background-image: 
             repeating-linear-gradient(
                 to bottom,
                 transparent 0px,
-                transparent 8px,  /* Reduced gap from 10px to 8px */
-                /* LIGHT color (background color) to simulate holes - TALLER */
-                rgba(240, 235, 228, 0.95) 8px,
-                rgba(240, 235, 228, 0.95) 20px,  /* Increased from 18px to 20px (12px tall holes) */
-                transparent 20px,
+                transparent 6px,  /* Reduced gap from 8px to 6px */
+                /* LIGHT color (background color) to simulate holes - EVEN TALLER */
+                rgba(240, 235, 228, 0.95) 6px,
+                rgba(240, 235, 228, 0.95) 22px,  /* Increased from 20px to 22px (16px tall holes!) */
+                transparent 22px,
                 transparent 35px
             );
         border-radius: 2px;
@@ -246,10 +246,10 @@
             repeating-linear-gradient(
                 to bottom,
                 transparent 0px,
-                transparent 8px,
-                rgba(40, 38, 35, 0.95) 8px,
-                rgba(40, 38, 35, 0.95) 20px,  /* Same increase */
-                transparent 20px,
+                transparent 6px,
+                rgba(40, 38, 35, 0.95) 6px,
+                rgba(40, 38, 35, 0.95) 22px,  /* Same increase */
+                transparent 22px,
                 transparent 35px
             );
     }
