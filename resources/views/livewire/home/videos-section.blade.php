@@ -60,150 +60,221 @@
     
     <style>
     /* ========================================
-       FILM STRIP / PELLICOLA CINEMATOGRAFICA
-       HORIZONTAL SCROLL VERSION
+       FILM STRIP V2 - MORE VISIBLE & REALISTIC
        ======================================== */
     
     /* Main Film Strip Container */
     .film-strip-container {
         position: relative;
-        background: #0a0a0a;
-        padding: 1.5rem 3.5rem;
-        border-radius: 1rem;
+        background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+        padding: 3rem 4rem;
+        border-radius: 0.75rem;
         box-shadow: 
-            0 12px 40px rgba(0, 0, 0, 0.6),
-            inset 0 0 30px rgba(0, 0, 0, 0.3);
+            0 20px 50px rgba(0, 0, 0, 0.8),
+            0 10px 25px rgba(0, 0, 0, 0.6);
         transition: all 0.3s ease;
+        border: 1px solid #2a2a2a;
     }
     
     .film-strip-container:hover {
+        transform: translateY(-4px);
         box-shadow: 
-            0 16px 50px rgba(0, 0, 0, 0.7),
-            inset 0 0 30px rgba(0, 0, 0, 0.4);
+            0 25px 60px rgba(0, 0, 0, 0.9),
+            0 15px 30px rgba(0, 0, 0, 0.7);
     }
     
-    /* Film Perforations (holes on sides) */
+    /* Film Perforations - LARGER & MORE VISIBLE */
     .film-perforation {
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 2.5rem;
-        background: 
-            repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 8px,
-                #0a0a0a 8px,
-                #0a0a0a 18px
-            );
+        width: 3rem;
+        background: #2a2a2a;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        padding: 1rem 0;
     }
     
+    /* Create actual hole elements */
     .film-perforation::before {
         content: '';
         position: absolute;
-        top: 13px;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 100%;
-        height: calc(100% - 26px);
-        background: 
-            radial-gradient(circle at center, transparent 5px, #1a1a1a 5px, #1a1a1a 7px, transparent 7px) 
-            center / 100% 26px repeat-y;
+        height: 100%;
+        background-image: 
+            repeating-linear-gradient(
+                to bottom,
+                transparent 0px,
+                transparent 8px,
+                rgba(0, 0, 0, 0.9) 8px,
+                rgba(0, 0, 0, 0.9) 10px,
+                transparent 10px,
+                transparent 25px
+            );
+    }
+    
+    .film-perforation::after {
+        content: '';
+        position: absolute;
+        top: 12.5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: calc(100% - 25px);
+        background-image: 
+            repeating-linear-gradient(
+                to bottom,
+                #0a0a0a 0px,
+                #0a0a0a 6px,
+                transparent 6px,
+                transparent 25px
+            );
+        border-radius: 2px;
+        box-shadow: 
+            inset 0 0 3px rgba(0, 0, 0, 0.8),
+            0 0 0 1px rgba(255, 255, 255, 0.05);
     }
     
     .film-perforation-left {
         left: 0;
-        border-right: 2px solid #2a2a2a;
+        border-top-left-radius: 0.75rem;
+        border-bottom-left-radius: 0.75rem;
+        border-right: 2px solid #0a0a0a;
     }
     
     .film-perforation-right {
         right: 0;
-        border-left: 2px solid #2a2a2a;
+        border-top-right-radius: 0.75rem;
+        border-bottom-right-radius: 0.75rem;
+        border-left: 2px solid #0a0a0a;
     }
     
     /* Film Frame (central area) */
     .film-frame {
         position: relative;
-        border: 3px solid #1a1a1a;
+        border: 4px solid #2a2a2a;
         border-radius: 0.5rem;
         background: #000;
         box-shadow: 
-            0 0 0 2px #2a2a2a,
-            inset 0 0 20px rgba(0, 0, 0, 0.8);
+            0 0 0 2px #1a1a1a,
+            inset 0 0 30px rgba(0, 0, 0, 0.9);
+        overflow: hidden;
     }
     
-    /* Frame Numbers (35mm style) */
+    /* Add film grain overlay */
+    .film-frame::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: 
+            repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.02) 2px,
+                rgba(255, 255, 255, 0.02) 4px
+            ),
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.01) 2px,
+                rgba(255, 255, 255, 0.01) 4px
+            );
+        pointer-events: none;
+        z-index: 10;
+    }
+    
+    /* Frame Numbers - LARGER & MORE VISIBLE */
     .film-frame-number {
         position: absolute;
         font-family: 'Courier New', monospace;
-        font-size: 0.7rem;
-        font-weight: 700;
-        color: #ff6b00;
-        letter-spacing: 0.1em;
+        font-size: 0.875rem;
+        font-weight: 900;
+        color: #ff8c00;
+        letter-spacing: 0.15em;
         z-index: 20;
-        text-shadow: 0 0 4px rgba(255, 107, 0, 0.5);
-        padding: 0.2rem 0.5rem;
-        background: rgba(0, 0, 0, 0.6);
-        border-radius: 3px;
+        text-shadow: 
+            0 0 8px rgba(255, 140, 0, 0.8),
+            0 0 4px rgba(255, 140, 0, 0.6),
+            0 2px 4px rgba(0, 0, 0, 0.8);
+        padding: 0.4rem 0.7rem;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.7) 100%);
+        border-radius: 4px;
+        border: 1px solid rgba(255, 140, 0, 0.3);
+        backdrop-filter: blur(4px);
     }
     
     .film-frame-number-tl {
-        top: 0.4rem;
-        left: 0.4rem;
+        top: 0.75rem;
+        left: 0.75rem;
     }
     
     .film-frame-number-tr {
-        top: 0.4rem;
-        right: 0.4rem;
+        top: 0.75rem;
+        right: 0.75rem;
     }
     
     .film-frame-number-bl {
-        bottom: 0.4rem;
-        left: 0.4rem;
+        bottom: 0.75rem;
+        left: 0.75rem;
     }
     
     .film-frame-number-br {
-        bottom: 0.4rem;
-        right: 0.4rem;
+        bottom: 0.75rem;
+        right: 0.75rem;
     }
     
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .film-strip-container {
-            padding: 1.2rem 2.5rem;
+            padding: 2.5rem 3rem;
         }
         
         .film-perforation {
-            width: 2rem;
+            width: 2.5rem;
         }
         
-        .film-perforation::before {
+        .film-perforation::after {
+            width: 12px;
             background-size: 100% 20px;
         }
         
         .film-frame-number {
-            font-size: 0.6rem;
-            padding: 0.15rem 0.35rem;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.5rem;
         }
     }
     
     /* Dark mode adjustments */
     :is(.dark .film-strip-container) {
-        background: #000000;
+        background: linear-gradient(135deg, #0a0a0a 0%, #000000 100%);
+        border-color: #1a1a1a;
         box-shadow: 
-            0 12px 40px rgba(0, 0, 0, 0.8),
-            inset 0 0 30px rgba(0, 0, 0, 0.5);
+            0 20px 50px rgba(0, 0, 0, 0.95),
+            0 10px 25px rgba(0, 0, 0, 0.8);
     }
     
     :is(.dark .film-strip-container:hover) {
         box-shadow: 
-            0 16px 50px rgba(0, 0, 0, 0.9),
-            inset 0 0 30px rgba(0, 0, 0, 0.6);
+            0 25px 60px rgba(0, 0, 0, 1),
+            0 15px 30px rgba(0, 0, 0, 0.9);
+    }
+    
+    :is(.dark .film-perforation) {
+        background: #1a1a1a;
     }
     
     :is(.dark .film-frame) {
-        border-color: #0a0a0a;
+        border-color: #1a1a1a;
         box-shadow: 
-            0 0 0 2px #1a1a1a,
-            inset 0 0 20px rgba(0, 0, 0, 0.9);
+            0 0 0 2px #0a0a0a,
+            inset 0 0 30px rgba(0, 0, 0, 0.95);
     }
     
     /* Fade-in animation */
