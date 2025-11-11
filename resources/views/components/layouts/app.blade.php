@@ -358,5 +358,29 @@
     </div>
     
     @stack('scripts')
+
+    <!-- Userback Widget -->
+    <script>
+        window.Userback = window.Userback || {};
+        Userback.access_token = "A-XS47P2vKL4SvC5uR2tFpztFlb";
+        
+        @auth
+        // Identify logged-in user
+        Userback.user_data = {
+            id: "{{ auth()->id() }}",
+            info: {
+                name: "{{ auth()->user()->name }}",
+                email: "{{ auth()->user()->email }}"
+            }
+        };
+        @endauth
+        
+        (function(d) {
+            var s = d.createElement('script');
+            s.async = true;
+            s.src = 'https://static.userback.io/widget/v1.js';
+            (d.head || d.body).appendChild(s);
+        })(document);
+    </script>
 </body>
 </html>
