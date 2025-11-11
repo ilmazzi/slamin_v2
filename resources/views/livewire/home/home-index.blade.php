@@ -80,24 +80,23 @@
                         </div>
                         <div class="hero-magazine-cover" style="transform: rotate({{ $rotation }}deg);">
                             <div class="hero-magazine-inner">
-                                <div class="flex justify-between items-start">
+                                <div class="flex justify-between items-start mb-1">
                                     <div class="text-xs font-bold text-neutral-900">SLAMIN</div>
                                     <div class="text-[8px] text-neutral-600">Vol. {{ date('Y') }} · N.{{ rand(10, 99) }}</div>
                                 </div>
-                                <div class="h-[1px] bg-neutral-900 my-1"></div>
-                                <div class="text-left mb-2">
-                                    <div class="px-2 py-0.5 bg-primary-600 text-white text-[10px] font-bold rounded inline-block">CULTURA</div>
+                                <div class="hero-magazine-image-area" style="background: url('<?php echo [
+                                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+                                    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+                                    'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400',
+                                    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400'
+                                ][rand(0, 3)]; ?>') center/cover;">
                                 </div>
-                                <div class="hero-magazine-image-area" style="background: linear-gradient(135deg, <?php echo ['#4a7c59 0%, #2d5a3f 100%', '#0369a1 0%, #0284c7 100%', '#d97706 0%, #ea580c 100%'][rand(0, 2)]; ?>);">
-                                    <svg class="w-8 h-8 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="hero-magazine-title mt-1">
+                                <h3 class="hero-magazine-title mt-2">
                                     {{ __('home.hero_category_articles') }}
                                 </h3>
-                                <p class="text-[8px] text-neutral-600 leading-tight mt-1 italic">
-                                    Lorem ipsum dolor sit amet consectetur adipiscing...
+                                <div class="h-[1px] bg-neutral-300 my-1"></div>
+                                <p class="text-[7px] text-neutral-500 leading-[0.6rem]">
+                                    Prtn b nsnt st ps dlrs dcms vntr
                                 </p>
                             </div>
                         </div>
