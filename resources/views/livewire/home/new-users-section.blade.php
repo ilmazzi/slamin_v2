@@ -225,121 +225,133 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* Polaroid Card - ULTRA REALISTIC 3D */
+        /* ============================================
+           POLAROID CARD - APPROCCIO COMPLETAMENTE NUOVO
+           ============================================ */
+        
         .polaroid-card {
             display: block;
-            /* Base: Creamy white plastic/cardboard */
-            background: #fdfcfb;
-            /* EXTRA THICK borders - TRUE Polaroid proportions */
-            padding: 20px 20px 72px 20px; /* Bottom MASSIVELY thick! */
-            /* DRAMATIC multi-layer shadows for physical depth */
-            box-shadow: 
-                /* Physical card thickness - RIGHT edge */
-                3px 0 0 #e8e8e8,
-                4px 0 0 #e0e0e0,
-                5px 0 0 #d8d8d8,
-                6px 0 0 #d0d0d0,
-                7px 0 0 #c8c8c8,
-                8px 0 1px #c0c0c0,
-                /* Physical card thickness - BOTTOM edge */
-                0 3px 0 #e8e8e8,
-                0 4px 0 #e0e0e0,
-                0 5px 0 #d8d8d8,
-                0 6px 0 #d0d0d0,
-                0 7px 0 #c8c8c8,
-                0 8px 1px #c0c0c0,
-                /* Ambient shadows (DROP shadow from card) */
-                0 15px 35px rgba(0, 0, 0, 0.25),
-                0 25px 60px rgba(0, 0, 0, 0.20),
-                0 40px 100px rgba(0, 0, 0, 0.15),
-                /* Surface details */
-                inset 0 0 0 1px rgba(0, 0, 0, 0.04),
-                inset 0 1px 2px rgba(255, 255, 255, 0.8),
-                inset 0 -1px 1px rgba(0, 0, 0, 0.03);
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-decoration: none;
             position: relative;
+            /* VERO cartoncino bianco spesso */
+            background: linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #fcfcfc 100%);
+            /* BORDI FISICI ENORMI - come vere Polaroid! */
+            border: 24px solid #ffffff;
+            border-bottom-width: 88px; /* FONDO ENORME! */
+            /* Bordo ESTERNO grigio per simulare lo spessore del cartoncino */
+            outline: 1px solid #e0e0e0;
+            outline-offset: 0;
+            /* Ombre MASSICCE per profondità */
+            box-shadow: 
+                /* Spessore visibile del cartoncino (lato destro e inferiore) */
+                8px 0 0 -2px #e8e8e8,
+                10px 0 0 -2px #dedede,
+                12px 0 0 -2px #d4d4d4,
+                0 8px 0 -2px #e8e8e8,
+                0 10px 0 -2px #dedede,
+                0 12px 0 -2px #d4d4d4,
+                /* Ombra proiettata sul tavolo */
+                0 20px 50px rgba(0, 0, 0, 0.35),
+                0 35px 85px rgba(0, 0, 0, 0.25),
+                0 50px 120px rgba(0, 0, 0, 0.18);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
             cursor: pointer;
-            border-radius: 4px;
-            /* Subtle paper texture */
+            border-radius: 6px;
+            /* Texture carta VISIBILE */
             background-image: 
-                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='5' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.12'/%3E%3C/svg%3E"),
-                /* Glossy plastic sheen */
-                linear-gradient(155deg, 
-                    rgba(255, 255, 255, 0.6) 0%,
-                    rgba(255, 255, 255, 0.1) 30%,
-                    rgba(255, 255, 255, 0) 50%,
-                    rgba(0, 0, 0, 0.02) 100%
-                );
-            background-color: #fdfcfb;
+                /* Grana carta */
+                url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='texture'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='6' /%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23texture)' opacity='0.15'/%3E%3C/svg%3E"),
+                /* Superficie leggermente lucida */
+                radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 50%),
+                /* Base bianca */
+                linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #fcfcfc 100%);
         }
         
         :is(.dark .polaroid-card) {
-            background-color: #f8f7f6;
+            background: linear-gradient(135deg, #fafafa 0%, #f8f8f8 50%, #f6f6f6 100%);
+            border-color: #fafafa;
         }
         
-        /* HOVER - Dramatic physical lift */
+        /* HOVER - Sollevamento drammatico */
         .polaroid-wrapper:hover .polaroid-card {
-            transform: translateY(-20px) translateZ(50px) scale(1.08) !important;
+            transform: translateY(-24px) scale(1.08) rotate(0deg) !important;
             box-shadow: 
-                /* Enhanced thickness */
-                4px 0 0 #e0e0e0,
-                5px 0 0 #d6d6d6,
-                6px 0 0 #cccccc,
-                7px 0 0 #c2c2c2,
-                8px 0 0 #b8b8b8,
-                9px 0 1px #aeaeae,
-                10px 0 2px #a4a4a4,
-                0 4px 0 #e0e0e0,
-                0 5px 0 #d6d6d6,
-                0 6px 0 #cccccc,
-                0 7px 0 #c2c2c2,
-                0 8px 0 #b8b8b8,
-                0 9px 1px #aeaeae,
-                0 10px 2px #a4a4a4,
-                /* DRAMATIC lift shadows */
-                0 30px 70px rgba(0, 0, 0, 0.35),
-                0 50px 120px rgba(0, 0, 0, 0.28),
-                0 80px 180px rgba(0, 0, 0, 0.20),
-                inset 0 0 0 1px rgba(0, 0, 0, 0.04),
-                inset 0 1px 2px rgba(255, 255, 255, 0.8);
+                /* Spessore ancora più marcato */
+                10px 0 0 -2px #e0e0e0,
+                12px 0 0 -2px #d5d5d5,
+                14px 0 0 -2px #cacaca,
+                16px 0 0 -2px #c0c0c0,
+                0 10px 0 -2px #e0e0e0,
+                0 12px 0 -2px #d5d5d5,
+                0 14px 0 -2px #cacaca,
+                0 16px 0 -2px #c0c0c0,
+                /* Ombra MOLTO più profonda */
+                0 35px 80px rgba(0, 0, 0, 0.45),
+                0 55px 130px rgba(0, 0, 0, 0.35),
+                0 80px 180px rgba(0, 0, 0, 0.25);
         }
         
         .polaroid-wrapper:hover .polaroid-tape {
-            top: -8px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            top: -10px;
+            filter: brightness(1.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
         
-        /* Photo area - DEEPLY recessed with beveled edges */
+        /* FOTO - Incassata PROFONDAMENTE nel cartoncino */
         .polaroid-photo {
             position: relative;
             aspect-ratio: 1;
             overflow: hidden;
-            background: #000000;
-            padding: 2px;
-            margin-bottom: 0;
-            border-radius: 1px;
-            /* DEEP inset effect - foto incassata nella carta */
+            /* Area NERA intorno alla foto (tipico delle Polaroid) */
+            background: #1a1a1a;
+            padding: 6px;
+            margin: 0;
+            border-radius: 2px;
+            /* INCASSO profondo - sembra premuta dentro! */
             box-shadow: 
-                /* Dark inner bevel */
-                inset 0 0 0 1px rgba(0, 0, 0, 0.4),
-                inset 0 2px 8px rgba(0, 0, 0, 0.4),
-                inset 0 4px 16px rgba(0, 0, 0, 0.3),
-                inset 2px 2px 8px rgba(0, 0, 0, 0.2),
-                inset -2px -2px 8px rgba(0, 0, 0, 0.15),
-                /* Light highlight on bottom-right (bevel) */
-                inset -1px -1px 0 rgba(255, 255, 255, 0.05);
+                /* Bordo interno scuro */
+                inset 0 0 0 1px rgba(0, 0, 0, 0.6),
+                /* Ombre interne PROFONDE (incasso) */
+                inset 0 3px 12px rgba(0, 0, 0, 0.6),
+                inset 0 6px 20px rgba(0, 0, 0, 0.5),
+                inset 3px 3px 12px rgba(0, 0, 0, 0.4),
+                inset -3px -3px 12px rgba(0, 0, 0, 0.3),
+                /* Luce riflessa dal basso (bevel) */
+                inset 0 -2px 4px rgba(255, 255, 255, 0.08);
         }
         
-        /* Add inner white frame between photo and black border */
+        /* Cornice interna sottile (dettaglio realistico) */
         .polaroid-photo::before {
             content: '';
             position: absolute;
-            inset: 2px;
-            border: 3px solid rgba(255, 255, 255, 0.15);
+            inset: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.12);
             pointer-events: none;
             z-index: 1;
             border-radius: 1px;
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.3),
+                inset 0 -1px 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Glossy finish sulla superficie (riflessione luce) */
+        .polaroid-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.5) 0%,
+                rgba(255, 255, 255, 0.1) 20%,
+                transparent 40%,
+                transparent 100%
+            );
+            pointer-events: none;
+            border-radius: 6px;
+            mix-blend-mode: overlay;
         }
         
         .polaroid-img {
@@ -353,11 +365,22 @@
             transform: scale(1.08);
         }
         
-        /* Caption area - in the thick bottom border */
+        /* Caption area - NEL BORDO INFERIORE SPESSO */
         .polaroid-caption {
             text-align: center;
-            padding: 0.75rem 0.5rem 0.25rem 0.5rem;
-            /* Already in the 50px bottom padding */
+            /* Posizionato SOTTO la foto, nel bordo spesso */
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 0.75rem 0.5rem 0.75rem;
+            /* Altezza del caption = border-bottom (88px) */
+            height: 88px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .polaroid-name {
