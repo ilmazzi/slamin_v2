@@ -515,12 +515,12 @@
     
     /* Smaller play button for film strips */
     .film-frame .plyr__control--overlaid {
-        transform: scale(0.7) !important;
+        transform: scale(0.5) !important;
         opacity: 0.9 !important;
     }
     
     .film-frame .plyr__control--overlaid:hover {
-        transform: scale(0.75) !important;
+        transform: scale(0.55) !important;
         opacity: 1 !important;
     }
     </style>
