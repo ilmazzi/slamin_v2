@@ -22,7 +22,7 @@ return [
     'see_all_gigs' => 'Tous les Engagements',
 
     // Videos Section
-    'videos_section_title' => 'Vidéos & Photos',
+    'videos_section_title' => 'Vidéos & <span class="italic text-primary-600">Photos</span>',
     'videos_section_subtitle' => 'De la communauté',
 
     // New Users Section

@@ -22,7 +22,7 @@ return [
     'see_all_gigs' => 'All Gigs',
 
     // Videos Section
-    'videos_section_title' => 'Videos & Photos',
+    'videos_section_title' => 'Videos & <span class="italic text-primary-600">Photos</span>',
     'videos_section_subtitle' => 'From the community',
 
     // New Users Section

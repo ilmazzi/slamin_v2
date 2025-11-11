@@ -22,7 +22,7 @@ return [
     'see_all_gigs' => 'Tutti gli Ingaggi',
 
     // Videos Section
-    'videos_section_title' => 'Video & Foto',
+    'videos_section_title' => 'Video & <span class="italic text-primary-600">Foto</span>',
     'videos_section_subtitle' => 'Dalla community',
 
     // New Users Section
