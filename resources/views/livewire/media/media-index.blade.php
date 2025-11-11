@@ -61,11 +61,11 @@
     </section>
 
     {{-- VIDEO MASONRY LAYOUT --}}
-    <section class="relative py-20 film-studio-section">
+    <section class="relative py-12 md:py-16 film-studio-section">
         <div class="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- Header con Toggle Floating --}}
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-16">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
                 <div class="flex items-baseline gap-4">
                     <h2 class="text-5xl md:text-7xl font-black text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
                         Video
@@ -88,12 +88,12 @@
                 </div>
             </div>
 
-            {{-- Masonry Grid Videos --}}
+            {{-- Masonry Grid Videos - COMPATTA --}}
             @if($mostPopularVideo)
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-auto">
                     
-                    {{-- Video Hero (span 2 cols + 2 rows) - SOLO PIÙ GRANDE --}}
-                    <div class="md:col-span-2 md:row-span-2 group cursor-pointer rounded-lg overflow-hidden bg-black"
+                    {{-- Video Hero (span 2 cols + 1 row) - PIÙ PICCOLO --}}
+                    <div class="md:col-span-2 group cursor-pointer rounded-lg overflow-hidden bg-black"
                          onclick="Livewire.dispatch('openVideoModal', { videoId: {{ $mostPopularVideo->id }} })"
                          x-data="{ visible: false }" 
                          x-intersect.once="visible = true">
@@ -173,11 +173,11 @@
     </section>
 
     {{-- PHOTO SECTION - Alternated Layout --}}
-    <section class="relative py-20 bg-white dark:bg-neutral-900">
+    <section class="relative py-12 md:py-16 bg-white dark:bg-neutral-900">
         <div class="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- Header --}}
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-16">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
                 <div class="flex items-baseline gap-4">
                     <h2 class="text-5xl md:text-7xl font-black text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
                         Foto
@@ -200,12 +200,12 @@
                 </div>
             </div>
 
-            {{-- Photo Masonry --}}
+            {{-- Photo Masonry - COMPATTA --}}
             @if($mostPopularPhoto)
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-auto">
                     
-                    {{-- Foto Hero (span 2 cols + 2 rows) - SOLO PIÙ GRANDE --}}
-                    <div class="md:col-span-2 md:row-span-2 group cursor-pointer rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800"
+                    {{-- Foto Hero (span 2 cols + 1 row) - PIÙ PICCOLA --}}
+                    <div class="md:col-span-2 group cursor-pointer rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800"
                          onclick="Livewire.dispatch('openPhotoModal', { photoId: {{ $mostPopularPhoto->id }} })"
                          x-data="{ visible: false }" 
                          x-intersect.once="visible = true">
