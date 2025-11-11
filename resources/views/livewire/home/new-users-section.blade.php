@@ -119,6 +119,11 @@
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
                 
+                {{-- Washi Tape bianco trasparente --}}
+                <div class="polaroid-tape-white" 
+                     style="width: {{ $tapeWidth }}px; 
+                            --tape-rotation: {{ $tapeRotation }}deg; 
+                            transform: translateX(-50%) rotate({{ $tapeRotation }}deg);"></div>
                 
                 {{-- Polaroid Card (link will be added when profile.show route exists) --}}
                 <div class="polaroid-card"
@@ -190,6 +195,52 @@
             padding-top: 20px;
         }
         
+        /* Washi Tape bianco trasparente */
+        .polaroid-tape-white {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            height: 30px;
+            background: 
+                /* Texture sottile */
+                linear-gradient(90deg, 
+                    rgba(255, 255, 255, 0.7) 0%, 
+                    rgba(255, 255, 255, 0.85) 50%, 
+                    rgba(255, 255, 255, 0.7) 100%
+                ),
+                /* Leggera sfumatura grigia */
+                linear-gradient(180deg,
+                    rgba(240, 240, 240, 0.6) 0%,
+                    rgba(250, 250, 250, 0.75) 50%,
+                    rgba(240, 240, 240, 0.6) 100%
+                );
+            box-shadow: 
+                0 2px 6px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+            z-index: 10;
+            transition: all 0.3s ease;
+            /* Bordi seghettati semi-trasparenti */
+            clip-path: polygon(
+                0% 0%, 2% 5%, 0% 10%, 2% 15%, 0% 20%, 2% 25%, 0% 30%, 2% 35%, 
+                0% 40%, 2% 45%, 0% 50%, 2% 55%, 0% 60%, 2% 65%, 0% 70%, 2% 75%, 
+                0% 80%, 2% 85%, 0% 90%, 2% 95%, 0% 100%,
+                100% 100%,
+                98% 95%, 100% 90%, 98% 85%, 100% 80%, 98% 75%, 100% 70%, 98% 65%, 
+                100% 60%, 98% 55%, 100% 50%, 98% 45%, 100% 40%, 98% 35%, 100% 30%, 
+                98% 25%, 100% 20%, 98% 15%, 100% 10%, 98% 5%, 100% 0%
+            );
+            /* Effetto frosted glass */
+            backdrop-filter: blur(2px);
+        }
+        
+        .polaroid-wrapper:hover .polaroid-tape-white {
+            top: -10px;
+            box-shadow: 
+                0 3px 8px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+        
         /* ============================================
            POLAROID CARD - STILE PULITO E REALISTICO
            ============================================ */
@@ -251,8 +302,8 @@
         
         .polaroid-wrapper:hover .polaroid-img {
             transform: scale(1.08);
-            /* Al hover leggero colore */
-            filter: grayscale(80%);
+            /* Al hover colore completo */
+            filter: grayscale(0%);
         }
         
         /* Caption area - con bio */
