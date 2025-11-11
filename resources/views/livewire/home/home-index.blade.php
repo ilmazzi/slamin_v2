@@ -2,8 +2,10 @@
     {{-- Hero Carousel --}}
     <livewire:home.hero-carousel />
 
-    {{-- Video/Foto Community - SEZIONE SEPARATA --}}
-    <livewire:home.videos-section />
+    {{-- Video/Foto Community - FILM STUDIO SECTION --}}
+    <div class="py-16 md:py-20 film-studio-section">
+        <livewire:home.videos-section />
+    </div>
 
     {{-- Eventi - CINEMA WALL --}}
     <div class="py-16 md:py-20 cinema-wall-section">
@@ -455,6 +457,40 @@
                 rgba(16, 185, 129, 0.1) 40%, 
                 transparent 70%
             );
+        }
+        
+        /* Film Studio Background - Dark Room / Editing Suite */
+        .film-studio-section {
+            position: relative;
+            background: 
+                /* Subtle film texture */
+                url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='4' seed='5' /%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23grain)' opacity='0.08'/%3E%3C/svg%3E"),
+                /* Very dark gradient (editing room) */
+                linear-gradient(135deg, 
+                    #0f0f0f 0%,
+                    #141414 25%,
+                    #111111 50%,
+                    #0d0d0d 75%,
+                    #121212 100%
+                );
+            box-shadow: 
+                inset 0 0 100px rgba(0, 0, 0, 0.4),
+                inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        :is(.dark .film-studio-section) {
+            background: 
+                url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='4' seed='5' /%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23grain)' opacity='0.1'/%3E%3C/svg%3E"),
+                linear-gradient(135deg, 
+                    #000000 0%,
+                    #0a0a0a 25%,
+                    #050505 50%,
+                    #030303 75%,
+                    #080808 100%
+                );
+            box-shadow: 
+                inset 0 0 120px rgba(0, 0, 0, 0.6),
+                inset 0 2px 10px rgba(0, 0, 0, 0.4);
         }
     </style>
 </div>
