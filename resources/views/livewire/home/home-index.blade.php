@@ -80,21 +80,25 @@
                         </div>
                         <div class="hero-magazine-cover" style="transform: rotate({{ $rotation }}deg);">
                             <div class="hero-magazine-inner">
-                                <div class="flex justify-between items-start mb-1">
+                                <div class="flex justify-between items-start">
                                     <div class="text-xs font-bold text-neutral-900">SLAMIN</div>
-                                    <div class="text-[8px] text-neutral-600">N.{{ rand(10, 99) }}</div>
+                                    <div class="text-[8px] text-neutral-600">Vol. {{ date('Y') }} · N.{{ rand(10, 99) }}</div>
                                 </div>
-                                <div class="text-center mb-2">
+                                <div class="h-[1px] bg-neutral-900 my-1"></div>
+                                <div class="text-left mb-2">
                                     <div class="px-2 py-0.5 bg-primary-600 text-white text-[10px] font-bold rounded inline-block">CULTURA</div>
                                 </div>
-                                <div class="hero-magazine-image-area">
-                                    <svg class="w-8 h-8 text-primary-600/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <div class="hero-magazine-image-area" style="background: linear-gradient(135deg, <?php echo ['#4a7c59 0%, #2d5a3f 100%', '#0369a1 0%, #0284c7 100%', '#d97706 0%, #ea580c 100%'][rand(0, 2)]; ?>);">
+                                    <svg class="w-8 h-8 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
                                 </div>
-                                <h3 class="hero-magazine-title mt-2">
+                                <h3 class="hero-magazine-title mt-1">
                                     {{ __('home.hero_category_articles') }}
                                 </h3>
+                                <p class="text-[8px] text-neutral-600 leading-tight mt-1 italic">
+                                    Lorem ipsum dolor sit amet consectetur adipiscing...
+                                </p>
                             </div>
                         </div>
                     </a>
@@ -889,11 +893,11 @@
         /* Magazine Title - Same as sections */
         .hero-magazine-title {
             font-family: 'Crimson Pro', serif;
-            font-size: 1rem;
+            font-size: 0.875rem;
             font-weight: 700;
             line-height: 1.3;
             color: #1a1a1a;
-            text-align: center;
+            text-align: left;
             transition: color 0.3s ease;
         }
         
@@ -903,12 +907,12 @@
         
         /* Magazine Image Area */
         .hero-magazine-image-area {
-            height: 50px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
             border-radius: 3px;
+            overflow: hidden;
         }
         
         /* Gigs - Mini Notice Board */
