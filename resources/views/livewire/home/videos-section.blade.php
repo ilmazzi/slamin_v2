@@ -221,7 +221,7 @@
             );
     }
     
-    /* Individual hole - LIGHT rectangle with shadows ONLY on this element */
+    /* Individual hole - LIGHT rectangle with SUBTLE shadows */
     .perforation-hole {
         width: 22px;
         height: 18px;
@@ -229,14 +229,14 @@
         background: #f0ebe8;
         border-radius: 2px;
         flex-shrink: 0;
-        /* SHADOWS ONLY ON THIS HOLE - not on entire strip! */
+        /* SUBTLE shadows for gentle recessed effect */
         box-shadow: 
-            /* DEEP inner shadows for recessed effect */
-            inset 0 4px 8px rgba(0, 0, 0, 0.6),
-            inset 0 2px 4px rgba(0, 0, 0, 0.5),
-            inset 0 -2px 4px rgba(0, 0, 0, 0.3),
-            /* Dark border around hole */
-            inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+            /* Lighter shadows - more subtle */
+            inset 0 3px 6px rgba(0, 0, 0, 0.35),
+            inset 0 1px 3px rgba(0, 0, 0, 0.25),
+            inset 0 -1px 2px rgba(0, 0, 0, 0.15),
+            /* Softer border */
+            inset 0 0 0 1px rgba(0, 0, 0, 0.25);
     }
     
     /* Dark mode - darker hole color */
