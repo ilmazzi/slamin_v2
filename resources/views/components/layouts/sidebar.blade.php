@@ -52,7 +52,7 @@
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="homeLink"
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300 group"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
                              :class="!collapsed && 'group-hover:-translate-x-1'" 
@@ -95,7 +95,7 @@
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="eventiLink"
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300 group"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
                              :class="!collapsed && 'group-hover:-translate-x-1'" 
@@ -121,7 +121,7 @@
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="gigsLink"
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300 group"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
                              :class="!collapsed && 'group-hover:-translate-x-1'" 
@@ -148,7 +148,7 @@
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="mediaLink"
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300 group"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
                              :class="!collapsed && 'group-hover:-translate-x-1'" 
@@ -173,7 +173,7 @@
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="poesieLink"
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300 group"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
                              :class="!collapsed && 'group-hover:-translate-x-1'" 
@@ -198,7 +198,7 @@
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="articoliLink"
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300 group"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
                              :class="!collapsed && 'group-hover:-translate-x-1'" 
@@ -223,7 +223,7 @@
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="galleriaLink"
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300 group"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
                              :class="!collapsed && 'group-hover:-translate-x-1'" 
@@ -249,7 +249,7 @@
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="gruppiLink"
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300 group"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
                              :class="!collapsed && 'group-hover:-translate-x-1'" 
@@ -274,7 +274,7 @@
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="forumLink"
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300 group"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
                        :class="collapsed && 'justify-center'">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
                              :class="!collapsed && 'group-hover:-translate-x-1'" 
@@ -300,7 +300,7 @@
         <div class="p-3 border-t border-neutral-200 dark:border-neutral-800">
             <!-- Collapse Toggle -->
             <button @click="collapsed = !collapsed"
-                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-neutral-100 hover:to-neutral-200 dark:hover:from-neutral-800 dark:hover:to-neutral-700 text-neutral-600 dark:text-white hover:text-neutral-900 dark:hover:text-white transition-all duration-300 group"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-neutral-100 hover:to-neutral-200 dark:hover:from-neutral-800 dark:hover:to-neutral-700 text-neutral-600 dark:!text-white hover:text-neutral-900 dark:hover:!text-white transition-all duration-300 group"
                     :class="collapsed && 'justify-center'">
                 <svg class="w-5 h-5 transition-all duration-300 group-hover:scale-110" :class="collapsed && 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
