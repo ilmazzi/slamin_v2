@@ -1,53 +1,42 @@
 <div class="min-h-screen">
     
-    {{-- HERO con Film Strip Orizzontale --}}
-    <section class="relative overflow-hidden bg-neutral-900 dark:bg-black">
-        
-        <!-- FILM STRIP ORIZZONTALE - Attraversa tutto -->
-        <div class="film-strip-horizontal">
-            <!-- Perforations Top -->
-            <div class="film-perforation-horizontal film-perforation-top">
-                @for($h = 0; $h < 40; $h++)
-                <div class="perforation-hole-horizontal"></div>
-                @endfor
-            </div>
-            
-            <!-- Perforations Bottom -->
-            <div class="film-perforation-horizontal film-perforation-bottom">
-                @for($h = 0; $h < 40; $h++)
-                <div class="perforation-hole-horizontal"></div>
-                @endfor
-            </div>
-            
-            <!-- Edge Codes Left -->
-            <div class="film-edge-code-left">SLAMIN</div>
-            
-            <!-- Edge Codes Right -->
-            <div class="film-edge-code-right">MEDIA</div>
-            
-            <!-- FOTOGRAMMI lungo la striscia -->
-            <div class="film-frames-row">
-                @for($f = 0; $f < 7; $f++)
-                <div class="film-frame-box {{ $f === 3 ? 'film-frame-active' : '' }}">
-                    @if($f === 3)
-                        <!-- Frame centrale ATTIVO con contenuto -->
-                        <div class="film-frame-number-box">{{ str_pad($f + 1, 2, '0', STR_PAD_LEFT) }}</div>
+    {{-- HERO con Film Card Singola --}}
+    <section class="relative py-20 overflow-hidden film-studio-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center">
+                <!-- SINGLE FILM CARD -->
+                <div class="media-hero-film-card">
+                    <!-- Film Perforations Left -->
+                    <div class="media-film-perf media-film-perf-left">
+                        @for($h = 0; $h < 12; $h++)
+                        <div class="media-perf-hole"></div>
+                        @endfor
+                    </div>
+                    
+                    <!-- Film Perforations Right -->
+                    <div class="media-film-perf media-film-perf-right">
+                        @for($h = 0; $h < 12; $h++)
+                        <div class="media-perf-hole"></div>
+                        @endfor
+                    </div>
+                    
+                    <!-- Film Edge Codes -->
+                    <div class="media-film-code-top">SLAMIN</div>
+                    <div class="media-film-code-bottom">MEDIA</div>
+                    
+                    <!-- Content -->
+                    <div class="media-film-content">
+                        <div class="media-frame-number media-frame-number-tl">///01</div>
+                        <div class="media-frame-number media-frame-number-tr">01A</div>
                         
-                        <div class="film-frame-content-box">
-                            <h1 class="text-3xl md:text-5xl font-black text-white text-center leading-tight" style="font-family: 'Crimson Pro', serif;">
-                                Video & <span class="italic text-primary-400">Foto</span>
-                            </h1>
-                            <p class="text-sm md:text-base text-white/80 text-center mt-3 font-medium">
-                                Dalla community Slamin
-                            </p>
-                        </div>
-                    @else
-                        <!-- Frame vuoto decorativo -->
-                        <div class="film-frame-number-box-small">{{ str_pad($f + 1, 2, '0', STR_PAD_LEFT) }}</div>
-                        <div class="film-frame-placeholder"></div>
-                    @endif
+                        <h1 class="text-5xl md:text-7xl font-black text-white text-center leading-tight" style="font-family: 'Crimson Pro', serif;">
+                            Video & <span class="italic text-primary-400">Foto</span>
+                        </h1>
+                        <p class="text-xl md:text-2xl text-white/80 text-center mt-6 font-medium">
+                            Dalla community Slamin
+                        </p>
+                    </div>
                 </div>
-                @endfor
             </div>
         </div>
     </section>
@@ -414,241 +403,143 @@
 
     <style>
         /* ========================================
-           FILM STRIP ORIZZONTALE - FULL WIDTH
+           MEDIA HERO - Single Film Card
            ======================================== */
         
-        .film-strip-horizontal {
+        .media-hero-film-card {
             position: relative;
-            width: 100%;
-            min-height: 320px;
-            /* Film marrone lucido CONTINUO */
+            padding: 3.5rem 5rem;
+            max-width: 800px;
             background: 
-                /* Glossy highlight */
-                linear-gradient(to bottom, 
+                linear-gradient(180deg, 
                     rgba(255, 255, 255, 0.15) 0%,
-                    transparent 20%,
-                    transparent 80%,
+                    transparent 15%,
+                    transparent 85%,
                     rgba(0, 0, 0, 0.2) 100%
                 ),
-                /* Diagonal light streak */
-                linear-gradient(135deg, 
+                linear-gradient(120deg, 
                     transparent 0%,
-                    transparent 45%,
-                    rgba(255, 255, 255, 0.1) 50%,
-                    transparent 55%,
+                    transparent 40%,
+                    rgba(255, 255, 255, 0.08) 48%,
+                    rgba(255, 255, 255, 0.12) 50%,
+                    rgba(255, 255, 255, 0.08) 52%,
+                    transparent 60%,
                     transparent 100%
                 ),
-                /* Film base */
-                linear-gradient(to bottom, 
+                linear-gradient(135deg, 
                     rgba(120, 80, 50, 0.85) 0%,
-                    rgba(100, 65, 40, 0.88) 50%,
-                    rgba(120, 80, 50, 0.85) 100%
+                    rgba(100, 65, 40, 0.88) 25%,
+                    rgba(110, 72, 45, 0.86) 50%,
+                    rgba(95, 60, 38, 0.89) 75%,
+                    rgba(115, 75, 48, 0.87) 100%
                 );
+            border-radius: 8px;
             box-shadow: 
-                0 10px 40px rgba(0, 0, 0, 0.4),
-                inset 0 2px 4px rgba(255, 255, 255, 0.1),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 10px 30px rgba(0, 0, 0, 0.3);
         }
         
-        /* Perforazioni ORIZZONTALI (top e bottom) */
-        .film-perforation-horizontal {
+        .media-film-perf {
             position: absolute;
-            left: 0;
-            right: 0;
-            height: 3rem;
+            top: 0;
+            bottom: 0;
+            width: 3.5rem;
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: space-evenly;
             align-items: center;
-            padding: 0 1rem;
-            /* Brown strip matching film */
+            padding: 1.5rem 0;
             background: 
-                linear-gradient(to bottom, 
-                    rgba(255, 255, 255, 0.12) 0%,
-                    transparent 50%
-                ),
-                linear-gradient(to bottom, 
-                    rgba(80, 55, 35, 0.95) 0%,
-                    rgba(70, 48, 30, 0.97) 50%,
-                    rgba(80, 55, 35, 0.95) 100%
-                );
+                linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0%, transparent 30%),
+                linear-gradient(180deg, rgba(80, 55, 35, 0.95) 0%, rgba(70, 48, 30, 0.97) 50%, rgba(80, 55, 35, 0.95) 100%);
         }
         
-        .film-perforation-top {
-            top: 0;
+        .media-film-perf-left {
+            left: 0;
         }
         
-        .film-perforation-bottom {
-            bottom: 0;
+        .media-film-perf-right {
+            right: 0;
         }
         
-        .perforation-hole-horizontal {
-            width: 18px;
-            height: 22px;
+        .media-perf-hole {
+            width: 24px;
+            height: 20px;
             background: #f0ebe8;
             border-radius: 2px;
             flex-shrink: 0;
             box-shadow: 
                 inset 0 3px 6px rgba(0, 0, 0, 0.3),
-                inset 0 -1px 2px rgba(0, 0, 0, 0.2),
-                inset 2px 0 4px rgba(0, 0, 0, 0.15),
-                inset -2px 0 4px rgba(0, 0, 0, 0.15);
+                inset 0 -1px 2px rgba(0, 0, 0, 0.2);
         }
         
-        .dark .perforation-hole-horizontal {
+        .dark .media-perf-hole {
             background: #1a1a1a;
         }
         
-        /* Edge Codes LATERALI */
-        .film-edge-code-left,
-        .film-edge-code-right {
+        .media-film-code-top,
+        .media-film-code-bottom {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%) rotate(-90deg);
+            left: 50%;
+            transform: translateX(-50%);
             color: rgba(255, 255, 255, 0.35);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 700;
             letter-spacing: 0.4em;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
             z-index: 3;
         }
         
-        .film-edge-code-left {
-            left: 1.5rem;
+        .media-film-code-top {
+            top: 1rem;
         }
         
-        .film-edge-code-right {
-            right: 1.5rem;
+        .media-film-code-bottom {
+            bottom: 1rem;
         }
         
-        /* FOTOGRAMMI INTEGRATI nella striscia */
-        .film-frames-row {
-            position: absolute;
-            top: 3rem;
-            bottom: 3rem;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: stretch;
-            gap: 0;
-            padding: 0 6rem;
-            z-index: 1;
-            /* Sotto le perforazioni! */
-        }
-        
-        .film-frame-box {
+        .media-film-content {
             position: relative;
-            width: 140px;
-            flex-shrink: 0;
-            /* Background scuro per frame */
-            background: 
-                linear-gradient(to bottom,
-                    rgba(0, 0, 0, 0.4) 0%,
-                    rgba(0, 0, 0, 0.5) 50%,
-                    rgba(0, 0, 0, 0.4) 100%
-                );
-            box-shadow: 
-                inset 0 2px 8px rgba(0, 0, 0, 0.5),
-                inset 0 -2px 8px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
+            z-index: 2;
+            padding: 3rem 2rem;
         }
         
-        /* STRISCIA NERA tra i fotogrammi */
-        .film-frame-box::after {
-            content: '';
+        .media-frame-number {
             position: absolute;
-            top: 0;
-            right: -6px;
-            bottom: 0;
-            width: 6px;
-            background: 
-                linear-gradient(to bottom,
-                    rgba(0, 0, 0, 0.9) 0%,
-                    rgba(0, 0, 0, 0.95) 50%,
-                    rgba(0, 0, 0, 0.9) 100%
-                );
-            box-shadow: 
-                inset 2px 0 4px rgba(0, 0, 0, 0.8),
-                inset -1px 0 2px rgba(0, 0, 0, 0.6);
-        }
-        
-        /* Ultimo frame non ha striscia a destra */
-        .film-frame-box:last-child::after {
-            display: none;
-        }
-        
-        .film-frame-active {
-            width: 300px;
-            background: 
-                linear-gradient(to bottom,
-                    rgba(0, 0, 0, 0.5) 0%,
-                    rgba(0, 0, 0, 0.6) 50%,
-                    rgba(0, 0, 0, 0.5) 100%
-                );
-            box-shadow: 
-                inset 0 0 20px rgba(0, 0, 0, 0.6),
-                0 0 30px rgba(0, 0, 0, 0.4),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-        }
-        
-        .film-frame-number-box,
-        .film-frame-number-box-small {
-            position: absolute;
-            top: 0.75rem;
-            left: 0.75rem;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
             font-weight: 700;
             font-family: 'Courier New', monospace;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
             z-index: 3;
         }
         
-        .film-frame-content-box {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1.5rem;
-            z-index: 2;
+        .media-frame-number-tl {
+            top: 1.5rem;
+            left: 4rem;
         }
         
-        .film-frame-placeholder {
-            position: absolute;
-            inset: 12px;
-            background: 
-                /* Diagonal stripes for empty frame */
-                repeating-linear-gradient(
-                    45deg,
-                    rgba(0, 0, 0, 0.25) 0px,
-                    rgba(0, 0, 0, 0.25) 2px,
-                    transparent 2px,
-                    transparent 10px,
-                    rgba(0, 0, 0, 0.25) 10px,
-                    rgba(0, 0, 0, 0.25) 12px,
-                    transparent 12px,
-                    transparent 20px
-                );
-            border: 1px solid rgba(0, 0, 0, 0.3);
-            border-radius: 1px;
-            opacity: 0.5;
+        .media-frame-number-tr {
+            top: 1.5rem;
+            right: 4rem;
         }
         
         @media (max-width: 768px) {
-            .film-frames-row {
-                gap: 0.5rem;
-                padding: 0 4rem;
+            .media-hero-film-card {
+                padding: 2.5rem 3.5rem;
             }
             
-            .film-frame-box {
-                width: 70px;
+            .media-film-perf {
+                width: 2.5rem;
             }
             
-            .film-frame-active {
-                width: 160px;
+            .media-perf-hole {
+                width: 18px;
+                height: 16px;
+            }
+            
+            .media-film-content {
+                padding: 2rem 1rem;
             }
         }
         
