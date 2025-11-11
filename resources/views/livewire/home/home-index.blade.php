@@ -134,24 +134,16 @@
                             <div class="hero-ticket-perforation"></div>
                             <div class="hero-ticket-content">
                                 <div class="ticket-mini-header">
-                                    <div class="text-[8px] font-black tracking-wider text-red-700">EVENTI</div>
+                                    <div class="text-[8px] font-black tracking-wider text-red-700">TICKET</div>
                                     <div class="text-[7px] font-bold text-amber-700">#0{{ rand(1, 9) }}{{ rand(0, 9) }}{{ rand(0, 9) }}</div>
                                 </div>
-                                <div class="hero-ticket-image">
-                                    <svg class="w-8 h-8 text-amber-600/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                </div>
-                                <div class="relative">
-                                    <div class="text-[9px] font-bold text-amber-900 text-center mb-1">{{ __('home.hero_category_events') }}</div>
-                                    <div class="hero-ticket-stamp-mini" style="transform: rotate(<?php echo rand(-8, 8); ?>deg);">
-                                        SLAMIN
-                                    </div>
+                                <div class="flex-1 flex items-center justify-center">
+                                    <div class="hero-ticket-stamp">{{ strtoupper(__('home.hero_category_events')) }}</div>
                                 </div>
                                 <div class="ticket-mini-barcode">
                                     <div class="flex justify-center gap-[1px]">
                                         @for($j = 0; $j < 20; $j++)
-                                        <div style="width: {{ rand(1, 2) }}px; height: {{ rand(10, 14) }}px; background: #2d2520;"></div>
+                                        <div style="width: {{ rand(1, 2) }}px; height: {{ rand(12, 18) }}px; background: #2d2520;"></div>
                                         @endfor
                                     </div>
                                 </div>
@@ -1053,7 +1045,7 @@
                 0 0 0 2px rgba(218, 165, 32, 0.4);
         }
         
-        /* Perforated Left Edge */
+        /* Perforated Left Edge - EXACT COPY */
         .hero-ticket-perforation {
             width: 16px;
             background: linear-gradient(135deg, 
@@ -1069,17 +1061,11 @@
             position: absolute;
             top: -5px;
             bottom: -5px;
-            right: -1px;
-            width: 10px;
+            right: 0;
+            width: 8px;
             background: 
-                /* Holes with dark shadow effect */
-                radial-gradient(circle at 0 6px, 
-                    transparent 2.5px,
-                    rgba(0, 0, 0, 0.15) 2.5px,
-                    rgba(0, 0, 0, 0.1) 3px,
-                    #fef7e6 3.5px
-                ) 0 0 / 10px 12px repeat-y;
-            box-shadow: inset 1px 0 2px rgba(0, 0, 0, 0.1);
+                radial-gradient(circle at 0 6px, transparent 3px, currentColor 3px) 0 0 / 8px 12px repeat-y;
+            color: inherit;
         }
         
         /* Ticket Content */
