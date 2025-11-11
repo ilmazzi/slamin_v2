@@ -114,14 +114,76 @@
                         
                             <!-- Video Container -->
                             <div class="relative aspect-[4/3] md:aspect-video overflow-hidden bg-black">
-                                <!-- REUSABLE VIDEO PLAYER COMPONENT -->
-                                <x-video-player :video="$video" 
-                                                :directUrl="$video->direct_url ?? null"
-                                                :showStats="true" 
-                                                :showAuthor="true"
-                                                :showSnaps="true"
-                                                size="full"
-                                                class="w-full h-full" />
+                                <!-- Video Thumbnail -->
+                                <img src="{{ $video->thumbnail_url }}" 
+                                     alt="{{ $video->title }}" 
+                                     class="w-full h-full object-cover"
+                                     onerror="this.src='{{ asset('assets/images/placeholder/placholder-1.jpg') }}'">
+                                
+                                <!-- Dark Overlay -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                                
+                                <!-- Play Button - Smaller -->
+                                <button class="absolute inset-0 flex items-center justify-center group"
+                                        onclick="window.open('{{ route('videos.show', $video) }}', '_blank')">
+                                    <div class="w-14 h-14 md:w-16 md:h-16 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-300">
+                                        <svg class="w-6 h-6 md:w-7 md:h-7 text-primary-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                    </div>
+                                </button>
+                                
+                                <!-- Title & Author - Smaller -->
+                                <div class="absolute top-0 left-0 right-0 p-3 md:p-4">
+                                    <h3 class="text-sm md:text-lg font-bold text-white drop-shadow-lg line-clamp-2 mb-2" 
+                                        style="font-family: 'Crimson Pro', serif;">
+                                        {{ $video->title }}
+                                    </h3>
+                                    <div class="flex items-center gap-2">
+                                        <img src="{{ $video->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($video->user->name) . '&background=059669&color=fff' }}" 
+                                             alt="{{ $video->user->name }}"
+                                             class="w-6 h-6 md:w-8 md:h-8 rounded-full object-cover ring-1 ring-white/50">
+                                        <div>
+                                            <p class="font-semibold text-xs md:text-sm text-white drop-shadow">{{ $video->user->name }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Social Stats - BELOW Video -->
+                            <div class="mt-3 px-3 pb-3 flex items-center justify-center gap-4 text-white/90">
+                                <!-- Views -->
+                                <div class="inline-flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                    <span class="text-xs md:text-sm">{{ $video->view_count ?? 0 }}</span>
+                                </div>
+                                
+                                <!-- Like -->
+                                <x-like-button 
+                                    :itemId="$video->id"
+                                    itemType="video"
+                                    :isLiked="false"
+                                    :likesCount="$video->like_count ?? 0"
+                                    size="sm"
+                                    class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4" />
+                                
+                                <!-- Comment -->
+                                <x-comment-button 
+                                    :itemId="$video->id"
+                                    itemType="video"
+                                    :commentsCount="$video->comment_count ?? 0"
+                                    size="sm"
+                                    class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                
+                                <!-- Share -->
+                                <x-share-button 
+                                    :itemId="$video->id"
+                                    itemType="video"
+                                    size="sm"
+                                    class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
                             </div>
                         </div>
                     </div>
