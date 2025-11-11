@@ -1307,21 +1307,50 @@
             z-index: 1;
         }
         
-        /* Media text overlay */
+        /* Media text overlay - WOW Effect */
         .hero-film-text {
             position: absolute;
-            bottom: 0.5rem;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             font-family: 'Crimson Pro', serif;
-            font-size: 0.875rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 900;
             color: white;
             text-shadow: 
-                0 2px 4px rgba(0, 0, 0, 0.8),
-                0 1px 2px rgba(0, 0, 0, 0.6);
-            z-index: 2;
+                0 0 20px rgba(16, 185, 129, 0.8),
+                0 0 40px rgba(16, 185, 129, 0.6),
+                0 0 60px rgba(16, 185, 129, 0.4),
+                0 4px 8px rgba(0, 0, 0, 0.9),
+                0 2px 4px rgba(0, 0, 0, 0.8);
+            z-index: 10;
             white-space: nowrap;
+            letter-spacing: 0.05em;
+            animation: hero-film-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes hero-film-glow {
+            0% {
+                text-shadow: 
+                    0 0 20px rgba(16, 185, 129, 0.8),
+                    0 0 40px rgba(16, 185, 129, 0.6),
+                    0 0 60px rgba(16, 185, 129, 0.4),
+                    0 4px 8px rgba(0, 0, 0, 0.9),
+                    0 2px 4px rgba(0, 0, 0, 0.8);
+            }
+            100% {
+                text-shadow: 
+                    0 0 30px rgba(16, 185, 129, 1),
+                    0 0 50px rgba(16, 185, 129, 0.8),
+                    0 0 80px rgba(16, 185, 129, 0.6),
+                    0 6px 12px rgba(0, 0, 0, 0.9),
+                    0 3px 6px rgba(0, 0, 0, 0.8);
+            }
+        }
+        
+        .hero-film-wrapper:hover .hero-film-text {
+            transform: translate(-50%, -50%) scale(1.1);
+            transition: transform 0.3s ease;
         }
         
         /* Frame numbers */
