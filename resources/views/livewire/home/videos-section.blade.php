@@ -113,7 +113,7 @@
                             <div class="film-frame-number film-frame-number-br">{{ $videos->count() }}</div>
                         
                             <!-- Video Container -->
-                            <div class="relative aspect-video overflow-hidden bg-black">
+                            <div class="relative aspect-[4/3] md:aspect-video overflow-hidden bg-black">
                                 <!-- REUSABLE VIDEO PLAYER COMPONENT -->
                                 <x-video-player :video="$video" 
                                                 :directUrl="$video->direct_url ?? null"
@@ -449,25 +449,25 @@
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .film-strip-container {
-            padding: 2.5rem 3.5rem;
+            padding: 3rem 3.5rem;
         }
         
         .film-perforation {
-            width: 2.5rem; /* Increased from 1.5rem to 2.5rem for mobile */
+            width: 2.5rem;
         }
         
         .film-perforation::before {
-            width: 16px; /* Increased from 8px to 16px */
+            width: 16px;
         }
         
         .film-frame-number {
-            font-size: 0.65rem;
-            padding: 0.2rem 0.4rem;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
         }
         
-        .film-strip-container::before,
-        .film-strip-container::after {
-            font-size: 0.55rem;
+        .film-edge-code-top,
+        .film-edge-code-bottom {
+            font-size: 0.65rem;
         }
     }
     
