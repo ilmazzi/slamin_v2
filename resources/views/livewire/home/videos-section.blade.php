@@ -14,8 +14,36 @@
             <div class="relative" x-data="{ 
                 scroll(direction) {
                     const container = this.$refs.scrollContainer;
-                    const scrollAmount = 400;
-                    container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+                    const cards = container.children;
+                    if (cards.length === 0) return;
+                    
+                    const containerRect = container.getBoundingClientRect();
+                    const scrollLeft = container.scrollLeft;
+                    
+                    // Find current visible card
+                    let targetCard = null;
+                    for (let i = 0; i < cards.length; i++) {
+                        const card = cards[i];
+                        const cardRect = card.getBoundingClientRect();
+                        const cardLeft = card.offsetLeft;
+                        
+                        if (direction > 0) {
+                            // Scroll right: find first card that's partially or fully off-screen to the right
+                            if (cardLeft > scrollLeft + containerRect.width - 100) {
+                                targetCard = card;
+                                break;
+                            }
+                        } else {
+                            // Scroll left: find card to the left of current view
+                            if (cardLeft < scrollLeft - 50) {
+                                targetCard = card;
+                            }
+                        }
+                    }
+                    
+                    if (targetCard) {
+                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                    }
                 }
             }">
                 <!-- Left Arrow (Desktop Only) - OUTSIDE content -->
