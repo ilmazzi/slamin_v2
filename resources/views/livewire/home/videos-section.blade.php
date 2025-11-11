@@ -34,7 +34,7 @@
                     </svg>
                 </button>
                 
-                <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-16 pt-12 scrollbar-hide"
+                <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-16 pt-12 px-8 md:px-12 scrollbar-hide"
                      style="-webkit-overflow-scrolling: touch;">
                 @foreach($videos as $i => $video)
                 <?php
