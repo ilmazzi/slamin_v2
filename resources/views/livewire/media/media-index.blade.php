@@ -412,7 +412,6 @@
     <livewire:media.video-modal />
     <livewire:media.photo-modal />
 
-    @push('styles')
     <style>
         /* ========================================
            FILM STRIP ORIZZONTALE - FULL WIDTH
@@ -961,5 +960,4 @@
                 0 32px 64px rgba(0, 0, 0, 0.06);
         }
     </style>
-    @endpush
 </div>
