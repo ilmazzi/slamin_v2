@@ -1363,46 +1363,72 @@
         .hero-frame-number-bl { bottom: 0.25rem; left: 1.1rem; }
         .hero-frame-number-br { bottom: 0.25rem; right: 1.1rem; }
         
-        /* Hero Card Hover Overlay - WOW Effect */
+        /* Hero Card Hover Overlay - Slide & Sparkle Effect */
         .hero-card-overlay {
             position: absolute;
             inset: 0;
-            background: 
-                radial-gradient(circle at center, 
-                    rgba(16, 185, 129, 0.15) 0%,
-                    rgba(0, 0, 0, 0.92) 60%,
-                    rgba(0, 0, 0, 0.95) 100%
-                );
-            backdrop-filter: blur(12px);
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.95) 0%,
+                rgba(16, 185, 129, 0.1) 50%,
+                rgba(0, 0, 0, 0.95) 100%
+            );
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            transform: scale(0.8) rotateY(90deg);
-            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            clip-path: inset(100% 0 0 0);
+            transition: clip-path 0.6s cubic-bezier(0.77, 0, 0.175, 1);
             border-radius: 4px;
             z-index: 100;
             pointer-events: none;
             overflow: hidden;
         }
         
-        .hero-card-overlay::before {
+        /* Sparkle particles */
+        .hero-card-overlay::before,
+        .hero-card-overlay::after {
             content: '';
             position: absolute;
-            inset: -50%;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0deg 90deg,
-                rgba(16, 185, 129, 0.3) 90deg 180deg,
-                transparent 180deg 270deg,
-                rgba(16, 185, 129, 0.3) 270deg 360deg
-            );
-            animation: hero-overlay-rotate 4s linear infinite;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 
+                0 0 10px 2px rgba(16, 185, 129, 0.8),
+                0 0 20px 4px rgba(16, 185, 129, 0.6),
+                20px 30px 0 0 white,
+                40px 10px 0 0 rgba(16, 185, 129, 0.8),
+                -20px 40px 0 0 white,
+                -30px 15px 0 0 rgba(16, 185, 129, 0.8),
+                60px 50px 0 0 white,
+                -40px 60px 0 0 rgba(16, 185, 129, 0.6),
+                70px 20px 0 0 white,
+                80px 40px 0 0 rgba(16, 185, 129, 0.8);
+            animation: hero-sparkle 2s ease-in-out infinite;
+            opacity: 0;
         }
         
-        @keyframes hero-overlay-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .hero-card-overlay::before {
+            top: 10%;
+            left: 20%;
+        }
+        
+        .hero-card-overlay::after {
+            bottom: 15%;
+            right: 25%;
+            animation-delay: 1s;
+        }
+        
+        @keyframes hero-sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
         
         .hero-paper-wrapper:hover .hero-card-overlay,
@@ -1410,60 +1436,68 @@
         .hero-notice-wrapper:hover .hero-card-overlay,
         .hero-ticket-wrapper:hover .hero-card-overlay,
         .hero-film-wrapper:hover .hero-card-overlay {
-            opacity: 1;
-            transform: scale(1) rotateY(0deg);
+            clip-path: inset(0 0 0 0);
         }
         
         .hero-overlay-text {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.5rem;
-            font-weight: 900;
+            font-size: 1.35rem;
+            font-weight: 800;
             color: white;
             text-align: center;
             padding: 1.5rem;
             position: relative;
             z-index: 2;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.03em;
+            line-height: 1.3;
             text-shadow: 
-                0 0 20px rgba(16, 185, 129, 1),
-                0 0 40px rgba(16, 185, 129, 0.8),
-                0 0 60px rgba(16, 185, 129, 0.6),
-                0 0 80px rgba(16, 185, 129, 0.4),
-                0 4px 8px rgba(0, 0, 0, 0.9),
-                0 8px 16px rgba(0, 0, 0, 0.8);
-            animation: hero-overlay-pulse 2s ease-in-out infinite alternate,
-                       hero-text-float 3s ease-in-out infinite;
-            transform-style: preserve-3d;
+                0 0 30px rgba(16, 185, 129, 0.9),
+                0 0 50px rgba(16, 185, 129, 0.7),
+                0 0 70px rgba(16, 185, 129, 0.5),
+                0 3px 6px rgba(0, 0, 0, 1),
+                0 6px 12px rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: hero-text-slide-up 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards,
+                       hero-text-breathe 3s ease-in-out infinite 1s;
         }
         
-        @keyframes hero-overlay-pulse {
+        .hero-paper-wrapper:hover .hero-overlay-text,
+        .hero-magazine-wrapper:hover .hero-overlay-text,
+        .hero-notice-wrapper:hover .hero-overlay-text,
+        .hero-ticket-wrapper:hover .hero-overlay-text,
+        .hero-film-wrapper:hover .hero-overlay-text {
+            animation: hero-text-slide-up 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards,
+                       hero-text-breathe 3s ease-in-out infinite 1s;
+        }
+        
+        @keyframes hero-text-slide-up {
             0% {
-                text-shadow: 
-                    0 0 20px rgba(16, 185, 129, 1),
-                    0 0 40px rgba(16, 185, 129, 0.8),
-                    0 0 60px rgba(16, 185, 129, 0.6),
-                    0 0 80px rgba(16, 185, 129, 0.4),
-                    0 4px 8px rgba(0, 0, 0, 0.9),
-                    0 8px 16px rgba(0, 0, 0, 0.8);
+                opacity: 0;
+                transform: translateY(30px);
             }
             100% {
-                text-shadow: 
-                    0 0 30px rgba(16, 185, 129, 1),
-                    0 0 60px rgba(16, 185, 129, 1),
-                    0 0 90px rgba(16, 185, 129, 0.8),
-                    0 0 120px rgba(16, 185, 129, 0.6),
-                    0 6px 12px rgba(0, 0, 0, 0.9),
-                    0 12px 24px rgba(0, 0, 0, 0.8);
+                opacity: 1;
+                transform: translateY(0);
             }
         }
         
-        @keyframes hero-text-float {
+        @keyframes hero-text-breathe {
             0%, 100% {
-                transform: translateY(0px) scale(1);
+                text-shadow: 
+                    0 0 30px rgba(16, 185, 129, 0.9),
+                    0 0 50px rgba(16, 185, 129, 0.7),
+                    0 0 70px rgba(16, 185, 129, 0.5),
+                    0 3px 6px rgba(0, 0, 0, 1),
+                    0 6px 12px rgba(0, 0, 0, 0.9);
             }
             50% {
-                transform: translateY(-10px) scale(1.05);
+                text-shadow: 
+                    0 0 40px rgba(16, 185, 129, 1),
+                    0 0 70px rgba(16, 185, 129, 0.9),
+                    0 0 100px rgba(16, 185, 129, 0.7),
+                    0 4px 8px rgba(0, 0, 0, 1),
+                    0 8px 16px rgba(0, 0, 0, 0.9);
             }
         }
         
