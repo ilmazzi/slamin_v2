@@ -42,7 +42,7 @@
             <?php
                 $paperRotation = rand(-2, 2); // Slight random rotation
             ?>
-            <div class="w-80 md:w-96 flex-shrink-0 poetry-card-container fade-scale-item" 
+            <div class="w-96 md:w-[28rem] flex-shrink-0 poetry-card-container fade-scale-item" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">

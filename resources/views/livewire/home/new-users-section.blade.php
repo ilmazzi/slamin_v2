@@ -65,7 +65,7 @@
                 ];
                 $selectedTape = $tapeColors[array_rand($tapeColors)];
             ?>
-            <div class="w-72 md:w-80 flex-shrink-0 polaroid-wrapper fade-scale-item" 
+            <div class="w-80 md:w-96 flex-shrink-0 polaroid-wrapper fade-scale-item" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
