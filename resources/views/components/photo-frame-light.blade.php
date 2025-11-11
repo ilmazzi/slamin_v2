@@ -85,7 +85,7 @@ $sizeClasses = [
         display: block;
         position: relative;
         background: #ffffff;
-        padding: 16px 16px 70px 16px;
+        padding: 16px 16px 90px 16px;
         box-shadow: 
             0 2px 4px rgba(0, 0, 0, 0.1),
             0 4px 8px rgba(0, 0, 0, 0.08),
@@ -133,6 +133,10 @@ $sizeClasses = [
     .photo-polaroid-caption {
         text-align: center;
         padding-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
     }
 </style>
 
