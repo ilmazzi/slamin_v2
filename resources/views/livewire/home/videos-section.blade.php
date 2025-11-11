@@ -25,11 +25,19 @@
                     
                     <!-- Film Strip Container -->
                     <div class="film-strip-container" style="transform: rotate({{ $tilt }}deg);">
-                        <!-- Film Perforations Left -->
-                        <div class="film-perforation film-perforation-left"></div>
+                        <!-- Film Perforations Left - Brown strip -->
+                        <div class="film-perforation film-perforation-left">
+                            @for($h = 0; $h < 12; $h++)
+                            <div class="perforation-hole"></div>
+                            @endfor
+                        </div>
                         
-                        <!-- Film Perforations Right -->
-                        <div class="film-perforation film-perforation-right"></div>
+                        <!-- Film Perforations Right - Brown strip -->
+                        <div class="film-perforation film-perforation-right">
+                            @for($h = 0; $h < 12; $h++)
+                            <div class="perforation-hole"></div>
+                            @endfor
+                        </div>
                         
                         <!-- Film Edge Codes -->
                         <div class="film-edge-code-top">SLAMIN</div>
@@ -189,12 +197,17 @@
             inset 0 0 40px rgba(0, 0, 0, 0.25);
     }
     
-    /* Film Edge Markers - Dark BROWN strips (not black!) */
+    /* Film Edge Markers - Dark BROWN strips with individual holes */
     .film-perforation {
         position: absolute;
         top: -20px;
         bottom: -20px;
         width: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        padding: 1rem 0;
         /* Dark BROWN edge strip matching film */
         background: 
             linear-gradient(90deg, 
@@ -206,55 +219,29 @@
                 rgba(70, 48, 30, 0.97) 50%,
                 rgba(80, 55, 35, 0.95) 100%
             );
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
     }
     
-    /* Light holes OVER the dark strip - simulating transparent perforations */
-    .film-perforation::before {
-        content: '';
-        position: absolute;
-        top: 12px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 20px;
-        height: calc(100% - 24px);
-        /* Light rectangles pattern simulating holes */
-        background-image: 
-            repeating-linear-gradient(
-                to bottom,
-                transparent 0px,
-                transparent 6px,
-                /* LIGHT color (background color) to simulate holes */
-                rgba(240, 235, 228, 0.95) 6px,
-                rgba(240, 235, 228, 0.95) 22px,
-                transparent 22px,
-                transparent 35px
-            );
+    /* Individual hole - LIGHT rectangle with shadows ONLY on this element */
+    .perforation-hole {
+        width: 22px;
+        height: 18px;
+        /* LIGHT color matching lightbox */
+        background: #f0ebe8;
         border-radius: 2px;
+        flex-shrink: 0;
+        /* SHADOWS ONLY ON THIS HOLE - not on entire strip! */
         box-shadow: 
-            /* DEEP inner shadows for hole/recessed effect */
+            /* DEEP inner shadows for recessed effect */
             inset 0 4px 8px rgba(0, 0, 0, 0.6),
             inset 0 2px 4px rgba(0, 0, 0, 0.5),
             inset 0 -2px 4px rgba(0, 0, 0, 0.3),
-            /* Dark border around each hole */
+            /* Dark border around hole */
             inset 0 0 0 1px rgba(0, 0, 0, 0.4);
     }
     
     /* Dark mode - darker hole color */
-    :is(.dark .film-perforation::before) {
-        background-image: 
-            repeating-linear-gradient(
-                to bottom,
-                transparent 0px,
-                transparent 6px,
-                rgba(40, 38, 35, 0.95) 6px,
-                rgba(40, 38, 35, 0.95) 22px,
-                transparent 22px,
-                transparent 35px
-            );
+    :is(.dark .perforation-hole) {
+        background: #2a2826;
     }
     
     .film-perforation-left {
