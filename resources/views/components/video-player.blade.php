@@ -229,8 +229,8 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
                         itemType="video"
                         :isLiked="$isLiked"
                         :likesCount="$video->like_count ?? 0"
-                        size="sm"
-                        class="[&_span]:!text-white/90" />
+                        size="md"
+                        class="[&_span]:!text-white/90 [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
                 </div>
                 
                 <!-- Comment Button Component -->
@@ -239,8 +239,8 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
                         :itemId="$video->id"
                         itemType="video"
                         :commentsCount="$video->comment_count ?? 0"
-                        size="sm"
-                        class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90 [&_svg]:!stroke-white" />
+                        size="md"
+                        class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
                 </div>
                 
                 <!-- Share Button Component -->
@@ -248,8 +248,8 @@ $containerClass = $sizeClasses[$size] ?? $sizeClasses['full'];
                     <x-share-button 
                         :itemId="$video->id"
                         itemType="video"
-                        size="sm"
-                        class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_svg]:!stroke-white" />
+                        size="md"
+                        class="[&_button]:!text-white/90 [&_button:hover]:!text-white [&_svg]:!stroke-white [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
                 </div>
             </div>
             @endif
