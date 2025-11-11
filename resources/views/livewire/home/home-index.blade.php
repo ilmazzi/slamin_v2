@@ -114,8 +114,7 @@
                        class="hero-notice-wrapper">
                         <div class="hero-washi-tape" 
                              style="width: {{ $tapeWidth }}px; 
-                                    transform: translate(calc(-50%), 0) rotate({{ $tapeRotation }}deg);
-                                    background: linear-gradient(135deg, {{ $selectedTape[0] }} 0%, {{ $selectedTape[1] }} 50%, {{ $selectedTape[2] }} 100%);"></div>
+                                    transform: translate(calc(-50%), 0) rotate({{ $tapeRotation }}deg);"></div>
                         <div class="hero-notice-paper" style="transform: rotate({{ $paperRotation }}deg);">
                             <div class="flex flex-col items-center justify-center gap-2 h-full">
                                 <svg class="w-10 h-10 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -865,31 +864,82 @@
         
         .hero-washi-tape {
             position: absolute;
-            top: -6px;
+            top: -12px;
             left: 50%;
-            height: 14px;
+            height: 24px;
             border-radius: 1px;
+            background: 
+                /* Subtle shine */
+                linear-gradient(
+                    105deg,
+                    rgba(255, 255, 255, 0.25) 0%,
+                    transparent 30%,
+                    transparent 70%,
+                    rgba(255, 255, 255, 0.25) 100%
+                ),
+                /* SOFT YELLOW scotch gradient (overwrites inline) */
+                linear-gradient(180deg, 
+                    rgba(240, 210, 100, 0.92) 0%, 
+                    rgba(245, 220, 120, 0.90) 50%, 
+                    rgba(250, 230, 140, 0.92) 100%
+                );
             box-shadow: 
-                0 2px 4px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+                /* Strong shadow for depth */
+                0 3px 8px rgba(0, 0, 0, 0.35),
+                0 1px 4px rgba(0, 0, 0, 0.25),
+                /* Glossy highlights */
+                inset 0 2px 5px rgba(255, 255, 255, 0.9),
+                inset 0 -1px 3px rgba(0, 0, 0, 0.2);
             z-index: 10;
-            /* Serrated edge (same as sections) */
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(200, 180, 100, 0.4);
+            /* SERRATED EDGES on LEFT and RIGHT sides */
             clip-path: polygon(
-                /* Top serrated edge */
-                2% 0%, 5% 30%, 8% 0%, 12% 35%, 15% 0%, 
-                18% 40%, 22% 0%, 25% 30%, 28% 0%, 32% 35%, 
-                35% 0%, 38% 40%, 42% 0%, 45% 30%, 48% 0%, 
-                52% 35%, 55% 0%, 58% 40%, 62% 0%, 65% 30%, 
-                68% 0%, 72% 35%, 75% 0%, 78% 40%, 82% 0%, 
-                85% 30%, 88% 0%, 92% 35%, 95% 0%, 98% 40%,
-                /* Close top edge */
-                100% 0%,
-                /* Right edge */
-                100% 100%,
-                /* Bottom edge (smooth) */
+                /* Left edge - serrated */
+                0% 0%,
+                2% 5%,
+                0% 10%,
+                2% 15%,
+                0% 20%,
+                2% 25%,
+                0% 30%,
+                2% 35%,
+                0% 40%,
+                2% 45%,
+                0% 50%,
+                2% 55%,
+                0% 60%,
+                2% 65%,
+                0% 70%,
+                2% 75%,
+                0% 80%,
+                2% 85%,
+                0% 90%,
+                2% 95%,
                 0% 100%,
-                /* Left edge */
-                0% 0%
+                /* Bottom edge (smooth) */
+                100% 100%,
+                /* Right edge - serrated */
+                98% 95%,
+                100% 90%,
+                98% 85%,
+                100% 80%,
+                98% 75%,
+                100% 70%,
+                98% 65%,
+                100% 60%,
+                98% 55%,
+                100% 50%,
+                98% 45%,
+                100% 40%,
+                98% 35%,
+                100% 30%,
+                98% 25%,
+                100% 20%,
+                98% 15%,
+                100% 10%,
+                98% 5%,
+                100% 0%
             );
         }
         
