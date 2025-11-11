@@ -190,12 +190,12 @@
             inset 0 0 40px rgba(0, 0, 0, 0.25);
     }
     
-    /* Film Edge Markers - Dark strips */
+    /* Film Edge Markers - Dark strips WIDER */
     .film-perforation {
         position: absolute;
         top: -20px;
         bottom: -20px;
-        width: 2rem;
+        width: 3rem; /* Increased from 2rem to 3rem - 50% wider strips! */
         /* Dark edge strip */
         background: 
             linear-gradient(90deg, 
@@ -402,11 +402,11 @@
         }
         
         .film-perforation {
-            width: 1.5rem;
+            width: 2.5rem; /* Increased from 1.5rem to 2.5rem for mobile */
         }
         
         .film-perforation::before {
-            width: 8px;
+            width: 16px; /* Increased from 8px to 16px */
         }
         
         .film-frame-number {
