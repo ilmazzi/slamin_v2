@@ -369,8 +369,8 @@
     /* Watermark Logo - Stamp Effect */
     .ticket-watermark {
         position: absolute;
-        top: 50%;
-        right: 0.5rem;
+        top: 30%;
+        right: -0.25rem;
         transform: translateY(-50%) rotate(-90deg);
         transform-origin: center;
         z-index: 3;
