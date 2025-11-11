@@ -55,7 +55,7 @@
                 $stampOffsetX = rand(-15, 15);
                 $stampOffsetY = rand(-10, 10);
             ?>
-            <div class="w-96 md:w-[28rem] flex-shrink-0 fade-scale-item"
+            <div class="w-80 md:w-96 flex-shrink-0 fade-scale-item"
                  x-data
                  x-intersect.once="$el.classList.add('animate-fade-in')"
                  style="animation-delay: {{ $i * 0.1 }}s">

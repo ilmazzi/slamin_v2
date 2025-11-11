@@ -33,7 +33,7 @@
             $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
             $pinRotation = rand(-15, 15);
         ?>
-        <article class="w-96 md:w-[28rem] flex-shrink-0 magazine-article-wrapper fade-scale-item" 
+        <article class="w-80 md:w-96 flex-shrink-0 magazine-article-wrapper fade-scale-item" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
