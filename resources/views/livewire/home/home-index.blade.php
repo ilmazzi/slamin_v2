@@ -80,15 +80,21 @@
                         </div>
                         <div class="hero-magazine-cover" style="transform: rotate({{ $rotation }}deg);">
                             <div class="hero-magazine-inner">
-                                <div class="text-center space-y-1">
+                                <div class="flex justify-between items-start mb-1">
                                     <div class="text-xs font-bold text-neutral-900">SLAMIN</div>
+                                    <div class="text-[8px] text-neutral-600">N.{{ rand(10, 99) }}</div>
+                                </div>
+                                <div class="text-center mb-2">
                                     <div class="px-2 py-0.5 bg-primary-600 text-white text-[10px] font-bold rounded inline-block">CULTURA</div>
                                 </div>
-                                <div class="flex-1 flex items-center justify-center mt-2">
-                                    <h3 class="hero-magazine-title">
-                                        {{ __('home.hero_category_articles') }}
-                                    </h3>
+                                <div class="hero-magazine-image-area">
+                                    <svg class="w-8 h-8 text-primary-600/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
                                 </div>
+                                <h3 class="hero-magazine-title mt-2">
+                                    {{ __('home.hero_category_articles') }}
+                                </h3>
                             </div>
                         </div>
                     </a>
@@ -893,6 +899,16 @@
         
         .hero-magazine-wrapper:hover .hero-magazine-title {
             color: #10b981;
+        }
+        
+        /* Magazine Image Area */
+        .hero-magazine-image-area {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+            border-radius: 3px;
         }
         
         /* Gigs - Mini Notice Board */
