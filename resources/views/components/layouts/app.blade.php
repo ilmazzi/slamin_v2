@@ -364,16 +364,16 @@
         window.Userback = window.Userback || {};
         Userback.access_token = "A-XS47P2vKL4SvC5uR2tFpztFlb";
         
-        @auth
+        @if(auth()->check())
         // Identify logged-in user
         Userback.user_data = {
-            id: "{{ auth()->id() }}",
+            id: "{!! auth()->id() !!}",
             info: {
-                name: "{{ auth()->user()->name }}",
-                email: "{{ auth()->user()->email }}"
+                name: "{!! addslashes(auth()->user()->name) !!}",
+                email: "{!! auth()->user()->email !!}"
             }
         };
-        @endauth
+        @endif
         
         (function(d) {
             var s = d.createElement('script');
