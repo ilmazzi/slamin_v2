@@ -63,7 +63,7 @@
                 </button>
                 <div x-show="dashboardOpen"
                      x-transition
-                     class="absolute right-0 mt-2 w-56 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2">
+                     class="absolute left-0 sm:left-auto sm:right-0 mt-2 w-56 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2">
                     <div class="px-4 py-2 border-b border-neutral-200 dark:border-neutral-700">
                         <p class="font-semibold text-sm text-neutral-900 dark:text-white">Dashboard</p>
                     </div>
@@ -86,7 +86,7 @@
                 </button>
                 <div x-show="shortcutsOpen"
                      x-transition
-                     class="absolute right-0 mt-2 w-64 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2">
+                     class="absolute left-0 sm:left-auto sm:right-0 mt-2 w-64 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2">
                     <div class="px-4 py-2 border-b border-neutral-200 dark:border-neutral-700">
                         <p class="font-semibold text-sm text-neutral-900 dark:text-white">Azioni Rapide</p>
                     </div>
@@ -126,7 +126,7 @@
                 </button>
                 <div x-show="langOpen"
                      x-transition
-                     class="absolute right-0 mt-2 w-40 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2">
+                     class="absolute right-0 mt-2 w-40 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2 mr-0 sm:mr-auto">
                     <a href="?lang=it" class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700">
                         <span class="text-sm">🇮🇹 Italiano</span>
                     </a>
@@ -169,7 +169,7 @@
                 </button>
                 <div x-show="profileOpen"
                      x-transition
-                     class="absolute right-0 mt-2 w-56 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2">
+                     class="absolute right-0 mt-2 w-56 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2 mr-0">
                     <div class="px-4 py-3 border-b border-neutral-200 dark:border-neutral-700">
                         <p class="font-semibold text-sm text-neutral-900 dark:text-white truncate">{{ auth()->user()->name }}</p>
                         <p class="text-xs text-neutral-500 truncate">{{ auth()->user()->email }}</p>
