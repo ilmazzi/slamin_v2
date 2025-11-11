@@ -226,116 +226,57 @@
         }
         
         /* ============================================
-           POLAROID CARD - APPROCCIO SEMPLICE MA DRAMMATICO
+           POLAROID CARD - STILE PULITO E REALISTICO
            ============================================ */
         
         .polaroid-card {
             display: block;
             position: relative;
-            /* Cartoncino bianco con texture MOLTO visibile */
-            background: 
-                /* Grana carta MARCATA */
-                url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3' numOctaves='8' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.25'/%3E%3C/svg%3E"),
-                /* Riflessione lucida */
-                radial-gradient(ellipse 800px 600px at top left, rgba(255,255,255,0.8), transparent),
-                /* Base bianca */
-                #fefefe;
-            /* BORDI BIANCHI SPESSI - padding classico */
-            padding: 16px 16px 65px 16px; /* Fondo spesso! */
-            /* OMBRE DRAMMATICHE multi-layer */
+            /* Bianco puro come vera Polaroid */
+            background: #ffffff;
+            /* Bordi bianchi - proporzioni classiche Polaroid */
+            padding: 20px 20px 70px 20px;
+            /* Ombra elegante e realistica */
             box-shadow: 
-                /* Bordo perimetrale visibile */
-                0 0 0 1px rgba(0, 0, 0, 0.08),
-                /* Spessore cartoncino (lati visibili) */
-                6px 0 0 0 #e5e5e5,
-                7px 0 0 0 #dadada,
-                8px 0 0 0 #cfcfcf,
-                9px 0 1px 0 #c4c4c4,
-                10px 0 2px 0 #b9b9b9,
-                0 6px 0 0 #e5e5e5,
-                0 7px 0 0 #dadada,
-                0 8px 0 0 #cfcfcf,
-                0 9px 1px 0 #c4c4c4,
-                0 10px 2px 0 #b9b9b9,
-                /* Ombra DROP massiccia */
-                0 25px 60px rgba(0, 0, 0, 0.4),
-                0 40px 100px rgba(0, 0, 0, 0.3),
-                0 60px 140px rgba(0, 0, 0, 0.2);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                0 4px 8px rgba(0, 0, 0, 0.08),
+                0 8px 16px rgba(0, 0, 0, 0.06),
+                0 16px 32px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
             text-decoration: none;
             cursor: pointer;
-            border-radius: 3px;
+            border-radius: 2px;
         }
         
         :is(.dark .polaroid-card) {
-            background: 
-                url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3' numOctaves='8' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.25'/%3E%3C/svg%3E"),
-                radial-gradient(ellipse 800px 600px at top left, rgba(255,255,255,0.8), transparent),
-                #f8f8f8;
+            background: #fafafa;
         }
         
-        /* HOVER - Lift drammatico */
+        /* HOVER - Lift delicato */
         .polaroid-wrapper:hover .polaroid-card {
-            transform: translateY(-20px) scale(1.06) !important;
+            transform: translateY(-12px) scale(1.03) !important;
             box-shadow: 
-                0 0 0 1px rgba(0, 0, 0, 0.08),
-                /* Spessore più marcato */
-                8px 0 0 0 #dcdcdc,
-                9px 0 0 0 #d0d0d0,
-                10px 0 0 0 #c4c4c4,
-                11px 0 1px 0 #b8b8b8,
-                12px 0 2px 0 #acacac,
-                13px 0 3px 0 #a0a0a0,
-                0 8px 0 0 #dcdcdc,
-                0 9px 0 0 #d0d0d0,
-                0 10px 0 0 #c4c4c4,
-                0 11px 1px 0 #b8b8b8,
-                0 12px 2px 0 #acacac,
-                0 13px 3px 0 #a0a0a0,
-                /* Ombra ancora più profonda */
-                0 40px 90px rgba(0, 0, 0, 0.5),
-                0 60px 140px rgba(0, 0, 0, 0.4),
-                0 90px 200px rgba(0, 0, 0, 0.3);
+                0 4px 8px rgba(0, 0, 0, 0.12),
+                0 8px 16px rgba(0, 0, 0, 0.1),
+                0 16px 32px rgba(0, 0, 0, 0.08),
+                0 32px 64px rgba(0, 0, 0, 0.06);
         }
         
         .polaroid-wrapper:hover .polaroid-tape {
-            top: -8px;
-            filter: brightness(1.15);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            top: -6px;
         }
         
-        /* FOTO - Incassata con ombre profonde */
+        /* FOTO - Stile pulito */
         .polaroid-photo {
             position: relative;
             aspect-ratio: 1;
             overflow: hidden;
-            background: #0a0a0a;
-            padding: 4px;
+            background: #f5f5f5;
             margin-bottom: 0;
             border-radius: 1px;
-            /* INCASSO DRAMMATICO */
             box-shadow: 
-                /* Bordo scuro */
-                inset 0 0 0 1px rgba(0, 0, 0, 0.7),
-                /* Ombre interne PROFONDE */
-                inset 0 4px 16px rgba(0, 0, 0, 0.8),
-                inset 0 8px 24px rgba(0, 0, 0, 0.7),
-                inset 4px 4px 16px rgba(0, 0, 0, 0.6),
-                inset -4px -4px 16px rgba(0, 0, 0, 0.5),
-                /* Highlight dal basso */
-                inset 0 -3px 6px rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Bordo interno bianco sottile */
-        .polaroid-photo::before {
-            content: '';
-            position: absolute;
-            inset: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            pointer-events: none;
-            z-index: 1;
-            border-radius: 1px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+                inset 0 0 0 1px rgba(0, 0, 0, 0.1),
+                inset 0 2px 4px rgba(0, 0, 0, 0.06);
         }
         
         .polaroid-img {
@@ -349,14 +290,14 @@
             transform: scale(1.08);
         }
         
-        /* Caption area - nel padding inferiore */
+        /* Caption area - elegante e spaziosa */
         .polaroid-caption {
             text-align: center;
-            padding: 0.75rem 0.5rem 0 0.5rem;
+            padding: 1rem 0.75rem 0 0.75rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.625rem;
         }
         
         .polaroid-name {
@@ -368,13 +309,13 @@
             line-height: 1.3;
         }
         
-        /* Nome - Scritto a mano sulla Polaroid */
+        /* Nome - Pulito e leggibile */
         .polaroid-name-large {
             font-family: 'Crimson Pro', serif;
-            font-size: 0.95rem;
-            font-weight: 700;
+            font-size: 1.05rem;
+            font-weight: 600;
             color: #1a1a1a;
-            line-height: 1.1;
+            line-height: 1.3;
             margin: 0;
             padding: 0;
             max-width: 100%;
@@ -383,55 +324,55 @@
             white-space: nowrap;
         }
         
-        /* Bio - NASCOSTA per mancanza spazio */
+        /* Bio - Nascosta */
         .polaroid-bio {
             display: none;
         }
         
-        /* Follow button - PIÙ PICCOLO */
+        /* Follow button - Elegante */
         .polaroid-follow-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.25rem;
-            padding: 0.35rem 0.75rem;
+            gap: 0.375rem;
+            padding: 0.45rem 0.875rem;
             background: #10b981;
             color: white;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            border-radius: 0.3rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 1px 3px rgba(16, 185, 129, 0.3);
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(16, 185, 129, 0.2);
         }
         
         .polaroid-follow-btn svg {
-            width: 0.75rem;
-            height: 0.75rem;
+            width: 0.875rem;
+            height: 0.875rem;
         }
         
         .polaroid-follow-btn:hover {
             background: #059669;
-            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
             transform: translateY(-1px);
         }
         
-        /* Stats row - PIÙ PICCOLI */
+        /* Stats row */
         .polaroid-stats {
             display: flex;
-            gap: 0.75rem;
+            gap: 1rem;
             justify-content: center;
             color: #666666;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
         }
         
         .polaroid-stat {
             display: flex;
             align-items: center;
-            gap: 0.25rem;
+            gap: 0.375rem;
         }
         
         .polaroid-stat svg {
-            width: 0.75rem;
-            height: 0.75rem;
+            width: 0.875rem;
+            height: 0.875rem;
         }
         
         .polaroid-info {
