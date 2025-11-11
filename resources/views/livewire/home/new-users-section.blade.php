@@ -228,42 +228,63 @@
         /* Polaroid Card */
         .polaroid-card {
             display: block;
-            background: #ffffff;
-            padding: 12px 12px 14px 12px;
+            background: 
+                /* Paper texture */
+                url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23paper)' opacity='0.03'/%3E%3C/svg%3E"),
+                linear-gradient(135deg, 
+                    #ffffff 0%,
+                    #fefefe 50%,
+                    #fcfcfc 100%
+                );
+            /* Thick white border - classic Polaroid! */
+            padding: 16px 16px 50px 16px; /* Bottom much thicker! */
             box-shadow: 
-                0 4px 8px rgba(0, 0, 0, 0.12),
-                0 8px 16px rgba(0, 0, 0, 0.08),
-                0 12px 24px rgba(0, 0, 0, 0.06);
+                /* Main depth */
+                0 8px 16px rgba(0, 0, 0, 0.15),
+                0 16px 32px rgba(0, 0, 0, 0.12),
+                0 24px 48px rgba(0, 0, 0, 0.08),
+                /* Subtle inset highlight */
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                inset 0 0 20px rgba(0, 0, 0, 0.02);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             position: relative;
             cursor: pointer;
+            border-radius: 4px;
         }
         
         :is(.dark .polaroid-card) {
-            background: #f8f8f8;
+            background: 
+                url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23paper)' opacity='0.03'/%3E%3C/svg%3E"),
+                linear-gradient(135deg, 
+                    #f9f9f9 0%,
+                    #f7f7f7 50%,
+                    #f5f5f5 100%
+                );
         }
         
         /* Hover effect - lift polaroid + tape */
         .polaroid-wrapper:hover .polaroid-card {
             transform: translateY(-12px) scale(1.05) !important;
             box-shadow: 
-                0 16px 28px rgba(0, 0, 0, 0.18),
-                0 24px 40px rgba(0, 0, 0, 0.12),
-                0 32px 56px rgba(0, 0, 0, 0.08);
+                0 20px 36px rgba(0, 0, 0, 0.2),
+                0 32px 56px rgba(0, 0, 0, 0.15),
+                0 48px 80px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
         
         .polaroid-wrapper:hover .polaroid-tape {
             top: -4px;
         }
         
-        /* Photo area - square */
+        /* Photo area - square with black border inside */
         .polaroid-photo {
             position: relative;
             aspect-ratio: 1;
             overflow: hidden;
-            background: #f0f0f0;
-            margin-bottom: 12px;
+            background: #000000;
+            padding: 3px; /* Black border effect! */
+            margin-bottom: 0; /* No gap, caption in thick bottom border */
         }
         
         .polaroid-img {
@@ -277,10 +298,11 @@
             transform: scale(1.08);
         }
         
-        /* Caption area - white space below photo */
+        /* Caption area - in the thick bottom border */
         .polaroid-caption {
             text-align: center;
-            padding: 0.5rem 0.25rem;
+            padding: 0.75rem 0.5rem 0.25rem 0.5rem;
+            /* Already in the 50px bottom padding */
         }
         
         .polaroid-name {
