@@ -1061,10 +1061,17 @@
             position: absolute;
             top: -5px;
             bottom: -5px;
-            right: 0;
-            width: 8px;
+            right: -1px;
+            width: 10px;
             background: 
-                radial-gradient(circle at 0 6px, transparent 3px, #fef7e6 3px) 0 0 / 8px 12px repeat-y;
+                /* Holes with dark shadow effect */
+                radial-gradient(circle at 0 6px, 
+                    transparent 2.5px,
+                    rgba(0, 0, 0, 0.15) 2.5px,
+                    rgba(0, 0, 0, 0.1) 3px,
+                    #fef7e6 3.5px
+                ) 0 0 / 10px 12px repeat-y;
+            box-shadow: inset 1px 0 2px rgba(0, 0, 0, 0.1);
         }
         
         /* Ticket Content */
