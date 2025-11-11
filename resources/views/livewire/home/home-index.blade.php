@@ -133,8 +133,17 @@
                              style="background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
                             <div class="hero-ticket-perforation"></div>
                             <div class="hero-ticket-content">
-                                <div class="flex items-center justify-center h-full">
-                                    <div class="hero-ticket-badge">{{ strtoupper(__('home.hero_category_events')) }}</div>
+                                <div class="ticket-mini-header">
+                                    <div class="text-[8px] font-black tracking-wider text-red-700">{{ strtoupper(__('home.hero_category_events')) }}</div>
+                                    <div class="text-[7px] font-bold text-amber-700">#0{{ rand(1, 9) }}{{ rand(0, 9) }}{{ rand(0, 9) }}</div>
+                                </div>
+                                <div class="flex-1"></div>
+                                <div class="ticket-mini-barcode">
+                                    <div class="flex justify-center gap-[1px]">
+                                        @for($j = 0; $j < 20; $j++)
+                                        <div style="width: {{ rand(1, 2) }}px; height: {{ rand(12, 18) }}px; background: #2d2520;"></div>
+                                        @endfor
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1060,37 +1069,23 @@
         .hero-ticket-content {
             flex: 1;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
             padding: 0.75rem 0.5rem;
         }
         
-        /* Events Badge - Stamp Style */
-        .hero-ticket-badge {
-            font-family: 'Special Elite', 'Courier New', monospace;
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 400;
-            color: #b91c1c;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 0.5rem 1rem;
-            border: 2px solid #b91c1c;
-            border-radius: 3px;
-            opacity: 0.75;
-            position: relative;
-            box-shadow: 
-                0 2px 4px rgba(185, 28, 28, 0.2),
-                inset 0 1px 2px rgba(185, 28, 28, 0.1);
+        .ticket-mini-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px dashed rgba(139, 115, 85, 0.3);
+            margin-bottom: 0.5rem;
         }
         
-        .hero-ticket-badge::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border: 1px solid rgba(185, 28, 28, 0.12);
-            border-radius: 2px;
-            pointer-events: none;
+        .ticket-mini-barcode {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px dashed rgba(139, 115, 85, 0.3);
         }
         
     </style>
