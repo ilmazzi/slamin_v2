@@ -204,13 +204,8 @@
             @if($mostPopularPhoto)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto">
                     
-                    {{-- Foto Hero (span 2 cols + 2 rows) - Polaroid Style --}}
-                    <?php 
-                        $heroRotation = rand(-2, 2);
-                        $heroTapeWidth = rand(80, 120);
-                        $heroTapeRotation = rand(-8, 8);
-                    ?>
-                    <div class="md:col-span-2 md:row-span-2 group cursor-pointer"
+                    {{-- Foto Hero (span 2 cols + 2 rows) - SOLO PIÙ GRANDE --}}
+                    <div class="md:col-span-2 md:row-span-2 group cursor-pointer rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800"
                          onclick="Livewire.dispatch('openPhotoModal', { photoId: {{ $mostPopularPhoto->id }} })"
                          x-data="{ visible: false }" 
                          x-intersect.once="visible = true">
@@ -218,34 +213,63 @@
                              x-transition:enter="transition ease-out duration-1000"
                              x-transition:enter-start="opacity-0 scale-95"
                              x-transition:enter-end="opacity-100 scale-100"
-                             class="h-full flex items-center justify-center">
+                             class="h-full relative aspect-square md:aspect-auto">
                             
-                            <div class="polaroid-wrapper-hero">
-                                <!-- Washi Tape bianco trasparente -->
-                                <div class="polaroid-tape-white-hero" 
-                                     style="width: {{ $heroTapeWidth }}px; 
-                                            transform: translateX(-50%) rotate({{ $heroTapeRotation }}deg);"></div>
-                                
-                                <div class="polaroid-card-hero" style="transform: rotate({{ $heroRotation }}deg);">
-                                    <div class="polaroid-photo-hero">
-                                        <img src="{{ $mostPopularPhoto->image_url }}" 
-                                             onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80'"
-                                             class="polaroid-img-hero">
+                            <img src="{{ $mostPopularPhoto->image_url }}" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80'"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter grayscale hover:grayscale-0">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+
+                            {{-- Zoom Icon --}}
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="w-16 h-16 md:w-20 md:h-20 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl">
+                                    <svg class="w-8 h-8 md:w-10 md:h-10 text-neutral-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            {{-- Content Overlay --}}
+                            <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-black/95 to-transparent">
+                                <div class="inline-block px-3 py-1 bg-accent-600 rounded-full mb-2 md:mb-3">
+                                    <span class="text-white text-xs font-bold tracking-wider">IN EVIDENZA</span>
+                                </div>
+                                <h3 class="text-xl md:text-3xl font-bold text-white mb-2 md:mb-3 line-clamp-2" style="font-family: 'Crimson Pro', serif;">
+                                    {{ $mostPopularPhoto->title ?? __('media.untitled') }}
+                                </h3>
+                                @if($mostPopularPhoto->user)
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <img src="{{ $mostPopularPhoto->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($mostPopularPhoto->user->name) . '&background=059669&color=fff' }}" 
+                                             alt="{{ $mostPopularPhoto->user->name }}"
+                                             class="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover ring-2 ring-white/30">
+                                        <span class="text-white font-semibold text-sm md:text-base">{{ $mostPopularPhoto->user->name }}</span>
+                                        <span class="text-white/70 text-xs md:text-sm ml-1">{{ number_format($mostPopularPhoto->view_count ?? 0) }} views</span>
                                     </div>
                                     
-                                    <div class="polaroid-caption-hero">
-                                        <div class="inline-block px-3 py-1 bg-accent-600 rounded-full mb-2">
-                                            <span class="text-white text-xs font-bold tracking-wider">IN EVIDENZA</span>
-                                        </div>
-                                        <div class="text-lg md:text-xl font-bold text-neutral-900 line-clamp-2 mb-2" style="font-family: 'Crimson Pro', serif;">
-                                            {{ $mostPopularPhoto->title ?? __('media.untitled') }}
-                                        </div>
-                                        @if($mostPopularPhoto->user)
-                                            <div class="text-sm text-neutral-600 mb-2">{{ $mostPopularPhoto->user->name }}</div>
-                                            <div class="text-xs text-neutral-500">{{ number_format($mostPopularPhoto->view_count ?? 0) }} views</div>
-                                        @endif
+                                    {{-- Social Buttons --}}
+                                    <div class="flex items-center gap-3">
+                                        <x-like-button 
+                                            :itemId="$mostPopularPhoto->id"
+                                            itemType="photo"
+                                            :isLiked="false"
+                                            :likesCount="$mostPopularPhoto->like_count ?? 0"
+                                            size="sm"
+                                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4" />
+                                        
+                                        <x-comment-button 
+                                            :itemId="$mostPopularPhoto->id"
+                                            itemType="photo"
+                                            :commentsCount="$mostPopularPhoto->comment_count ?? 0"
+                                            size="sm"
+                                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                        
+                                        <x-share-button 
+                                            :itemId="$mostPopularPhoto->id"
+                                            itemType="photo"
+                                            size="sm"
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
                                     </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
