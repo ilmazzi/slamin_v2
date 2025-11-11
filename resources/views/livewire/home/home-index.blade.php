@@ -226,12 +226,16 @@
                             
                             <!-- Polaroid Card -->
                             <div class="hero-polaroid-card">
-                                <div class="hero-polaroid-photo" style="background: url('<?php echo [
-                                    'https://images.unsplash.com/photo-1557683316-973673baf926?w=400',
-                                    'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400',
-                                    'https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?w=400',
-                                    'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=400'
-                                ][rand(0, 3)]; ?>') center/cover;"></div>
+                                <div class="hero-polaroid-photo" style="background: linear-gradient(135deg, <?php echo [
+                                    '#4a7c59 0%, #2d5a3f 100%',
+                                    '#0369a1 0%, #0284c7 100%',
+                                    '#d97706 0%, #ea580c 100%',
+                                    '#7c3aed 0%, #5b21b6 100%'
+                                ][rand(0, 3)]; ?>);">
+                                    <svg class="w-12 h-12 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    </svg>
+                                </div>
                                 <div class="hero-polaroid-caption">
                                     {{ __('home.hero_category_users') }}
                                 </div>
@@ -1405,6 +1409,7 @@
             align-items: center;
             gap: 1rem;
             transition: all 0.3s ease;
+            min-width: 130px;
         }
         
         .hero-card-container:hover > div:first-child {
@@ -1497,6 +1502,9 @@
             background-color: #e5e5e5;
             border-radius: 2px;
             margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .hero-polaroid-caption {
