@@ -1,7 +1,7 @@
 <div class="min-h-screen">
     
     {{-- HERO con Film Card + Titolo --}}
-    <section class="relative py-16 md:py-20 overflow-hidden film-studio-section">
+    <section class="relative py-16 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
                 
@@ -49,10 +49,10 @@
                 
                 <!-- TITOLO A FIANCO -->
                 <div class="text-center md:text-left">
-                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-neutral-900 dark:text-white leading-tight" style="font-family: 'Crimson Pro', serif;">
-                        Video & <span class="italic text-primary-600 dark:text-primary-400">Foto</span>
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight" style="font-family: 'Crimson Pro', serif;">
+                        Video & <span class="italic text-primary-400">Foto</span>
                     </h1>
-                    <p class="text-xl md:text-2xl text-neutral-600 dark:text-neutral-300 mt-4 font-medium">
+                    <p class="text-xl md:text-2xl text-white/80 mt-4 font-medium">
                         Dalla community Slamin
                     </p>
                 </div>
