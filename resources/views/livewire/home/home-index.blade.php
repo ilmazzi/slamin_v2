@@ -120,13 +120,22 @@
                                     transform: translate(calc(-50%), 0) rotate({{ $tapeBottomRotation }}deg);"></div>
                     </a>
                     
-                    {{-- Events --}}
+                    {{-- Events - Mini Cinema Ticket --}}
+                    <?php $tilt = rand(-3, 3); ?>
                     <a href="{{ route('events.index') }}" 
-                       class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px]">
-                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_events') }}</span>
+                       class="hero-ticket-wrapper"
+                       style="transform: rotate({{ $tilt }}deg);">
+                        <div class="hero-cinema-ticket">
+                            <div class="hero-ticket-perforation"></div>
+                            <div class="hero-ticket-content">
+                                <div class="flex flex-col items-center justify-center gap-2 h-full">
+                                    <svg class="w-8 h-8 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span class="text-xs font-bold text-amber-900">{{ __('home.hero_category_events') }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </a>
                     
                     {{-- Videos --}}
@@ -974,6 +983,68 @@
                 0 24px 40px rgba(0, 0, 0, 0.15),
                 inset 0 1px 0 rgba(255, 255, 255, 0.8),
                 inset 0 2px 4px rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Events - Mini Cinema Ticket */
+        .hero-ticket-wrapper {
+            display: block;
+            width: 130px;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-ticket-wrapper:hover {
+            transform: translateY(-6px) scale(1.02);
+        }
+        
+        .hero-cinema-ticket {
+            display: flex;
+            background: #fef7e6;
+            border-radius: 6px;
+            height: 150px;
+            box-shadow: 
+                0 6px 16px rgba(0, 0, 0, 0.4),
+                0 12px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-ticket-wrapper:hover .hero-cinema-ticket {
+            box-shadow: 
+                0 10px 20px rgba(0, 0, 0, 0.5),
+                0 16px 40px rgba(0, 0, 0, 0.4),
+                0 0 0 2px rgba(218, 165, 32, 0.4);
+        }
+        
+        /* Perforated Left Edge */
+        .hero-ticket-perforation {
+            width: 16px;
+            background: linear-gradient(135deg, 
+                rgba(139, 115, 85, 0.15) 0%,
+                rgba(160, 140, 110, 0.1) 100%
+            );
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .hero-ticket-perforation::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            bottom: -5px;
+            right: 0;
+            width: 8px;
+            background: 
+                radial-gradient(circle at 0 6px, transparent 3px, #fef7e6 3px) 0 0 / 8px 12px repeat-y;
+        }
+        
+        /* Ticket Content */
+        .hero-ticket-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
         }
         
     </style>
