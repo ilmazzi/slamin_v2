@@ -64,6 +64,19 @@
                 </svg>
             </button>
             
+            <!-- Mobile Scroll Indicator -->
+            <div class="md:hidden relative mb-4">
+                <div class="flex items-center justify-center gap-2 text-neutral-700 dark:text-neutral-300 text-sm">
+                    <svg class="w-5 h-5 animate-bounce-horizontal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                    </svg>
+                    <span>Scorri per vedere altro</span>
+                </div>
+            </div>
+            
+            <!-- Gradient Fade Right (Mobile Only) -->
+            <div class="md:hidden absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-amber-100 dark:from-amber-950 to-transparent pointer-events-none z-10"></div>
+            
             <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-20 pt-20 px-8 md:px-12 scrollbar-hide"
                  style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
                 @foreach($topGigs as $i => $gig)
