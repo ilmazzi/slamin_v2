@@ -245,50 +245,10 @@
                         </div>
                     </div>
 
-                    {{-- Foto Grid - Polaroid Style --}}
+                    {{-- Foto Grid - COMPONENTE LEGGERO --}}
                     @php $photos = $photoType === 'popular' ? $popularPhotos : $recentPhotos; @endphp
                     @foreach($photos->take(6) as $index => $photo)
-                        <?php 
-                            $rotation = rand(-3, 3);
-                            $tapeWidth = rand(60, 90);
-                            $tapeRotation = rand(-8, 8);
-                        ?>
-                        <div class="group cursor-pointer"
-                             onclick="Livewire.dispatch('openPhotoModal', { photoId: {{ $photo->id }} })"
-                             x-data="{ visible: false }" 
-                             x-intersect.once="visible = true">
-                            <div x-show="visible"
-                                 x-transition:enter="transition ease-out duration-700"
-                                 x-transition:enter-start="opacity-0 translate-y-8"
-                                 x-transition:enter-end="opacity-100 translate-y-0"
-                                 style="transition-delay: {{ $index * 100 }}ms">
-                                
-                                <div class="polaroid-wrapper-grid">
-                                    <!-- Washi Tape bianco -->
-                                    <div class="polaroid-tape-white-grid" 
-                                         style="width: {{ $tapeWidth }}px; 
-                                                transform: translateX(-50%) rotate({{ $tapeRotation }}deg);"></div>
-                                    
-                                    <div class="polaroid-card-grid" style="transform: rotate({{ $rotation }}deg);">
-                                        <div class="polaroid-photo-grid">
-                                            <img src="{{ $photo->image_url }}" 
-                                                 onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80'"
-                                                 class="polaroid-img-grid">
-                                        </div>
-                                        
-                                        <div class="polaroid-caption-grid">
-                                            <div class="text-base font-bold text-neutral-900 line-clamp-2 mb-1" style="font-family: 'Crimson Pro', serif;">
-                                                {{ $photo->title ?? __('media.untitled') }}
-                                            </div>
-                                            @if($photo->user)
-                                                <div class="text-xs text-neutral-600 mb-1">{{ $photo->user->name }}</div>
-                                                <div class="text-xs text-neutral-500">{{ number_format($photo->view_count ?? 0) }} views</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <x-photo-frame-light :photo="$photo" :index="$index + 2" />
                     @endforeach
                 </div>
             @endif
