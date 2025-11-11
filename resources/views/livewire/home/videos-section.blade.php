@@ -31,6 +31,10 @@
                         <!-- Film Perforations Right -->
                         <div class="film-perforation film-perforation-right"></div>
                         
+                        <!-- Film Edge Codes -->
+                        <div class="film-edge-code-top">KODAK</div>
+                        <div class="film-edge-code-bottom">ISO 400</div>
+                        
                         <!-- Film Frame -->
                         <div class="film-frame">
                             <!-- Frame Numbers -->
@@ -60,59 +64,109 @@
     
     <style>
     /* ========================================
-       PHOTO NEGATIVE FILM ROLL / RULLINO FOTOGRAFICO
+       PHOTO NEGATIVE FILM ROLL - REALISTIC & TRANSPARENT
        ======================================== */
     
-    /* Main Film Strip Container - Orange/Amber Film Border */
+    /* Main Film Strip Container - Brown Amber Semi-Transparent with Glossy Finish */
     .film-strip-container {
         position: relative;
+        /* Semi-transparent brown/amber film with glossy highlights */
         background: 
-            /* Film base gradient (orange/amber) */
+            /* Glossy highlight (top light reflection) */
+            linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.15) 0%,
+                transparent 15%,
+                transparent 85%,
+                rgba(0, 0, 0, 0.2) 100%
+            ),
+            /* Subtle diagonal light streaks (glossy effect) */
+            linear-gradient(120deg, 
+                transparent 0%,
+                transparent 40%,
+                rgba(255, 255, 255, 0.08) 48%,
+                rgba(255, 255, 255, 0.12) 50%,
+                rgba(255, 255, 255, 0.08) 52%,
+                transparent 60%,
+                transparent 100%
+            ),
+            /* Film base - semi-transparent brown/amber */
             linear-gradient(135deg, 
-                #d97a2c 0%,
-                #c86820 25%,
-                #d97a2c 50%,
-                #c86820 75%,
-                #d97a2c 100%
+                rgba(120, 80, 50, 0.85) 0%,
+                rgba(100, 65, 40, 0.88) 25%,
+                rgba(110, 72, 45, 0.86) 50%,
+                rgba(95, 60, 38, 0.89) 75%,
+                rgba(115, 75, 48, 0.87) 100%
             );
         padding: 2.5rem 2.5rem;
         border-radius: 0.5rem;
         box-shadow: 
+            /* Strong shadows for depth */
             0 20px 50px rgba(0, 0, 0, 0.7),
-            0 10px 25px rgba(217, 122, 44, 0.2),
-            inset 0 0 40px rgba(0, 0, 0, 0.15);
+            0 10px 25px rgba(80, 50, 30, 0.3),
+            /* Glossy edge highlights */
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+            /* Inner shadows */
+            inset 0 0 40px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
-        border: 3px solid #a85818;
-        /* Subtle film texture */
-        background-size: 100% 100%;
+        border: 2px solid rgba(70, 45, 28, 0.9);
+        /* Light background to show transparency */
+        backdrop-filter: blur(1px);
+    }
+    
+    /* Light background behind film to show transparency */
+    .film-strip-container::after {
+        content: '';
+        position: absolute;
+        inset: -20px;
+        background: 
+            /* Backlight effect (like lightbox for viewing negatives) */
+            radial-gradient(ellipse at center, 
+                rgba(255, 255, 240, 0.15) 0%,
+                rgba(230, 230, 220, 0.1) 40%,
+                transparent 70%
+            );
+        z-index: -1;
+        border-radius: 1rem;
+        pointer-events: none;
     }
     
     .film-strip-container:hover {
         transform: translateY(-4px);
         box-shadow: 
             0 25px 60px rgba(0, 0, 0, 0.8),
-            0 15px 30px rgba(217, 122, 44, 0.3),
-            inset 0 0 40px rgba(0, 0, 0, 0.2);
+            0 15px 30px rgba(80, 50, 30, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.25),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+            inset 0 0 40px rgba(0, 0, 0, 0.25);
     }
     
-    /* Film Edge Markers (simulating sprocket holes area) */
+    /* Film Edge Markers - Darker transparent areas with sprocket holes */
     .film-perforation {
         position: absolute;
         top: 0;
         bottom: 0;
         width: 2rem;
-        background: linear-gradient(180deg, 
-            rgba(0, 0, 0, 0.3) 0%,
-            rgba(0, 0, 0, 0.2) 50%,
-            rgba(0, 0, 0, 0.3) 100%
-        );
+        /* Slightly darker, still transparent */
+        background: 
+            /* Glossy edge highlight */
+            linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.08) 0%,
+                transparent 30%
+            ),
+            /* Base darker area */
+            linear-gradient(180deg, 
+                rgba(0, 0, 0, 0.35) 0%,
+                rgba(0, 0, 0, 0.25) 50%,
+                rgba(0, 0, 0, 0.35) 100%
+            );
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
     
-    /* Sprocket holes pattern */
+    /* Sprocket holes - actual perforations (more transparent) */
     .film-perforation::before {
         content: '';
         position: absolute;
@@ -126,26 +180,35 @@
                 to bottom,
                 transparent 0px,
                 transparent 10px,
-                rgba(0, 0, 0, 0.6) 10px,
-                rgba(0, 0, 0, 0.6) 18px,
+                /* Holes are more transparent (you can see through) */
+                rgba(0, 0, 0, 0.75) 10px,
+                rgba(0, 0, 0, 0.75) 18px,
                 transparent 18px,
                 transparent 35px
             );
         border-radius: 1px;
+        /* Glossy edges on holes */
+        box-shadow: 
+            inset 0 0 2px rgba(255, 255, 255, 0.1),
+            0 0 1px rgba(0, 0, 0, 0.3);
     }
     
     .film-perforation-left {
         left: 0;
         border-top-left-radius: 0.5rem;
         border-bottom-left-radius: 0.5rem;
-        border-right: 1px solid rgba(0, 0, 0, 0.4);
+        border-right: 1px solid rgba(0, 0, 0, 0.5);
+        /* Glossy left edge */
+        box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.1);
     }
     
     .film-perforation-right {
         right: 0;
         border-top-right-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
-        border-left: 1px solid rgba(0, 0, 0, 0.4);
+        border-left: 1px solid rgba(0, 0, 0, 0.5);
+        /* Glossy right edge */
+        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.1);
     }
     
     /* Film Frame (negative area) */
@@ -193,25 +256,35 @@
         z-index: 10;
     }
     
-    /* Frame Numbers - Photo Negative Style */
+    /* Frame Numbers - Printed on semi-transparent film */
     .film-frame-number {
         position: absolute;
         font-family: 'Courier New', monospace;
         font-size: 0.7rem;
         font-weight: 700;
-        color: #000;
+        color: rgba(0, 0, 0, 0.7);
         letter-spacing: 0.05em;
         z-index: 20;
-        background: linear-gradient(135deg, 
-            rgba(217, 122, 44, 0.95) 0%,
-            rgba(200, 104, 32, 0.95) 100%
-        );
+        /* Semi-transparent brown like film */
+        background: 
+            /* Top highlight (glossy) */
+            linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.15) 0%,
+                transparent 50%
+            ),
+            /* Base color */
+            linear-gradient(135deg, 
+                rgba(110, 72, 45, 0.9) 0%,
+                rgba(95, 60, 38, 0.92) 100%
+            );
         padding: 0.25rem 0.5rem;
         border-radius: 2px;
         box-shadow: 
             0 2px 4px rgba(0, 0, 0, 0.3),
-            inset 0 0 8px rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(0, 0, 0, 0.3);
+            /* Glossy top edge */
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            inset 0 0 8px rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.4);
     }
     
     .film-frame-number-tl {
@@ -238,9 +311,8 @@
         opacity: 0.8;
     }
     
-    /* Film edge codes (like real negatives) */
-    .film-strip-container::before {
-        content: 'KODAK';
+    /* Film edge codes - need separate elements to not conflict with backlight */
+    .film-strip-container .film-edge-code-top {
         position: absolute;
         top: 0.5rem;
         left: 50%;
@@ -248,12 +320,13 @@
         font-family: 'Arial', sans-serif;
         font-size: 0.65rem;
         font-weight: 900;
-        color: rgba(0, 0, 0, 0.4);
+        color: rgba(0, 0, 0, 0.5);
         letter-spacing: 0.3em;
+        z-index: 5;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
     }
     
-    .film-strip-container::after {
-        content: 'ISO 400';
+    .film-strip-container .film-edge-code-bottom {
         position: absolute;
         bottom: 0.5rem;
         left: 50%;
@@ -261,8 +334,10 @@
         font-family: 'Arial', sans-serif;
         font-size: 0.6rem;
         font-weight: 700;
-        color: rgba(0, 0, 0, 0.4);
+        color: rgba(0, 0, 0, 0.5);
         letter-spacing: 0.2em;
+        z-index: 5;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
     }
     
     /* Responsive adjustments */
@@ -290,28 +365,47 @@
         }
     }
     
-    /* Dark mode - slightly different amber tone */
+    /* Dark mode - same transparent look, darker tones */
     :is(.dark .film-strip-container) {
         background: 
+            linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.12) 0%,
+                transparent 15%,
+                transparent 85%,
+                rgba(0, 0, 0, 0.25) 100%
+            ),
+            linear-gradient(120deg, 
+                transparent 0%,
+                transparent 40%,
+                rgba(255, 255, 255, 0.06) 48%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0.06) 52%,
+                transparent 60%,
+                transparent 100%
+            ),
             linear-gradient(135deg, 
-                #b86820 0%,
-                #a85818 25%,
-                #b86820 50%,
-                #a85818 75%,
-                #b86820 100%
+                rgba(90, 60, 38, 0.88) 0%,
+                rgba(75, 50, 32, 0.9) 25%,
+                rgba(82, 55, 35, 0.89) 50%,
+                rgba(70, 45, 30, 0.91) 75%,
+                rgba(85, 58, 37, 0.9) 100%
             );
-        border-color: #8a4810;
+        border-color: rgba(50, 35, 22, 0.95);
         box-shadow: 
             0 20px 50px rgba(0, 0, 0, 0.95),
-            0 10px 25px rgba(184, 104, 32, 0.3),
-            inset 0 0 40px rgba(0, 0, 0, 0.25);
+            0 10px 25px rgba(60, 40, 25, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+            inset 0 0 40px rgba(0, 0, 0, 0.3);
     }
     
     :is(.dark .film-strip-container:hover) {
         box-shadow: 
             0 25px 60px rgba(0, 0, 0, 1),
-            0 15px 30px rgba(184, 104, 32, 0.4),
-            inset 0 0 40px rgba(0, 0, 0, 0.3);
+            0 15px 30px rgba(60, 40, 25, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.45),
+            inset 0 0 40px rgba(0, 0, 0, 0.35);
     }
     
     /* Fade-in animation */
