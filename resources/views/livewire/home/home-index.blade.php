@@ -7,14 +7,29 @@
         <livewire:home.videos-section />
     </div>
 
+    {{-- Decorative Separator --}}
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+        <div class="section-separator"></div>
+    </div>
+
     {{-- Eventi - CINEMA WALL --}}
     <div class="py-20 md:py-24 cinema-wall-section">
         <livewire:home.events-slider />
     </div>
 
+    {{-- Decorative Separator --}}
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+        <div class="section-separator"></div>
+    </div>
+
     {{-- Poesie - WOODEN DESK SECTION --}}
     <div class="py-20 md:py-24 wooden-desk-section">
         <livewire:home.poetry-section />
+    </div>
+
+    {{-- Decorative Separator --}}
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+        <div class="section-separator"></div>
     </div>
 
     {{-- Nuovi Utenti - POLAROID WALL --}}
@@ -45,6 +60,11 @@
     {{-- Top Gigs - CORK BOARD SECTION --}}
     <div class="py-20 md:py-24 cork-board-section">
         <livewire:home.gigs-section />
+    </div>
+
+    {{-- Decorative Separator --}}
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+        <div class="section-separator"></div>
     </div>
 
     {{-- Statistiche Prima del Footer --}}
