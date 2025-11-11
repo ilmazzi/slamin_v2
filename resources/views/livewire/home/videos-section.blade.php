@@ -10,9 +10,32 @@
                 <p class="text-lg text-neutral-600 dark:text-neutral-200 font-medium">{{ __('home.videos_section_subtitle') }}</p>
             </div>
 
-            <!-- Film Strip Horizontal Scroll -->
-            <div class="flex gap-6 overflow-x-auto pb-12 pt-8 scrollbar-hide"
-                 style="-webkit-overflow-scrolling: touch;">
+            <!-- Film Strip Horizontal Scroll with Desktop Navigation -->
+            <div class="relative" x-data="{ 
+                scroll(direction) {
+                    const container = this.$refs.scrollContainer;
+                    const scrollAmount = 400;
+                    container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+                }
+            }">
+                <!-- Left Arrow (Desktop Only) -->
+                <button @click="scroll(-1)" 
+                        class="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-full shadow-xl hover:scale-110 transition-all duration-300 items-center justify-center text-neutral-900 dark:text-white group">
+                    <svg class="w-6 h-6 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                
+                <!-- Right Arrow (Desktop Only) -->
+                <button @click="scroll(1)" 
+                        class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-full shadow-xl hover:scale-110 transition-all duration-300 items-center justify-center text-neutral-900 dark:text-white group">
+                    <svg class="w-6 h-6 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                
+                <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-8 scrollbar-hide"
+                     style="-webkit-overflow-scrolling: touch;">
                 @foreach($videos as $i => $video)
                 <?php
                     // Random film strip tilt
@@ -66,6 +89,7 @@
                     </div>
                 </div>
                 @endforeach
+                </div>
             </div>
         </div>
     </section>
