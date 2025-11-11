@@ -1409,7 +1409,9 @@
             align-items: center;
             gap: 1rem;
             transition: all 0.3s ease;
+            width: 130px;
             min-width: 130px;
+            max-width: 130px;
         }
         
         .hero-card-container:hover > div:first-child {
