@@ -4,10 +4,10 @@
         
         {{-- Header --}}
         <div class="text-center mb-12 section-title-fade">
-            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif;">
                 {!! __('home.events_section_title') !!}
             </h2>
-            <p class="text-lg text-neutral-600 dark:text-neutral-200 font-medium">
+            <p class="text-lg text-neutral-200 font-medium">
                 {{ __('home.events_section_subtitle') }}
             </p>
         </div>
