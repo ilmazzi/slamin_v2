@@ -802,17 +802,15 @@
         }
         
         /* ========================================
-           POLAROID - PHOTO CARDS
+           POLAROID HERO (solo per hero card grande)
            ======================================== */
         
-        .polaroid-wrapper-hero,
-        .polaroid-wrapper-grid {
+        .polaroid-wrapper-hero {
             position: relative;
             padding-top: 20px;
         }
         
-        .polaroid-tape-white-hero,
-        .polaroid-tape-white-grid {
+        .polaroid-tape-white-hero {
             position: absolute;
             top: -8px;
             left: 50%;
@@ -834,11 +832,12 @@
             backdrop-filter: blur(1px);
         }
         
-        .polaroid-card-hero,
-        .polaroid-card-grid {
+        .polaroid-card-hero {
             display: block;
             position: relative;
             background: #ffffff;
+            padding: 25px 25px 100px 25px;
+            max-width: 600px;
             box-shadow: 
                 0 2px 4px rgba(0, 0, 0, 0.1),
                 0 4px 8px rgba(0, 0, 0, 0.08),
@@ -848,22 +847,11 @@
             border-radius: 2px;
         }
         
-        .polaroid-card-hero {
-            padding: 25px 25px 100px 25px;
-            max-width: 600px;
-        }
-        
-        .polaroid-card-grid {
-            padding: 16px 16px 70px 16px;
-        }
-        
-        .dark .polaroid-card-hero,
-        .dark .polaroid-card-grid {
+        .dark .polaroid-card-hero {
             background: #fafafa;
         }
         
-        .polaroid-photo-hero,
-        .polaroid-photo-grid {
+        .polaroid-photo-hero {
             position: relative;
             aspect-ratio: 1;
             overflow: hidden;
@@ -872,8 +860,7 @@
             box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
         }
         
-        .polaroid-img-hero,
-        .polaroid-img-grid {
+        .polaroid-img-hero {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -881,20 +868,17 @@
             transition: all 0.5s ease;
         }
         
-        .polaroid-card-hero:hover .polaroid-img-hero,
-        .polaroid-card-grid:hover .polaroid-img-grid {
+        .polaroid-card-hero:hover .polaroid-img-hero {
             filter: grayscale(0%);
             transform: scale(1.05);
         }
         
-        .polaroid-caption-hero,
-        .polaroid-caption-grid {
+        .polaroid-caption-hero {
             text-align: center;
             padding-top: 1rem;
         }
         
-        .polaroid-wrapper-hero:hover .polaroid-card-hero,
-        .polaroid-wrapper-grid:hover .polaroid-card-grid {
+        .polaroid-wrapper-hero:hover .polaroid-card-hero {
             transform: translateY(-8px) scale(1.02) !important;
             box-shadow: 
                 0 4px 8px rgba(0, 0, 0, 0.12),
