@@ -28,8 +28,8 @@
     </div>
 
     {{-- Articoli - Newspaper Section --}}
-    <div class="py-20 md:py-28 articles-newspaper-section">
-        <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
+    <div class="py-20 md:py-28 articles-newspaper-section border-4 border-red-500">
+        <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8 border-4 border-blue-500">
             <div>
                 <div class="text-center mb-12 section-title-fade">
                     <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
