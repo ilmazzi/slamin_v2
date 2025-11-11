@@ -92,6 +92,16 @@
                 $stampRotation = rand(-8, 8);
                 $stampOffsetX = rand(-15, 15);
                 $stampOffsetY = rand(-10, 10);
+                
+                // Random wear/damage effects
+                $wearOpacity = rand(2, 5) / 10; // 0.2 to 0.5
+                $spot1X = rand(10, 90);
+                $spot1Y = rand(10, 90);
+                $spot2X = rand(10, 90);
+                $spot2Y = rand(10, 90);
+                $spot3X = rand(10, 90);
+                $spot3Y = rand(10, 90);
+                $creaseRotation = rand(-45, 45);
             ?>
             <div class="w-80 md:w-96 flex-shrink-0 fade-scale-item"
                  x-data
@@ -99,9 +109,17 @@
                  style="animation-delay: {{ $i * 0.1 }}s">
                 
                 {{-- Cinema Ticket --}}
-                <div class="cinema-ticket group"
+                <div class="cinema-ticket group ticket-worn"
                      style="transform: rotate({{ $tilt }}deg); 
-                            background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
+                            background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);
+                            --wear-opacity: {{ $wearOpacity }};
+                            --spot1-x: {{ $spot1X }}%;
+                            --spot1-y: {{ $spot1Y }}%;
+                            --spot2-x: {{ $spot2X }}%;
+                            --spot2-y: {{ $spot2Y }}%;
+                            --spot3-x: {{ $spot3X }}%;
+                            --spot3-y: {{ $spot3Y }}%;
+                            --crease-rotation: {{ $creaseRotation }}deg;">
                     
                     {{-- Perforated Left Edge --}}
                     <div class="ticket-perforation"></div>
@@ -290,6 +308,58 @@
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
+    }
+    
+    /* Worn/Vintage Effect - Random per ticket */
+    .ticket-worn::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: 
+            /* Paper texture/grain */
+            url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E"),
+            /* Random age spots */
+            radial-gradient(circle at var(--spot1-x) var(--spot1-y), 
+                rgba(139, 115, 85, var(--wear-opacity)) 0%, 
+                transparent 8%),
+            radial-gradient(circle at var(--spot2-x) var(--spot2-y), 
+                rgba(139, 115, 85, calc(var(--wear-opacity) * 0.7)) 0%, 
+                transparent 5%),
+            radial-gradient(circle at var(--spot3-x) var(--spot3-y), 
+                rgba(139, 115, 85, calc(var(--wear-opacity) * 0.5)) 0%, 
+                transparent 10%);
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    /* Crease/Fold effect */
+    .ticket-worn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -10%;
+        right: -10%;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.6)) 20%,
+            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.4)) 50%,
+            rgba(139, 115, 85, calc(var(--wear-opacity) * 0.6)) 80%,
+            transparent 100%
+        );
+        transform: rotate(var(--crease-rotation)) translateY(-50%);
+        box-shadow: 
+            0 1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.3)),
+            0 -1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.3));
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    /* Make sure content is above wear effects */
+    .ticket-content {
+        position: relative;
+        z-index: 2;
     }
     
     .cinema-ticket:hover {
