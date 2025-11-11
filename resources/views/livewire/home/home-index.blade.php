@@ -67,13 +67,32 @@
                         </div>
                     </a>
                     
-                    {{-- Articles --}}
+                    {{-- Articles - Mini Magazine --}}
+                    <?php 
+                        $rotation = rand(-3, 3);
+                        $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
+                        $pinRotation = rand(-15, 15);
+                    ?>
                     <a href="{{ route('articles.index') }}" 
-                       class="group flex flex-col items-center gap-3 p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-primary-500/50 transition-all duration-300 hover:scale-105 min-w-[140px]">
-                        <svg class="w-12 h-12 text-primary-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                        </svg>
-                        <span class="text-white font-medium text-sm">{{ __('home.hero_category_articles') }}</span>
+                       class="hero-magazine-wrapper">
+                        <div class="hero-thumbtack" 
+                             style="background: {{ $pinColor }}; transform: rotate({{ $pinRotation }}deg);">
+                            <div class="hero-thumbtack-needle"></div>
+                        </div>
+                        <div class="hero-magazine-cover" style="transform: rotate({{ $rotation }}deg);">
+                            <div class="hero-magazine-inner">
+                                <div class="text-center space-y-1">
+                                    <div class="text-xs font-bold text-neutral-900">SLAMIN</div>
+                                    <div class="px-2 py-0.5 bg-primary-600 text-white text-[10px] font-bold rounded inline-block">CULTURA</div>
+                                </div>
+                                <div class="flex items-center justify-center h-20 mt-2 bg-gradient-to-br from-primary-600 to-primary-700 rounded">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-xs font-bold text-neutral-900 mt-2">{{ __('home.hero_category_articles') }}</p>
+                            </div>
+                        </div>
                     </a>
                     
                     {{-- Gigs --}}
@@ -730,6 +749,84 @@
                 0 10px 16px rgba(0, 0, 0, 0.3),
                 0 20px 30px rgba(0, 0, 0, 0.25),
                 0 30px 45px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Articles - Mini Magazine */
+        .hero-magazine-wrapper {
+            display: block;
+            width: 130px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-magazine-wrapper:hover {
+            transform: translateY(-6px);
+        }
+        
+        .hero-thumbtack {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            box-shadow: 
+                0 3px 6px rgba(0, 0, 0, 0.35),
+                inset 0 1px 3px rgba(255, 255, 255, 0.4),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        .hero-thumbtack-needle {
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 6px;
+            background: linear-gradient(to bottom, 
+                rgba(0, 0, 0, 0.4),
+                rgba(0, 0, 0, 0.2),
+                transparent
+            );
+        }
+        
+        .hero-magazine-cover {
+            background: linear-gradient(135deg, 
+                #fefefe 0%,
+                #fcfcfc 25%,
+                #fafafa 50%,
+                #f8f8f8 75%,
+                #f6f6f6 100%
+            );
+            border: 2px solid #2d2d2d;
+            border-radius: 4px;
+            box-shadow: 
+                /* Main depth */
+                0 6px 10px rgba(0, 0, 0, 0.25),
+                0 12px 20px rgba(0, 0, 0, 0.2),
+                0 18px 30px rgba(0, 0, 0, 0.15),
+                /* Glossy highlight */
+                inset 0 1px 0 rgba(255, 255, 255, 0.6),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hero-magazine-inner {
+            padding: 1rem 0.75rem;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .hero-magazine-wrapper:hover .hero-magazine-cover {
+            box-shadow: 
+                0 10px 16px rgba(0, 0, 0, 0.3),
+                0 20px 32px rgba(0, 0, 0, 0.25),
+                0 30px 48px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
         }
         
     </style>
