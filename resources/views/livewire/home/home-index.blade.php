@@ -58,11 +58,10 @@
                        class="hero-paper-wrapper"
                        style="transform: rotate({{ $paperRotation }}deg);">
                         <div class="hero-paper-sheet">
-                            <div class="flex flex-col items-center justify-center gap-2 h-full">
-                                <svg class="w-10 h-10 text-neutral-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                </svg>
-                                <span class="text-sm font-semibold text-neutral-800 font-serif">{{ __('home.hero_category_poems') }}</span>
+                            <div class="flex items-center justify-center h-full">
+                                <h3 class="hero-paper-title">
+                                    "{{ __('home.hero_category_poems') }}"
+                                </h3>
                             </div>
                         </div>
                     </a>
@@ -787,6 +786,21 @@
                 0 10px 16px rgba(0, 0, 0, 0.3),
                 0 20px 30px rgba(0, 0, 0, 0.25),
                 0 30px 45px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Poetry Title - Same as sections */
+        .hero-paper-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #2d2520;
+            line-height: 1.4;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+        
+        .hero-paper-wrapper:hover .hero-paper-title {
+            color: #4a7c59;
         }
         
         /* Articles - Mini Magazine */
