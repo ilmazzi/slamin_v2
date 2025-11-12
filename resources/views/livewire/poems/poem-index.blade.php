@@ -51,15 +51,6 @@
     {{-- POEMS CONTENT SECTION --}}
     <div class="poems-poetic-background">
         
-        <!-- Citazione poetica gigante centrale con effetto typewriter -->
-        <div class="fixed inset-0 pointer-events-none flex items-center justify-center overflow-hidden" style="z-index: 1;" aria-hidden="true">
-            <div class="poetry-giant-quote">
-                <span class="poetry-typewriter" style="--chars: 45;">
-                    "La poesia è l'ombra dell'anima che danza"
-                </span>
-            </div>
-        </div>
-        
         <!-- Pattern calligrafico decorativo -->
         <div class="fixed inset-0 pointer-events-none overflow-hidden opacity-30" style="z-index: 1;" aria-hidden="true">
             <svg class="absolute top-1/4 right-1/4 w-96 h-96 text-accent-200/30 dark:text-accent-900/20" viewBox="0 0 200 200" fill="none">
@@ -350,60 +341,6 @@
                     #1b1916 100%
                 );
             animation: poetry-aurora 15s ease-in-out infinite;
-        }
-        
-        /* Citazione gigante con effetto typewriter */
-        .poetry-giant-quote {
-            font-family: 'Crimson Pro', serif;
-            font-size: 4rem;
-            font-weight: 300;
-            font-style: italic;
-            text-align: center;
-            max-width: 900px;
-            line-height: 1.4;
-        }
-        
-        .poetry-typewriter {
-            display: inline-block;
-            background: linear-gradient(
-                90deg,
-                rgba(139, 92, 46, 0.06) 0%,
-                rgba(139, 92, 46, 0.12) 30%,
-                rgba(139, 92, 46, 0.06) 100%
-            );
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: typewriter-gradient 5s ease-in-out infinite;
-        }
-        
-        :is(.dark .poetry-typewriter) {
-            background: linear-gradient(
-                90deg,
-                rgba(212, 165, 116, 0.08) 0%,
-                rgba(212, 165, 116, 0.15) 30%,
-                rgba(212, 165, 116, 0.08) 100%
-            );
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-        
-        @keyframes typewriter-gradient {
-            0%, 100% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .poetry-giant-quote {
-                font-size: 2rem;
-                max-width: 90%;
-            }
         }
         
         

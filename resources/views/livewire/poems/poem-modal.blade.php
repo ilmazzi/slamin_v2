@@ -478,6 +478,9 @@
                     inset 0 0 30px rgba(160, 100, 60, 0.15),
                     0 8px 16px rgba(0, 0, 0, 0.25);
                 position: relative;
+                display: flex;
+                flex-direction: column;
+                min-height: 0;
                 /* Linee notebook orizzontali */
                 background: 
                     /* Margine rosso verticale */
@@ -508,6 +511,10 @@
             
             .poem-page-right .poem-page-content {
                 padding: 2rem 1.5rem 1.5rem 3rem;
+                flex: 1;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior: contain;
             }
             
             .poem-book-spine {
