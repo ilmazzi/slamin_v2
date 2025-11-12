@@ -1,464 +1,648 @@
-<div class="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50/30 to-neutral-50 dark:from-neutral-900 dark:via-primary-950/20 dark:to-neutral-900">
+<div class="min-h-screen">
     
-    <!-- VERSI FLUTTUANTI IN BACKGROUND - Poetico -->
-    <div class="fixed inset-0 pointer-events-none overflow-hidden" style="z-index: 5;" aria-hidden="true">
-        @php
-            // Prendi 6 versi random dalle poesie
-            $floatingVerses = \App\Models\Poem::published()
-                ->inRandomOrder()
-                ->limit(6)
-                ->get()
-                ->map(function($p) {
-                    $content = strip_tags($p->content);
-                    $lines = array_filter(explode("\n", $content));
-                    if (empty($lines)) return null;
-                    $verse = trim($lines[array_rand($lines)]);
-                    return Str::limit($verse, 45);
-                })
-                ->filter()
-                ->take(6);
-        @endphp
-        
-        @foreach($floatingVerses as $idx => $verse)
-            <div class="absolute font-poem text-xl md:text-2xl italic font-medium pointer-events-none select-none px-4"
-                 style="
-                    top: {{ 12 + ($idx * 13) }}%;
-                    {{ $idx % 2 === 0 ? 'left' : 'right' }}: 8%;
-                    color: #10b981;
-                    opacity: 0.18;
-                    animation: float-verse-{{ $idx }} {{ 30 + ($idx * 2) }}s ease-in-out infinite;
-                    animation-delay: {{ $idx * 2 }}s;
-                    z-index: 5;
-                    max-width: 400px;
-                ">
-                "{{ $verse }}"
+    {{-- HERO con Paper Sheet + Titolo (come media page) --}}
+    <section class="relative py-12 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
+                
+                <!-- PAPER SHEET (dalla home) - Dimensione maggiorata -->
+                <div class="hero-paper-wrapper">
+                    <div class="hero-paper-sheet">
+                        <div class="flex items-center justify-center h-full">
+                            <h3 class="hero-paper-title">
+                                "{{ __('home.hero_category_poems') }}"
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TITOLO A FIANCO -->
+                <div class="text-center md:text-left">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight" style="font-family: 'Crimson Pro', serif;">
+                        Poesie & <span class="italic text-accent-400">Versi</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/80 mt-4 font-medium">
+                        L'arte della parola scritta
+                    </p>
+                    
+                    @auth
+                        <div class="mt-6">
+                            <a href="{{ route('poems.create') }}" 
+                               class="group inline-flex items-center gap-3 px-6 py-3 rounded-xl
+                                      bg-gradient-to-r from-accent-500 to-accent-600 
+                                      hover:from-accent-600 hover:to-accent-700
+                                      text-white font-bold shadow-xl shadow-accent-500/30
+                                      hover:shadow-2xl hover:shadow-accent-500/40 hover:-translate-y-1
+                                      transition-all duration-300">
+                                <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" 
+                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                          d="M12 4v16m8-8H4"/>
+                                </svg>
+                                <span>{{ __('poems.create.write_poem') }}</span>
+                            </a>
+                        </div>
+                    @endauth
+                </div>
             </div>
-            
-            <style>
-                @keyframes float-verse-{{ $idx }} {
-                    0%, 100% { 
-                        transform: translateY(0) rotate({{ -4 + ($idx * 1.5) }}deg);
-                    }
-                    50% { 
-                        transform: translateY(-40px) rotate({{ -2 + ($idx * 1.5) }}deg);
-                    }
-                }
-            </style>
-        @endforeach
-    </div>
+        </div>
+    </section>
     
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" style="z-index: 10;">
+    {{-- POEMS CONTENT SECTION --}}
+    <div class="poems-poetic-background">
         
-        
-        <!-- Poetic Header with animated quote marks -->
-        <div class="text-center mb-16 relative">
-            <!-- Decorative Quote Marks -->
-            <div class="absolute -top-8 left-1/2 -translate-x-1/2 text-primary-200 dark:text-primary-900/30 text-9xl font-poem leading-none pointer-events-none">
-                "
+        <!-- Citazione poetica gigante centrale con effetto typewriter -->
+        <div class="fixed inset-0 pointer-events-none flex items-center justify-center overflow-hidden" style="z-index: 1;" aria-hidden="true">
+            <div class="poetry-giant-quote">
+                <span class="poetry-typewriter" style="--chars: 45;">
+                    "La poesia è l'ombra dell'anima che danza"
+                </span>
             </div>
-            
-            <div class="relative z-10">
-                <h1 class="text-5xl md:text-7xl font-bold text-neutral-900 dark:text-white mb-4 font-poem tracking-tight">
-                    <span class="inline-block animate-fade-in">{{ __('poems.index.title') }}</span>
-                </h1>
-                <p class="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto font-poem italic animate-fade-in-delay-2">
-                    "{{ __('poems.index.subtitle') }}"
+        </div>
+        
+        <!-- Pattern calligrafico decorativo -->
+        <div class="fixed inset-0 pointer-events-none overflow-hidden opacity-30" style="z-index: 1;" aria-hidden="true">
+            <svg class="absolute top-1/4 right-1/4 w-96 h-96 text-accent-200/30 dark:text-accent-900/20" viewBox="0 0 200 200" fill="none">
+                <path d="M50 100 Q75 50 100 100 T150 100" stroke="currentColor" stroke-width="0.5" opacity="0.3"/>
+                <path d="M40 80 Q90 40 140 80" stroke="currentColor" stroke-width="0.3" opacity="0.2"/>
+                <circle cx="100" cy="50" r="30" stroke="currentColor" stroke-width="0.3" opacity="0.15"/>
+            </svg>
+            <svg class="absolute bottom-1/4 left-1/4 w-96 h-96 text-accent-200/30 dark:text-accent-900/20" viewBox="0 0 200 200" fill="none">
+                <path d="M100 50 Q50 75 100 100 T100 150" stroke="currentColor" stroke-width="0.5" opacity="0.3"/>
+                <path d="M80 40 Q40 90 80 140" stroke="currentColor" stroke-width="0.3" opacity="0.2"/>
+                <circle cx="50" cy="100" r="35" stroke="currentColor" stroke-width="0.3" opacity="0.15"/>
+            </svg>
+        </div>
+        
+        <!-- Ink bleed effect on scroll -->
+        <div class="ink-reveal-container"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" style="z-index: 10;">
+        
+        <!-- Poetic Search - Minimal & Elegant -->
+        <div class="mb-16 animate-fade-in-delay-1">
+            <div class="max-w-2xl mx-auto text-center mb-8">
+                <p class="text-lg text-neutral-600 dark:text-neutral-400 italic font-poem">
+                    "Cerca tra le parole dell'anima"
                 </p>
             </div>
             
-            @auth
-                <div class="mt-8 animate-fade-in-delay-2">
-                    <a href="{{ route('poems.create') }}" 
-                       class="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl
-                              bg-gradient-to-r from-primary-500 to-primary-600 
-                              hover:from-primary-600 hover:to-primary-700
-                              text-white font-semibold shadow-2xl shadow-primary-500/30
-                              hover:shadow-3xl hover:shadow-primary-500/40 hover:-translate-y-1
-                              transition-all duration-300">
-                        <svg class="w-6 h-6 group-hover:rotate-90 transition-transform duration-300" 
-                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M12 4v16m8-8H4"/>
-                        </svg>
-                        <span class="font-poem text-lg">{{ __('poems.create.write_poem') }}</span>
-                    </a>
-                </div>
-            @endauth
-        </div>
-        
-        <!-- Search & Filters - Modern Card -->
-        <div class="mb-12 animate-fade-in-delay-1">
-            <div class="backdrop-blur-xl bg-white/80 dark:bg-neutral-800/80 
-                        rounded-3xl shadow-2xl border border-white/20 dark:border-neutral-700/50 
-                        p-6 md:p-8">
-                
-                <!-- View Mode Toggle -->
-                <div class="flex items-center justify-between mb-6 pb-6 border-b border-neutral-200 dark:border-neutral-700">
-                    <h3 class="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                        {{ __('poems.index.view_mode') }}
-                    </h3>
-                    <div class="flex gap-2">
-                        <button wire:click="setViewMode('grid')"
-                                class="p-3 rounded-xl transition-all duration-200
-                                       {{ $viewMode === 'grid' 
-                                          ? 'bg-primary-500 text-white shadow-lg' 
-                                          : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-600' }}"
-                                title="{{ __('poems.index.view_grid') }}">
+            <div class="max-w-xl mx-auto">
+                <!-- Poetic Search Input -->
+                <div class="relative group">
+                    <input wire:model.live.debounce.500ms="search"
+                           type="text"
+                           placeholder="Cerca una poesia..."
+                           class="w-full px-6 py-4 rounded-full 
+                                  border-2 border-neutral-300/50 dark:border-neutral-700/50 
+                                  bg-white/60 dark:bg-neutral-800/60
+                                  backdrop-blur-sm
+                                  text-neutral-900 dark:text-white placeholder:text-neutral-500
+                                  focus:border-accent-400 focus:ring-4 focus:ring-accent-400/20 focus:bg-white dark:focus:bg-neutral-800
+                                  transition-all duration-300 
+                                  text-center italic"
+                           style="font-family: 'Crimson Pro', serif; font-size: 1.125rem;">
+                    
+                    @if($search)
+                        <button wire:click="$set('search', '')" 
+                                class="absolute right-6 top-1/2 -translate-y-1/2
+                                       text-neutral-400 hover:text-accent-600
+                                       hover:scale-110 transition-all">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                                      d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </button>
-                        <button wire:click="setViewMode('list')"
-                                class="p-3 rounded-xl transition-all duration-200
-                                       {{ $viewMode === 'list' 
-                                          ? 'bg-primary-500 text-white shadow-lg' 
-                                          : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-600' }}"
-                                title="{{ __('poems.index.view_list') }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M4 6h16M4 12h16M4 18h16"/>
-                            </svg>
-                        </button>
-                        <button wire:click="setViewMode('magazine')"
-                                class="p-3 rounded-xl transition-all duration-200
-                                       {{ $viewMode === 'magazine' 
-                                          ? 'bg-primary-500 text-white shadow-lg' 
-                                          : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-600' }}"
-                                title="{{ __('poems.index.view_magazine') }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                            </svg>
-                        </button>
-                    </div>
+                    @endif
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                    
-                    <!-- Search with Icon -->
-                    <div class="lg:col-span-2 relative group">
-                        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-primary-500 transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
-                        </div>
-                        <input wire:model.live.debounce.500ms="search"
-                               type="text"
-                               placeholder="{{ __('poems.index.search_placeholder') }}"
-                               class="w-full pl-12 pr-4 py-4 rounded-2xl 
-                                      border-2 border-neutral-200 dark:border-neutral-700 
-                                      bg-white dark:bg-neutral-900
-                                      text-neutral-900 dark:text-white placeholder:text-neutral-400
-                                      focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20
-                                      transition-all duration-300 font-poem">
-                        
-                        @if($search)
-                            <button wire:click="$set('search', '')" 
-                                    class="absolute right-4 top-1/2 -translate-y-1/2
-                                           text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200
-                                           hover:scale-110 transition-all">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                          d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
-                            </button>
-                        @endif
-                    </div>
-                    
-                    <!-- Filters -->
-                    <!-- Category -->
-                    <div class="relative">
-                        <select wire:model.live="category"
-                                class="w-full appearance-none pl-4 pr-10 py-4 rounded-2xl 
-                                       bg-gradient-to-br from-white to-neutral-50 
-                                       dark:from-neutral-800 dark:to-neutral-900
-                                       border border-neutral-300 dark:border-neutral-600
-                                       text-neutral-900 dark:text-white
-                                       focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30
-                                       hover:border-primary-400 dark:hover:border-primary-600
-                                       hover:shadow-md
-                                       transition-all duration-200 cursor-pointer 
-                                       font-medium text-sm">
-                            <option value="">{{ __('poems.filters.all_categories') }}</option>
-                            @foreach($categories as $key => $name)
-                                <option value="{{ $key }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                            <svg class="w-5 h-5 text-neutral-500 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                    </div>
-                    
-                    <!-- Language -->
-                    <div class="relative">
-                        <select wire:model.live="language"
-                                class="w-full appearance-none pl-4 pr-10 py-4 rounded-2xl 
-                                       bg-gradient-to-br from-white to-neutral-50 
-                                       dark:from-neutral-800 dark:to-neutral-900
-                                       border border-neutral-300 dark:border-neutral-600
-                                       text-neutral-900 dark:text-white
-                                       focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30
-                                       hover:border-primary-400 dark:hover:border-primary-600
-                                       hover:shadow-md
-                                       transition-all duration-200 cursor-pointer 
-                                       font-medium text-sm">
-                            <option value="">{{ __('poems.filters.all_languages') }}</option>
-                            @foreach($languages as $code => $name)
-                                <option value="{{ $code }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
-                        <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                            <svg class="w-5 h-5 text-neutral-500 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                    </div>
-                    
-                    <!-- Sort -->
-                    <div class="relative">
-                        <select wire:model.live="sort"
-                                class="w-full appearance-none pl-4 pr-10 py-4 rounded-2xl 
-                                       bg-gradient-to-br from-white to-neutral-50 
-                                       dark:from-neutral-800 dark:to-neutral-900
-                                       border border-neutral-300 dark:border-neutral-600
-                                       text-neutral-900 dark:text-white
-                                       focus:border-primary-500 focus:ring-2 focus:ring-primary-500/30
-                                       hover:border-primary-400 dark:hover:border-primary-600
-                                       hover:shadow-md
-                                       transition-all duration-200 cursor-pointer 
-                                       font-medium text-sm">
-                            <option value="recent">{{ __('poems.filters.sort_recent') }}</option>
-                            <option value="popular">{{ __('poems.filters.sort_popular') }}</option>
-                            <option value="oldest">{{ __('poems.filters.sort_oldest') }}</option>
-                            <option value="alphabetical">{{ __('poems.filters.sort_alphabetical') }}</option>
-                        </select>
-                        <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                            <svg class="w-5 h-5 text-neutral-500 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Active Filters -->
-                @if($search || $category || $language || $type || $sort !== 'recent')
-                    <div class="mt-6 flex items-center justify-between gap-4 pt-6 border-t border-neutral-200 dark:border-neutral-700">
-                        <div class="flex flex-wrap gap-2">
-                            @if($search)
-                                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full
-                                           bg-gradient-to-r from-primary-100 to-primary-50 
-                                           dark:from-primary-900/30 dark:to-primary-900/20
-                                           text-primary-700 dark:text-primary-300 text-sm font-medium
-                                           border border-primary-200 dark:border-primary-800">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                    </svg>
-                                    "{{ Str::limit($search, 20) }}"
-                                    <button wire:click="$set('search', '')" 
-                                            class="hover:text-primary-900 dark:hover:text-primary-100 font-bold">×</button>
-                                </span>
-                            @endif
-                            
-                            @if($category)
-                                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full
-                                           bg-gradient-to-r from-primary-100 to-primary-50 
-                                           dark:from-primary-900/30 dark:to-primary-900/20
-                                           text-primary-700 dark:text-primary-300 text-sm font-medium
-                                           border border-primary-200 dark:border-primary-800">
-                                    {{ $categories[$category] }}
-                                    <button wire:click="$set('category', '')" 
-                                            class="hover:text-primary-900 dark:hover:text-primary-100 font-bold">×</button>
-                                </span>
-                            @endif
-                            
-                            @if($language)
-                                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full
-                                           bg-gradient-to-r from-primary-100 to-primary-50 
-                                           dark:from-primary-900/30 dark:to-primary-900/20
-                                           text-primary-700 dark:text-primary-300 text-sm font-medium
-                                           border border-primary-200 dark:border-primary-800">
-                                    {{ $languages[$language] }}
-                                    <button wire:click="$set('language', '')" 
-                                            class="hover:text-primary-900 dark:hover:text-primary-100 font-bold">×</button>
-                                </span>
-                            @endif
+                <!-- Minimal Filters - Hidden by default, expandable -->
+                <details class="mt-6">
+                    <summary class="text-center text-sm text-neutral-500 hover:text-accent-600 cursor-pointer transition-colors font-poem">
+                        Filtri avanzati
+                    </summary>
+                    <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <!-- Category -->
+                        <div class="relative">
+                            <select wire:model.live="category"
+                                    class="w-full appearance-none px-4 py-3 rounded-xl 
+                                           bg-white/60 dark:bg-neutral-800/60
+                                           border border-neutral-300/50 dark:border-neutral-700/50
+                                           text-neutral-900 dark:text-white text-sm
+                                           focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20
+                                           transition-all cursor-pointer font-poem">
+                                <option value="">Tutte le categorie</option>
+                                @foreach($categories as $key => $name)
+                                    <option value="{{ $key }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         
-                        <button wire:click="resetFilters"
-                                class="px-4 py-2 text-sm text-neutral-600 dark:text-neutral-400
-                                       hover:text-primary-600 dark:hover:text-primary-400 
-                                       transition-colors font-medium whitespace-nowrap">
-                            ✨ {{ __('poems.index.clear_filters') }}
-                        </button>
+                        <!-- Language -->
+                        <div class="relative">
+                            <select wire:model.live="language"
+                                    class="w-full appearance-none px-4 py-3 rounded-xl 
+                                           bg-white/60 dark:bg-neutral-800/60
+                                           border border-neutral-300/50 dark:border-neutral-700/50
+                                           text-neutral-900 dark:text-white text-sm
+                                           focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20
+                                           transition-all cursor-pointer font-poem">
+                                <option value="">Tutte le lingue</option>
+                                @foreach($languages as $code => $name)
+                                    <option value="{{ $code }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <!-- Sort -->
+                        <div class="relative">
+                            <select wire:model.live="sort"
+                                    class="w-full appearance-none px-4 py-3 rounded-xl 
+                                           bg-white/60 dark:bg-neutral-800/60
+                                           border border-neutral-300/50 dark:border-neutral-700/50
+                                           text-neutral-900 dark:text-white text-sm
+                                           focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20
+                                           transition-all cursor-pointer font-poem">
+                                <option value="recent">Recenti</option>
+                                <option value="popular">Popolari</option>
+                                <option value="oldest">Meno recenti</option>
+                                <option value="alphabetical">Alfabetico</option>
+                            </select>
+                        </div>
                     </div>
-                @endif
+                </details>
             </div>
         </div>
         
-        <!-- Loading with Poetry -->
-        <div wire:loading.delay class="mb-8 flex justify-center">
-            <div class="inline-flex items-center gap-3 px-6 py-4 rounded-2xl
-                        backdrop-blur-xl bg-primary-50/80 dark:bg-primary-900/20 
-                        text-primary-600 dark:text-primary-400
-                        border border-primary-200 dark:border-primary-800
-                        shadow-lg">
-                <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" 
-                            stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" 
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span class="font-medium font-poem">{{ __('poems.index.searching') }}</span>
-            </div>
-        </div>
-        
-        <!-- Poems Display -->
-        @if($poems->count() > 0)
-            
-            <!-- GRID VIEW (Default) -->
-            @if($viewMode === 'grid')
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <!-- Poems Grid - Poetic Style -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            @if($poems && $poems->count() > 0)
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                     @foreach($poems as $index => $poem)
-                        <div style="animation-delay: {{ $index * 0.1 }}s" 
-                             class="opacity-0 animate-fade-in">
-                            <livewire:poems.poem-card 
-                                :poem="$poem" 
-                                :key="'poem-'.$poem->id" 
-                                wire:key="poem-{{ $poem->id }}" />
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-            
-            <!-- LIST VIEW -->
-            @if($viewMode === 'list')
-                <div class="space-y-6 mb-12">
-                    @foreach($poems as $index => $poem)
-                        <div style="animation-delay: {{ $index * 0.05 }}s" 
-                             class="opacity-0 animate-fade-in">
-                            <article class="backdrop-blur-xl bg-white/80 dark:bg-neutral-800/80 
-                                           rounded-2xl shadow-lg hover:shadow-xl
-                                           border border-white/50 dark:border-neutral-700/50
-                                           overflow-hidden transition-all duration-300 hover:-translate-y-1
-                                           cursor-pointer"
-                                    onclick="window.location='{{ route('poems.show', $poem->slug) }}'">
-                                <div class="flex flex-col md:flex-row">
-                                    <!-- Thumbnail Small -->
-                                    <div class="md:w-48 aspect-[4/3] md:aspect-square relative flex-shrink-0">
-                                        @if($poem->thumbnail_url)
-                                            <img src="{{ $poem->thumbnail_url }}" 
-                                                 alt="{{ $poem->title ?: __('poems.untitled') }}"
-                                                 class="w-full h-full object-cover">
-                                        @else
-                                            <div class="w-full h-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
-                                                <svg class="w-16 h-16 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
-                                                          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                </svg>
-                                            </div>
-                                        @endif
-                                        
-                                        @if($poem->is_featured)
-                                            <div class="absolute top-2 right-2">
-                                                <x-ui.badges.category label="⭐ Featured" color="warning" class="!text-xs" />
-                                            </div>
-                                        @endif
-                                    </div>
+                    <?php $paperRotation = rand(-2, 2); ?>
+                    <div class="poetry-card-wrapper"
+                         x-data="{ visible: false }" 
+                         x-intersect.once="visible = true">
+                        <div x-show="visible"
+                             x-transition:enter="transition ease-out duration-700"
+                             x-transition:enter-start="opacity-0 translate-y-8"
+                             x-transition:enter-end="opacity-100 translate-y-0"
+                             style="transition-delay: {{ ($index % 9) * 100 }}ms">
+                            
+                            <div class="poetry-paper-card cursor-pointer" 
+                                 style="transform: rotate({{ $paperRotation }}deg);"
+                                 onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $poem->id }} })">
+                                {{-- Author --}}
+                                <div class="poetry-card-author">
+                                    <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 60) }}" 
+                                         alt="{{ $poem->user->name }}"
+                                         class="w-10 h-10 rounded-full object-cover ring-2 ring-accent-200">
+                                    <span>{{ $poem->user->name }}</span>
+                                </div>
+                                
+                                {{-- Title & Excerpt --}}
+                                <div>
+                                    <h3 class="poetry-card-title">
+                                        "{{ $poem->title ?: __('poems.untitled') }}"
+                                    </h3>
                                     
-                                    <!-- Content -->
-                                    <div class="flex-1 p-6 md:p-8 flex flex-col">
-                                        <div class="flex items-start justify-between gap-4 mb-4">
-                                            <div class="flex-1">
-                                                <div class="flex items-center gap-2 mb-3">
-                                                    <x-ui.badges.category 
-                                                        :label="config('poems.categories')[$poem->category] ?? $poem->category" 
-                                                        color="primary" 
-                                                        class="!text-xs !px-3 !py-1" />
-                                                </div>
-                                                
-                                                <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-2 font-poem">
-                                                    {{ $poem->title ? '"' . $poem->title . '"' : __('poems.untitled') }}
-                                                </h3>
-                                                
-                                                <p class="text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-4 font-poem italic">
-                                                    {{ $poem->description ?? Str::limit(strip_tags($poem->content), 150) }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="flex items-center justify-between mt-auto">
-                                            <x-ui.user-avatar 
-                                                :user="$poem->user" 
-                                                size="sm" 
-                                                :showName="true" 
-                                                :link="false" />
-                                            
-                                            <div class="flex items-center gap-4" @click.stop>
-                                                <x-like-button :itemId="$poem->id" itemType="poem" :isLiked="false" :likesCount="$poem->like_count ?? 0" size="sm" />
-                                                <x-comment-button :itemId="$poem->id" itemType="poem" :commentsCount="$poem->comment_count ?? 0" size="sm" />
-                                            </div>
-                                        </div>
+                                    <div class="poetry-card-excerpt">
+                                        {{ $poem->description ?? Str::limit(strip_tags($poem->content), 150) }}
                                     </div>
                                 </div>
-                            </article>
+                                
+                                {{-- Meta - Social buttons che NON aprono il modale --}}
+                                <div class="poetry-card-meta" onclick="event.stopPropagation()">
+                                    <div class="flex items-center gap-2.5">
+                                        <x-like-button 
+                                            :itemId="$poem->id"
+                                            itemType="poem"
+                                            :isLiked="false"
+                                            :likesCount="$poem->like_count ?? 0"
+                                            size="sm"
+                                            class="[&_span]:!text-neutral-700 [&_svg]:!text-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
+                                        
+                                        <x-comment-button 
+                                            :itemId="$poem->id"
+                                            itemType="poem"
+                                            :commentsCount="$poem->comment_count ?? 0"
+                                            size="sm"
+                                            class="[&_button]:!text-neutral-700 [&_span]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
+                                        
+                                        <x-share-button 
+                                            :itemId="$poem->id"
+                                            itemType="poem"
+                                            size="sm"
+                                            class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5" />
+                                    </div>
+                                    <span class="text-xs">{{ $poem->created_at->diffForHumans() }}</span>
+                                </div>
+                            </div>
                         </div>
+                    </div>
                     @endforeach
+                
+                <!-- Pagination -->
+                <div class="flex justify-center mt-12">
+                    {{ $poems->links() }}
                 </div>
-            @endif
-            
-            <!-- MAGAZINE VIEW - BENTO GRID ASIMMETRICO -->
-            @if($viewMode === 'magazine')
-                @include('livewire.poems.poem-index-magazine')
-            @endif
-            
-            <!-- Pagination -->
-            <div class="flex justify-center">
-                {{ $poems->links() }}
-            </div>
-        @else
-            <!-- Empty State - Poetic -->
-            <div class="text-center py-20 animate-fade-in">
-                <div class="inline-flex items-center justify-center w-32 h-32 rounded-full 
-                           bg-gradient-to-br from-primary-100 to-primary-50 
-                           dark:from-primary-900/20 dark:to-primary-900/10
-                           mb-8 relative">
-                    <!-- Animated circles -->
-                    <div class="absolute inset-0 rounded-full border-2 border-primary-300 dark:border-primary-700 animate-ping opacity-20"></div>
-                    <svg class="w-16 h-16 text-primary-500 dark:text-primary-400" 
-                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
-                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                    </svg>
-                </div>
-                
-                <h3 class="text-3xl font-bold text-neutral-900 dark:text-white mb-4 font-poem">
-                    {{ __('poems.index.no_poems_title') }}
-                </h3>
-                
-                <p class="text-lg text-neutral-600 dark:text-neutral-400 mb-8 max-w-md mx-auto font-poem italic">
-                    "{{ __('poems.index.no_poems_subtitle') }}"
-                </p>
-                
-                @if($search || $category || $language || $type)
-                    <button wire:click="resetFilters"
-                            class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl
-                                   bg-gradient-to-r from-primary-500 to-primary-600 
-                                   hover:from-primary-600 hover:to-primary-700
-                                   text-white font-semibold shadow-lg
-                                   hover:-translate-y-1 transition-all duration-300">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            @else
+                <!-- Empty State - Poetic -->
+                <div class="text-center py-20">
+                    <div class="inline-flex items-center justify-center w-32 h-32 rounded-full 
+                               bg-gradient-to-br from-accent-100 to-accent-50 
+                               dark:from-accent-900/20 dark:to-accent-900/10
+                               mb-8">
+                        <svg class="w-16 h-16 text-accent-500" 
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                         </svg>
-                        <span class="font-poem">{{ __('poems.index.explore_all') }}</span>
-                    </button>
-                @endif
-            </div>
-        @endif
+                    </div>
+                    
+                    <h3 class="text-3xl font-bold text-neutral-900 dark:text-white mb-4" style="font-family: 'Crimson Pro', serif;">
+                        Nessuna poesia trovata
+                    </h3>
+                    
+                    <p class="text-lg text-neutral-600 dark:text-neutral-400 mb-8 italic font-poem">
+                        "Il silenzio è la poesia non ancora scritta"
+                    </p>
+                    
+                    @if($search || $category || $language)
+                        <button wire:click="resetFilters"
+                                class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl
+                                       bg-gradient-to-r from-accent-500 to-accent-600 
+                                       hover:from-accent-600 hover:to-accent-700
+                                       text-white font-semibold shadow-lg
+                                       hover:-translate-y-1 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                            <span>Mostra tutte</span>
+                        </button>
+                    @endif
+                </div>
+            @endif
+        </div>
+        </div>
     </div>
+    
+    {{-- Poem Modal with Book Opening Effect --}}
+    <livewire:poems.poem-modal />
+    
+    <style>
+        /* ========================================
+           POETIC BACKGROUND & ANIMATIONS
+           ======================================== */
+        
+        .poems-poetic-background {
+            position: relative;
+            background: 
+                /* Texture carta antica */
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='4' seed='3' /%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23paper)' opacity='0.04'/%3E%3C/svg%3E"),
+                /* Gradient animato poetico - Aurora letteraria */
+                radial-gradient(ellipse 80% 50% at 50% 0%, 
+                    rgba(251, 207, 232, 0.15) 0%,
+                    transparent 50%
+                ),
+                radial-gradient(ellipse 80% 50% at 50% 100%, 
+                    rgba(254, 215, 170, 0.12) 0%,
+                    transparent 50%
+                ),
+                linear-gradient(135deg, 
+                    #faf8f5 0%,
+                    #fff9f3 20%,
+                    #fef5ed 40%,
+                    #fdf3eb 60%,
+                    #fcf1e9 80%,
+                    #fbefe7 100%
+                );
+            min-height: 100vh;
+            animation: poetry-aurora 15s ease-in-out infinite;
+        }
+        
+        @keyframes poetry-aurora {
+            0%, 100% {
+                background-position: 0% 0%, 0% 100%, 0% 0%;
+            }
+            50% {
+                background-position: 100% 0%, 100% 100%, 100% 100%;
+            }
+        }
+        
+        :is(.dark .poems-poetic-background) {
+            background: 
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='4' seed='3' /%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23paper)' opacity='0.06'/%3E%3C/svg%3E"),
+                radial-gradient(ellipse 80% 50% at 50% 0%, 
+                    rgba(139, 92, 46, 0.08) 0%,
+                    transparent 50%
+                ),
+                radial-gradient(ellipse 80% 50% at 50% 100%, 
+                    rgba(212, 165, 116, 0.06) 0%,
+                    transparent 50%
+                ),
+                linear-gradient(135deg, 
+                    #1a1816 0%,
+                    #1e1c19 25%,
+                    #1c1a17 50%,
+                    #1f1d1a 75%,
+                    #1b1916 100%
+                );
+            animation: poetry-aurora 15s ease-in-out infinite;
+        }
+        
+        /* Citazione gigante con effetto typewriter */
+        .poetry-giant-quote {
+            font-family: 'Crimson Pro', serif;
+            font-size: 4rem;
+            font-weight: 300;
+            font-style: italic;
+            text-align: center;
+            max-width: 900px;
+            line-height: 1.4;
+        }
+        
+        .poetry-typewriter {
+            display: inline-block;
+            background: linear-gradient(
+                90deg,
+                rgba(139, 92, 46, 0.06) 0%,
+                rgba(139, 92, 46, 0.12) 30%,
+                rgba(139, 92, 46, 0.06) 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: typewriter-gradient 5s ease-in-out infinite;
+        }
+        
+        :is(.dark .poetry-typewriter) {
+            background: linear-gradient(
+                90deg,
+                rgba(212, 165, 116, 0.08) 0%,
+                rgba(212, 165, 116, 0.15) 30%,
+                rgba(212, 165, 116, 0.08) 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        
+        @keyframes typewriter-gradient {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .poetry-giant-quote {
+                font-size: 2rem;
+                max-width: 90%;
+            }
+        }
+        
+        
+        /* ========================================
+           POETRY PAGE HERO - Paper Sheet (ESATTO dalla home, ingrandito)
+           ======================================== */
+        
+        .hero-paper-wrapper {
+            display: block;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-paper-wrapper:hover {
+            transform: translateY(-6px) scale(1.05);
+        }
+        
+        .hero-paper-sheet {
+            background: 
+                linear-gradient(135deg, 
+                    rgba(255,253,245,0) 0%, 
+                    rgba(250,240,220,0.4) 25%, 
+                    rgba(245,235,215,0.3) 50%, 
+                    rgba(240,230,210,0.4) 75%, 
+                    rgba(255,250,240,0) 100%),
+                radial-gradient(circle at 20% 30%, rgba(210,180,140,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(205,175,135,0.12) 0%, transparent 50%),
+                #faf6ed;
+            padding: 2rem 1.5rem;
+            height: 260px;
+            border-radius: 3px;
+            box-shadow: 
+                inset 0 0 0 2px rgba(180, 120, 70, 0.7),
+                inset 0 0 12px 4px rgba(160, 100, 60, 0.4),
+                inset 0 0 20px 7px rgba(140, 90, 50, 0.25),
+                0 6px 10px rgba(0, 0, 0, 0.2),
+                0 12px 20px rgba(0, 0, 0, 0.15),
+                0 18px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hero-paper-wrapper:hover .hero-paper-sheet {
+            box-shadow: 
+                inset 0 0 0 3px rgba(180, 120, 70, 0.85),
+                inset 0 0 18px 7px rgba(160, 100, 60, 0.55),
+                inset 0 0 28px 11px rgba(140, 90, 50, 0.35),
+                0 10px 16px rgba(0, 0, 0, 0.3),
+                0 20px 30px rgba(0, 0, 0, 0.25),
+                0 30px 45px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero-paper-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #2d2520;
+            line-height: 1.4;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+        
+        .hero-paper-wrapper:hover .hero-paper-title {
+            color: #4a7c59;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-paper-wrapper {
+                width: 180px;
+            }
+            
+            .hero-paper-sheet {
+                padding: 1.75rem 1.25rem;
+                height: 240px;
+            }
+            
+            .hero-paper-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        
+        /* ========================================
+           POETRY CARDS - Grid Items
+           ======================================== */
+        
+        .poetry-card-wrapper {
+            position: relative;
+        }
+        
+        .poetry-paper-card {
+            background: 
+                /* Gradient di luce poetica */
+                radial-gradient(circle at top left, 
+                    rgba(255, 255, 255, 0.6) 0%,
+                    transparent 40%
+                ),
+                radial-gradient(circle at bottom right, 
+                    rgba(254, 243, 199, 0.4) 0%,
+                    transparent 40%
+                ),
+                linear-gradient(135deg, 
+                    rgba(255,253,245,0) 0%, 
+                    rgba(250,240,220,0.3) 25%, 
+                    rgba(245,235,215,0.2) 50%, 
+                    rgba(240,230,210,0.3) 75%, 
+                    rgba(255,250,240,0) 100%),
+                #fffef9;
+            padding: 2rem;
+            border-radius: 6px;
+            box-shadow: 
+                inset 0 0 0 1.5px rgba(180, 120, 70, 0.5),
+                inset 0 0 8px 3px rgba(160, 100, 60, 0.3),
+                inset 0 0 16px 6px rgba(140, 90, 50, 0.2),
+                0 4px 8px rgba(0, 0, 0, 0.1),
+                0 8px 16px rgba(0, 0, 0, 0.08),
+                0 12px 24px rgba(0, 0, 0, 0.06);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(205, 180, 140, 0.25);
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .poetry-card-wrapper:hover .poetry-paper-card {
+            transform: translateY(-12px) scale(1.04) rotateX(2deg) !important;
+            box-shadow: 
+                inset 0 0 0 2.5px rgba(180, 120, 70, 0.9),
+                inset 0 0 16px 6px rgba(251, 191, 36, 0.3),
+                inset 0 0 24px 10px rgba(254, 215, 170, 0.2),
+                0 16px 32px rgba(0, 0, 0, 0.2),
+                0 32px 64px rgba(0, 0, 0, 0.18),
+                0 48px 96px rgba(0, 0, 0, 0.15),
+                /* Glow letterario dorato */
+                0 0 60px rgba(251, 191, 36, 0.3),
+                0 0 100px rgba(254, 215, 170, 0.2);
+        }
+        
+        .poetry-card-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: rgba(45, 37, 32, 0.8);
+            font-family: 'Crimson Pro', serif;
+        }
+        
+        .poetry-card-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #2d2520;
+            margin-bottom: 1rem;
+            font-style: italic;
+            transition: all 0.5s ease;
+            position: relative;
+            background: linear-gradient(
+                90deg,
+                #2d2520 0%,
+                #2d2520 50%,
+                #4a7c59 50%,
+                #4a7c59 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .poetry-card-wrapper:hover .poetry-card-title {
+            background-position: -100% 0;
+            text-shadow: 0 0 20px rgba(74, 124, 89, 0.3);
+        }
+        
+        .poetry-card-excerpt {
+            flex: 1;
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.9375rem;
+            line-height: 1.8;
+            color: #4a4a4a;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .poetry-card-wrapper:hover .poetry-card-excerpt {
+            color: #2d2520;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Decorative flourish che appare al hover */
+        .poetry-paper-card::before {
+            content: '';
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        
+        .poetry-card-wrapper:hover .poetry-paper-card::before {
+            border-color: rgba(251, 191, 36, 0.3);
+            opacity: 1;
+            box-shadow: 
+                inset 0 0 20px rgba(251, 191, 36, 0.1),
+                0 0 30px rgba(251, 191, 36, 0.15);
+        }
+        
+        .poetry-card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(180, 120, 70, 0.2);
+            color: rgba(45, 37, 32, 0.6);
+            margin-top: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .poetry-paper-card {
+                padding: 1.5rem;
+                min-height: 280px;
+            }
+            
+            .poetry-card-title {
+                font-size: 1.25rem;
+            }
+            
+            .poetry-card-excerpt {
+                font-size: 0.875rem;
+            }
+        }
+    </style>
 </div>

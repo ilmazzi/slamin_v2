@@ -103,17 +103,18 @@
                              x-transition:enter="transition ease-out duration-1000"
                              x-transition:enter-start="opacity-0 scale-95"
                              x-transition:enter-end="opacity-100 scale-100"
-                             class="h-full relative aspect-video lg:aspect-[16/9]">
+                             class="relative aspect-video">
                             
                             <img src="{{ $mostPopularVideo->thumbnail_url }}" 
                                  onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1200&q=80'"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                 class="absolute inset-0 w-full h-full object-cover"
+                                 style="object-position: 50% 35%;">
                             <div class="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/40 to-transparent"></div>
 
                             {{-- Play Button --}}
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <div class="w-20 h-20 md:w-24 md:h-24 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all">
-                                    <svg class="w-10 h-10 md:w-12 md:h-12 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-12 h-12 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M8 5v14l11-7z"/>
                                     </svg>
                                 </div>
@@ -172,8 +173,8 @@
                     </div>
                 </div>
 
-                {{-- Sezione Inferiore: 3 Video Orizzontali --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {{-- Sezione Inferiore: 3 Video Orizzontali - FULL WIDTH --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     @foreach($videos->skip(2)->take(3) as $index => $video)
                         <x-video-frame-light :video="$video" :index="$index + 4" />
                     @endforeach
@@ -229,7 +230,8 @@
                             
                             <img src="{{ $mostPopularPhoto->image_url }}" 
                                  onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80'"
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter grayscale hover:grayscale-0">
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter grayscale hover:grayscale-0"
+                                 style="object-position: center 35%;">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
 
                             {{-- Zoom Icon --}}
@@ -462,6 +464,17 @@
     <livewire:media.photo-modal />
 
     <style>
+        /* Updated: 1762971590 */
+        .featured-hero-media {
+            object-position: 50% 35% !important;
+        }
+
+        @media (max-width: 1024px) {
+            .featured-hero-media {
+                object-position: 50% 38% !important;
+            }
+        }
+
         /* ========================================
            MEDIA PAGE HERO - Film Card (come homepage)
            ======================================== */

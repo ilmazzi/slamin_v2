@@ -9,9 +9,9 @@ $rotation = rand(-3, 3);
 $tapeWidth = rand(60, 90);
 $tapeRotation = rand(-8, 8);
 $sizeClasses = [
-    'small' => 'w-64',
-    'normal' => 'w-80 md:w-96',
-    'large' => 'w-96 md:w-[28rem]'
+    'small' => 'w-full',
+    'normal' => 'w-full',
+    'large' => 'w-full'
 ];
 ?>
 
