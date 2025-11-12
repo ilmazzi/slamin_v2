@@ -88,12 +88,14 @@
                 </div>
             </div>
 
-            {{-- Masonry Grid Videos - COMPATTA --}}
+            {{-- Video Layout: Hero + 2 laterali + 3 sotto --}}
             @if($mostPopularVideo)
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-auto">
-                    
-                    {{-- Video Hero (span 2 cols + 1 row) - PIÙ PICCOLO --}}
-                    <div class="md:col-span-2 group cursor-pointer rounded-lg overflow-hidden bg-black"
+                @php $videos = $videoType === 'popular' ? $popularVideos : $recentVideos; @endphp
+                
+                {{-- Sezione Superiore: Hero + 2 Video Laterali --}}
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+                    {{-- Video Hero (2 colonne) --}}
+                    <div class="lg:col-span-2 group cursor-pointer rounded-lg overflow-hidden bg-black"
                          onclick="Livewire.dispatch('openVideoModal', { videoId: {{ $mostPopularVideo->id }} })"
                          x-data="{ visible: false }" 
                          x-intersect.once="visible = true">
@@ -101,7 +103,7 @@
                              x-transition:enter="transition ease-out duration-1000"
                              x-transition:enter-start="opacity-0 scale-95"
                              x-transition:enter-end="opacity-100 scale-100"
-                             class="h-full relative aspect-video md:aspect-auto">
+                             class="h-full relative aspect-video lg:aspect-[16/9]">
                             
                             <img src="{{ $mostPopularVideo->thumbnail_url }}" 
                                  onerror="this.src='https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1200&q=80'"
@@ -162,10 +164,18 @@
                         </div>
                     </div>
 
-                    {{-- Video Grid (5 video) - COMPONENTE LEGGERO --}}
-                    @php $videos = $videoType === 'popular' ? $popularVideos : $recentVideos; @endphp
-                    @foreach($videos->take(5) as $index => $video)
-                        <x-video-frame-light :video="$video" :index="$index + 2" />
+                    {{-- 2 Video Laterali (1 colonna, impilati) --}}
+                    <div class="grid grid-cols-2 lg:grid-cols-1 gap-4">
+                        @foreach($videos->take(2) as $index => $video)
+                            <x-video-frame-light :video="$video" :index="$index + 2" />
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Sezione Inferiore: 3 Video Orizzontali --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach($videos->skip(2)->take(3) as $index => $video)
+                        <x-video-frame-light :video="$video" :index="$index + 4" />
                     @endforeach
                 </div>
             @endif
@@ -200,12 +210,14 @@
                 </div>
             </div>
 
-            {{-- Photo Masonry - COMPATTA --}}
+            {{-- Photo Layout: Hero + 2 laterali + 3 sotto --}}
             @if($mostPopularPhoto)
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-auto">
-                    
-                    {{-- Foto Hero (span 2 cols + 1 row) - PIÙ PICCOLA --}}
-                    <div class="md:col-span-2 group cursor-pointer rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800"
+                @php $photos = $photoType === 'popular' ? $popularPhotos : $recentPhotos; @endphp
+                
+                {{-- Sezione Superiore: Hero + 2 Foto Laterali --}}
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+                    {{-- Foto Hero (2 colonne) --}}
+                    <div class="lg:col-span-2 group cursor-pointer rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800"
                          onclick="Livewire.dispatch('openPhotoModal', { photoId: {{ $mostPopularPhoto->id }} })"
                          x-data="{ visible: false }" 
                          x-intersect.once="visible = true">
@@ -213,7 +225,7 @@
                              x-transition:enter="transition ease-out duration-1000"
                              x-transition:enter-start="opacity-0 scale-95"
                              x-transition:enter-end="opacity-100 scale-100"
-                             class="h-full relative aspect-square md:aspect-auto">
+                             class="h-full relative aspect-square lg:aspect-[4/3]">
                             
                             <img src="{{ $mostPopularPhoto->image_url }}" 
                                  onerror="this.src='https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80'"
@@ -274,10 +286,18 @@
                         </div>
                     </div>
 
-                    {{-- Foto Grid - COMPONENTE LEGGERO (5 foto) --}}
-                    @php $photos = $photoType === 'popular' ? $popularPhotos : $recentPhotos; @endphp
-                    @foreach($photos->take(5) as $index => $photo)
-                        <x-photo-frame-light :photo="$photo" :index="$index + 2" />
+                    {{-- 2 Foto Laterali (1 colonna, impilate) --}}
+                    <div class="grid grid-cols-2 lg:grid-cols-1 gap-4">
+                        @foreach($photos->take(2) as $index => $photo)
+                            <x-photo-frame-light :photo="$photo" :index="$index + 2" />
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Sezione Inferiore: 3 Foto Orizzontali --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach($photos->skip(2)->take(3) as $index => $photo)
+                        <x-photo-frame-light :photo="$photo" :index="$index + 4" />
                     @endforeach
                 </div>
             @endif
