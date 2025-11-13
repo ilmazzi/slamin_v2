@@ -91,8 +91,9 @@
     <section class="bg-gray-50 dark:bg-gray-900 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            {{-- Articolo in Evidenza --}}
-            @if($featuredArticle && !$search && !$selectedCategory)
+            {{-- Articolo Banner (dal Layout System) --}}
+            @if(!empty($layoutArticles['banner']) && !$search && !$selectedCategory)
+                @php $bannerArticle = $layoutArticles['banner']; @endphp
                 <div class="mb-12">
                     <div class="flex items-center gap-2 mb-6">
                         <div class="h-px flex-1 bg-gradient-to-r from-transparent via-accent-500 to-transparent"></div>
@@ -105,10 +106,10 @@
                     <article class="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
                         <div class="md:flex">
                             <div class="md:w-1/2 relative overflow-hidden">
-                                @if($featuredArticle->featured_image_url)
+                                @if($bannerArticle->featured_image_url)
                                     <img 
-                                        src="{{ $featuredArticle->featured_image_url }}" 
-                                        alt="{{ $featuredArticle->title }}"
+                                        src="{{ $bannerArticle->featured_image_url }}" 
+                                        alt="{{ $bannerArticle->title }}"
                                         class="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     >
                                 @else
@@ -125,25 +126,25 @@
                                 </div>
                             </div>
                             <div class="md:w-1/2 p-8 flex flex-col justify-center">
-                                @if($featuredArticle->category)
+                                @if($bannerArticle->category)
                                     <span class="inline-block text-xs font-semibold text-primary-600 dark:text-primary-400 uppercase tracking-wider mb-3">
-                                        {{ $featuredArticle->category->name }}
+                                        {{ $bannerArticle->category->name }}
                                     </span>
                                 @endif
                                 <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors" style="font-family: 'Playfair Display', serif;">
-                                    <a href="{{ route('articles.show', $featuredArticle->slug) }}" wire:navigate>
-                                        {{ $featuredArticle->title }}
+                                    <a href="{{ route('articles.show', $bannerArticle->slug) }}" wire:navigate>
+                                        {{ $bannerArticle->title }}
                                     </a>
                                 </h3>
                                 <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-3">
-                                    {{ $featuredArticle->excerpt }}
+                                    {{ $bannerArticle->excerpt }}
                                 </p>
                                 <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
                                     <div class="flex items-center gap-4">
-                                        <span>{{ $featuredArticle->published_at->format('d M Y') }}</span>
-                                        <span>{{ $featuredArticle->read_time }} {{ __('articles.index.reading_time', ['minutes' => $featuredArticle->read_time]) }}</span>
+                                        <span>{{ $bannerArticle->published_at->format('d M Y') }}</span>
+                                        <span>{{ $bannerArticle->read_time }} {{ __('articles.index.reading_time', ['minutes' => $bannerArticle->read_time]) }}</span>
                                     </div>
-                                    <a href="{{ route('articles.show', $featuredArticle->slug) }}" wire:navigate class="text-primary-600 dark:text-primary-400 font-semibold hover:underline">
+                                    <a href="{{ route('articles.show', $bannerArticle->slug) }}" wire:navigate class="text-primary-600 dark:text-primary-400 font-semibold hover:underline">
                                         {{ __('articles.index.read_more') }} →
                                     </a>
                                 </div>
