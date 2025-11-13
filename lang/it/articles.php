@@ -33,6 +33,8 @@ return [
         'analysis' => 'Analisi',
         'news' => 'Notizie',
         'culture' => 'Cultura',
+        'show_filters' => 'Mostra filtri avanzati',
+        'clear' => 'Cancella filtri',
     ],
     'categories' => [
         'interviews' => 'Interviste',
