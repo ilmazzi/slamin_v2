@@ -51,8 +51,8 @@
             </p>
         @endif
         
-        <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
-            <div class="flex items-center gap-3 flex-1">
+        <div class="flex flex-col gap-4 pt-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
+            <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 flex-wrap">
                 @if($showAuthor && $article->user)
                     <div class="flex items-center gap-2">
                         <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($article->user, 64) }}" 
@@ -70,16 +70,36 @@
                     <span>{{ $article->read_time }} min</span>
                 @endif
             </div>
-            
-            {{-- Pulsante Social Share --}}
-            <x-share-button 
-                :itemId="$article->id"
-                itemType="article"
-                :url="route('articles.show', $article->slug)"
-                :title="$article->title"
-                size="sm"
-                class="[&_svg]:stroke-current [&_span]:text-xs [&_button]:gap-1"
-            />
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3" @click.stop>
+                    <x-like-button 
+                        :itemId="$article->id"
+                        itemType="article"
+                        :isLiked="$article->is_liked ?? false"
+                        :likesCount="$article->like_count ?? 0"
+                        size="sm"
+                        class="[&_button]:!text-neutral-600 dark:[&_button]:!text-neutral-300 [&_button]:!gap-1 [&_svg]:!stroke-current [&_span]:!text-xs" />
+                    
+                    <x-comment-button 
+                        :itemId="$article->id"
+                        itemType="article"
+                        :commentsCount="$article->comment_count ?? 0"
+                        size="sm"
+                        class="[&_button]:!text-neutral-600 dark:[&_button]:!text-neutral-300 [&_button]:!gap-1 [&_svg]:!stroke-current [&_span]:!text-xs" />
+                    
+                    <x-share-button 
+                        :itemId="$article->id"
+                        itemType="article"
+                        :url="route('articles.show', $article->slug)"
+                        :title="$article->title"
+                        size="sm"
+                        class="[&_button]:!text-neutral-600 dark:[&_button]:!text-neutral-300 [&_button]:!gap-1 [&_svg]:!stroke-current [&_span]:!text-xs" />
+                </div>
+                
+                <a href="{{ route('articles.show', $article->slug) }}" wire:navigate class="text-primary-600 dark:text-primary-400 font-semibold text-sm hover:underline">
+                    {{ __('articles.index.read_more') }} →
+                </a>
+            </div>
         </div>
     </div>
 </article>

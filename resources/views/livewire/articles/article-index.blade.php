@@ -210,8 +210,8 @@
                                 <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-3">
                                     {{ $bannerArticle->excerpt }}
                                 </p>
-                                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                                    <div class="flex items-center gap-4">
+                                <div class="flex flex-col gap-4 text-sm text-gray-500 dark:text-gray-400">
+                                    <div class="flex items-center gap-4 flex-wrap">
                                         @if($bannerArticle->user)
                                             <div class="flex items-center gap-2">
                                                 <img 
@@ -227,16 +227,32 @@
                                         <span>{{ $bannerArticle->published_at->format('d M Y') }}</span>
                                         <span>{{ __('articles.index.reading_time', ['minutes' => $bannerArticle->read_time]) }}</span>
                                     </div>
-                                    <div class="flex items-center gap-4">
-                                        <x-share-button 
-                                            :itemId="$bannerArticle->id"
-                                            itemType="article"
-                                            :url="route('articles.show', $bannerArticle->slug)"
-                                            :title="$bannerArticle->title"
-                                            size="md"
-                                            class="[&_svg]:stroke-current [&_button]:text-primary-600 dark:[&_button]:text-primary-300"
-                                        />
-                                        <a href="{{ route('articles.show', $bannerArticle->slug) }}" wire:navigate class="text-primary-600 dark:text-primary-400 font-semibold hover:underline">
+                                    <div class="flex flex-wrap items-center gap-4 justify-between">
+                                        <div class="flex items-center gap-3" @click.stop>
+                                            <x-like-button 
+                                                :itemId="$bannerArticle->id"
+                                                itemType="article"
+                                                :isLiked="$bannerArticle->is_liked ?? false"
+                                                :likesCount="$bannerArticle->like_count ?? 0"
+                                                size="md"
+                                                class="[&_button]:!text-primary-600 dark:[&_button]:!text-primary-300 [&_button]:!gap-1.5 [&_svg]:!stroke-current [&_span]:!text-sm" />
+                                            
+                                            <x-comment-button 
+                                                :itemId="$bannerArticle->id"
+                                                itemType="article"
+                                                :commentsCount="$bannerArticle->comment_count ?? 0"
+                                                size="md"
+                                                class="[&_button]:!text-primary-600 dark:[&_button]:!text-primary-300 [&_button]:!gap-1.5 [&_svg]:!stroke-current [&_span]:!text-sm" />
+                                            
+                                            <x-share-button 
+                                                :itemId="$bannerArticle->id"
+                                                itemType="article"
+                                                :url="route('articles.show', $bannerArticle->slug)"
+                                                :title="$bannerArticle->title"
+                                                size="md"
+                                                class="[&_button]:!text-primary-600 dark:[&_button]:!text-primary-300 [&_button]:!gap-1.5 [&_svg]:!stroke-current [&_span]:!text-sm" />
+                                        </div>
+                                        <a href="{{ route('articles.show', $bannerArticle->slug) }}" wire:navigate class="text-primary-600 dark:text-primary-400 font-semibold hover:underline whitespace-nowrap">
                                             {{ __('articles.index.read_more') }} →
                                         </a>
                                     </div>
