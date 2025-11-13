@@ -1,225 +1,488 @@
 <div class="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/30 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 overflow-hidden">
     
-    <!-- Hero Search Section with Parallax -->
-    <div class="relative bg-gradient-to-r from-primary-600 via-primary-500 to-accent-500 py-20 overflow-hidden" 
+    @php
+        $heroEvent = $events->first();
+        $heroLocale = app()->getLocale();
+        $heroDate = $heroEvent?->start_datetime?->locale($heroLocale)->isoFormat('D MMM YYYY');
+        $heroTime = $heroEvent?->start_datetime?->format('H:mm');
+    @endphp
+
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-primary-700 via-primary-600 to-accent-500 py-24 overflow-hidden"
          x-data="{ showFilters: false, scrollY: 0 }"
          @scroll.window="scrollY = window.scrollY">
         
-        <!-- Animated Background Shapes -->
         <div class="absolute inset-0 overflow-hidden">
-            <!-- Floating circles with parallax -->
-            <div class="absolute top-10 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse" 
-                 :style="`transform: translateY(${scrollY * 0.3}px)`"></div>
-            <div class="absolute top-40 right-20 w-96 h-96 bg-accent-400/20 rounded-full blur-3xl animate-pulse" 
-                 style="animation-delay: 1s"
-                 :style="`transform: translateY(${scrollY * 0.5}px)`"></div>
-            <div class="absolute bottom-20 left-1/3 w-80 h-80 bg-primary-400/20 rounded-full blur-3xl animate-pulse" 
-                 style="animation-delay: 2s"
+            <div class="absolute -top-16 -left-16 w-80 h-80 bg-white/10 rounded-full blur-3xl opacity-80"></div>
+            <div class="absolute top-20 right-0 w-[28rem] h-[28rem] bg-accent-400/20 rounded-full blur-3xl"
                  :style="`transform: translateY(${scrollY * 0.2}px)`"></div>
-            
-            <!-- Floating particles -->
-            @for($i = 0; $i < 20; $i++)
-            <div class="absolute w-2 h-2 bg-white/30 rounded-full animate-float"
-                 style="left: {{ rand(0, 100) }}%; top: {{ rand(0, 100) }}%; animation-delay: {{ $i * 0.2 }}s; animation-duration: {{ 3 + ($i % 3) }}s;"></div>
-            @endfor
+            <div class="absolute bottom-0 left-1/4 w-[22rem] h-[22rem] bg-white/10 rounded-full blur-3xl"
+                 :style="`transform: translateY(${scrollY * -0.1}px)`"></div>
         </div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <!-- Title & Intro with Create Button -->
-            <div class="text-center text-white mb-8 relative"
-                 x-data="{ visible: false }"
-                 x-init="setTimeout(() => visible = true, 100)"
-                 x-show="visible"
-                 x-transition:enter="transition ease-out duration-1000"
-                 x-transition:enter-start="opacity-0 -translate-y-10"
-                 x-transition:enter-end="opacity-100 translate-y-0">
-                
-                <!-- Create Event Button - Desktop (top right) -->
-                @auth
-                    @if(auth()->user()->canOrganizeEvents())
-                        <a href="{{ route('events.create') }}" 
-                           class="absolute top-0 right-0 hidden md:flex items-center gap-2 px-6 py-3 bg-white text-primary-600 rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-300 group">
-                            <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                            </svg>
-                            Crea Evento
-                        </a>
-                    @endif
-                @endauth
-                
-                <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-accent-200 animate-gradient">
-                    {{ __('events.discover_events') }}
-                </h1>
-                <p class="text-xl text-white/90 italic">
-                    {{ __('events.where_poetry_lives') }}
-                </p>
-                
-                <!-- Create Event Button - Mobile (below title) -->
-                @auth
-                    @if(auth()->user()->canOrganizeEvents())
-                        <a href="{{ route('events.create') }}" 
-                           class="md:hidden inline-flex items-center gap-2 px-6 py-3 mt-4 bg-white text-primary-600 rounded-xl font-semibold hover:shadow-2xl transition-all duration-300">
+            <div class="flex flex-col lg:flex-row items-start lg:items-center gap-16">
+                <div class="flex-1 text-white">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-xs uppercase tracking-[0.3em] font-semibold mb-6">
+                        {{ __('events.featured_events') }}
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4 drop-shadow-lg"
+                        style="font-family: 'Playfair Display', serif;">
+                        {{ __('events.discover_events') }}
+                    </h1>
+                    <p class="text-lg md:text-xl text-white/80 max-w-xl leading-relaxed">
+                        {{ __('events.where_poetry_lives') }}
+                    </p>
+                    <div class="mt-8 flex flex-wrap items-center gap-4">
+                        <a href="#events-search-panel"
+                           class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-primary-600 font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                             </svg>
-                            Crea Evento
+                            {{ __('events.search_placeholder') }}
                         </a>
-                    @endif
-                @endauth
-            </div>
-
-            <!-- Search Bar -->
-            <div class="max-w-4xl mx-auto"
-                 x-data="{ visible: false }"
-                 x-init="setTimeout(() => visible = true, 200)"
-                 x-show="visible"
-                 x-transition:enter="transition ease-out duration-1000"
-                 x-transition:enter-start="opacity-0 scale-95"
-                 x-transition:enter-end="opacity-100 scale-100">
-                <div class="relative">
-                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                    <input 
-                        type="text" 
-                        wire:model.live.debounce.500ms="search"
-                        placeholder="{{ __('events.search_placeholder') }}"
-                        class="w-full pl-12 pr-4 py-4 rounded-full bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white border-0 shadow-xl focus:ring-2 focus:ring-accent-400 transition-all">
-                </div>
-            </div>
-
-            <!-- Quick Filters -->
-            <div class="mt-6 flex flex-wrap justify-center gap-2"
-                 x-data="{ visible: false }"
-                 x-init="setTimeout(() => visible = true, 300)"
-                 x-show="visible"
-                 x-transition:enter="transition ease-out duration-1000"
-                 x-transition:enter-start="opacity-0 translate-y-4"
-                 x-transition:enter-end="opacity-100 translate-y-0">
-                <button 
-                    wire:click="applyQuickFilter('today')"
-                    class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-sm font-medium transition-all hover:scale-110 hover:shadow-lg hover:shadow-white/20 active:scale-95">
-                    <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                    {{ __('events.today') }}
-                </button>
-                <button 
-                    wire:click="applyQuickFilter('tomorrow')"
-                    class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-sm font-medium transition-all hover:scale-110 hover:shadow-lg hover:shadow-white/20 active:scale-95">
-                    <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    {{ __('events.tomorrow') }}
-                </button>
-                <button 
-                    wire:click="applyQuickFilter('weekend')"
-                    class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-sm font-medium transition-all hover:scale-110 hover:shadow-lg hover:shadow-white/20 active:scale-95">
-                    <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
-                    </svg>
-                    {{ __('events.weekend') }}
-                </button>
-                <button 
-                    wire:click="applyQuickFilter('free')"
-                    class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-sm font-medium transition-all hover:scale-110 hover:shadow-lg hover:shadow-white/20 active:scale-95">
-                    <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
-                    </svg>
-                    {{ __('events.free') }}
-                </button>
-                @auth
-                <button 
-                    wire:click="applyQuickFilter('my')"
-                    class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-sm font-medium transition-all hover:scale-110 hover:shadow-lg hover:shadow-white/20 active:scale-95">
-                    <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                    </svg>
-                    {{ __('events.my_events') }}
-                </button>
-                @endauth
-                <button 
-                    wire:click="resetFilters"
-                    class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-sm font-medium transition-all hover:scale-110 hover:shadow-lg hover:shadow-white/20 active:scale-95">
-                    <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    {{ __('events.reset') }}
-                </button>
-            </div>
-
-            <!-- Advanced Filters Toggle -->
-            <div class="mt-4 text-center">
-                <button 
-                    @click="showFilters = !showFilters"
-                    class="text-white text-sm font-medium hover:text-white/80 transition">
-                    <svg class="inline w-5 h-5 mr-1 transition-transform" :class="{ 'rotate-180': showFilters }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                    {{ __('events.advanced_filters') }}
-                </button>
-            </div>
-
-            <!-- Advanced Filters Panel -->
-            <div 
-                x-show="showFilters"
-                x-transition:enter="transition ease-out duration-200"
-                x-transition:enter-start="opacity-0 -translate-y-4"
-                x-transition:enter-end="opacity-100 translate-y-0"
-                x-transition:leave="transition ease-in duration-150"
-                x-transition:leave-start="opacity-100 translate-y-0"
-                x-transition:leave-end="opacity-0 -translate-y-4"
-                class="mt-6 bg-white/10 backdrop-blur-md rounded-2xl p-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- City Filter -->
-                    <div>
-                        <label class="block text-white text-sm font-medium mb-2">{{ __('events.city') }}</label>
-                        <select wire:model.live="city" class="w-full px-4 py-2 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white border-0 focus:ring-2 focus:ring-accent-400">
-                            <option value="">{{ __('events.all_cities') }}</option>
-                            @foreach($cities as $cityOption)
-                                <option value="{{ $cityOption }}">{{ $cityOption }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Type Filter -->
-                    <div>
-                        <label class="block text-white text-sm font-medium mb-2">{{ __('events.type') }}</label>
-                        <select wire:model.live="type" class="w-full px-4 py-2 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white border-0 focus:ring-2 focus:ring-accent-400">
-                            <option value="">{{ __('events.all_types') }}</option>
-                            <option value="public">{{ __('events.public') }}</option>
-                            <option value="private">{{ __('events.private') }}</option>
-                        </select>
-                    </div>
-
-                    <!-- Free Only -->
-<div>
-                        <label class="block text-white text-sm font-medium mb-2">{{ __('events.price') }}</label>
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" wire:model.live="freeOnly" class="mr-2 rounded text-accent-500 focus:ring-accent-400">
-                            <span class="text-white">{{ __('events.free_only') }}</span>
-                        </label>
+                        @auth
+                            @if(auth()->user()->canOrganizeEvents())
+                                <a href="{{ route('events.create') }}"
+                                   class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/60 text-white font-semibold backdrop-blur-sm hover:bg-white/10 transition-all">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/>
+                                    </svg>
+                                    {{ __('events.create_event') }}
+                                </a>
+                            @endif
+                        @endauth
                     </div>
                 </div>
+                
+                @if($heroEvent)
+                    <div class="w-full max-w-md mx-auto lg:mx-0">
+                        <div class="events-hero-ticket group">
+                            <div class="events-ticket-perforation"></div>
+                            <div class="events-ticket-body">
+                                <div class="events-ticket-header">
+                                    <div class="events-ticket-admit">{{ strtoupper($heroEvent->category ?? __('events.event_details')) }}</div>
+                                    <div class="events-ticket-serial">#{{ str_pad($heroEvent->id, 4, '0', STR_PAD_LEFT) }}</div>
+                                </div>
+                                <div class="events-ticket-image">
+                                    @if($heroEvent->image_url)
+                                        <img src="{{ $heroEvent->image_url }}" alt="{{ $heroEvent->title }}">
+                                    @else
+                                        <div class="events-ticket-image-fallback">
+                                            {{ __('events.featured_events') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="events-ticket-content">
+                                    <h2 class="events-ticket-title">{{ $heroEvent->title }}</h2>
+                                    <div class="events-ticket-row">
+                                        <div>
+                                            <div class="events-ticket-label">{{ __('events.city') }}</div>
+                                            <div class="events-ticket-value">{{ $heroEvent->city }}</div>
+                                        </div>
+                                        <div>
+                                            <div class="events-ticket-label">{{ __('events.price') }}</div>
+                                            <div class="events-ticket-value">
+                                                @if($heroEvent->entry_fee === null || $heroEvent->entry_fee == 0)
+                                                    {{ __('events.free_label') }}
+                                                @else
+                                                    €{{ number_format($heroEvent->entry_fee, 2, ',', '.') }}
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="events-ticket-row">
+                                        <div>
+                                            <div class="events-ticket-label">{{ __('events.event_details') }}</div>
+                                            <div class="events-ticket-value">
+                                                @if($heroDate || $heroTime)
+                                                    {{ trim(($heroDate ?? '') . ($heroDate && $heroTime ? ' · ' : '') . ($heroTime ?? '')) }}
+                                                @else
+                                                    —
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="events-ticket-label">{{ __('events.organizer_label') }}</div>
+                                            <div class="events-ticket-value">{{ $heroEvent->user->name ?? '—' }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="events-ticket-footer">
+                                        <div class="events-ticket-actions" @click.stop>
+                                            <x-like-button 
+                                                :itemId="$heroEvent->id"
+                                                itemType="event"
+                                                :isLiked="$heroEvent->is_liked ?? false"
+                                                :likesCount="$heroEvent->like_count ?? 0"
+                                                size="sm"
+                                                class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700" />
+                                            <x-comment-button 
+                                                :itemId="$heroEvent->id"
+                                                itemType="event"
+                                                :commentsCount="$heroEvent->comment_count ?? 0"
+                                                size="sm"
+                                                class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700" />
+                                            <x-share-button 
+                                                :itemId="$heroEvent->id"
+                                                itemType="event"
+                                                :url="route('events.show', $heroEvent)"
+                                                :title="$heroEvent->title"
+                                                size="sm"
+                                                class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700" />
+                                        </div>
+                                        <a href="{{ route('events.show', $heroEvent) }}" wire:navigate class="events-ticket-cta">
+                                            {{ __('events.view_details') }}
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="events-ticket-stub">
+                                <div class="events-ticket-stamp">{{ strtoupper(__('events.discover_events')) }}</div>
+                                <div class="events-ticket-barcode"></div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
-
-            <!-- Create Event Button -->
-            @auth
-                @can('create', App\Models\Event::class)
-                    <div class="mt-6 text-center">
-                        <a href="{{ route('events.create') }}" 
-                           class="inline-flex items-center px-6 py-3 bg-white text-primary-600 rounded-full font-semibold hover:bg-white/90 transition-all hover:scale-105 shadow-lg">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            
+            <div id="events-search-panel" class="mt-16 relative">
+                <div class="events-search-card">
+                    <div class="relative">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <input 
+                            type="text" 
+                            wire:model.live.debounce.500ms="search"
+                            placeholder="{{ __('events.search_placeholder') }}"
+                            class="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/90 dark:bg-neutral-900/80 text-neutral-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary-400 transition-all">
+                    </div>
+                    
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        <button wire:click="applyQuickFilter('today')" class="events-filter-chip">
+                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            {{ __('events.today') }}
+                        </button>
+                        <button wire:click="applyQuickFilter('tomorrow')" class="events-filter-chip">
+                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                             </svg>
-                            {{ __('events.create_event') }}
-                        </a>
+                            {{ __('events.tomorrow') }}
+                        </button>
+                        <button wire:click="applyQuickFilter('weekend')" class="events-filter-chip">
+                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                            </svg>
+                            {{ __('events.weekend') }}
+                        </button>
+                        <button wire:click="applyQuickFilter('free')" class="events-filter-chip">
+                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
+                            </svg>
+                            {{ __('events.free') }}
+                        </button>
+                        @auth
+                            <button wire:click="applyQuickFilter('my')" class="events-filter-chip">
+                                <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                {{ __('events.my_events') }}
+                            </button>
+                        @endauth
+                        <button wire:click="resetFilters" class="events-filter-chip events-filter-chip--ghost">
+                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                            {{ __('events.reset') }}
+                        </button>
                     </div>
-                @endcan
-            @endauth
+                    
+                    <div class="mt-6 text-center">
+                        <button @click="showFilters = !showFilters"
+                                class="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition">
+                            <svg class="w-5 h-5 transition-transform" :class="{ 'rotate-180': showFilters }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                            {{ __('events.advanced_filters') }}
+                        </button>
+                    </div>
+                    
+                    <div x-show="showFilters"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 -translate-y-4"
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 translate-y-0"
+                         x-transition:leave-end="opacity-0 -translate-y-4"
+                         class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-neutral-600 dark:text-neutral-200 mb-2">{{ __('events.city') }}</label>
+                            <select wire:model.live="city" class="events-select">
+                                <option value="">{{ __('events.all_cities') }}</option>
+                                @foreach($cities as $cityOption)
+                                    <option value="{{ $cityOption }}">{{ $cityOption }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-neutral-600 dark:text-neutral-200 mb-2">{{ __('events.type') }}</label>
+                            <select wire:model.live="type" class="events-select">
+                                <option value="">{{ __('events.all_types') }}</option>
+                                <option value="public">{{ __('events.public') }}</option>
+                                <option value="private">{{ __('events.private') }}</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-between md:justify-start md:gap-3 bg-white/60 dark:bg-neutral-900/70 px-4 py-3 rounded-xl border border-white/20 dark:border-neutral-700/60">
+                            <div>
+                                <div class="text-sm font-semibold text-neutral-600 dark:text-neutral-200">{{ __('events.price') }}</div>
+                                <div class="text-xs text-neutral-500 dark:text-neutral-400">{{ __('events.free_only') }}</div>
+                            </div>
+                            <label class="inline-flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" wire:model.live="freeOnly" class="rounded text-primary-500 focus:ring-primary-400">
+                                <span class="text-sm text-neutral-600 dark:text-neutral-200">{{ __('events.free_only') }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <style>
+        .events-hero-ticket {
+            position: relative;
+            display: flex;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+            border-radius: 26px;
+            box-shadow: 0 25px 60px rgba(9, 12, 32, 0.35);
+            overflow: hidden;
+        }
+        .events-ticket-perforation {
+            position: absolute;
+            top: 24px;
+            bottom: 24px;
+            right: 140px;
+            width: 18px;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent,
+                transparent 18px,
+                rgba(9, 12, 32, 0.08) 18px,
+                rgba(9, 12, 32, 0.08) 34px
+            );
+            z-index: 5;
+            pointer-events: none;
+        }
+        .events-ticket-body {
+            flex: 1;
+            padding: 2.25rem 2.25rem 2rem 2.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+        }
+        .events-ticket-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            color: #0f172a;
+        }
+        .events-ticket-admit {
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            background: rgba(15, 23, 42, 0.08);
+        }
+        .events-ticket-serial {
+            font-size: 0.7rem;
+            color: rgba(15, 23, 42, 0.5);
+        }
+        .events-ticket-image {
+            height: 190px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+        }
+        .events-ticket-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .events-hero-ticket:hover .events-ticket-image img {
+            transform: scale(1.04);
+        }
+        .events-ticket-image-fallback {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(14, 165, 233, 0.25));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: rgba(15, 23, 42, 0.65);
+        }
+        .events-ticket-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.15rem;
+        }
+        .events-ticket-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+        .events-ticket-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        .events-ticket-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(15, 23, 42, 0.5);
+            margin-bottom: 0.25rem;
+        }
+        .events-ticket-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .events-ticket-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .events-ticket-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .events-ticket-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.1rem;
+            border-radius: 9999px;
+            background: #0f172a;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.25);
+        }
+        .events-ticket-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.3);
+        }
+        .events-ticket-stub {
+            width: 140px;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.8));
+            color: #f8fafc;
+            padding: 1.75rem 1.1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+        .events-ticket-stamp {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+        }
+        .events-ticket-barcode {
+            width: 100%;
+            height: 120px;
+            background: repeating-linear-gradient(
+                to right,
+                rgba(248, 250, 252, 0.8),
+                rgba(248, 250, 252, 0.8) 4px,
+                transparent 4px,
+                transparent 6px
+            );
+            border-radius: 6px;
+            position: relative;
+        }
+        .events-ticket-barcode::after {
+            content: '';
+            position: absolute;
+            inset: 14px 16px;
+            border-radius: 3px;
+            border: 1px dashed rgba(248, 250, 252, 0.35);
+        }
+        .events-search-card {
+            background: rgba(248, 250, 252, 0.95);
+            border-radius: 28px;
+            padding: 2rem;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.25);
+            backdrop-filter: blur(10px);
+        }
+        .dark .events-search-card {
+            background: rgba(17, 24, 39, 0.85);
+            box-shadow: 0 20px 45px rgba(4, 4, 16, 0.55);
+        }
+        .events-filter-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.55rem 1rem;
+            border-radius: 9999px;
+            background: rgba(15, 23, 42, 0.08);
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        .events-filter-chip svg {
+            color: inherit;
+        }
+        .events-filter-chip:hover {
+            transform: translateY(-2px);
+            background: rgba(15, 23, 42, 0.14);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.1);
+        }
+        .events-filter-chip--ghost {
+            background: rgba(15, 23, 42, 0.04);
+        }
+        .dark .events-filter-chip {
+            background: rgba(248, 250, 252, 0.08);
+            color: rgba(248, 250, 252, 0.9);
+        }
+        .events-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            background: rgba(255, 255, 255, 0.92);
+            color: #0f172a;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .events-select:focus {
+            outline: none;
+            border-color: rgba(59, 130, 246, 0.45);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        .dark .events-select {
+            background: rgba(17, 24, 39, 0.9);
+            color: rgba(248, 250, 252, 0.95);
+            border-color: rgba(248, 250, 252, 0.08);
+        }
+    </style>
+    
     <!-- Statistics Section - Modern Floating Style -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 mb-16"
          x-data="{ scrollY: 0 }"
