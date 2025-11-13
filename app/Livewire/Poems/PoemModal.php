@@ -33,6 +33,14 @@ class PoemModal extends Component
         $this->poemId = null;
     }
     
+    public function emitTranslationRequest()
+    {
+        if (!$this->poem) {
+            return;
+        }
+        $this->dispatch('openTranslationRequest', poemId: $this->poem->id);
+    }
+    
     public function render()
     {
         return view('livewire.poems.poem-modal');

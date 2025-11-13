@@ -17,7 +17,7 @@
              @click="$wire.closeModal()"></div>
         
         <!-- Book Container -->
-        <div class="absolute inset-0 flex items-center justify-center p-4 md:p-8 overflow-visible">
+        <div class="absolute inset-0 flex items-center justify-center p-4 md:p-8 overflow-y-auto overflow-x-hidden">
             
             <div class="poem-book-container"
                  x-show="show"
@@ -47,8 +47,16 @@
                          x-bind:class="leftOpen ? 'poem-page-open-left' : 'poem-page-closed-left'">
                         
                         <div class="poem-page-content">
-                            <!-- Cover + Author Info -->
-                            <div class="flex flex-col items-center justify-center h-full text-center space-y-6">
+                            <div class="poem-left-meta">
+                                <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 120) }}" 
+                                     alt="{{ $poem->user->name }}"
+                                     class="poem-left-avatar">
+
+                                <div class="poem-left-author">
+                                    <h3>{{ $poem->user->name }}</h3>
+                                    <p>Poeta</p>
+                                </div>
+
                                 @if($poem->thumbnail_url)
                                     <div class="poem-modal-cover poem-modal-cover-left">
                                         <img src="{{ $poem->thumbnail_url }}"
@@ -57,27 +65,45 @@
                                         <span class="poem-modal-cover-shadow"></span>
                                     </div>
                                 @endif
-                                <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 120) }}" 
-                                     alt="{{ $poem->user->name }}"
-                                     class="w-24 h-24 rounded-full object-cover ring-4 ring-accent-200 shadow-xl">
-                                
-                                <div>
-                                    <h3 class="text-xl font-bold text-neutral-800 mb-1" style="font-family: 'Crimson Pro', serif;">
-                                        {{ $poem->user->name }}
-                                    </h3>
-                                    <p class="text-xs text-neutral-600 italic">Poeta</p>
+
+                                <div class="poem-left-divider"></div>
+
+                                <div class="poem-left-stats">
+                                    <p class="count">{{ $poem->like_count ?? 0 }}</p>
+                                    <p class="label">Mi piace</p>
                                 </div>
-                                
-                                <div class="w-12 h-0.5 bg-gradient-to-r from-transparent via-accent-400 to-transparent"></div>
-                                
-                                <div class="text-center text-neutral-600 space-y-1">
-                                    <p class="text-2xl font-bold text-accent-600">{{ $poem->like_count ?? 0 }}</p>
-                                    <p class="text-xs">Mi piace</p>
-                                </div>
-                                
-                                <div class="text-xs text-neutral-500">
+
+                                <div class="poem-left-date">
                                     {{ $poem->created_at->diffForHumans() }}
                                 </div>
+
+                                @auth
+                                    @if(auth()->id() === $poem->user_id)
+                                        <div class="poem-owner-actions-bar">
+                                            <div class="poem-owner-actions">
+                                                <a href="{{ route('poems.edit', $poem->slug) }}" class="poem-owner-action">
+                                                    <svg class="poem-owner-action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 2.5l3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                                    </svg>
+                                                    <span>{{ __('poems.show.edit_poem') }}</span>
+                                                </a>
+                                                <button type="button" wire:click="emitTranslationRequest" class="poem-owner-action">
+                                                    <svg class="poem-owner-action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                                                    </svg>
+                                                    <span>{{ __('translations.request_translation') }}</span>
+                                                </button>
+                                                <a href="{{ route('poems.my-poems') }}" class="poem-owner-action">
+                                                    <svg class="poem-owner-action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                    <span>{{ __('poems.my_poems.title') }}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endauth
                             </div>
                         </div>
                     </div>
@@ -86,21 +112,7 @@
                     <div class="poem-page poem-page-right"
                          x-bind:class="rightOpen ? 'poem-page-open-right' : 'poem-page-closed-right'">
                         
-                        <div class="poem-page-content overflow-y-auto">
-                            @auth
-                                @if(auth()->id() === $poem->user_id)
-                                    <div class="flex justify-end mb-6 pt-2 pr-12 md:pr-20">
-                                        <a href="{{ route('poems.edit', $poem->slug) }}"
-                                           class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-500 text-white text-sm font-semibold shadow-lg shadow-accent-500/30 hover:bg-accent-600 transition-all duration-200">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 2.5l3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                            </svg>
-                                            <span>{{ __('poems.show.edit_poem') }}</span>
-                                        </a>
-                                    </div>
-                                @endif
-                            @endauth
+                        <div class="poem-page-content">
                              <!-- Title -->
                              <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 mb-4 text-center italic" 
                                  style="font-family: 'Crimson Pro', serif;">
@@ -154,6 +166,10 @@
             </div>
         </div>
     </div>
+    @endif
+
+    @if($poem)
+        <livewire:translations.translation-request :poem="$poem" :key="'translation-request-'.$poem->id" />
     @endif
     
     <style>
@@ -244,7 +260,7 @@
         .poem-page-content {
             padding: 2rem;
             height: 100%;
-            overflow-y: auto;
+            overflow: visible;
         }
         
         .poem-modal-cover {
@@ -253,26 +269,151 @@
             overflow: hidden;
             margin: 0 auto 2rem;
             max-width: 420px;
+            aspect-ratio: 4 / 3;
+            background: #f7f0e1;
             box-shadow:
                 0 18px 30px rgba(0, 0, 0, 0.18),
                 inset 0 0 0 1px rgba(180, 120, 70, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .poem-modal-cover-left {
-            max-width: 320px;
+            max-width: 100%;
+            width: 100%;
             margin-bottom: 1.5rem;
+            aspect-ratio: 16 / 9;
         }
         
         .poem-modal-cover-left .poem-modal-cover-image {
-            height: 220px;
+            height: 100%;
         }
-        
+ 
+        .poem-left-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .poem-left-avatar {
+            width: 6rem;
+            height: 6rem;
+            border-radius: 9999px;
+            object-fit: cover;
+            box-shadow:
+                0 12px 25px rgba(0, 0, 0, 0.18),
+                0 0 0 4px rgba(155, 214, 173, 0.6);
+        }
+
+        .poem-left-author h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d2520;
+            margin-bottom: 0.25rem;
+        }
+
+        .poem-left-author p {
+            font-size: 0.75rem;
+            color: #7a6d62;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .poem-left-divider {
+            width: 3.5rem;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(190, 140, 90, 0.4), transparent);
+        }
+
+        .poem-left-stats {
+            text-align: center;
+        }
+
+        .poem-left-stats .count {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a9e6a;
+            margin-bottom: 0.25rem;
+        }
+
+        .poem-left-stats .label {
+            font-size: 0.72rem;
+            color: #7a6d62;
+            margin: 0;
+        }
+
+        .poem-left-date {
+            font-size: 0.7rem;
+            color: #9a8e81;
+        }
+
+        .poem-owner-actions-bar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        .poem-owner-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 15;
+        }
+
+        .poem-owner-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.38rem 0.95rem;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #2c251f;
+            background: #fdf5e2;
+            border: 1px solid rgba(180, 120, 70, 0.38);
+            box-shadow:
+                0 6px 14px rgba(0, 0, 0, 0.08),
+                inset 0 0 12px rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+            white-space: nowrap;
+            flex: 0 0 auto;
+            overflow: visible;
+        }
+
+        .poem-owner-action:hover {
+            transform: translateY(-1px);
+            color: #215c4a;
+            border-color: rgba(60, 120, 90, 0.3);
+            box-shadow:
+                0 8px 18px rgba(0, 0, 0, 0.12),
+                inset 0 0 16px rgba(255, 255, 255, 0.9);
+        }
+
+        .poem-owner-action:active {
+            transform: translateY(0);
+        }
+
+        .poem-owner-action-icon {
+            width: 1rem;
+            height: 1rem;
+        }
+
         .poem-modal-cover-image {
             display: block;
             width: 100%;
-            height: 260px;
+            height: 100%;
             object-fit: cover;
             transition: transform 0.6s ease;
+            object-position: center;
         }
         
         .poem-modal-cover-shadow {
@@ -342,7 +483,8 @@
         
         @media (max-width: 768px) {
             .poem-book-container {
-                height: 90vh;
+                height: auto;
+                min-height: 90vh;
                 max-height: none;
                 width: 95%;
                 max-width: none;
@@ -504,19 +646,6 @@
                 display: none;
             }
             
-            .poem-page-left .space-y-6 > div:last-child {
-                display: none;
-            }
-            
-            .poem-page-left .text-center {
-                text-align: left;
-            }
-            
-            .poem-page-left h3 {
-                font-size: 1.125rem;
-                margin-bottom: 0.25rem;
-            }
-            
             .poem-page-left .space-y-1 {
                 display: flex;
                 flex-direction: row;
@@ -579,15 +708,39 @@
                 overscroll-behavior: contain;
             }
 
-            .poem-modal-cover {
+            .poem-modal-cover,
+            .poem-modal-cover-left {
                 max-width: 100%;
-                margin-bottom: 1.5rem;
+                width: 100%;
+                aspect-ratio: 3 / 2;
+                margin-bottom: 1.25rem;
+            }
+
+            .poem-modal-cover-left {
+                order: 0;
             }
 
             .poem-modal-cover-image {
                 height: 200px;
             }
 
+            .poem-owner-actions {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.45rem;
+            }
+            
+            .poem-owner-action {
+                font-size: 0.78rem;
+                padding: 0.4rem 0.9rem;
+            }
+            
+            .poem-modal-cover-left {
+                max-width: 100%;
+                margin-bottom: 1.5rem;
+            }
+            
             .poem-book-spine {
                 display: none;
             }

@@ -212,9 +212,7 @@
             <h1 class="text-5xl md:text-6xl font-bold text-neutral-900 dark:text-white mb-4 font-poem relative z-10">
                 {{ __('poems.edit.title') }}
             </h1>
-            <p class="text-xl text-neutral-600 dark:text-neutral-400 font-poem italic max-w-2xl mx-auto">
-                "{{ __('poems.create.subtitle') }}"
-            </p>
+          
             
             <!-- Success/Error Messages -->
             @if(session('success'))

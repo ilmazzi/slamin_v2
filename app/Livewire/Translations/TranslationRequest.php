@@ -6,6 +6,7 @@ use App\Models\Poem;
 use App\Models\Gig;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 
 class TranslationRequest extends Component
 {
@@ -18,6 +19,16 @@ class TranslationRequest extends Component
     public string $proposedCompensation = '';
     public string $deadline = '';
     
+    #[On('openTranslationRequest')]
+    public function handleOpenTranslationRequest($poemId)
+    {
+        if ((int) $poemId !== $this->poem->id) {
+            return;
+        }
+
+        $this->openModal();
+    }
+
     public function mount(Poem $poem)
     {
         $this->poem = $poem;
