@@ -48,13 +48,28 @@
                         
                         <div class="poem-page-content">
                             <div class="poem-left-meta">
-                                <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 120) }}" 
-                                     alt="{{ $poem->user->name }}"
-                                     class="poem-left-avatar">
+                                <div class="poem-left-header">
+                                    <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 120) }}" 
+                                         alt="{{ $poem->user->name }}"
+                                         class="poem-left-avatar">
 
-                                <div class="poem-left-author">
-                                    <h3>{{ $poem->user->name }}</h3>
-                                    <p>Poeta</p>
+                                    <div class="poem-left-header-info">
+                                        <div class="poem-left-author">
+                                            <h3>{{ $poem->user->name }}</h3>
+                                            <p>Poeta</p>
+                                        </div>
+                                        
+                                        <div class="poem-left-stats-inline">
+                                            <div class="poem-left-stats">
+                                                <p class="count">{{ $poem->like_count ?? 0 }}</p>
+                                                <p class="label">Mi piace</p>
+                                            </div>
+                                            <div class="poem-left-divider-vertical"></div>
+                                            <div class="poem-left-date">
+                                                {{ $poem->created_at->diffForHumans() }}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 @if($poem->thumbnail_url)
@@ -65,17 +80,6 @@
                                         <span class="poem-modal-cover-shadow"></span>
                                     </div>
                                 @endif
-
-                                <div class="poem-left-divider"></div>
-
-                                <div class="poem-left-stats">
-                                    <p class="count">{{ $poem->like_count ?? 0 }}</p>
-                                    <p class="label">Mi piace</p>
-                                </div>
-
-                                <div class="poem-left-date">
-                                    {{ $poem->created_at->diffForHumans() }}
-                                </div>
 
                                 @auth
                                     @if(auth()->id() === $poem->user_id)
@@ -260,7 +264,8 @@
         .poem-page-content {
             padding: 2rem;
             height: 100%;
-            overflow: visible;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
         
         .poem-modal-cover {
@@ -280,8 +285,9 @@
         }
         
         .poem-modal-cover-left {
-            max-width: 320px;
-            margin-bottom: 1.5rem;
+            max-width: 200px;
+            width: 200px;
+            margin: 0 auto 1rem;
             aspect-ratio: 3 / 4;
         }
         
@@ -294,60 +300,85 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            gap: 0.75rem;
+        }
+
+        .poem-left-header {
+            display: flex;
+            align-items: center;
             gap: 1rem;
+            width: 100%;
         }
 
         .poem-left-avatar {
-            width: 6rem;
-            height: 6rem;
+            width: 4.5rem;
+            height: 4.5rem;
             border-radius: 9999px;
             object-fit: cover;
+            flex-shrink: 0;
             box-shadow:
                 0 12px 25px rgba(0, 0, 0, 0.18),
                 0 0 0 4px rgba(155, 214, 173, 0.6);
         }
 
+        .poem-left-header-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+            text-align: left;
+        }
+
         .poem-left-author h3 {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #2d2520;
-            margin-bottom: 0.25rem;
+            margin: 0;
         }
 
         .poem-left-author p {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #7a6d62;
             font-style: italic;
             margin: 0;
         }
 
-        .poem-left-divider {
-            width: 3.5rem;
-            height: 2px;
-            background: linear-gradient(to right, transparent, rgba(190, 140, 90, 0.4), transparent);
+        .poem-left-stats-inline {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .poem-left-divider-vertical {
+            width: 1px;
+            height: 1.5rem;
+            background: rgba(190, 140, 90, 0.3);
         }
 
         .poem-left-stats {
-            text-align: center;
+            text-align: left;
         }
 
         .poem-left-stats .count {
-            font-size: 1.75rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #1a9e6a;
-            margin-bottom: 0.25rem;
+            margin: 0;
+            line-height: 1;
         }
 
         .poem-left-stats .label {
-            font-size: 0.72rem;
+            font-size: 0.6rem;
             color: #7a6d62;
             margin: 0;
+            line-height: 1.2;
         }
 
         .poem-left-date {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #9a8e81;
+            line-height: 1.3;
         }
 
         .poem-owner-actions-bar {
@@ -481,13 +512,18 @@
         }
         
         @media (max-width: 768px) {
+            .absolute.inset-0.flex {
+                align-items: flex-start !important;
+                padding-top: 2rem !important;
+            }
+            
             .poem-book-container {
                 height: auto;
                 min-height: 90vh;
                 max-height: none;
                 width: 95%;
                 max-width: none;
-                padding-top: 30px;
+                padding-top: 0;
             }
             
             .poem-book-opened {
@@ -508,7 +544,7 @@
                 height: auto;
                 min-height: auto;
                 padding: 0;
-                padding-top: 50px;
+                padding-top: 25px;
                 border-radius: 0;
                 box-shadow: 
                     inset 0 0 30px rgba(160, 100, 60, 0.15),
@@ -520,7 +556,8 @@
                     #fffef9 0%,
                     #fffdf7 50%,
                     #fffcf5 100%
-                );
+                ) !important;
+                overflow: visible !important;
             }
             
             /* BUCHI nel foglio per la spirale - con profondità */
@@ -531,6 +568,7 @@
                 right: 0;
                 top: 0;
                 height: 20px;
+                pointer-events: none;
                 background: 
                     /* Buchi ovali con ombra interna per profondità */
                     radial-gradient(ellipse 6px 8px at 40px 10px, 
@@ -572,16 +610,32 @@
             }
             
             .poem-page-left .poem-page-content {
-                padding: 0.75rem 1rem 1.5rem 1rem;
+                padding: 0.5rem 1rem 1.5rem 1rem !important;
+                overflow: visible !important;
+                position: relative !important;
+                z-index: 10 !important;
             }
             
             .poem-left-meta {
-                gap: 0.75rem;
+                gap: 0.75rem !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                position: relative !important;
+                z-index: 10 !important;
             }
             
             .poem-left-avatar {
-                width: 5rem;
-                height: 5rem;
+                width: 5rem !important;
+                height: 5rem !important;
+                display: block !important;
+                position: relative !important;
+                z-index: 10 !important;
+            }
+            
+            .poem-left-author {
+                position: relative !important;
+                z-index: 10 !important;
             }
             
             /* SPIRALE METALLICA - highlight + shadow centrati nei buchi */
@@ -635,35 +689,7 @@
                         drop-shadow(0 6px 8px rgba(0, 0, 0, 0.22));
             }
             
-            .poem-page-left .flex {
-                flex-direction: row;
-                align-items: center;
-                justify-content: flex-start;
-                gap: 1rem;
-                text-align: left;
-                height: auto;
-            }
-            
-            /* Rimosso: conflitto con layout nuovo */
-            
-            .poem-page-left .w-12 {
-                display: none;
-            }
-            
-            .poem-page-left .space-y-1 {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            
-            .poem-page-left .space-y-1 p:first-child {
-                font-size: 1.25rem;
-            }
-            
-            .poem-page-left .space-y-1 p:last-child {
-                font-size: 0.75rem;
-            }
+            /* Rimosso: tutte le regole vecchie del layout precedente */
             
             .poem-page-right {
                 flex: 1;
@@ -735,11 +761,6 @@
             .poem-owner-action {
                 font-size: 0.78rem;
                 padding: 0.4rem 0.9rem;
-            }
-            
-            .poem-modal-cover-left {
-                max-width: 100%;
-                margin-bottom: 1.5rem;
             }
             
             .poem-book-spine {
