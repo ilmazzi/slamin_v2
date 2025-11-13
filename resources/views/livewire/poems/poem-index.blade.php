@@ -189,7 +189,8 @@
                                         <span class="poetry-card-cover-shadow"></span>
                                     @else
                                         <div class="poetry-card-cover-placeholder">
-                                            
+                                            <i class="fa-solid fa-image"></i>
+                                            <span>{{ __('poems.index.cover_placeholder') }}</span>
                                         </div>
                                     @endif
                                 </div>
@@ -574,12 +575,12 @@
             position: relative;
             overflow: hidden;
             border-radius: 12px;
-            margin: 0.75rem 0 1.25rem;
+            margin: 1rem 0 1.5rem;
             box-shadow:
-                0 8px 18px rgba(0, 0, 0, 0.12),
-                inset 0 0 0 1px rgba(180, 120, 70, 0.1);
+                0 10px 22px rgba(0, 0, 0, 0.14),
+                inset 0 0 0 1px rgba(180, 120, 70, 0.12);
             transform: translateZ(0);
-            height: 140px;
+            height: 170px;
         }
         
         .poetry-card-cover--image {
@@ -642,7 +643,7 @@
             }
             
             .poetry-card-cover {
-                height: 120px;
+                height: 150px;
             }
         }
     </style>
