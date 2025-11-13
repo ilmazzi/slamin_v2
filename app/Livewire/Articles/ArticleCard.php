@@ -11,7 +11,7 @@ class ArticleCard extends Component
     public string $size = 'medium'; // small, medium, large
     public bool $showExcerpt = true;
     public bool $showCategory = true;
-    public bool $showAuthor = false;
+    public bool $showAuthor = true;
     public bool $showStats = true;
 
     public function mount(Article $article, string $size = 'medium')

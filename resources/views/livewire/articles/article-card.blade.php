@@ -76,7 +76,6 @@
                 :url="route('articles.show', $article->slug)"
                 :title="$article->title"
                 size="sm"
-                class="opacity-0 group-hover:opacity-100 transition-opacity"
             />
         </div>
     </div>
