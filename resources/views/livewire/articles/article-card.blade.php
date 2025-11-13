@@ -54,14 +54,12 @@
         <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
             <div class="flex items-center gap-3 flex-1">
                 @if($showAuthor && $article->user)
-                    <a href="{{ route('profile.show', $article->user->username) }}" 
-                       class="flex items-center gap-2 hover:text-primary-600 dark:hover:text-primary-400 transition-colors group"
-                       wire:navigate>
+                    <div class="flex items-center gap-2">
                         <img src="{{ $article->user->avatar }}" 
                              alt="{{ $article->user->name }}"
-                             class="w-6 h-6 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700 group-hover:ring-primary-400 transition-all">
-                        <span class="font-medium">{{ $article->user->name }}</span>
-                    </a>
+                             class="w-6 h-6 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700">
+                        <span class="font-medium text-gray-700 dark:text-gray-300">{{ $article->user->name }}</span>
+                    </div>
                     <span class="text-gray-400">•</span>
                 @endif
                 <span>{{ $article->published_at->format('d M Y') }}</span>
