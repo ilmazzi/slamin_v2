@@ -181,13 +181,6 @@
                     </div>
                 @endif
 
-                {{-- Horizontal 2 --}}
-                @if(!empty($layoutArticles['horizontal2']))
-                    <div class="mb-12">
-                        <livewire:articles.article-card :article="$layoutArticles['horizontal2']" size="large" :key="'horizontal2-'.$layoutArticles['horizontal2']->id" />
-                    </div>
-                @endif
-
                 {{-- Columns 3 & 4 --}}
                 @if(!empty($layoutArticles['column3']) || !empty($layoutArticles['column4']))
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
@@ -197,6 +190,13 @@
                         @if(!empty($layoutArticles['column4']))
                             <livewire:articles.article-card :article="$layoutArticles['column4']" size="medium" :key="'column4-'.$layoutArticles['column4']->id" />
                         @endif
+                    </div>
+                @endif
+
+                {{-- Horizontal 2 --}}
+                @if(!empty($layoutArticles['horizontal2']))
+                    <div class="mb-12">
+                        <livewire:articles.article-card :article="$layoutArticles['horizontal2']" size="large" :key="'horizontal2-'.$layoutArticles['horizontal2']->id" />
                     </div>
                 @endif
 
