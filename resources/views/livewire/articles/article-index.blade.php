@@ -212,12 +212,34 @@
                                 </p>
                                 <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
                                     <div class="flex items-center gap-4">
+                                        @if($bannerArticle->user)
+                                            <div class="flex items-center gap-2">
+                                                <img 
+                                                    src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($bannerArticle->user, 80) }}" 
+                                                    alt="{{ \App\Helpers\AvatarHelper::getDisplayName($bannerArticle->user) }}"
+                                                    class="w-9 h-9 rounded-full object-cover ring-2 ring-white/70 dark:ring-gray-700 shadow-sm">
+                                                <span class="font-medium text-gray-700 dark:text-gray-200">
+                                                    {{ \App\Helpers\AvatarHelper::getDisplayName($bannerArticle->user) }}
+                                                </span>
+                                            </div>
+                                            <span class="text-gray-400">•</span>
+                                        @endif
                                         <span>{{ $bannerArticle->published_at->format('d M Y') }}</span>
-                                        <span>{{ $bannerArticle->read_time }} {{ __('articles.index.reading_time', ['minutes' => $bannerArticle->read_time]) }}</span>
+                                        <span>{{ __('articles.index.reading_time', ['minutes' => $bannerArticle->read_time]) }}</span>
                                     </div>
-                                    <a href="{{ route('articles.show', $bannerArticle->slug) }}" wire:navigate class="text-primary-600 dark:text-primary-400 font-semibold hover:underline">
-                                        {{ __('articles.index.read_more') }} →
-                                    </a>
+                                    <div class="flex items-center gap-4">
+                                        <x-share-button 
+                                            :itemId="$bannerArticle->id"
+                                            itemType="article"
+                                            :url="route('articles.show', $bannerArticle->slug)"
+                                            :title="$bannerArticle->title"
+                                            size="md"
+                                            class="[&_svg]:stroke-current [&_button]:text-primary-600 dark:[&_button]:text-primary-300"
+                                        />
+                                        <a href="{{ route('articles.show', $bannerArticle->slug) }}" wire:navigate class="text-primary-600 dark:text-primary-400 font-semibold hover:underline">
+                                            {{ __('articles.index.read_more') }} →
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

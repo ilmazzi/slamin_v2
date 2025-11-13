@@ -55,10 +55,12 @@
             <div class="flex items-center gap-3 flex-1">
                 @if($showAuthor && $article->user)
                     <div class="flex items-center gap-2">
-                        <img src="{{ $article->user->avatar }}" 
-                             alt="{{ $article->user->name }}"
-                             class="w-6 h-6 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700">
-                        <span class="font-medium text-gray-700 dark:text-gray-300">{{ $article->user->name }}</span>
+                        <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($article->user, 64) }}" 
+                             alt="{{ \App\Helpers\AvatarHelper::getDisplayName($article->user) }}"
+                             class="w-7 h-7 rounded-full object-cover ring-2 ring-white/80 dark:ring-gray-700 shadow-sm">
+                        <span class="font-medium text-gray-700 dark:text-gray-200">
+                            {{ \App\Helpers\AvatarHelper::getDisplayName($article->user) }}
+                        </span>
                     </div>
                     <span class="text-gray-400">•</span>
                 @endif
@@ -71,9 +73,12 @@
             
             {{-- Pulsante Social Share --}}
             <x-share-button 
+                :itemId="$article->id"
+                itemType="article"
                 :url="route('articles.show', $article->slug)"
                 :title="$article->title"
                 size="sm"
+                class="[&_svg]:stroke-current [&_span]:text-xs [&_button]:gap-1"
             />
         </div>
     </div>
