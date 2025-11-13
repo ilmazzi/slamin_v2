@@ -99,23 +99,23 @@
 
     {{-- Modal per la ricerca articoli --}}
     @if($showSearchModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 z-[9999] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" style="background-color: rgba(0,0,0,0.5);">
+            <div class="flex items-center justify-center min-h-screen p-4">
                 
-                {{-- Overlay --}}
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" 
-                     wire:click="closeSearchModal"
-                     aria-hidden="true"></div>
-
                 {{-- Modal Panel --}}
-                <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
+                <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl" style="z-index: 10000;">
                     
                     {{-- Header --}}
                     <div class="bg-white dark:bg-gray-800 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center justify-between">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                {{ __('articles.layout.select_article') }}
-                            </h3>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                    {{ __('articles.layout.select_article') }}
+                                </h3>
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Posizione: {{ $currentPosition }} | Risultati: {{ $searchResults ? $searchResults->count() : 0 }}
+                                </p>
+                            </div>
                             <button wire:click="closeSearchModal" 
                                     class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
                                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -191,8 +191,8 @@
                             {{ __('common.cancel') }}
                         </button>
                     </div>
-                </div>
-            </div>
-        </div>
+                </div>{{-- Fine Modal Panel --}}
+            </div>{{-- Fine Flex Container --}}
+        </div>{{-- Fine Modal Wrapper --}}
     @endif
 </div>
