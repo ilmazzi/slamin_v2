@@ -111,13 +111,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Articles Routes
-Route::get('/articles', function () {
-    $articles = \App\Models\Article::where('moderation_status', 'approved')
-        ->where('is_public', true)
-        ->orderBy('created_at', 'desc')
-        ->paginate(12);
-    return view('pages.articles-index', compact('articles'));
-})->name('articles.index');
+Route::get('/articles', \App\Livewire\Articles\ArticleIndex::class)->name('articles.index');
 
 Route::get('/articles/{article}', function ($id) {
     $article = \App\Models\Article::findOrFail($id);
