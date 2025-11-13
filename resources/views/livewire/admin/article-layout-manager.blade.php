@@ -58,15 +58,15 @@
                     @include('livewire.admin.partials.layout-position', ['position' => 'horizontal1', 'size' => 'small'])
                 </div>
 
-                {{-- Horizontal 2 --}}
-                <div class="w-full">
-                    @include('livewire.admin.partials.layout-position', ['position' => 'horizontal2', 'size' => 'small'])
-                </div>
-
                 {{-- Column 3 & 4 --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @include('livewire.admin.partials.layout-position', ['position' => 'column3', 'size' => 'medium'])
                     @include('livewire.admin.partials.layout-position', ['position' => 'column4', 'size' => 'medium'])
+                </div>
+
+                {{-- Horizontal 2 --}}
+                <div class="w-full">
+                    @include('livewire.admin.partials.layout-position', ['position' => 'horizontal2', 'size' => 'small'])
                 </div>
 
                 {{-- Horizontal 3 --}}
