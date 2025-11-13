@@ -39,6 +39,7 @@ return [
     ],
     'layout' => [
         'title' => 'Gestione Layout Articoli',
+        'description' => 'Configura la disposizione degli articoli nella pagina principale',
         'banner' => 'Banner Principale',
         'column1' => 'Colonna 1',
         'column2' => 'Colonna 2',

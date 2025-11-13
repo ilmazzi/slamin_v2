@@ -118,6 +118,12 @@ Route::get('/articles/{article}', function ($id) {
     return view('pages.article-show', compact('article'));
 })->name('articles.show');
 
+// Articles Admin Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/articles/layout', \App\Livewire\Admin\ArticleLayoutManager::class)
+        ->name('admin.articles.layout');
+});
+
 // Gallery Route
 Route::get('/gallery', function () {
     return view('pages.gallery');
