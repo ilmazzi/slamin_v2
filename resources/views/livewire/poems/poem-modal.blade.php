@@ -280,10 +280,9 @@
         }
         
         .poem-modal-cover-left {
-            max-width: 100%;
-            width: 100%;
+            max-width: 320px;
             margin-bottom: 1.5rem;
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 3 / 4;
         }
         
         .poem-modal-cover-left .poem-modal-cover-image {
@@ -509,7 +508,7 @@
                 height: auto;
                 min-height: auto;
                 padding: 0;
-                padding-top: 20px;
+                padding-top: 30px;
                 border-radius: 0;
                 box-shadow: 
                     inset 0 0 30px rgba(160, 100, 60, 0.15),
@@ -573,7 +572,7 @@
             }
             
             .poem-page-left .poem-page-content {
-                padding: 0.5rem 1rem 1rem 1rem;
+                padding: 1rem 1rem 1.5rem 1rem;
             }
             
             /* SPIRALE METALLICA - highlight + shadow centrati nei buchi */
@@ -708,20 +707,17 @@
                 overscroll-behavior: contain;
             }
 
-            .poem-modal-cover,
             .poem-modal-cover-left {
                 max-width: 100%;
                 width: 100%;
-                aspect-ratio: 3 / 2;
-                margin-bottom: 1.25rem;
+                aspect-ratio: 16 / 9;
+                margin: 0 auto 1.5rem;
             }
 
-            .poem-modal-cover-left {
-                order: 0;
-            }
-
-            .poem-modal-cover-image {
-                height: 200px;
+            .poem-modal-cover-left .poem-modal-cover-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
 
             .poem-owner-actions {
