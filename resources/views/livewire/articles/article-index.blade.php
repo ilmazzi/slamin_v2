@@ -1,33 +1,42 @@
-<div>
-    {{-- Hero Section - Stile Editoriale --}}
-    <section class="relative overflow-hidden bg-gradient-to-br from-primary-900 to-primary-800 text-white">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-20 left-10 w-72 h-72 bg-accent-500 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary-500 rounded-full blur-3xl animate-pulse delay-700"></div>
-        </div>
-        
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-            <div class="text-center space-y-6">
-                {{-- Sovratitolo editorial --}}
-                <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                    <svg class="w-5 h-5 text-accent-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                    </svg>
-                    <span class="text-sm font-medium text-white">{{ __('articles.hero.tagline') }}</span>
-                </div>
-
-                <h1 class="text-5xl md:text-7xl font-bold tracking-tight opacity-0 animate-fade-in" style="font-family: 'Playfair Display', serif;">
-                    {{ __('articles.hero.title') }}
-                </h1>
+<div class="min-h-screen">
+    
+    {{-- HERO con Magazine + Titolo (come media e poems) --}}
+    <section class="relative py-12 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
                 
-                <p class="text-xl md:text-2xl text-primary-100 max-w-3xl mx-auto opacity-0 animate-fade-in-delay-1">
-                    {{ __('articles.hero.subtitle') }}
-                </p>
+                <!-- MAGAZINE COVER (dalla home) - Dimensione maggiorata -->
+                <div class="hero-magazine-wrapper-large">
+                    <div class="hero-magazine-cover-large">
+                        <div class="hero-magazine-inner-large">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="text-sm font-bold text-neutral-900">SLAMIN</div>
+                                <div class="text-xs text-neutral-600">{{ now()->format('M Y') }}</div>
+                            </div>
+                            <div class="h-px bg-gradient-to-r from-neutral-900 via-neutral-400 to-neutral-900 mb-3"></div>
+                            <h3 class="hero-magazine-title-large">
+                                {{ __('home.hero_category_articles') }}
+                            </h3>
+                            <div class="mt-auto pt-3">
+                                <div class="text-xs text-neutral-700 leading-tight">
+                                    {{ __('articles.hero.tagline') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TITOLO A FIANCO -->
+                <div class="text-center md:text-left">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight" style="font-family: 'Playfair Display', serif;">
+                        {{ __('articles.hero.title') }}
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/80 mt-4 font-medium">
+                        {{ __('articles.hero.subtitle') }}
+                    </p>
+                </div>
             </div>
         </div>
-
-        {{-- Decorazione bottom --}}
-        <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-50 dark:from-gray-900 to-transparent"></div>
     </section>
 
     {{-- Filtri e Ricerca --}}
@@ -218,4 +227,78 @@
             @endif
         </div>
     </section>
+
+    <style>
+        /* ========================================
+           MAGAZINE COVER - Hero Large Version
+           ======================================== */
+        
+        .hero-magazine-wrapper-large {
+            display: block;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-magazine-wrapper-large:hover {
+            transform: translateY(-6px) scale(1.05);
+        }
+        
+        .hero-magazine-cover-large {
+            background: linear-gradient(135deg, #f5f5f0 0%, #e8e6e1 100%);
+            padding: 1.5rem 1.25rem;
+            height: 260px;
+            border-radius: 4px;
+            box-shadow: 
+                inset 0 0 0 2px rgba(100, 100, 100, 0.2),
+                inset 0 0 8px rgba(0, 0, 0, 0.1),
+                0 8px 12px rgba(0, 0, 0, 0.2),
+                0 15px 25px rgba(0, 0, 0, 0.15),
+                0 25px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hero-magazine-wrapper-large:hover .hero-magazine-cover-large {
+            box-shadow: 
+                inset 0 0 0 2px rgba(100, 100, 100, 0.3),
+                inset 0 0 12px rgba(0, 0, 0, 0.15),
+                0 12px 18px rgba(0, 0, 0, 0.3),
+                0 25px 40px rgba(0, 0, 0, 0.25),
+                0 40px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero-magazine-inner-large {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .hero-magazine-title-large {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1.2;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+        
+        .hero-magazine-wrapper-large:hover .hero-magazine-title-large {
+            color: #2563eb;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-magazine-wrapper-large {
+                width: 180px;
+            }
+            
+            .hero-magazine-cover-large {
+                padding: 1.25rem 1rem;
+                height: 240px;
+            }
+            
+            .hero-magazine-title-large {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </div>
