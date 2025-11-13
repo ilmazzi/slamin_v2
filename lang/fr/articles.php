@@ -13,6 +13,7 @@ return [
         'featured' => 'À la Une',
         'featured_articles' => 'Articles à la Une',
         'all_articles' => 'Tous les Articles',
+        'sidebar_articles' => 'À Ne Pas Manquer',
         'read_more' => 'Lire l\'article',
         'reading_time' => ':minutes min de lecture',
         'published_on' => 'Publié le',

@@ -13,6 +13,7 @@ return [
         'featured' => 'In Evidenza',
         'featured_articles' => 'Articoli in Evidenza',
         'all_articles' => 'Tutti gli Articoli',
+        'sidebar_articles' => 'Da Non Perdere',
         'read_more' => 'Leggi l\'articolo',
         'reading_time' => ':minutes min di lettura',
         'published_on' => 'Pubblicato il',

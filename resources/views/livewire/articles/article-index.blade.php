@@ -91,6 +91,11 @@
     <section class="bg-gray-50 dark:bg-gray-900 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
+            {{-- Layout con Sidebar --}}
+            <div class="flex flex-col lg:flex-row gap-8">
+                {{-- Main Content Area --}}
+                <div class="flex-1 lg:w-2/3">
+            
             {{-- Articolo Banner (dal Layout System) --}}
             @if(!empty($layoutArticles['banner']) && !$search && !$selectedCategory)
                 @php $bannerArticle = $layoutArticles['banner']; @endphp
@@ -244,6 +249,58 @@
                     </div>
                 @endif
             @endif
+                
+                </div>{{-- Fine Main Content Area --}}
+                
+                {{-- Sidebar --}}
+                @if(!empty($layoutArticles['sidebar']) && !$search && !$selectedCategory)
+                    <aside class="lg:w-1/3">
+                        <div class="sticky top-24 space-y-6">
+                            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                    </svg>
+                                    {{ __('articles.index.sidebar_articles') }}
+                                </h3>
+                                <div class="space-y-4">
+                                    @foreach($layoutArticles['sidebar'] as $sidebarArticle)
+                                        <article class="group pb-4 border-b border-gray-200 dark:border-gray-700 last:border-0 last:pb-0">
+                                            @if($sidebarArticle->featured_image_url)
+                                                <div class="relative overflow-hidden rounded-lg mb-3 h-32">
+                                                    <img 
+                                                        src="{{ $sidebarArticle->featured_image_url }}" 
+                                                        alt="{{ $sidebarArticle->title }}"
+                                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                    >
+                                                </div>
+                                            @endif
+                                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
+                                                <a href="{{ route('articles.show', $sidebarArticle->slug) }}" wire:navigate>
+                                                    {{ $sidebarArticle->title }}
+                                                </a>
+                                            </h4>
+                                            @if($sidebarArticle->category)
+                                                <span class="inline-block px-2 py-1 text-xs rounded bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200 mb-2">
+                                                    {{ $sidebarArticle->category->name }}
+                                                </span>
+                                            @endif
+                                            <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
+                                                {{ $sidebarArticle->excerpt }}
+                                            </p>
+                                            <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                                                <span>{{ $sidebarArticle->published_at->format('d M Y') }}</span>
+                                                <span>{{ $sidebarArticle->read_time }} min</span>
+                                            </div>
+                                        </article>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                @endif
+            </div>{{-- Fine Layout con Sidebar --}}
+            
         </div>
     </section>
 

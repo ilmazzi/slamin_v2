@@ -13,6 +13,7 @@ return [
         'featured' => 'Featured',
         'featured_articles' => 'Featured Articles',
         'all_articles' => 'All Articles',
+        'sidebar_articles' => 'Don\'t Miss',
         'read_more' => 'Read article',
         'reading_time' => ':minutes min read',
         'published_on' => 'Published on',
