@@ -81,18 +81,18 @@
                         <div class="poem-page-content overflow-y-auto">
                             @auth
                                 @if(auth()->id() === $poem->user_id)
-                                    <div class="flex justify-end mb-6">
-                                        <a href="{{ route('poems.edit', $poem) }}"
-                                           class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-500 text-white text-sm font-semibold shadow-lg shadow-accent-500/30 hover:bg-accent-600 transition-all duration-200">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 2.5l3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                            </svg>
-                                            <span>{{ __('poems.show.edit_poem') }}</span>
-                                        </a>
-                                    </div>
-                                @endif
-                            @endauth
+                                    <div class="flex justify-end mb-6 pt-2 pr-12 md:pr-20">
+                                        <a href="{{ route('poems.edit', $poem->slug) }}"
+                                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-500 text-white text-sm font-semibold shadow-lg shadow-accent-500/30 hover:bg-accent-600 transition-all duration-200">
+                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
+                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 2.5l3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                             </svg>
+                                             <span>{{ __('poems.show.edit_poem') }}</span>
+                                         </a>
+                                     </div>
+                                 @endif
+                             @endauth
                             <!-- Title -->
                             <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 mb-4 text-center italic" 
                                 style="font-family: 'Crimson Pro', serif;">
