@@ -91,10 +91,11 @@ class ArticleLayoutManager extends Component
     public function searchArticles()
     {
         $query = Article::query()
-            ->published()
-            ->where('is_public', true)
             ->with(['category', 'user'])
             ->orderBy('created_at', 'desc');
+
+        // Mostra tutti gli articoli (anche draft) per il layout manager
+        // Rimuovo il filtro published() per permettere di selezionare qualsiasi articolo
 
         if (!empty($this->searchTerm)) {
             $searchTerm = $this->searchTerm;
@@ -110,6 +111,13 @@ class ArticleLayoutManager extends Component
         }
 
         $this->searchResults = $query->limit(20)->get();
+        
+        // Debug: log il numero di risultati
+        \Log::info('ArticleLayoutManager searchArticles', [
+            'searchTerm' => $this->searchTerm,
+            'resultsCount' => $this->searchResults->count(),
+            'totalArticles' => Article::count()
+        ]);
     }
 
     public function selectArticle($articleId)
