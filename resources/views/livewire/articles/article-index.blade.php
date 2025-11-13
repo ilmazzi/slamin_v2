@@ -39,49 +39,66 @@
         </div>
     </section>
 
-    {{-- Filtri e Ricerca --}}
-    <section class="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-16 z-20 backdrop-blur-sm bg-gray-50/95 dark:bg-gray-900/95">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-                {{-- Ricerca --}}
-                <div class="w-full md:w-96">
-                    <div class="relative">
+    {{-- Filtri e Ricerca - Stile Elegante --}}
+    <section class="sticky top-16 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+                
+                {{-- Ricerca Elegante --}}
+                <div class="w-full lg:w-auto lg:flex-1 lg:max-w-md">
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400 group-focus-within:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
                         <input 
                             type="text" 
                             wire:model.live.debounce.300ms="search"
-                            placeholder="{{ __('articles.index.search_placeholder') ?? 'Cerca articoli...' }}"
-                            class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            placeholder="{{ __('articles.index.search_placeholder') }}"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                         >
-                        <svg class="absolute left-3 top-3 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
                     </div>
                 </div>
 
-                {{-- Filtri --}}
-                <div class="flex flex-wrap gap-2 items-center">
+                {{-- Filtri Eleganti --}}
+                <div class="flex flex-wrap gap-3 items-center w-full lg:w-auto">
                     {{-- Ordinamento --}}
-                    <select 
-                        wire:model.live="sortBy"
-                        class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500"
-                    >
-                        <option value="recent">{{ __('articles.filters.recent') ?? 'Più recenti' }}</option>
-                        <option value="popular">{{ __('articles.filters.popular') ?? 'Più popolari' }}</option>
-                        <option value="featured">{{ __('articles.filters.featured') ?? 'In evidenza' }}</option>
-                    </select>
+                    <div class="relative">
+                        <select 
+                            wire:model.live="sortBy"
+                            class="appearance-none pl-4 pr-10 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 hover:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 cursor-pointer"
+                        >
+                            <option value="recent">{{ __('articles.filters.recent') }}</option>
+                            <option value="popular">{{ __('articles.filters.popular') }}</option>
+                            <option value="featured">{{ __('articles.filters.featured') }}</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                    </div>
 
                     {{-- Categoria --}}
-                    <select 
-                        wire:model.live="selectedCategory"
-                        class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-sm focus:ring-2 focus:ring-primary-500"
-                    >
-                        <option value="">{{ __('articles.filters.all') }}</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}">
-                                {{ $category->name }} ({{ $category->articles_count }})
-                            </option>
-                        @endforeach
-                    </select>
+                    <div class="relative">
+                        <select 
+                            wire:model.live="selectedCategory"
+                            class="appearance-none pl-4 pr-10 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 hover:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 cursor-pointer"
+                        >
+                            <option value="">{{ __('articles.filters.all') }}</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">
+                                    {{ $category->name }} ({{ $category->articles_count }})
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
