@@ -192,57 +192,11 @@
                     
                     @else
                     <!-- PHOTO Frame - Simple Vintage Style -->
-                    <div class="photo-frame-container" style="transform: rotate({{ $tilt }}deg);">
-                        <div class="photo-frame">
-                            <!-- Photo Image -->
-                            <a href="{{ route('photos.show', $item) }}" class="block">
-                                <img src="{{ $item->image_url }}" 
-                                     alt="{{ $item->title }}" 
-                                     class="w-full h-full object-cover">
-                            </a>
-                            
-                            <!-- Photo Info Overlay -->
-                            <div class="photo-info">
-                                <div class="photo-header">
-                                    <div class="photo-author-block">
-                                        <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($item->user, 64) }}"
-                                             alt="{{ \App\Helpers\AvatarHelper::getDisplayName($item->user) }}"
-                                             class="photo-author-avatar">
-                                        <div>
-                                            <h3 class="photo-title">{{ $item->title }}</h3>
-                                            <div class="photo-author">{{ \App\Helpers\AvatarHelper::getDisplayName($item->user) }}</div>
-                                        </div>
-                                    </div>
-                                    <span class="photo-date">{{ $item->created_at?->format('d M Y') }}</span>
-                                </div>
-                                
-                                <!-- Social Actions -->
-                                <div class="photo-actions" @click.stop>
-                                    <x-like-button 
-                                        :itemId="$item->id"
-                                        itemType="photo"
-                                        :isLiked="$item->is_liked ?? false"
-                                        :likesCount="$item->like_count ?? 0"
-                                        size="sm"
-                                        class="[&_button]:!text-neutral-600 dark:[&_button]:!text-neutral-200 [&_button]:!gap-1 [&_svg]:!stroke-current [&_span]:!text-xs" />
-                                    
-                                    <x-comment-button 
-                                        :itemId="$item->id"
-                                        itemType="photo"
-                                        :commentsCount="$item->comment_count ?? 0"
-                                        size="sm"
-                                        class="[&_button]:!text-neutral-600 dark:[&_button]:!text-neutral-200 [&_button]:!gap-1 [&_svg]:!stroke-current [&_span]:!text-xs" />
-                                    
-                                    <x-share-button 
-                                        :itemId="$item->id"
-                                        itemType="photo"
-                                        :url="route('photos.show', $item)"
-                                        :title="$item->title"
-                                        size="sm"
-                                        class="[&_button]:!text-neutral-600 dark:[&_button]:!text-neutral-200 [&_button]:!gap-1 [&_svg]:!stroke-current [&_span]:!text-xs" />
-                                </div>
-                            </div>
-                        </div>
+                    <div class="home-photo-frame" style="transform: rotate({{ $tilt }}deg);">
+                        <x-photo-frame-light 
+                            :photo="$item" 
+                            :index="$i" 
+                            size="normal" />
                     </div>
                     @endif
                 </div>
@@ -663,120 +617,9 @@
         opacity: 1 !important;
     }
     
-    /* ========================================
-       PHOTO FRAME - Vintage Style
-       ======================================== */
-    
-    .photo-frame-container {
-        width: clamp(240px, 55vw, 400px);
+    .home-photo-frame {
+        width: clamp(240px, 55vw, 420px);
         margin: 0 auto;
-        transition: transform 0.3s ease;
-    }
-    
-    .photo-frame {
-        position: relative;
-        background: #ffffff;
-        padding: 18px 18px 70px 18px;
-        box-shadow: 
-            0 12px 30px rgba(0, 0, 0, 0.12),
-            0 6px 12px rgba(0, 0, 0, 0.08);
-        border-radius: 8px;
-        aspect-ratio: 3/4;
-        overflow: hidden;
-    }
-    
-    .dark .photo-frame {
-        background: #fafafa;
-    }
-    
-    .photo-frame img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: grayscale(100%);
-        transition: filter 0.5s ease;
-    }
-    
-    .photo-frame:hover img {
-        filter: grayscale(0%);
-    }
-    
-    .photo-info {
-        position: absolute;
-        inset: auto 0 0 0;
-        padding: 1rem 1.25rem;
-        background: rgba(255, 255, 255, 0.94);
-        backdrop-filter: blur(12px);
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-    
-    .photo-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-    }
-    
-    .photo-author-block {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        min-width: 0;
-    }
-    
-    .photo-author-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 9999px;
-        object-fit: cover;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    
-    .photo-title {
-        font-family: 'Crimson Pro', serif;
-        font-size: 1rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        line-height: 1.2;
-        margin-bottom: 0.15rem;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    
-    .photo-author {
-        font-size: 0.8rem;
-        color: #555;
-    }
-    
-    .photo-date {
-        font-size: 0.75rem;
-        color: #888;
-        white-space: nowrap;
-    }
-    
-    .photo-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    
-    .dark .photo-info {
-        background: rgba(23, 23, 23, 0.88);
-    }
-    
-    .dark .photo-title {
-        color: #f5f5f5;
-    }
-    
-    .dark .photo-author {
-        color: #cfcfcf;
-    }
-    
-    .dark .photo-date {
-        color: #a3a3a3;
     }
     </style>
     @endif
