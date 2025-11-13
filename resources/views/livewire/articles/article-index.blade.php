@@ -39,42 +39,62 @@
         </div>
     </section>
 
-    {{-- Filtri e Ricerca - Stile Elegante --}}
-    <section class="sticky top-16 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+    {{-- Filtri e Ricerca - Stile Poetico Elegante --}}
+    <section class="relative py-8 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-900/95">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            {{-- Ricerca Principale - Stile Poetico --}}
+            <div class="relative max-w-2xl mx-auto">
+                <input wire:model.live.debounce.500ms="search"
+                       type="text"
+                       placeholder="{{ __('articles.index.search_placeholder') }}"
+                       class="w-full px-6 py-4 rounded-full 
+                              border-2 border-gray-300/50 dark:border-gray-700/50 
+                              bg-white/60 dark:bg-gray-800/60
+                              backdrop-blur-sm
+                              text-gray-900 dark:text-white placeholder:text-gray-500
+                              focus:border-primary-400 focus:ring-4 focus:ring-primary-400/20 focus:bg-white dark:focus:bg-gray-800
+                              transition-all duration-300 
+                              text-center"
+                       style="font-family: 'Playfair Display', serif; font-size: 1.125rem;">
                 
-                {{-- Ricerca Elegante --}}
-                <div class="w-full lg:w-auto lg:flex-1 lg:max-w-md">
-                    <div class="relative group">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400 group-focus-within:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
-                        </div>
-                        <input 
-                            type="text" 
-                            wire:model.live.debounce.300ms="search"
-                            placeholder="{{ __('articles.index.search_placeholder') }}"
-                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
-                        >
-                    </div>
-                </div>
-
-                {{-- Filtri Eleganti --}}
-                <div class="flex flex-wrap gap-3 items-center w-full lg:w-auto">
+                @if($search)
+                    <button wire:click="$set('search', '')" 
+                            class="absolute right-6 top-1/2 -translate-y-1/2
+                                   text-gray-400 hover:text-primary-600
+                                   hover:scale-110 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                @endif
+            </div>
+            
+            {{-- Filtri Minimali - Nascosti per default --}}
+            <details class="mt-6">
+                <summary class="text-center text-sm text-gray-500 hover:text-primary-600 cursor-pointer transition-colors" style="font-family: 'Playfair Display', serif;">
+                    {{ __('articles.filters.show_filters') ?? 'Mostra filtri avanzati' }}
+                </summary>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto">
                     {{-- Ordinamento --}}
                     <div class="relative">
-                        <select 
-                            wire:model.live="sortBy"
-                            class="appearance-none pl-4 pr-10 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 hover:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 cursor-pointer"
-                        >
+                        <select wire:model.live="sortBy"
+                                class="w-full px-4 py-3 rounded-xl
+                                       border-2 border-gray-300/50 dark:border-gray-700/50
+                                       bg-white/60 dark:bg-gray-800/60
+                                       backdrop-blur-sm
+                                       text-gray-700 dark:text-gray-300
+                                       focus:border-primary-400 focus:ring-4 focus:ring-primary-400/20
+                                       transition-all duration-300
+                                       appearance-none cursor-pointer"
+                                style="font-family: 'Playfair Display', serif;">
                             <option value="recent">{{ __('articles.filters.recent') }}</option>
                             <option value="popular">{{ __('articles.filters.popular') }}</option>
                             <option value="featured">{{ __('articles.filters.featured') }}</option>
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
                         </div>
@@ -82,10 +102,16 @@
 
                     {{-- Categoria --}}
                     <div class="relative">
-                        <select 
-                            wire:model.live="selectedCategory"
-                            class="appearance-none pl-4 pr-10 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 hover:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 cursor-pointer"
-                        >
+                        <select wire:model.live="selectedCategory"
+                                class="w-full px-4 py-3 rounded-xl
+                                       border-2 border-gray-300/50 dark:border-gray-700/50
+                                       bg-white/60 dark:bg-gray-800/60
+                                       backdrop-blur-sm
+                                       text-gray-700 dark:text-gray-300
+                                       focus:border-primary-400 focus:ring-4 focus:ring-primary-400/20
+                                       transition-all duration-300
+                                       appearance-none cursor-pointer"
+                                style="font-family: 'Playfair Display', serif;">
                             <option value="">{{ __('articles.filters.all') }}</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">
@@ -93,14 +119,34 @@
                                 </option>
                             @endforeach
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
                         </div>
                     </div>
                 </div>
-            </div>
+            </details>
+
+            {{-- Reset Filtri --}}
+            @if($search || $selectedCategory)
+                <div class="mt-6 text-center">
+                    <button wire:click="$set('search', ''); $set('selectedCategory', '')"
+                            class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full
+                                   bg-gradient-to-r from-primary-500 to-primary-600 
+                                   hover:from-primary-600 hover:to-primary-700
+                                   text-white text-sm font-medium
+                                   shadow-lg shadow-primary-500/30
+                                   hover:shadow-xl hover:shadow-primary-500/40
+                                   transition-all duration-300"
+                            style="font-family: 'Playfair Display', serif;">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                        {{ __('articles.filters.clear') ?? 'Cancella filtri' }}
+                    </button>
+                </div>
+            @endif
         </div>
     </section>
 
