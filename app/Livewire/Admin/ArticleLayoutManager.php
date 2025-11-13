@@ -11,7 +11,7 @@ class ArticleLayoutManager extends Component
 {
     public $layouts = [];
     public $searchTerm = '';
-    public $searchResults = [];
+    public $searchResults;
     public $showSearchModal = false;
     public $currentPosition = null;
 
@@ -43,6 +43,9 @@ class ArticleLayoutManager extends Component
         if (!auth()->user()->hasAnyRole(['admin', 'moderator', 'editor'])) {
             abort(403, 'Unauthorized action.');
         }
+        
+        // Inizializza searchResults come collection vuota
+        $this->searchResults = collect([]);
         
         $this->loadLayouts();
     }
@@ -76,7 +79,7 @@ class ArticleLayoutManager extends Component
         $this->currentPosition = $position;
         $this->showSearchModal = true;
         $this->searchTerm = '';
-        $this->searchResults = [];
+        $this->searchResults = collect([]);
         $this->searchArticles();
     }
 
@@ -85,7 +88,7 @@ class ArticleLayoutManager extends Component
         $this->showSearchModal = false;
         $this->currentPosition = null;
         $this->searchTerm = '';
-        $this->searchResults = [];
+        $this->searchResults = collect([]);
     }
 
     public function searchArticles()
