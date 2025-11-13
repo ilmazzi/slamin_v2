@@ -47,8 +47,16 @@
                          x-bind:class="leftOpen ? 'poem-page-open-left' : 'poem-page-closed-left'">
                         
                         <div class="poem-page-content">
-                            <!-- Author Info - SOLO statistiche -->
+                            <!-- Cover + Author Info -->
                             <div class="flex flex-col items-center justify-center h-full text-center space-y-6">
+                                @if($poem->thumbnail_url)
+                                    <div class="poem-modal-cover poem-modal-cover-left">
+                                        <img src="{{ $poem->thumbnail_url }}"
+                                             alt="{{ $poem->title ?: __('poems.untitled') }}"
+                                             class="poem-modal-cover-image">
+                                        <span class="poem-modal-cover-shadow"></span>
+                                    </div>
+                                @endif
                                 <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 120) }}" 
                                      alt="{{ $poem->user->name }}"
                                      class="w-24 h-24 rounded-full object-cover ring-4 ring-accent-200 shadow-xl">
@@ -93,20 +101,11 @@
                                     </div>
                                 @endif
                             @endauth
-
-                            @if($poem->thumbnail_url)
-                                <div class="poem-modal-cover">
-                                    <img src="{{ $poem->thumbnail_url }}"
-                                         alt="{{ $poem->title ?: __('poems.untitled') }}"
-                                         class="poem-modal-cover-image">
-                                    <span class="poem-modal-cover-shadow"></span>
-                                </div>
-                            @endif
-                            <!-- Title -->
-                            <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 mb-4 text-center italic" 
-                                style="font-family: 'Crimson Pro', serif;">
-                                "{{ $poem->title ?: __('poems.untitled') }}"
-                            </h2>
+                             <!-- Title -->
+                             <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 mb-4 text-center italic" 
+                                 style="font-family: 'Crimson Pro', serif;">
+                                 "{{ $poem->title ?: __('poems.untitled') }}"
+                             </h2>
                             
                             <!-- Category Badge -->
                             <div class="flex justify-center mb-4">
@@ -259,6 +258,15 @@
                 inset 0 0 0 1px rgba(180, 120, 70, 0.2);
         }
         
+        .poem-modal-cover-left {
+            max-width: 320px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .poem-modal-cover-left .poem-modal-cover-image {
+            height: 220px;
+        }
+        
         .poem-modal-cover-image {
             display: block;
             width: 100%;
@@ -275,7 +283,7 @@
             pointer-events: none;
         }
         
-        .poem-page-right:hover .poem-modal-cover-image {
+        .poem-page-left:hover .poem-modal-cover-image {
             transform: scale(1.03);
         }
         
