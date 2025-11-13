@@ -121,12 +121,6 @@ Route::get('/articles/{article}', function ($id) {
 // Articles Admin Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/articles/layout', \App\Livewire\Admin\ArticleLayoutManager::class)
-        ->middleware(function ($request, $next) {
-            if (!auth()->user()->hasAnyRole(['admin', 'moderator', 'editor'])) {
-                abort(403, 'Unauthorized action.');
-            }
-            return $next($request);
-        })
         ->name('admin.articles.layout');
 });
 
