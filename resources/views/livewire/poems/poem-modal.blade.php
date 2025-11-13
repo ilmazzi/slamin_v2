@@ -218,13 +218,13 @@
         }
         
         .poem-page-open-left {
-            transform: perspective(1200px) rotateY(15deg);
+            transform: perspective(1200px) rotateY(7deg);
             opacity: 1;
             pointer-events: auto;
         }
         
         .poem-page-open-right {
-            transform: perspective(1200px) rotateY(-15deg);
+            transform: perspective(1200px) rotateY(-7deg);
             opacity: 1;
             pointer-events: auto;
         }

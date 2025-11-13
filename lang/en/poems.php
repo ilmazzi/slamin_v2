@@ -81,6 +81,7 @@ return [
         'reset_filters_button' => 'Show all',
         'explore_all' => 'Explore All',
         'empty_quote' => 'Silence is poetry not yet written',
+        'cover_placeholder' => 'No cover available',
     ],
     
     // Filters

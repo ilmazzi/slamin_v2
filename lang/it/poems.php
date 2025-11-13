@@ -81,6 +81,7 @@ return [
         'reset_filters_button' => 'Mostra tutte',
         'explore_all' => 'Esplora Tutto',
         'empty_quote' => 'Il silenzio è la poesia non ancora scritta',
+        'cover_placeholder' => 'Immagine non disponibile',
     ],
     
     // Filters

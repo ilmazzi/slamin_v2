@@ -167,7 +167,7 @@
             @if($poems && $poems->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                     @foreach($poems as $index => $poem)
-                    <?php $paperRotation = rand(-2, 2); ?>
+                    <?php $paperRotation = rand(-2, 2); $hasCover = !empty($poem->thumbnail_url); ?>
                     <div class="poetry-card-wrapper"
                          x-data="{ visible: false }" 
                          x-intersect.once="visible = true">
@@ -181,14 +181,22 @@
                                  style="transform: rotate({{ $paperRotation }}deg);"
                                  onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $poem->id }} })">
                                 {{-- Featured Cover --}}
-                                @if($poem->thumbnail_url)
-                                    <div class="poetry-card-cover">
+                                <div class="poetry-card-cover {{ $hasCover ? 'poetry-card-cover--image' : 'poetry-card-cover--placeholder' }}">
+                                    @if($hasCover)
                                         <img src="{{ $poem->thumbnail_url }}"
                                              alt="{{ $poem->title ?: __('poems.untitled') }}"
                                              class="poetry-card-cover-image">
                                         <span class="poetry-card-cover-shadow"></span>
-                                    </div>
-                                @endif
+                                    @else
+                                        <div class="poetry-card-cover-placeholder">
+                                            <svg class="w-10 h-10 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M4 17l6-6 4 4 6-6" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M14 7h6v6" />
+                                            </svg>
+                                            <span>{{ __('poems.index.cover_placeholder') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
                                 
                                 {{-- Title & Excerpt --}}
                                 <div>
@@ -569,21 +577,43 @@
         .poetry-card-cover {
             position: relative;
             overflow: hidden;
-            border-radius: 10px;
-            margin: 1.25rem 0 1.75rem;
+            border-radius: 12px;
+            margin: 1rem 0 1.5rem;
             box-shadow:
-                0 12px 25px rgba(0, 0, 0, 0.18),
-                inset 0 0 0 1px rgba(180, 120, 70, 0.15);
+                0 10px 22px rgba(0, 0, 0, 0.14),
+                inset 0 0 0 1px rgba(180, 120, 70, 0.12);
             transform: translateZ(0);
+            height: 170px;
         }
         
-        .poetry-card-cover-image {
+        .poetry-card-cover--image {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
             transition: transform 0.6s ease;
         }
         
+        .poetry-card-cover--placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(249, 245, 235, 0.9) 50%, rgba(244, 236, 220, 0.95) 100%),
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 200c0-110 90-200 200-200' fill='none' stroke='rgba(183, 140, 88, 0.15)' stroke-width='6'/%3E%3C/svg%3E");
+            background-size: cover;
+        }
+
+        .poetry-card-cover-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: rgba(70, 55, 40, 0.5);
+            font-style: italic;
+            letter-spacing: 0.02em;
+        }
+
         .poetry-card-cover-shadow {
             position: absolute;
             inset: 0;
@@ -615,8 +645,8 @@
                 font-size: 0.875rem;
             }
             
-            .poetry-card-cover-image {
-                height: 160px;
+            .poetry-card-cover {
+                height: 150px;
             }
         }
     </style>
