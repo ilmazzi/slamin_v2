@@ -189,11 +189,7 @@
                                         <span class="poetry-card-cover-shadow"></span>
                                     @else
                                         <div class="poetry-card-cover-placeholder">
-                                            <svg class="w-10 h-10 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M4 17l6-6 4 4 6-6" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M14 7h6v6" />
-                                            </svg>
-                                            <span>{{ __('poems.index.cover_placeholder') }}</span>
+                                            
                                         </div>
                                     @endif
                                 </div>
@@ -578,12 +574,12 @@
             position: relative;
             overflow: hidden;
             border-radius: 12px;
-            margin: 1rem 0 1.5rem;
+            margin: 0.75rem 0 1.25rem;
             box-shadow:
-                0 10px 22px rgba(0, 0, 0, 0.14),
-                inset 0 0 0 1px rgba(180, 120, 70, 0.12);
+                0 8px 18px rgba(0, 0, 0, 0.12),
+                inset 0 0 0 1px rgba(180, 120, 70, 0.1);
             transform: translateZ(0);
-            height: 170px;
+            height: 140px;
         }
         
         .poetry-card-cover--image {
@@ -646,7 +642,7 @@
             }
             
             .poetry-card-cover {
-                height: 150px;
+                height: 120px;
             }
         }
     </style>
