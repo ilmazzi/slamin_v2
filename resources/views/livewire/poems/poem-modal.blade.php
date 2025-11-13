@@ -508,7 +508,7 @@
                 height: auto;
                 min-height: auto;
                 padding: 0;
-                padding-top: 30px;
+                padding-top: 50px;
                 border-radius: 0;
                 box-shadow: 
                     inset 0 0 30px rgba(160, 100, 60, 0.15),
@@ -572,7 +572,16 @@
             }
             
             .poem-page-left .poem-page-content {
-                padding: 1rem 1rem 1.5rem 1rem;
+                padding: 0.75rem 1rem 1.5rem 1rem;
+            }
+            
+            .poem-left-meta {
+                gap: 0.75rem;
+            }
+            
+            .poem-left-avatar {
+                width: 5rem;
+                height: 5rem;
             }
             
             /* SPIRALE METALLICA - highlight + shadow centrati nei buchi */
@@ -635,11 +644,7 @@
                 height: auto;
             }
             
-            .poem-page-left img {
-                width: 3.5rem;
-                height: 3.5rem;
-                flex-shrink: 0;
-            }
+            /* Rimosso: conflitto con layout nuovo */
             
             .poem-page-left .w-12 {
                 display: none;
