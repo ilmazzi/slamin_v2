@@ -87,7 +87,7 @@ class ArticleLayoutManager extends Component
     {
         $query = Article::query()
             ->published()
-            ->with(['category', 'author'])
+            ->with(['category', 'user'])
             ->orderBy('created_at', 'desc');
 
         if (!empty($this->searchTerm)) {
