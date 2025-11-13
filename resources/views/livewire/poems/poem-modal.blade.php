@@ -83,16 +83,25 @@
                                 @if(auth()->id() === $poem->user_id)
                                     <div class="flex justify-end mb-6 pt-2 pr-12 md:pr-20">
                                         <a href="{{ route('poems.edit', $poem->slug) }}"
-                                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-500 text-white text-sm font-semibold shadow-lg shadow-accent-500/30 hover:bg-accent-600 transition-all duration-200">
-                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
-                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 2.5l3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                             </svg>
-                                             <span>{{ __('poems.show.edit_poem') }}</span>
-                                         </a>
-                                     </div>
-                                 @endif
-                             @endauth
+                                           class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-500 text-white text-sm font-semibold shadow-lg shadow-accent-500/30 hover:bg-accent-600 transition-all duration-200">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 2.5l3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                            </svg>
+                                            <span>{{ __('poems.show.edit_poem') }}</span>
+                                        </a>
+                                    </div>
+                                @endif
+                            @endauth
+
+                            @if($poem->thumbnail_url)
+                                <div class="poem-modal-cover">
+                                    <img src="{{ $poem->thumbnail_url }}"
+                                         alt="{{ $poem->title ?: __('poems.untitled') }}"
+                                         class="poem-modal-cover-image">
+                                    <span class="poem-modal-cover-shadow"></span>
+                                </div>
+                            @endif
                             <!-- Title -->
                             <h2 class="text-2xl md:text-3xl font-bold text-neutral-900 mb-4 text-center italic" 
                                 style="font-family: 'Crimson Pro', serif;">
@@ -237,6 +246,37 @@
             padding: 2rem;
             height: 100%;
             overflow-y: auto;
+        }
+        
+        .poem-modal-cover {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 0 auto 2rem;
+            max-width: 420px;
+            box-shadow:
+                0 18px 30px rgba(0, 0, 0, 0.18),
+                inset 0 0 0 1px rgba(180, 120, 70, 0.2);
+        }
+        
+        .poem-modal-cover-image {
+            display: block;
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .poem-modal-cover-shadow {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.3) 100%);
+            mix-blend-mode: multiply;
+            pointer-events: none;
+        }
+        
+        .poem-page-right:hover .poem-modal-cover-image {
+            transform: scale(1.03);
         }
         
         /* Rilegatura centrale */
@@ -530,7 +570,16 @@
                 -webkit-overflow-scrolling: touch;
                 overscroll-behavior: contain;
             }
-            
+
+            .poem-modal-cover {
+                max-width: 100%;
+                margin-bottom: 1.5rem;
+            }
+
+            .poem-modal-cover-image {
+                height: 200px;
+            }
+
             .poem-book-spine {
                 display: none;
             }

@@ -73,11 +73,7 @@
         <!-- Poetic Search - Minimal & Elegant -->
         <div class="mb-16 animate-fade-in-delay-1">
            
-            <div class="max-w-2xl mx-auto text-center mb-8">
-                <p class="text-lg text-neutral-600 dark:text-neutral-400 italic font-poem">
-                    {{ __('poems.index.search_tagline') }}
-                </p>
-            </div>
+           
             
             <div class="max-w-xl mx-auto">
                 <!-- Poetic Search Input -->
@@ -184,13 +180,15 @@
                             <div class="poetry-paper-card cursor-pointer" 
                                  style="transform: rotate({{ $paperRotation }}deg);"
                                  onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $poem->id }} })">
-                                {{-- Author --}}
-                                <div class="poetry-card-author">
-                                    <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 60) }}" 
-                                         alt="{{ $poem->user->name }}"
-                                         class="w-10 h-10 rounded-full object-cover ring-2 ring-accent-200">
-                                    <span>{{ $poem->user->name }}</span>
-                                </div>
+                                {{-- Featured Cover --}}
+                                @if($poem->thumbnail_url)
+                                    <div class="poetry-card-cover">
+                                        <img src="{{ $poem->thumbnail_url }}"
+                                             alt="{{ $poem->title ?: __('poems.untitled') }}"
+                                             class="poetry-card-cover-image">
+                                        <span class="poetry-card-cover-shadow"></span>
+                                    </div>
+                                @endif
                                 
                                 {{-- Title & Excerpt --}}
                                 <div>
@@ -568,6 +566,41 @@
             margin-top: auto;
         }
         
+        .poetry-card-cover {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            margin: 1.25rem 0 1.75rem;
+            box-shadow:
+                0 12px 25px rgba(0, 0, 0, 0.18),
+                inset 0 0 0 1px rgba(180, 120, 70, 0.15);
+            transform: translateZ(0);
+        }
+        
+        .poetry-card-cover-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .poetry-card-cover-shadow {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.15) 100%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        
+        .poetry-card-wrapper:hover .poetry-card-cover-image {
+            transform: scale(1.05);
+        }
+        
+        .poetry-card-wrapper:hover .poetry-card-cover-shadow {
+            opacity: 1;
+        }
+        
         @media (max-width: 768px) {
             .poetry-paper-card {
                 padding: 1.5rem;
@@ -580,6 +613,10 @@
             
             .poetry-card-excerpt {
                 font-size: 0.875rem;
+            }
+            
+            .poetry-card-cover-image {
+                height: 160px;
             }
         }
     </style>
