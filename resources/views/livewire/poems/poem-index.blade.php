@@ -19,10 +19,10 @@
                 <!-- TITOLO A FIANCO -->
                 <div class="text-center md:text-left">
                     <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight" style="font-family: 'Crimson Pro', serif;">
-                        Poesie & <span class="italic text-accent-400">Versi</span>
+                        {!! __('poems.index.hero_title', ['highlight' => '<span class="italic text-accent-400">'.__('poems.index.hero_title_highlight').'</span>']) !!}
                     </h1>
                     <p class="text-xl md:text-2xl text-white/80 mt-4 font-medium">
-                        L'arte della parola scritta
+                        {{ __('poems.index.hero_subtitle') }}
                     </p>
                     
                     @auth
@@ -72,9 +72,10 @@
         
         <!-- Poetic Search - Minimal & Elegant -->
         <div class="mb-16 animate-fade-in-delay-1">
+           
             <div class="max-w-2xl mx-auto text-center mb-8">
                 <p class="text-lg text-neutral-600 dark:text-neutral-400 italic font-poem">
-                    "Cerca tra le parole dell'anima"
+                    {{ __('poems.index.search_tagline') }}
                 </p>
             </div>
             
@@ -83,7 +84,7 @@
                 <div class="relative group">
                     <input wire:model.live.debounce.500ms="search"
                            type="text"
-                           placeholder="Cerca una poesia..."
+                           placeholder="{{ __('poems.index.search_placeholder') }}"
                            class="w-full px-6 py-4 rounded-full 
                                   border-2 border-neutral-300/50 dark:border-neutral-700/50 
                                   bg-white/60 dark:bg-neutral-800/60
@@ -110,7 +111,7 @@
                 <!-- Minimal Filters - Hidden by default, expandable -->
                 <details class="mt-6">
                     <summary class="text-center text-sm text-neutral-500 hover:text-accent-600 cursor-pointer transition-colors font-poem">
-                        Filtri avanzati
+                        {{ __('poems.index.filters_summary') }}
                     </summary>
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
                         <!-- Category -->
@@ -122,7 +123,7 @@
                                            text-neutral-900 dark:text-white text-sm
                                            focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20
                                            transition-all cursor-pointer font-poem">
-                                <option value="">Tutte le categorie</option>
+                                <option value="">{{ __('poems.filters.all_categories_plain') }}</option>
                                 @foreach($categories as $key => $name)
                                     <option value="{{ $key }}">{{ $name }}</option>
                                 @endforeach
@@ -138,7 +139,7 @@
                                            text-neutral-900 dark:text-white text-sm
                                            focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20
                                            transition-all cursor-pointer font-poem">
-                                <option value="">Tutte le lingue</option>
+                                <option value="">{{ __('poems.filters.all_languages_plain') }}</option>
                                 @foreach($languages as $code => $name)
                                     <option value="{{ $code }}">{{ $name }}</option>
                                 @endforeach
@@ -154,10 +155,10 @@
                                            text-neutral-900 dark:text-white text-sm
                                            focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20
                                            transition-all cursor-pointer font-poem">
-                                <option value="recent">Recenti</option>
-                                <option value="popular">Popolari</option>
-                                <option value="oldest">Meno recenti</option>
-                                <option value="alphabetical">Alfabetico</option>
+                                <option value="recent">{{ __('poems.filters.recent') }}</option>
+                                <option value="popular">{{ __('poems.filters.popular') }}</option>
+                                <option value="oldest">{{ __('poems.filters.oldest') }}</option>
+                                <option value="alphabetical">{{ __('poems.filters.alphabetical') }}</option>
                             </select>
                         </div>
                     </div>
@@ -235,7 +236,7 @@
                 
                 <!-- Pagination -->
                 <div class="flex justify-center mt-12">
-                    {{ $poems->links() }}
+                    {{ $poems->links('components.pagination.poetic') }}
                 </div>
             @else
                 <!-- Empty State - Poetic -->
@@ -252,11 +253,11 @@
                     </div>
                     
                     <h3 class="text-3xl font-bold text-neutral-900 dark:text-white mb-4" style="font-family: 'Crimson Pro', serif;">
-                        Nessuna poesia trovata
+                        {{ __('poems.index.no_poems_title') }}
                     </h3>
                     
                     <p class="text-lg text-neutral-600 dark:text-neutral-400 mb-8 italic font-poem">
-                        "Il silenzio è la poesia non ancora scritta"
+                        {{ __('poems.index.empty_quote') }}
                     </p>
                     
                     @if($search || $category || $language)
@@ -270,7 +271,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                             </svg>
-                            <span>Mostra tutte</span>
+                            <span>{{ __('poems.index.reset_filters_button') }}</span>
                         </button>
                     @endif
                 </div>
