@@ -39,6 +39,11 @@ class ArticleLayoutManager extends Component
 
     public function mount()
     {
+        // Verifica permessi
+        if (!auth()->user()->hasAnyRole(['admin', 'moderator', 'editor'])) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $this->loadLayouts();
     }
 
