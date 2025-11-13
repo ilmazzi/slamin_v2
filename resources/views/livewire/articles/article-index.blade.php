@@ -96,10 +96,13 @@
                 {{-- Main Content Area --}}
                 <div class="flex-1 lg:w-2/3">
             
-            {{-- Articolo Banner (dal Layout System) --}}
-            @if(!empty($layoutArticles['banner']) && !$search && !$selectedCategory)
-                @php $bannerArticle = $layoutArticles['banner']; @endphp
-                <div class="mb-12">
+            {{-- Layout Curato dal Manager (solo se non ci sono filtri) --}}
+            @if(!$showAllArticles && !$search && !$selectedCategory && !empty($layoutArticles))
+                
+                {{-- Banner --}}
+                @if(!empty($layoutArticles['banner']))
+                    @php $bannerArticle = $layoutArticles['banner']; @endphp
+                    <div class="mb-12">
                     <div class="flex items-center gap-2 mb-6">
                         <div class="h-px flex-1 bg-gradient-to-r from-transparent via-accent-500 to-transparent"></div>
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
@@ -157,46 +160,66 @@
                         </div>
                     </article>
                 </div>
-            @endif
+                @endif
 
-            {{-- Featured Articles (dal Layout System) --}}
-            @if(!empty($layoutArticles['featured']) && !$search && !$selectedCategory)
-                <div class="mb-12">
-                    <div class="flex items-center gap-2 mb-6">
-                        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-primary-500 to-transparent"></div>
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ __('articles.index.featured_articles') }}
-                        </h2>
-                        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-primary-500 to-transparent"></div>
+                {{-- Columns 1 & 2 --}}
+                @if(!empty($layoutArticles['column1']) || !empty($layoutArticles['column2']))
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                        @if(!empty($layoutArticles['column1']))
+                            <livewire:articles.article-card :article="$layoutArticles['column1']" size="medium" :key="'column1-'.$layoutArticles['column1']->id" />
+                        @endif
+                        @if(!empty($layoutArticles['column2']))
+                            <livewire:articles.article-card :article="$layoutArticles['column2']" size="medium" :key="'column2-'.$layoutArticles['column2']->id" />
+                        @endif
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        @foreach($layoutArticles['featured'] as $article)
-                            <livewire:articles.article-card :article="$article" size="medium" :key="'featured-'.$article->id" />
-                        @endforeach
-                    </div>
-                </div>
-            @endif
+                @endif
 
-            {{-- Latest Articles (dal Layout System) --}}
-            @if(!empty($layoutArticles['latest']) && !$search && !$selectedCategory)
-                <div class="mb-12">
-                    <div class="flex items-center gap-2 mb-6">
-                        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent"></div>
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ __('articles.index.latest_articles') }}
-                        </h2>
-                        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent"></div>
+                {{-- Horizontal 1 --}}
+                @if(!empty($layoutArticles['horizontal1']))
+                    <div class="mb-12">
+                        <livewire:articles.article-card :article="$layoutArticles['horizontal1']" size="large" :key="'horizontal1-'.$layoutArticles['horizontal1']->id" />
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @foreach($layoutArticles['latest'] as $article)
-                            <livewire:articles.article-card :article="$article" size="small" :key="'latest-'.$article->id" />
-                        @endforeach
-                    </div>
-                </div>
-            @endif
+                @endif
 
-            {{-- Toggle per mostrare tutti gli articoli --}}
-            @if(!$showAllArticles && (!empty($layoutArticles['banner']) || !empty($layoutArticles['featured']) || !empty($layoutArticles['latest'])))
+                {{-- Horizontal 2 --}}
+                @if(!empty($layoutArticles['horizontal2']))
+                    <div class="mb-12">
+                        <livewire:articles.article-card :article="$layoutArticles['horizontal2']" size="large" :key="'horizontal2-'.$layoutArticles['horizontal2']->id" />
+                    </div>
+                @endif
+
+                {{-- Columns 3 & 4 --}}
+                @if(!empty($layoutArticles['column3']) || !empty($layoutArticles['column4']))
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                        @if(!empty($layoutArticles['column3']))
+                            <livewire:articles.article-card :article="$layoutArticles['column3']" size="medium" :key="'column3-'.$layoutArticles['column3']->id" />
+                        @endif
+                        @if(!empty($layoutArticles['column4']))
+                            <livewire:articles.article-card :article="$layoutArticles['column4']" size="medium" :key="'column4-'.$layoutArticles['column4']->id" />
+                        @endif
+                    </div>
+                @endif
+
+                {{-- Horizontal 3 --}}
+                @if(!empty($layoutArticles['horizontal3']))
+                    <div class="mb-12">
+                        <livewire:articles.article-card :article="$layoutArticles['horizontal3']" size="large" :key="'horizontal3-'.$layoutArticles['horizontal3']->id" />
+                    </div>
+                @endif
+
+                {{-- Columns 5 & 6 --}}
+                @if(!empty($layoutArticles['column5']) || !empty($layoutArticles['column6']))
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                        @if(!empty($layoutArticles['column5']))
+                            <livewire:articles.article-card :article="$layoutArticles['column5']" size="medium" :key="'column5-'.$layoutArticles['column5']->id" />
+                        @endif
+                        @if(!empty($layoutArticles['column6']))
+                            <livewire:articles.article-card :article="$layoutArticles['column6']" size="medium" :key="'column6-'.$layoutArticles['column6']->id" />
+                        @endif
+                    </div>
+                @endif
+
+                {{-- Toggle per mostrare tutti gli articoli --}}
                 <div class="text-center mb-12">
                     <button wire:click="toggleShowAll" class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow-lg transition-all duration-200">
                         <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -253,7 +276,12 @@
                 </div>{{-- Fine Main Content Area --}}
                 
                 {{-- Sidebar --}}
-                @if(!empty($layoutArticles['sidebar']) && !$search && !$selectedCategory)
+                @php
+                    $hasSidebar = !empty($layoutArticles['sidebar1']) || !empty($layoutArticles['sidebar2']) || 
+                                  !empty($layoutArticles['sidebar3']) || !empty($layoutArticles['sidebar4']) || 
+                                  !empty($layoutArticles['sidebar5']);
+                @endphp
+                @if($hasSidebar && !$search && !$selectedCategory && !$showAllArticles)
                     <aside class="lg:w-1/3">
                         <div class="sticky top-24 space-y-6">
                             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
@@ -264,35 +292,38 @@
                                     {{ __('articles.index.sidebar_articles') }}
                                 </h3>
                                 <div class="space-y-4">
-                                    @foreach($layoutArticles['sidebar'] as $sidebarArticle)
-                                        <article class="group pb-4 border-b border-gray-200 dark:border-gray-700 last:border-0 last:pb-0">
-                                            @if($sidebarArticle->featured_image_url)
-                                                <div class="relative overflow-hidden rounded-lg mb-3 h-32">
-                                                    <img 
-                                                        src="{{ $sidebarArticle->featured_image_url }}" 
-                                                        alt="{{ $sidebarArticle->title }}"
-                                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                                    >
+                                    @foreach(['sidebar1', 'sidebar2', 'sidebar3', 'sidebar4', 'sidebar5'] as $sidebarPos)
+                                        @if(!empty($layoutArticles[$sidebarPos]))
+                                            @php $sidebarArticle = $layoutArticles[$sidebarPos]; @endphp
+                                            <article class="group pb-4 border-b border-gray-200 dark:border-gray-700 last:border-0 last:pb-0">
+                                                @if($sidebarArticle->featured_image_url)
+                                                    <div class="relative overflow-hidden rounded-lg mb-3 h-32">
+                                                        <img 
+                                                            src="{{ $sidebarArticle->featured_image_url }}" 
+                                                            alt="{{ $sidebarArticle->title }}"
+                                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                        >
+                                                    </div>
+                                                @endif
+                                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
+                                                    <a href="{{ route('articles.show', $sidebarArticle->slug) }}" wire:navigate>
+                                                        {{ $sidebarArticle->title }}
+                                                    </a>
+                                                </h4>
+                                                @if($sidebarArticle->category)
+                                                    <span class="inline-block px-2 py-1 text-xs rounded bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200 mb-2">
+                                                        {{ $sidebarArticle->category->name }}
+                                                    </span>
+                                                @endif
+                                                <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
+                                                    {{ $sidebarArticle->excerpt }}
+                                                </p>
+                                                <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                                                    <span>{{ $sidebarArticle->published_at->format('d M Y') }}</span>
+                                                    <span>{{ $sidebarArticle->read_time }} min</span>
                                                 </div>
-                                            @endif
-                                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
-                                                <a href="{{ route('articles.show', $sidebarArticle->slug) }}" wire:navigate>
-                                                    {{ $sidebarArticle->title }}
-                                                </a>
-                                            </h4>
-                                            @if($sidebarArticle->category)
-                                                <span class="inline-block px-2 py-1 text-xs rounded bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200 mb-2">
-                                                    {{ $sidebarArticle->category->name }}
-                                                </span>
-                                            @endif
-                                            <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
-                                                {{ $sidebarArticle->excerpt }}
-                                            </p>
-                                            <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                                                <span>{{ $sidebarArticle->published_at->format('d M Y') }}</span>
-                                                <span>{{ $sidebarArticle->read_time }} min</span>
-                                            </div>
-                                        </article>
+                                            </article>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>

@@ -54,71 +54,28 @@ class ArticleIndex extends Component
     {
         $this->layoutArticles = [];
 
-        // Banner - single article
-        $bannerLayout = ArticleLayout::where('position', 'banner')
-            ->where('is_active', true)
-            ->with(['article.user', 'article.category'])
-            ->first();
-        
-        if ($bannerLayout && $bannerLayout->article) {
-            $this->layoutArticles['banner'] = $bannerLayout->article;
-        }
+        // Carica TUTTE le posizioni del layout
+        $allPositions = [
+            'banner',
+            'column1', 'column2',
+            'horizontal1', 'horizontal2',
+            'column3', 'column4',
+            'horizontal3',
+            'column5', 'column6',
+            'sidebar1', 'sidebar2', 'sidebar3', 'sidebar4', 'sidebar5'
+        ];
 
-        // Featured - columns 1-2 and horizontal 1-2
-        $featuredPositions = ['column1', 'column2', 'horizontal1', 'horizontal2'];
-        $featuredLayouts = ArticleLayout::whereIn('position', $featuredPositions)
+        $layouts = ArticleLayout::whereIn('position', $allPositions)
             ->where('is_active', true)
             ->with(['article.user', 'article.category'])
             ->orderBy('order', 'asc')
             ->get();
-        
-        if ($featuredLayouts->isNotEmpty()) {
-            $this->layoutArticles['featured'] = $featuredLayouts
-                ->filter(function($layout) {
-                    return $layout->article !== null;
-                })
-                ->map(function($layout) {
-                    return $layout->article;
-                })
-                ->values(); // Mantiene come Collection
-        }
 
-        // Latest - columns 3-6 and horizontal 3
-        $latestPositions = ['column3', 'column4', 'horizontal3', 'column5', 'column6'];
-        $latestLayouts = ArticleLayout::whereIn('position', $latestPositions)
-            ->where('is_active', true)
-            ->with(['article.user', 'article.category'])
-            ->orderBy('order', 'asc')
-            ->get();
-        
-        if ($latestLayouts->isNotEmpty()) {
-            $this->layoutArticles['latest'] = $latestLayouts
-                ->filter(function($layout) {
-                    return $layout->article !== null;
-                })
-                ->map(function($layout) {
-                    return $layout->article;
-                })
-                ->values(); // Mantiene come Collection
-        }
-
-        // Sidebar - sidebar1-5
-        $sidebarPositions = ['sidebar1', 'sidebar2', 'sidebar3', 'sidebar4', 'sidebar5'];
-        $sidebarLayouts = ArticleLayout::whereIn('position', $sidebarPositions)
-            ->where('is_active', true)
-            ->with(['article.user', 'article.category'])
-            ->orderBy('order', 'asc')
-            ->get();
-        
-        if ($sidebarLayouts->isNotEmpty()) {
-            $this->layoutArticles['sidebar'] = $sidebarLayouts
-                ->filter(function($layout) {
-                    return $layout->article !== null;
-                })
-                ->map(function($layout) {
-                    return $layout->article;
-                })
-                ->values(); // Mantiene come Collection
+        // Mappa ogni posizione al suo articolo
+        foreach ($layouts as $layout) {
+            if ($layout->article) {
+                $this->layoutArticles[$layout->position] = $layout->article;
+            }
         }
     }
 
