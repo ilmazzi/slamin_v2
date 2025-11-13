@@ -9,7 +9,9 @@ return [
     ],
     'index' => [
         'latest' => 'Latest Publications',
+        'latest_articles' => 'Latest Articles',
         'featured' => 'Featured',
+        'featured_articles' => 'Featured Articles',
         'all_articles' => 'All Articles',
         'read_more' => 'Read article',
         'reading_time' => ':minutes min read',
@@ -18,6 +20,8 @@ return [
         'no_articles' => 'No articles available',
         'no_articles_subtitle' => 'Check back soon for our insights',
         'search_placeholder' => 'Search articles...',
+        'show_all_articles' => 'Show All Articles',
+        'editor_layout' => 'Editor Layout',
     ],
     'filters' => [
         'all' => 'All categories',

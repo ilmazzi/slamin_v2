@@ -9,7 +9,9 @@ return [
     ],
     'index' => [
         'latest' => 'Dernières Publications',
+        'latest_articles' => 'Derniers Articles',
         'featured' => 'À la Une',
+        'featured_articles' => 'Articles à la Une',
         'all_articles' => 'Tous les Articles',
         'read_more' => 'Lire l\'article',
         'reading_time' => ':minutes min de lecture',
@@ -18,6 +20,8 @@ return [
         'no_articles' => 'Aucun article disponible',
         'no_articles_subtitle' => 'Revenez bientôt pour nos analyses',
         'search_placeholder' => 'Rechercher des articles...',
+        'show_all_articles' => 'Afficher Tous les Articles',
+        'editor_layout' => 'Vue Rédaction',
     ],
     'filters' => [
         'all' => 'Toutes les catégories',

@@ -9,7 +9,9 @@ return [
     ],
     'index' => [
         'latest' => 'Ultime Pubblicazioni',
+        'latest_articles' => 'Ultimi Articoli',
         'featured' => 'In Evidenza',
+        'featured_articles' => 'Articoli in Evidenza',
         'all_articles' => 'Tutti gli Articoli',
         'read_more' => 'Leggi l\'articolo',
         'reading_time' => ':minutes min di lettura',
@@ -18,6 +20,8 @@ return [
         'no_articles' => 'Nessun articolo disponibile',
         'no_articles_subtitle' => 'Torna presto per leggere i nostri approfondimenti',
         'search_placeholder' => 'Cerca articoli...',
+        'show_all_articles' => 'Mostra Tutti gli Articoli',
+        'editor_layout' => 'Vista Redazione',
     ],
     'filters' => [
         'all' => 'Tutte le categorie',
