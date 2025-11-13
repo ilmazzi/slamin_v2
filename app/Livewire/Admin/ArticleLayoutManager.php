@@ -92,13 +92,20 @@ class ArticleLayoutManager extends Component
     {
         $query = Article::query()
             ->published()
+            ->where('is_public', true)
             ->with(['category', 'user'])
             ->orderBy('created_at', 'desc');
 
         if (!empty($this->searchTerm)) {
-            $query->where(function ($q) {
-                $q->where('title', 'like', '%' . $this->searchTerm . '%')
-                  ->orWhere('excerpt', 'like', '%' . $this->searchTerm . '%');
+            $searchTerm = $this->searchTerm;
+            $query->where(function ($q) use ($searchTerm) {
+                // Cerca nei campi JSON title ed excerpt
+                $q->whereRaw("JSON_EXTRACT(title, '$.it') LIKE ?", ['%' . $searchTerm . '%'])
+                  ->orWhereRaw("JSON_EXTRACT(title, '$.en') LIKE ?", ['%' . $searchTerm . '%'])
+                  ->orWhereRaw("JSON_EXTRACT(title, '$.fr') LIKE ?", ['%' . $searchTerm . '%'])
+                  ->orWhereRaw("JSON_EXTRACT(excerpt, '$.it') LIKE ?", ['%' . $searchTerm . '%'])
+                  ->orWhereRaw("JSON_EXTRACT(excerpt, '$.en') LIKE ?", ['%' . $searchTerm . '%'])
+                  ->orWhereRaw("JSON_EXTRACT(excerpt, '$.fr') LIKE ?", ['%' . $searchTerm . '%']);
             });
         }
 

@@ -141,8 +141,8 @@
                                     <div wire:click="selectArticle({{ $article->id }})"
                                          class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors duration-200">
                                         <div class="flex gap-4">
-                                            @if($article->cover_image)
-                                                <img src="{{ $article->cover_image }}" 
+                                            @if($article->featured_image_url)
+                                                <img src="{{ $article->featured_image_url }}" 
                                                      alt="{{ $article->title }}"
                                                      class="w-20 h-20 object-cover rounded">
                                             @else

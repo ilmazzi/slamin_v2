@@ -27,8 +27,8 @@
     {{-- Content --}}
     @if($article)
         <div class="flex gap-4 items-start">
-            @if($article->cover_image)
-                <img src="{{ $article->cover_image }}" 
+            @if($article->featured_image_url)
+                <img src="{{ $article->featured_image_url }}" 
                      alt="{{ $article->title }}"
                      class="w-24 h-24 object-cover rounded flex-shrink-0">
             @else
