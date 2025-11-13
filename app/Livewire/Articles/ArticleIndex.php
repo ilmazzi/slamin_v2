@@ -80,7 +80,7 @@ class ArticleIndex extends Component
                 ->map(function($layout) {
                     return $layout->article;
                 })
-                ->toArray();
+                ->values(); // Mantiene come Collection
         }
 
         // Latest - columns 3-6 and horizontal 3
@@ -99,7 +99,7 @@ class ArticleIndex extends Component
                 ->map(function($layout) {
                     return $layout->article;
                 })
-                ->toArray();
+                ->values(); // Mantiene come Collection
         }
 
         // Sidebar - sidebar1-5
@@ -118,7 +118,7 @@ class ArticleIndex extends Component
                 ->map(function($layout) {
                     return $layout->article;
                 })
-                ->toArray();
+                ->values(); // Mantiene come Collection
         }
     }
 
