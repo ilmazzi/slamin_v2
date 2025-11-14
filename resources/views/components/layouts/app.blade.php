@@ -43,6 +43,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     @stack('styles')
+    
+    {{-- Events Page Assets --}}
+    @if(request()->routeIs('events.index'))
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        @vite(['resources/css/events-map.css', 'resources/css/events-index.css'])
+    @endif
 
     {{ $head ?? '' }}
 </head>
@@ -358,6 +364,12 @@
     </div>
     
     @stack('scripts')
+    
+    {{-- Events Page Scripts --}}
+    @if(request()->routeIs('events.index'))
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        @vite(['resources/js/events-map.js'])
+    @endif
 
     <!-- Userback Widget -->
     <script>
