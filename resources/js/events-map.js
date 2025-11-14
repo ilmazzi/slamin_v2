@@ -241,8 +241,11 @@ function addMarkerToMap(event, index, total) {
     const popupContent = createPopupContent(event);
     
     marker.bindPopup(popupContent, {
-        maxWidth: event.ticket_html ? 300 : 320,
-        className: 'custom-popup'
+        maxWidth: event.ticket_html ? 250 : 320,
+        minWidth: event.ticket_html ? 200 : 0,
+        className: 'custom-popup',
+        autoPan: true,
+        autoPanPadding: [50, 50]
     });
     
     markers.push(marker);
