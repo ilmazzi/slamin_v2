@@ -5,18 +5,21 @@
 
 let map = null;
 let markers = [];
+
+// Expose map globally for button access
+window.map = null;
 let currentTileLayer = null;
 let currentStyle = 'voyager';
 
-// Category colors matching legend
+// Category colors matching legend - muted colors
 const categoryColors = {
-    'poetry_slam': '#EF4444',
-    'workshop': '#F59E0B',
-    'open_mic': '#10B981',
-    'reading': '#3B82F6',
-    'festival': '#8B5CF6',
-    'concert': '#EC4899',
-    'book_presentation': '#6B7280'
+    'poetry_slam': '#DC2626',      // Red (muted)
+    'workshop': '#D97706',         // Amber (muted)
+    'open_mic': '#B45309',         // Amber darker (instead of green)
+    'reading': '#7C2D12',          // Red darker
+    'festival': '#92400E',         // Amber darker
+    'concert': '#991B1B',          // Red darker
+    'book_presentation': '#78716C' // Neutral gray
 };
 
 // Tile layers configuration
@@ -132,6 +135,7 @@ function initMap() {
     try {
         // Initialize map centered on Italy (zoom 5 for wider view)
         map = L.map('eventsMap').setView([41.9028, 12.4964], 5);
+        window.map = map; // Expose globally for button access
         
         console.log('✅ Map object created successfully');
     
