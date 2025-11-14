@@ -19,6 +19,11 @@
                  }, 300);
              }
          });
+         
+         // Listen for validation errors and scroll to top
+         Livewire.on('scroll-to-top', () => {
+             window.scrollTo({ top: 0, behavior: 'smooth' });
+         });
      ">
     
     {{-- Flash Messages --}}
@@ -152,6 +157,26 @@
             <div class="relative">
                 
                 <form wire:submit.prevent="save" class="space-y-8">
+                    {{-- General Validation Errors --}}
+                    @if ($errors->any())
+                        <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-xl">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-bold text-red-900 dark:text-red-200 mb-2">
+                                        Errore di validazione
+                                    </h3>
+                                    <ul class="list-disc list-inside space-y-1 text-sm text-red-800 dark:text-red-300">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     {{-- ============ STEP 1: BASIC INFO ============ --}}
                     <div x-show="$wire.currentStep === 1"
                          x-transition:enter="transition ease-out duration-500"

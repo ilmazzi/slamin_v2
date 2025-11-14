@@ -744,8 +744,8 @@ class EventEdit extends Component
     public function save()
     {
         try {
-            // Final validation
-            $this->validate();
+            // Final validation with all rules
+            $this->validate($this->rules(), $this->messages);
             
             $event = Event::findOrFail($this->eventId);
             
@@ -906,7 +906,9 @@ class EventEdit extends Component
             return redirect()->route('events.show', $event);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Validation errors - let Livewire handle them
+            // Validation errors - Livewire will automatically display them
+            // Scroll to top to show errors
+            $this->dispatch('scroll-to-top');
             throw $e;
         } catch (\Exception $e) {
             Log::error('Event update failed', [
