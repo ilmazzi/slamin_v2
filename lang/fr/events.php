@@ -48,6 +48,9 @@ return [
     // Sections
     'featured_events' => 'Événements en Vedette',
     'upcoming_soon' => 'Bientôt',
+    'upcoming_events' => 'Événements à venir',
+    'personalized_events' => 'Vos événements',
+    'personalized_events_description' => 'Événements auxquels vous participez, dans votre liste de souhaits ou suivis par les personnes que vous suivez',
     'browse_by_category' => 'Parcourir par Catégorie',
     'view_details' => 'Voir les Détails',
     

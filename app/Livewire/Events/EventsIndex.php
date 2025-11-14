@@ -5,7 +5,6 @@ namespace App\Livewire\Events;
 use Livewire\Component;
 use App\Models\Event;
 use App\Models\UnifiedLike;
-use App\Models\EventParticipant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -217,7 +216,8 @@ class EventsIndex extends Component
         $eventIds = collect([]);
 
         // 1. Eventi ai quali l'utente partecipa
-        $participatingEventIds = \App\Models\EventParticipant::where('user_id', $user->id)
+        $participatingEventIds = DB::table('event_participants')
+            ->where('user_id', $user->id)
             ->where('status', 'confirmed')
             ->pluck('event_id');
 
@@ -231,7 +231,8 @@ class EventsIndex extends Component
 
         if ($followingIds->isNotEmpty()) {
             // 4. Eventi ai quali partecipano gli utenti che segue
-            $followingParticipatingEventIds = \App\Models\EventParticipant::whereIn('user_id', $followingIds)
+            $followingParticipatingEventIds = DB::table('event_participants')
+                ->whereIn('user_id', $followingIds)
                 ->where('status', 'confirmed')
                 ->pluck('event_id');
 
