@@ -52,10 +52,10 @@
                             <div class="mt-6">
                                 <a href="{{ route('events.create') }}" 
                                    class="group inline-flex items-center gap-3 px-6 py-3 rounded-xl
-                                          bg-gradient-to-r from-primary-500 to-primary-600 
-                                          hover:from-primary-600 hover:to-primary-700
-                                          text-white font-bold shadow-xl shadow-primary-500/30
-                                          hover:shadow-2xl hover:shadow-primary-500/40 hover:-translate-y-1
+                                          bg-gradient-to-r from-red-700 to-red-800 
+                                          hover:from-red-800 hover:to-red-900
+                                          text-white font-bold shadow-xl shadow-red-700/30
+                                          hover:shadow-2xl hover:shadow-red-800/40 hover:-translate-y-1
                                           transition-all duration-300">
                                     <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" 
                                          fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,7 +124,7 @@
                         <button 
                             onclick="changeMapStyle('standard')"
                             id="style-standard"
-                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
                             title="Mappa Standard">
                             <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
@@ -133,7 +133,7 @@
                         <button 
                             onclick="changeMapStyle('satellite')"
                             id="style-satellite"
-                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
                             title="Vista Satellite">
                             <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -142,7 +142,7 @@
                         <button 
                             onclick="changeMapStyle('dark')"
                             id="style-dark"
-                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
                             title="Mappa Scura">
                             <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
@@ -153,14 +153,14 @@
                             id="style-voyager"
                             class="map-style-btn active p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
                             title="Mappa Colorata">
-                            <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 text-red-600 dark:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
                             </svg>
                         </button>
                         <button 
                             onclick="changeMapStyle('positron')"
                             id="style-positron"
-                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
                             title="Mappa Chiara Minimal">
                             <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
@@ -169,7 +169,7 @@
                         <button 
                             onclick="changeMapStyle('topo')"
                             id="style-topo"
-                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
                             title="Mappa Topografica">
                             <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
