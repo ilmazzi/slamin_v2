@@ -71,6 +71,128 @@
             </div>
         </div>
     </div>
+
+    <!-- Interactive Map Section -->
+    <div class="mb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                    {{ __('events.events_map') }}
+                </h2>
+                <button 
+                    @click="$refs.map.scrollIntoView({ behavior: 'smooth' })"
+                    class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full text-sm font-semibold transition-all hover:scale-105">
+                    <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    {{ __('events.center_map') }}
+                </button>
+            </div>
+            
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-primary-200 dark:border-primary-800">
+                <!-- Map Container (always visible) -->
+                <div id="eventsMap" 
+                     wire:ignore
+                     class="h-[500px] w-full bg-neutral-100 dark:bg-neutral-800">
+                </div>
+                
+                <!-- Hidden data container that updates with Livewire -->
+                <div id="mapEventsData" 
+                     class="hidden"
+                     data-events='@json($mapData)'
+                     data-total-count="{{ $events->count() }}">
+                </div>
+                
+                <!-- Hidden translation text for popup -->
+                <div data-view-details-text="{{ __('events.view_details') }}" class="hidden"></div>
+                
+                <!-- Map Controls Overlay -->
+                <div class="absolute top-4 right-4 z-[1000] flex flex-col gap-3">
+                    <!-- Reset View -->
+                    <button 
+                        onclick="map.setView([41.9028, 12.4964], 6)"
+                        class="p-3 bg-white dark:bg-neutral-800 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 group"
+                        title="Centra mappa sull'Italia">
+                        <svg class="w-5 h-5 text-primary-600 group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Map Style Selector -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-full shadow-lg p-2 flex flex-col gap-2">
+                        <button 
+                            onclick="changeMapStyle('standard')"
+                            id="style-standard"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Mappa Standard">
+                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                            </svg>
+                        </button>
+                        <button 
+                            onclick="changeMapStyle('satellite')"
+                            id="style-satellite"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Vista Satellite">
+                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </button>
+                        <button 
+                            onclick="changeMapStyle('dark')"
+                            id="style-dark"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Mappa Scura">
+                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                            </svg>
+                        </button>
+                        <button 
+                            onclick="changeMapStyle('voyager')"
+                            id="style-voyager"
+                            class="map-style-btn active p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Mappa Colorata">
+                            <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                            </svg>
+                        </button>
+                        <button 
+                            onclick="changeMapStyle('positron')"
+                            id="style-positron"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Mappa Chiara Minimal">
+                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                        </button>
+                        <button 
+                            onclick="changeMapStyle('topo')"
+                            id="style-topo"
+                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                            title="Mappa Topografica">
+                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Legend -->
+                <div class="absolute bottom-4 left-4 z-[1000] bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-primary-200 dark:border-primary-800">
+                    <h4 class="text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-2 uppercase tracking-wider">{{ __('events.legend') }}</h4>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach(['poetry_slam' => '#EF4444', 'workshop' => '#F59E0B', 'open_mic' => '#10B981', 'reading' => '#3B82F6', 'other' => '#6B7280'] as $cat => $color)
+                        <div class="flex items-center gap-1.5">
+                            <div class="w-3 h-3 rounded-full" style="background-color: {{ $color }}"></div>
+                            <span class="text-xs text-neutral-600 dark:text-neutral-400">{{ ucfirst(str_replace('_', ' ', $cat)) }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     {{-- Filtri e Ricerca --}}
     <div class="relative py-8 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-900/95">
@@ -224,128 +346,6 @@
                 </div>
             </div>
             @endforeach
-        </div>
-    </div>
-
-    <!-- Interactive Map Section -->
-    <div class="mb-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-3xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
-                    {{ __('events.events_map') }}
-                </h2>
-                <button 
-                    @click="$refs.map.scrollIntoView({ behavior: 'smooth' })"
-                    class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full text-sm font-semibold transition-all hover:scale-105">
-                    <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    {{ __('events.center_map') }}
-                </button>
-            </div>
-            
-            <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-primary-200 dark:border-primary-800">
-                <!-- Map Container (always visible) -->
-                <div id="eventsMap" 
-                     wire:ignore
-                     class="h-[500px] w-full bg-neutral-100 dark:bg-neutral-800">
-                </div>
-                
-                <!-- Hidden data container that updates with Livewire -->
-                <div id="mapEventsData" 
-                     class="hidden"
-                     data-events='@json($mapData)'
-                     data-total-count="{{ $events->count() }}">
-                </div>
-                
-                <!-- Hidden translation text for popup -->
-                <div data-view-details-text="{{ __('events.view_details') }}" class="hidden"></div>
-                
-                <!-- Map Controls Overlay -->
-                <div class="absolute top-4 right-4 z-[1000] flex flex-col gap-3">
-                    <!-- Reset View -->
-                    <button 
-                        onclick="map.setView([41.9028, 12.4964], 6)"
-                        class="p-3 bg-white dark:bg-neutral-800 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 group"
-                        title="Centra mappa sull'Italia">
-                        <svg class="w-5 h-5 text-primary-600 group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                    </button>
-                    
-                    <!-- Map Style Selector -->
-                    <div class="bg-white dark:bg-neutral-800 rounded-full shadow-lg p-2 flex flex-col gap-2">
-                        <button 
-                            onclick="changeMapStyle('standard')"
-                            id="style-standard"
-                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
-                            title="Mappa Standard">
-                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-                            </svg>
-                        </button>
-                        <button 
-                            onclick="changeMapStyle('satellite')"
-                            id="style-satellite"
-                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
-                            title="Vista Satellite">
-                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </button>
-                        <button 
-                            onclick="changeMapStyle('dark')"
-                            id="style-dark"
-                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
-                            title="Mappa Scura">
-                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                            </svg>
-                        </button>
-                        <button 
-                            onclick="changeMapStyle('voyager')"
-                            id="style-voyager"
-                            class="map-style-btn active p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
-                            title="Mappa Colorata">
-                            <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
-                            </svg>
-                        </button>
-                        <button 
-                            onclick="changeMapStyle('positron')"
-                            id="style-positron"
-                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
-                            title="Mappa Chiara Minimal">
-                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                            </svg>
-                        </button>
-                        <button 
-                            onclick="changeMapStyle('topo')"
-                            id="style-topo"
-                            class="map-style-btn p-2.5 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
-                            title="Mappa Topografica">
-                            <svg class="w-4 h-4 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Legend -->
-                <div class="absolute bottom-4 left-4 z-[1000] bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-primary-200 dark:border-primary-800">
-                    <h4 class="text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-2 uppercase tracking-wider">{{ __('events.legend') }}</h4>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach(['poetry_slam' => '#EF4444', 'workshop' => '#F59E0B', 'open_mic' => '#10B981', 'reading' => '#3B82F6', 'other' => '#6B7280'] as $cat => $color)
-                        <div class="flex items-center gap-1.5">
-                            <div class="w-3 h-3 rounded-full" style="background-color: {{ $color }}"></div>
-                            <span class="text-xs text-neutral-600 dark:text-neutral-400">{{ ucfirst(str_replace('_', ' ', $cat)) }}</span>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
