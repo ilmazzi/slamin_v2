@@ -11,7 +11,7 @@
              x-transition:enter-end="opacity-100 translate-x-0"
              x-transition:leave="transition ease-in duration-300"
              x-transition:leave-end="opacity-0 translate-x-full">
-            <div class="bg-gradient-to-r from-primary-500 to-accent-600 px-6 py-3 shadow-xl flex items-center gap-3">
+            <div class="bg-gradient-to-r from-red-600 to-amber-600 px-6 py-3 shadow-xl flex items-center gap-3">
                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
@@ -20,89 +20,99 @@
         </div>
     @endif
 
-    {{-- HERO CON PARALLAX --}}
-    <div class="relative h-screen flex items-center justify-center overflow-hidden -mt-16"
-         x-data="{ scrollY: 0 }"
-         @scroll.window="scrollY = window.pageYOffset">
-        
-        {{-- Background Layer 1 - Image con Parallax --}}
-        @if($event->image_url)
-            <div class="absolute inset-0" 
-                 :style="`transform: translateY(${scrollY * 0.5}px)`">
-                <img src="{{ $event->image_url }}" 
-                     class="w-full h-full object-cover scale-110"
-                     alt="{{ $event->title }}">
-            </div>
-        @else
-            <div class="absolute inset-0 bg-gradient-to-br from-primary-600 via-accent-600 to-primary-700"></div>
-        @endif
-
-        {{-- Gradient Overlay --}}
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-neutral-900/50 to-neutral-900/90"></div>
-
-        {{-- Geometric Pattern Overlay --}}
-        <div class="absolute inset-0 opacity-5">
-            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
-        </div>
-
-        {{-- Content Layer con Parallax invertito --}}
-        <div class="relative z-10 max-w-6xl mx-auto px-6 text-center"
-             :style="`transform: translateY(${scrollY * -0.2}px)`">
+    {{-- HERO CON TICKET ORIZZONTALE --}}
+    <div class="relative py-20 md:py-32 overflow-hidden bg-neutral-900 dark:bg-black -mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            {{-- Badges Eleganti --}}
-            <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <div class="group relative px-6 py-3 backdrop-blur-xl bg-white/10 border-2 border-white/20 overflow-hidden hover:border-white/40 transition-all">
-                    <div class="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all"></div>
-                    <span class="relative text-white text-sm font-black uppercase tracking-[0.2em]">
-                        {{ \App\Models\Event::getCategories()[$event->category] ?? $event->category }}
-                    </span>
-                </div>
-                
-                <div class="group relative px-6 py-3 backdrop-blur-xl {{ $event->is_public ? 'bg-primary-500/90' : 'bg-neutral-600/90' }} border-2 border-white/20 overflow-hidden hover:scale-105 transition-all">
-                    <span class="relative text-white text-sm font-black uppercase tracking-[0.2em]">
-                        {{ $event->is_public ? 'Pubblico' : 'Privato' }}
-                    </span>
-                </div>
-                
-                @if(!$event->is_paid_event)
-                    <div class="group relative px-6 py-3 backdrop-blur-xl bg-accent-500/90 border-2 border-white/20 overflow-hidden hover:scale-105 transition-all">
-                        <span class="relative text-white text-sm font-black uppercase tracking-[0.2em]">Free Entry</span>
+            {{-- Large Horizontal Ticket --}}
+            <?php 
+                $tilt = rand(-2, 2);
+                $selectedColors = [
+                    ['#fefaf3', '#fdf8f0', '#faf5ec'],
+                    ['#fef9f1', '#fdf7ef', '#faf4ea'],
+                    ['#fffbf5', '#fef9f3', '#fdf7f1']
+                ][rand(0, 2)];
+            ?>
+            <div class="event-show-ticket-wrapper">
+                <div class="event-show-ticket" style="transform: rotate({{ $tilt }}deg); background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
+                    {{-- Perforated Top Edge --}}
+                    <div class="event-ticket-perforation-top"></div>
+                    
+                    {{-- Ticket Content --}}
+                    <div class="event-ticket-content-horizontal">
+                        {{-- Left: Image --}}
+                        @if($event->image_url)
+                        <div class="event-ticket-image-horizontal">
+                            <img src="{{ $event->image_url }}" alt="{{ $event->title }}" class="w-full h-full object-cover">
+                        </div>
+                        @endif
+                        
+                        {{-- Right: Info --}}
+                        <div class="event-ticket-info-horizontal">
+                            {{-- Header --}}
+                            <div class="event-ticket-header-horizontal">
+                                <div class="event-ticket-category">{{ strtoupper(\App\Models\Event::getCategories()[$event->category] ?? $event->category) }}</div>
+                                <div class="event-ticket-serial">#{{ str_pad($event->id, 4, '0', STR_PAD_LEFT) }}</div>
+                            </div>
+                            
+                            {{-- Title --}}
+                            <h1 class="event-ticket-title-horizontal">{{ $event->title }}</h1>
+                            
+                            {{-- Info Grid --}}
+                            <div class="event-ticket-info-grid">
+                                <div class="event-ticket-info-item">
+                                    <div class="event-ticket-info-label">Tipo</div>
+                                    <div class="event-ticket-info-value {{ $event->is_public ? 'text-red-700' : 'text-neutral-600' }}">
+                                        {{ $event->is_public ? 'Pubblico' : 'Privato' }}
+                                    </div>
+                                </div>
+                                
+                                <div class="event-ticket-info-item">
+                                    <div class="event-ticket-info-label">Costo</div>
+                                    <div class="event-ticket-info-value text-red-700 font-bold">
+                                        @if(($event->entry_fee ?? 0) > 0)
+                                            {{ number_format($event->entry_fee, 2, ',', '.') }} €
+                                        @else
+                                            {{ __('events.free') }}
+                                        @endif
+                                    </div>
+                                </div>
+                                
+                                @if($event->start_datetime)
+                                <div class="event-ticket-info-item">
+                                    <div class="event-ticket-info-label">Data</div>
+                                    <div class="event-ticket-info-value">
+                                        {{ $event->start_datetime->locale('it')->isoFormat('D MMM YYYY') }}
+                                    </div>
+                                </div>
+                                @endif
+                                
+                                @if($event->start_datetime)
+                                <div class="event-ticket-info-item">
+                                    <div class="event-ticket-info-label">Ora</div>
+                                    <div class="event-ticket-info-value">
+                                        {{ $event->start_datetime->format('H:i') }}
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                            
+                            {{-- Barcode --}}
+                            <div class="event-ticket-barcode-horizontal">
+                                <div class="event-barcode-lines">
+                                    @for($j = 0; $j < 50; $j++)
+                                    <div style="width: {{ rand(1, 3) }}px; height: {{ rand(40, 50) }}px; background: #000;"></div>
+                                    @endfor
+                                </div>
+                                <div class="event-barcode-number">{{ str_pad($event->id, 12, '0', STR_PAD_LEFT) }}</div>
+                            </div>
+                        </div>
                     </div>
-                @else
-                    <div class="group relative px-6 py-3 backdrop-blur-xl bg-accent-600/90 border-2 border-white/20 overflow-hidden">
-                        <span class="relative text-white text-sm font-black uppercase tracking-[0.2em]">{{ number_format($event->entry_fee ?? 0, 2) }} EUR</span>
-                    </div>
-                @endif
+                    
+                    {{-- Perforated Bottom Edge --}}
+                    <div class="event-ticket-perforation-bottom"></div>
+                </div>
             </div>
-
-            {{-- Title con Parallax --}}
-            <h1 class="text-5xl md:text-7xl font-black text-white mb-6 leading-[1.1] tracking-tight" 
-                style="text-shadow: 0 10px 40px rgba(0,0,0,0.8)">
-                {{ $event->title }}
-            </h1>
-
-            @if($event->subtitle)
-                <div class="inline-block">
-                    <p class="text-2xl md:text-3xl text-white/95 font-medium leading-relaxed max-w-3xl border-l-4 border-accent-500 pl-6 text-left" 
-                       style="text-shadow: 0 4px 20px rgba(0,0,0,0.6)">
-                        {{ $event->subtitle }}
-                    </p>
-                </div>
-            @endif
-        </div>
-
-        {{-- Scroll Indicator - Fuori dal contenitore content --}}
-        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 animate-bounce">
-            <svg class="w-8 h-8 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-            </svg>
         </div>
     </div>
 
@@ -113,7 +123,7 @@
             {{-- Special Badges --}}
             <div class="flex flex-wrap gap-4 mb-12">
                 @if($event->is_recurring)
-                    <div class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-600 text-white">
+                    <div class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-red-600 to-amber-600 text-white">
                         <svg class="w-6 h-6 animate-spin" style="animation-duration: 3s" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                         </svg>
@@ -124,7 +134,7 @@
                     </div>
                 @endif
                 @if($event->is_availability_based)
-                    <div class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-accent-500 to-primary-600 text-white">
+                    <div class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-amber-600 to-red-600 text-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
@@ -141,21 +151,21 @@
                     
                     @if($event->description)
                         <div>
-                            <div class="text-primary-600 dark:text-primary-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Descrizione</div>
+                            <div class="text-red-600 dark:text-red-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Descrizione</div>
                             <p class="text-neutral-900 dark:text-neutral-100 text-xl leading-relaxed whitespace-pre-line">{{ $event->description }}</p>
                         </div>
                     @endif
 
                     @if($event->requirements)
                         <div>
-                            <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Requisiti</div>
+                            <div class="text-amber-600 dark:text-amber-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Requisiti</div>
                             <p class="text-neutral-900 dark:text-neutral-100 text-xl leading-relaxed whitespace-pre-line">{{ $event->requirements }}</p>
                         </div>
                     @endif
 
                     @if($event->promotional_video)
                         <div>
-                            <div class="text-primary-600 dark:text-primary-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Video</div>
+                            <div class="text-red-600 dark:text-red-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Video</div>
                             <div class="aspect-video bg-neutral-900">
                                 <iframe src="{{ $event->promotional_video }}" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
                             </div>
@@ -186,12 +196,12 @@
                         @endphp
                         @if($festivalEvents->count() > 0)
                             <div>
-                                <div class="text-primary-600 dark:text-primary-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Eventi del Festival ({{ $festivalEvents->count() }})</div>
+                                <div class="text-red-600 dark:text-red-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Eventi del Festival ({{ $festivalEvents->count() }})</div>
                                 <div class="space-y-4">
                                     @foreach($festivalEvents as $festEvent)
                                         <a href="{{ route('events.show', $festEvent) }}" 
-                                           class="block border-l-4 border-primary-500/30 hover:border-primary-500 pl-6 transition-colors group">
-                                            <div class="text-neutral-900 dark:text-white text-xl font-black mb-1 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                                           class="block border-l-4 border-red-500/30 hover:border-red-500 pl-6 transition-colors group">
+                                            <div class="text-neutral-900 dark:text-white text-xl font-black mb-1 group-hover:text-red-600 dark:group-hover:text-red-400">
                                                 {{ $festEvent->title }}
                                             </div>
                                             @if($festEvent->start_datetime)
@@ -213,10 +223,10 @@
                         @endphp
                         @if($festival)
                             <div>
-                                <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Fa Parte del Festival</div>
+                                <div class="text-amber-600 dark:text-amber-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Fa Parte del Festival</div>
                                 <a href="{{ route('events.show', $festival) }}" 
-                                   class="block border-l-4 border-accent-500/50 hover:border-accent-500 pl-6 transition-colors group">
-                                    <div class="text-neutral-900 dark:text-white text-3xl font-black mb-2 group-hover:text-accent-600 dark:group-hover:text-accent-400">
+                                   class="block border-l-4 border-amber-500/50 hover:border-amber-500 pl-6 transition-colors group">
+                                    <div class="text-neutral-900 dark:text-white text-3xl font-black mb-2 group-hover:text-amber-600 dark:group-hover:text-amber-400">
                                         {{ $festival->title }}
                                     </div>
                                     @if($festival->start_datetime && $festival->end_datetime)
@@ -233,11 +243,11 @@
                     {{-- Availability Options --}}
                     @if($event->is_availability_based && $event->availabilityOptions && $event->availabilityOptions->count() > 0)
                         <div>
-                            <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Date Disponibili</div>
+                            <div class="text-amber-600 dark:text-amber-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Date Disponibili</div>
                             <div class="space-y-4">
                                 @foreach($event->availabilityOptions as $index => $option)
-                                    <div class="flex items-baseline gap-4 pl-6 border-l-2 border-accent-500/30 hover:border-accent-500 transition-colors">
-                                        <span class="text-accent-600 dark:text-accent-400 font-black text-lg">{{ $index + 1 }}.</span>
+                                    <div class="flex items-baseline gap-4 pl-6 border-l-2 border-amber-500/30 hover:border-amber-500 transition-colors">
+                                        <span class="text-amber-600 dark:text-amber-400 font-black text-lg">{{ $index + 1 }}.</span>
                                         <div>
                                             <div class="text-neutral-900 dark:text-white font-black text-xl">{{ \Carbon\Carbon::parse($option->datetime)->format('d M Y - H:i') }}</div>
                                             @if($option->description)
@@ -248,8 +258,8 @@
                                 @endforeach
                             </div>
                             @if($event->availability_deadline)
-                                <div class="mt-6 px-4 py-2 bg-primary-500/10 border-l-4 border-primary-500 inline-block">
-                                    <span class="text-primary-700 dark:text-primary-400 font-bold text-sm">Scadenza: {{ \Carbon\Carbon::parse($event->availability_deadline)->format('d/m/Y H:i') }}</span>
+                                <div class="mt-6 px-4 py-2 bg-red-500/10 border-l-4 border-red-500 inline-block">
+                                    <span class="text-red-700 dark:text-red-400 font-bold text-sm">Scadenza: {{ \Carbon\Carbon::parse($event->availability_deadline)->format('d/m/Y H:i') }}</span>
                                 </div>
                             @endif
                         </div>
@@ -258,7 +268,7 @@
                     {{-- Gig Positions --}}
                     @if($event->gig_positions && count($event->gig_positions) > 0)
                         <div>
-                            <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Posizioni ({{ count($event->gig_positions) }})</div>
+                            <div class="text-amber-600 dark:text-amber-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Posizioni ({{ count($event->gig_positions) }})</div>
                             <div class="space-y-6">
                                 @foreach($event->gig_positions as $position)
                                     <div class="border-l-4 border-accent-500/30 hover:border-accent-500 pl-6 transition-colors">
@@ -269,13 +279,13 @@
                                                 <div>▸ Lingua: <strong class="text-neutral-900 dark:text-white">{{ ucfirst($position['language']) }}</strong></div>
                                             @endif
                                             @if(!empty($position['has_cachet']) && $position['has_cachet'])
-                                                <div>▸ Cachet: <strong class="text-primary-600 dark:text-primary-400">{{ $position['cachet_amount'] ?? 0 }} {{ $position['cachet_currency'] ?? 'EUR' }}</strong></div>
+                                                <div>▸ Cachet: <strong class="text-red-600 dark:text-red-400">{{ $position['cachet_amount'] ?? 0 }} {{ $position['cachet_currency'] ?? 'EUR' }}</strong></div>
                                             @endif
                                             @if(!empty($position['has_travel']) && $position['has_travel'])
-                                                <div>▸ Spese viaggio: <strong class="text-accent-600 dark:text-accent-400">Max {{ $position['travel_max'] ?? 0 }} {{ $position['travel_currency'] ?? 'EUR' }}</strong></div>
+                                                <div>▸ Spese viaggio: <strong class="text-amber-600 dark:text-amber-400">Max {{ $position['travel_max'] ?? 0 }} {{ $position['travel_currency'] ?? 'EUR' }}</strong></div>
                                             @endif
                                             @if(!empty($position['has_accommodation']) && $position['has_accommodation'])
-                                                <div>▸ Vitto/Alloggio: <strong class="text-accent-600 dark:text-accent-400">{{ $position['accommodation_details'] ?? 'Incluso' }}</strong></div>
+                                                <div>▸ Vitto/Alloggio: <strong class="text-amber-600 dark:text-amber-400">{{ $position['accommodation_details'] ?? 'Incluso' }}</strong></div>
                                             @endif
                                         </div>
                                     </div>
@@ -293,7 +303,7 @@
 
                     @if($performers->count() > 0)
                         <div>
-                            <div class="text-primary-600 dark:text-primary-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Artisti ({{ $performers->count() }})</div>
+                            <div class="text-red-600 dark:text-red-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Artisti ({{ $performers->count() }})</div>
                             <div class="grid md:grid-cols-2 gap-4">
                                 @foreach($performers as $invitation)
                                     <div class="hover:translate-x-2 transition-transform">
@@ -312,7 +322,7 @@
 
                     @if($organizers->count() > 0)
                         <div>
-                            <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Organizzatori ({{ $organizers->count() }})</div>
+                            <div class="text-amber-600 dark:text-amber-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Organizzatori ({{ $organizers->count() }})</div>
                             <div class="grid md:grid-cols-2 gap-4">
                                 @foreach($organizers as $invitation)
                                     <div class="hover:translate-x-2 transition-transform">
@@ -331,7 +341,7 @@
 
                     @if($audience->count() > 0)
                         <div>
-                            <div class="text-primary-600 dark:text-primary-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Pubblico ({{ $audience->count() }})</div>
+                            <div class="text-red-600 dark:text-red-400 text-xs font-black tracking-[0.3em] mb-4 uppercase">Pubblico ({{ $audience->count() }})</div>
                             <div class="grid md:grid-cols-2 gap-4">
                                 @foreach($audience->take(12) as $invitation)
                                     <div class="hover:translate-x-2 transition-transform">
@@ -358,7 +368,7 @@
                     
                     {{-- Organizer --}}
                     @if($event->organizer)
-                        <div class="border-l-4 border-primary-500 pl-4">
+                        <div class="border-l-4 border-red-500 pl-4">
                             <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-3 uppercase">Organizzatore</div>
                             <x-ui.user-avatar 
                                 :user="$event->organizer" 
@@ -371,7 +381,7 @@
 
                     {{-- Date/Time --}}
                     @if($event->start_datetime || $event->end_datetime)
-                        <div class="border-l-4 border-accent-500 pl-4">
+                        <div class="border-l-4 border-amber-500 pl-4">
                             <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-3 uppercase">Data & Ora</div>
                             <div class="space-y-3">
                                 @if($event->start_datetime)
@@ -394,7 +404,7 @@
                     <div class="border-l-4 border-primary-500 pl-4">
                         <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-3 uppercase">{{ $event->is_online ? 'Online' : 'Luogo' }}</div>
                         @if($event->is_online)
-                            <a href="{{ $event->online_url }}" target="_blank" class="text-accent-600 dark:text-accent-400 font-bold hover:underline break-all">
+                            <a href="{{ $event->online_url }}" target="_blank" class="text-amber-600 dark:text-amber-400 font-bold hover:underline break-all">
                                 {{ $event->online_url }}
                             </a>
                         @else
@@ -414,7 +424,7 @@
                             @if($event->latitude && $event->longitude)
                                 <div class="mt-4">
                                     <div id="eventShowMap" 
-                                         class="w-full h-48 rounded-xl overflow-hidden shadow-lg border-2 border-primary-200 dark:border-primary-800"
+                                         class="w-full h-48 rounded-xl overflow-hidden shadow-lg border-2 border-red-200 dark:border-red-800"
                                          data-lat="{{ $event->latitude }}"
                                          data-lng="{{ $event->longitude }}"
                                          data-name="{{ $event->venue_name ?? $event->title }}">
@@ -434,12 +444,12 @@
                             </div>
                             <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-2">
                                 <span class="text-neutral-600 dark:text-neutral-400 font-bold uppercase">Requests</span>
-                                <span class="font-black {{ $event->allow_requests ? 'text-primary-600 dark:text-primary-400' : 'text-neutral-500' }}">{{ $event->allow_requests ? 'OPEN' : 'CLOSED' }}</span>
+                                <span class="font-black {{ $event->allow_requests ? 'text-red-600 dark:text-red-400' : 'text-neutral-500' }}">{{ $event->allow_requests ? 'OPEN' : 'CLOSED' }}</span>
                             </div>
                             @if($event->registration_deadline)
                                 <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-2">
                                     <span class="text-neutral-600 dark:text-neutral-400 font-bold uppercase">Deadline</span>
-                                    <span class="text-accent-600 dark:text-accent-400 font-black">{{ \Carbon\Carbon::parse($event->registration_deadline)->format('d/m') }}</span>
+                                    <span class="text-amber-600 dark:text-amber-400 font-black">{{ \Carbon\Carbon::parse($event->registration_deadline)->format('d/m') }}</span>
                                 </div>
                             @endif
                         </div>
@@ -450,7 +460,7 @@
             {{-- Action Buttons --}}
             <div class="mt-16 flex flex-wrap gap-4">
                 <a href="{{ route('events.index') }}" wire:navigate
-                   class="inline-flex items-center gap-2 text-neutral-900 dark:text-white text-lg font-black hover:text-primary-600 dark:hover:text-primary-400 transition-colors group">
+                   class="inline-flex items-center gap-2 text-neutral-900 dark:text-white text-lg font-black hover:text-red-600 dark:hover:text-red-400 transition-colors group">
                     <svg class="w-6 h-6 group-hover:-translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
@@ -460,7 +470,7 @@
                 @auth
                     @if(auth()->user()->id === $event->organizer_id || auth()->user()->canOrganizeEvents())
                         <a href="{{ route('events.edit', $event) }}" wire:navigate
-                           class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-black uppercase tracking-wide transition-all hover:scale-105">
+                           class="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-wide transition-all hover:scale-105">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
@@ -468,7 +478,7 @@
                         </a>
                         
                         <a href="{{ route('events.manage', $event) }}" wire:navigate
-                           class="inline-flex items-center gap-2 px-6 py-3 bg-accent-600 hover:bg-accent-700 text-white font-black uppercase tracking-wide transition-all hover:scale-105">
+                           class="inline-flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-black uppercase tracking-wide transition-all hover:scale-105">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
@@ -483,6 +493,157 @@
     @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
+        /* Horizontal Ticket Styles */
+        .event-show-ticket-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0;
+        }
+        
+        .event-show-ticket {
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 12px;
+            box-shadow: 
+                0 12px 32px rgba(0, 0, 0, 0.4),
+                0 24px 64px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .event-ticket-perforation-top,
+        .event-ticket-perforation-bottom {
+            height: 20px;
+            background: linear-gradient(90deg, 
+                transparent 0%,
+                rgba(139, 115, 85, 0.1) 50%,
+                transparent 100%
+            );
+            position: relative;
+        }
+        
+        .event-ticket-perforation-top::before,
+        .event-ticket-perforation-bottom::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: 
+                radial-gradient(circle at 0 50%, transparent 3px, currentColor 3px) 0 0 / 16px 2px repeat-x;
+            color: rgba(139, 115, 85, 0.3);
+            transform: translateY(-50%);
+        }
+        
+        .event-ticket-content-horizontal {
+            display: flex;
+            gap: 0;
+            min-height: 300px;
+        }
+        
+        .event-ticket-image-horizontal {
+            width: 40%;
+            min-width: 300px;
+            flex-shrink: 0;
+            border-right: 2px dashed rgba(139, 115, 85, 0.3);
+            overflow: hidden;
+        }
+        
+        .event-ticket-info-horizontal {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .event-ticket-header-horizontal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px dashed rgba(139, 115, 85, 0.3);
+            margin-bottom: 1rem;
+        }
+        
+        .event-ticket-category {
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: #b91c1c;
+            text-transform: uppercase;
+        }
+        
+        .event-ticket-serial {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #8b7355;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .event-ticket-title-horizontal {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+        }
+        
+        .event-ticket-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .event-ticket-info-item {
+            text-align: left;
+        }
+        
+        .event-ticket-info-label {
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: #8b7355;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+        
+        .event-ticket-info-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2d2d2d;
+            font-family: 'Crimson Pro', serif;
+        }
+        
+        .event-ticket-barcode-horizontal {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px dashed rgba(139, 115, 85, 0.25);
+        }
+        
+        .event-barcode-lines {
+            display: flex;
+            align-items: flex-end;
+            gap: 1px;
+            height: 50px;
+            padding: 0 1rem;
+        }
+        
+        .event-barcode-number {
+            font-size: 0.625rem;
+            font-weight: 600;
+            color: #666;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.1em;
+        }
+        
         @keyframes blob {
             0%, 100% { transform: translate(0, 0) scale(1); }
             33% { transform: translate(30px, -30px) scale(1.05); }
@@ -522,7 +683,7 @@
             // Add marker
             const marker = L.marker([lat, lng], {
                 icon: L.divIcon({
-                    html: `<div style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); border: 3px solid white;"></div>`,
+                    html: `<div style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4); border: 3px solid white;"></div>`,
                     className: 'custom-event-marker',
                     iconSize: [32, 32],
                     iconAnchor: [16, 32]
