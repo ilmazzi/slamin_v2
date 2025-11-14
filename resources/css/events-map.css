@@ -1,27 +1,101 @@
 /* Events Map Styles */
 
-/* Map Popup Ticket Wrapper */
+/* Map Popup Ticket Wrapper - Smaller version without transform scale */
 .map-popup-ticket-wrapper {
     padding: 0;
-    transform: scale(0.55);
-    transform-origin: top center;
     display: inline-block;
     width: auto;
-    max-width: none;
     margin: 0;
-    line-height: 0;
 }
 
 .map-popup-ticket-wrapper .cinema-ticket {
     transform: none !important;
     margin: 0;
-    width: auto;
-    min-width: 0;
-    display: inline-block;
+    width: 380px !important;
+    max-width: 380px !important;
 }
 
 .map-popup-ticket-wrapper .cinema-ticket:hover {
     transform: none !important;
+}
+
+/* Scale down ticket elements for popup */
+.map-popup-ticket-wrapper .ticket-content {
+    padding: 1rem !important;
+    gap: 0.75rem !important;
+}
+
+.map-popup-ticket-wrapper .ticket-header {
+    padding-bottom: 0.5rem !important;
+}
+
+.map-popup-ticket-wrapper .ticket-admit {
+    font-size: 0.65rem !important;
+}
+
+.map-popup-ticket-wrapper .ticket-serial {
+    font-size: 0.55rem !important;
+}
+
+.map-popup-ticket-wrapper .ticket-image {
+    height: 100px !important;
+    margin: 0.25rem 0 !important;
+}
+
+.map-popup-ticket-wrapper .ticket-title {
+    font-size: 1rem !important;
+    margin: 0.25rem 0 !important;
+}
+
+.map-popup-ticket-wrapper .ticket-price {
+    font-size: 0.65rem !important;
+    padding: 0.2rem 0.5rem !important;
+    margin: 0.25rem auto !important;
+}
+
+.map-popup-ticket-wrapper .ticket-details {
+    gap: 0.5rem !important;
+    padding: 0.75rem 0 !important;
+}
+
+.map-popup-ticket-wrapper .ticket-detail-label {
+    font-size: 0.55rem !important;
+}
+
+.map-popup-ticket-wrapper .ticket-detail-value {
+    font-size: 0.75rem !important;
+}
+
+.map-popup-ticket-wrapper .ticket-barcode-wrapper {
+    margin-top: 0.25rem !important;
+}
+
+.map-popup-ticket-wrapper .barcode-lines {
+    height: 35px !important;
+    padding: 0 0.75rem !important;
+}
+
+.map-popup-ticket-wrapper .barcode-number {
+    font-size: 0.55rem !important;
+}
+
+.map-popup-ticket-wrapper .ticket-social {
+    gap: 1rem !important;
+    padding-top: 0.75rem !important;
+    margin-top: 0.5rem !important;
+}
+
+.map-popup-ticket-wrapper .ticket-stub {
+    width: 60px !important;
+}
+
+.map-popup-ticket-wrapper .stub-date {
+    font-size: 1rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.map-popup-ticket-wrapper .stub-serial {
+    font-size: 0.55rem !important;
 }
 
 /* Map style buttons */
@@ -43,26 +117,14 @@
 .custom-popup .leaflet-popup-content-wrapper {
     border-radius: 1.5rem;
     padding: 0 !important;
-    overflow: visible;
+    overflow: hidden;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     border: 2px solid rgba(16, 185, 129, 0.2);
-    width: auto !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    line-height: 0;
 }
 
 .custom-popup .leaflet-popup-content {
     margin: 0 !important;
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: none !important;
     padding: 0 !important;
-    line-height: 0;
-}
-
-.custom-popup .leaflet-popup-content-wrapper::after {
-    display: none;
 }
 
 .custom-popup .leaflet-popup-tip-container {
