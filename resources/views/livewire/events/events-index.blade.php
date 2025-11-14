@@ -111,7 +111,7 @@
                 <div class="absolute top-4 right-4 z-[1000] flex flex-col gap-3">
                     <!-- Reset View -->
                     <button 
-                        onclick="map.setView([41.9028, 12.4964], 6)"
+                        onclick="if(window.map) window.map.setView([41.9028, 12.4964], 5)"
                         class="p-3 bg-white dark:bg-neutral-800 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 group"
                         title="Centra mappa sull'Italia">
                         <svg class="w-5 h-5 text-primary-600 group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
