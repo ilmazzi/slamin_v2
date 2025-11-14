@@ -178,7 +178,7 @@
                             <div class="text-accent-600 dark:text-accent-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Gruppi Collegati</div>
                             <div class="space-y-4">
                                 @foreach($event->groups as $group)
-                                    <div class="border-l-4 border-accent-500/30 hover:border-accent-500 pl-6 transition-colors">
+                                    <div class="border-l-4 border-amber-500/30 hover:border-amber-500 pl-6 transition-colors">
                                         <div class="text-neutral-900 dark:text-white text-2xl font-black mb-1">{{ $group->name }}</div>
                                         @if($group->description)
                                             <div class="text-neutral-600 dark:text-neutral-400">{{ Str::limit($group->description, 120) }}</div>
