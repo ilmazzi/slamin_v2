@@ -21,7 +21,7 @@
          });
          
          // Listen for validation errors and scroll to top
-         Livewire.on('scroll-to-top', () => {
+         $wire.on('scroll-to-top', () => {
              window.scrollTo({ top: 0, behavior: 'smooth' });
          });
      ">
