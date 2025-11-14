@@ -194,160 +194,16 @@
         </div>
     </div>
     
-    {{-- Filtri e Ricerca --}}
-    <div class="relative py-8 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-900/95">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div id="events-search-panel" class="relative">
-                <div class="events-search-card">
-                    <div class="relative">
-                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
-                        <input 
-                            type="text" 
-                            wire:model.live.debounce.500ms="search"
-                            placeholder="{{ __('events.search_placeholder') }}"
-                            class="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/90 dark:bg-neutral-900/80 text-neutral-900 dark:text-white shadow-inner focus:ring-2 focus:ring-primary-400 transition-all">
-                    </div>
-                    
-                    <div class="mt-6 flex flex-wrap gap-2">
-                        <button wire:click="applyQuickFilter('today')" class="events-filter-chip">
-                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            {{ __('events.today') }}
-                        </button>
-                        <button wire:click="applyQuickFilter('tomorrow')" class="events-filter-chip">
-                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
-                            {{ __('events.tomorrow') }}
-                        </button>
-                        <button wire:click="applyQuickFilter('weekend')" class="events-filter-chip">
-                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
-                            </svg>
-                            {{ __('events.weekend') }}
-                        </button>
-                        <button wire:click="applyQuickFilter('free')" class="events-filter-chip">
-                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
-                            </svg>
-                            {{ __('events.free') }}
-                        </button>
-                        @auth
-                            <button wire:click="applyQuickFilter('my')" class="events-filter-chip">
-                                <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                </svg>
-                                {{ __('events.my_events') }}
-                            </button>
-                        @endauth
-                        <button wire:click="resetFilters" class="events-filter-chip events-filter-chip--ghost">
-                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                            </svg>
-                            {{ __('events.reset') }}
-                        </button>
-                    </div>
-                    
-                    <div class="mt-6 text-center">
-                        <button @click="showFilters = !showFilters"
-                                class="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition">
-                            <svg class="w-5 h-5 transition-transform" :class="{ 'rotate-180': showFilters }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                            {{ __('events.advanced_filters') }}
-                        </button>
-                    </div>
-                    
-                    <div x-show="showFilters"
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 -translate-y-4"
-                         x-transition:enter-end="opacity-100 translate-y-0"
-                         x-transition:leave="transition ease-in duration-150"
-                         x-transition:leave-start="opacity-100 translate-y-0"
-                         x-transition:leave-end="opacity-0 -translate-y-4"
-                         class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-sm font-semibold text-neutral-600 dark:text-neutral-200 mb-2">{{ __('events.city') }}</label>
-                            <select wire:model.live="city" class="events-select">
-                                <option value="">{{ __('events.all_cities') }}</option>
-                                @foreach($cities as $cityOption)
-                                    <option value="{{ $cityOption }}">{{ $cityOption }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-neutral-600 dark:text-neutral-200 mb-2">{{ __('events.type') }}</label>
-                            <select wire:model.live="type" class="events-select">
-                                <option value="">{{ __('events.all_types') }}</option>
-                                <option value="public">{{ __('events.public') }}</option>
-                                <option value="private">{{ __('events.private') }}</option>
-                            </select>
-                        </div>
-                        <div class="flex items-center justify-between md:justify-start md:gap-3 bg-white/60 dark:bg-neutral-900/70 px-4 py-3 rounded-xl border border-white/20 dark:border-neutral-700/60">
-                            <div>
-                                <div class="text-sm font-semibold text-neutral-600 dark:text-neutral-200">{{ __('events.price') }}</div>
-                                <div class="text-xs text-neutral-500 dark:text-neutral-400">{{ __('events.free_only') }}</div>
-                            </div>
-                            <label class="inline-flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" wire:model.live="freeOnly" class="rounded text-primary-500 focus:ring-primary-400">
-                                <span class="text-sm text-neutral-600 dark:text-neutral-200">{{ __('events.free_only') }}</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{-- Search Section --}}
+    <x-events-search-section 
+        :search="$search" 
+        :cities="$cities" 
+        :city="$city" 
+        :type="$type" 
+        :freeOnly="$freeOnly" />
     
-    <!-- Statistics Section - Modern Floating Style -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 mb-16"
-         x-data="{ scrollY: 0 }"
-         @scroll.window="scrollY = window.scrollY">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            @foreach([
-                ['label' => 'total_events', 'value' => $statistics['total_events'], 'gradient' => 'from-primary-400 to-primary-600', 'delay' => 0],
-                ['label' => 'public_events', 'value' => $statistics['public_events'], 'gradient' => 'from-accent-400 to-accent-600', 'delay' => 100],
-                ['label' => 'upcoming_events', 'value' => $statistics['upcoming_events'], 'gradient' => 'from-primary-500 to-accent-500', 'delay' => 200],
-                ['label' => 'venues_count', 'value' => $statistics['venues_count'], 'gradient' => 'from-accent-500 to-primary-600', 'delay' => 300]
-            ] as $stat)
-            <div 
-                class="group relative"
-                x-data="{ count: 0, target: {{ $stat['value'] }}, visible: false }"
-                x-init="setTimeout(() => { visible = true; let duration = 2000; let increment = target / (duration / 16); let timer = setInterval(() => { count += increment; if (count >= target) { count = target; clearInterval(timer); } }, 16); }, {{ $stat['delay'] }})"
-                x-show="visible"
-                x-transition:enter="transition ease-out duration-1000"
-                x-transition:enter-start="opacity-0 scale-50 -translate-y-10"
-                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                :style="`transform: translateY(${scrollY * 0.03}px)`">
-                
-                <!-- Floating Number Container -->
-                <div class="relative p-8 rounded-2xl bg-white/80 dark:bg-neutral-800/80 backdrop-blur-xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-3 hover:scale-105 cursor-pointer border border-primary-200/50 dark:border-primary-800/50">
-                    <!-- Gradient Glow Effect -->
-                    <div class="absolute inset-0 rounded-2xl bg-gradient-to-br {{ $stat['gradient'] }} opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
-                    
-                    <!-- Number -->
-                    <div class="relative text-center">
-                        <div class="text-5xl md:text-6xl font-black bg-gradient-to-br {{ $stat['gradient'] }} bg-clip-text text-transparent mb-2"
-                             x-text="Math.floor(count).toLocaleString()">
-                            0
-                        </div>
-                        
-                        <!-- Label -->
-                        <div class="text-xs md:text-sm font-medium text-neutral-600 dark:text-neutral-400 uppercase tracking-wider">
-                            {{ __('events.' . $stat['label']) }}
-                        </div>
-                    </div>
-                    
-                    <!-- Decorative Corner Element -->
-                    <div class="absolute top-3 right-3 w-3 h-3 rounded-full bg-gradient-to-br {{ $stat['gradient'] }} opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
+    {{-- Statistics Section --}}
+    <x-events-stats-section :statistics="$statistics" />
 
     <!-- Dynamic Bento Box Layout -->
     <div class="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16"

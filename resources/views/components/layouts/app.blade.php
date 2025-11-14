@@ -47,11 +47,7 @@
     {{-- Events Page Assets --}}
     @if(request()->routeIs('events.index'))
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-        <style>
-            @import url('{{ Vite::asset("resources/css/events-map.css") }}');
-            @import url('{{ Vite::asset("resources/css/events-index.css") }}');
-            @import url('{{ Vite::asset("resources/css/event-ticket.css") }}');
-        </style>
+        @vite(['resources/css/events-map.css', 'resources/css/events-index.css', 'resources/css/event-ticket.css'])
     @endif
 
     {{ $head ?? '' }}
