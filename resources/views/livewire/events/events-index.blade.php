@@ -837,11 +837,14 @@
         </div>
     </div>
     
+    @once
     @push('styles')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-@endpush
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    @endpush
+    @endonce
 
-@push('scripts')
+    @once
+    @push('scripts')
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 console.log('🌍 Leaflet map script loaded!');
@@ -1387,4 +1390,5 @@ function updateMapMarkers() {
 }
 </style>
 @endpush
+@endonce
 </div>
