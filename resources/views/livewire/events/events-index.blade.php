@@ -194,6 +194,9 @@
         </div>
     </div>
     
+    {{-- Statistics Section --}}
+    <x-events-stats-section :statistics="$statistics" />
+    
     {{-- Search Section --}}
     <x-events-search-section 
         :search="$search" 
@@ -201,9 +204,6 @@
         :city="$city" 
         :type="$type" 
         :freeOnly="$freeOnly" />
-    
-    {{-- Statistics Section --}}
-    <x-events-stats-section :statistics="$statistics" />
 
     <!-- Dynamic Bento Box Layout -->
     <div class="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16"
