@@ -409,4 +409,7 @@
         }
     </style>
     @endif
+    
+    {{-- Article Modal --}}
+    <livewire:articles.article-modal />
 </div>
