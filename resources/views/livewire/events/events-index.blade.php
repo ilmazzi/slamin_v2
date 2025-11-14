@@ -206,8 +206,8 @@
         :freeOnly="$freeOnly" />
 
     {{-- Upcoming Events Section --}}
-    @if($upcomingEvents->count() > 0)
     <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12">
+        @if($upcomingEvents->count() > 0)
         <div class="mb-10">
             <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
                 {{ __('events.upcoming_events') }}
@@ -241,8 +241,22 @@
                 </div>
             @endforeach
         </div>
+        @else
+        <div class="text-center py-16">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
+                <svg class="w-10 h-10 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+                {{ __('events.no_upcoming_events') }}
+            </h3>
+            <p class="text-neutral-600 dark:text-neutral-400">
+                {{ __('events.no_upcoming_events_description') }}
+            </p>
+        </div>
+        @endif
     </div>
-    @endif
 
     {{-- Personalized Events Section --}}
     @auth
