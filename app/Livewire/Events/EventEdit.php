@@ -907,8 +907,8 @@ class EventEdit extends Component
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Validation errors - Livewire will automatically display them
-            // Scroll to top to show errors
-            $this->dispatch('scroll-to-top');
+            // Scroll to top to show errors after a short delay
+            $this->js('setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 100)');
             throw $e;
         } catch (\Exception $e) {
             Log::error('Event update failed', [
