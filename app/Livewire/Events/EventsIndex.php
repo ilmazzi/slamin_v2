@@ -237,7 +237,7 @@ class EventsIndex extends Component
                 ->pluck('event_id');
 
             // 5. Eventi nella wishlist degli utenti che segue
-            $followingWishlistEventIds = \DB::table('wishlists')
+            $followingWishlistEventIds = DB::table('wishlists')
                 ->whereIn('user_id', $followingIds)
                 ->pluck('event_id');
 
