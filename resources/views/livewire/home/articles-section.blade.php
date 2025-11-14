@@ -85,7 +85,7 @@
             {{-- Magazine Cover --}}
             <div class="magazine-cover" style="transform: rotate({{ $rotation }}deg);">
                 
-                <a href="{{ route('articles.show', $article->id) }}" class="magazine-inner group">
+                <div onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $article->id }} })" class="magazine-inner group cursor-pointer">
                     
                     {{-- Magazine Header --}}
                     <div class="magazine-header">
@@ -128,7 +128,7 @@
                         </div>
                     </div>
                     
-                </a>
+                </div>
                 
                 {{-- Social Actions --}}
                 <div class="magazine-actions" @click.stop>

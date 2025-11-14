@@ -49,6 +49,11 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         @vite(['resources/css/events-map.css', 'resources/css/events-index.css', 'resources/css/event-ticket.css'])
     @endif
+    
+    {{-- Articles Page Assets --}}
+    @if(request()->routeIs('articles.index'))
+        @vite(['resources/css/article-modal.css'])
+    @endif
 
     {{ $head ?? '' }}
 </head>

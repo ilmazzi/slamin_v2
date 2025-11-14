@@ -40,9 +40,9 @@
     {{-- Contenuto --}}
     <div class="p-6 flex-1 flex flex-col">
         <h3 class="{{ $titleSize }} font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
-            <a href="{{ route('articles.show', $article->slug) }}" wire:navigate>
+            <div onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $article->id }} })" class="cursor-pointer">
                 {{ $article->title }}
-            </a>
+            </div>
         </h3>
         
         @if($showExcerpt && $article->excerpt)
@@ -96,9 +96,10 @@
                         class="[&_button]:!text-neutral-600 dark:[&_button]:!text-neutral-300 [&_button]:!gap-1 [&_svg]:!stroke-current [&_span]:!text-xs" />
                 </div>
                 
-                <a href="{{ route('articles.show', $article->slug) }}" wire:navigate class="text-primary-600 dark:text-primary-400 font-semibold text-sm hover:underline">
+                <button onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $article->id }} })" 
+                        class="text-primary-600 dark:text-primary-400 font-semibold text-sm hover:underline cursor-pointer">
                     {{ __('articles.index.read_more') }} →
-                </a>
+                </button>
             </div>
         </div>
     </div>

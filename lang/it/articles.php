@@ -73,5 +73,14 @@ return [
         'main_area' => 'Area Principale',
         'sidebar_area' => 'Sidebar',
     ],
+    'newspaper' => [
+        'title' => 'SLAMIN GAZETTE',
+        'reporter' => 'Reporter',
+        'views' => 'visualizzazioni',
+        'edit_article' => 'Modifica Articolo',
+    ],
+    'category' => [
+        'uncategorized' => 'Senza categoria',
+    ],
 ];
 

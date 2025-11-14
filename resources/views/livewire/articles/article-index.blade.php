@@ -202,10 +202,10 @@
                                         {{ $bannerArticle->category->name }}
                                     </span>
                                 @endif
-                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors" style="font-family: 'Playfair Display', serif;">
-                                    <a href="{{ route('articles.show', $bannerArticle->slug) }}" wire:navigate>
-                                        {{ $bannerArticle->title }}
-                                    </a>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors cursor-pointer" 
+                                    style="font-family: 'Playfair Display', serif;"
+                                    onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $bannerArticle->id }} })">
+                                    {{ $bannerArticle->title }}
                                 </h3>
                                 <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-3">
                                     {{ $bannerArticle->excerpt }}
@@ -252,9 +252,10 @@
                                                 size="md"
                                                 class="[&_button]:!text-primary-600 dark:[&_button]:!text-primary-300 [&_button]:!gap-1.5 [&_svg]:!stroke-current [&_span]:!text-sm" />
                                         </div>
-                                        <a href="{{ route('articles.show', $bannerArticle->slug) }}" wire:navigate class="text-primary-600 dark:text-primary-400 font-semibold hover:underline whitespace-nowrap">
+                                        <button onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $bannerArticle->id }} })" 
+                                                class="text-primary-600 dark:text-primary-400 font-semibold hover:underline whitespace-nowrap cursor-pointer">
                                             {{ __('articles.index.read_more') }} →
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -509,4 +510,7 @@
             }
         }
     </style>
+    
+    {{-- Article Modal --}}
+    <livewire:articles.article-modal />
 </div>
