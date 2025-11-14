@@ -17,9 +17,20 @@ class ArticleModal extends Component
     {
         $this->articleId = $articleId;
         $this->article = Article::with(['user', 'category'])
+            ->withCount(['likes', 'comments', 'views'])
             ->find($articleId);
         
         if ($this->article) {
+            // Check if user has liked
+            if (auth()->check()) {
+                $this->article->is_liked = \App\Models\UnifiedLike::where('user_id', auth()->id())
+                    ->where('likeable_type', Article::class)
+                    ->where('likeable_id', $this->article->id)
+                    ->exists();
+            } else {
+                $this->article->is_liked = false;
+            }
+            
             // Increment view count
             $this->article->increment('views_count');
             $this->isOpen = true;

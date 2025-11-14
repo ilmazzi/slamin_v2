@@ -407,10 +407,9 @@
                                                         >
                                                     </div>
                                                 @endif
-                                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
-                                                    <a href="{{ route('articles.show', $sidebarArticle->slug) }}" wire:navigate>
-                                                        {{ $sidebarArticle->title }}
-                                                    </a>
+                                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2 cursor-pointer"
+                                                    onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $sidebarArticle->id }} })">
+                                                    {{ $sidebarArticle->title }}
                                                 </h4>
                                                 @if($sidebarArticle->category)
                                                     <span class="inline-block px-2 py-1 text-xs rounded bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200 mb-2">
