@@ -581,17 +581,4 @@
             <p class="mt-4 text-neutral-900 dark:text-white font-medium">{{ __('events.loading') }}...</p>
         </div>
     </div>
-    
-    @once
-    @push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    @endpush
-    @endonce
-
-    @once
-    @push('scripts')
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    @vite(['resources/js/events-map.js'])
-    @endpush
-    @endonce
 </div>
