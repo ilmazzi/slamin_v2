@@ -1,18 +1,17 @@
-@once
-@push('styles')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-@vite(['resources/css/events-map.css', 'resources/css/events-index.css'])
-@endpush
-@endonce
-
-@once
-@push('scripts')
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-@vite(['resources/js/events-map.js'])
-@endpush
-@endonce
-
 <div class="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/30 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 overflow-hidden">
+    @once
+    @push('styles')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    @vite(['resources/css/events-map.css', 'resources/css/events-index.css'])
+    @endpush
+    @endonce
+
+    @once
+    @push('scripts')
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    @vite(['resources/js/events-map.js'])
+    @endpush
+    @endonce
     
     {{-- HERO con Ticket + Titolo (come poesie e articoli) --}}
     <div class="relative py-12 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
