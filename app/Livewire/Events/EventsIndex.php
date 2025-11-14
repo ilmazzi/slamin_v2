@@ -183,18 +183,24 @@ class EventsIndex extends Component
         return $this->events
             ->filter(fn($e) => $e->latitude && $e->longitude)
             ->values()
-            ->map(fn($e) => [
-                'id' => $e->id,
-                'title' => $e->title,
-                'category' => $e->category,
-                'city' => $e->city,
-                'venue_name' => $e->venue_name,
-                'start_datetime' => $e->start_datetime ? $e->start_datetime->format('d M Y H:i') : 'Data da definire',
-                'latitude' => floatval($e->latitude),
-                'longitude' => floatval($e->longitude),
-                'image_url' => $e->image_url,
-                'url' => route('events.show', $e->id)
-            ]);
+            ->map(function($e) {
+                // Render ticket component to HTML
+                $ticketHtml = view('components.event-ticket', ['event' => $e])->render();
+                
+                return [
+                    'id' => $e->id,
+                    'title' => $e->title,
+                    'category' => $e->category,
+                    'city' => $e->city,
+                    'venue_name' => $e->venue_name,
+                    'start_datetime' => $e->start_datetime ? $e->start_datetime->format('d M Y H:i') : 'Data da definire',
+                    'latitude' => floatval($e->latitude),
+                    'longitude' => floatval($e->longitude),
+                    'image_url' => $e->image_url,
+                    'url' => route('events.show', $e->id),
+                    'ticket_html' => $ticketHtml
+                ];
+            });
     }
 
     public function render()

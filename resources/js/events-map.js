@@ -250,8 +250,16 @@ function addMarkerToMap(event, index, total) {
 
 /**
  * Create popup content HTML for an event
+ * Uses the ticket component HTML rendered server-side
  */
 function createPopupContent(event) {
+    // Use ticket HTML if available, otherwise fallback to simple popup
+    if (event.ticket_html) {
+        // Wrap ticket in container for popup
+        return `<div class="map-popup-ticket-wrapper" style="width: 400px; max-width: 90vw;">${event.ticket_html}</div>`;
+    }
+    
+    // Fallback (should not happen, but just in case)
     const viewDetailsText = document.querySelector('[data-view-details-text]')?.getAttribute('data-view-details-text') || 'Vedi dettagli';
     
     return `

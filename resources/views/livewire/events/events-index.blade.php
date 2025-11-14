@@ -73,7 +73,7 @@
     </div>
 
     <!-- Interactive Map Section -->
-    <div class="mb-16">
+    <div class="mb-16 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-3xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">

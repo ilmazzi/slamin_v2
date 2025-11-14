@@ -1,5 +1,19 @@
 /* Events Map Styles */
 
+/* Map Popup Ticket Wrapper */
+.map-popup-ticket-wrapper {
+    padding: 0.5rem;
+}
+
+.map-popup-ticket-wrapper .cinema-ticket {
+    transform: none !important;
+    margin: 0;
+}
+
+.map-popup-ticket-wrapper .cinema-ticket:hover {
+    transform: none !important;
+}
+
 /* Map style buttons */
 .map-style-btn {
     opacity: 0.5;
