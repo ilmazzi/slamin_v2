@@ -205,6 +205,68 @@
         :type="$type" 
         :freeOnly="$freeOnly" />
 
+    {{-- Filtered Events Section (only when filters are active) --}}
+    @if($hasActiveFilters && $events->count() > 0)
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12 border-b-2 border-red-300/50 dark:border-red-700/50">
+        <div class="mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
+                {{ __('events.filtered_events') }}
+            </h2>
+            <p class="text-neutral-600 dark:text-neutral-400">
+                {{ __('events.filtered_events_description', ['count' => $events->count()]) }}
+            </p>
+        </div>
+        
+        {{-- Asymmetric Bento Style Layout --}}
+        @php
+            $sizes = [
+                'xl' => 'col-span-2 row-span-2 min-h-[500px]',
+                'lg' => 'col-span-2 row-span-1 min-h-[280px]',
+                'md' => 'col-span-1 row-span-2 min-h-[450px]',
+                'sm' => 'col-span-1 row-span-1 min-h-[280px]',
+            ];
+            $pattern = ['xl', 'sm', 'sm', 'lg', 'md', 'sm', 'sm', 'lg'];
+        @endphp
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 auto-rows-auto">
+            @foreach($events as $index => $event)
+                @php
+                    $sizeKey = $pattern[$index % count($pattern)];
+                    $sizeClass = $sizes[$sizeKey];
+                    $isLarge = in_array($sizeKey, ['xl', 'lg', 'md']);
+                @endphp
+                
+                <div class="{{ $sizeClass }}">
+                    @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index, 'isLarge' => $isLarge])
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @elseif($hasActiveFilters && $events->count() === 0)
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12 border-b-2 border-red-300/50 dark:border-red-700/50">
+        <div class="text-center py-16">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
+                <svg class="w-10 h-10 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+                {{ __('events.no_filtered_events') }}
+            </h3>
+            <p class="text-neutral-600 dark:text-neutral-400 mb-6 max-w-md mx-auto">
+                {{ __('events.no_filtered_events_description') }}
+            </p>
+            <button wire:click="resetFilters" 
+                    class="inline-flex items-center px-6 py-3 bg-red-700 text-white rounded-full font-semibold hover:bg-red-800 transition-all hover:scale-105">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                {{ __('events.reset_filters') }}
+            </button>
+        </div>
+    </div>
+    @endif
+
     {{-- Upcoming Events Section --}}
     <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12">
         @if($upcomingEvents->count() > 0)

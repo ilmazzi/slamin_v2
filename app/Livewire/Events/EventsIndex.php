@@ -81,6 +81,17 @@ class EventsIndex extends Component
         $this->quickFilter = '';
     }
 
+    public function hasActiveFilters()
+    {
+        return !empty($this->search) 
+            || !empty($this->city) 
+            || !empty($this->type) 
+            || !empty($this->dateFrom) 
+            || !empty($this->dateTo) 
+            || $this->freeOnly 
+            || !empty($this->quickFilter);
+    }
+
     public function getEventsProperty()
     {
         $query = Event::with(['organizer', 'venueOwner'])
@@ -321,6 +332,7 @@ class EventsIndex extends Component
             'statistics' => $this->statistics,
             'cities' => $this->cities,
             'mapData' => $this->mapData,
+            'hasActiveFilters' => $this->hasActiveFilters(),
         ])->layout('components.layouts.app');
     }
 }
