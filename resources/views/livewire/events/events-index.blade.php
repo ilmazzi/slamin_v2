@@ -332,11 +332,20 @@
         @endauth
     </div>
 
-    <!-- Dynamic Bento Box Layout -->
-    <div class="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 pb-16"
+    <!-- All Events Section -->
+    <div class="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 pb-16 border-t-2 border-red-300/50 dark:border-red-700/50"
          x-data="{ scrollY: 0, mouseX: 0, mouseY: 0 }"
          @scroll.window="scrollY = window.scrollY"
          @mousemove.window="mouseX = $event.clientX; mouseY = $event.clientY">
+        
+        <div class="mb-10 pt-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
+                {{ __('events.all_events') }}
+            </h2>
+            <p class="text-neutral-600 dark:text-neutral-400">
+                {{ __('events.all_events_description') }}
+            </p>
+        </div>
         
         <!-- Animated Floating Orbs Background -->
         <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-30">

@@ -215,33 +215,39 @@ class EventsIndex extends Component
         $user = Auth::user();
         $eventIds = collect([]);
 
-        // 1. Eventi ai quali l'utente partecipa
+        // 1. Eventi creati dall'utente (organizer)
+        $createdEventIds = Event::where('organizer_id', $user->id)
+            ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
+            ->pluck('id');
+
+        // 2. Eventi ai quali l'utente partecipa
         $participatingEventIds = DB::table('event_participants')
             ->where('user_id', $user->id)
             ->where('status', 'confirmed')
             ->pluck('event_id');
 
-        // 2. Eventi nella wishlist dell'utente
+        // 3. Eventi nella wishlist dell'utente
         $wishlistEventIds = $user->wishlistedEvents()
             ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
             ->pluck('events.id');
 
-        // 3. Utenti che l'utente segue
+        // 4. Utenti che l'utente segue
         $followingIds = $user->following()->pluck('following_id');
 
         if ($followingIds->isNotEmpty()) {
-            // 4. Eventi ai quali partecipano gli utenti che segue
+            // 5. Eventi ai quali partecipano gli utenti che segue
             $followingParticipatingEventIds = DB::table('event_participants')
                 ->whereIn('user_id', $followingIds)
                 ->where('status', 'confirmed')
                 ->pluck('event_id');
 
-            // 5. Eventi nella wishlist degli utenti che segue
+            // 6. Eventi nella wishlist degli utenti che segue
             $followingWishlistEventIds = DB::table('wishlists')
                 ->whereIn('user_id', $followingIds)
                 ->pluck('event_id');
 
             $eventIds = $eventIds
+                ->merge($createdEventIds)
                 ->merge($participatingEventIds)
                 ->merge($wishlistEventIds)
                 ->merge($followingParticipatingEventIds)
@@ -249,6 +255,7 @@ class EventsIndex extends Component
                 ->unique();
         } else {
             $eventIds = $eventIds
+                ->merge($createdEventIds)
                 ->merge($participatingEventIds)
                 ->merge($wishlistEventIds)
                 ->unique();
