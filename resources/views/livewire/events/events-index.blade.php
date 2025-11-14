@@ -259,45 +259,78 @@
     </div>
 
     {{-- Personalized Events Section --}}
-    @auth
-        @if($personalizedEvents->count() > 0)
-        <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12 border-t border-amber-200/40 dark:border-amber-800/30">
-            <div class="mb-10">
-                <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
-                    {{ __('events.personalized_events') }}
-                </h2>
-                <p class="text-neutral-600 dark:text-neutral-400">
-                    {{ __('events.personalized_events_description') }}
-                </p>
-            </div>
-            
-            {{-- Asymmetric Bento Style Layout --}}
-            @php
-                $sizes = [
-                    'xl' => 'col-span-2 row-span-2 min-h-[500px]',
-                    'lg' => 'col-span-2 row-span-1 min-h-[280px]',
-                    'md' => 'col-span-1 row-span-2 min-h-[450px]',
-                    'sm' => 'col-span-1 row-span-1 min-h-[280px]',
-                ];
-                $pattern = ['xl', 'sm', 'sm', 'lg', 'md', 'sm', 'sm', 'lg'];
-            @endphp
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 auto-rows-auto">
-                @foreach($personalizedEvents->take(10) as $index => $event)
-                    @php
-                        $sizeKey = $pattern[$index % count($pattern)];
-                        $sizeClass = $sizes[$sizeKey];
-                        $isLarge = in_array($sizeKey, ['xl', 'lg', 'md']);
-                    @endphp
-                    
-                    <div class="{{ $sizeClass }}">
-                        @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index, 'isLarge' => $isLarge])
-                    </div>
-                @endforeach
-            </div>
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12 border-t-2 border-amber-300/50 dark:border-amber-700/50 bg-gradient-to-b from-transparent via-amber-50/20 to-transparent dark:via-amber-900/10">
+        <div class="mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
+                {{ __('events.personalized_events') }}
+            </h2>
+            <p class="text-neutral-600 dark:text-neutral-400">
+                {{ __('events.personalized_events_description') }}
+            </p>
         </div>
-        @endif
-    @endauth
+        
+        @auth
+            @if($personalizedEvents->count() > 0)
+                {{-- Asymmetric Bento Style Layout --}}
+                @php
+                    $sizes = [
+                        'xl' => 'col-span-2 row-span-2 min-h-[500px]',
+                        'lg' => 'col-span-2 row-span-1 min-h-[280px]',
+                        'md' => 'col-span-1 row-span-2 min-h-[450px]',
+                        'sm' => 'col-span-1 row-span-1 min-h-[280px]',
+                    ];
+                    $pattern = ['xl', 'sm', 'sm', 'lg', 'md', 'sm', 'sm', 'lg'];
+                @endphp
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 auto-rows-auto">
+                    @foreach($personalizedEvents->take(10) as $index => $event)
+                        @php
+                            $sizeKey = $pattern[$index % count($pattern)];
+                            $sizeClass = $sizes[$sizeKey];
+                            $isLarge = in_array($sizeKey, ['xl', 'lg', 'md']);
+                        @endphp
+                        
+                        <div class="{{ $sizeClass }}">
+                            @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index, 'isLarge' => $isLarge])
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-16">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-100 dark:bg-amber-900/30 mb-4">
+                        <svg class="w-10 h-10 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+                        {{ __('events.no_personalized_events') }}
+                    </h3>
+                    <p class="text-neutral-600 dark:text-neutral-400 mb-6 max-w-md mx-auto">
+                        {{ __('events.personalized_events_empty_description') }}
+                    </p>
+                </div>
+            @endif
+        @else
+            <div class="text-center py-16">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-100 dark:bg-amber-900/30 mb-4">
+                    <svg class="w-10 h-10 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+                    {{ __('events.login_to_see_personalized') }}
+                </h3>
+                <p class="text-neutral-600 dark:text-neutral-400 mb-6 max-w-md mx-auto">
+                    {{ __('events.personalized_events_login_description') }}
+                </p>
+                @if(Route::has('login'))
+                <a href="{{ route('login') }}" class="inline-flex items-center px-6 py-3 bg-red-700 text-white rounded-full font-semibold hover:bg-red-800 transition-all hover:scale-105">
+                    {{ __('auth.login') ?? 'Accedi' }}
+                </a>
+                @endif
+            </div>
+        @endauth
+    </div>
 
     <!-- Dynamic Bento Box Layout -->
     <div class="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 pb-16"
