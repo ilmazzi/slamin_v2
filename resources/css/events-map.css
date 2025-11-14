@@ -1,0 +1,79 @@
+/* Events Map Styles */
+
+/* Map style buttons */
+.map-style-btn {
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.map-style-btn.active {
+    opacity: 1;
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.map-style-btn.active svg {
+    color: #10b981 !important;
+}
+
+/* Leaflet Popup Customization */
+.custom-popup .leaflet-popup-content-wrapper {
+    border-radius: 1.5rem;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border: 2px solid rgba(16, 185, 129, 0.2);
+}
+
+.custom-popup .leaflet-popup-content {
+    margin: 0;
+    width: 320px !important;
+}
+
+.custom-popup .leaflet-popup-tip-container {
+    display: none;
+}
+
+.custom-popup .leaflet-popup-close-button {
+    display: none !important;
+}
+
+/* Popup link styling - force white text */
+.custom-popup a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.custom-popup a:hover {
+    color: white !important;
+    transform: scale(1.05);
+}
+
+.custom-popup a svg {
+    stroke: white !important;
+}
+
+/* Custom Marker Styles */
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+.custom-marker * {
+    display: block !important;
+    visibility: visible !important;
+}
+
+.leaflet-marker-pane {
+    z-index: 600 !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.leaflet-marker-pane * {
+    display: block !important;
+    visibility: visible !important;
+}
+
