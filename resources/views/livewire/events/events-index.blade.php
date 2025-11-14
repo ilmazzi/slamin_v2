@@ -1,3 +1,212 @@
+@once
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+@endpush
+@endonce
+
+@once
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+console.log('🌍 Leaflet map script loaded!');
+
+let map = null;
+let markers = [];
+
+// Wait for Livewire to be ready
+document.addEventListener('livewire:init', () => {
+    console.log('✅ Livewire initialized, setting up map...');
+    
+    Livewire.on('map-ready', (data) => {
+        console.log('🗺️ Map ready event received:', data);
+        initMap(data);
+    });
+    
+    // Also try to init immediately if data is available
+    if (window.mapData) {
+        initMap(window.mapData);
+    }
+});
+
+function initMap(data) {
+    if (!data || !data.events || data.events.length === 0) {
+        console.log('⚠️ No events data available for map');
+        return;
+    }
+    
+    console.log('🗺️ Initializing map with', data.events.length, 'events');
+    
+    // Destroy existing map if any
+    if (map) {
+        map.remove();
+        markers = [];
+    }
+    
+    // Create map centered on first event or default location
+    const firstEvent = data.events[0];
+    const centerLat = firstEvent?.latitude || 41.9028;
+    const centerLng = firstEvent?.longitude || 12.4964;
+    
+    map = L.map('events-map').setView([centerLat, centerLng], 6);
+    
+    // Add tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(map);
+    
+    // Add markers for each event
+    data.events.forEach(event => {
+        if (event.latitude && event.longitude) {
+            const marker = L.marker([event.latitude, event.longitude])
+                .addTo(map)
+                .bindPopup(`
+                    <div class="custom-popup">
+                        <a href="${event.url}" class="block p-4 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl hover:from-primary-700 hover:to-primary-800 transition-all">
+                            <h3 class="font-bold text-lg mb-2">${event.title}</h3>
+                            <p class="text-sm opacity-90 mb-3">${event.city || ''}</p>
+                            <div class="flex items-center gap-2 text-xs">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <span>${event.date || ''}</span>
+                            </div>
+                        </a>
+                    </div>
+                `);
+            
+            markers.push(marker);
+        }
+    });
+    
+    // Fit map to show all markers
+    if (markers.length > 0) {
+        const group = new L.featureGroup(markers);
+        map.fitBounds(group.getBounds().pad(0.1));
+    }
+    
+    console.log('✅ Map initialized with', markers.length, 'markers');
+}
+
+// Handle map style changes
+window.changeMapStyle = function(style) {
+    if (!map) return;
+    
+    // Remove existing tile layer
+    map.eachLayer((layer) => {
+        if (layer instanceof L.TileLayer) {
+            map.removeLayer(layer);
+        }
+    });
+    
+    let tileUrl, attribution;
+    
+    switch(style) {
+        case 'satellite':
+            tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+            attribution = '© Esri';
+            break;
+        case 'terrain':
+            tileUrl = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+            attribution = '© OpenTopoMap';
+            break;
+        default: // standard
+            tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            attribution = '© OpenStreetMap contributors';
+    }
+    
+    L.tileLayer(tileUrl, {
+        attribution: attribution,
+        maxZoom: 19
+    }).addTo(map);
+    
+    // Update active button
+    document.querySelectorAll('.map-style-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.closest('.map-style-btn')?.classList.add('active');
+}
+</script>
+
+<style>
+/* Map style buttons */
+.map-style-btn {
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.map-style-btn.active {
+    opacity: 1;
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.map-style-btn.active svg {
+    color: #10b981 !important;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+    border-radius: 1.5rem;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border: 2px solid rgba(16, 185, 129, 0.2);
+}
+
+.custom-popup .leaflet-popup-content {
+    margin: 0;
+    width: 320px !important;
+}
+
+.custom-popup .leaflet-popup-tip-container {
+    display: none;
+}
+
+.custom-popup .leaflet-popup-close-button {
+    display: none !important;
+}
+
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+.custom-marker * {
+    display: block !important;
+    visibility: visible !important;
+}
+
+.leaflet-marker-pane {
+    z-index: 600 !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.leaflet-marker-pane * {
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Popup link styling - force white text */
+.custom-popup a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.custom-popup a:hover {
+    color: white !important;
+    transform: scale(1.05);
+}
+
+.custom-popup a svg {
+    stroke: white !important;
+}
+</style>
+@endpush
+@endonce
+
 <div class="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/30 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 overflow-hidden">
     
     {{-- HERO con Ticket + Titolo (come poesie e articoli) --}}
