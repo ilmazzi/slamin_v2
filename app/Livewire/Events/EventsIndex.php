@@ -5,7 +5,9 @@ namespace App\Livewire\Events;
 use Livewire\Component;
 use App\Models\Event;
 use App\Models\UnifiedLike;
+use App\Models\EventParticipant;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class EventsIndex extends Component
@@ -178,6 +180,105 @@ class EventsIndex extends Component
                    ->values();
     }
 
+    public function getUpcomingEventsProperty()
+    {
+        $events = Event::with(['organizer', 'venueOwner'])
+            ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
+            ->where('start_datetime', '>', Carbon::now())
+            ->orderBy('start_datetime', 'asc')
+            ->limit(10)
+            ->withCount(['views', 'likes', 'comments'])
+            ->get();
+
+        // Check if user has liked each event
+        if (Auth::check()) {
+            foreach ($events as $event) {
+                $event->is_liked = UnifiedLike::where('user_id', Auth::id())
+                    ->where('likeable_type', Event::class)
+                    ->where('likeable_id', $event->id)
+                    ->exists();
+            }
+        } else {
+            foreach ($events as $event) {
+                $event->is_liked = false;
+            }
+        }
+
+        return $events;
+    }
+
+    public function getPersonalizedEventsProperty()
+    {
+        if (!Auth::check()) {
+            return collect([]);
+        }
+
+        $user = Auth::user();
+        $eventIds = collect([]);
+
+        // 1. Eventi ai quali l'utente partecipa
+        $participatingEventIds = \App\Models\EventParticipant::where('user_id', $user->id)
+            ->where('status', 'confirmed')
+            ->pluck('event_id');
+
+        // 2. Eventi nella wishlist dell'utente
+        $wishlistEventIds = $user->wishlistedEvents()
+            ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
+            ->pluck('events.id');
+
+        // 3. Utenti che l'utente segue
+        $followingIds = $user->following()->pluck('following_id');
+
+        if ($followingIds->isNotEmpty()) {
+            // 4. Eventi ai quali partecipano gli utenti che segue
+            $followingParticipatingEventIds = \App\Models\EventParticipant::whereIn('user_id', $followingIds)
+                ->where('status', 'confirmed')
+                ->pluck('event_id');
+
+            // 5. Eventi nella wishlist degli utenti che segue
+            $followingWishlistEventIds = \DB::table('wishlists')
+                ->whereIn('user_id', $followingIds)
+                ->pluck('event_id');
+
+            $eventIds = $eventIds
+                ->merge($participatingEventIds)
+                ->merge($wishlistEventIds)
+                ->merge($followingParticipatingEventIds)
+                ->merge($followingWishlistEventIds)
+                ->unique();
+        } else {
+            $eventIds = $eventIds
+                ->merge($participatingEventIds)
+                ->merge($wishlistEventIds)
+                ->unique();
+        }
+
+        if ($eventIds->isEmpty()) {
+            return collect([]);
+        }
+
+        $events = Event::with(['organizer', 'venueOwner'])
+            ->whereIn('id', $eventIds)
+            ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
+            ->where(function ($q) {
+                $q->where('start_datetime', '>', Carbon::now())
+                  ->orWhere('is_availability_based', true);
+            })
+            ->orderBy('start_datetime', 'asc')
+            ->withCount(['views', 'likes', 'comments'])
+            ->get();
+
+        // Check if user has liked each event
+        foreach ($events as $event) {
+            $event->is_liked = UnifiedLike::where('user_id', Auth::id())
+                ->where('likeable_type', Event::class)
+                ->where('likeable_id', $event->id)
+                ->exists();
+        }
+
+        return $events;
+    }
+
     public function getMapDataProperty()
     {
         return $this->events
@@ -207,6 +308,8 @@ class EventsIndex extends Component
     {
         return view('livewire.events.events-index', [
             'events' => $this->events,
+            'upcomingEvents' => $this->upcomingEvents,
+            'personalizedEvents' => $this->personalizedEvents,
             'statistics' => $this->statistics,
             'cities' => $this->cities,
             'mapData' => $this->mapData,

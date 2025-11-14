@@ -48,6 +48,9 @@ return [
     // Sections
     'featured_events' => 'Featured Events',
     'upcoming_soon' => 'Coming Soon',
+    'upcoming_events' => 'Upcoming Events',
+    'personalized_events' => 'Your Events',
+    'personalized_events_description' => 'Events you participate in, in your wishlist or followed by people you follow',
     'browse_by_category' => 'Browse by Category',
     'view_details' => 'View Details',
     

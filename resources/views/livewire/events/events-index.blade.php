@@ -205,6 +205,48 @@
         :type="$type" 
         :freeOnly="$freeOnly" />
 
+    {{-- Upcoming Events Section --}}
+    @if($upcomingEvents->count() > 0)
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="mb-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
+                {{ __('events.upcoming_events') }}
+            </h2>
+            <p class="text-neutral-600 dark:text-neutral-400">
+                {{ __('events.upcoming_soon') }}
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            @foreach($upcomingEvents as $index => $event)
+                @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index, 'isLarge' => false])
+            @endforeach
+        </div>
+    </div>
+    @endif
+
+    {{-- Personalized Events Section --}}
+    @auth
+        @if($personalizedEvents->count() > 0)
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-amber-200/40 dark:border-amber-800/30">
+            <div class="mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
+                    {{ __('events.personalized_events') }}
+                </h2>
+                <p class="text-neutral-600 dark:text-neutral-400">
+                    {{ __('events.personalized_events_description') }}
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                @foreach($personalizedEvents as $index => $event)
+                    @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index, 'isLarge' => false])
+                @endforeach
+            </div>
+        </div>
+        @endif
+    @endauth
+
     <!-- Dynamic Bento Box Layout -->
     <div class="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16"
          x-data="{ scrollY: 0, mouseX: 0, mouseY: 0 }"
