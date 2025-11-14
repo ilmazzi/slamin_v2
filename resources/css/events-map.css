@@ -2,14 +2,18 @@
 
 /* Map Popup Ticket Wrapper */
 .map-popup-ticket-wrapper {
-    padding: 0.5rem;
-    transform: scale(0.75);
+    padding: 0.25rem;
+    transform: scale(0.65);
     transform-origin: top center;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .map-popup-ticket-wrapper .cinema-ticket {
     transform: none !important;
     margin: 0;
+    width: 100%;
 }
 
 .map-popup-ticket-wrapper .cinema-ticket:hover {
@@ -43,8 +47,8 @@
 .custom-popup .leaflet-popup-content {
     margin: 0;
     width: auto !important;
-    min-width: 300px;
-    max-width: 350px;
+    min-width: 280px;
+    max-width: 300px;
 }
 
 .custom-popup .leaflet-popup-tip-container {

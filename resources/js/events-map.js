@@ -241,7 +241,7 @@ function addMarkerToMap(event, index, total) {
     const popupContent = createPopupContent(event);
     
     marker.bindPopup(popupContent, {
-        maxWidth: event.ticket_html ? 350 : 320,
+        maxWidth: event.ticket_html ? 300 : 320,
         className: 'custom-popup'
     });
     
@@ -256,7 +256,7 @@ function createPopupContent(event) {
     // Use ticket HTML if available, otherwise fallback to simple popup
     if (event.ticket_html) {
         // Wrap ticket in container for popup
-        return `<div class="map-popup-ticket-wrapper" style="width: 400px; max-width: 90vw;">${event.ticket_html}</div>`;
+        return `<div class="map-popup-ticket-wrapper">${event.ticket_html}</div>`;
     }
     
     // Fallback (should not happen, but just in case)
