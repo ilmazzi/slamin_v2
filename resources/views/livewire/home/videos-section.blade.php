@@ -111,19 +111,29 @@
                             <div class="film-frame-number film-frame-number-tl">///{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</div>
                             <div class="film-frame-number film-frame-number-tr">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}A</div>
                         
-                            <!-- Video Player Component -->
-                            <div class="relative">
-                                <x-video-player 
-                                    :video="$item"
-                                    :showStats="false"
-                                    :showAuthor="false"
-                                    :autoplay="false"
-                                    size="full"
-                                    class="w-full">
-                                </x-video-player>
+                            <!-- Video Container -->
+                            <div class="relative aspect-[4/3] md:aspect-video overflow-hidden bg-black cursor-pointer group"
+                                 onclick="Livewire.dispatch('openVideoModal', { videoId: {{ $item->id }} })">
+                                <!-- Video Thumbnail -->
+                                <img src="{{ $item->thumbnail_url }}" 
+                                     alt="{{ $item->title }}" 
+                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                     onerror="this.src='{{ asset('assets/images/placeholder/placholder-1.jpg') }}'">
                                 
-                                <!-- Custom Overlay for Film Strip Style -->
-                                <div class="absolute top-0 left-0 right-0 pt-8 px-3 md:pt-4 md:px-4 z-10 pointer-events-none">
+                                <!-- Dark Overlay -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40"></div>
+                                
+                                <!-- Play Button - Smaller -->
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-14 h-14 md:w-16 md:h-16 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-300">
+                                        <svg class="w-6 h-6 md:w-7 md:h-7 text-primary-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                
+                                <!-- Title Only - Top -->
+                                <div class="absolute top-0 left-0 right-0 pt-8 px-3 md:pt-4 md:px-4">
                                     <h3 class="text-sm md:text-lg font-bold text-white drop-shadow-lg line-clamp-2" 
                                         style="font-family: 'Crimson Pro', serif;">
                                         {{ $item->title }}
@@ -613,4 +623,7 @@
     }
     </style>
     @endif
+    
+    {{-- Video Modal Component --}}
+    <livewire:media.video-modal />
 </div>
