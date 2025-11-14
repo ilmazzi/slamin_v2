@@ -1,224 +1,82 @@
 <div class="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/30 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 overflow-hidden">
     
-    @php
-        $heroEvent = $events->first();
-        $heroLocale = app()->getLocale();
-        $heroDate = $heroEvent?->start_datetime?->locale($heroLocale)->isoFormat('D MMM YYYY');
-        $heroTime = $heroEvent?->start_datetime?->format('H:mm');
-    @endphp
-
-    <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br from-primary-700 via-primary-600 to-accent-500 py-24 overflow-hidden"
-         x-data="{ showFilters: false, scrollY: 0 }"
-         @scroll.window="scrollY = window.scrollY">
-        
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute -top-16 -left-16 w-80 h-80 bg-white/10 rounded-full blur-3xl opacity-80"></div>
-            <div class="absolute top-20 right-0 w-[28rem] h-[28rem] bg-accent-400/20 rounded-full blur-3xl"
-                 :style="`transform: translateY(${scrollY * 0.2}px)`"></div>
-            <div class="absolute bottom-0 left-1/4 w-[22rem] h-[22rem] bg-white/10 rounded-full blur-3xl"
-                 :style="`transform: translateY(${scrollY * -0.1}px)`"></div>
-        </div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="flex flex-col lg:flex-row items-start lg:items-center gap-16">
-                <div class="flex-1 text-white">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-xs uppercase tracking-[0.3em] font-semibold mb-6">
-                        {{ __('events.featured_events') }}
-                    </div>
-                    <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4 drop-shadow-lg"
-                        style="font-family: 'Playfair Display', serif;">
-                        {{ __('events.discover_events') }}
-                    </h1>
-                    <p class="text-lg md:text-xl text-white/80 max-w-xl leading-relaxed">
-                        {{ __('events.where_poetry_lives') }}
-                    </p>
-                    <div class="mt-8 flex flex-wrap items-center gap-4">
-                        <a href="#events-search-panel"
-                           class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-primary-600 font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
-                            {{ __('events.search_placeholder') }}
-                        </a>
-                        @auth
-                            @if(auth()->user()->canOrganizeEvents())
-                                <a href="{{ route('events.create') }}"
-                                   class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/60 text-white font-semibold backdrop-blur-sm hover:bg-white/10 transition-all">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/>
-                                    </svg>
-                                    {{ __('events.create_event') }}
-                                </a>
-                            @endif
-                        @endauth
+    {{-- HERO con Ticket + Titolo (come poesie e articoli) --}}
+    <section class="relative py-12 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
+                
+                <!-- TICKET (dalla home) - Dimensione maggiorata -->
+                <?php 
+                    $tilt = rand(-3, 3);
+                    $selectedColors = [
+                        ['#fefaf3', '#fdf8f0', '#faf5ec'],
+                        ['#fef9f1', '#fdf7ef', '#faf4ea'],
+                        ['#fffbf5', '#fef9f3', '#fdf7f1']
+                    ][rand(0, 2)];
+                ?>
+                <div class="hero-ticket-wrapper-large">
+                    <div class="hero-ticket-wrapper" style="transform: rotate({{ $tilt }}deg);">
+                        <div class="hero-cinema-ticket"
+                             style="background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
+                            <div class="hero-ticket-perforation"></div>
+                            <div class="hero-ticket-content">
+                                <div class="ticket-mini-header">
+                                    <div class="text-[8px] font-black tracking-wider text-red-700">TICKET</div>
+                                    <div class="text-[7px] font-bold text-amber-700">#0{{ rand(1, 9) }}{{ rand(0, 9) }}{{ rand(0, 9) }}</div>
+                                </div>
+                                <div class="flex-1 flex items-center justify-center">
+                                    <div class="hero-ticket-stamp">{{ strtoupper(__('home.hero_category_events')) }}</div>
+                                </div>
+                                <div class="ticket-mini-barcode">
+                                    <div class="flex justify-center gap-[1px]">
+                                        @for($j = 0; $j < 20; $j++)
+                                        <div style="width: {{ rand(1, 2) }}px; height: {{ rand(12, 18) }}px; background: #2d2520;"></div>
+                                        @endfor
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                @if($heroEvent)
-                    <?php 
-                        $heroPalette = [
-                            ['#fefaf3', '#fdf8f0', '#faf5ec'],
-                            ['#fef9f1', '#fdf7ef', '#faf4ea'],
-                            ['#fffbf5', '#fef9f3', '#fdf7f1']
-                        ][$heroEvent->id % 3];
-                    ?>
-                    <div class="w-full max-w-sm mx-auto lg:mx-0">
-                        <div class="hero-ticket-wrapper hero-ticket-wrapper--feature">
-                            <div class="hero-cinema-ticket hero-cinema-ticket--feature"
-                                 style="background: linear-gradient(135deg, {{ $heroPalette[0] }} 0%, {{ $heroPalette[1] }} 50%, {{ $heroPalette[2] }} 100%);">
-                                <div class="hero-ticket-perforation"></div>
-                                <div class="hero-ticket-content">
-                                    <div class="ticket-mini-header">
-                                        <div class="ticket-mini-label">TICKET</div>
-                                        <div class="ticket-mini-number">#{{ str_pad($heroEvent->id, 5, '0', STR_PAD_LEFT) }}</div>
-                                    </div>
-                                    
-                                    <div class="hero-ticket-body">
-                                        <div class="hero-ticket-stamp hero-ticket-stamp--feature">
-                                            {{ strtoupper($heroEvent->category ?? __('events.featured_events')) }}
-                                        </div>
-                                        
-                                        <div class="hero-ticket-title">
-                                            {{ \Illuminate\Support\Str::limit($heroEvent->title, 60) }}
-                                        </div>
-                                        
-                                        <div class="hero-ticket-meta-grid">
-                                            <div class="hero-ticket-meta">
-                                                <span class="hero-ticket-meta-label">{{ __('events.city') }}</span>
-                                                <span class="hero-ticket-meta-value">{{ $heroEvent->city ?? '—' }}</span>
-                                            </div>
-                                            <div class="hero-ticket-meta">
-                                                <span class="hero-ticket-meta-label">{{ __('events.price') }}</span>
-                                                <span class="hero-ticket-meta-value">
-                                                    @if($heroEvent->entry_fee === null || $heroEvent->entry_fee == 0)
-                                                        {{ __('events.free_label') }}
-                                                    @else
-                                                        €{{ number_format($heroEvent->entry_fee, 2, ',', '.') }}
-                                                    @endif
-                                                </span>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="hero-ticket-meta-grid">
-                                            <div class="hero-ticket-meta">
-                                                <span class="hero-ticket-meta-label">{{ __('events.event_details') }}</span>
-                                                <span class="hero-ticket-meta-value">
-                                                    @if($heroDate || $heroTime)
-                                                        {{ trim(($heroDate ?? '') . ($heroDate && $heroTime ? ' · ' : '') . ($heroTime ?? '')) }}
-                                                    @else
-                                                        —
-                                                    @endif
-                                                </span>
-                                            </div>
-                                            <div class="hero-ticket-meta">
-                                                <span class="hero-ticket-meta-label">{{ __('events.organizer_label') }}</span>
-                                                <span class="hero-ticket-meta-value">{{ $heroEvent->user->name ?? '—' }}</span>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="hero-ticket-social" @click.stop>
-                                            <x-like-button 
-                                                :itemId="$heroEvent->id"
-                                                itemType="event"
-                                                :isLiked="$heroEvent->is_liked ?? false"
-                                                :likesCount="$heroEvent->like_count ?? 0"
-                                                size="sm"
-                                                class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_span]:!text-xs" />
-                                            <x-comment-button 
-                                                :itemId="$heroEvent->id"
-                                                itemType="event"
-                                                :commentsCount="$heroEvent->comment_count ?? 0"
-                                                size="sm"
-                                                class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_span]:!text-xs" />
-                                            <x-share-button 
-                                                :itemId="$heroEvent->id"
-                                                itemType="event"
-                                                :url="route('events.show', $heroEvent)"
-                                                :title="$heroEvent->title"
-                                                size="sm"
-                                                class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_span]:!text-xs" />
-                                        </div>
-                                        
-                                        <a href="{{ route('events.show', $heroEvent) }}" wire:navigate class="hero-ticket-cta">
-                                            {{ __('events.view_details') }}
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                    
-                                    <div class="ticket-mini-barcode">
-                                        <div class="ticket-mini-barcode-lines">
-                                            @for($i = 0; $i < 28; $i++)
-                                                <span style="height: {{ rand(14, 22) }}px; width: {{ rand(1, 2) }}px;"></span>
-                                            @endfor
-                                        </div>
-                                    </div>
-                                </div>
+                <!-- TITOLO A FIANCO -->
+                <div class="text-center md:text-left">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight" style="font-family: 'Playfair Display', serif;">
+                        {{ __('events.discover_events') }}
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/80 mt-4 font-medium">
+                        {{ __('events.where_poetry_lives') }}
+                    </p>
+                    
+                    @auth
+                        @if(auth()->user()->canOrganizeEvents())
+                            <div class="mt-6">
+                                <a href="{{ route('events.create') }}" 
+                                   class="group inline-flex items-center gap-3 px-6 py-3 rounded-xl
+                                          bg-gradient-to-r from-primary-500 to-primary-600 
+                                          hover:from-primary-600 hover:to-primary-700
+                                          text-white font-bold shadow-xl shadow-primary-500/30
+                                          hover:shadow-2xl hover:shadow-primary-500/40 hover:-translate-y-1
+                                          transition-all duration-300">
+                                    <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" 
+                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                              d="M12 4v16m8-8H4"/>
+                                    </svg>
+                                    <span>{{ __('events.create_event') }}</span>
+                                </a>
                             </div>
-                        </div>
-                    </div>
-                @else
-                    <div class="w-full max-w-sm mx-auto lg:mx-0">
-                        <div class="hero-ticket-wrapper hero-ticket-wrapper--feature">
-                            <div class="hero-cinema-ticket hero-cinema-ticket--feature"
-                                 style="background: linear-gradient(135deg, #fffbf5 0%, #fef9f3 50%, #fdf7f1 100%);">
-                                <div class="hero-ticket-perforation"></div>
-                                <div class="hero-ticket-content">
-                                    <div class="ticket-mini-header">
-                                        <div class="ticket-mini-label">TICKET</div>
-                                        <div class="ticket-mini-number">#00000</div>
-                                    </div>
-                                    <div class="hero-ticket-body">
-                                        <div class="hero-ticket-stamp hero-ticket-stamp--feature">
-                                            {{ strtoupper(__('events.featured_events')) }}
-                                        </div>
-                                        <div class="hero-ticket-title text-center text-neutral-600">
-                                            {{ __('events.no_events_found') }}
-                                        </div>
-                                        <div class="hero-ticket-meta-grid">
-                                            <div class="hero-ticket-meta">
-                                                <span class="hero-ticket-meta-label">{{ __('events.city') }}</span>
-                                                <span class="hero-ticket-meta-value">—</span>
-                                            </div>
-                                            <div class="hero-ticket-meta">
-                                                <span class="hero-ticket-meta-label">{{ __('events.price') }}</span>
-                                                <span class="hero-ticket-meta-value">{{ __('events.free_label') }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="hero-ticket-meta-grid">
-                                            <div class="hero-ticket-meta">
-                                                <span class="hero-ticket-meta-label">{{ __('events.event_details') }}</span>
-                                                <span class="hero-ticket-meta-value">—</span>
-                                            </div>
-                                            <div class="hero-ticket-meta">
-                                                <span class="hero-ticket-meta-label">{{ __('events.organizer_label') }}</span>
-                                                <span class="hero-ticket-meta-value">—</span>
-                                            </div>
-                                        </div>
-                                        <a href="#events-search-panel" class="hero-ticket-cta">
-                                            {{ __('events.search_placeholder') }}
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                    <div class="ticket-mini-barcode">
-                                        <div class="ticket-mini-barcode-lines">
-                                            @for($i = 0; $i < 28; $i++)
-                                                <span style="height: {{ rand(14, 22) }}px; width: {{ rand(1, 2) }}px;"></span>
-                                            @endfor
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
+                        @endif
+                    @endauth
+                </div>
             </div>
-            
-            <div id="events-search-panel" class="mt-16 relative">
+        </div>
+    </section>
+    
+    {{-- Filtri e Ricerca --}}
+    <section class="relative py-8 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-900/95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="events-search-panel" class="relative">
                 <div class="events-search-card">
                     <div class="relative">
                         <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,6 +182,56 @@
     </div>
 
     <style>
+        /* Ticket design reused from home hero - Large version for header */
+        .hero-ticket-wrapper-large {
+            display: block;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-ticket-wrapper-large:hover {
+            transform: translateY(-6px) scale(1.05);
+        }
+        
+        .hero-ticket-wrapper-large .hero-ticket-wrapper {
+            width: 100%;
+        }
+        
+        .hero-ticket-wrapper-large .hero-cinema-ticket {
+            height: 260px;
+        }
+        
+        .hero-ticket-wrapper-large .hero-ticket-content {
+            padding: 1.5rem 1rem;
+        }
+        
+        .hero-ticket-wrapper-large .hero-ticket-stamp {
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+        
+        .hero-ticket-wrapper-large .ticket-mini-header {
+            font-size: 0.75rem;
+        }
+        
+        .hero-ticket-wrapper-large .ticket-mini-header div:first-child {
+            font-size: 0.65rem;
+        }
+        
+        .hero-ticket-wrapper-large .ticket-mini-header div:last-child {
+            font-size: 0.6rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-ticket-wrapper-large {
+                width: 180px;
+            }
+            
+            .hero-ticket-wrapper-large .hero-cinema-ticket {
+                height: 240px;
+            }
+        }
+        
         /* Ticket design reused from home hero */
         .hero-ticket-wrapper {
             display: block;
