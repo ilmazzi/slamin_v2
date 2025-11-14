@@ -91,7 +91,8 @@
                     <div class="paper-sheet group">
                         
                         {{-- Author Avatar & Name --}}
-                        <a href="{{ route('poems.show', $poem->slug) }}" class="block">
+                        <div class="block cursor-pointer hover:opacity-90 transition-opacity" 
+                             onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $poem->id }} })">
                             <div class="paper-author-info">
                                 <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 80) }}" 
                                      alt="{{ $poem->user->name }}"
@@ -113,7 +114,7 @@
                             <div class="paper-readmore">
                                 {{ __('common.read_more') }} →
                             </div>
-                        </a>
+                        </div>
                         
                         {{-- Social Actions - Inside Paper --}}
                         <div class="paper-actions-integrated" @click.stop>
@@ -152,4 +153,7 @@
         </div>
     </div>
     @endif
+    
+    {{-- Poem Modal Component --}}
+    <livewire:poems.poem-modal />
 </div>
