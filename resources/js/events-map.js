@@ -130,8 +130,8 @@ function initMap() {
     console.log('Map element found:', mapElement);
     
     try {
-        // Initialize map centered on Italy
-        map = L.map('eventsMap').setView([41.9028, 12.4964], 6);
+        // Initialize map centered on Italy (zoom 5 for wider view)
+        map = L.map('eventsMap').setView([41.9028, 12.4964], 5);
         
         console.log('✅ Map object created successfully');
     
@@ -241,7 +241,7 @@ function addMarkerToMap(event, index, total) {
     const popupContent = createPopupContent(event);
     
     marker.bindPopup(popupContent, {
-        maxWidth: event.ticket_html ? 450 : 320,
+        maxWidth: event.ticket_html ? 350 : 320,
         className: 'custom-popup'
     });
     
@@ -406,7 +406,7 @@ function updateMapMarkers() {
     } else {
         console.warn('⚠️ No markers after update - map will be empty');
         // Reset to default view if no markers
-        map.setView([41.9028, 12.4964], 6);
+        map.setView([41.9028, 12.4964], 5);
     }
 }
 

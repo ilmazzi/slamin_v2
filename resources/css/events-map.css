@@ -3,6 +3,8 @@
 /* Map Popup Ticket Wrapper */
 .map-popup-ticket-wrapper {
     padding: 0.5rem;
+    transform: scale(0.75);
+    transform-origin: top center;
 }
 
 .map-popup-ticket-wrapper .cinema-ticket {
@@ -41,8 +43,8 @@
 .custom-popup .leaflet-popup-content {
     margin: 0;
     width: auto !important;
-    min-width: 320px;
-    max-width: 450px;
+    min-width: 300px;
+    max-width: 350px;
 }
 
 .custom-popup .leaflet-popup-tip-container {

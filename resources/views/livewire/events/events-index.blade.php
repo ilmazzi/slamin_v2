@@ -94,7 +94,7 @@
                 <!-- Map Container (always visible) -->
                 <div id="eventsMap" 
                      wire:ignore
-                     class="h-[500px] w-full bg-neutral-100 dark:bg-neutral-800">
+                     class="h-[650px] w-full bg-neutral-100 dark:bg-neutral-800">
                 </div>
                 
                 <!-- Hidden data container that updates with Livewire -->
