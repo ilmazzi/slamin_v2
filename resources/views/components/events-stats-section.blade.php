@@ -21,7 +21,7 @@
                  :style="`transform: translateY(${scrollY * 0.03}px)`">
                 
                 <div class="events-stat-content">
-                    <div class="events-stat-icon" style="background: linear-gradient(135deg, var(--tw-gradient-stops)); --tw-gradient-from: {{ str_replace('from-', '', $stat['gradient']) }}; --tw-gradient-to: {{ str_replace('to-', '', $stat['gradient']) }};">
+                    <div class="events-stat-icon bg-gradient-to-br {{ $stat['gradient'] }}">
                         @if($stat['icon'] === 'calendar')
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
