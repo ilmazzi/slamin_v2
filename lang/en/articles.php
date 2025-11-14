@@ -74,10 +74,14 @@ return [
         'sidebar_area' => 'Sidebar',
     ],
     'newspaper' => [
-        'title' => 'SLAMIN GAZETTE',
+        'title' => 'News from the Slam World',
+        'tagline' => 'The voice of performance poetry',
         'reporter' => 'Reporter',
         'views' => 'views',
+        'likes' => 'likes',
         'edit_article' => 'Edit Article',
+        'weather' => 'Sunny 72°F',
+        'location' => 'Rome, Italy',
     ],
     'category' => [
         'uncategorized' => 'Uncategorized',

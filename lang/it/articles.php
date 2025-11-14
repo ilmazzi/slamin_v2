@@ -74,10 +74,14 @@ return [
         'sidebar_area' => 'Sidebar',
     ],
     'newspaper' => [
-        'title' => 'SLAMIN GAZETTE',
+        'title' => 'Notizie dal mondo Slam',
+        'tagline' => 'La voce della poesia performativa',
         'reporter' => 'Reporter',
         'views' => 'visualizzazioni',
+        'likes' => 'mi piace',
         'edit_article' => 'Modifica Articolo',
+        'weather' => 'Soleggiato 22°C',
+        'location' => 'Roma, Italia',
     ],
     'category' => [
         'uncategorized' => 'Senza categoria',

@@ -74,10 +74,14 @@ return [
         'sidebar_area' => 'Barre Latérale',
     ],
     'newspaper' => [
-        'title' => 'SLAMIN GAZETTE',
+        'title' => 'Nouvelles du monde Slam',
+        'tagline' => 'La voix de la poésie performative',
         'reporter' => 'Reporter',
         'views' => 'vues',
+        'likes' => 'j\'aime',
         'edit_article' => 'Modifier l\'Article',
+        'weather' => 'Ensoleillé 22°C',
+        'location' => 'Rome, Italie',
     ],
     'category' => [
         'uncategorized' => 'Non catégorisé',

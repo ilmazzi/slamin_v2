@@ -1,17 +1,33 @@
 /* ========================================
    ARTICLE MODAL - Newspaper Style
+   Desktop: Opens like a book (two pages)
+   Mobile: Single newspaper page
    ======================================== */
 
 .article-newspaper-container {
-    position: relative;
-    max-width: 900px;
-    width: 90%;
-    height: 85vh;
-    max-height: 800px;
+    position: relative !important;
+    perspective: 2000px;
+    max-width: 1000px !important;
+    width: 90% !important;
+    height: 70vh !important;
+    max-height: 700px !important;
+    z-index: 50 !important;
 }
 
-.article-newspaper {
+.article-newspaper-opened {
+    position: relative;
     width: 100%;
+    height: 100%;
+    display: flex;
+    transform-style: preserve-3d;
+}
+
+/* ========================================
+   DESKTOP: Two Pages (Book Effect)
+   ======================================== */
+
+.article-page {
+    width: 50%;
     height: 100%;
     background: 
         /* Newspaper texture */
@@ -22,70 +38,248 @@
             #f5f5f5 100%
         );
     box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.4),
-        inset 0 0 0 1px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+        inset 0 0 0 2px rgba(0, 0, 0, 0.1),
+        inset 0 0 40px rgba(0, 0, 0, 0.05);
+    transform-style: preserve-3d;
+    transform-origin: center;
+    transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.6s ease;
     position: relative;
+    overflow: hidden;
 }
 
-/* Newspaper Header */
+.article-page-left {
+    border-radius: 12px 0 0 12px;
+    box-shadow: 
+        inset -4px 0 12px rgba(0, 0, 0, 0.2),
+        inset 0 0 40px rgba(0, 0, 0, 0.05),
+        -20px 0 40px rgba(0, 0, 0, 0.3);
+    transform-origin: right center;
+}
+
+.article-page-right {
+    border-radius: 0 12px 12px 0;
+    box-shadow: 
+        inset 4px 0 12px rgba(0, 0, 0, 0.2),
+        inset 0 0 40px rgba(0, 0, 0, 0.05),
+        20px 0 40px rgba(0, 0, 0, 0.3);
+    transform-origin: left center;
+}
+
+.article-page-open-left {
+    transform: perspective(1200px) rotateY(7deg);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.article-page-open-right {
+    transform: perspective(1200px) rotateY(-7deg);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.article-page-closed-left {
+    transform: perspective(1200px) rotateY(-110deg) !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.article-page-closed-right {
+    transform: perspective(1200px) rotateY(110deg) !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.article-page-content {
+    padding: 2rem;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Newspaper Spine (Desktop Only) */
+.article-newspaper-spine {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    transform: translateX(-50%);
+    background: linear-gradient(
+        180deg,
+        rgba(26, 26, 26, 0.8) 0%,
+        rgba(45, 45, 45, 0.9) 50%,
+        rgba(26, 26, 26, 0.8) 100%
+    );
+    box-shadow: 
+        inset 0 0 8px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+/* ========================================
+   Newspaper Header
+   ======================================== */
+
 .article-newspaper-header {
-    background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
+    background: #000;
     color: white;
-    padding: 1.5rem 2rem;
-    border-bottom: 4px double #666;
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid #333;
+    margin-bottom: 1.5rem;
 }
 
 .article-newspaper-masthead {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .article-newspaper-title {
     font-family: 'Times New Roman', serif;
-    font-size: 2.5rem;
+    font-size: 1.75rem;
     font-weight: 900;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin: 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
+    color: white;
+}
+
+.article-newspaper-date-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    color: #ccc;
+    margin-top: 0.25rem;
 }
 
 .article-newspaper-date {
-    font-family: 'Courier New', monospace;
-    font-size: 0.875rem;
-    color: #ccc;
     font-weight: 600;
 }
 
-.article-newspaper-divider {
-    height: 2px;
-    background: repeating-linear-gradient(
-        to right,
-        #666 0,
-        #666 10px,
-        transparent 10px,
-        transparent 20px
-    );
+.article-newspaper-price {
+    font-weight: 700;
+    color: white;
 }
 
-/* Article Content */
-.article-newspaper-content {
-    flex: 1;
-    padding: 2rem;
-    overflow-y: auto;
-    overflow-x: hidden;
+.article-newspaper-divider {
+    height: 1px;
+    background: #333;
+    margin: 0.5rem 0 0 0;
+}
+
+/* ========================================
+   Left Page Content (Desktop)
+   ======================================== */
+
+.article-left-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+}
+
+.article-author-info-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.article-author-avatar-left {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1a1a1a;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.article-author-name-left {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.article-author-role-left {
+    font-size: 0.875rem;
+    color: #666;
+    font-style: italic;
+    margin: 0;
+}
+
+.article-left-stats {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.article-left-stat {
+    text-align: center;
+}
+
+.article-left-stat .count {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+    line-height: 1;
+    font-family: 'Times New Roman', serif;
+}
+
+.article-left-stat .label {
+    font-size: 0.75rem;
+    color: #666;
+    margin: 0.25rem 0 0 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.article-featured-image-left {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.article-image-left {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.article-owner-actions-left {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+/* ========================================
+   Right Page Content
+   ======================================== */
+
+.article-title-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 3px double #333;
 }
 
 .article-header-section {
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
     border-bottom: 3px double #333;
+    display: none; /* Hide on desktop, show on mobile */
 }
 
 .article-category-badge {
@@ -102,7 +296,7 @@
 
 .article-main-title {
     font-family: 'Times New Roman', serif;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
     line-height: 1.2;
     color: #1a1a1a;
@@ -113,7 +307,7 @@
 
 .article-subtitle {
     font-family: 'Crimson Pro', serif;
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-style: italic;
     color: #555;
     line-height: 1.6;
@@ -177,7 +371,7 @@
 .article-image {
     width: 100%;
     height: auto;
-    max-height: 400px;
+    max-height: 350px;
     object-fit: cover;
     border: 2px solid #333;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -196,7 +390,7 @@
 /* Article Body */
 .article-body {
     font-family: 'Crimson Pro', serif;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.8;
     color: #2d2d2d;
     column-count: 2;
@@ -211,7 +405,7 @@
 }
 
 .article-body p:first-child::first-letter {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 700;
     float: left;
     line-height: 0.8;
@@ -290,50 +484,108 @@
 }
 
 /* Scrollbar */
-.article-newspaper-content::-webkit-scrollbar {
+.article-page-content::-webkit-scrollbar {
     width: 8px;
 }
 
-.article-newspaper-content::-webkit-scrollbar-track {
+.article-page-content::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05);
     border-radius: 4px;
 }
 
-.article-newspaper-content::-webkit-scrollbar-thumb {
+.article-page-content::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
 }
 
-.article-newspaper-content::-webkit-scrollbar-thumb:hover {
+.article-page-content::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.3);
 }
 
-/* Mobile Styles - Single Column Newspaper Page */
+/* ========================================
+   MOBILE: Single Newspaper Page
+   ======================================== */
+
 @media (max-width: 768px) {
     .article-newspaper-container {
         height: 95vh;
         max-height: none;
         width: 95%;
+        perspective: none;
     }
     
-    .article-newspaper {
+    .article-newspaper-opened {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .article-page {
+        width: 100%;
+        transform: none !important;
         border-radius: 0;
-        height: 100%;
+        height: auto;
     }
     
-    .article-newspaper-header {
-        padding: 1rem 1.5rem;
+    .article-page-left {
+        display: none; /* Hide left page on mobile */
     }
     
-    .article-newspaper-title {
-        font-size: 1.5rem;
+    .article-page-right {
+        border-radius: 0;
+        box-shadow: 
+            inset 0 0 40px rgba(0, 0, 0, 0.05),
+            0 8px 16px rgba(0, 0, 0, 0.25);
     }
     
-    .article-newspaper-date {
-        font-size: 0.75rem;
+    .article-newspaper-spine {
+        display: none; /* Hide spine on mobile */
     }
     
-    .article-newspaper-content {
+    .article-title-section {
+        display: none; /* Hide on mobile */
+    }
+    
+    .article-header-section {
+        display: block; /* Show on mobile */
+    }
+    
+    .article-newspaper-header-mobile {
+        background: #000;
+        color: white;
+        padding: 0.75rem 1rem;
+        border-bottom: 2px solid #333;
+        margin-bottom: 1.5rem;
+        display: none; /* Hide on desktop */
+    }
+    
+    @media (max-width: 768px) {
+        .article-newspaper-header {
+            display: none; /* Hide desktop header on mobile */
+        }
+        
+        .article-newspaper-header-mobile {
+            display: block; /* Show mobile header on mobile */
+        }
+        
+        .article-title-section {
+            display: none; /* Hide on mobile */
+        }
+        
+        .article-header-section {
+            display: block; /* Show on mobile */
+        }
+    }
+    
+    .article-newspaper-header-mobile .article-newspaper-title {
+        font-size: 1.25rem;
+        letter-spacing: 0.08em;
+    }
+    
+    .article-newspaper-header-mobile .article-newspaper-date-line {
+        font-size: 0.7rem;
+    }
+    
+    .article-page-content {
         padding: 1.5rem;
     }
     
@@ -373,4 +625,3 @@
         gap: 1rem;
     }
 }
-

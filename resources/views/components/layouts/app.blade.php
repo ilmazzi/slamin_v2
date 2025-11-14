@@ -50,10 +50,8 @@
         @vite(['resources/css/events-map.css', 'resources/css/events-index.css', 'resources/css/event-ticket.css'])
     @endif
     
-    {{-- Articles Page Assets --}}
-    @if(request()->routeIs('articles.index'))
-        @vite(['resources/css/article-modal.css'])
-    @endif
+    {{-- Article Modal Assets (needed on articles page and home page) --}}
+    @vite(['resources/css/article-modal.css'])
 
     {{ $head ?? '' }}
 </head>

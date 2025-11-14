@@ -1,7 +1,7 @@
 <div>
     @if($isOpen && $article)
     <!-- Modal Overlay -->
-    <div x-data="{ show: @entangle('isOpen') }"
+    <div x-data="{ show: @entangle('isOpen'), leftOpen: false, rightOpen: false }"
          x-show="show"
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0"
@@ -10,7 +10,8 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          class="fixed inset-0 z-50 overflow-hidden"
-         @keydown.escape.window="$wire.closeModal()">
+         @keydown.escape.window="$wire.closeModal()"
+         x-effect="if (show) { leftOpen = false; rightOpen = false; requestAnimationFrame(() => { leftOpen = true; rightOpen = true; }); } else { leftOpen = false; rightOpen = false; }">
         
         <!-- Dark Backdrop -->
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"
@@ -38,101 +39,173 @@
                     </svg>
                 </button>
                 
-                <!-- Newspaper Layout -->
-                <div class="article-newspaper">
+                <!-- Newspaper Opened (Desktop: Two Pages, Mobile: Single Page) -->
+                <div class="article-newspaper-opened">
                     
-                    <!-- Newspaper Header -->
-                    <div class="article-newspaper-header">
-                        <div class="article-newspaper-masthead">
-                            <h1 class="article-newspaper-title">{{ __('articles.newspaper.title') }}</h1>
-                            <div class="article-newspaper-date">{{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}</div>
-                        </div>
-                        <div class="article-newspaper-divider"></div>
-                    </div>
-                    
-                    <!-- Main Article Content -->
-                    <div class="article-newspaper-content">
-                        <!-- Article Header -->
-                        <div class="article-header-section">
-                            <div class="article-category-badge">
-                                {{ $article->category->name ?? __('articles.category.uncategorized') }}
-                            </div>
-                            <h2 class="article-main-title">{{ $article->title }}</h2>
-                            @if($article->excerpt)
-                            <p class="article-subtitle">{{ $article->excerpt }}</p>
-                            @endif
-                            <div class="article-byline">
-                                <div class="article-author-info">
-                                    <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($article->user, 48) }}" 
-                                         alt="{{ $article->user->name }}"
-                                         class="article-author-avatar">
-                                    <div>
-                                        <div class="article-author-name">{{ $article->user->name }}</div>
-                                        <div class="article-author-role">{{ __('articles.newspaper.reporter') }}</div>
+                    <!-- Left Page (Desktop Only) -->
+                    <div class="article-page article-page-left"
+                         x-bind:class="leftOpen ? 'article-page-open-left' : 'article-page-closed-left'">
+                        
+                        <div class="article-page-content">
+                            <!-- Newspaper Header -->
+                            <div class="article-newspaper-header">
+                                <div class="article-newspaper-masthead">
+                                    <h1 class="article-newspaper-title">{{ __('articles.newspaper.title') }}</h1>
+                                    <div class="article-newspaper-date-line">
+                                        <span class="article-newspaper-date">{{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}</span>
+                                        <span class="article-newspaper-price">€ 2,50</span>
                                     </div>
                                 </div>
-                                <div class="article-meta">
-                                    <span>{{ $article->created_at->diffForHumans() }}</span>
-                                    <span class="article-meta-divider">•</span>
-                                    <span>{{ $article->views_count ?? 0 }} {{ __('articles.newspaper.views') }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Featured Image -->
-                        @if($article->featured_image_url)
-                        <div class="article-featured-image">
-                            <img src="{{ $article->featured_image_url }}" 
-                                 alt="{{ $article->title }}"
-                                 class="article-image">
-                            @if($article->excerpt)
-                            <div class="article-image-caption">{{ $article->excerpt }}</div>
-                            @endif
-                        </div>
-                        @endif
-                        
-                        <!-- Article Body -->
-                        <div class="article-body">
-                            {!! $article->content !!}
-                        </div>
-                        
-                        <!-- Article Footer -->
-                        <div class="article-footer">
-                            <div class="article-social-actions">
-                                <x-like-button 
-                                    :itemId="$article->id"
-                                    itemType="article"
-                                    :isLiked="$article->is_liked ?? false"
-                                    :likesCount="$article->likes_count ?? 0"
-                                    size="md" />
-                                
-                                <x-comment-button 
-                                    :itemId="$article->id"
-                                    itemType="article"
-                                    :commentsCount="$article->comments_count ?? 0"
-                                    size="md" />
-                                
-                                <x-share-button 
-                                    :itemId="$article->id"
-                                    itemType="article"
-                                    size="md" />
+                                <div class="article-newspaper-divider"></div>
                             </div>
                             
-                            @auth
-                                @if(auth()->id() === $article->user_id)
-                                    <div class="article-owner-actions">
-                                        <a href="{{ route('articles.edit', $article->id) }}" class="article-owner-action">
-                                            <svg class="article-owner-action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 2.5l3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                            </svg>
-                                            <span>{{ __('articles.newspaper.edit_article') }}</span>
-                                        </a>
+                            <!-- Author Info -->
+                            <div class="article-left-meta">
+                                <div class="article-author-info-left">
+                                    <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($article->user, 80) }}" 
+                                         alt="{{ $article->user->name }}"
+                                         class="article-author-avatar-left">
+                                    <div>
+                                        <div class="article-author-name-left">{{ $article->user->name }}</div>
+                                        <div class="article-author-role-left">{{ __('articles.newspaper.reporter') }}</div>
                                     </div>
+                                </div>
+                                
+                                <div class="article-left-stats">
+                                    <div class="article-left-stat">
+                                        <p class="count">{{ $article->views_count ?? 0 }}</p>
+                                        <p class="label">{{ __('articles.newspaper.views') }}</p>
+                                    </div>
+                                    <div class="article-left-stat">
+                                        <p class="count">{{ $article->likes_count ?? 0 }}</p>
+                                        <p class="label">{{ __('articles.newspaper.likes') }}</p>
+                                    </div>
+                                </div>
+                                
+                                @if($article->featured_image_url)
+                                <div class="article-featured-image-left">
+                                    <img src="{{ $article->featured_image_url }}" 
+                                         alt="{{ $article->title }}"
+                                         class="article-image-left">
+                                </div>
                                 @endif
-                            @endauth
+                                
+                                @auth
+                                    @if(auth()->id() === $article->user_id)
+                                        <div class="article-owner-actions-left">
+                                            <a href="{{ route('articles.edit', $article->id) }}" class="article-owner-action">
+                                                <svg class="article-owner-action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 2.5l3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                                </svg>
+                                                <span>{{ __('articles.newspaper.edit_article') }}</span>
+                                            </a>
+                                        </div>
+                                    @endif
+                                @endauth
+                            </div>
                         </div>
                     </div>
+                    
+                    <!-- Right Page -->
+                    <div class="article-page article-page-right"
+                         x-bind:class="rightOpen ? 'article-page-open-right' : 'article-page-closed-right'">
+                        
+                        <div class="article-page-content">
+                            <!-- Article Title (Desktop - Right Page) -->
+                            <div class="article-title-section">
+                                <div class="article-category-badge">
+                                    {{ $article->category->name ?? __('articles.category.uncategorized') }}
+                                </div>
+                                <h2 class="article-main-title">{{ $article->title }}</h2>
+                                @if($article->excerpt)
+                                <p class="article-subtitle">{{ $article->excerpt }}</p>
+                                @endif
+                            </div>
+                            
+                            <!-- Article Header (Mobile) -->
+                            <div class="article-header-section">
+                                <!-- Newspaper Header (Mobile Only) -->
+                                <div class="article-newspaper-header-mobile">
+                                    <div class="article-newspaper-masthead">
+                                        <h1 class="article-newspaper-title">{{ __('articles.newspaper.title') }}</h1>
+                                        <div class="article-newspaper-date-line">
+                                            <span class="article-newspaper-date">{{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}</span>
+                                            <span class="article-newspaper-price">€ 2,50</span>
+                                        </div>
+                                    </div>
+                                    <div class="article-newspaper-divider"></div>
+                                </div>
+                                
+                                <div class="article-category-badge">
+                                    {{ $article->category->name ?? __('articles.category.uncategorized') }}
+                                </div>
+                                <h2 class="article-main-title">{{ $article->title }}</h2>
+                                @if($article->excerpt)
+                                <p class="article-subtitle">{{ $article->excerpt }}</p>
+                                @endif
+                                <div class="article-byline">
+                                    <div class="article-author-info">
+                                        <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($article->user, 48) }}" 
+                                             alt="{{ $article->user->name }}"
+                                             class="article-author-avatar">
+                                        <div>
+                                            <div class="article-author-name">{{ $article->user->name }}</div>
+                                            <div class="article-author-role">{{ __('articles.newspaper.reporter') }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="article-meta">
+                                        <span>{{ $article->created_at->diffForHumans() }}</span>
+                                        <span class="article-meta-divider">•</span>
+                                        <span>{{ $article->views_count ?? 0 }} {{ __('articles.newspaper.views') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Featured Image -->
+                            @if($article->featured_image_url)
+                            <div class="article-featured-image">
+                                <img src="{{ $article->featured_image_url }}" 
+                                     alt="{{ $article->title }}"
+                                     class="article-image">
+                                @if($article->excerpt)
+                                <div class="article-image-caption">{{ $article->excerpt }}</div>
+                                @endif
+                            </div>
+                            @endif
+                            
+                            <!-- Article Body -->
+                            <div class="article-body">
+                                {!! $article->content !!}
+                            </div>
+                            
+                            <!-- Article Footer -->
+                            <div class="article-footer">
+                                <div class="article-social-actions">
+                                    <x-like-button 
+                                        :itemId="$article->id"
+                                        itemType="article"
+                                        :isLiked="$article->is_liked ?? false"
+                                        :likesCount="$article->likes_count ?? 0"
+                                        size="md" />
+                                    
+                                    <x-comment-button 
+                                        :itemId="$article->id"
+                                        itemType="article"
+                                        :commentsCount="$article->comments_count ?? 0"
+                                        size="md" />
+                                    
+                                    <x-share-button 
+                                        :itemId="$article->id"
+                                        itemType="article"
+                                        size="md" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Newspaper Spine (Desktop Only) -->
+                    <div class="article-newspaper-spine"></div>
                 </div>
             </div>
         </div>

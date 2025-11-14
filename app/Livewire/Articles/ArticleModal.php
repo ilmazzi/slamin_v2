@@ -31,8 +31,8 @@ class ArticleModal extends Component
                 $this->article->is_liked = false;
             }
             
-            // Increment view count
-            $this->article->increment('views_count');
+            // Increment view count using the trait method
+            $this->article->incrementViewIfNotOwner(auth()->user());
             $this->isOpen = true;
         }
     }
