@@ -271,7 +271,7 @@
                             <div class="text-amber-600 dark:text-amber-400 text-xs font-black tracking-[0.3em] mb-6 uppercase">Posizioni ({{ count($event->gig_positions) }})</div>
                             <div class="space-y-6">
                                 @foreach($event->gig_positions as $position)
-                                    <div class="border-l-4 border-accent-500/30 hover:border-accent-500 pl-6 transition-colors">
+                                    <div class="border-l-4 border-amber-500/30 hover:border-amber-500 pl-6 transition-colors">
                                         <div class="text-neutral-900 dark:text-white text-2xl font-black mb-2">{{ ucfirst($position['type'] ?? 'Posizione') }}</div>
                                         <div class="text-neutral-600 dark:text-neutral-400 font-bold mb-3">Quantità: {{ $position['quantity'] ?? 1 }}</div>
                                         <div class="space-y-2 text-neutral-700 dark:text-neutral-300">
@@ -401,7 +401,7 @@
                     @endif
 
                     {{-- Location --}}
-                    <div class="border-l-4 border-primary-500 pl-4">
+                    <div class="border-l-4 border-red-500 pl-4">
                         <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-3 uppercase">{{ $event->is_online ? 'Online' : 'Luogo' }}</div>
                         @if($event->is_online)
                             <a href="{{ $event->online_url }}" target="_blank" class="text-amber-600 dark:text-amber-400 font-bold hover:underline break-all">
