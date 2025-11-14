@@ -217,26 +217,29 @@
             </p>
         </div>
         
-        {{-- Elegant Asymmetric Layout --}}
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
-            @php
-                $firstEvent = $upcomingEvents->first();
-                $remainingEvents = $upcomingEvents->skip(1)->take(9);
-            @endphp
-            
-            {{-- Large Featured Card (Left) --}}
-            @if($firstEvent)
-            <div class="lg:col-span-4">
-                @include('livewire.events.partials.event-card', ['event' => $firstEvent, 'index' => 0, 'isLarge' => true])
-            </div>
-            @endif
-            
-            {{-- Smaller Cards Grid (Right) - More compact --}}
-            <div class="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-3">
-                @foreach($remainingEvents as $index => $event)
-                    @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index + 1, 'isLarge' => false])
-                @endforeach
-            </div>
+        {{-- Asymmetric Bento Style Layout --}}
+        @php
+            $sizes = [
+                'xl' => 'col-span-2 row-span-2 min-h-[500px]',
+                'lg' => 'col-span-2 row-span-1 min-h-[280px]',
+                'md' => 'col-span-1 row-span-2 min-h-[450px]',
+                'sm' => 'col-span-1 row-span-1 min-h-[280px]',
+            ];
+            $pattern = ['xl', 'sm', 'sm', 'lg', 'md', 'sm', 'sm', 'lg'];
+        @endphp
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-auto">
+            @foreach($upcomingEvents->take(10) as $index => $event)
+                @php
+                    $sizeKey = $pattern[$index % count($pattern)];
+                    $sizeClass = $sizes[$sizeKey];
+                    $isLarge = in_array($sizeKey, ['xl', 'lg', 'md']);
+                @endphp
+                
+                <div class="{{ $sizeClass }}">
+                    @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index, 'isLarge' => $isLarge])
+                </div>
+            @endforeach
         </div>
     </div>
     @endif
@@ -254,26 +257,29 @@
                 </p>
             </div>
             
-            {{-- Elegant Asymmetric Layout --}}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
-                @php
-                    $firstPersonalizedEvent = $personalizedEvents->first();
-                    $remainingPersonalizedEvents = $personalizedEvents->skip(1)->take(9);
-                @endphp
-                
-                {{-- Large Featured Card (Left) --}}
-                @if($firstPersonalizedEvent)
-                <div class="lg:col-span-4">
-                    @include('livewire.events.partials.event-card', ['event' => $firstPersonalizedEvent, 'index' => 0, 'isLarge' => true])
-                </div>
-                @endif
-                
-                {{-- Smaller Cards Grid (Right) - More compact --}}
-                <div class="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-3">
-                    @foreach($remainingPersonalizedEvents as $index => $event)
-                        @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index + 1, 'isLarge' => false])
-                    @endforeach
-                </div>
+            {{-- Asymmetric Bento Style Layout --}}
+            @php
+                $sizes = [
+                    'xl' => 'col-span-2 row-span-2 min-h-[500px]',
+                    'lg' => 'col-span-2 row-span-1 min-h-[280px]',
+                    'md' => 'col-span-1 row-span-2 min-h-[450px]',
+                    'sm' => 'col-span-1 row-span-1 min-h-[280px]',
+                ];
+                $pattern = ['xl', 'sm', 'sm', 'lg', 'md', 'sm', 'sm', 'lg'];
+            @endphp
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-auto">
+                @foreach($personalizedEvents->take(10) as $index => $event)
+                    @php
+                        $sizeKey = $pattern[$index % count($pattern)];
+                        $sizeClass = $sizes[$sizeKey];
+                        $isLarge = in_array($sizeKey, ['xl', 'lg', 'md']);
+                    @endphp
+                    
+                    <div class="{{ $sizeClass }}">
+                        @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index, 'isLarge' => $isLarge])
+                    </div>
+                @endforeach
             </div>
         </div>
         @endif

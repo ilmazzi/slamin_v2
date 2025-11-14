@@ -26,7 +26,7 @@
     x-transition:enter="transition ease-out duration-800"
     x-transition:enter-start="opacity-0 scale-90 {{ $isLarge ? 'rotate-2' : '-rotate-1' }}"
     x-transition:enter-end="opacity-100 scale-100 rotate-0"
-    class="group relative overflow-hidden rounded-2xl cursor-pointer transition-all duration-300 {{ $isLarge ? 'min-h-[480px]' : 'min-h-[240px]' }}"
+    class="group relative overflow-hidden rounded-2xl cursor-pointer transition-all duration-300 h-full w-full"
     :class="isHovered ? 'z-20 shadow-2xl' : 'z-10 shadow-lg'"
     :style="`transform: ${isHovered ? `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)` : 'none'}`">
     
