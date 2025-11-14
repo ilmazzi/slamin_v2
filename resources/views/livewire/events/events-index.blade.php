@@ -218,7 +218,7 @@
         </div>
         
         {{-- Elegant Asymmetric Layout --}}
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
             @php
                 $firstEvent = $upcomingEvents->first();
                 $remainingEvents = $upcomingEvents->skip(1)->take(9);
@@ -226,13 +226,13 @@
             
             {{-- Large Featured Card (Left) --}}
             @if($firstEvent)
-            <div class="lg:col-span-5">
+            <div class="lg:col-span-4">
                 @include('livewire.events.partials.event-card', ['event' => $firstEvent, 'index' => 0, 'isLarge' => true])
             </div>
             @endif
             
-            {{-- Smaller Cards Grid (Right) --}}
-            <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {{-- Smaller Cards Grid (Right) - More compact --}}
+            <div class="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-3">
                 @foreach($remainingEvents as $index => $event)
                     @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index + 1, 'isLarge' => false])
                 @endforeach
@@ -255,7 +255,7 @@
             </div>
             
             {{-- Elegant Asymmetric Layout --}}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
                 @php
                     $firstPersonalizedEvent = $personalizedEvents->first();
                     $remainingPersonalizedEvents = $personalizedEvents->skip(1)->take(9);
@@ -263,13 +263,13 @@
                 
                 {{-- Large Featured Card (Left) --}}
                 @if($firstPersonalizedEvent)
-                <div class="lg:col-span-5">
+                <div class="lg:col-span-4">
                     @include('livewire.events.partials.event-card', ['event' => $firstPersonalizedEvent, 'index' => 0, 'isLarge' => true])
                 </div>
                 @endif
                 
-                {{-- Smaller Cards Grid (Right) --}}
-                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {{-- Smaller Cards Grid (Right) - More compact --}}
+                <div class="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-3">
                     @foreach($remainingPersonalizedEvents as $index => $event)
                         @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index + 1, 'isLarge' => false])
                     @endforeach
