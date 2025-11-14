@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/30 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 overflow-hidden">
     
     {{-- HERO con Ticket + Titolo (come poesie e articoli) --}}
-    <section class="relative py-12 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
+    <div class="relative py-12 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
                 
@@ -71,10 +71,10 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
     
     {{-- Filtri e Ricerca --}}
-    <section class="relative py-8 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-900/95">
+    <div class="relative py-8 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-900/95">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div id="events-search-panel" class="relative">
                 <div class="events-search-card">
@@ -617,7 +617,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- Dynamic Bento Box Layout -->
     <div class="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16"
