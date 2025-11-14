@@ -241,12 +241,39 @@ function addMarkerToMap(event, index, total) {
     const popupContent = createPopupContent(event);
     
     marker.bindPopup(popupContent, {
-        maxWidth: event.ticket_html ? 250 : 320,
-        minWidth: event.ticket_html ? 200 : 0,
+        maxWidth: event.ticket_html ? 220 : 320,
+        minWidth: 0,
         className: 'custom-popup',
         autoPan: true,
         autoPanPadding: [50, 50]
     });
+    
+    // Force popup to resize after opening
+    if (event.ticket_html) {
+        marker.on('popupopen', function() {
+            setTimeout(() => {
+                const popup = marker.getPopup();
+                if (popup) {
+                    const content = popup.getContent();
+                    const wrapper = popup.getElement();
+                    if (wrapper) {
+                        const contentWrapper = wrapper.querySelector('.leaflet-popup-content-wrapper');
+                        const contentDiv = wrapper.querySelector('.leaflet-popup-content');
+                        if (contentWrapper && contentDiv) {
+                            // Get actual scaled dimensions
+                            const scaledWidth = contentDiv.scrollWidth;
+                            const scaledHeight = contentDiv.scrollHeight;
+                            contentWrapper.style.width = scaledWidth + 'px';
+                            contentWrapper.style.height = scaledHeight + 'px';
+                            contentDiv.style.width = scaledWidth + 'px';
+                            contentDiv.style.height = scaledHeight + 'px';
+                            popup.update();
+                        }
+                    }
+                }
+            }, 10);
+        });
+    }
     
     markers.push(marker);
 }
