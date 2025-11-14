@@ -76,12 +76,12 @@
     <div class="mb-16 mt-12">
         <div class="max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-3xl font-bold bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                <h2 class="text-3xl font-bold text-red-700 dark:text-red-400" style="font-family: 'Crimson Pro', serif;">
                     {{ __('events.events_map') }}
                 </h2>
                 <button 
                     @click="$refs.map.scrollIntoView({ behavior: 'smooth' })"
-                    class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full text-sm font-semibold transition-all hover:scale-105">
+                    class="px-4 py-2 bg-red-700 hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-700 text-white rounded-full text-sm font-semibold transition-all hover:scale-105 shadow-lg shadow-red-700/20">
                     <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
