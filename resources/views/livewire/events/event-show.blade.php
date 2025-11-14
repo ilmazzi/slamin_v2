@@ -21,7 +21,7 @@
     @endif
 
     {{-- HERO CON TICKET ORIZZONTALE --}}
-    <div class="relative py-20 md:py-32 overflow-hidden bg-neutral-900 dark:bg-black -mt-16">
+    <div class="relative py-8 md:py-20 lg:py-32 overflow-hidden bg-neutral-900 dark:bg-black -mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- Large Horizontal Ticket --}}
@@ -498,7 +498,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem 0;
+            padding: 1rem 0;
         }
         
         .event-show-ticket {
@@ -514,13 +514,20 @@
         
         .event-ticket-perforation-top,
         .event-ticket-perforation-bottom {
-            height: 20px;
+            height: 12px;
             background: linear-gradient(90deg, 
                 transparent 0%,
                 rgba(139, 115, 85, 0.1) 50%,
                 transparent 100%
             );
             position: relative;
+        }
+        
+        @media (min-width: 768px) {
+            .event-ticket-perforation-top,
+            .event-ticket-perforation-bottom {
+                height: 20px;
+            }
         }
         
         .event-ticket-perforation-top::before,
@@ -539,64 +546,122 @@
         
         .event-ticket-content-horizontal {
             display: flex;
+            flex-direction: column;
             gap: 0;
-            min-height: 300px;
+            min-height: auto;
+        }
+        
+        @media (min-width: 768px) {
+            .event-ticket-content-horizontal {
+                flex-direction: row;
+                min-height: 300px;
+            }
         }
         
         .event-ticket-image-horizontal {
-            width: 40%;
-            min-width: 300px;
+            width: 100%;
+            height: 200px;
             flex-shrink: 0;
-            border-right: 2px dashed rgba(139, 115, 85, 0.3);
+            border-right: none;
+            border-bottom: 2px dashed rgba(139, 115, 85, 0.3);
             overflow: hidden;
+        }
+        
+        @media (min-width: 768px) {
+            .event-ticket-image-horizontal {
+                width: 40%;
+                min-width: 300px;
+                height: auto;
+                border-right: 2px dashed rgba(139, 115, 85, 0.3);
+                border-bottom: none;
+            }
         }
         
         .event-ticket-info-horizontal {
             flex: 1;
-            padding: 2rem;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+        
+        @media (min-width: 768px) {
+            .event-ticket-info-horizontal {
+                padding: 2rem;
+            }
         }
         
         .event-ticket-header-horizontal {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 1rem;
+            padding-bottom: 0.75rem;
             border-bottom: 2px dashed rgba(139, 115, 85, 0.3);
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        @media (min-width: 768px) {
+            .event-ticket-header-horizontal {
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
+            }
         }
         
         .event-ticket-category {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: 900;
             letter-spacing: 0.1em;
             color: #b91c1c;
             text-transform: uppercase;
         }
         
+        @media (min-width: 768px) {
+            .event-ticket-category {
+                font-size: 0.75rem;
+            }
+        }
+        
         .event-ticket-serial {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 700;
             color: #8b7355;
             font-family: 'Courier New', monospace;
         }
         
+        @media (min-width: 768px) {
+            .event-ticket-serial {
+                font-size: 0.65rem;
+            }
+        }
+        
         .event-ticket-title-horizontal {
             font-family: 'Crimson Pro', serif;
-            font-size: 2rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: #1a1a1a;
             line-height: 1.3;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .event-ticket-title-horizontal {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
         }
         
         .event-ticket-info-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .event-ticket-info-grid {
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
         }
         
         .event-ticket-info-item {
@@ -604,7 +669,7 @@
         }
         
         .event-ticket-info-label {
-            font-size: 0.625rem;
+            font-size: 0.6rem;
             font-weight: 700;
             color: #8b7355;
             text-transform: uppercase;
@@ -612,11 +677,23 @@
             margin-bottom: 0.25rem;
         }
         
+        @media (min-width: 768px) {
+            .event-ticket-info-label {
+                font-size: 0.625rem;
+            }
+        }
+        
         .event-ticket-info-value {
-            font-size: 1rem;
+            font-size: 0.875rem;
             font-weight: 600;
             color: #2d2d2d;
             font-family: 'Crimson Pro', serif;
+        }
+        
+        @media (min-width: 768px) {
+            .event-ticket-info-value {
+                font-size: 1rem;
+            }
         }
         
         .event-ticket-barcode-horizontal {
@@ -624,24 +701,43 @@
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
-            padding-top: 1rem;
+            padding-top: 0.75rem;
             border-top: 1px dashed rgba(139, 115, 85, 0.25);
+        }
+        
+        @media (min-width: 768px) {
+            .event-ticket-barcode-horizontal {
+                padding-top: 1rem;
+            }
         }
         
         .event-barcode-lines {
             display: flex;
             align-items: flex-end;
             gap: 1px;
-            height: 50px;
-            padding: 0 1rem;
+            height: 40px;
+            padding: 0 0.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .event-barcode-lines {
+                height: 50px;
+                padding: 0 1rem;
+            }
         }
         
         .event-barcode-number {
-            font-size: 0.625rem;
+            font-size: 0.6rem;
             font-weight: 600;
             color: #666;
             font-family: 'Courier New', monospace;
             letter-spacing: 0.1em;
+        }
+        
+        @media (min-width: 768px) {
+            .event-barcode-number {
+                font-size: 0.625rem;
+            }
         }
         
         @keyframes blob {
