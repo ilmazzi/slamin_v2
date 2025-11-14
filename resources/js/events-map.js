@@ -241,7 +241,7 @@ function addMarkerToMap(event, index, total) {
     const popupContent = createPopupContent(event);
     
     marker.bindPopup(popupContent, {
-        maxWidth: 320,
+        maxWidth: event.ticket_html ? 450 : 320,
         className: 'custom-popup'
     });
     

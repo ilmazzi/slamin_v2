@@ -40,7 +40,9 @@
 
 .custom-popup .leaflet-popup-content {
     margin: 0;
-    width: 320px !important;
+    width: auto !important;
+    min-width: 320px;
+    max-width: 450px;
 }
 
 .custom-popup .leaflet-popup-tip-container {
