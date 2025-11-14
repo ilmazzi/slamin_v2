@@ -1,7 +1,7 @@
 @props(['search', 'cities', 'city', 'type', 'freeOnly'])
 
 <div class="events-search-section" x-data="{ showFilters: false }">
-    <div class="max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8 ">
         <!-- Elegant Search Bar -->
         <div class="events-search-container">
             <div class="relative group">

@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/30 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 overflow-hidden">
+<div class="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-amber-50/20 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 overflow-hidden">
     {{-- HERO con Ticket + Titolo (come poesie e articoli) --}}
     <div class="relative py-12 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -212,14 +212,14 @@
          @mousemove.window="mouseX = $event.clientX; mouseY = $event.clientY">
         
         <!-- Animated Floating Orbs Background -->
-        <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-40">
-            <div class="absolute w-[600px] h-[600px] rounded-full blur-3xl bg-gradient-to-br from-primary-300/40 to-accent-300/40"
+        <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-30">
+            <div class="absolute w-[600px] h-[600px] rounded-full blur-3xl bg-gradient-to-br from-red-300/30 to-amber-300/30"
                  :style="`transform: translate(${mouseX * 0.02}px, ${scrollY * 0.2 + mouseY * 0.02}px)`"
                  style="top: 10%; left: 10%;"></div>
-            <div class="absolute w-[500px] h-[500px] rounded-full blur-3xl bg-gradient-to-br from-accent-300/40 to-primary-400/40 animate-pulse"
+            <div class="absolute w-[500px] h-[500px] rounded-full blur-3xl bg-gradient-to-br from-amber-300/30 to-red-400/30 animate-pulse"
                  :style="`transform: translate(-${mouseX * 0.03}px, ${scrollY * 0.3 - mouseY * 0.02}px)`"
                  style="top: 50%; right: 10%; animation-delay: 1s;"></div>
-            <div class="absolute w-[400px] h-[400px] rounded-full blur-3xl bg-gradient-to-br from-primary-400/40 to-accent-500/40 animate-pulse"
+            <div class="absolute w-[400px] h-[400px] rounded-full blur-3xl bg-gradient-to-br from-red-400/30 to-amber-500/30 animate-pulse"
                  :style="`transform: translate(${mouseX * 0.025}px, ${scrollY * 0.15 + mouseY * 0.015}px)`"
                  style="bottom: 20%; left: 40%; animation-delay: 2s;"></div>
         </div>
@@ -281,7 +281,7 @@
                                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                                  alt="{{ $event->title }}">
                             @else
-                            <div class="w-full h-full bg-gradient-to-br from-primary-400 via-primary-500 to-accent-600"></div>
+                            <div class="w-full h-full bg-gradient-to-br from-red-600 via-red-700 to-amber-700"></div>
                             @endif
                             
                             <!-- Gradient Overlay -->
@@ -291,8 +291,8 @@
                         <!-- Sparkle Effect on Hover -->
                         <div class="absolute inset-0 overflow-hidden pointer-events-none">
                             <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
-                            <div class="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-primary-300 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style="animation-delay: 0.1s"></div>
-                            <div class="absolute bottom-1/3 left-1/3 w-2 h-2 bg-accent-300 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style="animation-delay: 0.2s"></div>
+                            <div class="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-red-300 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style="animation-delay: 0.1s"></div>
+                            <div class="absolute bottom-1/3 left-1/3 w-2 h-2 bg-amber-300 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style="animation-delay: 0.2s"></div>
                             <div class="absolute top-1/2 right-1/4 w-1 h-1 bg-white rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping" style="animation-delay: 0.15s"></div>
                         </div>
                         
@@ -307,7 +307,7 @@
                         <div class="relative h-full flex flex-col justify-end p-6 {{ $isLarge ? 'p-8' : 'p-6' }}">
                             <!-- Date Badge -->
                             <div class="mb-3">
-                                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-500/90 backdrop-blur-sm rounded-full">
+                                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-700/90 backdrop-blur-sm rounded-full">
                                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
@@ -318,7 +318,7 @@
                             </div>
                             
                             <!-- Title -->
-                            <h3 class="text-white font-bold mb-2 {{ $isLarge ? 'text-3xl' : 'text-xl' }} line-clamp-2 group-hover:text-primary-300 transition-colors">
+                            <h3 class="text-white font-bold mb-2 {{ $isLarge ? 'text-3xl' : 'text-xl' }} line-clamp-2 group-hover:text-red-300 transition-colors">
                                 {{ $event->title }}
                             </h3>
                             
@@ -359,7 +359,7 @@
                             <!-- Hover Reveal: View Button -->
                             <div class="mt-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                                 <a href="{{ route('events.show', $event) }}" 
-                                   class="inline-flex items-center gap-2 px-4 py-2 bg-white text-primary-600 rounded-full font-semibold hover:bg-primary-50 transition-colors text-sm">
+                                   class="inline-flex items-center gap-2 px-4 py-2 bg-white text-red-700 rounded-full font-semibold hover:bg-red-50 transition-colors text-sm">
                                     {{ __('events.view_details') }}
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -369,7 +369,7 @@
                         </div>
                         
                         <!-- Animated Border on Hover -->
-                        <div class="absolute inset-0 border-4 border-primary-400 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300 pointer-events-none"></div>
+                        <div class="absolute inset-0 border-4 border-red-400/60 opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-300 pointer-events-none"></div>
                         
                         <!-- Shine Effect on Hover -->
                         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none overflow-hidden">
@@ -377,7 +377,7 @@
                         </div>
                         
                         <!-- Glow Effect Under Card -->
-                        <div class="absolute -inset-4 bg-gradient-to-r from-primary-500/0 via-primary-500/20 to-accent-500/0 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
+                        <div class="absolute -inset-4 bg-gradient-to-r from-red-600/0 via-red-600/20 to-amber-600/0 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
                         
                         <!-- Click Overlay -->
                         <a href="{{ route('events.show', $event) }}" class="absolute inset-0 z-5"></a>
@@ -404,7 +404,7 @@
                 </p>
                 <button 
                     wire:click="resetFilters"
-                    class="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-full font-semibold hover:bg-primary-700 transition-all hover:scale-105">
+                    class="inline-flex items-center px-6 py-3 bg-red-700 text-white rounded-full font-semibold hover:bg-red-800 transition-all hover:scale-105">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                     </svg>
@@ -418,7 +418,7 @@
     <div wire:loading wire:target="search,city,type,freeOnly,quickFilter,applyQuickFilter,resetFilters" 
          class="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center">
         <div class="bg-white dark:bg-neutral-800 rounded-xl p-6 shadow-2xl">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700 mx-auto"></div>
             <p class="mt-4 text-neutral-900 dark:text-white font-medium">{{ __('events.loading') }}...</p>
         </div>
     </div>
