@@ -208,7 +208,7 @@
     {{-- Upcoming Events Section --}}
     @if($upcomingEvents->count() > 0)
     <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="mb-8">
+        <div class="mb-10">
             <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
                 {{ __('events.upcoming_events') }}
             </h2>
@@ -217,10 +217,26 @@
             </p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-            @foreach($upcomingEvents as $index => $event)
-                @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index, 'isLarge' => false])
-            @endforeach
+        {{-- Elegant Asymmetric Layout --}}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            @php
+                $firstEvent = $upcomingEvents->first();
+                $remainingEvents = $upcomingEvents->skip(1)->take(9);
+            @endphp
+            
+            {{-- Large Featured Card (Left) --}}
+            @if($firstEvent)
+            <div class="lg:col-span-5">
+                @include('livewire.events.partials.event-card', ['event' => $firstEvent, 'index' => 0, 'isLarge' => true])
+            </div>
+            @endif
+            
+            {{-- Smaller Cards Grid (Right) --}}
+            <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                @foreach($remainingEvents as $index => $event)
+                    @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index + 1, 'isLarge' => false])
+                @endforeach
+            </div>
         </div>
     </div>
     @endif
@@ -229,7 +245,7 @@
     @auth
         @if($personalizedEvents->count() > 0)
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-amber-200/40 dark:border-amber-800/30">
-            <div class="mb-8">
+            <div class="mb-10">
                 <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
                     {{ __('events.personalized_events') }}
                 </h2>
@@ -238,10 +254,26 @@
                 </p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-                @foreach($personalizedEvents as $index => $event)
-                    @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index, 'isLarge' => false])
-                @endforeach
+            {{-- Elegant Asymmetric Layout --}}
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                @php
+                    $firstPersonalizedEvent = $personalizedEvents->first();
+                    $remainingPersonalizedEvents = $personalizedEvents->skip(1)->take(9);
+                @endphp
+                
+                {{-- Large Featured Card (Left) --}}
+                @if($firstPersonalizedEvent)
+                <div class="lg:col-span-5">
+                    @include('livewire.events.partials.event-card', ['event' => $firstPersonalizedEvent, 'index' => 0, 'isLarge' => true])
+                </div>
+                @endif
+                
+                {{-- Smaller Cards Grid (Right) --}}
+                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    @foreach($remainingPersonalizedEvents as $index => $event)
+                        @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index + 1, 'isLarge' => false])
+                    @endforeach
+                </div>
             </div>
         </div>
         @endif
