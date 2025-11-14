@@ -286,7 +286,7 @@
     @endauth
 
     <!-- Dynamic Bento Box Layout -->
-    <div class="relative max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-16"
+    <div class="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 pb-16"
          x-data="{ scrollY: 0, mouseX: 0, mouseY: 0 }"
          @scroll.window="scrollY = window.scrollY"
          @mousemove.window="mouseX = $event.clientX; mouseY = $event.clientY">
