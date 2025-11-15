@@ -11,7 +11,9 @@ export default defineConfig({
                 'resources/css/events-map.css',
                 'resources/css/events-index.css',
                 'resources/css/event-ticket.css',
+                'resources/css/event-show.css',
                 'resources/js/events-map.js',
+                'resources/js/event-show.js',
                 'resources/css/article-modal.css'
             ],
             refresh: true,

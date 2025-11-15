@@ -50,6 +50,12 @@
         @vite(['resources/css/events-map.css', 'resources/css/events-index.css', 'resources/css/event-ticket.css'])
     @endif
     
+    {{-- Event Show Page Assets --}}
+    @if(request()->routeIs('events.show'))
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        @vite(['resources/css/event-show.css'])
+    @endif
+    
     {{-- Article Modal Assets (needed on articles page and home page) --}}
     @vite(['resources/css/article-modal.css'])
 
@@ -372,6 +378,12 @@
     @if(request()->routeIs('events.index'))
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         @vite(['resources/js/events-map.js'])
+    @endif
+    
+    {{-- Event Show Page Scripts --}}
+    @if(request()->routeIs('events.show'))
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        @vite(['resources/js/event-show.js'])
     @endif
 
     <!-- Userback Widget -->
