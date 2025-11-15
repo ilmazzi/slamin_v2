@@ -18,23 +18,24 @@
     <!-- Dark Mode Script - MUST run before page renders -->
     <script>
         // Initialize theme IMMEDIATELY (before page renders)
-        // FORCE light mode, ignore system preference completely
+        // Preserve dark mode preference from localStorage
         (function() {
             const html = document.documentElement;
             const savedMode = localStorage.getItem('darkMode');
             
-            // ALWAYS remove dark class first
-            html.classList.remove('dark');
-            
             // If no preference saved, default to LIGHT mode
             if (savedMode === null) {
                 localStorage.setItem('darkMode', 'false');
+                html.classList.remove('dark');
             } else if (savedMode === 'true') {
-                // Only add dark if explicitly saved as true
+                // Add dark if explicitly saved as true
                 html.classList.add('dark');
+            } else {
+                // Remove dark if explicitly saved as false
+                html.classList.remove('dark');
             }
             
-            // Force light mode styling
+            // Set color scheme
             html.style.colorScheme = savedMode === 'true' ? 'dark' : 'light';
         })();
     </script>
@@ -48,6 +49,11 @@
     @if(request()->routeIs('events.index'))
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         @vite(['resources/css/events-map.css', 'resources/css/events-index.css', 'resources/css/event-ticket.css'])
+    @endif
+    
+    {{-- Scoring Page Assets --}}
+    @if(request()->routeIs('events.scoring.*'))
+        @vite(['resources/css/scoring.css'])
     @endif
     
     {{-- Article Modal Assets (needed on articles page and home page) --}}
@@ -373,6 +379,11 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         @vite(['resources/js/events-map.js'])
     @endif
+
+    {{-- Badge Notification Component (Global) --}}
+    @auth
+        <livewire:badge-notification />
+    @endauth
 
     <!-- Userback Widget -->
     <script>

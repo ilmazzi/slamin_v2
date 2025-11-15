@@ -34,6 +34,36 @@ window.toggleDarkMode = function() {
 // Configura Alpine quando Livewire è pronto
 document.addEventListener('livewire:init', () => {
     console.log('✅ Livewire initialized!');
+    
+    // Mantieni il dark mode durante la navigazione Livewire
+    Livewire.hook('morph.updated', ({ el, component }) => {
+        const savedMode = localStorage.getItem('darkMode');
+        if (savedMode === 'true') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    });
+    
+    // Mantieni il dark mode quando Livewire naviga con wire:navigate
+    Livewire.hook('navigate', ({ path }) => {
+        const savedMode = localStorage.getItem('darkMode');
+        if (savedMode === 'true') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    });
+    
+    // Mantieni il dark mode dopo che Livewire completa la navigazione
+    Livewire.hook('navigate.complete', ({ path }) => {
+        const savedMode = localStorage.getItem('darkMode');
+        if (savedMode === 'true') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    });
 });
 
 // Importa i plugin Alpine per Livewire

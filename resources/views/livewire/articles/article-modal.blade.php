@@ -93,7 +93,7 @@
                                 @auth
                                     @if(auth()->id() === $article->user_id)
                                         <div class="article-owner-actions-left">
-                                            <a href="{{ route('articles.edit', $article->id) }}" class="article-owner-action">
+                                            <a href="{{ route('articles.edit', $article->slug) }}" class="article-owner-action">
                                                 <svg class="article-owner-action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 2.5l3 3L12 15l-4 1 1-4 9.5-9.5z"/>

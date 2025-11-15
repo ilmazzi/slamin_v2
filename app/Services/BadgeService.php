@@ -521,9 +521,10 @@ class BadgeService
             ];
             
             // Store badge data in session for component to pick up
-            // The component that triggered the badge (e.g., SocialLikeButton) will dispatch the event
             session()->put('badge_earned', $badgeData);
             
+            // Trigger JavaScript event for real-time notification
+            // This will be picked up by the BadgeNotification component via polling
             Log::info('Badge earned event emitted', [
                 'user_id' => $user->id,
                 'badge_id' => $badge->id,

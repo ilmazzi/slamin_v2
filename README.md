@@ -249,12 +249,107 @@ npm run build
 
 ---
 
+---
+
+## 📋 Linee Guida di Sviluppo
+
+### 🌓 Dark Mode
+
+**SEMPRE supportare il tema dark** in tutte le viste e componenti.
+
+#### Come implementare:
+
+1. **Usa le classi Tailwind con prefisso `dark:`**:
+```html
+<div class="bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white">
+    Contenuto
+</div>
+```
+
+2. **Per colori personalizzati, usa variabili CSS o stili inline con media query**:
+```html
+<div style="background: #fefaf3; @media (prefers-color-scheme: dark) { background: #1a1a1a; }">
+```
+
+3. **Testa sempre entrambi i temi** durante lo sviluppo
+
+4. **Colori del biglietto elegante**:
+   - Light: beige/crema (#fefaf3, #fdf8f0, #faf5ec)
+   - Dark: grigi scuri (#1a1a1a, #2d2d2d)
+   - Accenti: rosso scuro (#b91c1c), marrone (#8b7355)
+
+### 📱 Responsive Design
+
+**Il mobile è prioritario!** Tutte le pagine devono essere perfettamente responsive.
+
+#### Breakpoints Tailwind:
+- `sm:` - 640px e superiori
+- `md:` - 768px e superiori
+- `lg:` - 1024px e superiori
+- `xl:` - 1280px e superiori
+
+#### Best Practices:
+
+1. **Mobile First**: Inizia sempre dal mobile, poi scala verso desktop
+```html
+<!-- Mobile: colonna singola, Desktop: griglia -->
+<div class="flex flex-col md:grid md:grid-cols-3 gap-4">
+```
+
+2. **Viste separate quando necessario**:
+```html
+<!-- Vista Mobile -->
+<div class="block md:hidden">
+    <!-- Layout mobile ottimizzato -->
+</div>
+
+<!-- Vista Desktop -->
+<div class="hidden md:block">
+    <!-- Layout desktop -->
+</div>
+```
+
+3. **Test su dispositivi reali**:
+   - iPhone (375px, 414px)
+   - Android (360px, 412px)
+   - Tablet (768px, 1024px)
+
+4. **Elementi interattivi**:
+   - Bottoni: minimo 44x44px su mobile
+   - Input: padding adeguato per touch
+   - Tabelle: scroll orizzontale o vista card su mobile
+
+5. **Tipografia responsive**:
+```html
+<h1 class="text-2xl md:text-4xl lg:text-5xl">
+```
+
+6. **Spaziature responsive**:
+```html
+<div class="p-4 md:p-6 lg:p-8">
+```
+
+### 🎨 CSS e JavaScript
+
+1. **CSS**: In `resources/css/` o in `@push('styles')` nel layout
+2. **JavaScript**: In `resources/js/` o in `@push('scripts')` nel layout
+3. **NO inline styles/scripts** nelle viste (eccetto per stili dinamici necessari)
+
+### 📝 Traduzioni
+
+- Usa sempre `__('key')` o `@lang('key')` per tutti i testi
+- Le chiavi di traduzione vanno in `lang/it/` o `lang/en/`
+
+---
+
 ## 🎉 That's It!
 
 Sistema pulito e semplice:
 - ✅ 1 palette configurabile
 - ✅ Semantici fissi
 - ✅ Vite build veloce
+- ✅ Dark mode supportato
+- ✅ Mobile first responsive
 - ✅ Zero complessità
 
 **Enjoy!** 🚀

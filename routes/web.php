@@ -64,6 +64,13 @@ Route::get('/events/{event}/edit', \App\Livewire\Events\EventEdit::class)
     ->middleware('auth')
     ->name('events.edit');
 
+// Event Scoring Routes
+Route::middleware('auth')->prefix('events/{event}/scoring')->name('events.scoring.')->group(function () {
+    Route::get('/scores', \App\Livewire\Events\Scoring\ScoreEntry::class)->name('scores');
+    Route::get('/participants', \App\Livewire\Events\Scoring\ParticipantManagement::class)->name('participants');
+    Route::get('/rankings', \App\Livewire\Events\Scoring\Rankings::class)->name('rankings');
+});
+
 // Manage route (da implementare)
 Route::get('/events/{event}/manage', function(\App\Models\Event $event) {
     // Check permissions
@@ -113,10 +120,18 @@ Route::middleware('auth')->group(function () {
 // Articles Routes
 Route::get('/articles', \App\Livewire\Articles\ArticleIndex::class)->name('articles.index');
 
+Route::get('/articles/create', \App\Livewire\Articles\ArticleCreate::class)
+    ->middleware('auth')
+    ->name('articles.create');
+
 Route::get('/articles/{article}', function ($id) {
     $article = \App\Models\Article::findOrFail($id);
     return view('pages.article-show', compact('article'));
 })->name('articles.show');
+
+Route::get('/articles/{article:slug}/edit', \App\Livewire\Articles\ArticleEdit::class)
+    ->middleware('auth')
+    ->name('articles.edit');
 
 // Articles Admin Routes
 Route::middleware(['auth'])->group(function () {

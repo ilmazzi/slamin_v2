@@ -55,12 +55,21 @@ class EventScoringService
 
             // Assign positions and save rankings
             foreach ($rankings as $position => $rankingData) {
-                $badgeId = $this->getBadgeForPosition($position + 1);
+                $finalPosition = $position + 1;
+                $badgeId = $this->getBadgeForPosition($finalPosition);
+
+                Log::info('Creating ranking', [
+                    'event_id' => $event->id,
+                    'participant_id' => $rankingData['participant']->id,
+                    'position' => $finalPosition,
+                    'total_score' => $rankingData['total_score'],
+                    'badge_id' => $badgeId,
+                ]);
 
                 EventRanking::create([
                     'event_id' => $event->id,
                     'participant_id' => $rankingData['participant']->id,
-                    'position' => $position + 1,
+                    'position' => $finalPosition,
                     'total_score' => $rankingData['total_score'],
                     'round_scores' => $rankingData['round_scores'],
                     'badge_id' => $badgeId,
@@ -97,6 +106,7 @@ class EventScoringService
             ->with(['participant.user', 'badge'])
             ->where('badge_awarded', false)
             ->whereNotNull('badge_id')
+            ->orderBy('position') // Ensure we process in order
             ->get();
 
         foreach ($rankings as $ranking) {
@@ -107,15 +117,69 @@ class EventScoringService
                 continue;
             }
 
-            if ($ranking->badge && !$participant->user->badges()->where('badges.id', $ranking->badge->id)->exists()) {
-                $badgeService->manuallyAwardBadge(
-                    $participant->user,
-                    $ranking->badge,
-                    auth()->user(),
-                    "Vinto {$ranking->position}° posto all'evento: {$event->title}"
-                );
+            if ($ranking->badge) {
+                // Double-check that the badge matches the position
+                $expectedBadgeId = $this->getBadgeForPosition($ranking->position);
+                
+                if ($expectedBadgeId !== $ranking->badge_id) {
+                    Log::error('Badge mismatch detected!', [
+                        'event_id' => $event->id,
+                        'participant_id' => $participant->id,
+                        'position' => $ranking->position,
+                        'expected_badge_id' => $expectedBadgeId,
+                        'actual_badge_id' => $ranking->badge_id,
+                        'actual_badge_name' => $ranking->badge->name,
+                    ]);
+                    
+                    // Fix the badge
+                    $correctBadge = Badge::find($expectedBadgeId);
+                    if ($correctBadge) {
+                        $ranking->badge_id = $expectedBadgeId;
+                        $ranking->save();
+                        $ranking->refresh();
+                        $ranking->load('badge');
+                        
+                        Log::info('Badge corrected', [
+                            'event_id' => $event->id,
+                            'participant_id' => $participant->id,
+                            'position' => $ranking->position,
+                            'correct_badge_id' => $expectedBadgeId,
+                            'correct_badge_name' => $correctBadge->name,
+                        ]);
+                    }
+                }
 
-                $badgesAwarded++;
+                Log::info('Awarding badge to participant', [
+                    'event_id' => $event->id,
+                    'participant_id' => $participant->id,
+                    'user_id' => $participant->user->id,
+                    'position' => $ranking->position,
+                    'badge_id' => $ranking->badge->id,
+                    'badge_name' => $ranking->badge->name,
+                ]);
+
+                if (!$participant->user->badges()->where('badges.id', $ranking->badge->id)->exists()) {
+                    $badgeService->manuallyAwardBadge(
+                        $participant->user,
+                        $ranking->badge,
+                        auth()->user(),
+                        "Vinto {$ranking->position}° posto all'evento: {$event->title}"
+                    );
+
+                    $badgesAwarded++;
+                } else {
+                    Log::info('Badge already exists for user', [
+                        'user_id' => $participant->user->id,
+                        'badge_id' => $ranking->badge->id,
+                        'badge_name' => $ranking->badge->name,
+                    ]);
+                }
+            } else {
+                Log::warning('No badge found for ranking', [
+                    'event_id' => $event->id,
+                    'participant_id' => $participant->id,
+                    'position' => $ranking->position,
+                ]);
             }
 
             // Mark as awarded
@@ -161,9 +225,19 @@ class EventScoringService
             return null;
         }
 
+        // Search for badge by name, type and category to ensure we get the correct one
         $badge = Badge::where('name', $badgeName)
             ->where('type', 'event')
+            ->where('category', 'event_wins')
+            ->where('criteria_type', 'special') // Only special badges for podium positions
             ->first();
+
+        if (!$badge) {
+            Log::warning('Badge not found for position', [
+                'position' => $position,
+                'badge_name' => $badgeName
+            ]);
+        }
 
         return $badge?->id;
     }
