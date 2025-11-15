@@ -488,310 +488,309 @@
                 @endauth
             </div>
         </div>
-    </div>
 
-    @push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        /* Horizontal Ticket Styles */
-        .event-show-ticket-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem 0;
-        }
-        
-        .event-show-ticket {
-            width: 100%;
-            max-width: 1000px;
-            border-radius: 12px;
-            box-shadow: 
-                0 12px 32px rgba(0, 0, 0, 0.4),
-                0 24px 64px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .event-ticket-perforation-top,
-        .event-ticket-perforation-bottom {
-            height: 12px;
-            background: linear-gradient(90deg, 
-                transparent 0%,
-                rgba(139, 115, 85, 0.1) 50%,
-                transparent 100%
-            );
-            position: relative;
-        }
-        
-        @media (min-width: 768px) {
+        @push('styles')
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <style>
+            /* Horizontal Ticket Styles */
+            .event-show-ticket-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 1rem 0;
+            }
+            
+            .event-show-ticket {
+                width: 100%;
+                max-width: 1000px;
+                border-radius: 12px;
+                box-shadow: 
+                    0 12px 32px rgba(0, 0, 0, 0.4),
+                    0 24px 64px rgba(0, 0, 0, 0.3);
+                position: relative;
+                overflow: hidden;
+            }
+            
             .event-ticket-perforation-top,
             .event-ticket-perforation-bottom {
-                height: 20px;
+                height: 12px;
+                background: linear-gradient(90deg, 
+                    transparent 0%,
+                    rgba(139, 115, 85, 0.1) 50%,
+                    transparent 100%
+                );
+                position: relative;
             }
-        }
-        
-        .event-ticket-perforation-top::before,
-        .event-ticket-perforation-bottom::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: 
-                radial-gradient(circle at 0 50%, transparent 3px, currentColor 3px) 0 0 / 16px 2px repeat-x;
-            color: rgba(139, 115, 85, 0.3);
-            transform: translateY(-50%);
-        }
-        
-        .event-ticket-content-horizontal {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            min-height: auto;
-        }
-        
-        @media (min-width: 768px) {
+            
+            @media (min-width: 768px) {
+                .event-ticket-perforation-top,
+                .event-ticket-perforation-bottom {
+                    height: 20px;
+                }
+            }
+            
+            .event-ticket-perforation-top::before,
+            .event-ticket-perforation-bottom::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: 
+                    radial-gradient(circle at 0 50%, transparent 3px, currentColor 3px) 0 0 / 16px 2px repeat-x;
+                color: rgba(139, 115, 85, 0.3);
+                transform: translateY(-50%);
+            }
+            
             .event-ticket-content-horizontal {
-                flex-direction: row;
-                min-height: 300px;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                min-height: auto;
             }
-        }
-        
-        .event-ticket-image-horizontal {
-            width: 100%;
-            height: 200px;
-            flex-shrink: 0;
-            border-right: none;
-            border-bottom: 2px dashed rgba(139, 115, 85, 0.3);
-            overflow: hidden;
-        }
-        
-        @media (min-width: 768px) {
+            
+            @media (min-width: 768px) {
+                .event-ticket-content-horizontal {
+                    flex-direction: row;
+                    min-height: 300px;
+                }
+            }
+            
             .event-ticket-image-horizontal {
-                width: 40%;
-                min-width: 300px;
-                height: auto;
-                border-right: 2px dashed rgba(139, 115, 85, 0.3);
-                border-bottom: none;
+                width: 100%;
+                height: 200px;
+                flex-shrink: 0;
+                border-right: none;
+                border-bottom: 2px dashed rgba(139, 115, 85, 0.3);
+                overflow: hidden;
             }
-        }
-        
-        .event-ticket-info-horizontal {
-            flex: 1;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        
-        @media (min-width: 768px) {
+            
+            @media (min-width: 768px) {
+                .event-ticket-image-horizontal {
+                    width: 40%;
+                    min-width: 300px;
+                    height: auto;
+                    border-right: 2px dashed rgba(139, 115, 85, 0.3);
+                    border-bottom: none;
+                }
+            }
+            
             .event-ticket-info-horizontal {
-                padding: 2rem;
+                flex: 1;
+                padding: 1rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
-        }
-        
-        .event-ticket-header-horizontal {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px dashed rgba(139, 115, 85, 0.3);
-            margin-bottom: 0.75rem;
-        }
-        
-        @media (min-width: 768px) {
+            
+            @media (min-width: 768px) {
+                .event-ticket-info-horizontal {
+                    padding: 2rem;
+                }
+            }
+            
             .event-ticket-header-horizontal {
-                padding-bottom: 1rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 0.75rem;
+                border-bottom: 2px dashed rgba(139, 115, 85, 0.3);
+                margin-bottom: 0.75rem;
+            }
+            
+            @media (min-width: 768px) {
+                .event-ticket-header-horizontal {
+                    padding-bottom: 1rem;
+                    margin-bottom: 1rem;
+                }
+            }
+            
+            .event-ticket-category {
+                font-size: 0.65rem;
+                font-weight: 900;
+                letter-spacing: 0.1em;
+                color: #b91c1c;
+                text-transform: uppercase;
+            }
+            
+            @media (min-width: 768px) {
+                .event-ticket-category {
+                    font-size: 0.75rem;
+                }
+            }
+            
+            .event-ticket-serial {
+                font-size: 0.6rem;
+                font-weight: 700;
+                color: #8b7355;
+                font-family: 'Courier New', monospace;
+            }
+            
+            @media (min-width: 768px) {
+                .event-ticket-serial {
+                    font-size: 0.65rem;
+                }
+            }
+            
+            .event-ticket-title-horizontal {
+                font-family: 'Crimson Pro', serif;
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: #1a1a1a;
+                line-height: 1.3;
                 margin-bottom: 1rem;
             }
-        }
-        
-        .event-ticket-category {
-            font-size: 0.65rem;
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            color: #b91c1c;
-            text-transform: uppercase;
-        }
-        
-        @media (min-width: 768px) {
-            .event-ticket-category {
-                font-size: 0.75rem;
+            
+            @media (min-width: 768px) {
+                .event-ticket-title-horizontal {
+                    font-size: 2rem;
+                    margin-bottom: 1.5rem;
+                }
             }
-        }
-        
-        .event-ticket-serial {
-            font-size: 0.6rem;
-            font-weight: 700;
-            color: #8b7355;
-            font-family: 'Courier New', monospace;
-        }
-        
-        @media (min-width: 768px) {
-            .event-ticket-serial {
-                font-size: 0.65rem;
-            }
-        }
-        
-        .event-ticket-title-horizontal {
-            font-family: 'Crimson Pro', serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            line-height: 1.3;
-            margin-bottom: 1rem;
-        }
-        
-        @media (min-width: 768px) {
-            .event-ticket-title-horizontal {
-                font-size: 2rem;
-                margin-bottom: 1.5rem;
-            }
-        }
-        
-        .event-ticket-info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-        
-        @media (min-width: 768px) {
+            
             .event-ticket-info-grid {
-                gap: 1rem;
-                margin-bottom: 1.5rem;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+                margin-bottom: 1rem;
             }
-        }
-        
-        .event-ticket-info-item {
-            text-align: left;
-        }
-        
-        .event-ticket-info-label {
-            font-size: 0.6rem;
-            font-weight: 700;
-            color: #8b7355;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.25rem;
-        }
-        
-        @media (min-width: 768px) {
+            
+            @media (min-width: 768px) {
+                .event-ticket-info-grid {
+                    gap: 1rem;
+                    margin-bottom: 1.5rem;
+                }
+            }
+            
+            .event-ticket-info-item {
+                text-align: left;
+            }
+            
             .event-ticket-info-label {
-                font-size: 0.625rem;
+                font-size: 0.6rem;
+                font-weight: 700;
+                color: #8b7355;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.25rem;
             }
-        }
-        
-        .event-ticket-info-value {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #2d2d2d;
-            font-family: 'Crimson Pro', serif;
-        }
-        
-        @media (min-width: 768px) {
+            
+            @media (min-width: 768px) {
+                .event-ticket-info-label {
+                    font-size: 0.625rem;
+                }
+            }
+            
             .event-ticket-info-value {
-                font-size: 1rem;
+                font-size: 0.875rem;
+                font-weight: 600;
+                color: #2d2d2d;
+                font-family: 'Crimson Pro', serif;
             }
-        }
-        
-        .event-ticket-barcode-horizontal {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            padding-top: 0.75rem;
-            border-top: 1px dashed rgba(139, 115, 85, 0.25);
-        }
-        
-        @media (min-width: 768px) {
+            
+            @media (min-width: 768px) {
+                .event-ticket-info-value {
+                    font-size: 1rem;
+                }
+            }
+            
             .event-ticket-barcode-horizontal {
-                padding-top: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                padding-top: 0.75rem;
+                border-top: 1px dashed rgba(139, 115, 85, 0.25);
             }
-        }
-        
-        .event-barcode-lines {
-            display: flex;
-            align-items: flex-end;
-            gap: 1px;
-            height: 40px;
-            padding: 0 0.5rem;
-        }
-        
-        @media (min-width: 768px) {
+            
+            @media (min-width: 768px) {
+                .event-ticket-barcode-horizontal {
+                    padding-top: 1rem;
+                }
+            }
+            
             .event-barcode-lines {
-                height: 50px;
-                padding: 0 1rem;
+                display: flex;
+                align-items: flex-end;
+                gap: 1px;
+                height: 40px;
+                padding: 0 0.5rem;
             }
-        }
-        
-        .event-barcode-number {
-            font-size: 0.6rem;
-            font-weight: 600;
-            color: #666;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 0.1em;
-        }
-        
-        @media (min-width: 768px) {
+            
+            @media (min-width: 768px) {
+                .event-barcode-lines {
+                    height: 50px;
+                    padding: 0 1rem;
+                }
+            }
+            
             .event-barcode-number {
-                font-size: 0.625rem;
+                font-size: 0.6rem;
+                font-weight: 600;
+                color: #666;
+                font-family: 'Courier New', monospace;
+                letter-spacing: 0.1em;
             }
-        }
-        
-        @keyframes blob {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.05); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
-        }
-        
-        .animate-blob { animation: blob 8s ease-in-out infinite; }
-        .animate-blob-slow { animation: blob 12s ease-in-out infinite; }
-        .animate-blob-slower { animation: blob 16s ease-in-out infinite; }
-    </style>
-    @endpush
+            
+            @media (min-width: 768px) {
+                .event-barcode-number {
+                    font-size: 0.625rem;
+                }
+            }
+            
+            @keyframes blob {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                33% { transform: translate(30px, -30px) scale(1.05); }
+                66% { transform: translate(-20px, 20px) scale(0.95); }
+            }
+            
+            .animate-blob { animation: blob 8s ease-in-out infinite; }
+            .animate-blob-slow { animation: blob 12s ease-in-out infinite; }
+            .animate-blob-slower { animation: blob 16s ease-in-out infinite; }
+        </style>
+        @endpush
 
-    @push('scripts')
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const mapContainer = document.getElementById('eventShowMap');
-        
-        if (mapContainer) {
-            const lat = parseFloat(mapContainer.dataset.lat);
-            const lng = parseFloat(mapContainer.dataset.lng);
-            const name = mapContainer.dataset.name;
+        @push('scripts')
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mapContainer = document.getElementById('eventShowMap');
             
-            // Initialize map
-            const eventMap = L.map('eventShowMap', {
-                scrollWheelZoom: false,
-                dragging: true,
-                zoomControl: true
-            }).setView([lat, lng], 15);
-            
-            // Add Voyager tile layer
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                attribution: '© OpenStreetMap, © CartoDB',
-                maxZoom: 19
-            }).addTo(eventMap);
-            
-            // Add marker
-            const marker = L.marker([lat, lng], {
-                icon: L.divIcon({
-                    html: `<div style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4); border: 3px solid white;"></div>`,
-                    className: 'custom-event-marker',
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 32]
-                })
-            }).addTo(eventMap);
-            
-            // Add popup
-            marker.bindPopup(`<strong>${name}</strong>`).openPopup();
-            
-            console.log('✅ Event show map initialized at:', lat, lng);
-        }
-    });
-    </script>
-    @endpush
-</div>
+            if (mapContainer) {
+                const lat = parseFloat(mapContainer.dataset.lat);
+                const lng = parseFloat(mapContainer.dataset.lng);
+                const name = mapContainer.dataset.name;
+                
+                // Initialize map
+                const eventMap = L.map('eventShowMap', {
+                    scrollWheelZoom: false,
+                    dragging: true,
+                    zoomControl: true
+                }).setView([lat, lng], 15);
+                
+                // Add Voyager tile layer
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                    attribution: '© OpenStreetMap, © CartoDB',
+                    maxZoom: 19
+                }).addTo(eventMap);
+                
+                // Add marker
+                const marker = L.marker([lat, lng], {
+                    icon: L.divIcon({
+                        html: `<div style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4); border: 3px solid white;"></div>`,
+                        className: 'custom-event-marker',
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32]
+                    })
+                }).addTo(eventMap);
+                
+                // Add popup
+                marker.bindPopup(`<strong>${name}</strong>`).openPopup();
+                
+                console.log('✅ Event show map initialized at:', lat, lng);
+            }
+        });
+        </script>
+        @endpush
+    </div>
