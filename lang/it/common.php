@@ -46,5 +46,6 @@ return [
     'back_to_poems' => 'Torna alle poesie',
     'back_to' => 'Torna a',
     'all' => 'Tutti',
+    'home' => 'Home',
 ];
 

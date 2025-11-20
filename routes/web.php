@@ -133,10 +133,71 @@ Route::get('/articles/{article:slug}/edit', \App\Livewire\Articles\ArticleEdit::
     ->middleware('auth')
     ->name('articles.edit');
 
-// Articles Admin Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/articles/layout', \App\Livewire\Admin\ArticleLayoutManager::class)
-        ->name('admin.articles.layout');
+// Admin Routes - Livewire Components
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', \App\Livewire\Admin\Dashboard\AdminDashboard::class)
+        ->name('dashboard');
+    
+    // Users
+    Route::get('/users', \App\Livewire\Admin\Users\UserList::class)
+        ->name('users.index');
+    
+    // Moderation
+    Route::get('/moderation', \App\Livewire\Admin\Moderation\ModerationIndex::class)
+        ->name('moderation.index');
+    
+    // Articles
+    Route::get('/articles', \App\Livewire\Admin\Articles\ArticleList::class)
+        ->name('articles.index');
+    Route::get('/articles/layout', \App\Livewire\Admin\ArticleLayoutManager::class)
+        ->name('articles.layout');
+    
+    // Admin Settings (Main page with all links)
+    Route::get('/settings', \App\Livewire\Admin\Settings\AdminSettings::class)
+        ->name('settings');
+    
+    // Settings
+    Route::get('/settings/system', \App\Livewire\Admin\Settings\SystemSettings::class)
+        ->name('settings.system');
+    Route::get('/settings/payment', \App\Livewire\Admin\Settings\PaymentSettings::class)
+        ->name('settings.payment');
+    Route::get('/settings/upload', \App\Livewire\Admin\Settings\UploadSettings::class)
+        ->name('settings.upload');
+    Route::get('/settings/social', \App\Livewire\Admin\Settings\SocialSettings::class)
+        ->name('settings.social');
+    Route::get('/settings/placeholder', \App\Livewire\Admin\Settings\PlaceholderSettings::class)
+        ->name('settings.placeholder');
+    
+    // Payment Accounts
+    Route::get('/payments/accounts', \App\Livewire\Admin\Payments\PaymentAccounts::class)
+        ->name('payments.accounts');
+    
+    // Payouts
+    Route::get('/payments/payouts', \App\Livewire\Admin\Payments\Payouts::class)
+        ->name('payments.payouts');
+    
+    // Gig Positions
+    Route::get('/gigs/positions', \App\Livewire\Admin\Gigs\GigPositionList::class)
+        ->name('gigs.positions');
+    
+    // PeerTube Settings
+    Route::get('/settings/peertube', \App\Livewire\Admin\Settings\PeerTubeSettings::class)
+        ->name('settings.peertube');
+    
+    // Logs
+    Route::get('/logs', \App\Livewire\Admin\Logs\LogList::class)
+        ->name('logs.index');
+    
+    // Carousels
+    Route::get('/carousels', \App\Livewire\Admin\Carousels\CarouselList::class)
+        ->name('carousels.index');
+    
+    // Gamification (già esiste)
+    Route::get('/gamification/badges', \App\Livewire\Admin\Gamification\BadgeManagement::class)
+        ->name('gamification.badges');
+    Route::get('/gamification/user-badges', \App\Livewire\Admin\Gamification\UserBadges::class)
+        ->name('gamification.user-badges');
 });
 
 // Gallery Route

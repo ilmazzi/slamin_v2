@@ -66,7 +66,7 @@
                               x-transition:leave="transition ease-in duration-200"
                               x-transition:leave-start="opacity-100 translate-x-0"
                               x-transition:leave-end="opacity-0 -translate-x-4"
-                              class="text-sm font-medium">Home</span>
+                              class="text-sm font-medium">{{ __('common.home') }}</span>
                     </a>
                     <!-- Tooltip -->
                     <div x-show="tooltip && collapsed"
@@ -293,6 +293,36 @@
                     <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.forumLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">Forum</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
                 @endauth
+
+                @auth
+                    @if(auth()->user()->hasRole('admin'))
+                        <!-- Admin Settings -->
+                        <li class="relative mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700" x-data="{ tooltip: false }">
+                            <a href="{{ route('admin.settings') }}" 
+                               @mouseenter="collapsed && (tooltip = true)"
+                               @mouseleave="tooltip = false"
+                               x-ref="adminLink"
+                               class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 dark:hover:from-red-900/20 dark:hover:to-red-800/20 text-red-600 dark:!text-red-400 hover:text-red-700 dark:hover:!text-red-300 transition-all duration-300 group"
+                               :class="collapsed && 'justify-center'">
+                                <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
+                                     :class="!collapsed && 'group-hover:-translate-x-1'" 
+                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span x-show="!collapsed" 
+                                      x-transition:enter="transition ease-out duration-300 delay-250"
+                                      x-transition:enter-start="opacity-0 -translate-x-4"
+                                      x-transition:enter-end="opacity-100 translate-x-0"
+                                      x-transition:leave="transition ease-in duration-200"
+                                      x-transition:leave-start="opacity-100 translate-x-0"
+                                      x-transition:leave-end="opacity-0 -translate-x-4"
+                                      class="text-sm font-medium">{{ __('admin.sidebar') }}</span>
+                            </a>
+                            <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-red-600 to-red-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.adminLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(239, 68, 68, 0.5);"><span class="relative z-10">{{ __('admin.sidebar') }}</span><div class="absolute inset-0 bg-red-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-red-600"></div></div></div>
+                        </li>
+                    @endif
+                @endauth
             </ul>
         </nav>
 
@@ -478,8 +508,42 @@
                     </a>
                 </li>
                 @endauth
+
+                @auth
+                    @if(auth()->user()->hasRole('admin'))
+                        <!-- Admin Settings -->
+                        <li class="mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+                            <a href="{{ route('admin.settings') }}" 
+                               @click="mobileOpen = false"
+                               class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 hover:text-red-700 transition-all group">
+                                <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span class="text-sm font-medium">{{ __('admin.sidebar') }}</span>
+                            </a>
+                        </li>
+                    @endif
+                @endauth
             </ul>
         </nav>
+
+        <!-- Bottom Actions Mobile -->
+        <div class="p-3 border-t border-neutral-200 dark:border-neutral-800">
+            <button @click="mobileOpen = false"
+                    class="w-full flex items-center justify-center gap-3 px-3 py-2.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                <span class="text-sm font-medium">Chiudi Menu</span>
+            </button>
+        </div>
+    </div>
+</aside>
+
+</div>
+
+
 
         <!-- Bottom Actions Mobile -->
         <div class="p-3 border-t border-neutral-200 dark:border-neutral-800">

@@ -133,12 +133,30 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getRoleNames()
     {
         // TODO: Replace with Spatie Permission when installed
-        // For now, return mock roles based on email or default
-        if (str_contains($this->email, 'admin')) {
+        // Check database first (model_has_roles table)
+        try {
+            if (DB::getSchemaBuilder()->hasTable('model_has_roles') && DB::getSchemaBuilder()->hasTable('roles')) {
+                $dbRoles = DB::table('model_has_roles')
+                    ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                    ->where('model_has_roles.model_type', 'App\\Models\\User')
+                    ->where('model_has_roles.model_id', $this->id)
+                    ->pluck('roles.name');
+                
+                if ($dbRoles->isNotEmpty()) {
+                    return $dbRoles;
+                }
+            }
+        } catch (\Exception $e) {
+            // Table might not exist yet, fallback to email check
+        }
+        
+        // Fallback: check email for admin (case insensitive)
+        if (str_contains(strtolower($this->email ?? ''), 'admin')) {
             return collect(['admin', 'poet', 'organizer']);
         }
-        // Give all users 'poet' and 'organizer' roles by default for testing
-        return collect(['poet', 'organizer']); // Default roles
+        
+        // Default roles for testing
+        return collect(['poet', 'organizer']);
     }
 
     public function hasRole($role): bool
@@ -1078,7 +1096,21 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Article::class)->published();
     }
 
-    // Translation payment relationships removed (system cleaned up)
+    /**
+     * Translation payments where user is the translator (receiver)
+     */
+    public function translationPayments()
+    {
+        return $this->hasMany(TranslationPayment::class, 'translator_id');
+    }
+
+    /**
+     * Translation payments where user is the client (payer)
+     */
+    public function translationPaymentsAsClient()
+    {
+        return $this->hasMany(TranslationPayment::class, 'client_id');
+    }
 
     // ========================================
     // RELAZIONI CON LE LINGUE
