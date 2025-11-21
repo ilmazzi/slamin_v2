@@ -6,6 +6,7 @@ use App\Models\Poem;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class PoemCreate extends Component
@@ -32,8 +33,18 @@ class PoemCreate extends Component
     
     public function mount()
     {
+        // Check permissions
+        $user = Auth::user();
+        if (!$user) {
+            abort(403, 'Devi essere autenticato per creare poesie');
+        }
+        
+        if (!$user->canCreatePoem()) {
+            abort(403, 'Non hai i permessi per creare poesie');
+        }
+        
         // Carica eventuali bozze esistenti
-        $latestDraft = Auth::user()->poems()
+        $latestDraft = $user->poems()
             ->where('is_draft', true)
             ->latest('draft_saved_at')
             ->first();

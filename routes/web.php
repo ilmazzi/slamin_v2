@@ -47,6 +47,15 @@ Route::get('/events', \App\Livewire\Events\EventsIndex::class)->name('events.ind
 
 // Media Routes
 Route::get('/media', \App\Livewire\Media\MediaIndex::class)->name('media.index');
+
+// Media Upload Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/media/upload/video', \App\Livewire\Media\VideoUpload::class)->name('media.upload.video');
+    Route::get('/media/upload-limit', \App\Livewire\Media\UploadLimit::class)->name('media.upload-limit');
+    Route::get('/media/my-videos', \App\Livewire\Media\MyVideos::class)->name('media.my-videos');
+    // Route::get('/media/upload/photo', \App\Livewire\Media\PhotoUpload::class)->name('media.upload.photo'); // TODO: Da implementare
+});
+
 Route::get('/videos/{video}', function(\App\Models\Video $video) {
     return view('pages.video-show', compact('video'));
 })->name('videos.show');
@@ -185,6 +194,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/settings/peertube', \App\Livewire\Admin\Settings\PeerTubeSettings::class)
         ->name('settings.peertube');
     
+    // Translations (Sito - file PHP in lang/)
+    Route::get('/translations', \App\Livewire\Admin\Translations\TranslationManagement::class)
+        ->name('translations.index');
+    
+    // Roles & Permissions
+    Route::get('/roles', \App\Livewire\Admin\Roles\RoleManagement::class)
+        ->name('roles.index');
+    Route::get('/permissions', \App\Livewire\Admin\Permissions\PermissionManagement::class)
+        ->name('permissions.index');
+    
     // Logs
     Route::get('/logs', \App\Livewire\Admin\Logs\LogList::class)
         ->name('logs.index');
@@ -243,26 +262,48 @@ Route::get('/dashboard', function () {
     return view('pages.dashboard');
 })->middleware('auth')->name('dashboard.index');
 
-// Auth Routes
-Route::get('/login', function () {
-    return view('auth.login');
-})->middleware('guest')->name('login');
-
-Route::post('/login', [App\Http\Controllers\AuthController::class, 'processLogin'])
+// Auth Routes - Livewire Components
+Route::get('/login', \App\Livewire\Auth\Login::class)
     ->middleware('guest')
-    ->name('login.process');
+    ->name('login');
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->middleware('guest')->name('register');
-
-Route::post('/register', [App\Http\Controllers\AuthController::class, 'processRegistration'])
+Route::get('/register', \App\Livewire\Auth\Register::class)
     ->middleware('guest')
-    ->name('register.process');
+    ->name('register');
 
 Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
+
+// Email Verification Routes
+Route::get('/email/verify', \App\Livewire\Auth\EmailVerificationNotice::class)
+    ->middleware('auth')
+    ->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (\Illuminate\Foundation\Auth\EmailVerificationRequest $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return redirect()->route('dashboard.index');
+    }
+    
+    $request->fulfill();
+    
+    // L'evento Verified dovrebbe essere triggerato automaticamente da fulfill()
+    // ma lo dispatchiamo esplicitamente per sicurezza
+    event(new \Illuminate\Auth\Events\Verified($request->user()));
+    
+    return redirect()->route('dashboard.index')
+        ->with('success', __('auth.email_verified_success'));
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (\Illuminate\Http\Request $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return redirect()->route('dashboard.index');
+    }
+
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('status', __('auth.verification_link_sent'));
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Resource routes removed - now using proper routes above
 

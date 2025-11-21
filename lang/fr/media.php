@@ -1,0 +1,97 @@
+<?php
+
+return [
+    // General
+    'featured' => 'EN VEDETTE',
+    'views' => 'vues',
+    'untitled' => 'Sans titre',
+    
+    // Upload
+    'upload' => 'Téléverser',
+    'upload_video' => 'Téléverser une Vidéo',
+    'upload_photo' => 'Téléverser une Photo',
+    
+    // Snap
+    'create_snap' => 'Créer un Snap',
+    'title' => 'Titre',
+    'description' => 'Description',
+    'snap_title_placeholder' => 'Titre du moment',
+    'snap_description_placeholder' => 'Description du moment',
+    
+    // Search
+    'search_placeholder' => 'Rechercher des vidéos, photos, auteurs...',
+    
+    // Upload Video
+    'upload_not_allowed' => 'Vous n\'avez pas la permission de téléverser des vidéos.',
+    'peertube_account_required' => 'Vous devez avoir un compte PeerTube pour téléverser des vidéos. Contactez l\'administrateur.',
+    'upload_limit_reached' => 'Vous avez atteint la limite de téléversement de vidéos. Passez à premium pour téléverser plus de vidéos.',
+    'upload_status' => 'État du Téléversement',
+    'videos_remaining' => 'Vidéos restantes',
+    'videos_used' => 'vidéos utilisées',
+    'upload_info' => 'Informations de Téléversement',
+    'supported_formats' => 'Formats pris en charge: MP4, AVI, MOV, MKV, WEBM, FLV',
+    'max_size' => 'Taille maximale: 100MB',
+    'processing_time' => 'Temps de traitement: quelques minutes',
+    'upload_form' => 'Formulaire de Téléversement',
+    'video_file' => 'Fichier Vidéo',
+    'drag_drop_video' => 'Glissez-déposez votre vidéo ici',
+    'select_file' => 'Sélectionner un Fichier',
+    'loading' => 'Chargement...',
+    'preparing_upload' => 'Préparation du téléversement...',
+    'select_thumbnail' => 'Sélectionner une Miniature',
+    'thumbnail_help' => 'Choisissez une image pour la miniature de la vidéo (optionnel)',
+    'privacy' => 'Confidentialité',
+    'public' => 'Public',
+    'private' => 'Privé',
+    'preparing_file' => 'Préparation du fichier...',
+    'saving_temp_file' => 'Sauvegarde du fichier temporaire...',
+    'preparing_peertube_data' => 'Préparation des données PeerTube...',
+    'uploading_to_peertube' => 'Téléversement sur PeerTube...',
+    'creating_video_record' => 'Création de l\'enregistrement vidéo...',
+    'saving_thumbnail' => 'Sauvegarde de la miniature...',
+    'finalizing' => 'Finalisation...',
+    'upload_complete' => 'Téléversement terminé!',
+    'peertube_upload_failed' => 'Erreur lors du téléversement sur PeerTube. Veuillez réessayer plus tard.',
+    'upload_error' => 'Erreur lors du téléversement de la vidéo',
+    'video_uploaded_successfully' => 'Vidéo téléversée avec succès! La vidéo sera disponible sous peu une fois le traitement terminé.',
+    'title_help' => 'Entrez un titre pour votre vidéo',
+    'description_help' => 'Entrez une description pour votre vidéo (optionnel)',
+    'tags_help' => 'Entrez les tags séparés par des virgules (max 5)',
+    'tags_placeholder' => 'ex: musique, poésie, performance',
+    
+    'video_selected' => 'Vidéo sélectionnée',
+    'retrieving_thumbnail' => 'Récupération de la miniature depuis PeerTube...',
+    'upload_info_peertube' => 'Téléversez vos vidéos sur PeerTube de manière sécurisée et décentralisée',
+    
+    // Upload Limit
+    'upload_limit_reached' => 'Limite de Téléversement Atteinte',
+    'limit_reached_title' => 'Vous avez atteint la limite maximale de téléversement de vidéos!',
+    'limit_reached_message' => 'Pour téléverser plus de vidéos, passez au plan Premium ou gérez vos vidéos existantes.',
+    'current_usage' => 'Utilisation Actuelle',
+    'current_plan_info' => 'Informations sur votre Plan Actuel',
+    'your_current_plan' => 'Votre plan actuel',
+    'upgrade_to_premium' => 'Passer à Premium',
+    'upgrade_benefits' => 'Débloquez une limite de téléversement vidéo plus élevée et d\'autres avantages exclusifs avec notre plan Premium.',
+    'view_packages' => 'Voir les Forfaits',
+    'manage_videos' => 'Gérer vos Vidéos',
+    'manage_existing_videos' => 'Révisionnez et gérez les vidéos que vous avez déjà téléversées. Vous pouvez supprimer les anciennes pour faire de la place.',
+    'view_my_videos' => 'Voir mes Vidéos',
+    'upgrade_now' => 'Passer à Premium Maintenant',
+    'video_limit' => 'Limite de Vidéos',
+    'premium_coming_soon' => 'Fonctionnalité Premium à venir',
+    
+    // My Videos
+    'my_videos' => 'Mes Vidéos',
+    'my_videos_description' => 'Gérez toutes vos vidéos téléversées',
+    'search_my_videos' => 'Rechercher dans vos vidéos...',
+    'all' => 'Toutes',
+    'approved' => 'Approuvées',
+    'pending' => 'En attente',
+    'rejected' => 'Rejetées',
+    'view' => 'Voir',
+    'confirm_delete_video' => 'Êtes-vous sûr de vouloir supprimer cette vidéo?',
+    'video_deleted_successfully' => 'Vidéo supprimée avec succès!',
+    'no_videos_yet' => 'Aucune vidéo pour le moment',
+    'upload_your_first_video' => 'Téléversez votre première vidéo pour commencer!',
+];
+

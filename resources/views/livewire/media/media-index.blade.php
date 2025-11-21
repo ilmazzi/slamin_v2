@@ -55,6 +55,31 @@
                     <p class="text-xl md:text-2xl text-white/80 mt-4 font-medium">
                         Dalla community Slamin
                     </p>
+                    
+                    {{-- Upload Buttons --}}
+                    @auth
+                        <div class="flex flex-col sm:flex-row gap-3 mt-6 justify-center md:justify-start">
+                            @can('upload.video')
+                                <a href="{{ route('media.upload.video') }}" 
+                                   class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-semibold shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span>{{ __('media.upload_video') }}</span>
+                                </a>
+                            @endcan
+                            
+                            @can('upload.photo')
+                                <a href="#" 
+                                   class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-accent-600 hover:bg-accent-700 text-white font-semibold shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span>{{ __('media.upload_photo') }}</span>
+                                </a>
+                            @endcan
+                        </div>
+                    @endauth
                 </div>
             </div>
         </div>

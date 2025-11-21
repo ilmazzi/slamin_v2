@@ -33,8 +33,14 @@ class ArticleCreate extends Component
     public function mount()
     {
         // Check authentication
-        if (!Auth::check()) {
+        $user = Auth::user();
+        if (!$user) {
             abort(403, 'Devi essere autenticato per creare un articolo');
+        }
+        
+        // Check permissions
+        if (!$user->canCreateArticle()) {
+            abort(403, 'Non hai i permessi per creare articoli');
         }
         
         // Load categories

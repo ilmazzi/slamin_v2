@@ -7,11 +7,10 @@ use App\Models\User;
 use App\Models\Event;
 use App\Models\Gig;
 use App\Models\GigApplication;
-// use App\Models\TranslationPayment; // Non esiste ancora in slamin_v2
+use App\Models\TranslationPayment;
 use App\Models\Video;
 use App\Models\Poem;
-// use App\Models\Group; // Verificare se esiste
-// use App\Models\ChatMessage; // Verificare se esiste
+use App\Models\Article;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,7 +35,7 @@ class AdminDashboard extends Component
             'total_users' => User::count(),
             'total_events' => Event::count(),
             'total_gigs' => Gig::count(),
-            'total_payments' => 0, // TranslationPayment non esiste ancora
+            'total_payments' => TranslationPayment::where('status', 'completed')->count(),
             'total_videos' => Video::count(),
             'total_poems' => Poem::count(),
             'total_groups' => 0, // TODO: Implementare quando Group sarà disponibile
@@ -59,7 +58,8 @@ class AdminDashboard extends Component
             'new_this_month' => User::where('created_at', '>=', $thisMonth)->count(),
             'active_users' => User::where('updated_at', '>=', Carbon::now()->subDays(7))->count(),
             'premium_users' => User::whereHas('subscriptions', function($query) {
-                $query->where('status', 'active');
+                $query->where('status', 'active')
+                      ->where('end_date', '>', Carbon::now());
             })->count(),
             'translators' => User::whereHas('languages')->count(), // Approssimazione
         ];
@@ -89,15 +89,24 @@ class AdminDashboard extends Component
      */
     public function getPaymentStatsProperty()
     {
-        // TODO: Implementare quando TranslationPayment sarà disponibile
+        $today = Carbon::today();
+        $thisWeek = Carbon::now()->startOfWeek();
+        $thisMonth = Carbon::now()->startOfMonth();
+        
         return [
-            'total_revenue' => 0,
-            'today_revenue' => 0,
-            'this_week_revenue' => 0,
-            'this_month_revenue' => 0,
-            'pending_payments' => 0,
-            'completed_payments' => 0,
-            'failed_payments' => 0,
+            'total_revenue' => TranslationPayment::where('status', 'completed')->sum('commission_total') ?? 0,
+            'today_revenue' => TranslationPayment::where('status', 'completed')
+                ->whereDate('created_at', $today)
+                ->sum('commission_total') ?? 0,
+            'this_week_revenue' => TranslationPayment::where('status', 'completed')
+                ->where('created_at', '>=', $thisWeek)
+                ->sum('commission_total') ?? 0,
+            'this_month_revenue' => TranslationPayment::where('status', 'completed')
+                ->where('created_at', '>=', $thisMonth)
+                ->sum('commission_total') ?? 0,
+            'pending_payments' => TranslationPayment::where('status', 'pending')->count(),
+            'completed_payments' => TranslationPayment::where('status', 'completed')->count(),
+            'failed_payments' => TranslationPayment::where('status', 'failed')->count(),
         ];
     }
 
@@ -109,12 +118,9 @@ class AdminDashboard extends Component
         return [
             'total_videos' => Video::count(),
             'total_poems' => Poem::count(),
-            'total_groups' => 0, // TODO: Implementare quando Group sarà disponibile
-            'total_messages' => 0, // TODO: Implementare quando ChatMessage sarà disponibile
             'videos_this_month' => Video::where('created_at', '>=', Carbon::now()->startOfMonth())->count(),
             'poems_this_month' => Poem::where('created_at', '>=', Carbon::now()->startOfMonth())->count(),
-            'groups_this_month' => 0, // TODO: Implementare quando Group sarà disponibile
-            'messages_this_month' => 0, // TODO: Implementare quando ChatMessage sarà disponibile
+            'articles_this_month' => Article::where('created_at', '>=', Carbon::now()->startOfMonth())->count(),
         ];
     }
 
@@ -124,10 +130,13 @@ class AdminDashboard extends Component
     public function getRecentActivityProperty()
     {
         $recentUsers = User::latest()->take(5)->get();
-        $recentEvents = Event::latest()->take(5)->get();
-        // TODO: Implementare quando TranslationPayment sarà disponibile
-        $recentPayments = collect([]);
-        $recentGigs = Gig::latest()->take(5)->get();
+        $recentEvents = Event::with('organizer')->latest()->take(5)->get();
+        $recentPayments = TranslationPayment::with(['client', 'translator'])
+            ->where('status', 'completed')
+            ->latest()
+            ->take(5)
+            ->get();
+        $recentGigs = Gig::with('user')->latest()->take(5)->get();
 
         return [
             'recent_users' => $recentUsers,

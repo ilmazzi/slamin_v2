@@ -33,5 +33,27 @@ return [
     'password_confirmed' => 'Les mots de passe ne correspondent pas',
     'invalid_credentials' => 'Identifiants invalides',
     'email_not_found' => 'Email introuvable',
+    'credentials_invalid' => 'Identifiants invalides',
+    'logout_success' => 'Déconnexion réussie',
+    'reset_link_failed' => 'Impossible d\'envoyer le lien de réinitialisation',
+    'password_reset_success' => 'Réinitialisation du mot de passe réussie',
+    'password_reset_failed' => 'Impossible de réinitialiser le mot de passe',
+    
+    // Welcome Messages
+    'welcome_back' => 'Bon retour, :name!',
+    'welcome_back_remember' => 'Bon retour, :name! Nous nous souviendrons de vous pour les prochaines visites.',
+    
+    // Email Verification
+    'email_verification_required' => 'Vérification Email Requise',
+    'email_verification_description' => 'Avant de continuer, veuillez vérifier votre adresse email en cliquant sur le lien que nous vous avons envoyé.',
+    'email_not_received' => 'Si vous n\'avez pas reçu l\'email',
+    'resend_verification' => 'Renvoyer l\'email de vérification',
+    'verification_link_sent' => 'Un nouveau lien de vérification a été envoyé à votre adresse email.',
+    'email_verified_success' => 'Email vérifié avec succès! Vous pouvez maintenant accéder à toutes les fonctionnalités.',
+    'verify_email_subject' => 'Vérifiez votre adresse email',
+    'verify_email_line1' => 'Veuillez cliquer sur le bouton ci-dessous pour vérifier votre adresse email.',
+    'verify_email_action' => 'Vérifier l\'adresse email',
+    'verify_email_line2' => 'Si vous n\'avez pas créé de compte, aucune autre action n\'est requise.',
+    'verify_email_line3' => 'Ce lien de vérification expirera dans 60 minutes.',
 ];
 

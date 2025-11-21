@@ -395,7 +395,8 @@
                         ⚡ {{ __('feed.quick_actions') }}
                     </h3>
                     <div class="space-y-2">
-                        <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors group">
+                        @can('create.poem')
+                        <a href="{{ route('poems.create') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors group">
                             <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                                 <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -403,6 +404,8 @@
                             </div>
                             <span class="font-medium text-neutral-900 dark:text-white">{{ __('feed.write_poem') }}</span>
                         </a>
+                        @endcan
+                        @can('upload.video')
                         <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors group">
                             <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                                 <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -411,6 +414,8 @@
                             </div>
                             <span class="font-medium text-neutral-900 dark:text-white">{{ __('feed.upload_video') }}</span>
                         </a>
+                        @endcan
+                        @can('create.event')
                         <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors group">
                             <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                                 <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -419,6 +424,7 @@
                             </div>
                             <span class="font-medium text-neutral-900 dark:text-white">{{ __('feed.create_event') }}</span>
                         </a>
+                        @endcan
                     </div>
                 </div>
 

@@ -7,7 +7,6 @@ use App\Services\ThumbnailService;
 use App\Services\ActivityService;
 use App\Services\BadgeService;
 use App\Jobs\GenerateVideoThumbnailJob;
-use App\Jobs\UpdatePeerTubeVideoStatusJob;
 use Illuminate\Support\Facades\Log;
 
 class VideoObserver
@@ -36,10 +35,11 @@ class VideoObserver
             $this->badgeService->checkAndAwardBadge($video->user, 'videos', $video);
         }
 
-        // Se è un video PeerTube in elaborazione, lancia il job di controllo
+        // Nota: Durante l'upload, PeerTube restituisce già la thumbnail e lo stato.
+        // Se necessario controllare periodicamente lo stato (quando PeerTube finisce il transcoding),
+        // possiamo aggiungere un job asincrono, ma per ora gestiamo tutto durante l'upload.
         if ($video->peertube_uuid && $video->peertube_status === 'processing') {
-            Log::info("🔄 Lanciando job controllo stato PeerTube per video {$video->id}");
-            UpdatePeerTubeVideoStatusJob::dispatch($video)->delay(now()->addMinutes(1));
+            Log::info("📹 Video PeerTube in elaborazione: {$video->id} - Lo stato verrà aggiornato quando PeerTube avrà finito il processing");
         }
 
         // Genera thumbnail automaticamente se non esiste (in background)

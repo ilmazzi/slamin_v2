@@ -14,6 +14,8 @@ return [
     'cancel' => 'Annulla',
     'save' => 'Salva',
     'close' => 'Chiudi',
+    'enabled' => 'Abilitato',
+    'disabled' => 'Disabilitato',
     'hide' => 'Nascondi',
     'show' => 'Mostra',
     'show_more' => 'Mostra di più',
@@ -45,6 +47,7 @@ return [
     'no_results' => 'Nessun risultato trovato',
     'back_to_poems' => 'Torna alle poesie',
     'back_to' => 'Torna a',
+    'back_to_media' => 'Torna ai Media',
     'all' => 'Tutti',
     'home' => 'Home',
 ];

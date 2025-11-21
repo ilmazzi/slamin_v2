@@ -14,6 +14,8 @@ return [
     'cancel' => 'Cancel',
     'save' => 'Save',
     'close' => 'Close',
+    'enabled' => 'Enabled',
+    'disabled' => 'Disabled',
     'hide' => 'Hide',
     'show' => 'Show',
     'show_more' => 'Show more',

@@ -50,5 +50,17 @@ return [
     'role_venue_owner' => 'Proprietario Locale',
     'role_technician' => 'Tecnico',
     'role_audience' => 'Spettatore',
+    
+    // Welcome Messages
+    'welcome_back' => 'Ti diamo il bentornato, :name!',
+    'welcome_back_remember' => 'Ti diamo il bentornato, :name! Ti ricorderemo per i prossimi accessi.',
+    
+    // Email Verification
+    'verify_email_subject' => 'Verifica il tuo indirizzo email',
+    'verify_email_line1' => 'Clicca sul pulsante sottostante per verificare il tuo indirizzo email.',
+    'verify_email_action' => 'Verifica Indirizzo Email',
+    'verify_email_line2' => 'Se non hai creato un account, non è necessaria alcuna azione.',
+    'verify_email_line3' => 'Questo link di verifica scadrà tra 60 minuti.',
+    'email_verified_success' => 'Email verificata con successo! Ora puoi accedere a tutte le funzionalità.',
 ];
 

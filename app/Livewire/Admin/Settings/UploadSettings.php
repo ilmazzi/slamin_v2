@@ -25,21 +25,37 @@ class UploadSettings extends Component
         $this->settings = SystemSetting::where('group', 'upload')
             ->get()
             ->mapWithKeys(function ($setting) {
+                // Converti il valore in base al tipo
                 $value = $setting->value;
-
-                // Gestisci valori JSON
-                if (is_string($value) && $this->isJson($value)) {
-                    $decoded = json_decode($value, true);
-                    if (isset($decoded['value'])) {
-                        $value = is_string($decoded['value']) && $this->isJson($decoded['value']) 
-                            ? json_decode($decoded['value'], true)['value'] ?? $decoded['value']
-                            : $decoded['value'];
-                    }
+                
+                switch ($setting->type) {
+                    case 'integer':
+                        $value = (int) $value;
+                        break;
+                    case 'boolean':
+                        $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                        break;
+                    case 'json':
+                        if (is_string($value)) {
+                            $decoded = json_decode($value, true);
+                            $value = $decoded ?? [];
+                        } elseif (!is_array($value)) {
+                            $value = [];
+                        }
+                        break;
+                    case 'float':
+                        $value = (float) $value;
+                        break;
+                    default:
+                        $value = (string) $value;
+                        break;
                 }
 
-                // Normalizza valore
-                if (is_array($value)) {
-                    $value = json_encode($value);
+                // Normalizza valore per la vista
+                if ($setting->type === 'json' && is_array($value)) {
+                    $value = json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                } elseif ($setting->type === 'boolean') {
+                    $value = $value ? '1' : '0';
                 } elseif (is_null($value)) {
                     $value = '';
                 } else {
@@ -80,14 +96,29 @@ class UploadSettings extends Component
                         'value' => $value,
                     ]);
                 } else {
-                    $validatedValue = $this->validateValue($value, $setting->type);
-
-                    if ($validatedValue === false) {
-                        $errors[] = "Valore non valido per '{$setting->display_name}'";
-                        continue;
+                    // Gestisci valori boolean come stringhe '1'/'0'
+                    if ($setting->type === 'boolean') {
+                        $value = ($value === '1' || $value === 1 || $value === true || $value === 'true') ? 'true' : 'false';
                     }
-
-                    $setting->value = is_array($validatedValue) ? json_encode($validatedValue) : (string) $validatedValue;
+                    
+                    // Gestisci valori JSON da stringhe
+                    if ($setting->type === 'json') {
+                        if (is_string($value)) {
+                            $decoded = json_decode($value, true);
+                            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                                $value = json_encode($decoded);
+                            } else {
+                                $errors[] = "Valore JSON non valido per '{$setting->display_name}'";
+                                continue;
+                            }
+                        } elseif (is_array($value)) {
+                            $value = json_encode($value);
+                        }
+                    } else {
+                        $value = (string) $value;
+                    }
+                    
+                    $setting->value = $value;
                     $setting->save();
                 }
 
@@ -127,8 +158,18 @@ class UploadSettings extends Component
 
     public function resetSettings()
     {
-        // TODO: Implementare reset impostazioni upload
-        session()->flash('message', 'Reset impostazioni upload');
+        try {
+            // Rimuovi tutte le impostazioni di upload
+            SystemSetting::where('group', 'upload')->delete();
+            
+            // Reinizializza le impostazioni di default
+            SystemSetting::initializeDefaults();
+            
+            $this->loadSettings();
+            session()->flash('message', __('admin.settings.upload.reset_success'));
+        } catch (\Exception $e) {
+            session()->flash('error', __('admin.settings.upload.reset_error') . ': ' . $e->getMessage());
+        }
     }
 
     public function render()

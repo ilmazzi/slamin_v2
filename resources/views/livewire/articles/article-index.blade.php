@@ -36,6 +36,7 @@
                     </p>
                     
                     @auth
+                        @can('create.article')
                         <div class="mt-6">
                             <a href="{{ route('articles.create') }}" 
                                class="group inline-flex items-center gap-3 px-6 py-3 rounded-xl
@@ -52,6 +53,7 @@
                                 <span>{{ __('articles.create.create_button') }}</span>
                             </a>
                         </div>
+                        @endcan
                     @endauth
                 </div>
             </div>

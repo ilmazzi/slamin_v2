@@ -221,8 +221,13 @@ class EventEdit extends Component
             abort(403, 'Devi essere autenticato per modificare eventi');
         }
 
-        // Check if user is organizer or admin
-        if ($event->organizer_id !== $user->id && !$user->canOrganizeEvents()) {
+        // Check general permission to create/edit events
+        if (!$user->canCreateEvent()) {
+            abort(403, 'Non hai i permessi per modificare eventi');
+        }
+
+        // Check if user is organizer of this event or admin/moderator
+        if ($event->organizer_id !== $user->id && !$user->canModerateContent()) {
             abort(403, 'Non hai i permessi per modificare questo evento');
         }
 

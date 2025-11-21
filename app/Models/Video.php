@@ -102,22 +102,47 @@ class Video extends Model
      */
     public function getThumbnailUrlAttribute()
     {
-        // Controlla se c'è un thumbnail URL completo (PeerTube o altro)
+        // PRIORITÀ 1: Thumbnail da PeerTube (viene sempre da lì!)
+        if ($this->peertube_thumbnail_url && !empty($this->peertube_thumbnail_url)) {
+            return $this->peertube_thumbnail_url;
+        }
+
+        // PRIORITÀ 2: thumbnail_path se è un URL completo (PeerTube o altro)
         if ($this->thumbnail_path && filter_var($this->thumbnail_path, FILTER_VALIDATE_URL)) {
             return $this->thumbnail_path;
         }
 
-        // Controlla se c'è un thumbnail locale (path relativo)
+        // PRIORITÀ 3: thumbnail_path se è un path locale (path relativo)
         if ($this->thumbnail_path) {
             return Storage::url($this->thumbnail_path);
         }
 
-        // Controlla il campo thumbnail generico
+        // PRIORITÀ 4: Campo thumbnail generico
         if ($this->thumbnail) {
             return asset('storage/' . $this->thumbnail);
         }
 
-        // Fallback: placeholder generico
+        // FALLBACK: Se è un video PeerTube ma non abbiamo la thumbnail, proviamo a recuperarla
+        if ($this->peertube_video_id || $this->peertube_uuid) {
+            try {
+                $thumbnailService = app(\App\Services\ThumbnailService::class);
+                $thumbnailUrl = $thumbnailService->getPeerTubeThumbnailUrl($this);
+                
+                if ($thumbnailUrl) {
+                    // Salva la thumbnail recuperata nel database
+                    $this->update([
+                        'peertube_thumbnail_url' => $thumbnailUrl,
+                        'thumbnail_path' => $thumbnailUrl
+                    ]);
+                    
+                    return $thumbnailUrl;
+                }
+            } catch (\Exception $e) {
+                \Log::warning("Errore recupero thumbnail on-the-fly per video {$this->id}: " . $e->getMessage());
+            }
+        }
+
+        // Fallback finale: placeholder generico
         return asset('assets/images/placeholder/placholder-1.jpg');
     }
 

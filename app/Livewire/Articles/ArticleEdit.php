@@ -40,11 +40,18 @@ class ArticleEdit extends Component
         $this->articleId = $this->article->id;
         
         // Check permissions
-        if (!Auth::check()) {
+        $user = Auth::user();
+        if (!$user) {
             abort(403, 'Devi essere autenticato per modificare un articolo');
         }
         
-        if (Auth::id() !== $this->article->user_id && !Auth::user()->hasRole(['admin', 'editor'])) {
+        // Check general permission
+        if (!$user->canCreateArticle()) {
+            abort(403, 'Non hai i permessi per modificare articoli');
+        }
+        
+        // Check if user owns the article or is admin/moderator
+        if ($user->id !== $this->article->user_id && !$user->canModerateContent()) {
             abort(403, 'Non hai i permessi per modificare questo articolo');
         }
         

@@ -97,32 +97,47 @@ class DashboardIndex extends Component
     
     private function getQuickActions($user)
     {
-        return [
-            [
+        $actions = [];
+        
+        // Scrivere poesie
+        if ($user->canCreatePoem()) {
+            $actions[] = [
                 'icon' => 'ph-pen-nib',
                 'title' => __('dashboard.write_poem'),
                 'description' => __('dashboard.write_poem_description'),
-                'url' => '#', // route('poems.create')
-            ],
-            [
+                'url' => route('poems.create'),
+            ];
+        }
+        
+        // Creare eventi
+        if ($user->canCreateEvent()) {
+            $actions[] = [
                 'icon' => 'ph-calendar-plus',
                 'title' => __('dashboard.create_event'),
                 'description' => __('dashboard.create_event_description'),
-                'url' => '#', // route('events.create')
-            ],
-            [
+                'url' => route('events.create'),
+            ];
+        }
+        
+        // Caricare video
+        if ($user->canUploadVideo()) {
+            $actions[] = [
                 'icon' => 'ph-video-camera',
                 'title' => __('dashboard.upload_video'),
                 'description' => __('dashboard.upload_video_description'),
-                'url' => '#', // route('videos.create')
-            ],
-            [
-                'icon' => 'ph-compass',
-                'title' => __('dashboard.explore_content'),
-                'description' => __('dashboard.explore_content_description'),
-                'url' => '#', // route('explore')
-            ],
+                'url' => '#', // route('videos.create') - da implementare
+            ];
+        }
+        
+        // Esplorare contenuti (sempre disponibile)
+        $actions[] = [
+            'icon' => 'ph-compass',
+            'title' => __('dashboard.explore_content'),
+            'description' => __('dashboard.explore_content_description'),
+            'url' => '#', // route('explore') - da implementare
         ];
+        
+        return $actions;
     }
     
     private function getSocialActivities($user)

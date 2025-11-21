@@ -26,6 +26,7 @@
                     </p>
                     
                     @auth
+                        @can('create.poem')
                         <div class="mt-6">
                             <a href="{{ route('poems.create') }}" 
                                class="group inline-flex items-center gap-3 px-6 py-3 rounded-xl
@@ -42,6 +43,7 @@
                                 <span>{{ __('poems.create.write_poem') }}</span>
                             </a>
                         </div>
+                        @endcan
                     @endauth
                 </div>
             </div>

@@ -88,15 +88,12 @@ class UserList extends Component
 
     public function openEditModal($userId)
     {
-        $user = User::with(['roles', 'permissions'])->findOrFail($userId);
+        $user = User::findOrFail($userId);
         $this->editingUser = $user;
         $this->name = $user->name;
         $this->email = $user->email;
         $this->nickname = $user->nickname ?? '';
         $this->userStatus = $user->status ?? 'active';
-        // TODO: Implementare quando roles/permissions saranno disponibili
-        // $this->roles = $user->roles->pluck('id')->toArray();
-        // $this->permissions = $user->permissions->pluck('id')->toArray();
         $this->showEditModal = true;
     }
 
@@ -117,7 +114,7 @@ class UserList extends Component
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->editingUser->id)],
             'nickname' => 'nullable|string|max:50',
-            'userStatus' => 'required|in:active,inactive',
+            'userStatus' => 'required|in:active,inactive,suspended,banned',
             'roles' => 'array',
             'permissions' => 'array',
         ]);
@@ -137,7 +134,7 @@ class UserList extends Component
         //     $this->editingUser->syncPermissions($this->permissions);
         // }
 
-        session()->flash('message', 'Utente aggiornato con successo');
+        session()->flash('message', __('admin.users.updated_success'));
         $this->closeEditModal();
     }
 
@@ -147,9 +144,16 @@ class UserList extends Component
         $currentUser = Auth::user();
 
         // Controlli sicurezza
-        if ($user->hasRole('admin') && !$currentUser->hasRole('super-admin') && User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->count() <= 1) {
-            session()->flash('error', 'Non puoi eliminare l\'ultimo admin');
-            return;
+        if ($user->hasRole('admin')) {
+            // Conta admin nel database
+            $adminCount = User::all()->filter(function($u) {
+                return $u->hasRole('admin');
+            })->count();
+            
+            if ($adminCount <= 1) {
+                session()->flash('error', __('admin.users.cannot_delete_last_admin'));
+                return;
+            }
         }
 
         try {
@@ -164,9 +168,9 @@ class UserList extends Component
             // Elimina utente
             $user->delete();
 
-            session()->flash('message', 'Utente eliminato con successo');
+            session()->flash('message', __('admin.users.deleted_success'));
         } catch (\Exception $e) {
-            session()->flash('error', 'Errore durante l\'eliminazione: ' . $e->getMessage());
+            session()->flash('error', __('admin.users.delete_error') . ': ' . $e->getMessage());
             Log::error('Errore eliminazione utente', [
                 'user_id' => $userId,
                 'error' => $e->getMessage()
@@ -186,19 +190,24 @@ class UserList extends Component
 
     public function getStatsProperty()
     {
+        $allUsers = User::all();
+        $adminCount = $allUsers->filter(function($u) {
+            return $u->hasRole('admin');
+        })->count();
+        
         return [
             'total' => User::count(),
-            'active' => User::where('status', 'active')->count(),
+            'active' => User::where('status', 'active')->orWhereNull('status')->count(),
             'inactive' => User::where('status', 'inactive')->count(),
-            'admins' => User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->count(),
+            'suspended' => User::where('status', 'suspended')->count(),
+            'banned' => User::where('status', 'banned')->count(),
+            'admins' => $adminCount,
         ];
     }
 
     public function render()
     {
-        $query = User::query()
-            ->with(['roles', 'permissions'])
-            ->orderBy($this->sortBy, $this->sortDirection);
+        $query = User::query()->orderBy($this->sortBy, $this->sortDirection);
 
         // Filtri
         if ($this->search) {
@@ -210,19 +219,38 @@ class UserList extends Component
         }
 
         if ($this->status !== 'all') {
-            $query->where('status', $this->status);
+            if ($this->status === 'active') {
+                $query->where(function($q) {
+                    $q->where('status', 'active')->orWhereNull('status');
+                });
+            } else {
+                $query->where('status', $this->status);
+            }
         }
 
+        // Filtro per ruolo - dobbiamo filtrare in memoria perché non c'è relazione
+        $users = $query->get();
+        
         if ($this->role !== 'all') {
-            $query->whereHas('roles', function($q) {
-                $q->where('name', $this->role);
+            $users = $users->filter(function($user) {
+                return $user->hasRole($this->role);
             });
         }
 
-        $users = $query->paginate(12);
+        // Paginazione manuale
+        $currentPage = $this->getPage();
+        $perPage = 12;
+        $items = $users->slice(($currentPage - 1) * $perPage, $perPage)->values();
+        $usersPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $users->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
 
         return view('livewire.admin.users.user-list', [
-            'users' => $users,
+            'users' => $usersPaginated,
         ])->layout('components.layouts.app');
     }
 }

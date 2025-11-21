@@ -32,11 +32,22 @@ class PoemEdit extends Component
     
     public function mount($slug)
     {
+        // Check authentication
+        $user = Auth::user();
+        if (!$user) {
+            abort(403, 'Devi essere autenticato per modificare poesie');
+        }
+        
+        // Check permissions
+        if (!$user->canCreatePoem()) {
+            abort(403, 'Non hai i permessi per modificare poesie');
+        }
+        
         // Trova poesia per slug
         $this->poem = Poem::where('slug', $slug)->firstOrFail();
         
-        // Verifica autorizzazione
-        if (!$this->poem->canBeEditedBy(Auth::user())) {
+        // Verifica autorizzazione (proprietario o admin)
+        if (!$this->poem->canBeEditedBy($user)) {
             abort(403, 'Non sei autorizzato a modificare questa poesia');
         }
         

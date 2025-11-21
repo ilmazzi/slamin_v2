@@ -23,28 +23,31 @@ class SystemSettings extends Component
 
     public function loadSettings()
     {
-        $groups = [
-            'upload' => 'Limiti Upload',
-            'video' => 'Limiti Video',
-            'moderation' => 'Moderazione',
-            'payment' => 'Pagamenti e Commissioni',
-            'system' => 'Impostazioni'
-        ];
-
         $this->settings = [];
         
-        foreach ($groups as $group => $displayName) {
+        // Lista dei gruppi disponibili
+        $groups = ['upload', 'video', 'moderation', 'payment', 'system'];
+        
+        foreach ($groups as $group) {
             $groupSettings = SystemSetting::getGroup($group);
 
             foreach ($groupSettings as $key => $setting) {
                 if (is_array($setting)) {
-                    $this->settings[$group][$key] = $setting;
+                    // Traduci display_name e description se possibile
+                    $translationKey = "admin.settings.system.setting.{$key}";
+                    $this->settings[$group][$key] = [
+                        'value' => $setting['value'] ?? '',
+                        'type' => $setting['type'] ?? 'string',
+                        'display_name' => __("admin.settings.system.setting.{$key}.display_name", [], null, $setting['display_name'] ?? ucfirst(str_replace('_', ' ', $key))),
+                        'description' => __("admin.settings.system.setting.{$key}.description", [], null, $setting['description'] ?? ''),
+                    ];
                 } else {
+                    $translationKey = "admin.settings.system.setting.{$key}";
                     $this->settings[$group][$key] = [
                         'value' => $setting,
                         'type' => 'string',
-                        'display_name' => ucfirst(str_replace('_', ' ', $key)),
-                        'description' => ''
+                        'display_name' => __("admin.settings.system.setting.{$key}.display_name", [], null, ucfirst(str_replace('_', ' ', $key))),
+                        'description' => __("admin.settings.system.setting.{$key}.description", [], null, ''),
                     ];
                 }
             }
@@ -168,11 +171,11 @@ class SystemSettings extends Component
     public function getGroupsProperty()
     {
         return [
-            'upload' => 'Limiti Upload',
-            'video' => 'Limiti Video',
-            'moderation' => 'Moderazione',
-            'payment' => 'Pagamenti e Commissioni',
-            'system' => 'Impostazioni'
+            'upload' => 'upload',
+            'video' => 'video',
+            'moderation' => 'moderation',
+            'payment' => 'payment',
+            'system' => 'system'
         ];
     }
 

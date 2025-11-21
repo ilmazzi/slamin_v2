@@ -14,6 +14,8 @@ return [
     'cancel' => 'Annuler',
     'save' => 'Enregistrer',
     'close' => 'Fermer',
+    'enabled' => 'Activé',
+    'disabled' => 'Désactivé',
     'hide' => 'Masquer',
     'show' => 'Afficher',
     'show_more' => 'Afficher plus',

@@ -14,8 +14,11 @@ use App\Models\VideoLike;
 use App\Models\Video;
 use App\Models\SystemSetting;
 use App\Models\UserLanguage;
+use App\Models\Role;
+use App\Models\Permission;
 // use App\Services\OnlineStatusService; // Removed - not needed
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -128,17 +131,41 @@ class User extends Authenticatable implements MustVerifyEmail
      */
 
     /**
-     * Temporary role methods - Will be replaced with Spatie Permission
+     * Relazione con i ruoli (many-to-many polimorfa)
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'model_has_roles', 'model_id', 'role_id')
+                    ->where('model_has_roles.model_type', self::class)
+                    ->withPivot('model_type');
+    }
+
+    /**
+     * Relazione con i permessi diretti (many-to-many polimorfa)
+     */
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'model_has_permissions', 'model_id', 'permission_id')
+                    ->wherePivot('model_type', self::class)
+                    ->withPivot('model_type');
+    }
+
+    /**
+     * Ottiene tutti i nomi dei ruoli dell'utente
      */
     public function getRoleNames()
     {
-        // TODO: Replace with Spatie Permission when installed
-        // Check database first (model_has_roles table)
         try {
+            // Usa la relazione se disponibile
+            if ($this->relationLoaded('roles')) {
+                return $this->roles->pluck('name');
+            }
+            
+            // Altrimenti query diretta
             if (DB::getSchemaBuilder()->hasTable('model_has_roles') && DB::getSchemaBuilder()->hasTable('roles')) {
                 $dbRoles = DB::table('model_has_roles')
                     ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-                    ->where('model_has_roles.model_type', 'App\\Models\\User')
+                    ->where('model_has_roles.model_type', self::class)
                     ->where('model_has_roles.model_id', $this->id)
                     ->pluck('roles.name');
                 
@@ -159,22 +186,152 @@ class User extends Authenticatable implements MustVerifyEmail
         return collect(['poet', 'organizer']);
     }
 
+    /**
+     * Verifica se l'utente ha un ruolo specifico
+     */
     public function hasRole($role): bool
     {
-        // TODO: Replace with Spatie Permission when installed
-        return $this->getRoleNames()->contains($role);
+        if ($role instanceof Role) {
+            return $this->roles()->where('roles.id', $role->id)->exists();
+        }
+
+        return $this->roles()->where('roles.name', $role)->exists() 
+            || $this->getRoleNames()->contains($role);
     }
 
+    /**
+     * Verifica se l'utente ha almeno uno dei ruoli specificati
+     */
     public function hasAnyRole($roles): bool
     {
-        // TODO: Replace with Spatie Permission when installed
-        $roleNames = $this->getRoleNames();
         foreach ((array)$roles as $role) {
-            if ($roleNames->contains($role)) {
+            if ($this->hasRole($role)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Verifica se l'utente ha un permesso specifico
+     */
+    public function hasPermissionTo($permission): bool
+    {
+        // Admin ha sempre tutti i permessi
+        if ($this->hasRole('admin')) {
+            return true;
+        }
+        
+        // Permessi diretti
+        if ($permission instanceof Permission) {
+            if ($this->permissions()->where('permissions.id', $permission->id)->exists()) {
+                return true;
+            }
+        } else {
+            if ($this->permissions()->where('permissions.name', $permission)->exists()) {
+                return true;
+            }
+        }
+
+        // Permessi tramite ruoli
+        foreach ($this->roles()->get() as $role) {
+            if ($role->hasPermissionTo($permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Assegna un ruolo all'utente
+     */
+    public function assignRole(Role|string $role): self
+    {
+        if (is_string($role)) {
+            $role = Role::where('name', $role)->firstOrFail();
+        }
+
+        if (!$this->hasRole($role)) {
+            DB::table('model_has_roles')->insert([
+                'role_id' => $role->id,
+                'model_type' => self::class,
+                'model_id' => $this->id,
+            ]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Rimuove un ruolo dall'utente
+     */
+    public function removeRole(Role|string $role): self
+    {
+        if (is_string($role)) {
+            $role = Role::where('name', $role)->first();
+            if (!$role) {
+                return $this;
+            }
+        }
+
+        DB::table('model_has_roles')
+            ->where('role_id', $role->id)
+            ->where('model_type', self::class)
+            ->where('model_id', $this->id)
+            ->delete();
+
+        return $this;
+    }
+
+    /**
+     * Sincronizza i ruoli dell'utente
+     */
+    public function syncRoles(array $roles): self
+    {
+        $roleIds = collect($roles)->map(function ($role) {
+            if ($role instanceof Role) {
+                return $role->id;
+            }
+            return Role::where('name', $role)->first()?->id;
+        })->filter()->toArray();
+
+        // Rimuovi tutti i ruoli esistenti
+        DB::table('model_has_roles')
+            ->where('model_type', self::class)
+            ->where('model_id', $this->id)
+            ->delete();
+
+        // Aggiungi i nuovi ruoli
+        foreach ($roleIds as $roleId) {
+            DB::table('model_has_roles')->insert([
+                'role_id' => $roleId,
+                'model_type' => self::class,
+                'model_id' => $this->id,
+            ]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Assegna un permesso all'utente
+     */
+    public function givePermissionTo(Permission|string $permission): self
+    {
+        if (is_string($permission)) {
+            $permission = Permission::where('name', $permission)->firstOrFail();
+        }
+
+        if (!$this->hasPermissionTo($permission)) {
+            DB::table('model_has_permissions')->insert([
+                'permission_id' => $permission->id,
+                'model_type' => self::class,
+                'model_id' => $this->id,
+            ]);
+        }
+
+        return $this;
     }
 
     /**
@@ -260,6 +417,110 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isOrganizer(): bool
     {
         return $this->hasRole('organizer');
+    }
+    
+    /**
+     * Check if user can upload videos
+     */
+    public function canUploadVideo(): bool
+    {
+        // Admin e moderator hanno sempre permesso
+        if ($this->hasAnyRole(['admin', 'moderator'])) {
+            return true;
+        }
+        
+        // Verifica permesso diretto
+        if ($this->hasPermissionTo('upload.video')) {
+            return true;
+        }
+        
+        // Verifica ruoli che possono caricare video
+        return $this->hasAnyRole(['poet', 'organizer']);
+    }
+    
+    /**
+     * Check if user can create poems
+     */
+    public function canCreatePoem(): bool
+    {
+        // Admin e moderator hanno sempre permesso
+        if ($this->hasAnyRole(['admin', 'moderator'])) {
+            return true;
+        }
+        
+        // Verifica permesso diretto
+        if ($this->hasPermissionTo('create.poem')) {
+            return true;
+        }
+        
+        // Verifica ruoli che possono creare poesie
+        return $this->hasRole('poet');
+    }
+    
+    /**
+     * Check if user can create events
+     */
+    public function canCreateEvent(): bool
+    {
+        // Admin e moderator hanno sempre permesso
+        if ($this->hasAnyRole(['admin', 'moderator'])) {
+            return true;
+        }
+        
+        // Verifica permesso diretto
+        if ($this->hasPermissionTo('create.event')) {
+            return true;
+        }
+        
+        // Verifica ruoli che possono creare eventi
+        return $this->hasRole('organizer');
+    }
+    
+    /**
+     * Check if user can upload photos
+     */
+    public function canUploadPhoto(): bool
+    {
+        // Admin e moderator hanno sempre permesso
+        if ($this->hasAnyRole(['admin', 'moderator'])) {
+            return true;
+        }
+        
+        // Verifica permesso diretto
+        if ($this->hasPermissionTo('upload.photo')) {
+            return true;
+        }
+        
+        // Verifica ruoli che possono caricare foto
+        return $this->hasAnyRole(['poet', 'organizer', 'venue_owner']);
+    }
+    
+    /**
+     * Check if user can create articles
+     */
+    public function canCreateArticle(): bool
+    {
+        // Admin e moderator hanno sempre permesso
+        if ($this->hasAnyRole(['admin', 'moderator'])) {
+            return true;
+        }
+        
+        // Verifica permesso diretto
+        return $this->hasPermissionTo('create.article');
+    }
+    
+    /**
+     * Check if user can moderate content
+     */
+    public function canModerateContent(): bool
+    {
+        // Admin e moderator hanno sempre permesso
+        if ($this->hasAnyRole(['admin', 'moderator'])) {
+            return true;
+        }
+        
+        // Verifica permesso diretto
+        return $this->hasPermissionTo('moderate.content');
     }
 
     /**
@@ -429,8 +690,16 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getRoleDisplayNameAttribute(): string
     {
-        $role = $this->roles->first();
-        return $role ? $role->name : 'audience';
+        try {
+            if ($this->relationLoaded('roles') && $this->roles->isNotEmpty()) {
+                return $this->roles->first()->name;
+            }
+            $roleNames = $this->getRoleNames();
+            return $roleNames->isNotEmpty() ? $roleNames->first() : 'audience';
+        } catch (\Exception $e) {
+            $roleNames = $this->getRoleNames();
+            return $roleNames->isNotEmpty() ? $roleNames->first() : 'audience';
+        }
     }
 
     /**
@@ -452,13 +721,18 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getDisplayRoles(): array
     {
-        return $this->roles->pluck('name')->toArray();
+        try {
+            if ($this->relationLoaded('roles')) {
+                return $this->roles->pluck('name')->toArray();
+            }
+            return $this->getRoleNames()->toArray();
+        } catch (\Exception $e) {
+            return $this->getRoleNames()->toArray();
+        }
     }
 
-    public function getMorphClass(): string
-    {
-        return 'user';
-    }
+    // Removed getMorphClass() as it causes issues with Livewire
+    // Livewire uses the fully qualified class name by default
 
     /**
      * Check if user is active (for future status management)

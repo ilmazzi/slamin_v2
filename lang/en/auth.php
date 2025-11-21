@@ -33,5 +33,27 @@ return [
     'password_confirmed' => 'Passwords do not match',
     'invalid_credentials' => 'Invalid credentials',
     'email_not_found' => 'Email not found',
+    'credentials_invalid' => 'Invalid credentials',
+    'logout_success' => 'Logout successful',
+    'reset_link_failed' => 'Unable to send reset link',
+    'password_reset_success' => 'Password reset successful',
+    'password_reset_failed' => 'Unable to reset password',
+    
+    // Welcome Messages
+    'welcome_back' => 'Welcome back, :name!',
+    'welcome_back_remember' => 'Welcome back, :name! We\'ll remember you for future visits.',
+    
+    // Email Verification
+    'email_verification_required' => 'Email Verification Required',
+    'email_verification_description' => 'Before proceeding, please verify your email address by clicking the link we sent to you.',
+    'email_not_received' => 'If you did not receive the email',
+    'resend_verification' => 'Resend Verification Email',
+    'verification_link_sent' => 'A new verification link has been sent to your email address.',
+    'email_verified_success' => 'Email verified successfully! You can now access all features.',
+    'verify_email_subject' => 'Verify Your Email Address',
+    'verify_email_line1' => 'Please click the button below to verify your email address.',
+    'verify_email_action' => 'Verify Email Address',
+    'verify_email_line2' => 'If you did not create an account, no further action is required.',
+    'verify_email_line3' => 'This verification link will expire in 60 minutes.',
 ];
 
