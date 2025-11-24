@@ -12,7 +12,7 @@ class ChatIndex extends Component
     public $search = '';
 
     protected $listeners = [
-        'conversationSelected' => 'selectConversation',
+        'conversationSelected' => 'handleConversationSelected',
         'backToList' => 'backToList',
     ];
 
@@ -27,6 +27,11 @@ class ChatIndex extends Component
                 $conversation->markAsRead(Auth::user());
             }
         }
+    }
+
+    public function handleConversationSelected($conversationId)
+    {
+        $this->selectConversation($conversationId);
     }
 
     public function selectConversation($conversationId)
