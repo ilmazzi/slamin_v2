@@ -17,10 +17,12 @@ class GroupInvitation extends Model
         'status',
         'message',
         'responded_at',
+        'expires_at',
     ];
 
     protected $casts = [
         'responded_at' => 'datetime',
+        'expires_at' => 'datetime',
     ];
 
     public function group(): BelongsTo
@@ -64,5 +66,21 @@ class GroupInvitation extends Model
             'status' => 'declined',
             'responded_at' => now(),
         ]);
+    }
+
+    /**
+     * Verifica se l'invito è scaduto
+     */
+    public function isExpired(): bool
+    {
+        return $this->expires_at && $this->expires_at->isPast();
+    }
+
+    /**
+     * Marca l'invito come scaduto
+     */
+    public function markAsExpired(): void
+    {
+        $this->update(['status' => 'expired']);
     }
 }
