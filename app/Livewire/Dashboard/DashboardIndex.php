@@ -125,7 +125,7 @@ class DashboardIndex extends Component
                 'icon' => 'ph-video-camera',
                 'title' => __('dashboard.upload_video'),
                 'description' => __('dashboard.upload_video_description'),
-                'url' => '#', // route('videos.create') - da implementare
+                'url' => route('media.upload.video'),
             ];
         }
         
