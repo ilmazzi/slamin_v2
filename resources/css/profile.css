@@ -1048,6 +1048,56 @@
     color: #86efac;
 }
 
+/* Spoken vs Written distinction */
+.language-flag-tag.spoken {
+    border-color: rgba(59, 130, 246, 0.4);
+}
+
+.language-flag-tag.written {
+    border-color: rgba(168, 85, 247, 0.4);
+}
+
+.dark .language-flag-tag.spoken {
+    border-color: rgba(96, 165, 250, 0.5);
+}
+
+.dark .language-flag-tag.written {
+    border-color: rgba(192, 132, 252, 0.5);
+}
+
+.language-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.language-type-badge.spoken {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.15));
+    color: #1e40af;
+}
+
+.language-type-badge.written {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.15));
+    color: #6b21a8;
+}
+
+.dark .language-type-badge.spoken {
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.25), rgba(96, 165, 250, 0.15));
+    color: #93c5fd;
+}
+
+.dark .language-type-badge.written {
+    background: linear-gradient(135deg, rgba(192, 132, 252, 0.25), rgba(192, 132, 252, 0.15));
+    color: #c4b5fd;
+}
+
 .flag-emoji {
     font-size: 1.5rem;
     line-height: 1;

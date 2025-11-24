@@ -144,9 +144,15 @@
                                         <span class="flag-emoji">{{ $language->language_code === 'it' ? '🇮🇹' : ($language->language_code === 'en' ? '🇬🇧' : ($language->language_code === 'fr' ? '🇫🇷' : ($language->language_code === 'es' ? '🇪🇸' : ($language->language_code === 'de' ? '🇩🇪' : '🌐')))) }}</span>
                                         <span class="language-name">{{ $language->language_name }}</span>
                                         @if($language->type === 'native')
-                                            <span class="language-badge-inline">{{ __('profile.native') }}</span>
-                                        @elseif($language->level)
-                                            <span class="language-level-inline">{{ __('profile.' . $language->level) }}</span>
+                                            <span class="language-badge-inline native">{{ __('profile.native') }}</span>
+                                        @else
+                                            <span class="language-type-badge {{ $language->type }}">
+                                                {{ $language->type === 'spoken' ? '🗣️' : '✍️' }}
+                                                {{ __('languages.' . $language->type) }}
+                                            </span>
+                                            @if($language->level)
+                                                <span class="language-level-inline">{{ __('profile.' . $language->level) }}</span>
+                                            @endif
                                         @endif
                                     </span>
                                 @endforeach
