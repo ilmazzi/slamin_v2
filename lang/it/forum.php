@@ -97,8 +97,11 @@ return [
     'settings' => 'Impostazioni',
     
     // Reports
+    'report_content' => 'Segnala contenuto',
     'report_reason' => 'Motivo della segnalazione',
-    'report_description' => 'Descrizione (opzionale)',
+    'report_description' => 'Descrizione',
+    'submit_report' => 'Invia segnalazione',
+    'optional' => 'opzionale',
     'spam' => 'Spam',
     'harassment' => 'Molestie',
     'hate_speech' => 'Incitamento all\'odio',

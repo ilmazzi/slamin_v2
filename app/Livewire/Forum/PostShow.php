@@ -16,6 +16,13 @@ class PostShow extends Component
     public $replyTo = null;
     public $sortComments = 'best'; // best, new, old, top
     public $editingContent = '';
+    
+    // Report
+    public $showReportModal = false;
+    public $reportTargetType = null;
+    public $reportTargetId = null;
+    public $reportReason = 'spam';
+    public $reportDescription = '';
 
     public function mount(ForumPost $post)
     {
@@ -193,6 +200,63 @@ class PostShow extends Component
     public function replyToComment($commentId)
     {
         $this->replyTo = $commentId;
+    }
+
+    public function openReportModal($type, $id)
+    {
+        if (!Auth::check()) {
+            return $this->redirect(route('login'));
+        }
+
+        $this->reportTargetType = $type;
+        $this->reportTargetId = $id;
+        $this->showReportModal = true;
+    }
+
+    public function closeReportModal()
+    {
+        $this->showReportModal = false;
+        $this->reportTargetType = null;
+        $this->reportTargetId = null;
+        $this->reportReason = 'spam';
+        $this->reportDescription = '';
+    }
+
+    public function submitReport()
+    {
+        if (!Auth::check()) {
+            return;
+        }
+
+        $this->validate([
+            'reportReason' => 'required|in:spam,harassment,hate_speech,inappropriate_content,misinformation,violence,self_harm,other',
+            'reportDescription' => 'nullable|string|max:1000',
+        ]);
+
+        // Check if already reported
+        $exists = \App\Models\ForumReport::where('reporter_id', Auth::id())
+            ->where('target_type', $this->reportTargetType)
+            ->where('target_id', $this->reportTargetId)
+            ->where('status', 'pending')
+            ->exists();
+
+        if ($exists) {
+            session()->flash('error', 'Hai già segnalato questo contenuto');
+            $this->closeReportModal();
+            return;
+        }
+
+        \App\Models\ForumReport::create([
+            'reporter_id' => Auth::id(),
+            'target_type' => $this->reportTargetType,
+            'target_id' => $this->reportTargetId,
+            'reason' => $this->reportReason,
+            'description' => $this->reportDescription,
+            'status' => 'pending',
+        ]);
+
+        session()->flash('success', 'Segnalazione inviata. I moderatori la esamineranno al più presto.');
+        $this->closeReportModal();
     }
 
     public function render()

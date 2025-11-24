@@ -82,6 +82,13 @@
                         @endif
 
                         @auth
+                            <button wire:click="openReportModal('App\\Models\\ForumPost', {{ $post->id }})" class="post-action">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+                                </svg>
+                                {{ __('forum.report') }}
+                            </button>
+
                             @if($post->canDelete(auth()->user()))
                                 <button wire:click="deletePost" wire:confirm="Sei sicuro di voler eliminare questo post?" class="post-action text-red-600">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,5 +162,72 @@
             </div>
         </div>
     </div>
+
+    {{-- Report Modal --}}
+    @if($showReportModal)
+        <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ show: @entangle('showReportModal') }">
+            <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" wire:click="closeReportModal"></div>
+
+                <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-neutral-900 rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="px-6 pt-5 pb-4">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                                {{ __('forum.report_content') }}
+                            </h3>
+                            <button wire:click="closeReportModal" class="text-gray-400 hover:text-gray-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <form wire:submit="submitReport">
+                            <div class="mb-4">
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('forum.report_reason') }}
+                                </label>
+                                <select wire:model="reportReason" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white">
+                                    <option value="spam">Spam</option>
+                                    <option value="harassment">Molestie</option>
+                                    <option value="hate_speech">Incitamento all'odio</option>
+                                    <option value="inappropriate_content">Contenuto inappropriato</option>
+                                    <option value="misinformation">Disinformazione</option>
+                                    <option value="violence">Violenza</option>
+                                    <option value="self_harm">Autolesionismo</option>
+                                    <option value="other">Altro</option>
+                                </select>
+                                @error('reportReason') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                    {{ __('forum.report_description') }} ({{ __('forum.optional') }})
+                                </label>
+                                <textarea wire:model="reportDescription" 
+                                          rows="4" 
+                                          maxlength="1000"
+                                          class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-neutral-800 text-gray-900 dark:text-white"
+                                          placeholder="Descrivi il problema..."></textarea>
+                                @error('reportDescription') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="flex justify-end gap-3">
+                                <button type="button" 
+                                        wire:click="closeReportModal"
+                                        class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-lg">
+                                    {{ __('forum.cancel') }}
+                                </button>
+                                <button type="submit" 
+                                        class="px-6 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600">
+                                    {{ __('forum.submit_report') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
 
