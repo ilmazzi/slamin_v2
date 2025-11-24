@@ -50,6 +50,9 @@ class GroupMemberController extends Controller
 
         $member->update(['role' => 'admin']);
 
+        // Invia notifica
+        $member->user->notify(new \App\Notifications\GroupMemberPromotedNotification($member, 'admin'));
+
         return back()->with('success', __('groups.member_promoted'));
     }
 
@@ -74,6 +77,9 @@ class GroupMemberController extends Controller
 
         $member->update(['role' => 'moderator']);
 
+        // Invia notifica
+        $member->user->notify(new \App\Notifications\GroupMemberDemotedNotification($member, 'moderator'));
+
         return back()->with('success', __('groups.member_demoted'));
     }
 
@@ -93,6 +99,9 @@ class GroupMemberController extends Controller
 
         $member->update(['role' => 'moderator']);
 
+        // Invia notifica
+        $member->user->notify(new \App\Notifications\GroupMemberPromotedNotification($member, 'moderator'));
+
         return back()->with('success', __('groups.promoted_to_moderator'));
     }
 
@@ -111,6 +120,9 @@ class GroupMemberController extends Controller
         }
 
         $member->update(['role' => 'member']);
+
+        // Invia notifica
+        $member->user->notify(new \App\Notifications\GroupMemberDemotedNotification($member, 'member'));
 
         return back()->with('success', __('groups.demoted_to_member'));
     }
@@ -140,7 +152,13 @@ class GroupMemberController extends Controller
             return back()->with('error', __('groups.cannot_remove_last_admin'));
         }
 
+        // Salva l'utente prima di eliminare il membro
+        $user = $member->user;
+
         $member->delete();
+
+        // Invia notifica
+        $user->notify(new \App\Notifications\GroupMemberRemovedNotification($group, Auth::user()));
 
         return back()->with('success', __('groups.member_removed'));
     }

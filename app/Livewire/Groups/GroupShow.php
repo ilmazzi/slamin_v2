@@ -67,11 +67,16 @@ class GroupShow extends Component
             session()->flash('success', __('groups.joined_successfully'));
         } else {
             // Crea richiesta
-            GroupJoinRequest::create([
+            $joinRequest = GroupJoinRequest::create([
                 'group_id' => $this->group->id,
                 'user_id' => $user->id,
                 'status' => 'pending',
             ]);
+            
+            // Notifica tutti i moderatori e admin
+            $this->group->getModerators()->each(function ($member) use ($joinRequest) {
+                $member->user->notify(new \App\Notifications\GroupJoinRequestNotification($joinRequest));
+            });
             
             session()->flash('success', __('groups.request_sent'));
         }
@@ -134,13 +139,20 @@ class GroupShow extends Component
             'announcementContent' => 'required|string',
         ]);
 
-        GroupAnnouncement::create([
+        $announcement = GroupAnnouncement::create([
             'group_id' => $this->group->id,
             'user_id' => Auth::id(),
             'title' => $this->announcementTitle,
             'content' => $this->announcementContent,
             'is_pinned' => $this->announcementIsPinned,
         ]);
+
+        // Invia notifica a tutti i membri tranne l'autore
+        $this->group->members()
+            ->where('user_id', '!=', Auth::id())
+            ->each(function ($member) use ($announcement) {
+                $member->user->notify(new \App\Notifications\GroupAnnouncementNotification($announcement));
+            });
 
         // Reset form
         $this->announcementTitle = '';
@@ -185,6 +197,66 @@ class GroupShow extends Component
         $announcement->delete();
         
         session()->flash('success', 'Annuncio eliminato con successo');
+    }
+
+    public function acceptJoinRequest($requestId)
+    {
+        if (!Auth::check() || !$this->isModerator) {
+            session()->flash('error', 'Non hai i permessi');
+            return;
+        }
+
+        $request = GroupJoinRequest::findOrFail($requestId);
+        
+        if ($request->group_id !== $this->group->id) {
+            return;
+        }
+
+        $request->accept(Auth::user());
+        
+        // Notifica l'utente
+        $request->user->notify(new \App\Notifications\GroupJoinRequestResponseNotification($request, 'accepted'));
+        
+        session()->flash('success', 'Richiesta accettata');
+    }
+
+    public function declineJoinRequest($requestId)
+    {
+        if (!Auth::check() || !$this->isModerator) {
+            session()->flash('error', 'Non hai i permessi');
+            return;
+        }
+
+        $request = GroupJoinRequest::findOrFail($requestId);
+        
+        if ($request->group_id !== $this->group->id) {
+            return;
+        }
+
+        $request->decline(Auth::user());
+        
+        // Notifica l'utente
+        $request->user->notify(new \App\Notifications\GroupJoinRequestResponseNotification($request, 'declined'));
+        
+        session()->flash('success', 'Richiesta rifiutata');
+    }
+
+    public function cancelInvitation($invitationId)
+    {
+        if (!Auth::check() || !$this->isModerator) {
+            session()->flash('error', 'Non hai i permessi');
+            return;
+        }
+
+        $invitation = \App\Models\GroupInvitation::findOrFail($invitationId);
+        
+        if ($invitation->group_id !== $this->group->id) {
+            return;
+        }
+
+        $invitation->delete();
+        
+        session()->flash('success', 'Invito cancellato');
     }
 
     public function getEventsProperty()
