@@ -80,6 +80,69 @@
                                 size="md" />
                         </div>
                     </div>
+
+                    {{-- Comments Section --}}
+                    <div class="mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+                        <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-4">
+                            {{ __('social.comments_title') }} ({{ $photo->comments_count ?? 0 }})
+                        </h3>
+
+                        {{-- Comments List --}}
+                        <div class="space-y-4 max-h-96 overflow-y-auto mb-4">
+                            @forelse($photo->comments()->with('user')->latest()->get() as $comment)
+                                <div class="flex gap-3">
+                                    <img src="{{ $comment->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($comment->user->name) . '&background=059669&color=fff' }}" 
+                                         alt="{{ $comment->user->name }}" 
+                                         class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+                                    <div class="flex-1">
+                                        <div class="bg-neutral-100 dark:bg-neutral-800 rounded-2xl p-4">
+                                            <h4 class="font-semibold text-sm text-neutral-900 dark:text-white">
+                                                {{ $comment->user->name }}
+                                            </h4>
+                                            <p class="text-neutral-700 dark:text-neutral-300 mt-1">
+                                                {{ $comment->content }}
+                                            </p>
+                                        </div>
+                                        <p class="text-xs text-neutral-500 mt-1 ml-4">
+                                            {{ $comment->created_at->diffForHumans() }}
+                                        </p>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-center py-8 text-neutral-500">
+                                    {{ __('social.no_comments') }}
+                                </p>
+                            @endforelse
+                        </div>
+
+                        {{-- Add Comment Form --}}
+                        @auth
+                            <form wire:submit.prevent="addComment" class="flex gap-3">
+                                <img src="{{ auth()->user()->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=059669&color=fff' }}" 
+                                     alt="{{ auth()->user()->name }}" 
+                                     class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+                                <div class="flex-1">
+                                    <textarea wire:model="newComment" 
+                                              placeholder="{{ __('social.add_comment') }}"
+                                              rows="2"
+                                              class="w-full px-4 py-3 border border-neutral-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"></textarea>
+                                    @error('newComment') 
+                                        <span class="text-red-500 text-sm">{{ $message }}</span> 
+                                    @enderror
+                                    <button type="submit" 
+                                            class="mt-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+                                        {{ __('social.post_comment') }}
+                                    </button>
+                                </div>
+                            </form>
+                        @else
+                            <p class="text-center py-4 text-neutral-500">
+                                <a href="{{ route('login') }}" class="text-primary-600 hover:underline">
+                                    {{ __('social.login_to_comment') }}
+                                </a>
+                            </p>
+                        @endauth
+                    </div>
                 </div>
             </div>
         </div>
