@@ -15,12 +15,6 @@ class GroupJoinRequest extends Model
         'user_id',
         'status',
         'message',
-        'responded_at',
-        'responded_by',
-    ];
-
-    protected $casts = [
-        'responded_at' => 'datetime',
     ];
 
     public function group(): BelongsTo
@@ -33,11 +27,6 @@ class GroupJoinRequest extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function respondedBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'responded_by');
-    }
-
     public function isPending(): bool
     {
         return $this->status === 'pending';
@@ -47,8 +36,6 @@ class GroupJoinRequest extends Model
     {
         $this->update([
             'status' => 'accepted',
-            'responded_at' => now(),
-            'responded_by' => $respondedBy->id,
         ]);
 
         // Aggiungi l'utente al gruppo
@@ -63,8 +50,6 @@ class GroupJoinRequest extends Model
     {
         $this->update([
             'status' => 'declined',
-            'responded_at' => now(),
-            'responded_by' => $respondedBy->id,
         ]);
     }
 }

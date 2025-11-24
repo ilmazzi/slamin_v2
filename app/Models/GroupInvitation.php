@@ -16,12 +16,10 @@ class GroupInvitation extends Model
         'invited_by',
         'status',
         'message',
-        'responded_at',
         'expires_at',
     ];
 
     protected $casts = [
-        'responded_at' => 'datetime',
         'expires_at' => 'datetime',
     ];
 
@@ -49,7 +47,6 @@ class GroupInvitation extends Model
     {
         $this->update([
             'status' => 'accepted',
-            'responded_at' => now(),
         ]);
 
         // Aggiungi l'utente al gruppo
@@ -64,7 +61,6 @@ class GroupInvitation extends Model
     {
         $this->update([
             'status' => 'declined',
-            'responded_at' => now(),
         ]);
     }
 
