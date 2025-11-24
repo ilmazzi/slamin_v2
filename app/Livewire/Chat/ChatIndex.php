@@ -48,6 +48,7 @@ class ChatIndex extends Component
 
     public function render()
     {
-        return view('livewire.chat.chat-index');
+        return view('livewire.chat.chat-index')
+            ->layout('components.layouts.app');
     }
 }
