@@ -84,7 +84,7 @@ class Bans extends Component
             return;
         }
 
-        ForumBan::create([
+        $ban = ForumBan::create([
             'user_id' => $this->banUserId,
             'subreddit_id' => $this->subreddit->id,
             'reason' => $this->banReason,
@@ -92,6 +92,10 @@ class Bans extends Component
             'expires_at' => $this->banType === 'temporary' ? $this->banExpiresAt : null,
             'banned_by' => Auth::id(),
         ]);
+
+        // Notify banned user
+        $bannedUser = User::find($this->banUserId);
+        $bannedUser->notify(new \App\Notifications\Forum\UserBannedNotification($ban));
 
         // Reset form
         $this->showBanForm = false;

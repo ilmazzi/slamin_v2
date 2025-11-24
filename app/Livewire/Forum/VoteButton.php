@@ -78,6 +78,19 @@ class VoteButton extends Component
                 
                 if ($type === 'upvote') {
                     $this->voteable->increment('upvotes');
+                    
+                    // Notify author (only for upvotes, every 5 upvotes to avoid spam)
+                    if ($this->voteable->user_id !== Auth::id() && $this->voteable->upvotes % 5 === 0) {
+                        $notificationClass = $this->voteableType === 'App\\Models\\ForumPost'
+                            ? \App\Notifications\Forum\PostVotedNotification::class
+                            : \App\Notifications\Forum\CommentVotedNotification::class;
+                        
+                        $this->voteable->user->notify(new $notificationClass(
+                            $this->voteable,
+                            Auth::user(),
+                            $type
+                        ));
+                    }
                 } else {
                     $this->voteable->increment('downvotes');
                 }

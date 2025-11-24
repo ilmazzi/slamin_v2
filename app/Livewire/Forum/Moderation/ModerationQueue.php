@@ -77,6 +77,11 @@ class ModerationQueue extends Component
             'approved_by' => Auth::id(),
         ]);
         
+        // Notify post author
+        if ($post->user_id !== Auth::id()) {
+            $post->user->notify(new \App\Notifications\Forum\PostApprovedNotification($post, Auth::user()));
+        }
+        
         session()->flash('success', 'Post approvato');
     }
 
@@ -86,6 +91,16 @@ class ModerationQueue extends Component
         
         if ($post->subreddit_id !== $this->subreddit->id) {
             return;
+        }
+
+        // Notify post author before deleting
+        if ($post->user_id !== Auth::id()) {
+            $post->user->notify(new \App\Notifications\Forum\PostRemovedNotification(
+                $post->title,
+                $post->subreddit->name,
+                Auth::user(),
+                'Il tuo post non rispetta le regole della community'
+            ));
         }
 
         $post->delete();

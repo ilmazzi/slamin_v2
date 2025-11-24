@@ -98,6 +98,20 @@ class PostShow extends Component
 
         $this->post->incrementCommentsCount();
 
+        // Send notifications
+        if ($this->replyTo) {
+            // Notify parent comment author
+            $parentComment = ForumComment::find($this->replyTo);
+            if ($parentComment->user_id !== Auth::id()) {
+                $parentComment->user->notify(new \App\Notifications\Forum\NewReplyNotification($comment));
+            }
+        } else {
+            // Notify post author
+            if ($this->post->user_id !== Auth::id()) {
+                $this->post->user->notify(new \App\Notifications\Forum\NewCommentNotification($comment));
+            }
+        }
+
         $this->commentContent = '';
         $this->replyTo = null;
 
@@ -246,7 +260,7 @@ class PostShow extends Component
             return;
         }
 
-        \App\Models\ForumReport::create([
+        $report = \App\Models\ForumReport::create([
             'reporter_id' => Auth::id(),
             'target_type' => $this->reportTargetType,
             'target_id' => $this->reportTargetId,
@@ -254,6 +268,21 @@ class PostShow extends Component
             'description' => $this->reportDescription,
             'status' => 'pending',
         ]);
+
+        // Notify moderators
+        $subreddit = $this->reportTargetType === 'App\\Models\\ForumPost' 
+            ? \App\Models\ForumPost::find($this->reportTargetId)->subreddit
+            : \App\Models\ForumComment::find($this->reportTargetId)->post->subreddit;
+
+        $moderators = $subreddit->moderators()->with('user')->get()->pluck('user');
+        
+        $notificationClass = $this->reportTargetType === 'App\\Models\\ForumPost'
+            ? \App\Notifications\Forum\PostReportedNotification::class
+            : \App\Notifications\Forum\CommentReportedNotification::class;
+
+        foreach ($moderators as $moderator) {
+            $moderator->notify(new $notificationClass($report));
+        }
 
         session()->flash('success', 'Segnalazione inviata. I moderatori la esamineranno al più presto.');
         $this->closeReportModal();

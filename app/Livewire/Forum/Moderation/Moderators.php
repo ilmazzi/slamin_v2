@@ -82,12 +82,16 @@ class Moderators extends Component
             return;
         }
 
-        ForumModerator::create([
+        $moderator = ForumModerator::create([
             'subreddit_id' => $this->subreddit->id,
             'user_id' => $this->newModUserId,
             'role' => $this->newModRole,
             'added_by' => Auth::id(),
         ]);
+
+        // Notify new moderator
+        $newMod = User::find($this->newModUserId);
+        $newMod->notify(new \App\Notifications\Forum\ModeratorAddedNotification($moderator));
 
         // Reset form
         $this->newModSearch = '';
