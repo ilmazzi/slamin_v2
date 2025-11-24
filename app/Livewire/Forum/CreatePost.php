@@ -17,11 +17,12 @@ class CreatePost extends Component
     use WithFileUploads;
 
     public Subreddit $subreddit;
-    public $type = 'text'; // text, link, image
+    public $postType = 'text'; // text, link, image
     public $title = '';
     public $content = '';
     public $url = '';
     public $image;
+    public $imagePreview;
 
     #[Title('Crea Post - Forum')]
 
@@ -38,12 +39,22 @@ class CreatePost extends Component
         }
     }
 
-    public function updatedType()
+    public function updatedPostType()
     {
         // Reset fields when type changes
         $this->content = '';
         $this->url = '';
         $this->image = null;
+        $this->imagePreview = null;
+    }
+
+    public function updatedImage()
+    {
+        $this->validate([
+            'image' => 'image|max:10240',
+        ]);
+
+        $this->imagePreview = $this->image->temporaryUrl();
     }
 
     public function createPost()
@@ -52,11 +63,11 @@ class CreatePost extends Component
             'title' => 'required|string|min:3|max:300',
         ];
 
-        if ($this->type === 'text') {
+        if ($this->postType === 'text') {
             $rules['content'] = 'required|string|min:1|max:40000';
-        } elseif ($this->type === 'link') {
+        } elseif ($this->postType === 'link') {
             $rules['url'] = 'required|url|max:2000';
-        } elseif ($this->type === 'image') {
+        } elseif ($this->postType === 'image') {
             $rules['image'] = 'required|image|max:10240'; // 10MB
         }
 
@@ -66,14 +77,14 @@ class CreatePost extends Component
             'subreddit_id' => $this->subreddit->id,
             'user_id' => Auth::id(),
             'title' => $this->title,
-            'type' => $this->type,
+            'type' => $this->postType,
         ];
 
-        if ($this->type === 'text') {
+        if ($this->postType === 'text') {
             $postData['content'] = $this->content;
-        } elseif ($this->type === 'link') {
+        } elseif ($this->postType === 'link') {
             $postData['url'] = $this->url;
-        } elseif ($this->type === 'image' && $this->image) {
+        } elseif ($this->postType === 'image' && $this->image) {
             // Process and save image as WebP
             $manager = new ImageManager(new Driver());
             $image = $manager->read($this->image->getRealPath());
