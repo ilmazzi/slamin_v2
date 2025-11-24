@@ -284,6 +284,15 @@ class PostShow extends Component
             $moderator->notify(new $notificationClass($report));
         }
 
+        // Notify content author (without revealing reporter)
+        $contentAuthor = $this->reportTargetType === 'App\\Models\\ForumPost'
+            ? \App\Models\ForumPost::find($this->reportTargetId)->user
+            : \App\Models\ForumComment::find($this->reportTargetId)->user;
+
+        if ($contentAuthor->id !== Auth::id()) {
+            $contentAuthor->notify(new \App\Notifications\Forum\ContentReportedNotification($report));
+        }
+
         session()->flash('success', 'Segnalazione inviata. I moderatori la esamineranno al più presto.');
         $this->closeReportModal();
     }
