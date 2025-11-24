@@ -433,7 +433,7 @@ Route::post('/logout', function () {
 
 Route::middleware(['auth'])->prefix('chat')->name('chat.')->group(function () {
     Route::get('/', \App\Livewire\Chat\ChatIndex::class)->name('index');
-    Route::get('/{conversation}', \App\Livewire\Chat\ChatIndex::class)->name('show');
+    Route::get('/{conversationId}', \App\Livewire\Chat\ChatIndex::class)->name('show');
 });
 
 /*

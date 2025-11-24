@@ -16,16 +16,11 @@ class ChatIndex extends Component
         'backToList' => 'backToList',
     ];
 
-    public function mount($conversation = null)
+    public function mount($conversationId = null)
     {
         // Se c'è una conversazione nell'URL (route parameter), selezionala
-        if ($conversation) {
-            if (is_numeric($conversation)) {
-                $this->selectConversation($conversation);
-            } elseif ($conversation instanceof Conversation) {
-                $this->selectedConversation = $conversation;
-                $conversation->markAsRead(Auth::user());
-            }
+        if ($conversationId) {
+            $this->selectConversation($conversationId);
         }
     }
 
