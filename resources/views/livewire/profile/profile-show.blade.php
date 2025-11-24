@@ -72,6 +72,11 @@
                             <span class="stat-num">{{ number_format($stats['total_views']) }}</span>
                             <span class="stat-lbl">{{ __('profile.stats.views') }}</span>
                         </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-num">{{ $user->level ?? 1 }}</span>
+                            <span class="stat-lbl">Livello</span>
+                        </div>
                     </div>
 
                     {{-- Edit Profile Button (only for own profile) --}}
@@ -84,21 +89,8 @@
                         </a>
                     @endif
 
-                    {{-- Social + Badges --}}
+                    {{-- Social Links + Badges + Languages --}}
                     <div class="meta-row">
-                        {{-- User Badges --}}
-                        @if($topBadges && $topBadges->count() > 0)
-                            <div class="user-badges">
-                                @foreach($topBadges as $userBadge)
-                                    <div class="badge-item" title="{{ $userBadge->badge->name }}">
-                                        <img src="{{ $userBadge->badge->icon_url }}"
-                                             alt="{{ $userBadge->badge->name }}"
-                                             class="badge-icon">
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-
                         {{-- Social Links --}}
                         @if($user->social_facebook || $user->social_instagram || $user->social_twitter || $user->social_youtube || $user->social_linkedin)
                             <div class="social-links">
@@ -130,39 +122,33 @@
                             </div>
                         @endif
 
-                        @if($topBadges->count() > 0)
-                            <div class="badges-row">
-                                @foreach($topBadges->take(5) as $userBadge)
-                                    @if($userBadge->badge)
-                                        <div class="badge-item" title="{{ $userBadge->badge->name }}">
-                                            <img src="{{ $userBadge->badge->icon_url }}" alt="{{ $userBadge->badge->name }}">
-                                        </div>
-                                    @endif
+                        {{-- User Badges (PIÙ GRANDI) --}}
+                        @if($topBadges && $topBadges->count() > 0)
+                            <div class="user-badges-large">
+                                @foreach($topBadges as $userBadge)
+                                    <div class="badge-item-large" title="{{ $userBadge->badge->name }}">
+                                        <img src="{{ $userBadge->badge->icon_url }}"
+                                             alt="{{ $userBadge->badge->name }}"
+                                             class="badge-icon-large">
+                                    </div>
                                 @endforeach
                             </div>
                         @endif
 
-                        {{-- User Languages --}}
+                        {{-- User Languages con bandiere E LIVELLO --}}
                         @if($user->languages && $user->languages->count() > 0)
-                            <div class="languages-row">
-                                <div class="languages-label">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 0112 15.5c1.596 0 3.159-.384 4.552-1.115M18 12.28a5.99 5.99 0 012 4.72v2M12 12.28a5.99 5.99 0 00-2 4.72v2"/>
-                                    </svg>
-                                    {{ __('profile.languages') }}:
-                                </div>
-                                <div class="languages-list">
-                                    @foreach($user->languages as $language)
-                                        <span class="language-tag {{ $language->type }}">
-                                            {{ $language->language_name }}
-                                            @if($language->type === 'native')
-                                                <span class="language-badge">{{ __('profile.native') }}</span>
-                                            @elseif($language->level)
-                                                <span class="language-level">{{ __('profile.' . $language->level) }}</span>
-                                            @endif
-                                        </span>
-                                    @endforeach
-                                </div>
+                            <div class="languages-compact">
+                                @foreach($user->languages as $language)
+                                    <span class="language-flag-tag {{ $language->type }}">
+                                        <span class="flag-emoji">{{ $language->language_code === 'it' ? '🇮🇹' : ($language->language_code === 'en' ? '🇬🇧' : ($language->language_code === 'fr' ? '🇫🇷' : ($language->language_code === 'es' ? '🇪🇸' : ($language->language_code === 'de' ? '🇩🇪' : '🌐')))) }}</span>
+                                        <span class="language-name">{{ $language->language_name }}</span>
+                                        @if($language->type === 'native')
+                                            <span class="language-badge-inline">{{ __('profile.native') }}</span>
+                                        @elseif($language->level)
+                                            <span class="language-level-inline">{{ __('profile.' . $language->level) }}</span>
+                                        @endif
+                                    </span>
+                                @endforeach
                             </div>
                         @endif
                     </div>

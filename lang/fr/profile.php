@@ -17,6 +17,10 @@ return [
     'edit_profile' => 'Modifier le profil',
     'languages' => 'Langues',
     'badges' => 'Badges',
+    'native' => 'Langue maternelle',
+    'excellent' => 'Excellent',
+    'good' => 'Bon',
+    'poor' => 'Basique',
     
     'nav' => [
         'my_profile' => 'Mon profil',

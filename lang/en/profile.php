@@ -17,6 +17,10 @@ return [
     'edit_profile' => 'Edit Profile',
     'languages' => 'Languages',
     'badges' => 'Badges',
+    'native' => 'Native',
+    'excellent' => 'Excellent',
+    'good' => 'Good',
+    'poor' => 'Basic',
     
     'nav' => [
         'my_profile' => 'My Profile',
