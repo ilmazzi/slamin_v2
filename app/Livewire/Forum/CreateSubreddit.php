@@ -19,6 +19,10 @@ class CreateSubreddit extends Component
     public $rules = '';
     public $color = '#007bff';
     public $is_private = false;
+    public $icon;
+    public $banner;
+    public $iconPreview;
+    public $bannerPreview;
 
     #[Title('Crea Subreddit - Forum')]
 
@@ -39,6 +43,24 @@ class CreateSubreddit extends Component
         $this->slug = Str::slug($this->name);
     }
 
+    public function updatedIcon()
+    {
+        $this->validate([
+            'icon' => 'image|max:2048', // 2MB Max
+        ]);
+
+        $this->iconPreview = $this->icon->temporaryUrl();
+    }
+
+    public function updatedBanner()
+    {
+        $this->validate([
+            'banner' => 'image|max:5120', // 5MB Max
+        ]);
+
+        $this->bannerPreview = $this->banner->temporaryUrl();
+    }
+
     public function createSubreddit()
     {
         $this->validate([
@@ -48,9 +70,11 @@ class CreateSubreddit extends Component
             'rules' => 'nullable|string|max:5000',
             'color' => 'required|regex:/^#[0-9A-Fa-f]{6}$/',
             'is_private' => 'boolean',
+            'icon' => 'nullable|image|max:2048',
+            'banner' => 'nullable|image|max:5120',
         ]);
 
-        $subreddit = Subreddit::create([
+        $data = [
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
@@ -58,7 +82,19 @@ class CreateSubreddit extends Component
             'color' => $this->color,
             'created_by' => Auth::id(),
             'is_private' => $this->is_private,
-        ]);
+        ];
+
+        // Handle icon upload
+        if ($this->icon) {
+            $data['icon'] = $this->icon->store('subreddits/icons', 'public');
+        }
+
+        // Handle banner upload
+        if ($this->banner) {
+            $data['banner'] = $this->banner->store('subreddits/banners', 'public');
+        }
+
+        $subreddit = Subreddit::create($data);
 
         // Make creator an admin
         $subreddit->moderators()->create([

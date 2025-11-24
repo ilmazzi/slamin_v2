@@ -23,6 +23,8 @@ class SubredditSettings extends Component
     public $is_private;
     public $icon;
     public $banner;
+    public $iconPreview;
+    public $bannerPreview;
 
     public function mount(Subreddit $subreddit)
     {
@@ -42,6 +44,46 @@ class SubredditSettings extends Component
     public function title(): string
     {
         return 'Impostazioni - ' . $this->subreddit->name;
+    }
+
+    public function updatedIcon()
+    {
+        $this->validate([
+            'icon' => 'image|max:2048',
+        ]);
+
+        $this->iconPreview = $this->icon->temporaryUrl();
+    }
+
+    public function updatedBanner()
+    {
+        $this->validate([
+            'banner' => 'image|max:5120',
+        ]);
+
+        $this->bannerPreview = $this->banner->temporaryUrl();
+    }
+
+    public function removeIcon()
+    {
+        if ($this->subreddit->icon) {
+            Storage::disk('public')->delete($this->subreddit->icon);
+            $this->subreddit->update(['icon' => null]);
+        }
+        $this->icon = null;
+        $this->iconPreview = null;
+        session()->flash('success', 'Icona rimossa');
+    }
+
+    public function removeBanner()
+    {
+        if ($this->subreddit->banner) {
+            Storage::disk('public')->delete($this->subreddit->banner);
+            $this->subreddit->update(['banner' => null]);
+        }
+        $this->banner = null;
+        $this->bannerPreview = null;
+        session()->flash('success', 'Banner rimosso');
     }
 
     public function updateSettings()
