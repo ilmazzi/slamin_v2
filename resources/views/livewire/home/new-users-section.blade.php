@@ -125,9 +125,10 @@
                             --tape-rotation: {{ $tapeRotation }}deg; 
                             transform: translateX(-50%) rotate({{ $tapeRotation }}deg);"></div>
                 
-                {{-- Polaroid Card (link will be added when profile.show route exists) --}}
-                <div class="polaroid-card"
-                     style="transform: rotate({{ $rotation }}deg);">
+                {{-- Polaroid Card with Link --}}
+                <a href="{{ route('user.show', $user) }}" 
+                   class="polaroid-card"
+                   style="transform: rotate({{ $rotation }}deg);">
                     
                     {{-- Photo --}}
                     <div class="polaroid-photo">
@@ -144,7 +145,7 @@
                         <div class="polaroid-bio">{{ $userBio }}</div>
                         
                         {{-- Follow Button --}}
-                        <button class="polaroid-follow-btn">
+                        <button class="polaroid-follow-btn" @click.stop>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                             </svg>
@@ -167,7 +168,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             @endforeach
             </div>
