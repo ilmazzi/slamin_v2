@@ -9,7 +9,7 @@
     }
 @endphp
 
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full" x-data="{ showInfo: false }">
     <!-- Chat Header -->
     <div class="chat-header">
         <!-- Back button (mobile) -->
@@ -47,11 +47,114 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
             </button>
-            <button class="chat-header-btn" title="{{ __('chat.info') }}">
+            <button @click="showInfo = !showInfo" class="chat-header-btn" title="{{ __('chat.info') }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
             </button>
+        </div>
+    </div>
+    
+    <!-- Info Panel (Sidebar) -->
+    <div x-show="showInfo" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 translate-x-full"
+         x-transition:enter-end="opacity-100 translate-x-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 translate-x-0"
+         x-transition:leave-end="opacity-0 translate-x-full"
+         class="fixed right-0 top-0 h-full w-80 bg-white dark:bg-neutral-900 shadow-2xl z-50 overflow-y-auto border-l border-neutral-200 dark:border-neutral-800"
+         style="display: none;">
+        
+        <!-- Header -->
+        <div class="p-6 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+            <h3 class="text-xl font-bold text-neutral-900 dark:text-white">{{ __('chat.conversation_info') }}</h3>
+            <button @click="showInfo = false" class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Content -->
+        <div class="p-6 space-y-6">
+            <!-- Avatar & Name -->
+            <div class="text-center">
+                @if($displayAvatar)
+                    <img src="{{ $displayAvatar }}" alt="{{ $displayName }}" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                @else
+                    <div class="w-24 h-24 rounded-full mx-auto mb-4 bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center text-2xl font-bold text-neutral-600 dark:text-neutral-400">
+                        {{ strtoupper(substr($displayName, 0, 2)) }}
+                    </div>
+                @endif
+                <h4 class="text-lg font-bold text-neutral-900 dark:text-white">{{ $displayName }}</h4>
+                @if($conversation->type === 'private' && $otherUser)
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                        {{ $otherUser->is_online ? __('chat.online') : __('chat.offline') }}
+                    </p>
+                    @if($otherUser->nickname)
+                        <p class="text-sm text-neutral-500 dark:text-neutral-400">@\{{ $otherUser->nickname }}</p>
+                    @endif
+                @endif
+            </div>
+            
+            <!-- Actions -->
+            @if($conversation->type === 'private' && $otherUser)
+                <div class="space-y-2">
+                    <a href="{{ route('user.show', $otherUser) }}" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+                        <svg class="w-5 h-5 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span class="text-sm font-medium text-neutral-900 dark:text-white">{{ __('chat.view_profile') }}</span>
+                    </a>
+                    
+                    <button class="flex items-center gap-3 p-3 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors w-full text-left">
+                        <svg class="w-5 h-5 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <span class="text-sm font-medium text-neutral-900 dark:text-white">{{ __('chat.search_in_conversation') }}</span>
+                    </button>
+                    
+                    <button class="flex items-center gap-3 p-3 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors w-full text-left">
+                        <svg class="w-5 h-5 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="text-sm font-medium text-neutral-900 dark:text-white">{{ __('chat.mute_notifications') }}</span>
+                    </button>
+                </div>
+            @endif
+            
+            <!-- Conversation Stats -->
+            <div class="border-t border-neutral-200 dark:border-neutral-800 pt-6">
+                <h5 class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">{{ __('chat.conversation_details') }}</h5>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-neutral-600 dark:text-neutral-400">{{ __('chat.messages') }}</span>
+                        <span class="font-medium text-neutral-900 dark:text-white">{{ $conversation->messages()->count() }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-neutral-600 dark:text-neutral-400">{{ __('chat.created') }}</span>
+                        <span class="font-medium text-neutral-900 dark:text-white">{{ $conversation->created_at->diffForHumans() }}</span>
+                    </div>
+                    @if($conversation->type === 'group')
+                        <div class="flex justify-between">
+                            <span class="text-neutral-600 dark:text-neutral-400">{{ __('chat.members') }}</span>
+                            <span class="font-medium text-neutral-900 dark:text-white">{{ $conversation->participants()->count() }}</span>
+                        </div>
+                    @endif
+                </div>
+            </div>
+            
+            <!-- Danger Zone -->
+            <div class="border-t border-neutral-200 dark:border-neutral-800 pt-6">
+                <button class="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors w-full text-left text-red-600 dark:text-red-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    <span class="text-sm font-medium">{{ __('chat.delete_conversation') }}</span>
+                </button>
+            </div>
         </div>
     </div>
     

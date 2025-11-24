@@ -65,5 +65,15 @@ return [
     'message_too_long' => 'Il messaggio è troppo lungo',
     'file_too_large' => 'Il file è troppo grande',
     'invalid_file_type' => 'Tipo di file non valido',
+    
+    // Info Panel
+    'conversation_info' => 'Info Conversazione',
+    'view_profile' => 'Visualizza Profilo',
+    'search_in_conversation' => 'Cerca nella conversazione',
+    'mute_notifications' => 'Silenzia notifiche',
+    'conversation_details' => 'Dettagli conversazione',
+    'created' => 'Creata',
+    'members' => 'Membri',
+    'delete_conversation' => 'Elimina conversazione',
 ];
 
