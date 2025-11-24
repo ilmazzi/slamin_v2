@@ -371,3 +371,6 @@ document.addEventListener('livewire:init', () => {
 });
 </script>
 @endpush
+
+{{-- Photo Modal Component --}}
+@livewire('media.photo-modal')
