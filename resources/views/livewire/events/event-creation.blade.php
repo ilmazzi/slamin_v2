@@ -804,7 +804,7 @@
                             </div>
 
                             {{-- Link to Group --}}
-                            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 rounded-2xl p-6 border border-blue-200 dark:border-blue-800">
+                            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 rounded-2xl p-6 border border-blue-200 dark:border-blue-800 mt-6">
                                 <div class="flex items-center justify-between mb-4">
                                     <div>
                                         <h3 class="font-bold text-neutral-900 dark:text-white flex items-center gap-2">
@@ -908,7 +908,7 @@
 
                             {{-- Link to Festival (only if NOT festival) --}}
                             @if($category !== 'festival')
-                                <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/10 dark:to-pink-900/10 rounded-2xl p-6 border border-purple-200 dark:border-purple-800">
+                                <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/10 dark:to-pink-900/10 rounded-2xl p-6 border border-purple-200 dark:border-purple-800 mt-6">
                                     <div class="flex items-center justify-between mb-4">
                                         <div>
                                             <h3 class="font-bold text-neutral-900 dark:text-white flex items-center gap-2">
