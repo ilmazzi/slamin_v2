@@ -8,6 +8,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\Chat\NewMessageNotification;
 
 class ChatShow extends Component
 {
@@ -78,10 +79,19 @@ class ChatShow extends Component
             }
         }
 
-        Message::create($messageData);
+        $message = Message::create($messageData);
 
         // Update conversation timestamp
         $this->conversation->touch();
+
+        // Notify other participants
+        $otherParticipants = $this->conversation->users()
+            ->where('users.id', '!=', Auth::id())
+            ->get();
+        
+        foreach ($otherParticipants as $participant) {
+            $participant->notify(new NewMessageNotification($message, Auth::user()));
+        }
 
         // Reset form
         $this->newMessage = '';
@@ -91,9 +101,6 @@ class ChatShow extends Component
         // Dispatch events
         $this->dispatch('messageSent');
         $this->dispatch('messagesLoaded');
-        
-        // Notify other participants via broadcast
-        // TODO: Implement broadcasting
     }
 
     public function setReplyTo($messageId)

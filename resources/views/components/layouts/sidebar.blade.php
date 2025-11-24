@@ -138,6 +138,31 @@
                 </li>
 
                 @auth
+                <!-- Chat -->
+                <li class="relative" x-data="{ tooltip: false }">
+                    <a href="{{ route('chat.index') }}" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
+                       x-ref="chatLink"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
+                       :class="collapsed && 'justify-center'">
+                        <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
+                             :class="!collapsed && 'group-hover:-translate-x-1'" 
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                        <span x-show="!collapsed" 
+                              x-transition:enter="transition ease-out duration-300 delay-100"
+                              x-transition:enter-start="opacity-0 -translate-x-4"
+                              x-transition:enter-end="opacity-100 translate-x-0"
+                              x-transition:leave="transition ease-in duration-200"
+                              x-transition:leave-start="opacity-100 translate-x-0"
+                              x-transition:leave-end="opacity-0 -translate-x-4"
+                              class="text-sm font-medium">{{ __('chat.chat') }}</span>
+                    </a>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.chatLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">{{ __('chat.chat') }}</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
+                </li>
+
                 <!-- Gigs -->
                 <li class="relative" x-data="{ tooltip: false }">
                     <a href="{{ route('gigs.index') }}" 
@@ -443,6 +468,18 @@
                 </li>
 
                 @auth
+                <!-- Chat -->
+                <li>
+                    <a href="{{ route('chat.index') }}" 
+                       @click="mobileOpen = false"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group">
+                        <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                        <span class="text-sm font-medium">{{ __('chat.chat') }}</span>
+                    </a>
+                </li>
+
                 <!-- Gigs -->
                 <li>
                     <a href="{{ route('gigs.index') }}" 

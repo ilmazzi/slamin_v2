@@ -70,6 +70,7 @@ class NotificationModal extends Component
             'forum_post_removed' => 'Post rimosso',
             'forum_user_banned' => 'Bannato da subreddit',
             'forum_moderator_added' => 'Sei moderatore',
+            'chat_new_message' => 'Nuovo messaggio',
             default => $data['title'] ?? 'Notifica',
         };
     }
@@ -77,6 +78,7 @@ class NotificationModal extends Component
     private function getNotificationMessage($type, $data)
     {
         return match($type) {
+            'chat_new_message' => ($data['sender_name'] ?? 'Qualcuno') . ' ti ha inviato un messaggio: "' . \Str::limit($data['message_preview'] ?? '', 60) . '"',
             'forum_new_comment' => ($data['commenter_name'] ?? 'Qualcuno') . ' ha commentato il tuo post: "' . \Str::limit($data['post_title'] ?? '', 50) . '"',
             'forum_new_reply' => ($data['replier_name'] ?? 'Qualcuno') . ' ha risposto al tuo commento: "' . \Str::limit($data['reply_excerpt'] ?? '', 60) . '"',
             'forum_post_voted' => 'Il tuo post "' . \Str::limit($data['post_title'] ?? '', 50) . '" ha raggiunto ' . ($data['current_score'] ?? 0) . ' punti!',
@@ -104,6 +106,7 @@ class NotificationModal extends Component
             'forum_post_removed' => '❌',
             'forum_user_banned' => '🔨',
             'forum_moderator_added' => '👑',
+            'chat_new_message' => '💬',
             default => '🔔',
         };
     }
