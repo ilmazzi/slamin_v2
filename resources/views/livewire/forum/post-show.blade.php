@@ -165,11 +165,11 @@
 
     {{-- Report Modal --}}
     @if($showReportModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ show: @entangle('showReportModal') }">
+        <div class="fixed inset-0 z-[9999] overflow-y-auto" x-data="{ show: @entangle('showReportModal') }">
             <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" wire:click="closeReportModal"></div>
+                <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75 z-[9998]" wire:click="closeReportModal"></div>
 
-                <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-neutral-900 rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-neutral-900 rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full relative z-[9999]">
                     <div class="px-6 pt-5 pb-4">
                         <div class="flex items-start justify-between mb-4">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">
