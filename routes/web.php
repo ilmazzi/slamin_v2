@@ -132,7 +132,8 @@ Route::get('/videos/{video}', function(\App\Models\Video $video) {
     return view('pages.video-show', compact('video'));
 })->name('videos.show');
 Route::get('/photos/{photo}', function(\App\Models\Photo $photo) {
-    return view('pages.photo-show', compact('photo'));
+    // Redirect to home with modal open
+    return view('pages.photo-redirect', compact('photo'));
 })->name('photos.show');
 
 Route::get('/events/create', \App\Livewire\Events\EventCreation::class)
@@ -433,7 +434,7 @@ Route::post('/logout', function () {
 
 Route::middleware(['auth'])->prefix('chat')->name('chat.')->group(function () {
     Route::get('/', \App\Livewire\Chat\ChatIndex::class)->name('index');
-    Route::get('/{conversation}', \App\Livewire\Chat\ChatShow::class)->name('show');
+    Route::get('/{conversation}', \App\Livewire\Chat\ChatIndex::class)->name('show');
 });
 
 /*
