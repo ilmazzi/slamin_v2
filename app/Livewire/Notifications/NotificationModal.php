@@ -36,19 +36,73 @@ class NotificationModal extends Component
             ->take(20)
             ->get()
             ->map(function($notification) {
+                $data = $notification->data;
+                $type = $data['type'] ?? 'default';
+                
+                // Format notification based on type
                 return [
                     'id' => $notification->id,
-                    'title' => $notification->data['title'] ?? 'Notifica',
-                    'message' => $notification->data['message'] ?? '',
-                    'icon' => $notification->data['icon'] ?? '🔔',
-                    'url' => $notification->data['url'] ?? '#',
+                    'type' => $type,
+                    'title' => $this->getNotificationTitle($type, $data),
+                    'message' => $this->getNotificationMessage($type, $data),
+                    'icon' => $this->getNotificationIcon($type),
+                    'url' => $data['url'] ?? '#',
                     'read' => $notification->read_at !== null,
                     'created_at' => $notification->created_at->diffForHumans(),
-                    'sender_name' => $notification->data['sender_name'] ?? null,
+                    'data' => $data,
                 ];
             });
 
         $this->unreadCount = Auth::user()->unreadNotifications()->count();
+    }
+
+    private function getNotificationTitle($type, $data)
+    {
+        return match($type) {
+            'forum_new_comment' => 'Nuovo commento',
+            'forum_new_reply' => 'Nuova risposta',
+            'forum_post_voted' => 'Post votato',
+            'forum_comment_voted' => 'Commento votato',
+            'forum_post_reported' => 'Post segnalato',
+            'forum_comment_reported' => 'Commento segnalato',
+            'forum_post_approved' => 'Post approvato',
+            'forum_post_removed' => 'Post rimosso',
+            'forum_user_banned' => 'Bannato da subreddit',
+            'forum_moderator_added' => 'Sei moderatore',
+            default => $data['title'] ?? 'Notifica',
+        };
+    }
+
+    private function getNotificationMessage($type, $data)
+    {
+        return match($type) {
+            'forum_new_comment' => ($data['commenter_name'] ?? 'Qualcuno') . ' ha commentato il tuo post: "' . \Str::limit($data['post_title'] ?? '', 50) . '"',
+            'forum_new_reply' => ($data['replier_name'] ?? 'Qualcuno') . ' ha risposto al tuo commento: "' . \Str::limit($data['reply_excerpt'] ?? '', 60) . '"',
+            'forum_post_voted' => 'Il tuo post "' . \Str::limit($data['post_title'] ?? '', 50) . '" ha raggiunto ' . ($data['current_score'] ?? 0) . ' punti!',
+            'forum_comment_voted' => 'Il tuo commento ha raggiunto ' . ($data['current_score'] ?? 0) . ' punti!',
+            'forum_post_reported' => ($data['reporter_name'] ?? 'Un utente') . ' ha segnalato un post: "' . \Str::limit($data['post_title'] ?? '', 50) . '"',
+            'forum_comment_reported' => ($data['reporter_name'] ?? 'Un utente') . ' ha segnalato un commento',
+            'forum_post_approved' => 'Il tuo post "' . \Str::limit($data['post_title'] ?? '', 50) . '" è stato approvato da ' . ($data['moderator_name'] ?? 'un moderatore'),
+            'forum_post_removed' => 'Il tuo post "' . \Str::limit($data['post_title'] ?? '', 50) . '" è stato rimosso' . (isset($data['reason']) ? ': ' . $data['reason'] : ''),
+            'forum_user_banned' => 'Sei stato bannato da r/' . ($data['subreddit_name'] ?? '') . (isset($data['expires_at']) && !$data['is_permanent'] ? ' fino al ' . \Carbon\Carbon::parse($data['expires_at'])->format('d/m/Y') : ' permanentemente'),
+            'forum_moderator_added' => 'Sei stato aggiunto come ' . __('forum.' . ($data['role'] ?? 'moderator')) . ' di r/' . ($data['subreddit_name'] ?? ''),
+            default => $data['message'] ?? '',
+        };
+    }
+
+    private function getNotificationIcon($type)
+    {
+        return match($type) {
+            'forum_new_comment' => '💬',
+            'forum_new_reply' => '🔄',
+            'forum_post_voted', 'forum_comment_voted' => '⬆️',
+            'forum_post_reported', 'forum_comment_reported' => '🚩',
+            'forum_post_approved' => '✅',
+            'forum_post_removed' => '❌',
+            'forum_user_banned' => '🔨',
+            'forum_moderator_added' => '👑',
+            default => '🔔',
+        };
     }
 
     public function markAsRead($notificationId)
