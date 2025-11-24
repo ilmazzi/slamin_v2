@@ -486,6 +486,25 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     
     /**
+     * Check if user can upload videos
+     */
+    public function canUploadVideo(): bool
+    {
+        // Admin e moderator hanno sempre permesso
+        if ($this->hasAnyRole(['admin', 'moderator'])) {
+            return true;
+        }
+        
+        // Verifica permesso diretto
+        if ($this->hasPermissionTo('upload.video')) {
+            return true;
+        }
+        
+        // Tutti gli utenti autenticati possono caricare video
+        return true;
+    }
+    
+    /**
      * Check if user can upload photos
      */
     public function canUploadPhoto(): bool
