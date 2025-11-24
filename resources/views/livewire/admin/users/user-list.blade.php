@@ -169,7 +169,7 @@
                                         </div>
                                         @if($user->nickname)
                                             <div class="text-sm text-neutral-500 dark:text-neutral-400">
-                                                @{{ $user->nickname }}
+                                                {{ $user->nickname }}
                                             </div>
                                         @endif
                                     </div>

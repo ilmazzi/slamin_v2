@@ -65,7 +65,7 @@
             <div class="pt-16 sm:pt-20 pb-6 text-center">
                 <h2 class="text-xl font-bold text-neutral-900 dark:text-white">{{ $user->name }}</h2>
                 @if($user->nickname)
-                    <p class="text-primary-600 dark:text-primary-400">@{{ $user->nickname }}</p>
+                    <p class="text-primary-600 dark:text-primary-400">{{ $user->nickname }}</p>
                 @endif
             </div>
         </div>

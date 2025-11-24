@@ -1248,7 +1248,7 @@
                                                     <div>
                                                         <div class="font-semibold text-neutral-900 dark:text-white">{{ $result['name'] }}</div>
                                                         @if($result['nickname'])
-                                                            <div class="text-sm text-neutral-600 dark:text-neutral-400">@{{ $result['nickname'] }}</div>
+                                                            <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ $result['nickname'] }}</div>
                                                         @endif
                                                     </div>
                                                     <div class="flex gap-2">
@@ -1317,7 +1317,7 @@
                                                     <div>
                                                         <div class="font-semibold text-neutral-900 dark:text-white">{{ $result['name'] }}</div>
                                                         @if($result['nickname'])
-                                                            <div class="text-sm text-neutral-600 dark:text-neutral-400">@{{ $result['nickname'] }}</div>
+                                                            <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ $result['nickname'] }}</div>
                                                         @endif
                                                     </div>
                                                     <button type="button" wire:click="addAudienceInvitation({{ $result['id'] }})" 
