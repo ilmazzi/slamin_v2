@@ -71,6 +71,18 @@
                         class="px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all {{ $activeSection === 'events' ? 'bg-primary-600 text-white shadow-lg' : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800' }}">
                     Eventi
                 </button>
+                @if($isModerator)
+                    @php
+                        $pendingRequests = $group->joinRequests()->where('status', 'pending')->count();
+                    @endphp
+                    @if($pendingRequests > 0)
+                        <a href="{{ route('groups.requests.pending', $group) }}"
+                           class="px-6 py-3 rounded-xl font-semibold whitespace-nowrap transition-all bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-800 flex items-center gap-2">
+                            Richieste Pendenti
+                            <span class="px-2 py-0.5 bg-amber-500 text-white text-xs font-bold rounded-full">{{ $pendingRequests }}</span>
+                        </a>
+                    @endif
+                @endif
             </div>
         </div>
 
@@ -126,7 +138,21 @@
             </div>
         @elseif($activeSection === 'members')
             <div class="bg-white dark:bg-neutral-900 rounded-2xl shadow-sm p-6 md:p-8">
-                <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-6">Membri</h2>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">Membri</h2>
+                    @if($isModerator)
+                        <div class="flex gap-2">
+                            <a href="{{ route('groups.invitations.create', $group) }}"
+                               class="px-4 py-2 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-all">
+                                Invita Utente
+                            </a>
+                            <a href="{{ route('groups.members.index', $group) }}"
+                               class="px-4 py-2 bg-neutral-600 text-white rounded-xl font-semibold hover:bg-neutral-700 transition-all">
+                                Gestisci Membri
+                            </a>
+                        </div>
+                    @endif
+                </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($members as $member)
