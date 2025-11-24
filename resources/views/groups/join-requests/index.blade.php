@@ -1,6 +1,6 @@
-@extends('components.layouts.app')
+<x-layouts.app>
 
-@section('content')
+
 <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950 py-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold text-neutral-900 dark:text-white mb-8">{{ __('groups.my_requests') }}</h1>
@@ -49,5 +49,5 @@
         </div>
     </div>
 </div>
-@endsection
+</x-layouts.app>
 

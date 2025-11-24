@@ -1,6 +1,4 @@
-@extends('components.layouts.app')
-
-@section('content')
+<x-layouts.app>
 <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950 py-8">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-neutral-900 rounded-2xl shadow-lg p-8">
@@ -61,5 +59,5 @@ function selectUser(id, name) {
     document.getElementById('search_results').innerHTML = '';
 }
 </script>
-@endsection
+</x-layouts.app>
 

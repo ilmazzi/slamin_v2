@@ -1,6 +1,6 @@
-@extends('components.layouts.app')
+<x-layouts.app>
 
-@section('content')
+
 <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Header --}}
@@ -87,5 +87,5 @@
         </div>
     </div>
 </div>
-@endsection
+</x-layouts.app>
 
