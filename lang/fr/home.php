@@ -59,5 +59,18 @@ return [
     'cta_title' => 'Votre <span class="italic">voix</span> compte',
     'cta_subtitle' => 'Rejoignez la communauté poétique la plus innovante d\'Italie',
     'cta_button' => 'Commencer Gratuitement →',
+
+    // Empty States / Placeholders
+    'no_poems_title' => 'Aucun Poème Disponible',
+    'no_poems_subtitle' => 'Soyez le premier à partager vos vers avec la communauté',
+    'no_articles_title' => 'Aucun Article Disponible',
+    'no_articles_subtitle' => 'Partagez vos histoires et réflexions',
+    'no_videos_title' => 'Aucun Média Disponible',
+    'no_videos_subtitle' => 'Téléchargez vos vidéos et photos pour inspirer la communauté',
+    'no_events_title' => 'Aucun Événement Prévu',
+    'no_events_subtitle' => 'Créez le premier événement pour la communauté',
+    'no_gigs_title' => 'Aucune Opportunité Disponible',
+    'no_gigs_subtitle' => 'Publiez la première offre créative',
+    'create_content' => 'Créer du Contenu',
 ];
 

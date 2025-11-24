@@ -768,5 +768,37 @@
         opacity: 0; 
     }
     </style>
+    @else
+    {{-- Empty State Placeholder --}}
+    <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
+        <div class="text-center mb-12 section-title-fade">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif;">
+                {!! __('home.events_section_title') !!}
+            </h2>
+            <p class="text-lg text-neutral-200 font-medium">
+                {{ __('home.events_section_subtitle') }}
+            </p>
+        </div>
+        
+        <div class="flex flex-col items-center justify-center py-20 px-4">
+            <div class="text-center max-w-md">
+                <svg class="w-24 h-24 mx-auto mb-6 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <h3 class="text-2xl font-bold text-white mb-3" style="font-family: 'Crimson Pro', serif;">
+                    {{ __('home.no_events_title') }}
+                </h3>
+                <p class="text-white/80 mb-6">
+                    {{ __('home.no_events_subtitle') }}
+                </p>
+                @auth
+                <a href="{{ route('events.create') }}" 
+                   class="inline-block px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-300">
+                    {{ __('home.create_content') }}
+                </a>
+                @endauth
+            </div>
+        </div>
+    </div>
     @endif
 </div>

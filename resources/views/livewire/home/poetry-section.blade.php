@@ -155,6 +155,38 @@
             </a>
         </div>
     </div>
+    @else
+    {{-- Empty State Placeholder --}}
+    <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
+        <div class="text-center mb-12 section-title-fade">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif;">
+                {!! __('home.poetry_section_title') !!}
+            </h2>
+            <p class="text-lg text-white/90 font-medium">
+                {{ __('home.poetry_section_subtitle') }}
+            </p>
+        </div>
+        
+        <div class="flex flex-col items-center justify-center py-20 px-4">
+            <div class="text-center max-w-md">
+                <svg class="w-24 h-24 mx-auto mb-6 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <h3 class="text-2xl font-bold text-white mb-3" style="font-family: 'Crimson Pro', serif;">
+                    {{ __('home.no_poems_title') }}
+                </h3>
+                <p class="text-white/80 mb-6">
+                    {{ __('home.no_poems_subtitle') }}
+                </p>
+                @auth
+                <a href="{{ route('poems.create') }}" 
+                   class="inline-block px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-300">
+                    {{ __('home.create_content') }}
+                </a>
+                @endauth
+            </div>
+        </div>
+    </div>
     @endif
     
     {{-- Poem Modal Component --}}

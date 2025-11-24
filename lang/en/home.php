@@ -58,5 +58,18 @@ return [
     'cta_title' => 'Your <span class="italic">voice</span> matters',
     'cta_subtitle' => 'Join Italy\'s most innovative poetry community',
     'cta_button' => 'Start for Free →',
+
+    // Empty States / Placeholders
+    'no_poems_title' => 'No Poems Available',
+    'no_poems_subtitle' => 'Be the first to share your verses with the community',
+    'no_articles_title' => 'No Articles Available',
+    'no_articles_subtitle' => 'Share your stories and reflections',
+    'no_videos_title' => 'No Media Available',
+    'no_videos_subtitle' => 'Upload your videos and photos to inspire the community',
+    'no_events_title' => 'No Upcoming Events',
+    'no_events_subtitle' => 'Create the first event for the community',
+    'no_gigs_title' => 'No Opportunities Available',
+    'no_gigs_subtitle' => 'Post the first creative gig',
+    'create_content' => 'Create Content',
 ];
 

@@ -622,6 +622,38 @@
         margin: 0 auto;
     }
     </style>
+    @else
+    {{-- Empty State Placeholder --}}
+    <section>
+        <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
+            <div class="text-center mb-12 section-title-fade">
+                <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
+                    {!! __('home.videos_section_title') !!}
+                </h2>
+                <p class="text-lg text-neutral-600 dark:text-neutral-200 font-medium">{{ __('home.videos_section_subtitle') }}</p>
+            </div>
+            
+            <div class="flex flex-col items-center justify-center py-20 px-4">
+                <div class="text-center max-w-md">
+                    <svg class="w-24 h-24 mx-auto mb-6 text-neutral-400 dark:text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-3" style="font-family: 'Crimson Pro', serif;">
+                        {{ __('home.no_videos_title') }}
+                    </h3>
+                    <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                        {{ __('home.no_videos_subtitle') }}
+                    </p>
+                    @auth
+                    <a href="{{ route('media.upload') }}" 
+                       class="inline-block px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors duration-300">
+                        {{ __('home.create_content') }}
+                    </a>
+                    @endauth
+                </div>
+            </div>
+        </div>
+    </section>
     @endif
     
     {{-- Video Modal Component --}}

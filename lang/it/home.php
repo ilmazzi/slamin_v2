@@ -59,4 +59,17 @@ return [
     'cta_title' => 'La tua <span class="italic">voce</span> conta',
     'cta_subtitle' => 'Unisciti alla community poetica più innovativa d\'Italia',
     'cta_button' => 'Inizia Gratuitamente →',
+
+    // Empty States / Placeholders
+    'no_poems_title' => 'Nessuna Poesia Disponibile',
+    'no_poems_subtitle' => 'Sii il primo a condividere i tuoi versi con la community',
+    'no_articles_title' => 'Nessun Articolo Disponibile',
+    'no_articles_subtitle' => 'Condividi le tue storie e riflessioni',
+    'no_videos_title' => 'Nessun Media Disponibile',
+    'no_videos_subtitle' => 'Carica i tuoi video e foto per ispirare la community',
+    'no_events_title' => 'Nessun Evento in Programma',
+    'no_events_subtitle' => 'Crea il primo evento per la community',
+    'no_gigs_title' => 'Nessuna Opportunità Disponibile',
+    'no_gigs_subtitle' => 'Pubblica il primo ingaggio creativo',
+    'create_content' => 'Crea Contenuto',
 ];

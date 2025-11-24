@@ -473,5 +473,37 @@
                 inset 0 -1px 3px rgba(0, 0, 0, 0.2);
         }
     </style>
+    @else
+    {{-- Empty State Placeholder --}}
+    <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
+        <div class="text-center mb-12 section-title-fade">
+            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
+                {!! __('home.gigs_section_title') !!}
+            </h2>
+            <p class="text-lg text-neutral-600 dark:text-neutral-100 font-medium">
+                {{ __('home.gigs_section_subtitle') }}
+            </p>
+        </div>
+        
+        <div class="flex flex-col items-center justify-center py-20 px-4">
+            <div class="text-center max-w-md">
+                <svg class="w-24 h-24 mx-auto mb-6 text-neutral-400 dark:text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-3" style="font-family: 'Crimson Pro', serif;">
+                    {{ __('home.no_gigs_title') }}
+                </h3>
+                <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                    {{ __('home.no_gigs_subtitle') }}
+                </p>
+                @auth
+                <a href="{{ route('gigs.create') }}" 
+                   class="inline-block px-6 py-3 bg-accent-600 text-white font-semibold rounded-lg hover:bg-accent-700 transition-colors duration-300">
+                    {{ __('home.create_content') }}
+                </a>
+                @endauth
+            </div>
+        </div>
+    </div>
     @endif
 </div>

@@ -411,6 +411,27 @@
             border-top-color: rgba(255, 255, 255, 0.1);
         }
     </style>
+    @else
+    {{-- Empty State Placeholder --}}
+    <div class="flex flex-col items-center justify-center py-20 px-4">
+        <div class="text-center max-w-md">
+            <svg class="w-24 h-24 mx-auto mb-6 text-neutral-400 dark:text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+            </svg>
+            <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-3" style="font-family: 'Crimson Pro', serif;">
+                {{ __('home.no_articles_title') }}
+            </h3>
+            <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                {{ __('home.no_articles_subtitle') }}
+            </p>
+            @auth
+            <a href="{{ route('articles.create') }}" 
+               class="inline-block px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors duration-300">
+                {{ __('home.create_content') }}
+            </a>
+            @endauth
+        </div>
+    </div>
     @endif
     
     {{-- Article Modal --}}
