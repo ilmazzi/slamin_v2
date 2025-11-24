@@ -35,7 +35,7 @@
         </div>
         
         <!-- Main Chat Area -->
-        <div class="chat-main" :class="{ 'hidden': showSidebar && isMobile }">
+        <div class="chat-main" x-show="!isMobile || !showSidebar">
             @if($selectedConversation)
                 @livewire('chat.chat-show', ['conversation' => $selectedConversation], key($selectedConversation->id))
             @else
