@@ -170,7 +170,7 @@
                                 </p>
                             @endif
                             <p class="text-xs text-neutral-500 dark:text-neutral-400">
-                                {{ __('admin.moderation.created_at') }}: {{ $content->created_at ? $content->created_at->format('d/m/Y H:i') : 'N/A' }}
+                                {{ __('admin.moderation.created_at') }}: {{ $content->created_at ? (\Carbon\Carbon::parse($content->created_at)->format('d/m/Y H:i')) : 'N/A' }}
                             </p>
                         </div>
                         <div class="flex items-center gap-2 ml-4">
