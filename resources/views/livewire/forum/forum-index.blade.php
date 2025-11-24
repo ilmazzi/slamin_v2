@@ -84,14 +84,6 @@
                                 </button>
                             @endauth
                         </div>
-                        
-                        <div class="subreddit-icon" style="color: {{ $subreddit->color }};">
-                            @if($subreddit->icon)
-                                <img src="{{ Storage::url($subreddit->icon) }}" alt="{{ $subreddit->name }}" class="w-full h-full rounded-full object-cover">
-                            @else
-                                {{ substr($subreddit->name, 0, 1) }}
-                            @endif
-                        </div>
 
                         <a href="{{ route('forum.subreddit.show', $subreddit) }}" wire:navigate class="subreddit-card-body">
                             <h3 class="subreddit-name">r/{{ $subreddit->name }}</h3>
