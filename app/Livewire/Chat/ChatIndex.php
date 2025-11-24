@@ -10,6 +10,7 @@ class ChatIndex extends Component
 {
     public $selectedConversation = null;
     public $search = '';
+    public $showMobileChat = false;
 
     protected $listeners = [
         'conversationSelected' => 'handleConversationSelected',
@@ -51,12 +52,10 @@ class ChatIndex extends Component
         }
         
         $this->selectedConversation = $conversation;
+        $this->showMobileChat = true;
         
         // Mark as read
         $conversation->markAsRead(Auth::user());
-        
-        // Dispatch event for mobile sidebar hiding
-        $this->dispatch('conversationSelected');
         
         // Update URL
         $this->dispatch('url-change', ['url' => route('chat.show', $conversation)]);
@@ -65,6 +64,7 @@ class ChatIndex extends Component
     public function backToList()
     {
         $this->selectedConversation = null;
+        $this->showMobileChat = false;
     }
 
     public function startConversation($userId)

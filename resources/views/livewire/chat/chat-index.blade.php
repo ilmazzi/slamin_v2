@@ -1,13 +1,7 @@
-<div class="-mt-16" x-data="{ 
-    isMobile: window.innerWidth < 768,
-    showSidebar: true 
-}" 
-@resize.window="isMobile = window.innerWidth < 768"
-@conversationSelected.window="if(isMobile) showSidebar = false"
-@backToList.window="showSidebar = true">
+<div class="-mt-16">
     <div class="chat-container">
         <!-- Sidebar con lista conversazioni -->
-        <div class="chat-sidebar" :class="{ 'hidden': !showSidebar && isMobile && {{ $selectedConversation ? 'true' : 'false' }} }">
+        <div class="chat-sidebar {{ $showMobileChat ? 'max-md:hidden' : '' }}">
             <div class="chat-sidebar-header">
                 <h1 class="chat-sidebar-title">{{ __('chat.messages') }}</h1>
                 
@@ -35,7 +29,7 @@
         </div>
         
         <!-- Main Chat Area -->
-        <div class="chat-main" x-show="!isMobile || !showSidebar">
+        <div class="chat-main {{ !$showMobileChat ? 'max-md:hidden' : '' }}">
             @if($selectedConversation)
                 @livewire('chat.chat-show', ['conversation' => $selectedConversation], key($selectedConversation->id))
             @else
