@@ -8,6 +8,7 @@ use App\Models\Poem;
 use App\Models\Video;
 use App\Models\Article;
 use App\Models\Event;
+use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\SocialInteractionReceived;
@@ -18,7 +19,7 @@ class CommentController extends Controller
     {
         $request->validate([
             'id' => 'required|integer',
-            'type' => 'required|string|in:poem,video,article,event,gallery',
+            'type' => 'required|string|in:poem,video,article,event,gallery,photo',
         ]);
 
         $modelMap = [
@@ -26,6 +27,7 @@ class CommentController extends Controller
             'video' => Video::class,
             'article' => Article::class,
             'event' => Event::class,
+            'photo' => Photo::class,
         ];
 
         $modelClass = $modelMap[$request->type] ?? null;
@@ -68,7 +70,7 @@ class CommentController extends Controller
 
         $request->validate([
             'id' => 'required|integer',
-            'type' => 'required|string|in:poem,video,article,event,gallery',
+            'type' => 'required|string|in:poem,video,article,event,gallery,photo',
             'content' => 'required|string|min:2|max:1000',
         ]);
 
@@ -77,6 +79,7 @@ class CommentController extends Controller
             'video' => Video::class,
             'article' => Article::class,
             'event' => Event::class,
+            'photo' => Photo::class,
         ];
 
         $modelClass = $modelMap[$request->type] ?? null;
