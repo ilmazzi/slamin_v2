@@ -1,4 +1,4 @@
-<div>
+<div class="-mt-16">
     <div class="chat-container">
         <!-- Sidebar con lista conversazioni -->
         <div class="chat-sidebar" :class="{ 'hidden': selectedConversation && window.innerWidth < 768 }">
