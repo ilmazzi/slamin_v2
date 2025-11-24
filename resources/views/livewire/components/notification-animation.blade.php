@@ -56,15 +56,16 @@
                         <h3 class="font-bold text-2xl mb-2 drop-shadow-lg">✨ Nuova Notifica!</h3>
                         <p class="text-sm text-white/90 mb-3">Hai ricevuto una nuova interazione</p>
                         
-                        <!-- CTA Button -->
-                        <button @click="$dispatch('open-notification-modal'); $wire.hideAnimation()"
-                                class="inline-flex items-center gap-2 px-4 py-2 bg-white text-primary-600 rounded-full font-semibold text-sm hover:bg-primary-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                            </svg>
-                            Visualizza
-                        </button>
+                        <!-- CTA Buttons -->
+                        <div class="flex gap-2">
+                            <button @click="$dispatch('open-notification-modal'); $wire.hideAnimation()"
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-white text-primary-600 rounded-full font-semibold text-sm hover:bg-primary-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                </svg>
+                                Tutte
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Close Button -->

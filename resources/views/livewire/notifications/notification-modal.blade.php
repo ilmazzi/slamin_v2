@@ -90,7 +90,9 @@
                 @if(count($notifications) > 0)
                     <div class="space-y-3">
                         @foreach($notifications as $notification)
-                        <div class="group relative bg-gradient-to-r {{ $notification['read'] ? 'from-neutral-50 to-neutral-100 dark:from-neutral-800 dark:to-neutral-800' : 'from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/30' }} rounded-2xl p-4 hover:shadow-lg transition-all duration-300 border-2 {{ $notification['read'] ? 'border-transparent' : 'border-primary-200 dark:border-primary-700' }}">
+                        <a href="{{ $notification['url'] }}" 
+                           wire:click="markAsRead('{{ $notification['id'] }}')"
+                           class="group relative bg-gradient-to-r {{ $notification['read'] ? 'from-neutral-50 to-neutral-100 dark:from-neutral-800 dark:to-neutral-800' : 'from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/30' }} rounded-2xl p-4 hover:shadow-lg transition-all duration-300 border-2 {{ $notification['read'] ? 'border-transparent' : 'border-primary-200 dark:border-primary-700' }} block cursor-pointer">
                             <div class="flex items-start gap-4">
                                 <!-- Icon -->
                                 <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 flex items-center justify-center shadow-md">
@@ -118,16 +120,13 @@
                                         </span>
 
                                         <div class="flex items-center gap-2">
-                                            @if(!$notification['read'])
-                                            <button wire:click="markAsRead('{{ $notification['id'] }}')"
-                                                    class="text-xs text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
-                                                Segna come letta
-                                            </button>
-                                            @endif
+                                            <span class="text-xs text-primary-600 dark:text-primary-400 font-medium">
+                                                Visualizza →
+                                            </span>
                                             
-                                            <button wire:click="deleteNotification('{{ $notification['id'] }}')"
+                                            <button wire:click.stop="deleteNotification('{{ $notification['id'] }}')"
                                                     class="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium">
-                                                Elimina
+                                                ✕
                                             </button>
                                         </div>
                                     </div>
@@ -136,7 +135,7 @@
 
                             <!-- Hover effect -->
                             <div class="absolute inset-0 bg-gradient-to-r from-primary-500/5 to-primary-600/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                        </div>
+                        </a>
                         @endforeach
                     </div>
                 @else
