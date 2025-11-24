@@ -1,7 +1,6 @@
 <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 shadow-sm"
         x-data="{ 
             searchOpen: false,
-            dashboardOpen: false,
             shortcutsOpen: false,
             notificationsOpen: false,
             profileOpen: false,
@@ -53,28 +52,14 @@
             </button>
 
             @auth
-            <!-- Dashboard Dropdown -->
-            <div class="relative" @click.away="dashboardOpen = false">
-                <button @click="dashboardOpen = !dashboardOpen"
-                        class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors relative">
-                    <svg class="w-5 h-5 text-neutral-700 dark:!text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"/>
-                    </svg>
-                </button>
-                <div x-show="dashboardOpen"
-                     x-transition
-                     class="absolute left-0 sm:left-auto sm:right-0 mt-2 w-56 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2">
-                    <div class="px-4 py-2 border-b border-neutral-200 dark:border-neutral-700">
-                        <p class="font-semibold text-sm text-neutral-900 dark:text-white">Dashboard</p>
-                    </div>
-                    <a href="{{ route('dashboard.index') }}" class="flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
-                        <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                        </svg>
-                        <span class="text-sm text-neutral-700 dark:!text-white">Vai alla Dashboard</span>
-                    </a>
-                </div>
-            </div>
+            <!-- Dashboard Direct Link -->
+            <a href="{{ route('dashboard.index') }}" 
+               class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors relative"
+               title="Dashboard">
+                <svg class="w-5 h-5 text-neutral-700 dark:!text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"/>
+                </svg>
+            </a>
 
             <!-- Shortcuts Dropdown -->
             <div class="relative" @click.away="shortcutsOpen = false">
