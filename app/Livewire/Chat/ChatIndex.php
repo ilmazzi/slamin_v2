@@ -10,19 +10,21 @@ class ChatIndex extends Component
 {
     public $selectedConversation = null;
     public $search = '';
-    public ?Conversation $conversation = null;
 
     protected $listeners = [
         'conversationSelected' => 'handleConversationSelected',
         'backToList' => 'backToList',
     ];
 
-    public function mount(?Conversation $conversation = null)
+    public function mount()
     {
-        // Se c'è una conversazione nell'URL (route parameter), selezionala
-        if ($conversation) {
-            // Verifica che l'utente sia partecipante
-            if ($conversation->hasParticipant(Auth::user())) {
+        // Ottieni il parametro conversation dalla route manualmente
+        $conversationId = request()->route('conversation');
+        
+        if ($conversationId) {
+            $conversation = Conversation::find($conversationId);
+            
+            if ($conversation && $conversation->hasParticipant(Auth::user())) {
                 $this->selectedConversation = $conversation;
                 $conversation->markAsRead(Auth::user());
             }
