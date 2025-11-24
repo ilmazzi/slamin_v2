@@ -1,6 +1,6 @@
 <div class="chat-conversations">
     @forelse($conversations as $conversation)
-        <div wire:click="$dispatch('conversationSelected', { conversationId: {{ $conversation->id }} })" 
+        <div wire:click="$dispatch('conversationSelected', { conversationId: {{ $conversation->id }} }); window.dispatchEvent(new CustomEvent('conversationSelected'))" 
              class="chat-conversation-item {{ $selectedConversation && $selectedConversation->id === $conversation->id ? 'active' : '' }}">
             
             <!-- Avatar -->
