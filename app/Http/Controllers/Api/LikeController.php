@@ -8,6 +8,7 @@ use App\Models\Poem;
 use App\Models\Video;
 use App\Models\Article;
 use App\Models\Event;
+use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\SocialInteractionReceived;
@@ -25,7 +26,7 @@ class LikeController extends Controller
 
         $request->validate([
             'id' => 'required|integer',
-            'type' => 'required|string|in:poem,video,article,event',
+            'type' => 'required|string|in:poem,video,article,event,photo',
         ]);
 
         $modelMap = [
@@ -33,6 +34,7 @@ class LikeController extends Controller
             'video' => Video::class,
             'article' => Article::class,
             'event' => Event::class,
+            'photo' => Photo::class,
         ];
 
         $modelClass = $modelMap[$request->type] ?? null;
