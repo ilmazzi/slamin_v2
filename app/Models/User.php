@@ -151,6 +151,15 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Subreddits a cui l'utente è iscritto
+     */
+    public function subscribedSubreddits(): BelongsToMany
+    {
+        return $this->belongsToMany(Subreddit::class, 'subreddit_subscribers')
+                    ->withTimestamps();
+    }
+
+    /**
      * Ottiene tutti i nomi dei ruoli dell'utente
      */
     public function getRoleNames()
