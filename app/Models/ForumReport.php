@@ -13,18 +13,18 @@ class ForumReport extends Model
 
     protected $fillable = [
         'reporter_id',
-        'target_type',
-        'target_id',
+        'reportable_type',
+        'reportable_id',
         'reason',
         'description',
         'status',
         'handled_by',
+        'resolved_at',
         'moderator_notes',
-        'handled_at',
     ];
 
     protected $casts = [
-        'handled_at' => 'datetime',
+        'resolved_at' => 'datetime',
     ];
 
     // Relationships
@@ -33,12 +33,22 @@ class ForumReport extends Model
         return $this->belongsTo(User::class, 'reporter_id');
     }
 
-    public function target(): MorphTo
+    public function reportable(): MorphTo
     {
         return $this->morphTo();
     }
 
+    public function target(): MorphTo
+    {
+        return $this->reportable();
+    }
+
     public function handler(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'handled_by');
+    }
+
+    public function handledBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'handled_by');
     }
@@ -76,7 +86,7 @@ class ForumReport extends Model
     {
         $this->status = 'resolved';
         $this->handled_by = $user->id;
-        $this->handled_at = now();
+        $this->resolved_at = now();
         if ($notes) {
             $this->moderator_notes = $notes;
         }
@@ -87,7 +97,7 @@ class ForumReport extends Model
     {
         $this->status = 'dismissed';
         $this->handled_by = $user->id;
-        $this->handled_at = now();
+        $this->resolved_at = now();
         if ($notes) {
             $this->moderator_notes = $notes;
         }

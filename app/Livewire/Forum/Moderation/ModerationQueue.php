@@ -33,7 +33,7 @@ class ModerationQueue extends Component
     public function getPendingPostsProperty()
     {
         return $this->subreddit->posts()
-            ->where('status', 'pending')
+            ->whereNull('approved_at')
             ->with('user')
             ->latest()
             ->get();
@@ -41,7 +41,7 @@ class ModerationQueue extends Component
 
     public function getPendingPostsCountProperty()
     {
-        return $this->subreddit->posts()->where('status', 'pending')->count();
+        return $this->subreddit->posts()->whereNull('approved_at')->count();
     }
 
     public function getPendingCommentsProperty()
@@ -49,7 +49,7 @@ class ModerationQueue extends Component
         return \App\Models\ForumComment::whereHas('post', function($q) {
                 $q->where('subreddit_id', $this->subreddit->id);
             })
-            ->where('status', 'pending')
+            ->whereNull('approved_at')
             ->with('user', 'post')
             ->latest()
             ->get();
@@ -60,7 +60,7 @@ class ModerationQueue extends Component
         return \App\Models\ForumComment::whereHas('post', function($q) {
                 $q->where('subreddit_id', $this->subreddit->id);
             })
-            ->where('status', 'pending')
+            ->whereNull('approved_at')
             ->count();
     }
 
@@ -73,7 +73,6 @@ class ModerationQueue extends Component
         }
 
         $post->update([
-            'status' => 'approved',
             'approved_at' => now(),
             'approved_by' => Auth::id(),
         ]);
@@ -89,11 +88,8 @@ class ModerationQueue extends Component
             return;
         }
 
-        $post->update([
-            'status' => 'removed',
-            'removed_at' => now(),
-            'removed_by' => Auth::id(),
-        ]);
+        $post->delete();
+        $this->subreddit->decrementPostsCount();
         
         session()->flash('success', 'Post rimosso');
     }
@@ -103,7 +99,6 @@ class ModerationQueue extends Component
         $comment = \App\Models\ForumComment::findOrFail($commentId);
         
         $comment->update([
-            'status' => 'approved',
             'approved_at' => now(),
             'approved_by' => Auth::id(),
         ]);
@@ -116,7 +111,6 @@ class ModerationQueue extends Component
         $comment = \App\Models\ForumComment::findOrFail($commentId);
         
         $comment->update([
-            'status' => 'removed',
             'deleted_at' => now(),
             'deleted_by' => Auth::id(),
         ]);

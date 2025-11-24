@@ -108,7 +108,7 @@ class CreatePost extends Component
 
         $this->subreddit->incrementPostsCount();
 
-        return $this->redirect(route('forum.post.show', $post), navigate: true);
+        return $this->redirect(route('forum.post.show', [$this->subreddit, $post]), navigate: true);
     }
 
     public function render()
