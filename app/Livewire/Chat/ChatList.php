@@ -16,14 +16,18 @@ class ChatList extends Component
         'messageSent' => '$refresh',
     ];
 
-    public function selectConversation($conversationId)
+    public function selectConversation($conversationId = null)
     {
-        $this->dispatch('conversationSelected', conversationId: $conversationId);
+        if ($conversationId) {
+            $this->dispatch('conversationSelected', conversationId: $conversationId);
+        }
     }
 
-    public function updateSelected($conversationId)
+    public function updateSelected($conversationId = null)
     {
-        $this->selectedConversation = Conversation::find($conversationId);
+        if ($conversationId) {
+            $this->selectedConversation = Conversation::find($conversationId);
+        }
     }
 
     public function getConversationsProperty()
