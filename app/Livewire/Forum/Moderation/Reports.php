@@ -43,14 +43,14 @@ class Reports extends Component
 
     public function getReportsProperty()
     {
-        $query = ForumReport::with(['reporter', 'reportable', 'handledBy'])
+        $query = ForumReport::with(['reporter', 'target', 'handledBy'])
             ->where(function ($q) {
                 // Get reports for posts in this subreddit
-                $q->whereHasMorph('reportable', [\App\Models\ForumPost::class], function ($query) {
+                $q->whereHasMorph('target', [\App\Models\ForumPost::class], function ($query) {
                     $query->where('subreddit_id', $this->subreddit->id);
                 })
                 // Or comments on posts in this subreddit
-                ->orWhereHasMorph('reportable', [\App\Models\ForumComment::class], function ($query) {
+                ->orWhereHasMorph('target', [\App\Models\ForumComment::class], function ($query) {
                     $query->whereHas('post', function ($q) {
                         $q->where('subreddit_id', $this->subreddit->id);
                     });
@@ -62,9 +62,9 @@ class Reports extends Component
         }
 
         if ($this->filterType === 'post') {
-            $query->where('reportable_type', \App\Models\ForumPost::class);
+            $query->where('target_type', \App\Models\ForumPost::class);
         } elseif ($this->filterType === 'comment') {
-            $query->where('reportable_type', \App\Models\ForumComment::class);
+            $query->where('target_type', \App\Models\ForumComment::class);
         }
 
         return $query->latest()->paginate(20);
@@ -74,17 +74,17 @@ class Reports extends Component
     {
         $report = ForumReport::findOrFail($reportId);
         
-        if ($report->reportable instanceof \App\Models\ForumPost) {
-            $report->reportable->delete();
+        if ($report->target instanceof \App\Models\ForumPost) {
+            $report->target->delete();
             $this->subreddit->decrementPostsCount();
-        } elseif ($report->reportable instanceof \App\Models\ForumComment) {
-            $report->reportable->delete();
+        } elseif ($report->target instanceof \App\Models\ForumComment) {
+            $report->target->delete();
         }
 
         $report->update([
             'status' => 'resolved',
             'handled_by' => Auth::id(),
-            'resolved_at' => now(),
+            'handled_at' => now(),
         ]);
         
         session()->flash('success', 'Contenuto rimosso');
@@ -97,7 +97,7 @@ class Reports extends Component
         $report->update([
             'status' => 'resolved',
             'handled_by' => Auth::id(),
-            'resolved_at' => now(),
+            'handled_at' => now(),
         ]);
         
         session()->flash('success', 'Segnalazione archiviata');

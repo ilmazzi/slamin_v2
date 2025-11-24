@@ -57,7 +57,7 @@
                                         {{ __('forum.' . $report->status) }}
                                     </span>
                                     <span class="px-3 py-1 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-full">
-                                        {{ __('forum.' . $report->reportable_type) }}
+                                        {{ $report->target_type === 'App\\Models\\ForumPost' ? __('forum.post') : __('forum.comment') }}
                                     </span>
                                 </div>
                                 <p class="text-sm text-gray-500">
@@ -75,18 +75,18 @@
 
                         {{-- Reported Content --}}
                         <div class="mb-4 p-4 bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-lg">
-                            @if($report->reportable_type === 'post')
-                                <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ $report->reportable->title }}</h3>
-                                @if($report->reportable->content)
-                                    <p class="text-gray-700 dark:text-gray-300 line-clamp-3">{{ $report->reportable->content }}</p>
+                            @if($report->target_type === 'App\\Models\\ForumPost')
+                                <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ $report->target->title }}</h3>
+                                @if($report->target->content)
+                                    <p class="text-gray-700 dark:text-gray-300 line-clamp-3">{{ $report->target->content }}</p>
                                 @endif
                                 <div class="mt-2 text-sm text-gray-500">
-                                    by u/{{ $report->reportable->user->name }} in r/{{ $report->reportable->subreddit->name }}
+                                    by u/{{ $report->target->user->name }} in r/{{ $report->target->subreddit->name }}
                                 </div>
                             @else
-                                <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">{{ $report->reportable->content }}</p>
+                                <p class="text-gray-700 dark:text-gray-300 whitespace-pre-line">{{ $report->target->content }}</p>
                                 <div class="mt-2 text-sm text-gray-500">
-                                    Comment by u/{{ $report->reportable->user->name }}
+                                    Comment by u/{{ $report->target->user->name }}
                                 </div>
                             @endif
                         </div>
@@ -108,14 +108,14 @@
                                     </svg>
                                     {{ __('forum.dismiss_report') }}
                                 </button>
-                                @if($report->reportable_type === 'post')
-                                    <a href="{{ route('forum.post.show', [$report->reportable->subreddit, $report->reportable]) }}" 
+                                @if($report->target_type === 'App\\Models\\ForumPost')
+                                    <a href="{{ route('forum.post.show', [$report->target->subreddit, $report->target]) }}" 
                                        wire:navigate
                                        class="px-4 py-2 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-neutral-700 transition-all">
                                         {{ __('forum.view_post') }}
                                     </a>
                                 @else
-                                    <a href="{{ route('forum.post.show', [$report->reportable->post->subreddit, $report->reportable->post]) }}" 
+                                    <a href="{{ route('forum.post.show', [$report->target->post->subreddit, $report->target->post]) }}" 
                                        wire:navigate
                                        class="px-4 py-2 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-neutral-700 transition-all">
                                         {{ __('forum.view_context') }}
