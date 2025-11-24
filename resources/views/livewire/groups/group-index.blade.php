@@ -159,7 +159,8 @@
                 {{-- Users Grid --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @forelse($users as $user)
-                        <a href="{{ route('profile.show', $user) }}" wire:navigate
+                        <a href="{{ route('user.show', $user) }}"
+                           onclick="window.location.href = this.href; return false;"
                            class="bg-white dark:bg-neutral-900 rounded-2xl shadow-sm hover:shadow-xl transition-all p-6 group">
                             <div class="flex items-center gap-4 mb-4">
                                 <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($user, 100) }}"
