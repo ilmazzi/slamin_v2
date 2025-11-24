@@ -10,13 +10,66 @@ use Illuminate\Support\Facades\Auth;
 class GroupAnnouncementController extends Controller
 {
     /**
-     * Crea un nuovo annuncio
+     * Mostra gli annunci di un gruppo
+     */
+    public function index(Group $group)
+    {
+        $user = Auth::user();
+        
+        if ($group->visibility === 'private' && !$group->hasMember($user)) {
+            abort(403, __('groups.no_permission_view_announcements'));
+        }
+
+        $announcements = $group->announcements()
+            ->with(['user'])
+            ->orderBy('is_pinned', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('groups.announcements.index', compact('group', 'announcements'));
+    }
+
+    /**
+     * Mostra un annuncio specifico
+     */
+    public function show(Group $group, GroupAnnouncement $announcement)
+    {
+        $user = Auth::user();
+        
+        if ($announcement->group_id !== $group->id) {
+            abort(404);
+        }
+
+        if ($group->visibility === 'private' && !$group->hasMember($user)) {
+            abort(403, __('groups.no_permission_view_announcement'));
+        }
+
+        return view('groups.announcements.show', compact('group', 'announcement'));
+    }
+
+    /**
+     * Mostra il form per creare un nuovo annuncio
+     */
+    public function create(Group $group)
+    {
+        $user = Auth::user();
+        
+        if (!$group->hasModerator($user)) {
+            abort(403, __('groups.no_permission_create_announcement'));
+        }
+
+        return view('groups.announcements.create', compact('group'));
+    }
+
+    /**
+     * Salva un nuovo annuncio
      */
     public function store(Request $request, Group $group)
     {
-        // Verifica che l'utente sia moderatore o admin
-        if (!$group->hasModerator(Auth::user())) {
-            abort(403);
+        $user = Auth::user();
+        
+        if (!$group->hasModerator($user)) {
+            abort(403, __('groups.no_permission_create_announcement'));
         }
 
         $request->validate([
@@ -25,15 +78,33 @@ class GroupAnnouncementController extends Controller
             'is_pinned' => 'boolean',
         ]);
 
-        GroupAnnouncement::create([
-            'group_id' => $group->id,
-            'user_id' => Auth::id(),
+        $group->announcements()->create([
+            'user_id' => $user->id,
             'title' => $request->title,
             'content' => $request->content,
             'is_pinned' => $request->boolean('is_pinned', false),
         ]);
 
-        return back()->with('success', __('groups.announcement_created'));
+        return redirect()->route('groups.announcements.index', $group)
+                        ->with('success', __('groups.announcement_created'));
+    }
+
+    /**
+     * Mostra il form per modificare un annuncio
+     */
+    public function edit(Group $group, GroupAnnouncement $announcement)
+    {
+        $user = Auth::user();
+        
+        if ($announcement->group_id !== $group->id) {
+            abort(404);
+        }
+
+        if (!$group->hasModerator($user) && $announcement->user_id !== $user->id) {
+            abort(403, __('groups.no_permission_edit_announcement'));
+        }
+
+        return view('groups.announcements.edit', compact('group', 'announcement'));
     }
 
     /**
@@ -41,9 +112,14 @@ class GroupAnnouncementController extends Controller
      */
     public function update(Request $request, Group $group, GroupAnnouncement $announcement)
     {
-        // Verifica che l'utente sia moderatore, admin o l'autore
-        if (!$group->hasModerator(Auth::user()) && $announcement->user_id !== Auth::id()) {
-            abort(403);
+        $user = Auth::user();
+        
+        if ($announcement->group_id !== $group->id) {
+            abort(404);
+        }
+
+        if (!$group->hasModerator($user) && $announcement->user_id !== $user->id) {
+            abort(403, __('groups.no_permission_edit_announcement'));
         }
 
         $request->validate([
@@ -55,10 +131,11 @@ class GroupAnnouncementController extends Controller
         $announcement->update([
             'title' => $request->title,
             'content' => $request->content,
-            'is_pinned' => $request->boolean('is_pinned', $announcement->is_pinned),
+            'is_pinned' => $group->hasModerator($user) ? $request->boolean('is_pinned', $announcement->is_pinned) : $announcement->is_pinned,
         ]);
 
-        return back()->with('success', __('groups.announcement_updated'));
+        return redirect()->route('groups.announcements.show', [$group, $announcement])
+                        ->with('success', __('groups.announcement_updated'));
     }
 
     /**
@@ -66,13 +143,19 @@ class GroupAnnouncementController extends Controller
      */
     public function destroy(Group $group, GroupAnnouncement $announcement)
     {
-        // Verifica che l'utente sia moderatore, admin o l'autore
-        if (!$group->hasModerator(Auth::user()) && $announcement->user_id !== Auth::id()) {
-            abort(403);
+        $user = Auth::user();
+        
+        if ($announcement->group_id !== $group->id) {
+            abort(404);
+        }
+
+        if (!$group->hasModerator($user) && $announcement->user_id !== $user->id) {
+            abort(403, __('groups.no_permission_delete_announcement'));
         }
 
         $announcement->delete();
 
-        return back()->with('success', __('groups.announcement_deleted'));
+        return redirect()->route('groups.announcements.index', $group)
+                        ->with('success', __('groups.announcement_deleted'));
     }
 }

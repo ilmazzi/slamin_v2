@@ -53,25 +53,63 @@ Route::prefix('groups')->name('groups.')->group(function () {
         Route::get('/{group}/edit', \App\Livewire\Groups\GroupEdit::class)->name('edit');
         
         // Member Management
-        Route::post('/{group}/members/{member}/promote', [App\Http\Controllers\GroupMemberController::class, 'promote'])->name('members.promote');
-        Route::post('/{group}/members/{member}/demote', [App\Http\Controllers\GroupMemberController::class, 'demote'])->name('members.demote');
-        Route::delete('/{group}/members/{member}', [App\Http\Controllers\GroupMemberController::class, 'remove'])->name('members.remove');
+        Route::prefix('{group}/members')->name('members.')->group(function () {
+            Route::get('/', [App\Http\Controllers\GroupMemberController::class, 'index'])->name('index');
+            Route::post('/{member}/promote', [App\Http\Controllers\GroupMemberController::class, 'promote'])->name('promote');
+            Route::post('/{member}/demote', [App\Http\Controllers\GroupMemberController::class, 'demote'])->name('demote');
+            Route::post('/{member}/promote-moderator', [App\Http\Controllers\GroupMemberController::class, 'promoteToModerator'])->name('promote-moderator');
+            Route::post('/{member}/demote-member', [App\Http\Controllers\GroupMemberController::class, 'demoteToMember'])->name('demote-member');
+            Route::delete('/{member}', [App\Http\Controllers\GroupMemberController::class, 'remove'])->name('remove');
+            Route::get('/search', [App\Http\Controllers\GroupMemberController::class, 'searchUsers'])->name('search');
+            Route::post('/invite', [App\Http\Controllers\GroupMemberController::class, 'invite'])->name('invite');
+        });
         
         // Invitations
-        Route::post('/{group}/invitations', [App\Http\Controllers\GroupInvitationController::class, 'store'])->name('invitations.store');
-        Route::post('/invitations/{invitation}/accept', [App\Http\Controllers\GroupInvitationController::class, 'accept'])->name('invitations.accept');
-        Route::post('/invitations/{invitation}/decline', [App\Http\Controllers\GroupInvitationController::class, 'decline'])->name('invitations.decline');
+        Route::prefix('{group}/invitations')->name('invitations.')->group(function () {
+            Route::get('/pending', [App\Http\Controllers\GroupInvitationController::class, 'pending'])->name('pending');
+            Route::get('/create', [App\Http\Controllers\GroupInvitationController::class, 'create'])->name('create');
+            Route::post('/store', [App\Http\Controllers\GroupInvitationController::class, 'store'])->name('store');
+        });
         
         // Join Requests
-        Route::post('/{group}/requests/{request}/approve', [App\Http\Controllers\GroupJoinRequestController::class, 'approve'])->name('requests.approve');
-        Route::post('/{group}/requests/{request}/decline', [App\Http\Controllers\GroupJoinRequestController::class, 'decline'])->name('requests.decline');
+        Route::prefix('{group}/requests')->name('requests.')->group(function () {
+            Route::get('/pending', [App\Http\Controllers\GroupJoinRequestController::class, 'pending'])->name('pending');
+            Route::get('/stats', [App\Http\Controllers\GroupJoinRequestController::class, 'stats'])->name('stats');
+            Route::post('/store', [App\Http\Controllers\GroupJoinRequestController::class, 'store'])->name('store');
+            Route::post('/{request}/accept', [App\Http\Controllers\GroupJoinRequestController::class, 'accept'])->name('accept');
+            Route::post('/{request}/decline', [App\Http\Controllers\GroupJoinRequestController::class, 'decline'])->name('decline');
+        });
         
         // Announcements
-        Route::post('/{group}/announcements', [App\Http\Controllers\GroupAnnouncementController::class, 'store'])->name('announcements.store');
-        Route::put('/{group}/announcements/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'update'])->name('announcements.update');
-        Route::delete('/{group}/announcements/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'destroy'])->name('announcements.destroy');
+        Route::prefix('{group}/announcements')->name('announcements.')->group(function () {
+            Route::get('/', [App\Http\Controllers\GroupAnnouncementController::class, 'index'])->name('index');
+            Route::get('/create', [App\Http\Controllers\GroupAnnouncementController::class, 'create'])->name('create');
+            Route::post('/', [App\Http\Controllers\GroupAnnouncementController::class, 'store'])->name('store');
+            Route::get('/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'show'])->name('show');
+            Route::get('/{announcement}/edit', [App\Http\Controllers\GroupAnnouncementController::class, 'edit'])->name('edit');
+            Route::put('/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'update'])->name('update');
+            Route::delete('/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'destroy'])->name('destroy');
+        });
     });
     Route::get('/{group}', \App\Livewire\Groups\GroupShow::class)->name('show');
+});
+
+// Routes per inviti (globali)
+Route::prefix('group-invitations')->name('group-invitations.')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\GroupInvitationController::class, 'index'])->name('index');
+    Route::get('/sent', [App\Http\Controllers\GroupInvitationController::class, 'sent'])->name('sent');
+    Route::get('/{invitation}', [App\Http\Controllers\GroupInvitationController::class, 'show'])->name('show');
+    Route::post('/{invitation}/accept', [App\Http\Controllers\GroupInvitationController::class, 'accept'])->name('accept');
+    Route::post('/{invitation}/decline', [App\Http\Controllers\GroupInvitationController::class, 'decline'])->name('decline');
+    Route::delete('/{invitation}', [App\Http\Controllers\GroupInvitationController::class, 'cancel'])->name('cancel');
+    Route::post('/{invitation}/resend', [App\Http\Controllers\GroupInvitationController::class, 'resend'])->name('resend');
+});
+
+// Routes per richieste di partecipazione
+Route::prefix('group-requests')->name('group-requests.')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\GroupJoinRequestController::class, 'index'])->name('index');
+    Route::get('/{request}', [App\Http\Controllers\GroupJoinRequestController::class, 'show'])->name('show');
+    Route::delete('/{request}', [App\Http\Controllers\GroupJoinRequestController::class, 'cancel'])->name('cancel');
 });
 
 // Media Routes
