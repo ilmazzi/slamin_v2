@@ -51,51 +51,50 @@ Route::get('/parallax-enhanced', function () {
 Route::get('/events', \App\Livewire\Events\EventsIndex::class)->name('events.index');
 
 // Groups Routes
-Route::prefix('groups')->name('groups.')->group(function () {
+Route::middleware('auth')->prefix('groups')->name('groups.')->group(function () {
     Route::get('/', \App\Livewire\Groups\GroupIndex::class)->name('index');
-    Route::middleware('auth')->group(function () {
-        Route::get('/create', \App\Livewire\Groups\GroupCreate::class)->name('create');
-        Route::get('/{group}/edit', \App\Livewire\Groups\GroupEdit::class)->name('edit');
-        
-        // Member Management
-        Route::prefix('{group}/members')->name('members.')->group(function () {
-            Route::get('/', [App\Http\Controllers\GroupMemberController::class, 'index'])->name('index');
-            Route::post('/{member}/promote', [App\Http\Controllers\GroupMemberController::class, 'promote'])->name('promote');
-            Route::post('/{member}/demote', [App\Http\Controllers\GroupMemberController::class, 'demote'])->name('demote');
-            Route::post('/{member}/promote-moderator', [App\Http\Controllers\GroupMemberController::class, 'promoteToModerator'])->name('promote-moderator');
-            Route::post('/{member}/demote-member', [App\Http\Controllers\GroupMemberController::class, 'demoteToMember'])->name('demote-member');
-            Route::delete('/{member}', [App\Http\Controllers\GroupMemberController::class, 'remove'])->name('remove');
-            Route::get('/search', [App\Http\Controllers\GroupMemberController::class, 'searchUsers'])->name('search');
-            Route::post('/invite', [App\Http\Controllers\GroupMemberController::class, 'invite'])->name('invite');
-        });
-        
-        // Invitations
-        Route::prefix('{group}/invitations')->name('invitations.')->group(function () {
-            Route::get('/pending', [App\Http\Controllers\GroupInvitationController::class, 'pending'])->name('pending');
-            Route::get('/create', [App\Http\Controllers\GroupInvitationController::class, 'create'])->name('create');
-            Route::post('/store', [App\Http\Controllers\GroupInvitationController::class, 'store'])->name('store');
-        });
-        
-        // Join Requests
-        Route::prefix('{group}/requests')->name('requests.')->group(function () {
-            Route::get('/pending', [App\Http\Controllers\GroupJoinRequestController::class, 'pending'])->name('pending');
-            Route::get('/stats', [App\Http\Controllers\GroupJoinRequestController::class, 'stats'])->name('stats');
-            Route::post('/store', [App\Http\Controllers\GroupJoinRequestController::class, 'store'])->name('store');
-            Route::post('/{request}/accept', [App\Http\Controllers\GroupJoinRequestController::class, 'accept'])->name('accept');
-            Route::post('/{request}/decline', [App\Http\Controllers\GroupJoinRequestController::class, 'decline'])->name('decline');
-        });
-        
-        // Announcements
-        Route::prefix('{group}/announcements')->name('announcements.')->group(function () {
-            Route::get('/', [App\Http\Controllers\GroupAnnouncementController::class, 'index'])->name('index');
-            Route::get('/create', [App\Http\Controllers\GroupAnnouncementController::class, 'create'])->name('create');
-            Route::post('/', [App\Http\Controllers\GroupAnnouncementController::class, 'store'])->name('store');
-            Route::get('/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'show'])->name('show');
-            Route::get('/{announcement}/edit', [App\Http\Controllers\GroupAnnouncementController::class, 'edit'])->name('edit');
-            Route::put('/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'update'])->name('update');
-            Route::delete('/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'destroy'])->name('destroy');
-        });
+    Route::get('/create', \App\Livewire\Groups\GroupCreate::class)->name('create');
+    Route::get('/{group}/edit', \App\Livewire\Groups\GroupEdit::class)->name('edit');
+    
+    // Member Management
+    Route::prefix('{group}/members')->name('members.')->group(function () {
+        Route::get('/', [App\Http\Controllers\GroupMemberController::class, 'index'])->name('index');
+        Route::post('/{member}/promote', [App\Http\Controllers\GroupMemberController::class, 'promote'])->name('promote');
+        Route::post('/{member}/demote', [App\Http\Controllers\GroupMemberController::class, 'demote'])->name('demote');
+        Route::post('/{member}/promote-moderator', [App\Http\Controllers\GroupMemberController::class, 'promoteToModerator'])->name('promote-moderator');
+        Route::post('/{member}/demote-member', [App\Http\Controllers\GroupMemberController::class, 'demoteToMember'])->name('demote-member');
+        Route::delete('/{member}', [App\Http\Controllers\GroupMemberController::class, 'remove'])->name('remove');
+        Route::get('/search', [App\Http\Controllers\GroupMemberController::class, 'searchUsers'])->name('search');
+        Route::post('/invite', [App\Http\Controllers\GroupMemberController::class, 'invite'])->name('invite');
     });
+    
+    // Invitations
+    Route::prefix('{group}/invitations')->name('invitations.')->group(function () {
+        Route::get('/pending', [App\Http\Controllers\GroupInvitationController::class, 'pending'])->name('pending');
+        Route::get('/create', [App\Http\Controllers\GroupInvitationController::class, 'create'])->name('create');
+        Route::post('/store', [App\Http\Controllers\GroupInvitationController::class, 'store'])->name('store');
+    });
+    
+    // Join Requests
+    Route::prefix('{group}/requests')->name('requests.')->group(function () {
+        Route::get('/pending', [App\Http\Controllers\GroupJoinRequestController::class, 'pending'])->name('pending');
+        Route::get('/stats', [App\Http\Controllers\GroupJoinRequestController::class, 'stats'])->name('stats');
+        Route::post('/store', [App\Http\Controllers\GroupJoinRequestController::class, 'store'])->name('store');
+        Route::post('/{request}/accept', [App\Http\Controllers\GroupJoinRequestController::class, 'accept'])->name('accept');
+        Route::post('/{request}/decline', [App\Http\Controllers\GroupJoinRequestController::class, 'decline'])->name('decline');
+    });
+    
+    // Announcements
+    Route::prefix('{group}/announcements')->name('announcements.')->group(function () {
+        Route::get('/', [App\Http\Controllers\GroupAnnouncementController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\GroupAnnouncementController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\GroupAnnouncementController::class, 'store'])->name('store');
+        Route::get('/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'show'])->name('show');
+        Route::get('/{announcement}/edit', [App\Http\Controllers\GroupAnnouncementController::class, 'edit'])->name('edit');
+        Route::put('/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'update'])->name('update');
+        Route::delete('/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'destroy'])->name('destroy');
+    });
+    
     Route::get('/{group}', \App\Livewire\Groups\GroupShow::class)->name('show');
 });
 
