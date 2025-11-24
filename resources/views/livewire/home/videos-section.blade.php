@@ -645,7 +645,7 @@
                         {{ __('home.no_videos_subtitle') }}
                     </p>
                     @auth
-                    <a href="{{ route('media.upload') }}" 
+                    <a href="{{ route('media.upload.video') }}" 
                        class="inline-block px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors duration-300">
                         {{ __('home.create_content') }}
                     </a>

@@ -493,15 +493,9 @@
                 <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-3" style="font-family: 'Crimson Pro', serif;">
                     {{ __('home.no_gigs_title') }}
                 </h3>
-                <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                <p class="text-neutral-600 dark:text-neutral-400">
                     {{ __('home.no_gigs_subtitle') }}
                 </p>
-                @auth
-                <a href="{{ route('gigs.create') }}" 
-                   class="inline-block px-6 py-3 bg-accent-600 text-white font-semibold rounded-lg hover:bg-accent-700 transition-colors duration-300">
-                    {{ __('home.create_content') }}
-                </a>
-                @endauth
             </div>
         </div>
     </div>
