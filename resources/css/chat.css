@@ -586,10 +586,21 @@
         position: absolute;
         z-index: 10;
         height: 100%;
+        left: 0;
+        top: 0;
     }
     
     .chat-sidebar.hidden {
         display: none;
+    }
+    
+    .chat-main {
+        width: 100%;
+        position: absolute;
+        z-index: 10;
+        height: 100%;
+        left: 0;
+        top: 0;
     }
     
     .chat-message {
