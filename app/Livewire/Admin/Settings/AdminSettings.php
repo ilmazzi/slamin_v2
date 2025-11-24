@@ -48,6 +48,11 @@ class AdminSettings extends Component
                 'key' => 'settings',
             ],
             [
+                'route' => route('admin.settings.moderation'),
+                'icon' => 'moderation',
+                'key' => 'moderation_settings',
+            ],
+            [
                 'route' => route('admin.settings.payment'),
                 'icon' => 'payment',
                 'key' => 'payment_settings',

@@ -244,6 +244,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         ->name('settings.social');
     Route::get('/settings/placeholder', \App\Livewire\Admin\Settings\PlaceholderSettings::class)
         ->name('settings.placeholder');
+    Route::get('/settings/moderation', \App\Livewire\Admin\Settings\ModerationSettings::class)
+        ->name('settings.moderation');
     
     // Payment Accounts
     Route::get('/payments/accounts', \App\Livewire\Admin\Payments\PaymentAccounts::class)
