@@ -12,7 +12,10 @@ export default defineConfig({
                 'resources/css/events-index.css',
                 'resources/css/event-ticket.css',
                 'resources/js/events-map.js',
-                'resources/css/article-modal.css'
+                'resources/css/article-modal.css',
+                'resources/css/notification-animation.css',
+                'resources/css/profile.css',
+                'resources/js/profile.js'
             ],
             refresh: true,
         }),
