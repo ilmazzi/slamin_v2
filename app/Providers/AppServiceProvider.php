@@ -18,6 +18,8 @@ use App\Observers\ArticleObserver;
 use App\Observers\PhotoObserver;
 use App\Observers\LikeObserver;
 use App\Observers\CommentObserver;
+use App\Observers\GroupObserver;
+use App\Observers\GroupMemberObserver;
 use App\Listeners\CreatePeerTubeAccount;
 
 class AppServiceProvider extends ServiceProvider
@@ -42,6 +44,10 @@ class AppServiceProvider extends ServiceProvider
         Photo::observe(PhotoObserver::class);
         UnifiedLike::observe(LikeObserver::class);
         UnifiedComment::observe(CommentObserver::class);
+        
+        // Register Group observers
+        \App\Models\Group::observe(GroupObserver::class);
+        \App\Models\GroupMember::observe(GroupMemberObserver::class);
         
         // ForumPost observer - uncomment if ForumPost model exists
         // if (class_exists(\App\Models\ForumPost::class)) {

@@ -124,5 +124,15 @@ return [
     'invitation_cancelled' => 'Invitation cancelled',
     'cannot_cancel_others_request' => 'Cannot cancel others\' requests',
     'request_cancelled' => 'Request cancelled',
+    
+    // Notifications
+    'notification' => [
+        'invitation_received' => 'New group invitation',
+        'invitation_message' => ':inviter invited you to join :group',
+        'join_request_received' => 'New join request',
+        'join_request_message' => ':user wants to join :group',
+        'new_announcement' => 'New announcement',
+        'announcement_message' => 'New announcement in :group: :title',
+    ],
 ];
 

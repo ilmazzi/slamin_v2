@@ -124,5 +124,15 @@ return [
     'invitation_cancelled' => 'Invito cancellato',
     'cannot_cancel_others_request' => 'Non puoi cancellare richieste di altri',
     'request_cancelled' => 'Richiesta cancellata',
+    
+    // Notifications
+    'notification' => [
+        'invitation_received' => 'Nuovo invito al gruppo',
+        'invitation_message' => ':inviter ti ha invitato a unirti al gruppo :group',
+        'join_request_received' => 'Nuova richiesta di partecipazione',
+        'join_request_message' => ':user vuole unirsi al gruppo :group',
+        'new_announcement' => 'Nuovo annuncio',
+        'announcement_message' => 'Nuovo annuncio in :group: :title',
+    ],
 ];
 
