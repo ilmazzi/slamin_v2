@@ -1,5 +1,7 @@
 <div>
     @auth
+    {{-- Nascondi il pulsante quando si è già nella pagina chat --}}
+    @if(!request()->routeIs('chat.*'))
     <div class="fixed bottom-6 right-6 z-50">
         <a href="{{ route('chat.index') }}" 
            class="chat-fab group"
@@ -23,6 +25,7 @@
             </svg>
         </a>
     </div>
+    @endif
 
     <style>
     .chat-fab {
