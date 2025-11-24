@@ -30,6 +30,11 @@ Route::post('/api/comments', [App\Http\Controllers\Api\CommentController::class,
     ->middleware('auth')
     ->name('api.comments.store');
 
+// User Search API
+Route::get('/api/users/search', [App\Http\Controllers\Api\UserSearchController::class, 'search'])
+    ->middleware('auth')
+    ->name('api.users.search');
+
 // Color System
 Route::get('/colors', \App\Livewire\SimpleThemeManager::class)->name('colors');
 

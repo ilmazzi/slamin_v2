@@ -9,7 +9,10 @@ return [
     // Actions
     'new_conversation' => 'New Conversation',
     'search_conversations' => 'Search conversations...',
+    'search_users' => 'Search users...',
     'select_conversation' => 'Select a conversation to start',
+    'no_users_found' => 'No users found',
+    'type_to_search' => 'Type at least 2 characters to search',
     'type_message' => 'Type a message...',
     'send' => 'Send',
     'attach_file' => 'Attach file',
