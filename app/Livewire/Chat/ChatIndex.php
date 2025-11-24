@@ -10,17 +10,18 @@ class ChatIndex extends Component
 {
     public $selectedConversation = null;
     public $search = '';
+    public $conversationId = null;
 
     protected $listeners = [
         'conversationSelected' => 'handleConversationSelected',
         'backToList' => 'backToList',
     ];
 
-    public function mount($conversationId = null)
+    public function mount()
     {
         // Se c'è una conversazione nell'URL (route parameter), selezionala
-        if ($conversationId) {
-            $this->selectConversation($conversationId);
+        if ($this->conversationId) {
+            $this->selectConversation($this->conversationId);
         }
     }
 
