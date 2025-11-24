@@ -18,7 +18,9 @@ export default defineConfig({
                 'resources/js/profile.js',
                 'resources/css/groups.css',
                 'resources/css/forum.css',
-                'resources/js/forum.js'
+                'resources/js/forum.js',
+                'resources/css/chat.css',
+                'resources/js/chat.js'
             ],
             refresh: true,
         }),

@@ -420,6 +420,23 @@ Route::post('/logout', function () {
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+| Chat Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->prefix('chat')->name('chat.')->group(function () {
+    Route::get('/', \App\Livewire\Chat\ChatIndex::class)->name('index');
+    Route::get('/{conversation}', \App\Livewire\Chat\ChatShow::class)->name('show');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Forum Routes
+|--------------------------------------------------------------------------
+*/
+
 Route::prefix('forum')->name('forum.')->group(function () {
     // Public forum routes
     Route::get('/', \App\Livewire\Forum\ForumIndex::class)->name('index');

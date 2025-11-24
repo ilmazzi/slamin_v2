@@ -8,73 +8,92 @@ use App\Models\Conversation;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 
 class ChatShow extends Component
 {
     use WithFileUploads;
 
-    public $conversationId;
-    public $conversation;
-    public $messageBody = '';
+    public Conversation $conversation;
+    public $newMessage = '';
+    public $attachment;
     public $replyTo = null;
-    public $attachment = null;
-    public $attachmentPreview = null;
 
     protected $listeners = [
-        'conversationSelected' => 'loadConversation',
-        'echo:conversations.{conversationId},MessageSent' => 'handleNewMessage',
+        'messageSent' => 'loadMessages',
     ];
 
-    public function mount($conversationId = null)
+    public function mount(Conversation $conversation)
     {
-        if ($conversationId) {
-            $this->loadConversation($conversationId);
+        // Check if user is participant
+        if (!$conversation->hasParticipant(Auth::user())) {
+            abort(403);
         }
-    }
 
-    public function loadConversation($conversationId)
-    {
-        $this->conversationId = $conversationId;
-        $this->conversation = Conversation::with(['messages.user', 'users'])
-            ->find($conversationId);
-
-        if ($this->conversation && $this->conversation->hasParticipant(Auth::user())) {
-            $this->conversation->markAsRead(Auth::user());
-        }
-    }
-
-    public function handleNewMessage($event)
-    {
-        // Refresh messages when new message arrives
-        $this->conversation = Conversation::with(['messages.user', 'users'])
-            ->find($this->conversationId);
+        $this->conversation = $conversation;
         
-        if ($this->conversation) {
-            $this->conversation->markAsRead(Auth::user());
-        }
-        
-        $this->dispatch('scrollToBottom');
+        // Mark as read
+        $conversation->markAsRead(Auth::user());
     }
 
-    public function updatedAttachment()
+    public function loadMessages()
+    {
+        $this->conversation->refresh();
+        $this->conversation->markAsRead(Auth::user());
+        $this->dispatch('messagesLoaded');
+    }
+
+    public function sendMessage()
     {
         $this->validate([
-            'attachment' => 'file|max:10240', // 10MB max
+            'newMessage' => 'required_without:attachment|string|max:5000',
+            'attachment' => 'nullable|file|max:10240', // 10MB max
         ]);
 
+        $messageData = [
+            'conversation_id' => $this->conversation->id,
+            'user_id' => Auth::id(),
+            'body' => $this->newMessage,
+            'type' => 'text',
+            'reply_to' => $this->replyTo,
+        ];
+
+        // Handle attachment
         if ($this->attachment) {
+            $path = $this->attachment->store('chat-attachments', 'public');
+            
             if (str_starts_with($this->attachment->getMimeType(), 'image/')) {
-                $this->attachmentPreview = $this->attachment->temporaryUrl();
+                $messageData['type'] = 'image';
+                $messageData['metadata'] = [
+                    'url' => Storage::url($path),
+                    'filename' => $this->attachment->getClientOriginalName(),
+                    'size' => $this->attachment->getSize(),
+                ];
+            } else {
+                $messageData['type'] = 'file';
+                $messageData['metadata'] = [
+                    'url' => Storage::url($path),
+                    'filename' => $this->attachment->getClientOriginalName(),
+                    'size' => number_format($this->attachment->getSize() / 1024, 2) . ' KB',
+                ];
             }
         }
-    }
 
-    public function removeAttachment()
-    {
+        Message::create($messageData);
+
+        // Update conversation timestamp
+        $this->conversation->touch();
+
+        // Reset form
+        $this->newMessage = '';
         $this->attachment = null;
-        $this->attachmentPreview = null;
+        $this->replyTo = null;
+
+        // Dispatch events
+        $this->dispatch('messageSent');
+        $this->dispatch('messagesLoaded');
+        
+        // Notify other participants via broadcast
+        // TODO: Implement broadcasting
     }
 
     public function setReplyTo($messageId)
@@ -87,102 +106,24 @@ class ChatShow extends Component
         $this->replyTo = null;
     }
 
-    public function sendMessage()
+    public function removeAttachment()
     {
-        if (!$this->conversation) {
-            return;
-        }
-
-        $this->validate([
-            'messageBody' => 'required_without:attachment|string|max:5000',
-            'attachment' => 'nullable|file|max:10240',
-        ]);
-
-        $messageData = [
-            'conversation_id' => $this->conversation->id,
-            'user_id' => Auth::id(),
-            'body' => $this->messageBody ?: '',
-            'type' => 'text',
-            'reply_to' => $this->replyTo,
-        ];
-
-        // Handle attachment
-        if ($this->attachment) {
-            $mimeType = $this->attachment->getMimeType();
-            
-            if (str_starts_with($mimeType, 'image/')) {
-                // Process image
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read($this->attachment->getRealPath());
-                
-                // Resize if too large
-                if ($image->width() > 1920 || $image->height() > 1920) {
-                    $image->scale(width: 1920);
-                }
-                
-                $filename = 'chat_' . uniqid() . '.webp';
-                $path = 'chat/images/' . $filename;
-                
-                Storage::disk('public')->put($path, $image->toWebp(85));
-                
-                $messageData['type'] = 'image';
-                $messageData['metadata'] = [
-                    'path' => $path,
-                    'filename' => $this->attachment->getClientOriginalName(),
-                    'size' => $this->attachment->getSize(),
-                ];
-            } else {
-                // Handle file
-                $path = $this->attachment->store('chat/files', 'public');
-                
-                $messageData['type'] = 'file';
-                $messageData['metadata'] = [
-                    'path' => $path,
-                    'filename' => $this->attachment->getClientOriginalName(),
-                    'size' => $this->attachment->getSize(),
-                    'mime_type' => $mimeType,
-                ];
-            }
-        }
-
-        $message = Message::create($messageData);
-
-        // Update conversation timestamp
-        $this->conversation->touch();
-
-        // Reset form
-        $this->messageBody = '';
-        $this->replyTo = null;
         $this->attachment = null;
-        $this->attachmentPreview = null;
-
-        // Broadcast event (will be implemented with Broadcasting)
-        // broadcast(new MessageSent($message))->toOthers();
-
-        $this->dispatch('messageSent');
-        $this->dispatch('scrollToBottom');
-        
-        // Reload conversation
-        $this->loadConversation($this->conversationId);
     }
 
-    public function deleteMessage($messageId)
+    public function getMessagesProperty()
     {
-        $message = Message::find($messageId);
-        
-        if ($message && $message->user_id === Auth::id()) {
-            // Delete attachments if any
-            if ($message->metadata && isset($message->metadata['path'])) {
-                Storage::disk('public')->delete($message->metadata['path']);
-            }
-            
-            $message->delete();
-            $this->loadConversation($this->conversationId);
-        }
+        return $this->conversation->messages()
+            ->with('user')
+            ->orderBy('created_at', 'asc')
+            ->get();
     }
 
     public function render()
     {
-        return view('livewire.chat.chat-show');
+        return view('livewire.chat.chat-show', [
+            'messages' => $this->messages,
+            'replyTo' => $this->replyTo ? Message::find($this->replyTo) : null,
+        ]);
     }
 }

@@ -80,6 +80,9 @@
     <!-- Sidebar -->
     <x-layouts.sidebar />
 
+    <!-- Floating Chat Button -->
+    @livewire('chat.chat-button')
+
     <!-- Main Content Area -->
     <main class="pt-16 transition-all duration-300 lg:ml-0 overflow-x-hidden"
           :class="sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'">
