@@ -141,7 +141,7 @@ class GroupShow extends Component
 
         $announcement = GroupAnnouncement::create([
             'group_id' => $this->group->id,
-            'user_id' => Auth::id(),
+            'author_id' => Auth::id(),
             'title' => $this->announcementTitle,
             'content' => $this->announcementContent,
             'is_pinned' => $this->announcementIsPinned,

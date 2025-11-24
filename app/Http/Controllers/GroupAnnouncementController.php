@@ -79,7 +79,7 @@ class GroupAnnouncementController extends Controller
         ]);
 
         $announcement = $group->announcements()->create([
-            'user_id' => $user->id,
+            'author_id' => $user->id,
             'title' => $request->title,
             'content' => $request->content,
             'is_pinned' => $request->boolean('is_pinned', false),
