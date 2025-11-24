@@ -7,12 +7,19 @@ use Livewire\Attributes\Title;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\GroupJoinRequest;
+use App\Models\GroupAnnouncement;
 use Illuminate\Support\Facades\Auth;
 
 class GroupShow extends Component
 {
     public Group $group;
     public $activeSection = 'about';
+    
+    // Announcement form
+    public $showAnnouncementForm = false;
+    public $announcementTitle = '';
+    public $announcementContent = '';
+    public $announcementIsPinned = false;
 
     public function mount(Group $group)
     {
@@ -108,7 +115,76 @@ class GroupShow extends Component
 
     public function getAnnouncementsProperty()
     {
-        return $this->group->announcements()->with('user')->latest()->take(5)->get();
+        return $this->group->announcements()
+            ->with('author')
+            ->orderBy('is_pinned', 'desc')
+            ->latest()
+            ->get();
+    }
+
+    public function createAnnouncement()
+    {
+        if (!Auth::check() || !$this->isModerator) {
+            session()->flash('error', 'Non hai i permessi per creare annunci');
+            return;
+        }
+
+        $this->validate([
+            'announcementTitle' => 'required|string|max:255',
+            'announcementContent' => 'required|string',
+        ]);
+
+        GroupAnnouncement::create([
+            'group_id' => $this->group->id,
+            'user_id' => Auth::id(),
+            'title' => $this->announcementTitle,
+            'content' => $this->announcementContent,
+            'is_pinned' => $this->announcementIsPinned,
+        ]);
+
+        // Reset form
+        $this->announcementTitle = '';
+        $this->announcementContent = '';
+        $this->announcementIsPinned = false;
+        $this->showAnnouncementForm = false;
+
+        session()->flash('success', 'Annuncio pubblicato con successo');
+    }
+
+    public function togglePinAnnouncement($announcementId)
+    {
+        if (!Auth::check() || !$this->isModerator) {
+            session()->flash('error', 'Non hai i permessi per modificare annunci');
+            return;
+        }
+
+        $announcement = GroupAnnouncement::findOrFail($announcementId);
+        
+        if ($announcement->group_id !== $this->group->id) {
+            return;
+        }
+
+        $announcement->update(['is_pinned' => !$announcement->is_pinned]);
+        
+        session()->flash('success', $announcement->is_pinned ? 'Annuncio fissato' : 'Annuncio sbloccato');
+    }
+
+    public function deleteAnnouncement($announcementId)
+    {
+        if (!Auth::check() || !$this->isModerator) {
+            session()->flash('error', 'Non hai i permessi per eliminare annunci');
+            return;
+        }
+
+        $announcement = GroupAnnouncement::findOrFail($announcementId);
+        
+        if ($announcement->group_id !== $this->group->id) {
+            return;
+        }
+
+        $announcement->delete();
+        
+        session()->flash('success', 'Annuncio eliminato con successo');
     }
 
     public function getEventsProperty()
