@@ -1,3 +1,4 @@
+<div>
 @php
     $primaryRole = optional($user->roles->first())->display_name ?? optional($user->roles->first())->name ?? null;
 @endphp
@@ -374,3 +375,5 @@ document.addEventListener('livewire:init', () => {
 
 {{-- Photo Modal Component --}}
 @livewire('media.photo-modal')
+
+</div>
