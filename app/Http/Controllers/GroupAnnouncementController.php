@@ -78,12 +78,23 @@ class GroupAnnouncementController extends Controller
             'is_pinned' => 'boolean',
         ]);
 
-        $group->announcements()->create([
+        $announcement = $group->announcements()->create([
             'user_id' => $user->id,
             'title' => $request->title,
             'content' => $request->content,
             'is_pinned' => $request->boolean('is_pinned', false),
         ]);
+
+        // Invia notifica a tutti i membri del gruppo (tranne chi ha creato l'annuncio)
+        $members = $group->members()
+            ->where('user_id', '!=', $user->id)
+            ->with('user')
+            ->get()
+            ->pluck('user');
+
+        foreach ($members as $member) {
+            $member->notify(new \App\Notifications\GroupAnnouncementNotification($announcement));
+        }
 
         return redirect()->route('groups.announcements.index', $group)
                         ->with('success', __('groups.announcement_created'));

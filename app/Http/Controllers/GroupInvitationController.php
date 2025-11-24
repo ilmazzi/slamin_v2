@@ -87,13 +87,16 @@ class GroupInvitationController extends Controller
         }
 
         // Crea l'invito
-        GroupInvitation::create([
+        $invitation = GroupInvitation::create([
             'group_id' => $group->id,
             'user_id' => $invitedUser->id,
             'invited_by' => $user->id,
             'status' => 'pending',
             'expires_at' => now()->addDays(7),
         ]);
+
+        // Invia notifica all'utente invitato
+        $invitedUser->notify(new \App\Notifications\GroupInvitationNotification($invitation));
 
         return back()->with('success', __('groups.invitation_sent'));
     }
@@ -160,6 +163,9 @@ class GroupInvitationController extends Controller
         // Accetta l'invito (il metodo accept crea automaticamente il GroupMember)
         $invitation->accept();
 
+        // Notifica chi ha inviato l'invito
+        $invitation->invitedBy->notify(new \App\Notifications\GroupInvitationResponseNotification($invitation, 'accepted'));
+
         if (request()->expectsJson()) {
             return response()->json([
                 'success' => true,
@@ -197,6 +203,9 @@ class GroupInvitationController extends Controller
 
         // Rifiuta l'invito
         $invitation->decline();
+
+        // Notifica chi ha inviato l'invito
+        $invitation->invitedBy->notify(new \App\Notifications\GroupInvitationResponseNotification($invitation, 'declined'));
 
         if (request()->expectsJson()) {
             return response()->json([

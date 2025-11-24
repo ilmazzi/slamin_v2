@@ -67,12 +67,23 @@ class GroupJoinRequestController extends Controller
         }
 
         // Crea la richiesta
-        GroupJoinRequest::create([
+        $joinRequest = GroupJoinRequest::create([
             'group_id' => $group->id,
             'user_id' => $user->id,
             'status' => 'pending',
             'message' => $request->input('message', ''),
         ]);
+
+        // Invia notifica a tutti gli admin e moderatori del gruppo
+        $moderators = $group->members()
+            ->whereIn('role', ['admin', 'moderator'])
+            ->with('user')
+            ->get()
+            ->pluck('user');
+
+        foreach ($moderators as $moderator) {
+            $moderator->notify(new \App\Notifications\GroupJoinRequestNotification($joinRequest));
+        }
 
         return back()->with('success', __('groups.request_sent'));
     }
@@ -120,6 +131,9 @@ class GroupJoinRequestController extends Controller
         // Accetta la richiesta (il metodo accept crea automaticamente il GroupMember)
         $request->accept($user);
 
+        // Notifica l'utente che ha fatto la richiesta
+        $request->user->notify(new \App\Notifications\GroupJoinRequestResponseNotification($request, 'accepted'));
+
         return back()->with('success', __('groups.request_approved'));
     }
 
@@ -142,6 +156,9 @@ class GroupJoinRequestController extends Controller
 
         // Rifiuta la richiesta
         $request->decline($user);
+
+        // Notifica l'utente che ha fatto la richiesta
+        $request->user->notify(new \App\Notifications\GroupJoinRequestResponseNotification($request, 'declined'));
 
         return back()->with('success', __('groups.request_declined'));
     }
