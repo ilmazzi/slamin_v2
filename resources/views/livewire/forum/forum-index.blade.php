@@ -1,4 +1,4 @@
-<x-layouts.app>
+<div>
     @vite(['resources/css/forum.css', 'resources/js/forum.js'])
 
     <div class="forum-container">
@@ -129,5 +129,5 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+</div>
 
