@@ -16,7 +16,9 @@ export default defineConfig({
                 'resources/css/notification-animation.css',
                 'resources/css/profile.css',
                 'resources/js/profile.js',
-                'resources/css/groups.css'
+                'resources/css/groups.css',
+                'resources/css/forum.css',
+                'resources/js/forum.js'
             ],
             refresh: true,
         }),
