@@ -5,16 +5,18 @@
             
             <!-- Avatar -->
             @php
-                $avatar = $conversation->getDisplayAvatar(auth()->user());
                 $name = $conversation->getDisplayName(auth()->user());
-                $initials = strtoupper(substr($name, 0, 2));
+                // Per conversazioni private, ottieni l'altro utente
+                if ($conversation->type === 'private') {
+                    $otherUser = $conversation->users->where('id', '!=', auth()->id())->first();
+                    $avatar = $otherUser ? \App\Helpers\AvatarHelper::getUserAvatarUrl($otherUser, 80) : null;
+                } else {
+                    // Per gruppi, usa avatar del gruppo o default
+                    $avatar = $conversation->avatar;
+                }
             @endphp
             
-            @if($avatar)
-                <img src="{{ $avatar }}" alt="{{ $name }}" class="chat-avatar">
-            @else
-                <div class="chat-avatar-placeholder">{{ $initials }}</div>
-            @endif
+            <img src="{{ $avatar }}" alt="{{ $name }}" class="chat-avatar">
             
             <!-- Info -->
             <div class="chat-conversation-info">

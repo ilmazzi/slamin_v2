@@ -1,7 +1,12 @@
 @php
     $displayName = $conversation->getDisplayName(auth()->user());
-    $displayAvatar = $conversation->getDisplayAvatar(auth()->user());
     $otherUser = $conversation->getOtherParticipant(auth()->user());
+    // Usa AvatarHelper per l'avatar
+    if ($conversation->type === 'private' && $otherUser) {
+        $displayAvatar = \App\Helpers\AvatarHelper::getUserAvatarUrl($otherUser, 80);
+    } else {
+        $displayAvatar = $conversation->avatar;
+    }
 @endphp
 
 <div class="flex flex-col h-full">
@@ -56,15 +61,9 @@
             <div class="chat-message {{ $message->user_id === auth()->id() ? 'sent' : 'received' }}">
                 <!-- Avatar (only for received messages) -->
                 @if($message->user_id !== auth()->id())
-                    @if($message->user->profile_photo)
-                        <img src="{{ $message->user->profile_photo }}" 
-                             alt="{{ $message->user->name }}" 
-                             class="chat-message-avatar">
-                    @else
-                        <div class="chat-avatar-placeholder" style="width: 36px; height: 36px; font-size: 0.9rem;">
-                            {{ strtoupper(substr($message->user->name, 0, 2)) }}
-                        </div>
-                    @endif
+                    <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($message->user, 72) }}" 
+                         alt="{{ $message->user->name }}" 
+                         class="chat-message-avatar">
                 @endif
                 
                 <div class="chat-message-content">
