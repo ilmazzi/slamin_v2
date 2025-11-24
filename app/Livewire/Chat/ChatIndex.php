@@ -31,13 +31,19 @@ class ChatIndex extends Component
         }
     }
 
-    public function handleConversationSelected($conversationId)
+    public function handleConversationSelected($conversationId = null)
     {
-        $this->selectConversation($conversationId);
+        if ($conversationId) {
+            $this->selectConversation($conversationId);
+        }
     }
 
-    public function selectConversation($conversationId)
+    public function selectConversation($conversationId = null)
     {
+        if (!$conversationId) {
+            return;
+        }
+        
         $conversation = Conversation::find($conversationId);
         
         if (!$conversation || !$conversation->hasParticipant(Auth::user())) {
