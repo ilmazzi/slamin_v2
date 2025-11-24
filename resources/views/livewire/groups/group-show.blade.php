@@ -153,7 +153,100 @@
                         </div>
                     @endif
                 </div>
-                
+
+                @if($isModerator)
+                    @php
+                        $pendingInvitations = $group->invitations()->where('status', 'pending')->with(['user', 'invitedBy'])->get();
+                        $pendingRequests = $group->joinRequests()->where('status', 'pending')->with('user')->get();
+                    @endphp
+
+                    {{-- Richieste Pendenti --}}
+                    @if($pendingRequests->count() > 0)
+                        <div class="mb-8 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold text-amber-900 dark:text-amber-200 flex items-center gap-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                    </svg>
+                                    Richieste di Partecipazione ({{ $pendingRequests->count() }})
+                                </h3>
+                                <a href="{{ route('groups.requests.pending', $group) }}" class="text-sm text-amber-700 dark:text-amber-300 hover:underline">
+                                    Vedi tutte
+                                </a>
+                            </div>
+                            <div class="space-y-3">
+                                @foreach($pendingRequests->take(3) as $request)
+                                    <div class="bg-white dark:bg-neutral-800 rounded-xl p-4 flex items-center gap-4">
+                                        <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($request->user, 50) }}"
+                                             alt="{{ $request->user->name }}"
+                                             class="w-12 h-12 rounded-full object-cover">
+                                        <div class="flex-1">
+                                            <h4 class="font-semibold text-neutral-900 dark:text-white">{{ $request->user->name }}</h4>
+                                            <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ $request->created_at->diffForHumans() }}</p>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <form action="{{ route('groups.requests.accept', [$group, $request]) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="px-3 py-1.5 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700">
+                                                    Accetta
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('groups.requests.decline', [$group, $request]) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="px-3 py-1.5 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700">
+                                                    Rifiuta
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Inviti Pendenti --}}
+                    @if($pendingInvitations->count() > 0)
+                        <div class="mb-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold text-blue-900 dark:text-blue-200 flex items-center gap-2">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                    Inviti Pendenti ({{ $pendingInvitations->count() }})
+                                </h3>
+                                <a href="{{ route('groups.invitations.pending', $group) }}" class="text-sm text-blue-700 dark:text-blue-300 hover:underline">
+                                    Vedi tutti
+                                </a>
+                            </div>
+                            <div class="space-y-3">
+                                @foreach($pendingInvitations->take(3) as $invitation)
+                                    <div class="bg-white dark:bg-neutral-800 rounded-xl p-4 flex items-center gap-4">
+                                        <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($invitation->user, 50) }}"
+                                             alt="{{ $invitation->user->name }}"
+                                             class="w-12 h-12 rounded-full object-cover">
+                                        <div class="flex-1">
+                                            <h4 class="font-semibold text-neutral-900 dark:text-white">{{ $invitation->user->name }}</h4>
+                                            <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                                                Invitato da {{ $invitation->invitedBy->name }} • {{ $invitation->created_at->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                        <form action="{{ route('group-invitations.cancel', $invitation) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Cancellare questo invito?')"
+                                                    class="px-3 py-1.5 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700">
+                                                Cancella
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endif
+
+                {{-- Lista Membri --}}
+                <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">Tutti i Membri ({{ $members->count() }})</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($members as $member)
                         <a href="{{ route('profile.show', $member->user) }}" wire:navigate
