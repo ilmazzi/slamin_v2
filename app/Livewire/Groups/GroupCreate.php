@@ -73,12 +73,7 @@ class GroupCreate extends Component
             'social_linkedin' => $this->social_linkedin,
         ]);
 
-        // Aggiungi il creatore come admin
-        GroupMember::create([
-            'group_id' => $group->id,
-            'user_id' => Auth::id(),
-            'role' => 'admin',
-        ]);
+        // Il creatore viene aggiunto automaticamente come admin dal GroupObserver
 
         session()->flash('success', __('groups.group_created'));
         
