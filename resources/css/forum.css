@@ -101,6 +101,9 @@
     transition: all 0.3s ease;
     cursor: pointer;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
 }
 
 .subreddit-card:hover {
@@ -112,6 +115,7 @@
     height: 80px;
     background: linear-gradient(135deg, var(--forum-primary) 0%, var(--forum-secondary) 100%);
     position: relative;
+    flex-shrink: 0;
 }
 
 .subreddit-icon {
@@ -133,6 +137,11 @@
 
 .subreddit-card-body {
     padding: 2.5rem 1.5rem 1.5rem;
+    display: block;
+    text-decoration: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .subreddit-name {
@@ -147,6 +156,11 @@
     font-size: 0.9rem;
     line-height: 1.5;
     margin-bottom: 1rem;
+    flex: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -604,5 +618,62 @@
 .ban-card.expired {
     opacity: 0.5;
     border-left-color: #999;
+}
+
+/* ============================================
+   DARK MODE
+   ============================================ */
+
+.dark .subreddit-card {
+    background: rgb(23, 23, 23);
+}
+
+.dark .subreddit-name {
+    color: #ffffff;
+}
+
+.dark .subreddit-description {
+    color: #a3a3a3;
+}
+
+.dark .subreddit-stats {
+    color: #a3a3a3;
+}
+
+.dark .post-card {
+    background: rgb(23, 23, 23);
+}
+
+.dark .post-title a {
+    color: #ffffff;
+}
+
+.dark .post-text {
+    color: #d4d4d4;
+}
+
+.dark .post-footer {
+    border-top-color: rgb(38, 38, 38);
+}
+
+.dark .comment {
+    background: rgb(23, 23, 23);
+    border-left-color: rgb(38, 38, 38);
+}
+
+.dark .vote-btn {
+    color: #a3a3a3;
+}
+
+.dark .vote-btn.active.upvote {
+    color: #ff4500;
+}
+
+.dark .vote-btn.active.downvote {
+    color: #7193ff;
+}
+
+.dark .vote-score {
+    color: #d4d4d4;
 }
 
