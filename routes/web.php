@@ -45,6 +45,35 @@ Route::get('/parallax-enhanced', function () {
 // Events Routes
 Route::get('/events', \App\Livewire\Events\EventsIndex::class)->name('events.index');
 
+// Groups Routes
+Route::prefix('groups')->name('groups.')->group(function () {
+    Route::get('/', \App\Livewire\Groups\GroupIndex::class)->name('index');
+    Route::middleware('auth')->group(function () {
+        Route::get('/create', \App\Livewire\Groups\GroupCreate::class)->name('create');
+        Route::get('/{group}/edit', \App\Livewire\Groups\GroupEdit::class)->name('edit');
+        
+        // Member Management
+        Route::post('/{group}/members/{member}/promote', [App\Http\Controllers\GroupMemberController::class, 'promote'])->name('members.promote');
+        Route::post('/{group}/members/{member}/demote', [App\Http\Controllers\GroupMemberController::class, 'demote'])->name('members.demote');
+        Route::delete('/{group}/members/{member}', [App\Http\Controllers\GroupMemberController::class, 'remove'])->name('members.remove');
+        
+        // Invitations
+        Route::post('/{group}/invitations', [App\Http\Controllers\GroupInvitationController::class, 'store'])->name('invitations.store');
+        Route::post('/invitations/{invitation}/accept', [App\Http\Controllers\GroupInvitationController::class, 'accept'])->name('invitations.accept');
+        Route::post('/invitations/{invitation}/decline', [App\Http\Controllers\GroupInvitationController::class, 'decline'])->name('invitations.decline');
+        
+        // Join Requests
+        Route::post('/{group}/requests/{request}/approve', [App\Http\Controllers\GroupJoinRequestController::class, 'approve'])->name('requests.approve');
+        Route::post('/{group}/requests/{request}/decline', [App\Http\Controllers\GroupJoinRequestController::class, 'decline'])->name('requests.decline');
+        
+        // Announcements
+        Route::post('/{group}/announcements', [App\Http\Controllers\GroupAnnouncementController::class, 'store'])->name('announcements.store');
+        Route::put('/{group}/announcements/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'update'])->name('announcements.update');
+        Route::delete('/{group}/announcements/{announcement}', [App\Http\Controllers\GroupAnnouncementController::class, 'destroy'])->name('announcements.destroy');
+    });
+    Route::get('/{group}', \App\Livewire\Groups\GroupShow::class)->name('show');
+});
+
 // Media Routes
 Route::get('/media', \App\Livewire\Media\MediaIndex::class)->name('media.index');
 

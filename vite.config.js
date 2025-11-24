@@ -15,7 +15,8 @@ export default defineConfig({
                 'resources/css/article-modal.css',
                 'resources/css/notification-animation.css',
                 'resources/css/profile.css',
-                'resources/js/profile.js'
+                'resources/js/profile.js',
+                'resources/css/groups.css'
             ],
             refresh: true,
         }),

@@ -1,0 +1,80 @@
+/* ============================================
+   GROUPS SYSTEM - CUSTOM STYLES
+   ============================================ */
+
+/* Custom scrollbar for groups content */
+.groups-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.groups-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.groups-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(74, 124, 89, 0.5);
+    border-radius: 10px;
+}
+
+.groups-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(74, 124, 89, 0.7);
+}
+
+/* Dark mode scrollbar */
+.dark .groups-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dark .groups-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(74, 124, 89, 0.6);
+}
+
+.dark .groups-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(74, 124, 89, 0.8);
+}
+
+/* Group card hover effect */
+.group-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Member avatar ring animation */
+.member-avatar {
+    transition: all 0.3s ease;
+}
+
+.member-avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px rgba(74, 124, 89, 0.2);
+}
+
+/* Badge animations */
+@keyframes badge-pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+.badge-animated {
+    animation: badge-pulse 2s ease-in-out infinite;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+    .groups-mobile-padding {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
