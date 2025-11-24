@@ -1040,6 +1040,21 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasAnyRole(['poet', 'organizer', 'admin']);
     }
 
+    public function canCreateSubreddit(): bool
+    {
+        // Admin e moderator possono sempre creare subreddit
+        if ($this->hasAnyRole(['admin', 'moderator'])) {
+            return true;
+        }
+
+        // Utenti verificati con almeno 30 giorni di anzianità
+        if ($this->email_verified_at && $this->created_at->diffInDays(now()) >= 30) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function canViewGroups(): bool
     {
         return $this->hasAnyRole(['poet', 'organizer', 'admin', 'audience']);

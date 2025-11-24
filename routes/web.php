@@ -411,3 +411,43 @@ Route::post('/logout', function () {
     \Illuminate\Support\Facades\Auth::logout();
     return redirect('/');
 })->middleware('auth')->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| Forum Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('forum')->name('forum.')->group(function () {
+    // Public forum routes
+    Route::get('/', \App\Livewire\Forum\ForumIndex::class)->name('index');
+    Route::get('/r/{subreddit:slug}', \App\Livewire\Forum\SubredditShow::class)->name('subreddit.show');
+    Route::get('/r/{subreddit:slug}/post/{post}', \App\Livewire\Forum\PostShow::class)->name('post.show');
+    
+    // Authenticated routes
+    Route::middleware('auth')->group(function () {
+        // Post creation
+        Route::get('/r/{subreddit:slug}/create', \App\Livewire\Forum\CreatePost::class)->name('post.create');
+        
+        // Subreddit management
+        Route::get('/create-subreddit', \App\Livewire\Forum\CreateSubreddit::class)->name('subreddit.create');
+        Route::get('/r/{subreddit:slug}/settings', \App\Livewire\Forum\SubredditSettings::class)->name('subreddit.settings');
+        
+        // Moderation routes
+        Route::prefix('r/{subreddit:slug}/mod')->name('mod.')->group(function () {
+            Route::get('/queue', \App\Livewire\Forum\Moderation\ModerationQueue::class)->name('queue');
+            Route::get('/reports', \App\Livewire\Forum\Moderation\Reports::class)->name('reports');
+            Route::get('/bans', \App\Livewire\Forum\Moderation\Bans::class)->name('bans');
+            Route::get('/moderators', \App\Livewire\Forum\Moderation\Moderators::class)->name('moderators');
+        });
+    });
+    
+    // API-style routes for AJAX actions
+    Route::middleware('auth')->prefix('api')->name('api.')->group(function () {
+        Route::post('/vote', [App\Http\Controllers\ForumVoteController::class, 'vote'])->name('vote');
+        Route::post('/report', [App\Http\Controllers\ForumReportController::class, 'create'])->name('report');
+        Route::post('/comment/delete', [App\Http\Controllers\ForumCommentController::class, 'delete'])->name('comment.delete');
+        Route::post('/post/lock', [App\Http\Controllers\ForumPostController::class, 'lock'])->name('post.lock');
+        Route::post('/post/sticky', [App\Http\Controllers\ForumPostController::class, 'sticky'])->name('post.sticky');
+    });
+});
