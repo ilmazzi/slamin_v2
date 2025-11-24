@@ -1,7 +1,13 @@
-<div class="-mt-16">
+<div class="-mt-16" x-data="{ 
+    isMobile: window.innerWidth < 768,
+    showSidebar: true 
+}" 
+@resize.window="isMobile = window.innerWidth < 768"
+@conversationSelected.window="if(isMobile) showSidebar = false"
+@backToList.window="showSidebar = true">
     <div class="chat-container">
         <!-- Sidebar con lista conversazioni -->
-        <div class="chat-sidebar" :class="{ 'hidden': selectedConversation && window.innerWidth < 768 }">
+        <div class="chat-sidebar" :class="{ 'hidden': !showSidebar && isMobile && {{ $selectedConversation ? 'true' : 'false' }} }">
             <div class="chat-sidebar-header">
                 <h1 class="chat-sidebar-title">{{ __('chat.messages') }}</h1>
                 

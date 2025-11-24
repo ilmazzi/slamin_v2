@@ -42,6 +42,9 @@ class ChatIndex extends Component
         // Mark as read
         $conversation->markAsRead(Auth::user());
         
+        // Dispatch event for mobile sidebar hiding
+        $this->dispatch('conversationSelected');
+        
         // Update URL
         $this->dispatch('url-change', ['url' => route('chat.show', $conversation)]);
     }
