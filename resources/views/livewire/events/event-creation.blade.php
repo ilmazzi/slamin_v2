@@ -826,10 +826,82 @@
                                 </div>
                                 
                                 @if($is_linked_to_group)
-                                    <div class="bg-white dark:bg-neutral-800 rounded-xl p-4">
-                                        <p class="text-sm text-neutral-600 dark:text-neutral-400 italic">
-                                            ℹ️ Funzionalità Gruppi in fase di sviluppo. Sarà disponibile prossimamente.
-                                        </p>
+                                    <div class="bg-white dark:bg-neutral-800 rounded-xl p-4 space-y-4">
+                                        {{-- Search Groups --}}
+                                        <div>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                                Cerca Gruppo
+                                            </label>
+                                            <input type="text" 
+                                                   wire:model.live.debounce.300ms="groupSearch"
+                                                   placeholder="Cerca per nome gruppo..."
+                                                   class="w-full px-4 py-2 rounded-xl border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-blue-500">
+                                        </div>
+
+                                        {{-- Search Results --}}
+                                        @if($groupSearch && strlen($groupSearch) >= 2)
+                                            <div class="space-y-2 max-h-60 overflow-y-auto">
+                                                @forelse($searchedGroups as $group)
+                                                    <div class="p-3 rounded-lg border {{ in_array($group->id, $selected_groups) ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-700' : 'bg-neutral-50 dark:bg-neutral-700 border-neutral-200 dark:border-neutral-600' }} cursor-pointer hover:shadow-md transition-all"
+                                                         wire:click="toggleGroup({{ $group->id }})">
+                                                        <div class="flex items-center gap-3">
+                                                            @if($group->image)
+                                                                <img src="{{ Storage::url($group->image) }}" 
+                                                                     alt="{{ $group->name }}"
+                                                                     class="w-10 h-10 rounded-full object-cover">
+                                                            @else
+                                                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold">
+                                                                    {{ substr($group->name, 0, 1) }}
+                                                                </div>
+                                                            @endif
+                                                            <div class="flex-1">
+                                                                <h4 class="font-semibold text-neutral-900 dark:text-white">{{ $group->name }}</h4>
+                                                                <p class="text-xs text-neutral-500 dark:text-neutral-400">
+                                                                    {{ $group->members()->count() }} membri • {{ ucfirst($group->visibility) }}
+                                                                </p>
+                                                            </div>
+                                                            @if(in_array($group->id, $selected_groups))
+                                                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                                </svg>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @empty
+                                                    <p class="text-sm text-neutral-500 dark:text-neutral-400 text-center py-4">
+                                                        Nessun gruppo trovato
+                                                    </p>
+                                                @endforelse
+                                            </div>
+                                        @endif
+
+                                        {{-- Selected Groups --}}
+                                        @if(count($selected_groups) > 0)
+                                            <div>
+                                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                                    Gruppi Selezionati
+                                                </label>
+                                                <div class="flex flex-wrap gap-2">
+                                                    @foreach($selected_groups as $groupId)
+                                                        @php
+                                                            $selectedGroup = \App\Models\Group::find($groupId);
+                                                        @endphp
+                                                        @if($selectedGroup)
+                                                            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
+                                                                {{ $selectedGroup->name }}
+                                                                <button type="button" 
+                                                                        wire:click="toggleGroup({{ $groupId }})"
+                                                                        class="hover:text-blue-900 dark:hover:text-blue-100">
+                                                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                                                    </svg>
+                                                                </button>
+                                                            </span>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 @endif
                             </div>

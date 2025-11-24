@@ -83,6 +83,8 @@ class EventCreation extends Component
     // Groups
     public $is_linked_to_group = false;
     public $selected_groups = [];
+    public $groupSearch = '';
+    public $searchedGroups = [];
 
     // Festival
     public $is_festival_event = false;
@@ -787,6 +789,11 @@ class EventCreation extends Component
                 $event->createGigsFromPositions();
             }
 
+            // Attach groups
+            if ($this->is_linked_to_group && !empty($this->selected_groups)) {
+                $event->groups()->attach($this->selected_groups);
+            }
+
             session()->flash('success', 'Evento creato con successo!');
             
             return redirect()->route('events.show', $event);
@@ -802,6 +809,46 @@ class EventCreation extends Component
             ]);
 
             session()->flash('error', 'Errore durante la creazione dell\'evento: ' . $e->getMessage());
+        }
+    }
+
+    // ========================================
+    // GROUP MANAGEMENT
+    // ========================================
+    public function updatedGroupSearch()
+    {
+        if (strlen($this->groupSearch) >= 2) {
+            $user = Auth::user();
+            
+            // Cerca solo nei gruppi di cui l'utente è membro o moderatore
+            $this->searchedGroups = \App\Models\Group::where(function($query) {
+                $query->where('name', 'like', '%' . $this->groupSearch . '%')
+                      ->orWhere('description', 'like', '%' . $this->groupSearch . '%');
+            })
+            ->where(function($query) use ($user) {
+                $query->where('visibility', 'public')
+                      ->orWhereHas('members', function($q) use ($user) {
+                          $q->where('user_id', $user->id);
+                      });
+            })
+            ->withCount('members')
+            ->limit(10)
+            ->get();
+        } else {
+            $this->searchedGroups = [];
+        }
+    }
+
+    public function toggleGroup($groupId)
+    {
+        if (in_array($groupId, $this->selected_groups)) {
+            // Rimuovi
+            $this->selected_groups = array_values(array_filter($this->selected_groups, function($id) use ($groupId) {
+                return $id !== $groupId;
+            }));
+        } else {
+            // Aggiungi
+            $this->selected_groups[] = $groupId;
         }
     }
 

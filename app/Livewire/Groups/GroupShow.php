@@ -113,7 +113,7 @@ class GroupShow extends Component
 
     public function getEventsProperty()
     {
-        return $this->group->events()->latest()->take(5)->get();
+        return $this->group->linkedEvents()->latest()->take(10)->get();
     }
 
     public function getUserRoleProperty()
