@@ -967,6 +967,33 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get all conversations for the user
+     */
+    public function conversations()
+    {
+        return $this->belongsToMany(Conversation::class, 'participants')
+                    ->withPivot('role', 'last_read_at')
+                    ->withTimestamps()
+                    ->orderBy('conversations.updated_at', 'desc');
+    }
+
+    /**
+     * Get all messages sent by the user
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Get all participants records
+     */
+    public function participants()
+    {
+        return $this->hasMany(Participant::class);
+    }
+
+    /**
      * Membership nei gruppi
      */
     public function groupMemberships()
