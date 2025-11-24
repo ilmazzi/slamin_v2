@@ -291,7 +291,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 @foreach($members as $member)
-                    <a href="{{ route('profile.show', $member->user) }}" wire:navigate
+                    <a href="{{ route('user.show', $member->user) }}" wire:navigate
                        class="flex items-center gap-4 p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
                         <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($member->user, 80) }}"
                              alt="{{ $member->user->name }}"
