@@ -35,7 +35,7 @@ class CommentReportedNotification extends Notification
             'reporter_name' => $this->report->reporter->name,
             'reason' => $this->report->reason,
             'comment_excerpt' => \Str::limit($comment->content, 100),
-            'url' => route('forum.moderation.reports', $comment->post->subreddit),
+            'url' => route('forum.mod.reports', ['subreddit' => $comment->post->subreddit->slug]),
             'created_at' => $this->report->created_at->toISOString(),
         ];
     }

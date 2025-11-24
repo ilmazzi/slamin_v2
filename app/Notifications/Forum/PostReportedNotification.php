@@ -34,7 +34,7 @@ class PostReportedNotification extends Notification
             'reporter_name' => $this->report->reporter->name,
             'reason' => $this->report->reason,
             'description' => $this->report->description,
-            'url' => route('forum.moderation.reports', $post->subreddit),
+            'url' => route('forum.mod.reports', ['subreddit' => $post->subreddit->slug]),
             'created_at' => $this->report->created_at->toISOString(),
         ];
     }
