@@ -125,6 +125,8 @@ class EventEdit extends Component
     // Group search
     public $groupSearchQuery = '';
     public $groupSearchResults = [];
+    public $groupSearch = ''; // Alias for groupSearchQuery
+    public $searchedGroups = []; // Alias for groupSearchResults
 
     // Tags
     public $tags = [];
@@ -281,9 +283,9 @@ class EventEdit extends Component
         $this->ticket_price = $event->entry_fee ?? 0;
         $this->ticket_currency = 'EUR';
 
-        // Groups & Festival - Disabled for now (Group model not implemented)
-        $this->is_linked_to_group = false;
-        $this->selected_groups = [];
+        // Groups & Festival
+        $this->selected_groups = $event->groups->pluck('id')->toArray();
+        $this->is_linked_to_group = count($this->selected_groups) > 0;
         $this->festival_id = $event->festival_id ?? '';
         $this->selected_festival_events = $event->festival_events ?? [];
 
@@ -578,8 +580,48 @@ class EventEdit extends Component
 
     public function updatedGroupSearchQuery()
     {
-        // Group search disabled - Group model not implemented yet
-        $this->groupSearchResults = [];
+        $this->groupSearch = $this->groupSearchQuery;
+        $this->updatedGroupSearch();
+    }
+
+    public function updatedGroupSearch()
+    {
+        if (strlen($this->groupSearch) >= 2) {
+            $user = Auth::user();
+            
+            // Cerca solo nei gruppi di cui l'utente è membro o moderatore
+            $this->searchedGroups = \App\Models\Group::where(function($query) {
+                $query->where('name', 'like', '%' . $this->groupSearch . '%')
+                      ->orWhere('description', 'like', '%' . $this->groupSearch . '%');
+            })
+            ->where(function($query) use ($user) {
+                $query->where('visibility', 'public')
+                      ->orWhereHas('members', function($q) use ($user) {
+                          $q->where('user_id', $user->id);
+                      });
+            })
+            ->withCount('members')
+            ->limit(10)
+            ->get();
+            
+            $this->groupSearchResults = $this->searchedGroups;
+        } else {
+            $this->searchedGroups = [];
+            $this->groupSearchResults = [];
+        }
+    }
+
+    public function toggleGroup($groupId)
+    {
+        if (in_array($groupId, $this->selected_groups)) {
+            // Rimuovi
+            $this->selected_groups = array_values(array_filter($this->selected_groups, function($id) use ($groupId) {
+                return $id !== $groupId;
+            }));
+        } else {
+            // Aggiungi
+            $this->selected_groups[] = $groupId;
+        }
     }
 
     public function updatedAudienceSearchQuery()
@@ -838,10 +880,13 @@ class EventEdit extends Component
 
             ]);
 
-            // Sync groups - Disabled for now (Group model not implemented)
-            // if ($this->is_linked_to_group && !empty($this->selected_groups)) {
-            //     $event->groups()->sync($this->selected_groups);
-            // }
+            // Sync groups
+            if ($this->is_linked_to_group && !empty($this->selected_groups)) {
+                $event->groups()->sync($this->selected_groups);
+            } else {
+                // Remove all groups if not linked
+                $event->groups()->detach();
+            }
 
             // Delete and recreate invitations
             $event->invitations()->delete();
