@@ -4,6 +4,7 @@ namespace App\Livewire\Forum;
 
 use Livewire\Component;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\On;
 use App\Models\ForumPost;
 use App\Models\ForumComment;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,7 @@ class PostShow extends Component
     public $commentContent = '';
     public $replyTo = null;
     public $sortComments = 'best'; // best, new, old, top
+    public $editingContent = '';
 
     public function mount(ForumPost $post)
     {
@@ -105,6 +107,36 @@ class PostShow extends Component
         $this->replyTo = null;
     }
 
+    #[On('lock-post')]
+    public function toggleLock()
+    {
+        if (!$this->isModerator) {
+            session()->flash('error', 'Non hai i permessi per bloccare post');
+            return;
+        }
+
+        $this->post->update([
+            'is_locked' => !$this->post->is_locked,
+        ]);
+
+        session()->flash('success', $this->post->is_locked ? 'Post bloccato' : 'Post sbloccato');
+    }
+
+    #[On('sticky-post')]
+    public function toggleSticky()
+    {
+        if (!$this->isModerator) {
+            session()->flash('error', 'Non hai i permessi per fissare post');
+            return;
+        }
+
+        $this->post->update([
+            'is_sticky' => !$this->post->is_sticky,
+        ]);
+
+        session()->flash('success', $this->post->is_sticky ? 'Post fissato in alto' : 'Post rimosso dall\'alto');
+    }
+
     public function deletePost()
     {
         if (!Auth::check()) {
@@ -118,8 +150,49 @@ class PostShow extends Component
 
         $subreddit = $this->post->subreddit;
         $this->post->delete();
+        $subreddit->decrementPostsCount();
 
         return $this->redirect(route('forum.subreddit.show', $subreddit), navigate: true);
+    }
+
+    public function deleteComment($commentId)
+    {
+        $comment = ForumComment::findOrFail($commentId);
+
+        if ($comment->user_id !== Auth::id() && !$this->isModerator) {
+            session()->flash('error', 'Non hai i permessi per eliminare questo commento');
+            return;
+        }
+
+        $comment->delete();
+        $this->post->decrementCommentsCount();
+
+        session()->flash('success', 'Commento eliminato');
+    }
+
+    public function updateComment($commentId)
+    {
+        $comment = ForumComment::findOrFail($commentId);
+
+        if ($comment->user_id !== Auth::id()) {
+            return;
+        }
+
+        $this->validate([
+            'editingContent' => 'required|string|min:1|max:10000',
+        ]);
+
+        $comment->update([
+            'content' => $this->editingContent,
+            'is_edited' => true,
+        ]);
+
+        session()->flash('success', 'Commento aggiornato');
+    }
+
+    public function replyToComment($commentId)
+    {
+        $this->replyTo = $commentId;
     }
 
     public function render()
