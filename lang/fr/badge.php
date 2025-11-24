@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'manage_display' => 'Gérer les Badges',
+    'manage_display_desc' => 'Choisissez quels badges afficher sur votre profil et dans la barre latérale',
+    'profile_badges' => 'Badges du Profil',
+    'profile_badges_desc' => 'Ces badges apparaîtront sur votre page de profil',
+    'sidebar_badges' => 'Badges de la Barre Latérale',
+    'sidebar_badges_desc' => 'Ces badges apparaîtront dans la barre latérale du site',
+    'complete_collection' => 'Collection Complète',
+    'complete_collection_desc' => 'Tous les badges que vous avez gagnés jusqu\'à présent',
+    'no_profile_badges' => 'Aucun badge affiché dans le profil',
+    'no_sidebar_badges' => 'Aucun badge affiché dans la barre latérale',
+    'no_badges_earned' => 'Aucun badge gagné pour le moment',
+    'start_interacting' => 'Commencez à interagir avec la communauté pour gagner vos premiers badges!',
+    'points' => 'points',
+    'total_badges' => 'Badges Totaux',
+    'total_points' => 'Points Totaux',
+    'profile_displayed' => 'Dans le Profil',
+    'sidebar_displayed' => 'Dans la Barre Latérale',
+    'shown_in_profile' => 'Affiché dans le profil',
+    'shown_in_sidebar' => 'Affiché dans la barre latérale',
+    'profile_badges_updated' => 'Badges du profil mis à jour avec succès!',
+    'sidebar_badges_updated' => 'Badges de la barre latérale mis à jour avec succès!',
+    'all_profile_badges_hidden' => 'Tous les badges du profil ont été masqués',
+    'all_sidebar_badges_hidden' => 'Tous les badges de la barre latérale ont été masqués',
+    'hide_all' => 'Masquer Tout',
+];

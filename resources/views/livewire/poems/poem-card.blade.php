@@ -16,9 +16,10 @@
                             :link="false"
                             class="ring-2 ring-primary-200 dark:ring-primary-800" />
                         <div class="flex-1 min-w-0">
-                            <p class="font-semibold text-xs text-neutral-900 dark:text-neutral-100 truncate">
-                                {{ $poem->user->name }}
-                            </p>
+                            <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($poem->user) }}" 
+                               class="font-semibold text-xs text-neutral-900 dark:text-neutral-100 hover:text-primary-600 dark:hover:text-primary-400 hover:underline truncate transition-colors">
+                                {{ \App\Helpers\AvatarHelper::getDisplayName($poem->user) }}
+                            </a>
                             <p class="text-xs text-neutral-600 dark:text-neutral-400">
                                 {{ $poem->published_at?->diffForHumans() ?? $poem->created_at->diffForHumans() }}
                             </p>

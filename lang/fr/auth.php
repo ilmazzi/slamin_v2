@@ -3,10 +3,19 @@
 return [
     // Password Reset
     'forgot_password' => 'Mot de passe oublié',
+    'forgot_password_description' => 'Entrez votre email et nous vous enverrons un lien pour réinitialiser votre mot de passe',
     'reset_password' => 'Réinitialiser le mot de passe',
     'reset_password_description' => 'Entrez votre email et votre nouveau mot de passe',
     'send_reset_link' => 'Envoyer le lien de réinitialisation',
-    'reset_link_sent' => 'Lien de réinitialisation envoyé! Vérifiez votre email.',
+    'reset_link_sent' => 'Lien de réinitialisation envoyé!',
+    'reset_link_sent_description' => 'Nous avons envoyé un lien de réinitialisation à :email. Vérifiez votre boîte de réception et suivez les instructions.',
+    'password_reset_failed' => 'Impossible d\'envoyer le lien de réinitialisation. Veuillez vérifier l\'adresse email.',
+    'password_reset_success' => 'Mot de passe réinitialisé avec succès! Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.',
+    'password_reset_help_title' => 'Vous avez oublié votre mot de passe?',
+    'password_reset_help_description' => 'Ne vous inquiétez pas! Entrez votre email et nous vous enverrons un lien sécurisé pour réinitialiser votre mot de passe.',
+    'secure_password_title' => 'Choisissez un mot de passe sécurisé',
+    'secure_password_description' => 'Assurez-vous d\'utiliser un mot de passe fort avec au moins 8 caractères, contenant des lettres majuscules, minuscules et des chiffres.',
+    'reset_password_button' => 'Réinitialiser le mot de passe',
     
     // Form Fields
     'email' => 'Email',

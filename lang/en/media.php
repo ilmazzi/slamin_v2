@@ -22,8 +22,11 @@ return [
     'search_placeholder' => 'Search videos, photos, authors...',
     
     // Upload Video
+    'upload_video_title' => 'Upload',
+    'video' => 'Video',
+    'login_required' => 'You must be logged in to upload videos.',
     'upload_not_allowed' => 'You do not have permission to upload videos.',
-    'peertube_account_required' => 'You must have a PeerTube account to upload videos. Contact the administrator.',
+    'peertube_account_required' => 'You must have a PeerTube account to upload videos. Contact the administrator to set up your account.',
     'upload_limit_reached' => 'You have reached the video upload limit. Upgrade to premium to upload more videos.',
     'upload_status' => 'Upload Status',
     'videos_remaining' => 'Videos remaining',

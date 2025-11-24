@@ -66,7 +66,10 @@
                                          alt="{{ $article->user->name }}"
                                          class="article-author-avatar-left">
                                     <div>
-                                        <div class="article-author-name-left">{{ $article->user->name }}</div>
+                                        <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($article->user) }}" 
+                                           class="article-author-name-left hover:underline transition-colors">
+                                            {{ \App\Helpers\AvatarHelper::getDisplayName($article->user) }}
+                                        </a>
                                         <div class="article-author-role-left">{{ __('articles.newspaper.reporter') }}</div>
                                     </div>
                                 </div>
@@ -150,7 +153,10 @@
                                              alt="{{ $article->user->name }}"
                                              class="article-author-avatar">
                                         <div>
-                                            <div class="article-author-name">{{ $article->user->name }}</div>
+                                            <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($article->user) }}" 
+                                               class="article-author-name hover:underline transition-colors">
+                                                {{ \App\Helpers\AvatarHelper::getDisplayName($article->user) }}
+                                            </a>
                                             <div class="article-author-role">{{ __('articles.newspaper.reporter') }}</div>
                                         </div>
                                     </div>

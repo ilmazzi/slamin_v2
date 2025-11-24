@@ -24,8 +24,11 @@ return [
     'search_placeholder' => 'Cerca video, foto, autori...',
     
     // Upload Video
+    'upload_video_title' => 'Carica',
+    'video' => 'Video',
+    'login_required' => 'Devi effettuare il login per caricare video.',
     'upload_not_allowed' => 'Non hai il permesso di caricare video.',
-    'peertube_account_required' => 'Devi avere un account PeerTube per caricare video. Contatta l\'amministratore.',
+    'peertube_account_required' => 'Devi avere un account PeerTube per caricare video. Contatta l\'amministratore per configurare il tuo account.',
     'upload_limit_reached' => 'Hai raggiunto il limite di upload video. Passa a premium per caricare più video.',
     'upload_status' => 'Stato Upload',
     'videos_remaining' => 'Video rimanenti',

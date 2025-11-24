@@ -1,0 +1,122 @@
+<?php
+
+return [
+    'stats' => [
+        'photos' => 'Foto',
+        'videos' => 'Video',
+        'articles' => 'Articoli',
+        'poems' => 'Poesie',
+        'followers' => 'Follower',
+        'following' => 'Seguiti',
+        'views' => 'Visualizzazioni',
+        'likes' => 'Mi piace',
+        'publications' => 'Pubblicazioni',
+    ],
+    
+    'scroll_to_explore' => 'Scorri per esplorare',
+    'edit_profile' => 'Modifica Profilo',
+    'languages' => 'Lingue',
+    'badges' => 'Badge',
+    
+    'nav' => [
+        'my_profile' => 'Il Mio Profilo',
+    ],
+    
+    'tabs' => [
+        'about' => 'Profilo',
+        'poems' => 'Poesie',
+        'articles' => 'Articoli',
+        'media' => 'Media',
+        'events' => 'Eventi',
+        'settings' => 'Impostazioni',
+    ],
+    
+    'about' => [
+        'title' => 'Chi sono',
+        'no_bio' => 'Nessuna biografia disponibile.',
+        'location' => 'Posizione',
+        'website' => 'Sito web',
+        'birth_date' => 'Data di nascita',
+        'phone' => 'Telefono',
+        'social_links' => 'Link social',
+        'badges' => 'Badge',
+        'role' => 'Ruolo',
+        'no_badges' => 'Ancora nessun badge da mostrare.',
+    ],
+    
+    'poems' => [
+        'title' => 'Poesie',
+        'subtitle' => ':count poesie pubblicate',
+        'empty' => 'Nessuna poesia disponibile.',
+    ],
+    
+    'articles' => [
+        'title' => 'Articoli',
+        'subtitle' => ':count articoli pubblicati',
+        'empty' => 'Nessun articolo disponibile.',
+    ],
+    
+    'media' => [
+        'title' => 'Media',
+        'subtitle' => ':photos foto e :videos video',
+        'videos' => 'Video',
+        'photos' => 'Foto',
+        'empty' => 'Nessun media disponibile.',
+    ],
+    
+    'events' => [
+        'title' => 'Eventi',
+        'subtitle' => ':count eventi organizzati',
+        'empty' => 'Nessun evento disponibile.',
+    ],
+    
+    'settings' => [
+        'title' => 'Impostazioni',
+        'edit_profile' => 'Modifica Profilo',
+        'edit_profile_desc' => 'Modifica le tue informazioni personali',
+        'badges' => 'Gestisci Badge',
+        'badges_desc' => 'Visualizza e organizza i tuoi badge',
+        'media' => 'Gestisci Media',
+        'media_desc' => 'Carica e gestisci foto e video',
+    ],
+    
+    'edit' => [
+        'title' => 'Modifica Profilo',
+        'subtitle' => 'Aggiorna le tue informazioni personali e le impostazioni',
+        'images' => 'Immagini',
+        'avatar' => 'Avatar',
+        'avatar_help' => 'JPG, PNG, WEBP - Max 2MB',
+        'banner' => 'Banner',
+        'banner_help' => 'JPG, PNG, WEBP - Max 5MB',
+        'remove_avatar' => 'Rimuovi Avatar',
+        'remove_banner' => 'Rimuovi Banner',
+        'basic_info' => 'Informazioni Base',
+        'name' => 'Nome',
+        'nickname' => 'Nickname',
+        'email' => 'Email',
+        'phone' => 'Telefono',
+        'location' => 'Posizione',
+        'birth_date' => 'Data di nascita',
+        'website' => 'Sito web',
+        'bio' => 'Biografia',
+        'bio_help' => 'Massimo 1000 caratteri',
+        'social_links' => 'Link Social',
+        'privacy' => 'Impostazioni Privacy',
+        'is_public' => 'Profilo pubblico',
+        'is_public_help' => 'Rendi il tuo profilo visibile a tutti',
+        'show_email' => 'Mostra email',
+        'show_email_help' => 'Mostra la tua email nel profilo pubblico',
+        'show_phone' => 'Mostra telefono',
+        'show_phone_help' => 'Mostra il tuo telefono nel profilo pubblico',
+        'show_birth_date' => 'Mostra data di nascita',
+        'show_birth_date_help' => 'Mostra la tua data di nascita nel profilo pubblico',
+        'save' => 'Salva Modifiche',
+        'saving' => 'Salvataggio...',
+        'cancel' => 'Annulla',
+        'updated_successfully' => 'Profilo aggiornato con successo!',
+        'update_error' => 'Errore durante l\'aggiornamento',
+        'avatar_removed' => 'Avatar rimosso con successo',
+        'banner_removed' => 'Banner rimosso con successo',
+    ],
+];
+

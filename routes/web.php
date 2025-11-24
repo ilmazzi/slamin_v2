@@ -271,6 +271,15 @@ Route::get('/register', \App\Livewire\Auth\Register::class)
     ->middleware('guest')
     ->name('register');
 
+// Password Reset Routes
+Route::get('/forgot-password', \App\Livewire\Auth\ForgotPassword::class)
+    ->middleware('guest')
+    ->name('password.request');
+
+Route::get('/reset-password/{token}', \App\Livewire\Auth\ResetPassword::class)
+    ->middleware('guest')
+    ->name('password.reset');
+
 Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
@@ -319,9 +328,16 @@ Route::get('/fluid', function () {
     return view('fluid.index');
 })->name('fluid');
 
-Route::get('/profile', function () {
-    return view('profile.index');
-})->middleware('auth')->name('profile');
+// Profile Routes
+Route::middleware('auth')->prefix('profile')->name('profile.')->group(function () {
+    Route::get('/', \App\Livewire\Profile\ProfileShow::class)->name('show');
+    Route::get('/edit', \App\Livewire\Profile\ProfileEdit::class)->name('edit');
+    Route::get('/languages', \App\Livewire\Profile\LanguageManagement::class)->name('languages');
+    Route::get('/badges', \App\Livewire\Profile\MyBadges::class)->name('badges');
+});
+
+// Public Profile Routes
+Route::get('/user/{user}', \App\Livewire\Profile\ProfileShow::class)->name('user.show');
 
 // Logout (simplified - would be handled by auth system)
 Route::post('/logout', function () {

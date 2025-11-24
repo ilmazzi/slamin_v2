@@ -74,6 +74,17 @@
         </div>
     </div>
 
+    {{-- Pulsante Crea Utente --}}
+    <div class="mb-6 flex justify-end">
+        <button wire:click="openCreateModal"
+                class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg shadow-lg transition-colors flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            {{ __('admin.users.create_user') }}
+        </button>
+    </div>
+
     {{-- Tabella utenti --}}
     <div class="bg-white dark:bg-neutral-800 rounded-lg shadow border border-neutral-200 dark:border-neutral-700 overflow-hidden">
         <div class="overflow-x-auto">
@@ -233,36 +244,110 @@
     </div>
 
     {{-- Modal modifica --}}
-    @if($showEditModal)
+    @if($showEditModal && $editingUser)
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" 
              wire:click="closeEditModal">
-            <div class="bg-white dark:bg-neutral-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+            <div class="bg-white dark:bg-neutral-800 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
                  wire:click.stop>
                 <div class="p-6">
-                    <h2 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">
-                        {{ __('admin.users.edit_user') }}
-                    </h2>
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">
+                            {{ __('admin.users.edit_user') }}: {{ $editingUser->name }}
+                        </h2>
+                        <button wire:click="closeEditModal" class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    {{-- Informazioni PeerTube --}}
+                    @if($editingUser->hasPeerTubeAccount())
+                        <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="font-semibold text-green-900 dark:text-green-100">{{ __('admin.users.peertube_account') }}</span>
+                            </div>
+                            <div class="text-sm text-green-700 dark:text-green-300 space-y-1">
+                                @if($editingUser->peertube_user_id)
+                                    <p><strong>ID:</strong> {{ $editingUser->peertube_user_id }}</p>
+                                @endif
+                                @if($editingUser->peertube_username)
+                                    <p><strong>Username:</strong> {{ $editingUser->peertube_username }}</p>
+                                @endif
+                                @if($editingUser->peertube_display_name)
+                                    <p><strong>Display Name:</strong> {{ $editingUser->peertube_display_name }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    @else
+                        <div class="mb-6 p-4 bg-neutral-50 dark:bg-neutral-700/50 border border-neutral-200 dark:border-neutral-600 rounded-lg">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                </svg>
+                                <span class="text-sm text-neutral-600 dark:text-neutral-400">{{ __('admin.users.no_peertube_account') }}</span>
+                            </div>
+                        </div>
+                    @endif
+                    
+                    {{-- Informazioni Account --}}
+                    <div class="mb-6 p-4 bg-neutral-50 dark:bg-neutral-700/50 border border-neutral-200 dark:border-neutral-600 rounded-lg">
+                        <h3 class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">{{ __('admin.users.account_info') }}</h3>
+                        <div class="grid grid-cols-2 gap-3 text-sm">
+                            <div>
+                                <span class="text-neutral-500 dark:text-neutral-400">{{ __('admin.users.registered') }}:</span>
+                                <span class="text-neutral-900 dark:text-white ml-2">{{ $editingUser->created_at->format('d/m/Y H:i') }}</span>
+                            </div>
+                            <div>
+                                <span class="text-neutral-500 dark:text-neutral-400">{{ __('admin.users.email_verified') }}:</span>
+                                @if($editingUser->email_verified_at)
+                                    <span class="text-green-600 dark:text-green-400 ml-2">{{ __('admin.users.yes') }} ({{ $editingUser->email_verified_at->format('d/m/Y') }})</span>
+                                @else
+                                    <span class="text-red-600 dark:text-red-400 ml-2">{{ __('admin.users.no') }}</span>
+                                @endif
+                            </div>
+                            <div>
+                                <span class="text-neutral-500 dark:text-neutral-400">{{ __('admin.users.user_id') }}:</span>
+                                <span class="text-neutral-900 dark:text-white ml-2">#{{ $editingUser->id }}</span>
+                            </div>
+                            <div>
+                                <span class="text-neutral-500 dark:text-neutral-400">{{ __('admin.users.current_roles') }}:</span>
+                                <span class="text-neutral-900 dark:text-white ml-2">
+                                    @if($editingUser->roles->count() > 0)
+                                        {{ $editingUser->roles->pluck('display_name')->join(', ') }}
+                                    @else
+                                        <span class="text-neutral-400">{{ __('admin.users.no_roles') }}</span>
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                     
                     <form wire:submit.prevent="updateUser">
                         <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                                    {{ __('admin.users.name') }} *
-                                </label>
-                                <input type="text" 
-                                       wire:model="name"
-                                       class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                                @error('name') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                                    {{ __('admin.users.email') }} *
-                                </label>
-                                <input type="email" 
-                                       wire:model="email"
-                                       class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                                @error('email') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                        {{ __('admin.users.name') }} *
+                                    </label>
+                                    <input type="text" 
+                                           wire:model="name"
+                                           class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    @error('name') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                        {{ __('admin.users.email') }} *
+                                    </label>
+                                    <input type="email" 
+                                           wire:model="email"
+                                           class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    @error('email') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                                </div>
                             </div>
                             
                             <div>
@@ -273,6 +358,155 @@
                                        wire:model="nickname"
                                        class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                                 @error('nickname') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                        {{ __('admin.users.status') }} *
+                                    </label>
+                                    <select wire:model="userStatus"
+                                            class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                        <option value="active">{{ __('admin.users.active') }}</option>
+                                        <option value="inactive">{{ __('admin.users.inactive') }}</option>
+                                        <option value="suspended">{{ __('admin.users.suspended') }}</option>
+                                        <option value="banned">{{ __('admin.users.banned') }}</option>
+                                    </select>
+                                    @error('userStatus') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                        {{ __('admin.users.email_verification') }}
+                                    </label>
+                                    <div class="flex items-center gap-3 px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700">
+                                        @if($emailVerified)
+                                            <span class="text-sm text-green-600 dark:text-green-400">{{ __('admin.users.verified') }}</span>
+                                            <button type="button" 
+                                                    wire:click="toggleEmailVerification"
+                                                    class="text-xs text-red-600 dark:text-red-400 hover:underline">
+                                                {{ __('admin.users.unverify') }}
+                                            </button>
+                                        @else
+                                            <span class="text-sm text-red-600 dark:text-red-400">{{ __('admin.users.not_verified') }}</span>
+                                            <button type="button" 
+                                                    wire:click="toggleEmailVerification"
+                                                    class="text-xs text-green-600 dark:text-green-400 hover:underline">
+                                                {{ __('admin.users.verify') }}
+                                            </button>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                    {{ __('admin.users.roles') }}
+                                </label>
+                                @if($this->availableRoles->count() > 0)
+                                    <select wire:model="roles" 
+                                            multiple
+                                            size="6"
+                                            class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                        @foreach($this->availableRoles as $role)
+                                            <option value="{{ $role->id }}" {{ in_array($role->id, $roles ?? []) ? 'selected' : '' }}>
+                                                {{ $role->display_name ?? ucfirst($role->name) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                                        {{ __('admin.users.select_multiple_roles') }}
+                                    </p>
+                                @else
+                                    <div class="w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                                        {{ __('admin.users.no_roles_available') }}
+                                    </div>
+                                @endif
+                                @error('roles') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-700">
+                            <button type="button" 
+                                    wire:click="closeEditModal"
+                                    class="px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg transition-colors">
+                                {{ __('admin.users.cancel') }}
+                            </button>
+                            <button type="submit" 
+                                    class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                                {{ __('admin.users.save') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- Modal creazione utente --}}
+    @if($showCreateModal)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" 
+             wire:click="closeCreateModal">
+            <div class="bg-white dark:bg-neutral-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                 wire:click.stop>
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">
+                        {{ __('admin.users.create_user') }}
+                    </h2>
+                    
+                    <form wire:submit.prevent="createUser">
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                        {{ __('admin.users.name') }} *
+                                    </label>
+                                    <input type="text" 
+                                           wire:model="name"
+                                           class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    @error('name') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                        {{ __('admin.users.email') }} *
+                                    </label>
+                                    <input type="email" 
+                                           wire:model="email"
+                                           class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    @error('email') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                    {{ __('admin.users.nickname') }}
+                                </label>
+                                <input type="text" 
+                                       wire:model="nickname"
+                                       class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                @error('nickname') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                        {{ __('admin.users.password') }} *
+                                    </label>
+                                    <input type="password" 
+                                           wire:model="password"
+                                           class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    @error('password') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                        {{ __('admin.users.confirm_password') }} *
+                                    </label>
+                                    <input type="password" 
+                                           wire:model="password_confirmation"
+                                           class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                </div>
                             </div>
                             
                             <div>
@@ -288,17 +522,63 @@
                                 </select>
                                 @error('userStatus') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
                             </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                    {{ __('admin.users.roles') }}
+                                </label>
+                                @if($this->availableRoles->count() > 0)
+                                    <select wire:model="roles" 
+                                            multiple
+                                            size="6"
+                                            class="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                        @foreach($this->availableRoles as $role)
+                                            <option value="{{ $role->id }}">
+                                                {{ $role->display_name ?? ucfirst($role->name) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                                        {{ __('admin.users.select_multiple_roles') }}
+                                    </p>
+                                @else
+                                    <div class="w-full px-4 py-3 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-sm">
+                                        {{ __('admin.users.no_roles_available') }}
+                                    </div>
+                                @endif
+                                @error('roles') <span class="text-red-600 dark:text-red-400 text-sm">{{ $message }}</span> @enderror
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" 
+                                           wire:model="verifyEmail"
+                                           class="w-4 h-4 text-primary-600 border-neutral-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-neutral-700 dark:text-neutral-300">
+                                        {{ __('admin.users.verify_email') }}
+                                    </span>
+                                </label>
+                                
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" 
+                                           wire:model="createPeerTubeAccount"
+                                           class="w-4 h-4 text-primary-600 border-neutral-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-neutral-700 dark:text-neutral-300">
+                                        {{ __('admin.users.create_peertube_account') }}
+                                    </span>
+                                </label>
+                            </div>
                         </div>
                         
                         <div class="flex items-center justify-end gap-3 mt-6">
                             <button type="button" 
-                                    wire:click="closeEditModal"
+                                    wire:click="closeCreateModal"
                                     class="px-4 py-2 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg transition-colors">
                                 {{ __('admin.users.cancel') }}
                             </button>
                             <button type="submit" 
                                     class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
-                                {{ __('admin.users.save') }}
+                                {{ __('admin.users.create') }}
                             </button>
                         </div>
                     </form>

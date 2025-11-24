@@ -33,19 +33,26 @@ class UserList extends Component
     public $showEditModal = false;
     public $editingUser = null;
     
+    // Modal create
+    public $showCreateModal = false;
+    
     // Form fields
     public $name = '';
     public $email = '';
     public $nickname = '';
+    public $password = '';
+    public $password_confirmation = '';
     public $userStatus = 'active';
     public $roles = [];
     public $permissions = [];
+    public $createPeerTubeAccount = false;
+    public $verifyEmail = false;
+    public $emailVerified = false;
 
     // Available roles and permissions (computed)
     public function getAvailableRolesProperty()
     {
-        // TODO: Implementare quando Role model sarà disponibile
-        return collect([]);
+        return \App\Models\Role::all();
     }
 
     public function getAvailablePermissionsProperty()
@@ -94,14 +101,121 @@ class UserList extends Component
         $this->email = $user->email;
         $this->nickname = $user->nickname ?? '';
         $this->userStatus = $user->status ?? 'active';
+        $this->roles = $user->roles()->pluck('roles.id')->toArray();
+        $this->emailVerified = $user->email_verified_at !== null;
         $this->showEditModal = true;
+    }
+    
+    public function toggleEmailVerification()
+    {
+        $this->emailVerified = !$this->emailVerified;
     }
 
     public function closeEditModal()
     {
         $this->showEditModal = false;
         $this->editingUser = null;
-        $this->reset(['name', 'email', 'nickname', 'userStatus', 'roles', 'permissions']);
+        $this->reset(['name', 'email', 'nickname', 'userStatus', 'roles', 'permissions', 'emailVerified']);
+    }
+
+    public function openCreateModal()
+    {
+        $this->showCreateModal = true;
+        $this->reset(['name', 'email', 'nickname', 'password', 'password_confirmation', 'userStatus', 'roles', 'permissions', 'createPeerTubeAccount', 'verifyEmail']);
+    }
+
+    public function closeCreateModal()
+    {
+        $this->showCreateModal = false;
+        $this->reset(['name', 'email', 'nickname', 'password', 'password_confirmation', 'userStatus', 'roles', 'permissions', 'createPeerTubeAccount', 'verifyEmail']);
+    }
+
+    public function createUser()
+    {
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'nickname' => 'nullable|string|max:50|unique:users,nickname',
+            'password' => 'required|min:8|confirmed',
+            'userStatus' => 'required|in:active,inactive,suspended,banned',
+            'roles' => 'array',
+            'createPeerTubeAccount' => 'boolean',
+            'verifyEmail' => 'boolean',
+        ], [
+            'name.required' => 'Il nome è obbligatorio',
+            'email.required' => 'L\'email è obbligatoria',
+            'email.email' => 'L\'email deve essere valida',
+            'email.unique' => 'Questa email è già registrata',
+            'nickname.unique' => 'Questo nickname è già in uso',
+            'password.required' => 'La password è obbligatoria',
+            'password.min' => 'La password deve essere di almeno 8 caratteri',
+            'password.confirmed' => 'Le password non corrispondono',
+        ]);
+
+        try {
+            // Crea l'utente
+            $user = User::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'nickname' => $this->nickname,
+                'password' => \Illuminate\Support\Facades\Hash::make($this->password),
+                'status' => $this->userStatus,
+                'email_verified_at' => $this->verifyEmail ? now() : null,
+            ]);
+
+            // Assegna i ruoli
+            if (!empty($this->roles)) {
+                $user->syncRoles($this->roles);
+            }
+
+            // Crea account PeerTube se richiesto
+            if ($this->createPeerTubeAccount) {
+                try {
+                    $peerTubeService = new \App\Services\PeerTubeService();
+                    
+                    // Verifica che PeerTube sia configurato
+                    if (!$peerTubeService->isConfigured()) {
+                        session()->flash('error', __('admin.users.peertube_not_configured'));
+                        Log::warning('PeerTube non configurato - impossibile creare account', [
+                            'user_id' => $user->id
+                        ]);
+                    } else {
+                        $peerTubePassword = \Illuminate\Support\Str::random(16);
+                        $success = $peerTubeService->createPeerTubeUser($user, $peerTubePassword);
+                        
+                        if ($success) {
+                            Log::info('Account PeerTube creato per utente admin', [
+                                'user_id' => $user->id,
+                                'email' => $user->email
+                            ]);
+                            session()->flash('message', __('admin.users.peertube_created_success'));
+                        } else {
+                            Log::warning('Errore creazione account PeerTube per utente admin', [
+                                'user_id' => $user->id,
+                                'email' => $user->email
+                            ]);
+                            session()->flash('error', __('admin.users.peertube_creation_failed'));
+                        }
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Eccezione durante creazione account PeerTube', [
+                        'user_id' => $user->id,
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                    session()->flash('error', __('admin.users.peertube_creation_error') . ': ' . $e->getMessage());
+                }
+            }
+
+            session()->flash('message', __('admin.users.created_success', ['name' => $user->name]));
+            $this->closeCreateModal();
+        } catch (\Exception $e) {
+            Log::error('Errore creazione utente admin', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            $this->addError('email', __('admin.users.create_error') . ': ' . $e->getMessage());
+        }
     }
 
     public function updateUser()
@@ -116,23 +230,30 @@ class UserList extends Component
             'nickname' => 'nullable|string|max:50',
             'userStatus' => 'required|in:active,inactive,suspended,banned',
             'roles' => 'array',
-            'permissions' => 'array',
+        ], [
+            'name.required' => 'Il nome è obbligatorio',
+            'email.required' => 'L\'email è obbligatoria',
+            'email.email' => 'L\'email deve essere valida',
+            'email.unique' => 'Questa email è già registrata',
         ]);
 
-        $this->editingUser->update([
+        $updateData = [
             'name' => $this->name,
             'email' => $this->email,
             'nickname' => $this->nickname,
             'status' => $this->userStatus,
-        ]);
+            'email_verified_at' => $this->emailVerified ? now() : null,
+        ];
+        
+        $this->editingUser->update($updateData);
 
-        // TODO: Implementare quando roles/permissions saranno disponibili
-        // if (!empty($this->roles)) {
-        //     $this->editingUser->syncRoles($this->roles);
-        // }
-        // if (!empty($this->permissions)) {
-        //     $this->editingUser->syncPermissions($this->permissions);
-        // }
+        // Sincronizza i ruoli
+        if (!empty($this->roles)) {
+            $this->editingUser->syncRoles($this->roles);
+        } else {
+            // Se nessun ruolo selezionato, rimuovi tutti i ruoli
+            $this->editingUser->syncRoles([]);
+        }
 
         session()->flash('message', __('admin.users.updated_success'));
         $this->closeEditModal();

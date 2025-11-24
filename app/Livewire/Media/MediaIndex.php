@@ -31,6 +31,45 @@ class MediaIndex extends Component
         $this->photoType = $type;
     }
 
+    public function navigateToVideoUpload()
+    {
+        $user = auth()->user();
+        
+        if (!$user) {
+            $this->dispatch('notify', [
+                'message' => __('media.login_required'),
+                'type' => 'error'
+            ]);
+            return;
+        }
+
+        // Verifica permessi
+        if (!$user->canUploadVideo()) {
+            $this->dispatch('notify', [
+                'message' => __('media.upload_not_allowed'),
+                'type' => 'error'
+            ]);
+            return;
+        }
+
+        // Verifica che l'utente abbia un account PeerTube
+        if (!$user->hasPeerTubeAccount()) {
+            $this->dispatch('notify', [
+                'message' => __('media.peertube_account_required'),
+                'type' => 'error'
+            ]);
+            return;
+        }
+
+        // Verifica limiti upload
+        if (!$user->canUploadMoreVideos()) {
+            return $this->redirect(route('media.upload-limit'), navigate: false);
+        }
+
+        // Tutto ok, naviga alla pagina di upload
+        return $this->redirect(route('media.upload.video'), navigate: false);
+    }
+
     public function searchMedia()
     {
         // Search is handled automatically by computed properties

@@ -123,7 +123,10 @@
                              alt="{{ $article->user->name }}"
                              class="magazine-avatar">
                         <div class="magazine-author-info">
-                            <div class="magazine-author-name">{{ $article->user->name }}</div>
+                            <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($article->user) }}" 
+                               class="magazine-author-name hover:underline transition-colors">
+                                {{ \App\Helpers\AvatarHelper::getDisplayName($article->user) }}
+                            </a>
                             <div class="magazine-author-date">{{ $article->created_at->format('d M Y') }}</div>
                         </div>
                     </div>

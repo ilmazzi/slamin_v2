@@ -10,6 +10,7 @@ use App\Models\Article;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\SocialInteractionReceived;
 
 class LikeController extends Controller
 {
@@ -69,13 +70,25 @@ class LikeController extends Controller
             ]);
         } else {
             // Like
-            UnifiedLike::create([
+            $like = UnifiedLike::create([
                 'user_id' => Auth::id(),
                 'likeable_type' => $modelClass,
                 'likeable_id' => $request->id,
             ]);
-            
+
             $model->increment('like_count');
+
+            // Send notification to content owner if different from liker
+            if ($model->user_id !== Auth::id()) {
+                $contentOwner = $model->user;
+                \Log::info('Dispatching SocialInteractionReceived event', [
+                    'liker_id' => Auth::id(),
+                    'owner_id' => $contentOwner->id,
+                    'content_type' => get_class($model),
+                    'content_id' => $model->id,
+                ]);
+                event(new SocialInteractionReceived($like, Auth::user(), $contentOwner, $model, 'like'));
+            }
             
             return response()->json([
                 'success' => true,

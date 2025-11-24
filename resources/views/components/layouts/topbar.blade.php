@@ -111,8 +111,14 @@
                 </div>
             </div>
 
-            <!-- Notifications - Livewire Component -->
+            <!-- Notifications - Livewire Components -->
             <livewire:components.notification-center />
+            @endauth
+            
+            <!-- Notification Animation (always visible for testing) -->
+            @auth
+            <livewire:components.notification-animation />
+            <livewire:notifications.notification-modal />
             @endauth
 
             <!-- Language Selector -->
@@ -174,17 +180,17 @@
                         <p class="font-semibold text-sm text-neutral-900 dark:text-white truncate">{{ auth()->user()->name }}</p>
                         <p class="text-xs text-neutral-500 truncate">{{ auth()->user()->email }}</p>
                     </div>
-                    <a href="#" class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700">
+                    <a href="{{ route('profile.show') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
-                        <span class="text-sm text-neutral-700 dark:!text-white">Profilo</span>
+                        <span class="text-sm text-neutral-700 dark:!text-white">{{ __('profile.nav.my_profile') }}</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700">
+                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        <span class="text-sm text-neutral-700 dark:!text-white">Impostazioni</span>
+                        <span class="text-sm text-neutral-700 dark:!text-white">{{ __('profile.settings.edit_profile') }}</span>
                     </a>
                     <div class="border-t border-neutral-200 dark:border-neutral-700 my-2"></div>
                     <form action="{{ route('logout') }}" method="POST">

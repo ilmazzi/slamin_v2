@@ -56,6 +56,14 @@
         @vite(['resources/css/scoring.css'])
     @endif
     
+    {{-- Profile Page Assets --}}
+    @if(request()->routeIs('profile.*') || request()->routeIs('user.*'))
+        @vite(['resources/css/profile.css', 'resources/css/event-ticket.css', 'resources/js/profile.js'])
+    @endif
+
+    {{-- Notification Animation Assets --}}
+    @vite(['resources/css/notification-animation.css'])
+    
     {{-- Article Modal Assets (needed on articles page and home page) --}}
     @vite(['resources/css/article-modal.css'])
 
@@ -322,12 +330,29 @@
         type: 'success',
         showToast(data) {
             // Skip dragon likes
-            if(data.type === 'like') return;
+            if(data && data.type === 'like') return;
             
-            this.message = data.message;
-            this.type = data.type || 'success';
+            console.log('🔔 Toast data received:', data);
+            console.log('🔔 Data type:', typeof data);
+            console.log('🔔 Data keys:', data ? Object.keys(data) : 'no data');
+            
+            // Gestisci sia array che oggetto
+            if (Array.isArray(data)) {
+                this.message = data[0]?.message || data.message || data[0] || 'Messaggio non disponibile';
+                this.type = data[0]?.type || data.type || 'success';
+            } else if (typeof data === 'object' && data !== null) {
+                this.message = data.message || 'Messaggio non disponibile';
+                this.type = data.type || 'success';
+            } else {
+                this.message = data || 'Messaggio non disponibile';
+                this.type = 'success';
+            }
+            
+            console.log('🔔 Final message:', this.message);
+            console.log('🔔 Final type:', this.type);
+            
             this.show = true;
-            setTimeout(() => { this.show = false; }, 3000);
+            setTimeout(() => { this.show = false; }, 5000);
         }
     }"
     @notify.window="showToast($event.detail)"
@@ -360,8 +385,12 @@
                 <svg x-show="type === 'warning'" class="w-6 h-6 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
+                <!-- Icon Error -->
+                <svg x-show="type === 'error'" class="w-6 h-6 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
                 <!-- Message -->
-                <span x-text="message" class="text-white font-medium flex-1"></span>
+                <span x-text="message || 'Messaggio non disponibile'" class="text-white font-medium flex-1"></span>
                 <!-- Close -->
                 <button @click="show = false" class="text-white/80 hover:text-white transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -384,6 +413,12 @@
     @auth
         <livewire:badge-notification />
     @endauth
+    
+    {{-- Article and Poem Modals (needed on profile pages) --}}
+    @if(request()->routeIs('profile.*') || request()->routeIs('user.*'))
+        <livewire:articles.article-modal />
+        <livewire:poems.poem-modal />
+    @endif
 
     <!-- Userback Widget -->
     <script>

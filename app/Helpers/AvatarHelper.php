@@ -61,6 +61,22 @@ class AvatarHelper
             return 'User';
         }
 
-        return $user->name ?? $user->nickname ?? $user->email ?? 'User';
+        return $user->nickname ?: $user->name ?? $user->email ?? 'User';
+    }
+
+    /**
+     * Get user profile URL
+     */
+    public static function getUserProfileUrl($user)
+    {
+        if (!$user || !is_object($user) || !isset($user->id)) {
+            return '#';
+        }
+
+        if ($user->nickname) {
+            return route('user.show', $user->nickname);
+        }
+
+        return route('user.show', $user->id);
     }
 }

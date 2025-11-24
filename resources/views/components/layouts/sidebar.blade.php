@@ -16,15 +16,16 @@
     <div class="flex flex-col h-full overflow-visible">
         <!-- User Info (Top) -->
         @auth
-        <div class="p-4 border-b border-neutral-200 dark:border-neutral-800"
-             :class="collapsed && 'px-2'">
+        <a href="{{ route('profile.show') }}"
+           class="p-4 border-b border-neutral-200 dark:border-neutral-800 block"
+           :class="collapsed && 'px-2'">
             <div class="flex items-center gap-3"
                  :class="collapsed && 'justify-center'">
-                <img src="{{ auth()->user()->profile_photo_url }}" 
-                     alt="{{ auth()->user()->name }}" 
+                <img src="{{ auth()->user()->profile_photo_url }}"
+                     alt="{{ auth()->user()->name }}"
                      class="w-10 h-10 rounded-full object-cover ring-2 ring-primary-200 flex-shrink-0 transition-all duration-300"
                      :class="!collapsed && 'hover:ring-4 hover:ring-primary-300 cursor-pointer'">
-                <div x-show="!collapsed" 
+                <div x-show="!collapsed"
                      x-transition:enter="transition ease-out duration-300 delay-100"
                      x-transition:enter-start="opacity-0 -translate-x-4"
                      x-transition:enter-end="opacity-100 translate-x-0"
@@ -32,15 +33,37 @@
                      x-transition:leave-start="opacity-100 translate-x-0"
                      x-transition:leave-end="opacity-0 -translate-x-4"
                      class="flex-1 min-w-0">
-                    <p class="font-semibold text-sm text-neutral-900 dark:text-white truncate">
-                        {{ auth()->user()->name }}
-                    </p>
+                    <div class="flex items-center gap-2 mb-1">
+                        <p class="font-semibold text-sm text-neutral-900 dark:text-white truncate">
+                            {{ auth()->user()->name }}
+                        </p>
+                        {{-- User Sidebar Badges --}}
+                        @php
+                            $sidebarBadges = auth()->user()->userBadges()
+                                ->where('show_in_sidebar', true)
+                                ->with('badge')
+                                ->orderBy('sidebar_order', 'asc')
+                                ->limit(3)
+                                ->get();
+                        @endphp
+                        @if($sidebarBadges->count() > 0)
+                            <div class="flex gap-1 flex-shrink-0">
+                                @foreach($sidebarBadges as $userBadge)
+                                <div class="w-4 h-4 rounded-full overflow-hidden border border-white/20" title="{{ $userBadge->badge->name }}">
+                                    <img src="{{ $userBadge->badge->icon_url }}"
+                                         alt="{{ $userBadge->badge->name }}"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
                     <p class="text-xs text-neutral-500 truncate">
                         {{ auth()->user()->nickname ?? auth()->user()->email }}
                     </p>
                 </div>
             </div>
-        </div>
+        </a>
         @endauth
 
         <!-- Navigation Menu -->
@@ -113,6 +136,33 @@
                     </a>
                     <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.eventiLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">Eventi</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
+
+                @auth
+                <!-- Il Mio Profilo -->
+                <li class="relative" x-data="{ tooltip: false }">
+                    <a href="{{ route('profile.show') }}" 
+                       @mouseenter="collapsed && (tooltip = true)"
+                       @mouseleave="tooltip = false"
+                       x-ref="profiloLink"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-primary-50 hover:to-primary-100 dark:hover:from-primary-900/20 dark:hover:to-primary-800/20 text-neutral-700 dark:!text-white hover:text-primary-600 dark:hover:!text-primary-400 transition-all duration-300 group"
+                       :class="collapsed && 'justify-center'">
+                        <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
+                             :class="!collapsed && 'group-hover:-translate-x-1'" 
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span x-show="!collapsed" 
+                              x-transition:enter="transition ease-out duration-300 delay-125"
+                              x-transition:enter-start="opacity-0 -translate-x-4"
+                              x-transition:enter-end="opacity-100 translate-x-0"
+                              x-transition:leave="transition ease-in duration-200"
+                              x-transition:leave-start="opacity-100 translate-x-0"
+                              x-transition:leave-end="opacity-0 -translate-x-4"
+                              class="text-sm font-medium">{{ __('profile.nav.my_profile') }}</span>
+                    </a>
+                    <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.profiloLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">{{ __('profile.nav.my_profile') }}</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
+                </li>
+                @endauth
 
                 @auth
                 <!-- Gigs -->
@@ -376,21 +426,43 @@
     <div class="flex flex-col h-full">
         <!-- User Info (Top) -->
         @auth
-        <div class="p-4 border-b border-neutral-200 dark:border-neutral-800">
+        <a href="{{ route('profile.show') }}" class="block p-4 border-b border-neutral-200 dark:border-neutral-800">
             <div class="flex items-center gap-3">
-                <img src="{{ auth()->user()->profile_photo_url }}" 
-                     alt="{{ auth()->user()->name }}" 
+                <img src="{{ auth()->user()->profile_photo_url }}"
+                     alt="{{ auth()->user()->name }}"
                      class="w-10 h-10 rounded-full object-cover ring-2 ring-primary-200 flex-shrink-0">
                 <div class="flex-1 min-w-0">
-                    <p class="font-semibold text-sm text-neutral-900 dark:text-white truncate">
-                        {{ auth()->user()->name }}
-                    </p>
+                    <div class="flex items-center gap-2 mb-1">
+                        <p class="font-semibold text-sm text-neutral-900 dark:text-white truncate">
+                            {{ auth()->user()->name }}
+                        </p>
+                        {{-- User Sidebar Badges --}}
+                        @php
+                            $sidebarBadges = auth()->user()->userBadges()
+                                ->where('show_in_sidebar', true)
+                                ->with('badge')
+                                ->orderBy('sidebar_order', 'asc')
+                                ->limit(3)
+                                ->get();
+                        @endphp
+                        @if($sidebarBadges->count() > 0)
+                            <div class="flex gap-1 flex-shrink-0">
+                                @foreach($sidebarBadges as $userBadge)
+                                <div class="w-4 h-4 rounded-full overflow-hidden border border-white/20" title="{{ $userBadge->badge->name }}">
+                                    <img src="{{ $userBadge->badge->icon_url }}"
+                                         alt="{{ $userBadge->badge->name }}"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
                     <p class="text-xs text-neutral-500 truncate">
                         {{ auth()->user()->nickname ?? auth()->user()->email }}
                     </p>
                 </div>
             </div>
-        </div>
+        </a>
         @endauth
 
         <!-- Navigation Menu -->
@@ -421,6 +493,18 @@
                 </li>
 
                 @auth
+                <!-- Il Mio Profilo -->
+                <li>
+                    <a href="{{ route('profile.show') }}" 
+                       @click="mobileOpen = false"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group">
+                        <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span class="text-sm font-medium">{{ __('profile.nav.my_profile') }}</span>
+                    </a>
+                </li>
+
                 <!-- Gigs -->
                 <li>
                     <a href="{{ route('gigs.index') }}" 

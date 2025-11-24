@@ -17,14 +17,22 @@ class PeerTubeSettings extends Component
 
     protected $peerTubeService;
 
-    public function mount(PeerTubeService $peerTubeService)
+    public function mount()
     {
         if (!Auth::check() || !Auth::user()->hasRole('admin')) {
             abort(403, 'Accesso negato');
         }
 
-        $this->peerTubeService = $peerTubeService;
+        $this->peerTubeService = app(PeerTubeService::class);
         $this->loadSettings();
+    }
+    
+    public function boot()
+    {
+        // Assicurati che il servizio sia sempre disponibile
+        if (!$this->peerTubeService) {
+            $this->peerTubeService = app(PeerTubeService::class);
+        }
     }
 
     public function loadSettings()

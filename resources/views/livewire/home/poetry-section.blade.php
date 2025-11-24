@@ -97,7 +97,10 @@
                                 <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 80) }}" 
                                      alt="{{ $poem->user->name }}"
                                      class="paper-avatar">
-                                <span class="paper-author-name">{{ $poem->user->name }}</span>
+                                <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($poem->user) }}" 
+                                   class="paper-author-name hover:underline transition-colors">
+                                    {{ \App\Helpers\AvatarHelper::getDisplayName($poem->user) }}
+                                </a>
                             </div>
                             
                             {{-- Poem Title --}}

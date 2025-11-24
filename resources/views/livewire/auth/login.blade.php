@@ -58,7 +58,7 @@
                         @enderror
                     </div>
 
-                    <!-- Remember Me -->
+                    <!-- Remember Me & Forgot Password -->
                     <div class="flex items-center justify-between">
                         <label class="flex items-center">
                             <input type="checkbox" 
@@ -68,6 +68,9 @@
                                 {{ __('login.remember_me') }}
                             </span>
                         </label>
+                        <a href="{{ route('password.request') }}" class="text-sm text-primary-600 hover:text-primary-700 font-semibold">
+                            {{ __('auth.forgot_password') }}
+                        </a>
                     </div>
 
                     <!-- Submit Button -->

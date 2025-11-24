@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'manage_display' => 'Gestisci Badge',
+    'manage_display_desc' => 'Scegli quali badge mostrare nel tuo profilo e nella sidebar',
+    'profile_badges' => 'Badge nel Profilo',
+    'profile_badges_desc' => 'Questi badge appariranno nella tua pagina profilo',
+    'sidebar_badges' => 'Badge nella Sidebar',
+    'sidebar_badges_desc' => 'Questi badge appariranno nella sidebar del sito',
+    'complete_collection' => 'Collezione Completa',
+    'complete_collection_desc' => 'Tutti i badge che hai conquistato finora',
+    'no_profile_badges' => 'Nessun badge mostrato nel profilo',
+    'no_sidebar_badges' => 'Nessun badge mostrato nella sidebar',
+    'no_badges_earned' => 'Nessun badge conquistato',
+    'start_interacting' => 'Inizia a interagire con la community per guadagnare i tuoi primi badge!',
+    'points' => 'punti',
+    'total_badges' => 'Badge Totali',
+    'total_points' => 'Punti Totali',
+    'profile_displayed' => 'Nel Profilo',
+    'sidebar_displayed' => 'Nella Sidebar',
+    'shown_in_profile' => 'Mostrato nel profilo',
+    'shown_in_sidebar' => 'Mostrato nella sidebar',
+    'profile_badges_updated' => 'Badge del profilo aggiornati con successo!',
+    'sidebar_badges_updated' => 'Badge della sidebar aggiornati con successo!',
+    'all_profile_badges_hidden' => 'Tutti i badge del profilo sono stati nascosti',
+    'all_sidebar_badges_hidden' => 'Tutti i badge della sidebar sono stati nascosti',
+    'hide_all' => 'Nascondi Tutto',
+];

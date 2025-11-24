@@ -134,7 +134,17 @@
             @if($event->user ?? $event->organizer)
             <div class="ticket-detail-item">
                 <div class="ticket-detail-label">ORGANIZZATO DA</div>
-                <div class="ticket-detail-value">{{ Str::limit(($event->user ?? $event->organizer)->name ?? 'N/A', 20) }}</div>
+                @php
+                    $organizer = $event->user ?? $event->organizer;
+                @endphp
+                @if($organizer)
+                    <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($organizer) }}" 
+                       class="ticket-detail-value hover:underline transition-colors">
+                        {{ Str::limit(\App\Helpers\AvatarHelper::getDisplayName($organizer), 20) }}
+                    </a>
+                @else
+                    <div class="ticket-detail-value">N/A</div>
+                @endif
             </div>
             @endif
         </div>

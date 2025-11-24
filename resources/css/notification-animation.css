@@ -1,0 +1,109 @@
+/* ============================================
+   NOTIFICATION ANIMATION - BUSTA ENTRANCE
+   ============================================ */
+
+/* Custom keyframes for busta animation */
+@keyframes bustaSlideIn {
+    0% {
+        transform: translateX(100%) scale(0.3) rotate(45deg);
+        opacity: 0;
+    }
+    50% {
+        transform: translateX(-10%) scale(1.1) rotate(-5deg);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateX(0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes bustaBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    10% {
+        transform: translateY(-10px) rotate(2deg);
+    }
+    30% {
+        transform: translateY(-5px) rotate(-1deg);
+    }
+    40% {
+        transform: translateY(-8px) rotate(1deg);
+    }
+    60% {
+        transform: translateY(-3px) rotate(-0.5deg);
+    }
+    70% {
+        transform: translateY(-6px) rotate(0.5deg);
+    }
+    90% {
+        transform: translateY(-2px) rotate(-0.2deg);
+    }
+}
+
+@keyframes sparklePulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+@keyframes notificationGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.6), 0 0 60px rgba(59, 130, 246, 0.4);
+    }
+}
+
+/* Enhanced busta animation styles */
+.notification-busta-container {
+    position: relative;
+    animation: bustaSlideIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.notification-busta-image {
+    animation: bustaBounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+}
+
+.notification-busta-image:hover {
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.4));
+    transform: scale(1.05);
+}
+
+.notification-glow {
+    animation: notificationGlow 2s ease-in-out infinite;
+}
+
+.sparkle-1 {
+    animation: sparklePulse 1.5s ease-in-out infinite;
+}
+
+.sparkle-2 {
+    animation: sparklePulse 1.5s ease-in-out infinite 0.3s;
+}
+
+.sparkle-3 {
+    animation: sparklePulse 1.5s ease-in-out infinite 0.6s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .notification-busta-image {
+        width: 6rem !important;
+        height: 6rem !important;
+    }
+
+    .notification-busta-container {
+        top: 5rem !important;
+        right: 1rem !important;
+    }
+}

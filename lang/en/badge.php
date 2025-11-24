@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'manage_display' => 'Manage Badges',
+    'manage_display_desc' => 'Choose which badges to show on your profile and in the sidebar',
+    'profile_badges' => 'Profile Badges',
+    'profile_badges_desc' => 'These badges will appear on your profile page',
+    'sidebar_badges' => 'Sidebar Badges',
+    'sidebar_badges_desc' => 'These badges will appear in the site sidebar',
+    'complete_collection' => 'Complete Collection',
+    'complete_collection_desc' => 'All badges you have earned so far',
+    'no_profile_badges' => 'No badges shown in profile',
+    'no_sidebar_badges' => 'No badges shown in sidebar',
+    'no_badges_earned' => 'No badges earned yet',
+    'start_interacting' => 'Start interacting with the community to earn your first badges!',
+    'points' => 'points',
+    'total_badges' => 'Total Badges',
+    'total_points' => 'Total Points',
+    'profile_displayed' => 'In Profile',
+    'sidebar_displayed' => 'In Sidebar',
+    'shown_in_profile' => 'Shown in profile',
+    'shown_in_sidebar' => 'Shown in sidebar',
+    'profile_badges_updated' => 'Profile badges updated successfully!',
+    'sidebar_badges_updated' => 'Sidebar badges updated successfully!',
+    'all_profile_badges_hidden' => 'All profile badges have been hidden',
+    'all_sidebar_badges_hidden' => 'All sidebar badges have been hidden',
+    'hide_all' => 'Hide All',
+];

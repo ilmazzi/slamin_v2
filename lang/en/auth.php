@@ -3,10 +3,19 @@
 return [
     // Password Reset
     'forgot_password' => 'Forgot Password',
+    'forgot_password_description' => 'Enter your email and we will send you a link to reset your password',
     'reset_password' => 'Reset Password',
     'reset_password_description' => 'Enter your email and new password',
     'send_reset_link' => 'Send Reset Link',
-    'reset_link_sent' => 'Reset link sent! Check your email.',
+    'reset_link_sent' => 'Reset link sent!',
+    'reset_link_sent_description' => 'We have sent a reset link to :email. Check your inbox and follow the instructions.',
+    'password_reset_failed' => 'Unable to send reset link. Please verify the email address.',
+    'password_reset_success' => 'Password reset successfully! You can now login with your new password.',
+    'password_reset_help_title' => 'Forgot your password?',
+    'password_reset_help_description' => 'Don\'t worry! Enter your email and we will send you a secure link to reset your password.',
+    'secure_password_title' => 'Choose a secure password',
+    'secure_password_description' => 'Make sure to use a strong password with at least 8 characters, containing uppercase, lowercase letters and numbers.',
+    'reset_password_button' => 'Reset Password',
     
     // Form Fields
     'email' => 'Email',

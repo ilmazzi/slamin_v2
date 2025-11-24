@@ -59,7 +59,10 @@
                              alt="{{ \App\Helpers\AvatarHelper::getDisplayName($article->user) }}"
                              class="w-7 h-7 rounded-full object-cover ring-2 ring-white/80 dark:ring-gray-700 shadow-sm">
                         <span class="font-medium text-gray-700 dark:text-gray-200">
-                            {{ \App\Helpers\AvatarHelper::getDisplayName($article->user) }}
+                            <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($article->user) }}" 
+                               class="hover:underline transition-colors">
+                                {{ \App\Helpers\AvatarHelper::getDisplayName($article->user) }}
+                            </a>
                         </span>
                     </div>
                     <span class="text-gray-400">•</span>

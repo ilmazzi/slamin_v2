@@ -40,6 +40,9 @@ class NotificationCenter extends Component
     public function notificationReceived($event)
     {
         $this->loadNotifications();
+        // Emette evento per attivare l'animazione della busta
+        $this->dispatch('refresh-notifications');
+        $this->dispatch('notification-received');
     }
 
     /**

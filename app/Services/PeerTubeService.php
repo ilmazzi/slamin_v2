@@ -125,6 +125,15 @@ class PeerTubeService
                 'url' => $this->baseUrl . '/api/v1/users/token'
             ]);
 
+            // Verifica che le credenziali admin siano configurate
+            if (empty($this->adminUsername) || empty($this->adminPassword)) {
+                Log::error('Credenziali admin PeerTube non configurate', [
+                    'has_username' => !empty($this->adminUsername),
+                    'has_password' => !empty($this->adminPassword)
+                ]);
+                return null;
+            }
+            
             $formData = [
                 'client_id' => $clientId,
                 'client_secret' => $clientSecret,

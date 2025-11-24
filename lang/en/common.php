@@ -4,6 +4,7 @@ return [
     // Common Actions
     'discover_more' => 'Discover more',
     'see_all' => 'See all',
+    'view_all' => 'View all',
     'read_more' => 'Read more',
     'learn_more' => 'Learn more',
     'watch' => 'Watch',

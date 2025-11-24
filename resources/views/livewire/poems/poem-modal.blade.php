@@ -55,7 +55,10 @@
 
                                     <div class="poem-left-header-info">
                                         <div class="poem-left-author">
-                                            <h3>{{ $poem->user->name }}</h3>
+                                            <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($poem->user) }}" 
+                                               class="hover:underline transition-colors">
+                                                <h3>{{ \App\Helpers\AvatarHelper::getDisplayName($poem->user) }}</h3>
+                                            </a>
                                             <p>Poeta</p>
                                         </div>
                                         

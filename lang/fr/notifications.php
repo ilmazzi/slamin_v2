@@ -26,4 +26,10 @@ return [
     // Negotiation Notifications
     'negotiation_message_title' => 'Nouveau message de négociation',
     'negotiation_message_message' => ':user vous a envoyé un message concernant ":gig"',
+
+    // Social Interaction Notifications
+    'comment_received_title' => 'Nouveau commentaire',
+    'comment_received_message' => ':user a commenté votre :type ":title"',
+    'like_received_title' => 'Nouveau like',
+    'like_received_message' => ':user a aimé votre :type ":title"',
 ];

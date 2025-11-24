@@ -22,8 +22,9 @@ $sizeClasses = $sizes[$size] ?? $sizes['md'];
 $avatarUrl = $user->profile_photo_url ?? null;
 $initial = strtoupper(substr($user->name ?? 'U', 0, 1));
 
-// Profile route (da implementare)
-$profileUrl = '#'; // TODO: route('profile.show', $user->id) quando sarà pronto
+// Profile route
+$profileUrl = \App\Helpers\AvatarHelper::getUserProfileUrl($user);
+$displayName = \App\Helpers\AvatarHelper::getDisplayName($user);
 @endphp
 
 <div {{ $attributes->merge(['class' => 'inline-flex items-center gap-3']) }}>
@@ -34,7 +35,7 @@ $profileUrl = '#'; // TODO: route('profile.show', $user->id) quando sarà pronto
     {{-- Avatar --}}
     @if($avatarUrl)
         <img src="{{ $avatarUrl }}" 
-             alt="{{ $user->name }}" 
+             alt="{{ $displayName }}" 
              class="{{ $sizeClasses }} rounded-full object-cover shadow-lg group-hover:scale-110 transition-transform">
     @else
         <div class="{{ $sizeClasses }} rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center text-white font-black shadow-lg group-hover:scale-110 transition-transform">
@@ -52,11 +53,11 @@ $profileUrl = '#'; // TODO: route('profile.show', $user->id) quando sarà pronto
             @if($showName)
                 <div class="text-neutral-900 dark:text-white font-bold truncate">
                     @if($link)
-                        <a href="{{ $profileUrl }}" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                            {{ $user->name }}
+                        <a href="{{ $profileUrl }}" class="hover:text-primary-600 dark:hover:text-primary-400 hover:underline transition-colors">
+                            {{ $displayName }}
                         </a>
                     @else
-                        {{ $user->name }}
+                        {{ $displayName }}
                     @endif
                 </div>
             @endif

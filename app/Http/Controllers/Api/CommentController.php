@@ -10,6 +10,7 @@ use App\Models\Article;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\SocialInteractionReceived;
 
 class CommentController extends Controller
 {
@@ -96,6 +97,12 @@ class CommentController extends Controller
         $model = $modelClass::find($request->id);
         if ($model) {
             $model->increment('comment_count');
+
+            // Send notification to content owner if different from commenter
+            if ($model->user_id !== Auth::id()) {
+                $contentOwner = $model->user;
+                event(new SocialInteractionReceived($comment, Auth::user(), $contentOwner, $model, 'comment'));
+            }
         }
 
         return response()->json([

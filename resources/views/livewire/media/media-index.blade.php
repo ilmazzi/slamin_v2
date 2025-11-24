@@ -60,13 +60,14 @@
                     @auth
                         <div class="flex flex-col sm:flex-row gap-3 mt-6 justify-center md:justify-start">
                             @can('upload.video')
-                                <a href="{{ route('media.upload.video') }}" 
-                                   class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-semibold shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                                <button type="button"
+                                        wire:click="navigateToVideoUpload"
+                                        class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-semibold shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                                     </svg>
                                     <span>{{ __('media.upload_video') }}</span>
-                                </a>
+                                </button>
                             @endcan
                             
                             @can('upload.photo')
@@ -158,7 +159,10 @@
                                         <img src="{{ $mostPopularVideo->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($mostPopularVideo->user->name) . '&background=059669&color=fff' }}" 
                                              alt="{{ $mostPopularVideo->user->name }}"
                                              class="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover ring-2 ring-white/30">
-                                        <span class="text-white font-semibold text-sm md:text-base">{{ $mostPopularVideo->user->name }}</span>
+                                        <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($mostPopularVideo->user) }}" 
+                                           class="text-white hover:text-white/80 font-semibold text-sm md:text-base hover:underline transition-colors">
+                                            {{ \App\Helpers\AvatarHelper::getDisplayName($mostPopularVideo->user) }}
+                                        </a>
                                         <span class="text-white/70 text-xs md:text-sm ml-1">{{ number_format($mostPopularVideo->view_count ?? 0) }} views</span>
                                     </div>
                                     
@@ -281,7 +285,10 @@
                                         <img src="{{ $mostPopularPhoto->user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($mostPopularPhoto->user->name) . '&background=059669&color=fff' }}" 
                                              alt="{{ $mostPopularPhoto->user->name }}"
                                              class="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover ring-2 ring-white/30">
-                                        <span class="text-white font-semibold text-sm md:text-base">{{ $mostPopularPhoto->user->name }}</span>
+                                        <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($mostPopularPhoto->user) }}" 
+                                           class="text-white hover:text-white/80 font-semibold text-sm md:text-base hover:underline transition-colors">
+                                            {{ \App\Helpers\AvatarHelper::getDisplayName($mostPopularPhoto->user) }}
+                                        </a>
                                         <span class="text-white/70 text-xs md:text-sm ml-1">{{ number_format($mostPopularPhoto->view_count ?? 0) }} views</span>
                                     </div>
                                     
@@ -434,7 +441,10 @@
                                 <div class="absolute bottom-0 left-0 right-0 p-5">
                                     <h4 class="text-xl font-black text-white mb-2 line-clamp-2">{{ $video->title }}</h4>
                                     @if($video->user)
-                                        <div class="text-white/80 text-sm font-medium">{{ $video->user->name }}</div>
+                                        <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($video->user) }}" 
+                                           class="text-white/80 hover:text-white text-sm font-medium hover:underline transition-colors">
+                                            {{ \App\Helpers\AvatarHelper::getDisplayName($video->user) }}
+                                        </a>
                                     @endif
                                 </div>
                             </div>
@@ -463,7 +473,10 @@
                                 <div class="absolute bottom-0 left-0 right-0 p-5">
                                     <h4 class="text-xl font-black text-white mb-2 line-clamp-2">{{ $photo->title ?? __('media.untitled') }}</h4>
                                     @if($photo->user)
-                                        <div class="text-white/80 text-sm font-medium">{{ $photo->user->name }}</div>
+                                        <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($photo->user) }}" 
+                                           class="text-white/80 hover:text-white text-sm font-medium hover:underline transition-colors">
+                                            {{ \App\Helpers\AvatarHelper::getDisplayName($photo->user) }}
+                                        </a>
                                     @endif
                                 </div>
                             </div>

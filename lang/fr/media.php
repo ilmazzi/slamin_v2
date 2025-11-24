@@ -22,8 +22,11 @@ return [
     'search_placeholder' => 'Rechercher des vidéos, photos, auteurs...',
     
     // Upload Video
+    'upload_video_title' => 'Téléverser',
+    'video' => 'Vidéo',
+    'login_required' => 'Vous devez être connecté pour téléverser des vidéos.',
     'upload_not_allowed' => 'Vous n\'avez pas la permission de téléverser des vidéos.',
-    'peertube_account_required' => 'Vous devez avoir un compte PeerTube pour téléverser des vidéos. Contactez l\'administrateur.',
+    'peertube_account_required' => 'Vous devez avoir un compte PeerTube pour téléverser des vidéos. Contactez l\'administrateur pour configurer votre compte.',
     'upload_limit_reached' => 'Vous avez atteint la limite de téléversement de vidéos. Passez à premium pour téléverser plus de vidéos.',
     'upload_status' => 'État du Téléversement',
     'videos_remaining' => 'Vidéos restantes',

@@ -53,14 +53,12 @@ class VideoUpload extends Component
         // Verifica che l'utente abbia un account PeerTube
         if (!$user->hasPeerTubeAccount()) {
             session()->flash('error', __('media.peertube_account_required'));
-            $this->redirect(route('media.index'), navigate: true);
-            return;
+            return $this->redirect(route('media.index'), navigate: false);
         }
 
         // Verifica limiti upload
         if (!$user->canUploadMoreVideos()) {
-            $this->redirect(route('media.upload-limit'), navigate: true);
-            return;
+            return $this->redirect(route('media.upload-limit'), navigate: false);
         }
     }
 
@@ -76,8 +74,6 @@ class VideoUpload extends Component
     
     public function updatedTitle()
     {
-        // Debug: verifica che title venga aggiornato
-        Log::info('Title updated', ['title' => $this->title]);
         $this->validateOnly('title');
     }
 
