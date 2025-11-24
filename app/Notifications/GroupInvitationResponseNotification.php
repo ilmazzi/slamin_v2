@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class GroupInvitationResponseNotification extends Notification implements ShouldQueue
+class GroupInvitationResponseNotification extends Notification // Rimosso ShouldQueue per invio immediato
 {
     use Queueable;
 

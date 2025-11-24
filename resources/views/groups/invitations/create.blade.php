@@ -2,7 +2,13 @@
 <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950 py-8">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white dark:bg-neutral-900 rounded-2xl shadow-lg p-8">
-            <h1 class="text-2xl font-bold text-neutral-900 dark:text-white mb-6">Invita Utente a {{ $group->name }}</h1>
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-2xl font-bold text-neutral-900 dark:text-white">Invita Utente a {{ $group->name }}</h1>
+                <a href="{{ route('groups.invitations.pending', $group) }}" 
+                   class="text-sm text-primary-600 dark:text-primary-400 hover:underline">
+                    Vedi inviti pendenti
+                </a>
+            </div>
             
             <form action="{{ route('groups.invitations.store', $group) }}" method="POST">
                 @csrf

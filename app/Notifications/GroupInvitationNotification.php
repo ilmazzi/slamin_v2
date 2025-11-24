@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class GroupInvitationNotification extends Notification implements ShouldQueue
+class GroupInvitationNotification extends Notification // Rimosso ShouldQueue per invio immediato
 {
     use Queueable;
 
