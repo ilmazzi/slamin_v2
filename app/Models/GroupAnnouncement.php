@@ -12,7 +12,7 @@ class GroupAnnouncement extends Model
 
     protected $fillable = [
         'group_id',
-        'user_id',
+        'author_id',
         'title',
         'content',
         'type',
@@ -28,9 +28,15 @@ class GroupAnnouncement extends Model
         return $this->belongsTo(Group::class);
     }
 
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
+
+    // Alias per retrocompatibilità
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->author();
     }
 
     public function scopePinned($query)
