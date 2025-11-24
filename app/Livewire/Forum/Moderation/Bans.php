@@ -15,11 +15,13 @@ class Bans extends Component
     use WithPagination;
 
     public Subreddit $subreddit;
-    public $showBanModal = false;
+    public $showBanForm = false;
     public $banUserId = null;
+    public $banUserSearch = '';
+    public $userSearchResults = [];
     public $banReason = '';
     public $banType = 'temporary';
-    public $banDuration = 7; // days
+    public $banExpiresAt = null;
 
     public function mount(Subreddit $subreddit)
     {
@@ -38,51 +40,68 @@ class Bans extends Component
     public function getBansProperty()
     {
         return $this->subreddit->bans()
-            ->with(['user', 'bannedBy'])
-            ->where('is_active', true)
+            ->with(['user', 'bannedBy', 'liftedBy'])
             ->latest()
             ->paginate(20);
     }
 
-    public function openBanModal($userId)
+    public function updatedBanUserSearch()
+    {
+        if (strlen($this->banUserSearch) >= 2) {
+            $this->userSearchResults = User::where('name', 'like', '%' . $this->banUserSearch . '%')
+                ->limit(10)
+                ->get();
+        } else {
+            $this->userSearchResults = [];
+        }
+    }
+
+    public function selectUser($userId)
     {
         $this->banUserId = $userId;
-        $this->showBanModal = true;
+        $user = User::find($userId);
+        $this->banUserSearch = $user->name;
+        $this->userSearchResults = [];
     }
 
-    public function closeBanModal()
-    {
-        $this->showBanModal = false;
-        $this->banUserId = null;
-        $this->banReason = '';
-        $this->banType = 'temporary';
-        $this->banDuration = 7;
-    }
-
-    public function createBan()
+    public function banUser()
     {
         $this->validate([
+            'banUserId' => 'required|exists:users,id',
             'banReason' => 'required|string|min:10|max:500',
             'banType' => 'required|in:temporary,permanent',
-            'banDuration' => 'required_if:banType,temporary|integer|min:1|max:365',
+            'banExpiresAt' => 'required_if:banType,temporary|nullable|date|after:now',
         ]);
 
-        $expiresAt = null;
-        if ($this->banType === 'temporary') {
-            $expiresAt = now()->addDays($this->banDuration);
+        // Check if user is already banned
+        $existingBan = ForumBan::where('user_id', $this->banUserId)
+            ->where('subreddit_id', $this->subreddit->id)
+            ->whereNull('lifted_at')
+            ->first();
+
+        if ($existingBan) {
+            session()->flash('error', 'Questo utente è già bannato');
+            return;
         }
 
         ForumBan::create([
             'user_id' => $this->banUserId,
             'subreddit_id' => $this->subreddit->id,
             'reason' => $this->banReason,
-            'type' => $this->banType,
-            'expires_at' => $expiresAt,
+            'is_permanent' => $this->banType === 'permanent',
+            'expires_at' => $this->banType === 'temporary' ? $this->banExpiresAt : null,
             'banned_by' => Auth::id(),
         ]);
 
-        $this->closeBanModal();
-        session()->flash('success', 'Utente bannato');
+        // Reset form
+        $this->showBanForm = false;
+        $this->banUserId = null;
+        $this->banUserSearch = '';
+        $this->banReason = '';
+        $this->banType = 'temporary';
+        $this->banExpiresAt = null;
+
+        session()->flash('success', 'Utente bannato con successo');
     }
 
     public function liftBan($banId)

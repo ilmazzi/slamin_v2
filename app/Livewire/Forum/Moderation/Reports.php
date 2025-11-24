@@ -14,7 +14,8 @@ class Reports extends Component
     use WithPagination;
 
     public Subreddit $subreddit;
-    public $filter = 'pending'; // pending, reviewed, all
+    public $filterStatus = 'pending'; // pending, resolved, all
+    public $filterType = 'all'; // all, post, comment
 
     public function mount(Subreddit $subreddit)
     {
@@ -30,65 +31,76 @@ class Reports extends Component
         return 'Segnalazioni - ' . $this->subreddit->name;
     }
 
-    public function updatedFilter()
+    public function updatedFilterStatus()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedFilterType()
     {
         $this->resetPage();
     }
 
     public function getReportsProperty()
     {
-        $query = ForumReport::with(['reporter', 'target', 'handler'])
+        $query = ForumReport::with(['reporter', 'reportable', 'handledBy'])
             ->where(function ($q) {
                 // Get reports for posts in this subreddit
-                $q->whereHasMorph('target', [\App\Models\ForumPost::class], function ($query) {
+                $q->whereHasMorph('reportable', [\App\Models\ForumPost::class], function ($query) {
                     $query->where('subreddit_id', $this->subreddit->id);
                 })
                 // Or comments on posts in this subreddit
-                ->orWhereHasMorph('target', [\App\Models\ForumComment::class], function ($query) {
+                ->orWhereHasMorph('reportable', [\App\Models\ForumComment::class], function ($query) {
                     $query->whereHas('post', function ($q) {
                         $q->where('subreddit_id', $this->subreddit->id);
                     });
                 });
             });
 
-        if ($this->filter !== 'all') {
-            $query->where('status', $this->filter);
+        if ($this->filterStatus !== 'all') {
+            $query->where('status', $this->filterStatus);
+        }
+
+        if ($this->filterType === 'post') {
+            $query->where('reportable_type', \App\Models\ForumPost::class);
+        } elseif ($this->filterType === 'comment') {
+            $query->where('reportable_type', \App\Models\ForumComment::class);
         }
 
         return $query->latest()->paginate(20);
     }
 
-    public function resolve($reportId, $notes = null)
-    {
-        $report = ForumReport::findOrFail($reportId);
-        $report->resolve(Auth::user(), $notes);
-        
-        session()->flash('success', 'Segnalazione risolta');
-    }
-
-    public function dismiss($reportId, $notes = null)
-    {
-        $report = ForumReport::findOrFail($reportId);
-        $report->dismiss(Auth::user(), $notes);
-        
-        session()->flash('success', 'Segnalazione respinta');
-    }
-
-    public function deleteContent($reportId)
+    public function removeContent($reportId)
     {
         $report = ForumReport::findOrFail($reportId);
         
-        if ($report->target instanceof \App\Models\ForumPost) {
-            $report->target->delete();
+        if ($report->reportable instanceof \App\Models\ForumPost) {
+            $report->reportable->delete();
             $this->subreddit->decrementPostsCount();
-        } elseif ($report->target instanceof \App\Models\ForumComment) {
-            $report->target->softDelete(Auth::user());
-            $report->target->post->decrementCommentsCount();
+        } elseif ($report->reportable instanceof \App\Models\ForumComment) {
+            $report->reportable->delete();
         }
 
-        $report->resolve(Auth::user(), 'Contenuto rimosso');
+        $report->update([
+            'status' => 'resolved',
+            'handled_by' => Auth::id(),
+            'resolved_at' => now(),
+        ]);
         
-        session()->flash('success', 'Contenuto eliminato e segnalazione risolta');
+        session()->flash('success', 'Contenuto rimosso');
+    }
+
+    public function dismissReport($reportId)
+    {
+        $report = ForumReport::findOrFail($reportId);
+        
+        $report->update([
+            'status' => 'resolved',
+            'handled_by' => Auth::id(),
+            'resolved_at' => now(),
+        ]);
+        
+        session()->flash('success', 'Segnalazione archiviata');
     }
 
     public function render()

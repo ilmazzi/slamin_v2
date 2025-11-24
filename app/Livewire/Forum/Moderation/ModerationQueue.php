@@ -14,6 +14,7 @@ class ModerationQueue extends Component
     use WithPagination;
 
     public Subreddit $subreddit;
+    public $activeTab = 'posts'; // posts, comments
 
     public function mount(Subreddit $subreddit)
     {
@@ -32,13 +33,38 @@ class ModerationQueue extends Component
     public function getPendingPostsProperty()
     {
         return $this->subreddit->posts()
-            ->whereNull('approved_at')
+            ->where('status', 'pending')
             ->with('user')
             ->latest()
-            ->paginate(20);
+            ->get();
     }
 
-    public function approve($postId)
+    public function getPendingPostsCountProperty()
+    {
+        return $this->subreddit->posts()->where('status', 'pending')->count();
+    }
+
+    public function getPendingCommentsProperty()
+    {
+        return \App\Models\ForumComment::whereHas('post', function($q) {
+                $q->where('subreddit_id', $this->subreddit->id);
+            })
+            ->where('status', 'pending')
+            ->with('user', 'post')
+            ->latest()
+            ->get();
+    }
+
+    public function getPendingCommentsCountProperty()
+    {
+        return \App\Models\ForumComment::whereHas('post', function($q) {
+                $q->where('subreddit_id', $this->subreddit->id);
+            })
+            ->where('status', 'pending')
+            ->count();
+    }
+
+    public function approvePost($postId)
     {
         $post = ForumPost::findOrFail($postId);
         
@@ -46,11 +72,16 @@ class ModerationQueue extends Component
             return;
         }
 
-        $post->approve(Auth::user());
+        $post->update([
+            'status' => 'approved',
+            'approved_at' => now(),
+            'approved_by' => Auth::id(),
+        ]);
+        
         session()->flash('success', 'Post approvato');
     }
 
-    public function reject($postId)
+    public function removePost($postId)
     {
         $post = ForumPost::findOrFail($postId);
         
@@ -58,16 +89,48 @@ class ModerationQueue extends Component
             return;
         }
 
-        $post->delete();
-        $this->subreddit->decrementPostsCount();
+        $post->update([
+            'status' => 'removed',
+            'removed_at' => now(),
+            'removed_by' => Auth::id(),
+        ]);
         
         session()->flash('success', 'Post rimosso');
+    }
+
+    public function approveComment($commentId)
+    {
+        $comment = \App\Models\ForumComment::findOrFail($commentId);
+        
+        $comment->update([
+            'status' => 'approved',
+            'approved_at' => now(),
+            'approved_by' => Auth::id(),
+        ]);
+        
+        session()->flash('success', 'Commento approvato');
+    }
+
+    public function removeComment($commentId)
+    {
+        $comment = \App\Models\ForumComment::findOrFail($commentId);
+        
+        $comment->update([
+            'status' => 'removed',
+            'deleted_at' => now(),
+            'deleted_by' => Auth::id(),
+        ]);
+        
+        session()->flash('success', 'Commento rimosso');
     }
 
     public function render()
     {
         return view('livewire.forum.moderation.moderation-queue', [
             'pendingPosts' => $this->pendingPosts,
+            'pendingPostsCount' => $this->pendingPostsCount,
+            'pendingComments' => $this->pendingComments,
+            'pendingCommentsCount' => $this->pendingCommentsCount,
         ]);
     }
 }

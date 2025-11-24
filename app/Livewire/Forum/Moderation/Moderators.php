@@ -12,19 +12,21 @@ use Illuminate\Support\Facades\Auth;
 class Moderators extends Component
 {
     public Subreddit $subreddit;
-    public $searchUser = '';
-    public $searchResults = [];
-    public $selectedUserId = null;
-    public $newModeratorRole = 'moderator';
+    public $newModSearch = '';
+    public $userSearchResults = [];
+    public $newModUserId = null;
+    public $newModRole = 'moderator';
+    public $isOwner = false;
 
     public function mount(Subreddit $subreddit)
     {
-        // Only admins can manage moderators
-        if (!$subreddit->isAdmin(Auth::user())) {
-            abort(403, 'Solo gli admin possono gestire i moderatori');
-        }
-
         $this->subreddit = $subreddit;
+        $this->isOwner = $subreddit->created_by === Auth::id();
+        
+        // Only owner or admins can manage moderators
+        if (!$this->isOwner && !$subreddit->isAdmin(Auth::user())) {
+            abort(403, 'Solo il creatore o gli admin possono gestire i moderatori');
+        }
     }
 
     public function title(): string
@@ -32,17 +34,26 @@ class Moderators extends Component
         return 'Moderatori - ' . $this->subreddit->name;
     }
 
-    public function updatedSearchUser()
+    public function updatedNewModSearch()
     {
-        if (strlen($this->searchUser) >= 2) {
-            $this->searchResults = User::where('name', 'like', '%' . $this->searchUser . '%')
-                ->orWhere('email', 'like', '%' . $this->searchUser . '%')
-                ->whereNotIn('id', $this->subreddit->moderators()->pluck('user_id'))
+        if (strlen($this->newModSearch) >= 2) {
+            $existingModIds = $this->subreddit->moderators()->pluck('user_id')->toArray();
+            
+            $this->userSearchResults = User::where('name', 'like', '%' . $this->newModSearch . '%')
+                ->whereNotIn('id', $existingModIds)
                 ->limit(10)
                 ->get();
         } else {
-            $this->searchResults = [];
+            $this->userSearchResults = [];
         }
+    }
+
+    public function selectUser($userId)
+    {
+        $this->newModUserId = $userId;
+        $user = User::find($userId);
+        $this->newModSearch = $user->name;
+        $this->userSearchResults = [];
     }
 
     public function getModeratorsProperty()
@@ -54,23 +65,37 @@ class Moderators extends Component
             ->get();
     }
 
-    public function addModerator($userId)
+    public function addModerator()
     {
         $this->validate([
-            'newModeratorRole' => 'required|in:moderator,admin',
+            'newModUserId' => 'required|exists:users,id',
+            'newModRole' => 'required|in:moderator,admin',
         ]);
+
+        // Check if user is already a moderator
+        $exists = ForumModerator::where('subreddit_id', $this->subreddit->id)
+            ->where('user_id', $this->newModUserId)
+            ->exists();
+
+        if ($exists) {
+            session()->flash('error', 'Questo utente è già un moderatore');
+            return;
+        }
 
         ForumModerator::create([
             'subreddit_id' => $this->subreddit->id,
-            'user_id' => $userId,
-            'role' => $this->newModeratorRole,
+            'user_id' => $this->newModUserId,
+            'role' => $this->newModRole,
             'added_by' => Auth::id(),
         ]);
 
-        $this->searchUser = '';
-        $this->searchResults = [];
+        // Reset form
+        $this->newModSearch = '';
+        $this->newModUserId = null;
+        $this->newModRole = 'moderator';
+        $this->userSearchResults = [];
         
-        session()->flash('success', 'Moderatore aggiunto');
+        session()->flash('success', 'Moderatore aggiunto con successo');
     }
 
     public function removeModerator($moderatorId)
