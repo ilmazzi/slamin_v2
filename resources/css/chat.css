@@ -2,6 +2,14 @@
    CHAT STYLES - Slamin V2
    ============================================ */
 
+/* Emoji Support for Chat */
+.chat-container,
+.chat-message-text,
+.chat-input-field,
+.chat-conversation-preview {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
 /* Variables */
 :root {
     --chat-primary: #05A77D;
