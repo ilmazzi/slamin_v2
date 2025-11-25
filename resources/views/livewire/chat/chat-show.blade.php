@@ -10,23 +10,7 @@
 @endphp
 
 <div class="flex flex-col h-full" 
-     x-data="{ 
-         showInfo: false,
-         scrollToBottom() {
-             const container = document.getElementById('chat-messages-{{ $conversation->id }}');
-             if (container) {
-                 // Usa requestAnimationFrame per assicurarsi che il DOM sia aggiornato
-                 requestAnimationFrame(() => {
-                     container.scrollTop = container.scrollHeight;
-                 });
-             }
-         }
-     }"
-     x-init="
-         // Scroll al caricamento iniziale
-         setTimeout(() => scrollToBottom(), 100);
-     "
-     @scroll-to-bottom.window="scrollToBottom()"
+     x-data="{ showInfo: false }"
      wire:poll.5s="loadMessages">
     <!-- Chat Header -->
     <div class="chat-header">
@@ -317,22 +301,43 @@
     </div>
 </div>
 
+@script
 <script>
-    // Listen for Livewire scrollToBottom event and dispatch Alpine event
-    document.addEventListener('livewire:initialized', () => {
-        Livewire.on('scrollToBottom', () => {
-            // Dispatch Alpine event
-            window.dispatchEvent(new CustomEvent('scroll-to-bottom'));
-        });
+    const chatContainerId = 'chat-messages-{{ $conversation->id }}';
+    
+    function scrollChatToBottom() {
+        const container = document.getElementById(chatContainerId);
+        if (container) {
+            requestAnimationFrame(() => {
+                container.scrollTop = container.scrollHeight;
+                console.log('📜 Scrolled chat to bottom');
+            });
+        }
+    }
+    
+    // Scroll al caricamento
+    scrollChatToBottom();
+    
+    // Listen for Livewire events
+    $wire.on('scrollToBottom', () => {
+        console.log('🔔 scrollToBottom event received');
+        setTimeout(() => scrollChatToBottom(), 100);
     });
     
-    // Scroll immediato al caricamento della pagina
-    window.addEventListener('load', function() {
-        setTimeout(() => {
-            const container = document.getElementById('chat-messages-{{ $conversation->id }}');
-            if (container) {
-                container.scrollTop = container.scrollHeight;
-            }
-        }, 200);
+    // Intercetta anche gli aggiornamenti del wire
+    Livewire.hook('morph.updated', ({ el, component }) => {
+        // Controlla se l'elemento aggiornato è il nostro container
+        if (el.id === chatContainerId || el.closest('#' + chatContainerId)) {
+            console.log('🔄 Chat DOM updated');
+            setTimeout(() => scrollChatToBottom(), 100);
+        }
+    });
+    
+    // Backup: scroll dopo ogni update Livewire
+    Livewire.hook('commit', ({ component, commit, respond }) => {
+        if (component.name === 'chat.chat-show') {
+            setTimeout(() => scrollChatToBottom(), 150);
+        }
     });
 </script>
+@endscript

@@ -163,18 +163,25 @@
         window.Echo.private('App.Models.User.{{ Auth::id() }}')
             .notification((notification) => {
                 console.log('🔔 Notification received via Echo:', notification);
+                console.log('🔔 Notification type:', notification.type);
+                console.log('🔔 Notification data:', notification.data);
                 
                 // Refresh Livewire component
                 Livewire.dispatch('refresh-notifications');
                 
                 // Skip browser notification for chat messages (badge is enough)
-                const isChatMessage = notification.type === 'chat_new_message' || 
-                                     notification.type === 'App\\Notifications\\Chat\\NewMessageNotification';
+                // Check multiple possible locations for the type
+                const notifType = notification.type || notification.data?.type || '';
+                const isChatMessage = notifType.includes('chat_new_message') || 
+                                     notifType.includes('NewMessageNotification') ||
+                                     notification.data?.type === 'chat_new_message';
+                
+                console.log('🔔 Is chat message?', isChatMessage);
                 
                 // Show browser notification if supported (but NOT for chat messages)
                 if (!isChatMessage && 'Notification' in window && Notification.permission === 'granted') {
-                    new Notification(notification.title || 'New notification', {
-                        body: notification.message || '',
+                    new Notification(notification.title || notification.data?.title || 'New notification', {
+                        body: notification.message || notification.data?.message || '',
                         icon: '/assets/images/logo.png',
                     });
                 }
