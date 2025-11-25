@@ -90,6 +90,12 @@
                 <span wire:loading.remove wire:target="downloadExport">📊 Esporta Excel (Tutti i file)</span>
                 <span wire:loading wire:target="downloadExport">⏳ Generazione Excel...</span>
             </button>
+            <button wire:click="downloadExport('ods')" 
+                    wire:loading.attr="disabled"
+                    class="px-5 py-2.5 bg-purple-600 hover:bg-purple-700 disabled:bg-neutral-400 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-colors">
+                <span wire:loading.remove wire:target="downloadExport">📄 Esporta ODS/LibreOffice (Tutti i file)</span>
+                <span wire:loading wire:target="downloadExport">⏳ Generazione ODS...</span>
+            </button>
             <button wire:click="$toggle('showImportModal')" 
                     class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors">
                 📤 {{ __('admin.translations.import') }}
@@ -292,10 +298,11 @@
                         <p class="text-sm font-bold text-blue-800 dark:text-blue-300 mb-2">📋 Formato File Supportato</p>
                         <ul class="text-xs text-blue-700 dark:text-blue-400 space-y-1 list-disc list-inside">
                             <li><strong>Excel (.xlsx, .xls):</strong> File Excel con fogli multipli (uno per file di traduzione)</li>
+                            <li><strong>LibreOffice (.ods):</strong> File OpenDocument Spreadsheet con fogli multipli (uno per file di traduzione)</li>
                             <li><strong>CSV (.csv):</strong> File CSV con colonne: Chiave, Italiano, Traduzione, Stato, Note</li>
                         </ul>
                         <p class="text-xs text-blue-700 dark:text-blue-400 mt-3">
-                            <strong>Nota:</strong> Per Excel, ogni foglio corrisponde a un file di traduzione. Il sistema rileva automaticamente il file corretto dal nome del foglio.
+                            <strong>Nota:</strong> Per Excel e LibreOffice, ogni foglio corrisponde a un file di traduzione. Il sistema rileva automaticamente il file corretto dal nome del foglio.
                         </p>
                     </div>
                     

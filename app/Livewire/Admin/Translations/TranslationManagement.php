@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Ods;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -606,7 +607,9 @@ class TranslationManagement extends Component
     public function exportTranslations($format = 'excel')
     {
         try {
-            $filename = "translations_{$this->selectedLanguage}_" . now()->format('Y-m-d_His') . ".xlsx";
+            // Determina estensione e writer in base al formato
+            $extension = ($format === 'ods') ? 'ods' : 'xlsx';
+            $filename = "translations_{$this->selectedLanguage}_" . now()->format('Y-m-d_His') . ".{$extension}";
             $filePath = storage_path('app/temp/' . $filename);
             
             // Crea directory temp se non esiste
@@ -644,8 +647,12 @@ class TranslationManagement extends Component
             $readmeSheet->setTitle('📖 ISTRUZIONI');
             $this->populateReadmeSheet($readmeSheet);
 
-            // Salva file
-            $writer = new Xlsx($spreadsheet);
+            // Salva file con il writer appropriato
+            if ($format === 'ods') {
+                $writer = new Ods($spreadsheet);
+            } else {
+                $writer = new Xlsx($spreadsheet);
+            }
             $writer->save($filePath);
 
             // Download del file
@@ -970,7 +977,7 @@ class TranslationManagement extends Component
     public function importTranslations()
     {
         $this->validate([
-            'importFile' => 'required|file|mimes:csv,txt,xlsx,xls|max:10240', // 10MB max
+            'importFile' => 'required|file|mimes:csv,txt,xlsx,xls,ods|max:10240', // 10MB max
         ]);
 
         try {
@@ -982,7 +989,7 @@ class TranslationManagement extends Component
             $fileExtension = strtolower($this->importFile->getClientOriginalExtension());
 
             // Determina il tipo di file
-            if (in_array($fileExtension, ['xlsx', 'xls'])) {
+            if (in_array($fileExtension, ['xlsx', 'xls', 'ods'])) {
                 $imported = $this->importFromExcel($fullPath, $errors);
             } else {
                 $imported = $this->importFromCsv($fullPath, $errors);
