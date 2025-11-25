@@ -14,7 +14,7 @@
          x-init="$watch('show', value => { if (value) { document.querySelectorAll('[x-data]').forEach(el => { if (el.__x && el.__x.$data.showMenu !== undefined) el.__x.$data.showMenu = false; }); } })">
         
         <!-- Dark Backdrop -->
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        <div class="absolute inset-0 bg-black/80"
              @click="$wire.closeModal()"></div>
         
         <!-- Book Container -->
