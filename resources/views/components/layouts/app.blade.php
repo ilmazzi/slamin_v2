@@ -417,6 +417,9 @@
         <livewire:badge-notification />
     @endauth
     
+    {{-- Report Modal Component (Global) --}}
+    <livewire:moderation.report-modal />
+    
     {{-- Article and Poem Modals (needed on profile pages) --}}
     @if(request()->routeIs('profile.*') || request()->routeIs('user.*'))
         <livewire:articles.article-modal />

@@ -68,6 +68,11 @@
                                             :itemId="$item['id']"
                                             itemType="poem"
                                             size="sm" />
+                                        
+                                        <x-report-button 
+                                            :itemId="$item['id']"
+                                            itemType="poem"
+                                            size="sm" />
                                     </div>
                                 </div>
                             </div>
@@ -151,6 +156,11 @@
                                         size="sm" />
                                     
                                     <x-share-button 
+                                        :itemId="$item['id']"
+                                        itemType="article"
+                                        size="sm" />
+                                    
+                                    <x-report-button 
                                         :itemId="$item['id']"
                                         itemType="article"
                                         size="sm" />
@@ -332,6 +342,12 @@
                                                 itemType="video"
                                                 size="sm"
                                                 class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                            
+                                            <!-- Report -->
+                                            <x-report-button 
+                                                :itemId="$item['id']"
+                                                itemType="video"
+                                                size="sm" />
                                         </div>
                                     </div>
                                 </div>
