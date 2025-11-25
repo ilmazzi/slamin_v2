@@ -34,6 +34,9 @@ class ChatShow extends Component
         
         // Mark as read
         $conversation->markAsRead(Auth::user());
+        
+        // Trigger scroll to bottom on initial load
+        $this->dispatch('scrollToBottom');
     }
 
     public function loadMessages()
@@ -41,6 +44,7 @@ class ChatShow extends Component
         $this->conversation->refresh();
         $this->conversation->markAsRead(Auth::user());
         $this->dispatch('messagesLoaded');
+        $this->dispatch('scrollToBottom'); // Trigger scroll
     }
 
     public function sendMessage()
@@ -101,6 +105,7 @@ class ChatShow extends Component
         // Dispatch events
         $this->dispatch('messageSent');
         $this->dispatch('messagesLoaded');
+        $this->dispatch('scrollToBottom'); // Trigger scroll after sending
     }
 
     public function setReplyTo($messageId)
