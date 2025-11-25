@@ -49,6 +49,11 @@ class PersonalizedFeed extends Component
             ? fn($query) => $query->whereIn('user_id', $followingIds)
             : fn($query) => $query->where('like_count', '>', 0);
         
+        // For events, use organizer_id instead of user_id
+        $whereEventOrganizerClause = !empty($followingIds)
+            ? fn($query) => $query->whereIn('organizer_id', $followingIds)
+            : fn($query) => $query->where('like_count', '>', 0);
+        
         // Recent poems from followed users
         $poems = Poem::with('user')
             ->where('is_public', true)
@@ -87,7 +92,7 @@ class PersonalizedFeed extends Component
         $events = Event::where('is_public', true)
             ->where('moderation_status', 'approved')
             ->where('start_datetime', '>=', now())
-            ->where($whereUserClause)
+            ->where($whereEventOrganizerClause)
             ->orderBy('start_datetime')
             ->limit(2)
             ->get();
