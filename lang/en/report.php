@@ -1,79 +1,81 @@
 <?php
 
 return [
-    // Button
     'report' => 'Report',
-    'reported' => 'Reported',
-    'report_content' => 'Report content',
-    'already_reported' => 'You have already reported this content',
-    'login_required' => 'Please login to report content',
+    'report_content' => 'Report Content',
+    'report_description' => 'Help us keep the community safe by reporting content that violates our guidelines.',
+    'reason' => 'Reason for report',
+    'select_reason' => 'Select a reason',
+    'reason_spam' => 'Spam or Advertising',
+    'reason_inappropriate' => 'Inappropriate Content',
+    'reason_violence' => 'Violence or Dangerous Content',
+    'reason_harassment' => 'Harassment or Bullying',
+    'reason_copyright' => 'Copyright Violation',
+    'reason_misinformation' => 'Misinformation',
+    'reason_other' => 'Other',
+    'description_optional' => 'Description (optional)',
+    'description_placeholder' => 'Provide more details about the report...',
+    'cancel' => 'Cancel',
+    'submit_report' => 'Submit Report',
+    'report_submitted_success' => 'Content reported successfully. Thank you for your help!',
+    'already_reported' => 'You have already reported this content.',
+    'error_invalid_type' => 'Invalid content type for reporting.',
+    'error_generic' => 'An error occurred while submitting the report.',
+    'login_to_report' => 'Log in to report content.',
 
-    // Modal
-    'modal_title' => 'Report Content',
-    'modal_subtitle' => 'Help us keep the community safe',
-    'select_reason' => 'Select a reason for the report',
-    'additional_details' => 'Additional details',
-    'description_placeholder' => 'Provide more details about the report (optional)...',
-    'max_characters' => 'Maximum :max characters',
-    'submit' => 'Submit Report',
-    'info_message' => 'Reports are anonymous and will be reviewed by our moderation team. Thank you for helping us keep the community safe.',
-
-    // Reasons
-    'reasons' => [
-        'spam' => 'Spam or Advertising',
-        'spam_desc' => 'Unsolicited or repetitive promotional content',
-        
-        'inappropriate' => 'Inappropriate Content',
-        'inappropriate_desc' => 'Offensive, vulgar, or unsuitable content',
-        
-        'violence' => 'Violence or Dangerous Content',
-        'violence_desc' => 'Threats, violence, or hate speech',
-        
-        'harassment' => 'Harassment or Bullying',
-        'harassment_desc' => 'Intimidating or harassing behavior',
-        
-        'copyright' => 'Copyright Violation',
-        'copyright_desc' => 'Unauthorized use of protected content',
-        
-        'misinformation' => 'Misinformation',
-        'misinformation_desc' => 'False or misleading information',
-        
-        'other' => 'Other',
-        'other_desc' => 'Other reason not listed above',
-    ],
-
-    // Messages
-    'success' => 'Report submitted successfully. Thank you for helping us keep the community safe.',
-    'error' => 'An error occurred while submitting the report. Please try again later.',
-    'invalid_type' => 'Invalid content type',
-    'content_not_found' => 'Content not found',
-
-    // Moderation Dashboard
-    'moderation_title' => 'Moderation Dashboard',
-    'pending_reports' => 'Pending Reports',
-    'active_reports' => 'Active Reports',
-    'resolved_reports' => 'Resolved Reports',
-    'dismissed_reports' => 'Dismissed Reports',
-    'all_reports' => 'All Reports',
-    'no_reports' => 'No reports found',
-    'view_content' => 'View Content',
-    'reported_by' => 'Reported by',
-    'reported_at' => 'Reported on',
-    'status' => 'Status',
-    'reason' => 'Reason',
-    'description' => 'Description',
-    'actions' => 'Actions',
-    'mark_investigating' => 'Mark as Investigating',
-    'mark_resolved' => 'Mark as Resolved',
-    'mark_dismissed' => 'Dismiss',
-    'resolution_notes' => 'Resolution Notes',
-    'resolve_report' => 'Resolve Report',
-    'dismiss_report' => 'Dismiss Report',
-    
-    // Status
+    // Statuses
     'status_pending' => 'Pending',
     'status_investigating' => 'Investigating',
     'status_resolved' => 'Resolved',
     'status_dismissed' => 'Dismissed',
-];
 
+    // Reasons for translation
+    'reasons' => [
+        'spam' => 'Spam or Advertising',
+        'inappropriate' => 'Inappropriate Content',
+        'violence' => 'Violence or Dangerous Content',
+        'harassment' => 'Harassment or Bullying',
+        'copyright' => 'Copyright Violation',
+        'misinformation' => 'Misinformation',
+        'other' => 'Other',
+    ],
+
+    // Moderation Dashboard
+    'moderation_title' => 'Moderation Dashboard',
+    'moderation_subtitle' => 'Manage community reports',
+    'pending_reports' => 'Pending',
+    'active_reports' => 'Investigating',
+    'resolved_reports' => 'Resolved',
+    'dismissed_reports' => 'Dismissed',
+    'all_reports' => 'Total',
+    'all_statuses' => 'All statuses',
+    'filter_by_status' => 'Filter by status',
+    'search_placeholder' => 'Search by user, reason or description...',
+    'no_reports' => 'No reports found',
+    'no_reports_message' => 'There are no reports matching the selected filters.',
+    'view_content' => 'View Content',
+    'reported_by' => 'Reported by',
+    'reported_at' => 'Reported on',
+    'reported_content' => 'Reported Content',
+    'content_deleted_or_unavailable' => 'Content deleted or unavailable',
+    'status' => 'Status',
+    'reason' => 'Reason',
+    'description' => 'Description',
+    'actions' => 'Actions',
+    'mark_investigating' => 'Investigate',
+    'mark_resolved' => 'Resolve',
+    'mark_dismissed' => 'Dismiss',
+    'delete_content' => 'Delete Content',
+    'resolution_notes' => 'Resolution Notes',
+    'resolution_notes_placeholder' => 'Add notes about the resolution (optional)...',
+    'resolve_report' => 'Resolve Report',
+    'dismiss_report' => 'Dismiss Report',
+    'resolve' => 'Resolve',
+    'confirm_dismiss' => 'Are you sure you want to dismiss this report?',
+    'confirm_delete_content' => 'Are you sure you want to delete this content? This action cannot be undone.',
+    'status_updated' => 'Report status updated',
+    'report_resolved' => 'Report resolved successfully',
+    'report_dismissed' => 'Report dismissed',
+    'content_deleted' => 'Content deleted successfully',
+    'error_deleting_content' => 'Error deleting content',
+];

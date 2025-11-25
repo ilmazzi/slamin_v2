@@ -1,79 +1,81 @@
 <?php
 
 return [
-    // Button
     'report' => 'Signaler',
-    'reported' => 'Signalé',
-    'report_content' => 'Signaler le contenu',
-    'already_reported' => 'Vous avez déjà signalé ce contenu',
-    'login_required' => 'Veuillez vous connecter pour signaler du contenu',
+    'report_content' => 'Signaler le Contenu',
+    'report_description' => 'Aidez-nous à maintenir la communauté en sécurité en signalant les contenus qui violent nos directives.',
+    'reason' => 'Raison du signalement',
+    'select_reason' => 'Sélectionnez une raison',
+    'reason_spam' => 'Spam ou Publicité',
+    'reason_inappropriate' => 'Contenu Inapproprié',
+    'reason_violence' => 'Violence ou Contenu Dangereux',
+    'reason_harassment' => 'Harcèlement ou Intimidation',
+    'reason_copyright' => 'Violation du Droit d\'Auteur',
+    'reason_misinformation' => 'Désinformation',
+    'reason_other' => 'Autre',
+    'description_optional' => 'Description (optionnelle)',
+    'description_placeholder' => 'Fournissez plus de détails sur le signalement...',
+    'cancel' => 'Annuler',
+    'submit_report' => 'Envoyer le Signalement',
+    'report_submitted_success' => 'Contenu signalé avec succès. Merci pour votre aide!',
+    'already_reported' => 'Vous avez déjà signalé ce contenu.',
+    'error_invalid_type' => 'Type de contenu non valide pour le signalement.',
+    'error_generic' => 'Une erreur s\'est produite lors de l\'envoi du signalement.',
+    'login_to_report' => 'Connectez-vous pour signaler du contenu.',
 
-    // Modal
-    'modal_title' => 'Signaler le Contenu',
-    'modal_subtitle' => 'Aidez-nous à maintenir la communauté sûre',
-    'select_reason' => 'Sélectionnez une raison pour le signalement',
-    'additional_details' => 'Détails supplémentaires',
-    'description_placeholder' => 'Fournissez plus de détails sur le signalement (optionnel)...',
-    'max_characters' => 'Maximum :max caractères',
-    'submit' => 'Envoyer le Signalement',
-    'info_message' => 'Les signalements sont anonymes et seront examinés par notre équipe de modération. Merci de nous aider à maintenir la communauté sûre.',
+    // Statuses
+    'status_pending' => 'En Attente',
+    'status_investigating' => 'En Cours d\'Investigation',
+    'status_resolved' => 'Résolu',
+    'status_dismissed' => 'Rejeté',
 
-    // Reasons
+    // Reasons for translation
     'reasons' => [
         'spam' => 'Spam ou Publicité',
-        'spam_desc' => 'Contenu promotionnel non sollicité ou répétitif',
-        
         'inappropriate' => 'Contenu Inapproprié',
-        'inappropriate_desc' => 'Contenu offensant, vulgaire ou inapproprié',
-        
         'violence' => 'Violence ou Contenu Dangereux',
-        'violence_desc' => 'Menaces, violence ou discours de haine',
-        
         'harassment' => 'Harcèlement ou Intimidation',
-        'harassment_desc' => 'Comportement intimidant ou harcelant',
-        
         'copyright' => 'Violation du Droit d\'Auteur',
-        'copyright_desc' => 'Utilisation non autorisée de contenu protégé',
-        
         'misinformation' => 'Désinformation',
-        'misinformation_desc' => 'Informations fausses ou trompeuses',
-        
         'other' => 'Autre',
-        'other_desc' => 'Autre raison non listée ci-dessus',
     ],
 
-    // Messages
-    'success' => 'Signalement envoyé avec succès. Merci de nous aider à maintenir la communauté sûre.',
-    'error' => 'Une erreur s\'est produite lors de l\'envoi du signalement. Veuillez réessayer plus tard.',
-    'invalid_type' => 'Type de contenu invalide',
-    'content_not_found' => 'Contenu non trouvé',
-
     // Moderation Dashboard
-    'moderation_title' => 'Tableau de Bord de Modération',
-    'pending_reports' => 'Signalements en Attente',
-    'active_reports' => 'Signalements Actifs',
-    'resolved_reports' => 'Signalements Résolus',
-    'dismissed_reports' => 'Signalements Rejetés',
-    'all_reports' => 'Tous les Signalements',
+    'moderation_title' => 'Tableau de Bord Modération',
+    'moderation_subtitle' => 'Gérer les signalements de la communauté',
+    'pending_reports' => 'En Attente',
+    'active_reports' => 'En Investigation',
+    'resolved_reports' => 'Résolus',
+    'dismissed_reports' => 'Rejetés',
+    'all_reports' => 'Total',
+    'all_statuses' => 'Tous les statuts',
+    'filter_by_status' => 'Filtrer par statut',
+    'search_placeholder' => 'Rechercher par utilisateur, raison ou description...',
     'no_reports' => 'Aucun signalement trouvé',
+    'no_reports_message' => 'Il n\'y a aucun signalement correspondant aux filtres sélectionnés.',
     'view_content' => 'Voir le Contenu',
     'reported_by' => 'Signalé par',
     'reported_at' => 'Signalé le',
+    'reported_content' => 'Contenu Signalé',
+    'content_deleted_or_unavailable' => 'Contenu supprimé ou indisponible',
     'status' => 'Statut',
     'reason' => 'Raison',
     'description' => 'Description',
     'actions' => 'Actions',
-    'mark_investigating' => 'Marquer comme En Cours d\'Investigation',
-    'mark_resolved' => 'Marquer comme Résolu',
+    'mark_investigating' => 'Enquêter',
+    'mark_resolved' => 'Résoudre',
     'mark_dismissed' => 'Rejeter',
+    'delete_content' => 'Supprimer le Contenu',
     'resolution_notes' => 'Notes de Résolution',
+    'resolution_notes_placeholder' => 'Ajouter des notes sur la résolution (optionnel)...',
     'resolve_report' => 'Résoudre le Signalement',
     'dismiss_report' => 'Rejeter le Signalement',
-    
-    // Status
-    'status_pending' => 'En Attente',
-    'status_investigating' => 'En Investigation',
-    'status_resolved' => 'Résolu',
-    'status_dismissed' => 'Rejeté',
+    'resolve' => 'Résoudre',
+    'confirm_dismiss' => 'Êtes-vous sûr de vouloir rejeter ce signalement?',
+    'confirm_delete_content' => 'Êtes-vous sûr de vouloir supprimer ce contenu? Cette action ne peut pas être annulée.',
+    'status_updated' => 'Statut du signalement mis à jour',
+    'report_resolved' => 'Signalement résolu avec succès',
+    'report_dismissed' => 'Signalement rejeté',
+    'content_deleted' => 'Contenu supprimé avec succès',
+    'error_deleting_content' => 'Erreur lors de la suppression du contenu',
 ];
-

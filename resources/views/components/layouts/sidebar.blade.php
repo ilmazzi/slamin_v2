@@ -249,9 +249,38 @@
                 @endauth
 
                 @auth
+                    @if(auth()->user()->hasRole(['admin', 'moderator']))
+                        <!-- Moderation Dashboard -->
+                        <li class="relative mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700" x-data="{ tooltip: false }">
+                            <a href="{{ route('admin.moderation.reports') }}" 
+                               @mouseenter="collapsed && (tooltip = true)"
+                               @mouseleave="tooltip = false"
+                               x-ref="moderationLink"
+                               class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gradient-to-r hover:from-red-50 hover:to-orange-50 dark:hover:from-red-900/20 dark:hover:to-orange-800/20 text-red-600 dark:!text-red-400 hover:text-red-700 dark:hover:!text-red-300 transition-all duration-300 group"
+                               :class="collapsed && 'justify-center'">
+                                <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300" 
+                                     :class="!collapsed && 'group-hover:-translate-x-1'" 
+                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                </svg>
+                                <span x-show="!collapsed" 
+                                      x-transition:enter="transition ease-out duration-300 delay-250"
+                                      x-transition:enter-start="opacity-0 -translate-x-4"
+                                      x-transition:enter-end="opacity-100 translate-x-0"
+                                      x-transition:leave="transition ease-in duration-200"
+                                      x-transition:leave-start="opacity-100 translate-x-0"
+                                      x-transition:leave-end="opacity-0 -translate-x-4"
+                                      class="text-sm font-medium">{{ __('report.moderation_title') }}</span>
+                            </a>
+                            <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-red-600 to-orange-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.moderationLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(239, 68, 68, 0.5);"><span class="relative z-10">{{ __('report.moderation_title') }}</span><div class="absolute inset-0 bg-red-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-red-600"></div></div></div>
+                        </li>
+                    @endif
+                @endauth
+
+                @auth
                     @if(auth()->user()->hasRole('admin'))
                         <!-- Admin Settings -->
-                        <li class="relative mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700" x-data="{ tooltip: false }">
+                        <li class="relative" x-data="{ tooltip: false }">
                             <a href="{{ route('admin.settings') }}" 
                                @mouseenter="collapsed && (tooltip = true)"
                                @mouseleave="tooltip = false"
@@ -461,9 +490,25 @@
                 @endauth
 
                 @auth
+                    @if(auth()->user()->hasRole(['admin', 'moderator']))
+                        <!-- Moderation Dashboard -->
+                        <li class="mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+                            <a href="{{ route('admin.moderation.reports') }}" 
+                               @click="mobileOpen = false"
+                               class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 hover:text-red-700 transition-all group">
+                                <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                </svg>
+                                <span class="text-sm font-medium">{{ __('report.moderation_title') }}</span>
+                            </a>
+                        </li>
+                    @endif
+                @endauth
+
+                @auth
                     @if(auth()->user()->hasRole('admin'))
                         <!-- Admin Settings -->
-                        <li class="mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+                        <li>
                             <a href="{{ route('admin.settings') }}" 
                                @click="mobileOpen = false"
                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 hover:text-red-700 transition-all group">
