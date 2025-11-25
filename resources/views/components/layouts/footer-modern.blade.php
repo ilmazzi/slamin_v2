@@ -30,8 +30,8 @@
             <div>
                 <h3 class="text-white font-bold mb-4">Community</h3>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="{{ route('guidelines') }}" class="hover:text-primary-400 transition-colors">Linee Guida</a></li>
-                    <li><a href="{{ route('faq') }}" class="hover:text-primary-400 transition-colors">FAQ</a></li>
+                    <li><a href="{{ route('faq') }}" class="hover:text-primary-400 transition-colors">{{ __('help.faq.title') }}</a></li>
+                    <li><a href="{{ route('help') }}" class="hover:text-primary-400 transition-colors">{{ __('help.help.title') }}</a></li>
                     <li><a href="{{ route('support') }}" class="hover:text-primary-400 transition-colors">Supporto</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-primary-400 transition-colors">Contatti</a></li>
                 </ul>

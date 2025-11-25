@@ -268,6 +268,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/settings/peertube', \App\Livewire\Admin\Settings\PeerTubeSettings::class)
         ->name('settings.peertube');
     
+    // Help & FAQ Management
+    Route::get('/help', \App\Livewire\Admin\Help\HelpManagement::class)
+        ->name('help.index');
+    
     // Translations (Sito - file PHP in lang/)
     Route::get('/translations', \App\Livewire\Admin\Translations\TranslationManagement::class)
         ->name('translations.index');
@@ -318,10 +322,8 @@ Route::get('/guidelines', function () {
     return view('pages.guidelines');
 })->name('guidelines');
 
-Route::get('/faq', function () {
-    return view('pages.faq');
-})->name('faq');
-
+Route::get('/help', \App\Livewire\Help\HelpIndex::class)->name('help');
+Route::get('/faq', \App\Livewire\Help\FaqIndex::class)->name('faq');
 Route::get('/support', function () {
     return view('pages.support');
 })->name('support');

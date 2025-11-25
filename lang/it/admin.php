@@ -653,4 +653,16 @@ return [
         'forum_comments_desc' => 'Approva automaticamente i nuovi commenti nel forum',
         'save' => 'Salva Impostazioni',
     ],
+    
+    'help' => [
+        'title' => 'Gestione Help & FAQ',
+        'description' => 'Gestisci le guide di aiuto e le domande frequenti del sito',
+        'add' => 'Aggiungi',
+        'create' => 'Crea Nuovo',
+        'edit' => 'Modifica',
+        'created' => 'Elemento creato con successo',
+        'updated' => 'Elemento aggiornato con successo',
+        'deleted' => 'Elemento eliminato con successo',
+        'status_updated' => 'Stato aggiornato con successo',
+    ],
 ];

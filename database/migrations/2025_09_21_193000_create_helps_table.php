@@ -16,9 +16,14 @@ return new class extends Migration
             $table->string('type')->default('help'); // 'help' o 'faq'
             $table->string('title');
             $table->text('content');
+            $table->string('category')->nullable(); // Categoria per organizzare (es: 'account', 'poems', 'events')
             $table->integer('order')->default(0);
             $table->boolean('is_active')->default(true);
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
+            
+            $table->index(['type', 'is_active']);
+            $table->index(['category', 'is_active']);
         });
     }
 

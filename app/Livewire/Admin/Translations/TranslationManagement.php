@@ -505,27 +505,34 @@ class TranslationManagement extends Component
         }
 
         $content = "<?php\n\nreturn [\n";
-
-        foreach ($translations as $key => $value) {
-            $escapedKey = addslashes($key);
-            
-            if (is_array($value)) {
-                $content .= "    '{$escapedKey}' => [\n";
-                foreach ($value as $subKey => $subValue) {
-                    $escapedSubKey = addslashes($subKey);
-                    $escapedSubValue = addslashes($subValue);
-                    $content .= "        '{$escapedSubKey}' => '{$escapedSubValue}',\n";
-                }
-                $content .= "    ],\n";
-            } else {
-                $escapedValue = addslashes($value);
-                $content .= "    '{$escapedKey}' => '{$escapedValue}',\n";
-            }
-        }
-
+        $content .= $this->formatTranslationsArray($translations, 1);
         $content .= "\n];\n";
 
         File::put($filePath, $content);
+    }
+
+    /**
+     * Formatta ricorsivamente un array di traduzioni in codice PHP
+     */
+    private function formatTranslationsArray(array $array, int $indent = 1): string
+    {
+        $content = '';
+        $indentStr = str_repeat('    ', $indent);
+        
+        foreach ($array as $key => $value) {
+            $escapedKey = addslashes($key);
+            
+            if (is_array($value)) {
+                $content .= "{$indentStr}'{$escapedKey}' => [\n";
+                $content .= $this->formatTranslationsArray($value, $indent + 1);
+                $content .= "{$indentStr}],\n";
+            } else {
+                $escapedValue = addslashes((string)$value);
+                $content .= "{$indentStr}'{$escapedKey}' => '{$escapedValue}',\n";
+            }
+        }
+        
+        return $content;
     }
 
     private function syncLanguageFiles(string $language): int

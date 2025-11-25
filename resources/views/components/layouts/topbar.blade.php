@@ -110,7 +110,7 @@
             <div class="relative" @click.away="langOpen = false">
                 <button @click="langOpen = !langOpen"
                         class="hidden md:flex items-center gap-2 p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors">
-                    <span class="text-sm font-medium text-neutral-700 dark:!text-white">IT</span>
+                    <span class="text-sm font-medium text-neutral-700 dark:!text-white uppercase">{{ strtoupper(app()->getLocale()) }}</span>
                     <svg class="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
@@ -118,14 +118,26 @@
                 <div x-show="langOpen"
                      x-transition
                      class="absolute right-0 mt-2 w-40 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2 mr-0 sm:mr-auto">
-                    <a href="?lang=it" class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700">
+                    <a href="{{ request()->fullUrlWithQuery(['lang' => 'it']) }}" 
+                       class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700 {{ app()->getLocale() === 'it' ? 'bg-primary-50 dark:bg-primary-900/20' : '' }}">
                         <span class="text-sm">🇮🇹 Italiano</span>
+                        @if(app()->getLocale() === 'it')
+                            <span class="ml-auto text-primary-600">✓</span>
+                        @endif
                     </a>
-                    <a href="?lang=en" class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700">
+                    <a href="{{ request()->fullUrlWithQuery(['lang' => 'en']) }}" 
+                       class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700 {{ app()->getLocale() === 'en' ? 'bg-primary-50 dark:bg-primary-900/20' : '' }}">
                         <span class="text-sm">🇬🇧 English</span>
+                        @if(app()->getLocale() === 'en')
+                            <span class="ml-auto text-primary-600">✓</span>
+                        @endif
                     </a>
-                    <a href="?lang=fr" class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700">
+                    <a href="{{ request()->fullUrlWithQuery(['lang' => 'fr']) }}" 
+                       class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700 {{ app()->getLocale() === 'fr' ? 'bg-primary-50 dark:bg-primary-900/20' : '' }}">
                         <span class="text-sm">🇫🇷 Français</span>
+                        @if(app()->getLocale() === 'fr')
+                            <span class="ml-auto text-primary-600">✓</span>
+                        @endif
                     </a>
                 </div>
             </div>

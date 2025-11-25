@@ -51,5 +51,16 @@ return [
     'back_to_media' => 'Torna ai Media',
     'all' => 'Tutti',
     'home' => 'Home',
+    
+    // Sidebar Navigation
+    'events' => 'Eventi',
+    'gigs' => 'Ingaggi',
+    'media' => 'Media',
+    'poems' => 'Poesie',
+    'articles' => 'Articoli',
+    'users_groups' => 'Utenze/Gruppi',
+    'forum' => 'Forum',
+    'collapse' => 'Comprimi',
+    'close_menu' => 'Chiudi Menu',
 ];
 
