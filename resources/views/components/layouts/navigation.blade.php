@@ -72,6 +72,13 @@
                             <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                                 Dashboard
                             </a>
+                            
+                            @if(auth()->user()->hasRole(['admin', 'moderator']))
+                            <a href="{{ route('admin.moderation.reports') }}" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium">
+                                🛡️ {{ __('report.moderation_title') }}
+                            </a>
+                            @endif
+                            
                             <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                                 Profilo
                             </a>

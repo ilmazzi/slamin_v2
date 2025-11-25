@@ -230,6 +230,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     // Moderation
     Route::get('/moderation', \App\Livewire\Admin\Moderation\ModerationIndex::class)
         ->name('moderation.index');
+    Route::get('/moderation/reports', \App\Livewire\Moderation\ReportsDashboard::class)
+        ->name('moderation.reports');
     
     // Articles
     Route::get('/articles', \App\Livewire\Admin\Articles\ArticleList::class)
