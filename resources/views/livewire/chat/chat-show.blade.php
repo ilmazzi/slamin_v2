@@ -300,19 +300,40 @@
 </div>
 
 <script>
-    // Auto-scroll to bottom on new messages
-    document.addEventListener('livewire:load', function () {
+    // Funzione per scrollare in basso
+    function scrollChatToBottom() {
         const messagesContainer = document.getElementById('chat-messages-{{ $conversation->id }}');
         if (messagesContainer) {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            // Usa setTimeout per assicurarsi che il DOM sia aggiornato
+            setTimeout(() => {
+                messagesContainer.scrollTo({
+                    top: messagesContainer.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }, 100);
         }
+    }
+    
+    // Auto-scroll al caricamento iniziale (Livewire 3)
+    document.addEventListener('livewire:init', function () {
+        scrollChatToBottom();
     });
     
-    // Mark as read when viewing
+    // Auto-scroll dopo ogni aggiornamento Livewire
+    document.addEventListener('livewire:update', function () {
+        scrollChatToBottom();
+    });
+    
+    // Listener per evento messagesLoaded
     @this.on('messagesLoaded', () => {
-        const messagesContainer = document.getElementById('chat-messages-{{ $conversation->id }}');
-        if (messagesContainer) {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        scrollChatToBottom();
+    });
+    
+    // Listener per quando il componente è stato renderizzato
+    Livewire.hook('morph.updated', ({ el, component }) => {
+        // Controlla se l'elemento aggiornato è il nostro container messaggi
+        if (el.id === 'chat-messages-{{ $conversation->id }}' || el.closest('#chat-messages-{{ $conversation->id }}')) {
+            scrollChatToBottom();
         }
     });
 </script>
