@@ -14,13 +14,16 @@
          x-init="$watch('show', value => { if (value) { document.querySelectorAll('[x-data]').forEach(el => { if (el.__x && el.__x.$data.showMenu !== undefined) el.__x.$data.showMenu = false; }); } })">
         
         <!-- Dark Backdrop -->
-        <div class="absolute inset-0 bg-black/80"
+        <div class="absolute inset-0 bg-black/80 -z-10"
+             style="pointer-events: auto;"
              @click="$wire.closeModal()"></div>
         
         <!-- Book Container -->
-        <div class="relative z-10 flex items-center justify-center p-4 md:p-8 w-full h-full overflow-y-auto overflow-x-hidden">
+        <div class="relative z-10 flex items-center justify-center p-4 md:p-8 w-full h-full overflow-y-auto overflow-x-hidden"
+             style="transform: translateZ(0); will-change: transform;">
             
             <div class="poem-book-container"
+                 style="transform: translateZ(0); isolation: isolate;"
                  x-show="show"
                  x-transition:enter="transition-all ease-out duration-1000"
                  x-transition:enter-start="opacity-0 scale-95"
