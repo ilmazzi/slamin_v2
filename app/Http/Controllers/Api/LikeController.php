@@ -81,8 +81,19 @@ class LikeController extends Controller
             $model->increment('like_count');
 
             // Send notification to content owner if different from liker
-            if ($model->user_id !== Auth::id()) {
-                $contentOwner = $model->user;
+            // Handle different owner field names (user_id for poems/videos/articles, organizer_id for events)
+            $ownerId = null;
+            $contentOwner = null;
+            
+            if ($model instanceof Event) {
+                $ownerId = $model->organizer_id;
+                $contentOwner = $model->organizer;
+            } else {
+                $ownerId = $model->user_id ?? null;
+                $contentOwner = $model->user ?? null;
+            }
+            
+            if ($ownerId && $ownerId !== Auth::id() && $contentOwner) {
                 \Log::info('Dispatching SocialInteractionReceived event', [
                     'liker_id' => Auth::id(),
                     'owner_id' => $contentOwner->id,
