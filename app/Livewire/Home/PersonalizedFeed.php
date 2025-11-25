@@ -29,8 +29,8 @@ class PersonalizedFeed extends Component
         // Get IDs of users the current user follows
         $followingIds = [];
         if ($user) {
-            // belongsToMany already returns User models, so we pluck 'id' not 'following_id'
-            $followingIds = $user->following()->pluck('id')->toArray();
+            // Specify table name to avoid ambiguity with the pivot table
+            $followingIds = $user->following()->pluck('users.id')->toArray();
             
             // Also get users followed by users you follow (second degree)
             if (!empty($followingIds)) {
