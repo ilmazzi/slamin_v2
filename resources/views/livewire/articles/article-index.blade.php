@@ -272,6 +272,12 @@
                                                 :title="$bannerArticle->title"
                                                 size="md"
                                                 class="[&_button]:!text-primary-600 dark:[&_button]:!text-primary-300 [&_button]:!gap-1.5 [&_svg]:!stroke-current [&_span]:!text-sm" />
+                                            
+                                            <x-report-button 
+                                                :itemId="$bannerArticle->id"
+                                                itemType="article"
+                                                size="md"
+                                                class="[&_button]:!text-primary-600 dark:[&_button]:!text-primary-300 [&_button]:!gap-1.5 [&_svg]:!stroke-current [&_span]:!text-sm" />
                                         </div>
                                         <button onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $bannerArticle->id }} })" 
                                                 class="text-primary-600 dark:text-primary-400 font-semibold hover:underline whitespace-nowrap cursor-pointer">

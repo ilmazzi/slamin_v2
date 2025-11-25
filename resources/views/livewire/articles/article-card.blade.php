@@ -97,6 +97,12 @@
                         :title="$article->title"
                         size="sm"
                         class="[&_button]:!text-neutral-600 dark:[&_button]:!text-neutral-300 [&_button]:!gap-1 [&_svg]:!stroke-current [&_span]:!text-xs" />
+                    
+                    <x-report-button 
+                        :itemId="$article->id"
+                        itemType="article"
+                        size="sm"
+                        class="[&_button]:!text-neutral-600 dark:[&_button]:!text-neutral-300 [&_button]:!gap-1 [&_svg]:!stroke-current [&_span]:!text-xs" />
                 </div>
                 
                 <button onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $article->id }} })" 

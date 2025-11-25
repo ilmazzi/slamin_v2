@@ -188,6 +188,12 @@
                                             itemType="video"
                                             size="sm"
                                             class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                        
+                                        <x-report-button 
+                                            :itemId="$mostPopularVideo->id"
+                                            itemType="video"
+                                            size="sm"
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
                                     </div>
                                 @endif
                             </div>
