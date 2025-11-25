@@ -54,20 +54,12 @@ class ReportModal extends Component
 
         $this->validate();
 
-        // Map item type to model class
-        $modelMap = [
-            'poem' => 'App\Models\Poem',
-            'article' => 'App\Models\Article',
-            'video' => 'App\Models\Video',
-            'photo' => 'App\Models\Photo',
-            'event' => 'App\Models\Event',
-            'carousel' => 'App\Models\Carousel',
-            'comment' => 'App\Models\Comment',
-        ];
+        // Get model class from morph map
+        $reportableType = $this->itemType; // Use short name from morph map
 
-        $reportableType = $modelMap[$this->itemType] ?? null;
-
-        if (!$reportableType) {
+        // Validate reportable type
+        $validTypes = ['poem', 'article', 'video', 'photo', 'event', 'carousel', 'comment'];
+        if (!in_array($reportableType, $validTypes)) {
             $this->dispatch('notify', [
                 'message' => __('report.invalid_type'),
                 'type' => 'error'
@@ -75,8 +67,19 @@ class ReportModal extends Component
             return;
         }
 
-        // Check if content exists
-        $content = $reportableType::find($this->itemId);
+        // Check if content exists (Laravel will use morph map to resolve the class)
+        $morphMap = \Illuminate\Database\Eloquent\Relations\Relation::morphMap();
+        $modelClass = $morphMap[$reportableType] ?? null;
+        
+        if (!$modelClass) {
+            $this->dispatch('notify', [
+                'message' => __('report.invalid_type'),
+                'type' => 'error'
+            ]);
+            return;
+        }
+
+        $content = $modelClass::find($this->itemId);
         if (!$content) {
             $this->dispatch('notify', [
                 'message' => __('report.content_not_found'),
@@ -85,7 +88,7 @@ class ReportModal extends Component
             return;
         }
 
-        // Check if already reported
+        // Check if already reported (use short name for consistency)
         $existingReport = Report::where('user_id', Auth::id())
             ->where('reportable_type', $reportableType)
             ->where('reportable_id', $this->itemId)
@@ -103,9 +106,10 @@ class ReportModal extends Component
 
         // Create report
         try {
+            // Create report with short type name (morph map will handle it)
             Report::create([
                 'user_id' => Auth::id(),
-                'reportable_type' => $reportableType,
+                'reportable_type' => $reportableType, // Short name from morph map
                 'reportable_id' => $this->itemId,
                 'reason' => $this->reason,
                 'description' => $this->description,

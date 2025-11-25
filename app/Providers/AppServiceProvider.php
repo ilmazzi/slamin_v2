@@ -40,6 +40,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Configure Morph Map for polymorphic relations
+        \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
+            'poem' => 'App\Models\Poem',
+            'article' => 'App\Models\Article',
+            'video' => 'App\Models\Video',
+            'photo' => 'App\Models\Photo',
+            'event' => 'App\Models\Event',
+            'carousel' => 'App\Models\Carousel',
+            'comment' => 'App\Models\Comment',
+            'gallery' => 'App\Models\Gallery',
+        ]);
+
         // Register observers for gamification
         Video::observe(VideoObserver::class);
         Poem::observe(PoemObserver::class);

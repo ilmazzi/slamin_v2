@@ -19,6 +19,8 @@ return [
     'submit_report' => 'Envoyer le Signalement',
     'report_submitted_success' => 'Contenu signalé avec succès. Merci pour votre aide!',
     'already_reported' => 'Vous avez déjà signalé ce contenu.',
+    'content_not_found' => 'Le contenu que vous essayez de signaler n\'existe plus.',
+    'invalid_type' => 'Type de contenu non valide.',
     'error_invalid_type' => 'Type de contenu non valide pour le signalement.',
     'error_generic' => 'Une erreur s\'est produite lors de l\'envoi du signalement.',
     'login_to_report' => 'Connectez-vous pour signaler du contenu.',

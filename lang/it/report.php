@@ -6,6 +6,8 @@ return [
     'reported' => 'Segnalato',
     'report_content' => 'Segnala contenuto',
     'already_reported' => 'Hai già segnalato questo contenuto',
+    'content_not_found' => 'Il contenuto che stai cercando di segnalare non esiste più',
+    'invalid_type' => 'Tipo di contenuto non valido',
     'login_required' => 'Effettua il login per segnalare contenuti',
 
     // Modal

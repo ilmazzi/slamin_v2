@@ -19,6 +19,8 @@ return [
     'submit_report' => 'Submit Report',
     'report_submitted_success' => 'Content reported successfully. Thank you for your help!',
     'already_reported' => 'You have already reported this content.',
+    'content_not_found' => 'The content you are trying to report no longer exists.',
+    'invalid_type' => 'Invalid content type.',
     'error_invalid_type' => 'Invalid content type for reporting.',
     'error_generic' => 'An error occurred while submitting the report.',
     'login_to_report' => 'Log in to report content.',
