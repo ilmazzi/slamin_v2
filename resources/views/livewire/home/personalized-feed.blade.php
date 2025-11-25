@@ -456,9 +456,9 @@
             </div>
         </div>
     </div>
+    
+    {{-- Modals for content --}}
+    <livewire:poems.poem-modal />
+    <livewire:articles.article-modal />
+    <livewire:media.video-modal />
 </div>
-
-{{-- Modals for content --}}
-<livewire:poems.poem-modal />
-<livewire:articles.article-modal />
-<livewire:media.video-modal />
