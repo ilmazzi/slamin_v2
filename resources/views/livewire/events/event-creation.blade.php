@@ -539,6 +539,33 @@
                                 {{-- Physical Location Fields + Map - Show only when In Presenza --}}
                                 @if(!$is_online)
                                 <div class="space-y-6">
+                                    {{-- Recent Venues Dropdown --}}
+                                    @if(count($recentVenues) > 0)
+                                    <div class="relative group">
+                                        <select wire:model.live="selectedRecentVenue"
+                                                wire:change="loadRecentVenueFromSelect"
+                                                id="recent_venue"
+                                                class="w-full px-5 py-4 rounded-2xl bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 
+                                                       border-2 border-primary-300 dark:border-primary-700 text-neutral-900 dark:text-white appearance-none cursor-pointer
+                                                       focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/20
+                                                       transition-all duration-300 font-medium">
+                                            <option value="">📍 Seleziona da luoghi recenti...</option>
+                                            @foreach($recentVenues as $index => $venue)
+                                                <option value="{{ $index }}">
+                                                    {{ $venue['venue_name'] }} - {{ $venue['city'] ?? '' }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary-600 dark:text-primary-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                        <label for="recent_venue" 
+                                               class="absolute left-5 -top-2.5 px-2 text-sm font-bold bg-white dark:bg-neutral-800 text-primary-600 dark:text-primary-400">
+                                            🏛️ Luoghi Recenti
+                                        </label>
+                                    </div>
+                                    @endif
+
                                     <div class="relative group">
                                         <input type="text"
                                                wire:model="venue_name"
