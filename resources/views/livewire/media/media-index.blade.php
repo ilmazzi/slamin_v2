@@ -167,37 +167,33 @@
                                     </div>
                                     
                                     {{-- Social Buttons --}}
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-3" @click.stop>
                                         <x-like-button 
                                             :itemId="$mostPopularVideo->id"
                                             itemType="video"
                                             :isLiked="false"
                                             :likesCount="$mostPopularVideo->like_count ?? 0"
                                             size="sm"
-                                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4"
-                                            @click.stop />
+                                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4" />
                                         
                                         <x-comment-button 
                                             :itemId="$mostPopularVideo->id"
                                             itemType="video"
                                             :commentsCount="$mostPopularVideo->comment_count ?? 0"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
-                                            @click.stop />
+                                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
                                         
                                         <x-share-button 
                                             :itemId="$mostPopularVideo->id"
                                             itemType="video"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
-                                            @click.stop />
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
                                         
                                         <x-report-button 
                                             :itemId="$mostPopularVideo->id"
                                             itemType="video"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
-                                            @click.stop />
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
                                     </div>
                                 @endif
                             </div>
@@ -303,37 +299,33 @@
                                     </div>
                                     
                                     {{-- Social Buttons --}}
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-3" @click.stop>
                                         <x-like-button 
                                             :itemId="$mostPopularPhoto->id"
                                             itemType="photo"
                                             :isLiked="false"
                                             :likesCount="$mostPopularPhoto->like_count ?? 0"
                                             size="sm"
-                                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4"
-                                            @click.stop />
+                                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4" />
                                         
                                         <x-comment-button 
                                             :itemId="$mostPopularPhoto->id"
                                             itemType="photo"
                                             :commentsCount="$mostPopularPhoto->comment_count ?? 0"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
-                                            @click.stop />
+                                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
                                         
                                         <x-share-button 
                                             :itemId="$mostPopularPhoto->id"
                                             itemType="photo"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
-                                            @click.stop />
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
                                         
                                         <x-report-button 
                                             :itemId="$mostPopularPhoto->id"
                                             itemType="photo"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
-                                            @click.stop />
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
                                     </div>
                                 @endif
                             </div>

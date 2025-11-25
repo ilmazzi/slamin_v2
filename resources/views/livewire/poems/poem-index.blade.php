@@ -210,37 +210,33 @@
                                 
                                 {{-- Meta - Social buttons che NON aprono il modale --}}
                                 <div class="poetry-card-meta">
-                                    <div class="flex items-center gap-2.5">
+                                    <div class="flex items-center gap-2.5" @click.stop>
                                         <x-like-button 
                                             :itemId="$poem->id"
                                             itemType="poem"
                                             :isLiked="false"
                                             :likesCount="$poem->like_count ?? 0"
                                             size="sm"
-                                            class="[&_span]:!text-neutral-700 [&_svg]:!text-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs"
-                                            @click.stop />
+                                            class="[&_span]:!text-neutral-700 [&_svg]:!text-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
                                         
                                         <x-comment-button 
                                             :itemId="$poem->id"
                                             itemType="poem"
                                             :commentsCount="$poem->comment_count ?? 0"
                                             size="sm"
-                                            class="[&_button]:!text-neutral-700 [&_span]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs"
-                                            @click.stop />
+                                            class="[&_button]:!text-neutral-700 [&_span]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
                                         
                                         <x-share-button 
                                             :itemId="$poem->id"
                                             itemType="poem"
                                             size="sm"
-                                            class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5"
-                                            @click.stop />
+                                            class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5" />
                                         
                                         <x-report-button 
                                             :itemId="$poem->id"
                                             itemType="poem"
                                             size="sm"
-                                            class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5"
-                                            @click.stop />
+                                            class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5" />
                                     </div>
                                     <span class="text-xs">{{ $poem->created_at->diffForHumans() }}</span>
                                 </div>
