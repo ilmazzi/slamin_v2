@@ -17,13 +17,22 @@ class GroupObserver
 
         // Aggiungi automaticamente il creatore come admin
         if ($group->created_by) {
-            GroupMember::firstOrCreate([
-                'group_id' => $group->id,
-                'user_id' => $group->created_by,
-            ], [
-                'role' => 'admin',
-                'joined_at' => now(),
-            ]);
+            try {
+                // Use insert instead of firstOrCreate to avoid triggering observer during observer
+                GroupMember::create([
+                    'group_id' => $group->id,
+                    'user_id' => $group->created_by,
+                    'role' => 'admin',
+                    'joined_at' => now(),
+                ]);
+            } catch (\Exception $e) {
+                // If it fails (e.g., duplicate), just log it
+                Log::warning('Failed to create group member', [
+                    'group_id' => $group->id,
+                    'user_id' => $group->created_by,
+                    'error' => $e->getMessage()
+                ]);
+            }
         }
     }
 

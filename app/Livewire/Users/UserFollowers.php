@@ -50,6 +50,8 @@ class UserFollowers extends Component
     {
         return view('livewire.users.user-followers', [
             'followers' => $this->followers,
+        ])->layout('components.layouts.app', [
+            'title' => __('follow.followers_title', ['name' => $this->user->name])
         ]);
     }
 }

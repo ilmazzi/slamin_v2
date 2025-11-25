@@ -104,17 +104,10 @@
                 ];
                 $selectedTape = $tapeColors[array_rand($tapeColors)];
                 
-                // Fake bio for users without one
-                $fakeBios = [
-                    'Appassionato di poesia e letteratura 📖',
-                    'Scrittore emergente e lettore vorace 🖋️',
-                    'Amante delle parole e dell\'arte ✨',
-                    'Poeta urbano e sognatore notturno 🌙',
-                    'Creativo multimediale e storyteller 🎨',
-                ];
-                $userBio = $user->bio ?? $fakeBios[array_rand($fakeBios)];
+                // Use real user bio if available, otherwise show nothing or a placeholder
+                $userBio = !empty($user->bio) ? $user->bio : null;
             ?>
-            <div class="w-72 md:w-80 flex-shrink-0 polaroid-wrapper fade-scale-item" 
+            <div class="w-[21rem] md:w-[23rem] flex-shrink-0 polaroid-wrapper fade-scale-item" 
                  x-data 
                  x-intersect.once="$el.classList.add('animate-fade-in')" 
                  style="animation-delay: {{ $i * 0.1 }}s">
@@ -242,8 +235,8 @@
             position: relative;
             /* Bianco puro come vera Polaroid */
             background: #ffffff;
-            /* Bordi bianchi - più spazio per la bio */
-            padding: 20px 20px 85px 20px;
+            /* Bordi bianchi - più spazio per la bio e il pulsante */
+            padding: 20px 20px 110px 20px;
             /* Ombra elegante e realistica */
             box-shadow: 
                 0 2px 4px rgba(0, 0, 0, 0.1),
@@ -301,7 +294,7 @@
         /* Caption area - con bio */
         .polaroid-caption {
             text-align: center;
-            padding: 1rem 0.75rem 0 0.75rem;
+            padding: 1rem 1rem 0 1rem; /* Più padding laterale */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -340,32 +333,26 @@
             margin-bottom: 0.5rem;
             font-style: italic;
             display: block;
+            max-height: 3rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
         
-        /* Follow button - Elegante */
-        .polaroid-follow-btn {
-            display: inline-flex;
+        /* Follow button wrapper - pulsante circolare */
+        .polaroid-follow-btn-wrapper {
+            margin: 0.75rem 0 0.5rem 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 0.375rem;
-            padding: 0.45rem 0.875rem;
-            background: #10b981;
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: 0.375rem;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 2px rgba(16, 185, 129, 0.2);
+            min-height: 40px;
         }
         
-        .polaroid-follow-btn svg {
-            width: 0.875rem;
-            height: 0.875rem;
-        }
-        
-        .polaroid-follow-btn:hover {
-            background: #059669;
-            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
-            transform: translateY(-1px);
+        .polaroid-follow-btn-wrapper > * {
+            flex-shrink: 0;
         }
         
         /* Stats row */

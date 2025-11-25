@@ -6,6 +6,10 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 define('LARAVEL_START', microtime(true));
 
+// Prevent timeout issues for CLI commands
+set_time_limit(0); // No limit for CLI
+ini_set('max_execution_time', '0');
+
 // Register the Composer autoloader...
 require __DIR__.'/vendor/autoload.php';
 

@@ -29,7 +29,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Prevent timeout issues during development
+        if (config('app.debug')) {
+            ini_set('max_execution_time', '300');
+        }
     }
 
     /**

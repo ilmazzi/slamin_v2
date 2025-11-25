@@ -1,4 +1,3 @@
-<x-layouts.app :title="__('follow.following_title', ['name' => $user->name])">
 <div class="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50/30 to-accent-50/20 dark:from-neutral-900 dark:via-primary-950/50 dark:to-accent-950/30 py-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Header --}}
@@ -89,5 +88,3 @@
         @endif
     </div>
 </div>
-</x-layouts.app>
-
