@@ -167,8 +167,12 @@
                 // Refresh Livewire component
                 Livewire.dispatch('refresh-notifications');
                 
-                // Show browser notification if supported
-                if ('Notification' in window && Notification.permission === 'granted') {
+                // Skip browser notification for chat messages (badge is enough)
+                const isChatMessage = notification.type === 'chat_new_message' || 
+                                     notification.type === 'App\\Notifications\\Chat\\NewMessageNotification';
+                
+                // Show browser notification if supported (but NOT for chat messages)
+                if (!isChatMessage && 'Notification' in window && Notification.permission === 'granted') {
                     new Notification(notification.title || 'New notification', {
                         body: notification.message || '',
                         icon: '/assets/images/logo.png',
