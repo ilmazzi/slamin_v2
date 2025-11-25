@@ -249,7 +249,7 @@
                 @endauth
 
                 @auth
-                    @if(auth()->user()->hasRole(['admin', 'moderator']))
+                    @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('moderator'))
                         <!-- Moderation Dashboard -->
                         <li class="relative mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700" x-data="{ tooltip: false }">
                             <a href="{{ route('admin.moderation.reports') }}" 
@@ -490,7 +490,7 @@
                 @endauth
 
                 @auth
-                    @if(auth()->user()->hasRole(['admin', 'moderator']))
+                    @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('moderator'))
                         <!-- Moderation Dashboard -->
                         <li class="mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700">
                             <a href="{{ route('admin.moderation.reports') }}" 
