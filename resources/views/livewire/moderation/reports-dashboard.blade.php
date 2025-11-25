@@ -205,15 +205,18 @@
                             
                             @if($report->reportable)
                                 @php
-                                    $contentType = class_basename($report->reportable_type);
+                                    // Normalizza il tipo - può essere 'poem' o 'Poem' o 'App\Models\Poem'
+                                    $rawType = $report->reportable_type;
+                                    $contentType = class_basename($rawType);
+                                    $contentTypeLower = strtolower($contentType);
                                     $contentUrl = null;
                                     
                                     // Genera URL per contenuti che hanno pagine dedicate
-                                    if ($contentType === 'Event') {
+                                    if ($contentTypeLower === 'event') {
                                         $contentUrl = route('events.show', $report->reportable_id);
-                                    } elseif ($contentType === 'Poem') {
+                                    } elseif ($contentTypeLower === 'poem') {
                                         $contentUrl = route('poems.show', $report->reportable->slug ?? $report->reportable_id);
-                                    } elseif ($contentType === 'Article') {
+                                    } elseif ($contentTypeLower === 'article') {
                                         $contentUrl = route('articles.show', $report->reportable_id);
                                     }
                                 @endphp
