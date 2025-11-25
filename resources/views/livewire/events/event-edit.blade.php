@@ -3,6 +3,7 @@
      x-data="{ 
          currentStep: @entangle('currentStep')
      }"
+     @scroll-to-top.window="window.scrollTo({ top: 0, behavior: 'smooth' })"
      x-init="
          $watch('currentStep', value => {
              if (value === 2) {
@@ -766,9 +767,14 @@
                                                    id="event_image"
                                                    class="hidden">
                                             <label for="event_image" 
-                                                   class="flex flex-col items-center justify-center w-full h-48 rounded-2xl border-2 border-dashed border-neutral-300 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-900 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-primary-500 transition-all">
+                                                   class="flex flex-col items-center justify-center w-full h-48 rounded-2xl border-2 border-dashed border-neutral-300 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-900 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-primary-500 transition-all overflow-hidden">
                                                 @if ($event_image)
-                                                    <img src="{{ $event_image->temporaryUrl() }}" class="max-h-full rounded-2xl">
+                                                    <img src="{{ $event_image->temporaryUrl() }}" class="w-full h-full object-cover rounded-2xl">
+                                                @elseif($existing_image_url)
+                                                    <img src="{{ $existing_image_url }}" alt="Immagine evento esistente" class="w-full h-full object-cover rounded-2xl">
+                                                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-2xl">
+                                                        <p class="text-white font-medium">Clicca per sostituire</p>
+                                                    </div>
                                                 @else
                                                     <svg class="w-12 h-12 text-neutral-400 dark:text-neutral-500 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
@@ -1106,19 +1112,6 @@
                                     @error('max_participants')
                                         <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                     @enderror
-                                </div>
-
-                                {{-- Allow Requests --}}
-                                <div class="flex items-center justify-between p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all cursor-pointer"
-                                     wire:click="$toggle('allow_requests')">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-7 rounded-full relative transition-all duration-300
-                                                    {{ $allow_requests ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}">
-                                            <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
-                                                        {{ $allow_requests ? 'left-6' : 'left-1' }}"></div>
-                                        </div>
-                                        <span class="text-neutral-900 dark:text-white font-medium">Permetti Richieste di Partecipazione</span>
-                                    </div>
                                 </div>
 
                                 {{-- Registration Deadline --}}
@@ -1472,6 +1465,32 @@
                             </div>
 
                             <div class="space-y-4">
+                                {{-- Event Image Preview --}}
+                                @if($event_image || $existing_image_url)
+                                    <div class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700">
+                                        <h3 class="font-bold text-neutral-900 dark:text-white mb-4 flex items-center gap-2">
+                                            <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            Immagine Copertina
+                                        </h3>
+                                        <div class="relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 border-2 border-neutral-200 dark:border-neutral-700">
+                                            @if($event_image)
+                                                <img src="{{ $event_image->temporaryUrl() }}" 
+                                                     alt="Anteprima nuova immagine evento" 
+                                                     class="w-full h-auto max-h-96 object-cover">
+                                            @elseif($existing_image_url)
+                                                <img src="{{ $existing_image_url }}" 
+                                                     alt="Immagine evento esistente" 
+                                                     class="w-full h-auto max-h-96 object-cover">
+                                            @endif
+                                            <div class="absolute top-4 right-4 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg text-white text-sm font-semibold">
+                                                📸 Anteprima
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
                                 {{-- Basic Info Summary --}}
                                 <div class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700">
                                     <h3 class="font-bold text-neutral-900 dark:text-white mb-4 flex items-center gap-2">
@@ -1826,10 +1845,6 @@
                                         <div class="flex justify-between items-start">
                                             <dt class="font-medium text-neutral-600 dark:text-neutral-400">Max Partecipanti:</dt>
                                             <dd class="font-semibold text-neutral-900 dark:text-white">{{ $max_participants ?: '∞ Illimitati' }}</dd>
-                                        </div>
-                                        <div class="flex justify-between items-start">
-                                            <dt class="font-medium text-neutral-600 dark:text-neutral-400">Richieste Partecipazione:</dt>
-                                            <dd class="font-semibold text-neutral-900 dark:text-white">{{ $allow_requests ? '✅ Permesse' : '❌ Non permesse' }}</dd>
                                         </div>
                                         @if($registration_deadline)
                                             <div class="flex justify-between items-start">
@@ -2259,6 +2274,36 @@ document.addEventListener('livewire:init', () => {
                 geocodeAddress();
             }
         }, 1500);
+    });
+    
+    // Listen for map location update (when coordinates change directly)
+    Livewire.on('update-map-location', (data) => {
+        console.log('🔔 Updating map location:', data);
+        if (creationMap && data.latitude && data.longitude) {
+            const lat = parseFloat(data.latitude);
+            const lng = parseFloat(data.longitude);
+            
+            // Remove old marker
+            if (creationMarker) {
+                creationMap.removeLayer(creationMarker);
+            }
+            
+            // Add new marker
+            creationMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: `<div style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); border: 3px solid white; position: relative; z-index: 1000;"></div>`,
+                    className: 'custom-event-marker',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32]
+                }),
+                zIndexOffset: 1000
+            }).addTo(creationMap);
+            
+            // Center map on marker
+            creationMap.setView([lat, lng], 14);
+            
+            console.log('📍 Marker updated to:', lat, lng);
+        }
     });
     
     Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {

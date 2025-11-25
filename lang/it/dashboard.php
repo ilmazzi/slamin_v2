@@ -33,6 +33,8 @@ return [
     'create_event_description' => 'Crea un nuovo evento di Poetry Slam',
     'upload_video' => 'Carica Video',
     'upload_video_description' => 'Condividi una performance video',
+    'publish_article' => 'Pubblica Articolo',
+    'publish_article_description' => 'Scrivi e pubblica un nuovo articolo',
     'explore_content' => 'Esplora Contenuti',
     'explore_content_description' => 'Scopri poesie, eventi e video dalla community',
     

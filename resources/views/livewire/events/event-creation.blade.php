@@ -2,7 +2,8 @@
 <div class="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50/30 to-accent-50/20 dark:from-neutral-900 dark:via-primary-950/50 dark:to-accent-950/30 relative overflow-hidden" 
      x-data="{ 
          currentStep: @entangle('currentStep')
-     }">
+     }"
+     @scroll-to-top.window="window.scrollTo({ top: 0, behavior: 'smooth' })">
     
     {{-- ANIMATED BACKGROUND WITH SUBTLE BLOBS --}}
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -1036,19 +1037,6 @@
                                     @enderror
                                 </div>
 
-                                {{-- Allow Requests --}}
-                                <div class="flex items-center justify-between p-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all cursor-pointer"
-                                     wire:click="$toggle('allow_requests')">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-7 rounded-full relative transition-all duration-300
-                                                    {{ $allow_requests ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}">
-                                            <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
-                                                        {{ $allow_requests ? 'left-6' : 'left-1' }}"></div>
-                                        </div>
-                                        <span class="text-neutral-900 dark:text-white font-medium">Permetti Richieste di Partecipazione</span>
-                                    </div>
-                                </div>
-
                                 {{-- Registration Deadline --}}
                                 <div class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700">
                                     <div class="flex items-center justify-between mb-4">
@@ -1400,6 +1388,26 @@
                             </div>
 
                             <div class="space-y-4">
+                                {{-- Event Image Preview --}}
+                                @if($event_image)
+                                    <div class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700">
+                                        <h3 class="font-bold text-neutral-900 dark:text-white mb-4 flex items-center gap-2">
+                                            <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            Immagine Copertina
+                                        </h3>
+                                        <div class="relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 border-2 border-neutral-200 dark:border-neutral-700">
+                                            <img src="{{ $event_image->temporaryUrl() }}" 
+                                                 alt="Anteprima immagine evento" 
+                                                 class="w-full h-auto max-h-96 object-cover">
+                                            <div class="absolute top-4 right-4 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg text-white text-sm font-semibold">
+                                                📸 Anteprima
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
                                 {{-- Basic Info Summary --}}
                                 <div class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700">
                                     <h3 class="font-bold text-neutral-900 dark:text-white mb-4 flex items-center gap-2">
@@ -1754,10 +1762,6 @@
                                         <div class="flex justify-between items-start">
                                             <dt class="font-medium text-neutral-600 dark:text-neutral-400">Max Partecipanti:</dt>
                                             <dd class="font-semibold text-neutral-900 dark:text-white">{{ $max_participants ?: '∞ Illimitati' }}</dd>
-                                        </div>
-                                        <div class="flex justify-between items-start">
-                                            <dt class="font-medium text-neutral-600 dark:text-neutral-400">Richieste Partecipazione:</dt>
-                                            <dd class="font-semibold text-neutral-900 dark:text-white">{{ $allow_requests ? '✅ Permesse' : '❌ Non permesse' }}</dd>
                                         </div>
                                         @if($registration_deadline)
                                             <div class="flex justify-between items-start">

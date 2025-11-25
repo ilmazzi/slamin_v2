@@ -66,5 +66,6 @@ return [
     'order' => 'Ordine',
     'delete_confirm' => 'Sei sicuro di voler eliminare questo elemento?',
     'quick_actions' => 'Azioni Rapide',
+    'clear_all' => 'Pulisci Tutto',
 ];
 

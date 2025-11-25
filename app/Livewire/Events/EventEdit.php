@@ -73,6 +73,7 @@ class EventEdit extends Component
     // ========================================
     // Media
     public $event_image;
+    public $existing_image_url = '';
     public $promotional_video = '';
 
     // Payment
@@ -184,7 +185,6 @@ class EventEdit extends Component
 
             // Step 4: Settings
             'max_participants' => 'nullable|integer|min:1',
-            'allow_requests' => 'boolean',
             'status' => 'required|in:draft,published',
         ];
     }
@@ -278,6 +278,7 @@ class EventEdit extends Component
         $this->recurrence_monthday = $event->recurrence_monthday ?? '';
 
         // Media
+        $this->existing_image_url = $event->image_url ?? '';
         $this->promotional_video = $event->promotional_video ?? '';
         $this->is_paid_event = ($event->entry_fee ?? 0) > 0;
         $this->ticket_price = $event->entry_fee ?? 0;
@@ -340,6 +341,8 @@ class EventEdit extends Component
 
         if ($this->currentStep < $this->totalSteps) {
             $this->currentStep++;
+            // Scroll to top dopo il cambio step
+            $this->dispatch('scroll-to-top');
         }
     }
 
@@ -347,6 +350,8 @@ class EventEdit extends Component
     {
         if ($this->currentStep > 1) {
             $this->currentStep--;
+            // Scroll to top dopo il cambio step
+            $this->dispatch('scroll-to-top');
         }
     }
 
@@ -354,6 +359,8 @@ class EventEdit extends Component
     {
         if ($step >= 1 && $step <= $this->totalSteps) {
             $this->currentStep = $step;
+            // Scroll to top dopo il cambio step
+            $this->dispatch('scroll-to-top');
         }
     }
 
@@ -482,6 +489,28 @@ class EventEdit extends Component
     public function updatedCity()
     {
         $this->dispatch('trigger-geocoding');
+    }
+
+    public function updatedLatitude()
+    {
+        // Aggiorna il pin sulla mappa quando cambia la latitudine
+        if ($this->latitude && $this->longitude) {
+            $this->dispatch('update-map-location', 
+                latitude: floatval($this->latitude), 
+                longitude: floatval($this->longitude)
+            );
+        }
+    }
+
+    public function updatedLongitude()
+    {
+        // Aggiorna il pin sulla mappa quando cambia la longitudine
+        if ($this->latitude && $this->longitude) {
+            $this->dispatch('update-map-location', 
+                latitude: floatval($this->latitude), 
+                longitude: floatval($this->longitude)
+            );
+        }
     }
 
     #[On('map-clicked')]
@@ -871,7 +900,7 @@ class EventEdit extends Component
 
                 // Settings
                 'max_participants' => $this->max_participants ?: null,
-                'allow_requests' => $this->allow_requests,
+                'allow_requests' => false, // Sempre false, solo ingaggi e inviti
                 'status' => $this->status,
 
                 // Festival

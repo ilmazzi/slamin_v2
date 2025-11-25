@@ -170,6 +170,16 @@ class DashboardIndex extends Component
             ];
         }
         
+        // Pubblicare articolo
+        if ($user->canCreateArticle()) {
+            $actions[] = [
+                'icon' => 'ph-newspaper',
+                'title' => __('dashboard.publish_article'),
+                'description' => __('dashboard.publish_article_description'),
+                'url' => route('articles.create'),
+            ];
+        }
+        
         return $actions;
     }
     

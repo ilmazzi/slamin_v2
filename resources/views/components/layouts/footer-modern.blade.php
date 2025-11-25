@@ -22,7 +22,7 @@
                     <li><a href="{{ route('events.index') }}" class="hover:text-primary-400 transition-colors">Eventi</a></li>
                     <li><a href="{{ route('poems.index') }}" class="hover:text-primary-400 transition-colors">Poesie</a></li>
                     <li><a href="{{ route('articles.index') }}" class="hover:text-primary-400 transition-colors">Articoli</a></li>
-                    <li><a href="{{ route('gallery.index') }}" class="hover:text-primary-400 transition-colors">Galleria</a></li>
+                    <li><a href="{{ route('media.index') }}" class="hover:text-primary-400 transition-colors">Media</a></li>
                 </ul>
             </div>
 

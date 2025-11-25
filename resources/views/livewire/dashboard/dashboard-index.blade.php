@@ -139,6 +139,7 @@
                     ['from' => 'from-emerald-500', 'to' => 'to-teal-600', 'hover_from' => 'hover:from-emerald-600', 'hover_to' => 'hover:to-teal-700'],
                     ['from' => 'from-green-600', 'to' => 'to-emerald-700', 'hover_from' => 'hover:from-green-700', 'hover_to' => 'hover:to-emerald-800'],
                     ['from' => 'from-teal-500', 'to' => 'to-cyan-600', 'hover_from' => 'hover:from-teal-600', 'hover_to' => 'hover:to-cyan-700'],
+                    ['from' => 'from-blue-500', 'to' => 'to-indigo-600', 'hover_from' => 'hover:from-blue-600', 'hover_to' => 'hover:to-indigo-700'],
                 ];
                 @endphp
                 
@@ -162,6 +163,9 @@
                             @elseif($loop->index === 2)
                                 <!-- Video Icon -->
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                            @elseif($loop->index === 3)
+                                <!-- Article/Newspaper Icon -->
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
                             @else
                                 <!-- Compass/Explore Icon -->
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>

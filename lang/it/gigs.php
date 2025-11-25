@@ -133,6 +133,8 @@ return array (
   'select_language' => 'Seleziona Lingua',
   'select_event' => 'Seleziona Evento',
   'select_group' => 'Seleziona Gruppo',
+  'no_gigs_found' => 'Nessun Ingaggio Trovato',
+  'no_gigs_description' => 'Prova a modificare i filtri o crea un nuovo ingaggio',
   'actions' => 
   array (
     'view' => 'Visualizza',
@@ -239,8 +241,6 @@ return array (
     'application_rejected' => 'Candidatura rifiutata',
     'confirm_accept' => 'Sei sicuro di voler accettare questa candidatura?',
     'confirm_reject' => 'Sei sicuro di voler rifiutare questa candidatura?',
-    'no_gigs_found' => 'Nessun Ingaggio Trovato',
-    'no_gigs_description' => 'Prova a modificare i filtri o crea un nuovo ingaggio',
     'no_my_gigs' => 'Non hai ancora creato ingaggi',
     'no_my_gigs_description' => 'Crea il tuo primo ingaggio per iniziare',
     'no_my_applications' => 'Non hai ancora inviato candidature',

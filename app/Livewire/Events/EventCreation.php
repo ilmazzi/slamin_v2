@@ -184,7 +184,6 @@ class EventCreation extends Component
 
             // Step 4: Settings
             'max_participants' => 'nullable|integer|min:1',
-            'allow_requests' => 'boolean',
             'status' => 'required|in:draft,published',
         ];
     }
@@ -259,6 +258,8 @@ class EventCreation extends Component
 
         if ($this->currentStep < $this->totalSteps) {
             $this->currentStep++;
+            // Scroll to top dopo il cambio step
+            $this->dispatch('scroll-to-top');
         }
     }
 
@@ -728,7 +729,7 @@ class EventCreation extends Component
 
                 // Settings
                 'max_participants' => $this->max_participants ?: null,
-                'allow_requests' => $this->allow_requests,
+                'allow_requests' => false, // Sempre false, solo ingaggi e inviti
                 'status' => $this->status,
 
                 // Festival
