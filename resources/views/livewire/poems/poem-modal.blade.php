@@ -196,8 +196,8 @@
             perspective: 2000px;
             max-width: 900px;
             width: 90%;
-            height: 70vh;
-            max-height: 600px;
+            height: 80vh;
+            max-height: 700px;
         }
         
         .poem-book-opened {
