@@ -154,42 +154,6 @@ class PersonalizedFeed extends Component
             ];
         }
 
-
-        // New poet suggestions
-        $newPoets = User::whereHas('poems', function($query) {
-                $query->where('moderation_status', 'approved');
-            })
-            ->withCount(['poems', 'followers'])
-            ->latest('created_at')
-            ->limit(1)
-            ->get();
-
-        foreach ($newPoets as $poet) {
-            // Count mutual followers if user is authenticated
-            $mutualFollowersCount = 0;
-            if (Auth::check()) {
-                // Get IDs of users that the current user follows
-                $followingIds = Auth::user()->following()->pluck('users.id');
-                // Count how many of the poet's followers are also followed by current user
-                $mutualFollowersCount = $poet->followers()
-                    ->whereIn('users.id', $followingIds)
-                    ->count();
-            }
-            
-            $this->feedItems[] = [
-                'type' => 'suggestion',
-                'id' => $poet->id,
-                'poet' => [
-                    'name' => $poet->name,
-                    'avatar' => $poet->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($poet->name) . '&background=dc2626&color=fff',
-                    'followers_count' => $poet->followers_count ?? 0,
-                    'poems_count' => $poet->poems_count,
-                    'bio' => $poet->bio ?? 'Poeta contemporaneo, amo scrivere di natura e sentimenti.',
-                ],
-                'mutual_followers' => $mutualFollowersCount,
-            ];
-        }
-
         // TODO: Add real gallery feature when implemented
         // For now, galleries are not included in the feed
     }
@@ -264,15 +228,75 @@ class PersonalizedFeed extends Component
         $this->dispatch('notify', ['message' => 'Ti sei iscritto all\'evento!', 'type' => 'success']);
     }
 
-    public function followPoet($poetId)
+    public function getTrendingTopics()
     {
-        // Handle follow
-        $this->dispatch('notify', ['message' => 'Ora segui questo poeta!', 'type' => 'success']);
+        $trending = [];
+        
+        // Get tags from ALL poems (global, not time-limited)
+        $poemTags = Poem::where('is_public', true)
+            ->where('moderation_status', 'approved')
+            ->whereNotNull('tags')
+            ->pluck('tags')
+            ->flatten()
+            ->filter()
+            ->countBy()
+            ->sortDesc()
+            ->take(10);
+        
+        foreach ($poemTags as $tag => $count) {
+            $trending[$tag] = ($trending[$tag] ?? 0) + $count;
+        }
+        
+        // Get tags from ALL articles (global, not time-limited)
+        $articleTags = Article::where('is_public', true)
+            ->where('moderation_status', 'approved')
+            ->withCount(['tags'])
+            ->with('tags')
+            ->get()
+            ->pluck('tags')
+            ->flatten()
+            ->pluck('name')
+            ->filter()
+            ->countBy()
+            ->sortDesc();
+        
+        foreach ($articleTags as $tag => $count) {
+            $trending[$tag] = ($trending[$tag] ?? 0) + $count;
+        }
+        
+        // Sort by count and take top 5
+        arsort($trending);
+        $trending = array_slice($trending, 0, 5, true);
+        
+        // Format with # if not already present
+        $formatted = [];
+        foreach ($trending as $tag => $count) {
+            $formattedTag = str_starts_with($tag, '#') ? $tag : '#' . $tag;
+            $formatted[] = [
+                'tag' => $formattedTag,
+                'count' => $count
+            ];
+        }
+        
+        // If no trending topics, return defaults
+        if (empty($formatted)) {
+            return [
+                ['tag' => '#PoesiaContemporanea', 'count' => 0],
+                ['tag' => '#Haiku', 'count' => 0],
+                ['tag' => '#Versi', 'count' => 0],
+            ];
+        }
+        
+        return $formatted;
     }
 
     public function render()
     {
-        return view('livewire.home.personalized-feed');
+        $trendingTopics = $this->getTrendingTopics();
+        
+        return view('livewire.home.personalized-feed', [
+            'trendingTopics' => $trendingTopics
+        ]);
     }
 }
 

@@ -2,31 +2,13 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Header -->
-        <div class="flex items-center justify-between mb-8">
-            <div>
-                <h2 class="text-3xl lg:text-4xl font-bold text-neutral-900 dark:text-white">
-                    {!! __('feed.title') !!}
-                </h2>
-                <p class="text-neutral-600 dark:text-neutral-400 mt-2">
-                    {{ __('feed.subtitle') }}
-                </p>
-            </div>
-            
-            <!-- Filter Pills -->
-            <div class="hidden md:flex items-center gap-2">
-                <button class="px-4 py-2 rounded-full bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors">
-                    {{ __('feed.filter_all') }}
-                </button>
-                <button class="px-4 py-2 rounded-full bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
-                    {{ __('feed.filter_poems') }}
-                </button>
-                <button class="px-4 py-2 rounded-full bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
-                    {{ __('feed.filter_events') }}
-                </button>
-                <button class="px-4 py-2 rounded-full bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-sm font-medium hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
-                    {{ __('feed.filter_videos') }}
-                </button>
-            </div>
+        <div class="mb-8">
+            <h2 class="text-3xl lg:text-4xl font-bold text-neutral-900 dark:text-white">
+                {!! __('feed.title') !!}
+            </h2>
+            <p class="text-neutral-600 dark:text-neutral-400 mt-2">
+                {{ __('feed.subtitle') }}
+            </p>
         </div>
 
         <!-- Feed Grid -->
@@ -336,56 +318,22 @@
             <!-- Sidebar (Right 1/3) -->
             <div class="space-y-6">
                 
-                <!-- Poet Suggestions -->
-                @foreach($feedItems as $item)
-                    @if($item['type'] === 'suggestion')
-                        <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-6">
-                            <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-4">
-                                🌟 {{ __('feed.suggested_poets') }}
-                            </h3>
-                            <div class="space-y-4">
-                                <div class="flex items-start gap-3">
-                                    <img src="{{ $item['poet']['avatar'] }}" alt="{{ $item['poet']['name'] }}" 
-                                         class="w-14 h-14 rounded-full object-cover ring-2 ring-primary-200 flex-shrink-0">
-                                    <div class="flex-1 min-w-0">
-                                        <h4 class="font-semibold text-neutral-900 dark:text-white truncate">
-                                            {{ $item['poet']['name'] }}
-                                        </h4>
-                                        <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-2">
-                                            {{ $item['poet']['bio'] }}
-                                        </p>
-                                        <div class="flex items-center gap-3 text-xs text-neutral-500 dark:text-neutral-500 mb-3">
-                                            <span>{{ $item['poet']['followers_count'] }} {{ __('feed.followers') }}</span>
-                                            <span>•</span>
-                                            <span>{{ $item['poet']['poems_count'] }} {{ __('feed.poems_count') }}</span>
-                                        </div>
-                                        <button wire:click="followPoet({{ $item['id'] }})" 
-                                                class="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-colors">
-                                            {{ __('feed.follow') }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
-
-                <!-- Trending Topics -->
+                <!-- Trending Topics - GLOBALE -->
                 <div class="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl shadow-lg p-6 text-white">
-                    <h3 class="text-lg font-bold mb-4">🔥 {{ __('feed.trending_today') }}</h3>
+                    <h3 class="text-lg font-bold mb-4">🔥 {{ __('feed.trending') }}</h3>
                     <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm">#PoesiaContemporanea</span>
-                            <span class="text-xs bg-white/20 px-2 py-1 rounded-full">1.2K</span>
+                        @forelse($trendingTopics as $topic)
+                        <div class="flex items-center justify-between hover:bg-white/10 -mx-2 px-2 py-2 rounded-lg transition-colors cursor-pointer">
+                            <span class="text-sm font-medium">{{ $topic['tag'] }}</span>
+                            <span class="text-xs bg-white/20 px-2.5 py-1 rounded-full font-semibold">
+                                {{ $topic['count'] > 1000 ? number_format($topic['count'] / 1000, 1) . 'K' : $topic['count'] }}
+                            </span>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm">#Haiku</span>
-                            <span class="text-xs bg-white/20 px-2 py-1 rounded-full">892</span>
+                        @empty
+                        <div class="text-sm text-white/70 italic">
+                            {{ __('feed.no_trending_yet') }}
                         </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm">#Versi</span>
-                            <span class="text-xs bg-white/20 px-2 py-1 rounded-full">654</span>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
 

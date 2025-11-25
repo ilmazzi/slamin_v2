@@ -30,7 +30,9 @@ return [
     'poems_count' => 'poems',
     'follow' => 'Follow',
     
+    'trending' => 'Trending Topics',
     'trending_today' => 'Trending Today',
+    'no_trending_yet' => 'No topics yet',
     
     'quick_actions' => 'Quick Actions',
     'write_poem' => 'Write Poem',

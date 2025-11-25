@@ -30,7 +30,9 @@ return [
     'poems_count' => 'poèmes',
     'follow' => 'Suivre',
     
+    'trending' => 'Tendances',
     'trending_today' => 'Tendance Aujourd\'hui',
+    'no_trending_yet' => 'Aucun sujet pour le moment',
     
     'quick_actions' => 'Actions Rapides',
     'write_poem' => 'Écrire un Poème',
