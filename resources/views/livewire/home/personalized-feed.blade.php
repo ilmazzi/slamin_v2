@@ -1,4 +1,537 @@
 <div class="py-16 bg-gradient-to-br from-neutral-50 via-white to-primary-50/30 dark:from-neutral-900 dark:via-neutral-900 dark:to-primary-900/10">
+    
+    {{-- CSS Styles for Feed Content Cards --}}
+    <style>
+        /* ========================================
+           PAPER SHEET STYLE (POEMS)
+           ======================================== */
+        
+        .poetry-card-container {
+            perspective: 1000px;
+            margin-bottom: 2rem;
+        }
+        
+        .paper-sheet-wrapper {
+            transition: transform 0.4s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .paper-sheet {
+            background: linear-gradient(145deg, #fdfcfb 0%, #faf9f8 50%, #f5f4f2 100%);
+            padding: 2.5rem 2rem 2rem 2rem;
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.08),
+                0 8px 24px rgba(0, 0, 0, 0.06),
+                0 16px 48px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            position: relative;
+            min-height: 200px;
+            transition: all 0.4s ease;
+            border-radius: 4px;
+        }
+        
+        .paper-sheet::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 2rem;
+            right: 2rem;
+            height: 1px;
+            background: repeating-linear-gradient(
+                to right,
+                transparent,
+                transparent 4px,
+                rgba(var(--color-primary-600-rgb), 0.15) 4px,
+                rgba(var(--color-primary-600-rgb), 0.15) 8px
+            );
+            margin-top: 2.5rem;
+        }
+        
+        .paper-author-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+        
+        .paper-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+        
+        .paper-author-name {
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .paper-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .paper-content {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #444;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        .paper-readmore {
+            color: var(--color-primary-600);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: transform 0.2s ease;
+        }
+        
+        .paper-actions-integrated {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        
+        /* ========================================
+           MAGAZINE COVER STYLE (ARTICLES)
+           ======================================== */
+        
+        .magazine-article-wrapper {
+            position: relative;
+            perspective: 1200px;
+            margin-bottom: 2rem;
+        }
+        
+        .thumbtack {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            z-index: 20;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .thumbtack-needle {
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 10px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border-radius: 1px;
+        }
+        
+        .magazine-cover {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f8f8 100%);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 
+                0 8px 24px rgba(0, 0, 0, 0.12),
+                0 16px 48px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            transition: all 0.4s ease;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        .magazine-inner {
+            padding: 1.5rem;
+        }
+        
+        .magazine-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #333;
+        }
+        
+        .magazine-logo {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #000;
+            letter-spacing: 2px;
+        }
+        
+        .magazine-issue {
+            font-size: 0.75rem;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .magazine-category {
+            display: inline-block;
+            background: var(--color-primary-600);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        
+        .magazine-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .magazine-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #000;
+            line-height: 1.3;
+            margin-bottom: 0.75rem;
+        }
+        
+        .magazine-excerpt {
+            font-size: 0.875rem;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .magazine-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .magazine-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .magazine-author-info {
+            flex: 1;
+        }
+        
+        .magazine-author-name {
+            font-weight: 700;
+            color: #000;
+            font-size: 0.875rem;
+        }
+        
+        .magazine-author-date {
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .magazine-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        
+        /* ========================================
+           CINEMA TICKET STYLE (EVENTS)
+           ======================================== */
+        
+        .cinema-ticket {
+            position: relative;
+            padding: 2rem 2.5rem 2rem 3rem;
+            box-shadow: 
+                0 8px 24px rgba(0, 0, 0, 0.15),
+                0 16px 48px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            transition: all 0.4s ease;
+            overflow: visible;
+            min-height: 280px;
+        }
+        
+        .ticket-perforation {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 24px;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent 0px,
+                transparent 8px,
+                rgba(0, 0, 0, 0.15) 8px,
+                rgba(0, 0, 0, 0.15) 12px,
+                transparent 12px,
+                transparent 20px
+            );
+            border-right: 2px dashed rgba(0, 0, 0, 0.2);
+        }
+        
+        .ticket-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .ticket-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .ticket-admit {
+            font-size: 0.875rem;
+            font-weight: 800;
+            color: #000;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .ticket-serial {
+            font-size: 0.75rem;
+            color: #666;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .ticket-image {
+            width: 100%;
+            height: 140px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .ticket-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #000;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        
+        .ticket-price {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: #c41e3a;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            border: 3px solid #a01729;
+            box-shadow: 0 4px 12px rgba(196, 30, 58, 0.4);
+        }
+        
+        .ticket-details {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .ticket-detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .ticket-detail-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .ticket-detail-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .ticket-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .location-icon {
+            width: 1rem;
+            height: 1rem;
+        }
+        
+        .ticket-cta-button {
+            width: 100%;
+            background: var(--color-primary-600);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .ticket-cta-button:hover {
+            background: var(--color-primary-700);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(var(--color-primary-600-rgb), 0.4);
+        }
+        
+        /* ========================================
+           FILM STRIP STYLE (VIDEOS)
+           ======================================== */
+        
+        .film-strip-container {
+            position: relative;
+            padding: 2.5rem 4rem;
+            background: 
+                linear-gradient(180deg, 
+                    rgba(255, 255, 255, 0.15) 0%,
+                    transparent 15%,
+                    transparent 85%,
+                    rgba(0, 0, 0, 0.2) 100%
+                ),
+                linear-gradient(135deg, 
+                    rgba(120, 80, 50, 0.85) 0%,
+                    rgba(100, 65, 40, 0.88) 25%,
+                    rgba(110, 72, 45, 0.86) 50%,
+                    rgba(95, 60, 38, 0.89) 75%,
+                    rgba(115, 75, 48, 0.87) 100%
+                );
+            clip-path: polygon(
+                0% 2%, 3% 0.5%, 6% 1.5%, 10% 0.8%, 15% 1.2%, 20% 0.5%, 
+                25% 1%, 30% 0.3%, 35% 0.8%, 40% 0.5%, 45% 1%, 50% 0.4%, 
+                55% 0.9%, 60% 0.6%, 65% 1.2%, 70% 0.5%, 75% 0.8%, 80% 0.4%, 
+                85% 1%, 90% 0.6%, 95% 1.2%, 100% 0.8%,
+                100% 98%, 97% 99.5%, 94% 98.5%, 90% 99.2%, 85% 98.8%, 
+                80% 99.5%, 75% 99%, 70% 99.7%, 65% 99.2%, 60% 99.5%, 
+                55% 99%, 50% 99.6%, 45% 99.1%, 40% 99.4%, 35% 98.8%, 
+                30% 99.5%, 25% 99.2%, 20% 99.6%, 15% 99%, 10% 99.4%, 
+                5% 98.8%, 0% 98%
+            );
+            box-shadow: 
+                0 8px 24px rgba(0, 0, 0, 0.3),
+                0 16px 48px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.1),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+        }
+        
+        .film-perforation {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2rem;
+            background: linear-gradient(135deg, #654321 0%, #4a3319 50%, #5a3d1f 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .film-perforation-left {
+            left: 0;
+        }
+        
+        .film-perforation-right {
+            right: 0;
+        }
+        
+        .perforation-hole {
+            width: 0.5rem;
+            height: 0.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 2px;
+            box-shadow: 
+                inset 0 1px 2px rgba(0, 0, 0, 0.5),
+                0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .film-edge-code-top,
+        .film-edge-code-bottom {
+            position: absolute;
+            left: 2rem;
+            right: 2rem;
+            text-align: center;
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+        
+        .film-edge-code-top {
+            top: 0.5rem;
+        }
+        
+        .film-edge-code-bottom {
+            bottom: 0.5rem;
+        }
+        
+        .film-frame {
+            position: relative;
+            background: #000;
+            padding: 0.75rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .film-frame-number {
+            position: absolute;
+            font-size: 0.625rem;
+            font-family: 'Courier New', monospace;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 700;
+        }
+        
+        .film-frame-number-tl {
+            top: 0.25rem;
+            left: 0.5rem;
+        }
+        
+        .film-frame-number-tr {
+            top: 0.25rem;
+            right: 0.5rem;
+        }
+    </style>
+    
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Header -->
@@ -18,245 +551,326 @@
             <div class="lg:col-span-2 space-y-6">
                 @foreach($feedItems as $index => $item)
                     @if($item['type'] === 'poem')
-                        <!-- Poem Card -->
-                        <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                            <!-- Author Header -->
-                            <div class="p-6 flex items-center justify-between border-b border-neutral-100 dark:border-neutral-700">
-                                <div class="flex items-center gap-3">
-                                    <img src="{{ $item['author']['avatar'] }}" alt="{{ $item['author']['name'] }}" 
-                                         class="w-12 h-12 rounded-full object-cover ring-2 ring-primary-200">
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <h3 class="font-semibold text-neutral-900 dark:text-white">{{ $item['author']['name'] }}</h3>
-                                            @if($item['author']['verified'])
-                                                <svg class="w-4 h-4 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                                </svg>
-                                            @endif
-                                        </div>
-                                        <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ $item['created_at'] }}</p>
+                        <!-- Poem Card - Paper Sheet Style (Homepage Match) -->
+                        <?php $paperRotation = rand(-2, 2); ?>
+                        <div class="poetry-card-container mb-6">
+                            <div class="paper-sheet-wrapper" style="transform: rotate({{ $paperRotation }}deg);">
+                                <div class="paper-sheet group">
+                                    <!-- Author Avatar & Name -->
+                                    <div class="paper-author-info">
+                                        <img src="{{ $item['author']['avatar'] }}" 
+                                             alt="{{ $item['author']['name'] }}"
+                                             class="paper-avatar">
+                                        <span class="paper-author-name">
+                                            {{ $item['author']['name'] }}
+                                        </span>
                                     </div>
-                                </div>
-                                <button class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300" title="{{ __('common.more_options') }}">
-                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                                    </svg>
-                                </button>
-                            </div>
-
-                            <!-- Poem Content -->
-                            <div class="p-6">
-                                <h4 class="text-2xl font-bold text-neutral-900 dark:text-white mb-3 group-hover:text-primary-600 transition-colors">
-                                    {{ $item['title'] }}
-                                </h4>
-                                <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed italic">
-                                    "{{ $item['excerpt'] }}"
-                                </p>
-                            </div>
-
-                            @if(isset($item['image']) && $item['image'])
-                                <div class="aspect-video overflow-hidden">
-                                    <img src="{{ $item['image'] }}" alt="{{ $item['title'] }}" 
-                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                </div>
-                            @endif
-
-                             <!-- Actions -->
-                            <div class="p-6 border-t border-neutral-100 dark:border-neutral-700">
-                                <div class="flex items-center gap-6">
-                                    <x-like-button 
-                                        :item-id="$item['id']"
-                                        :item-type="$item['type']"
-                                        :is-liked="$item['is_liked']"
-                                        :likes-count="$item['likes_count']"
-                                    />
                                     
-                                    <x-comment-button 
-                                        :item-id="$item['id']"
-                                        :item-type="$item['type']"
-                                        :comments-count="$item['comments_count']"
-                                    />
+                                    <!-- Poem Title -->
+                                    <h3 class="paper-title">
+                                        "{{ $item['title'] }}"
+                                    </h3>
                                     
-                                    <x-share-button 
-                                        :item-id="$item['id']"
-                                        :item-type="$item['type']"
-                                    />
+                                    <!-- Poem Content -->
+                                    <div class="paper-content">
+                                        {{ $item['excerpt'] }}
+                                    </div>
+                                    
+                                    <!-- Read more hint -->
+                                    <div class="paper-readmore">
+                                        {{ __('common.read_more') }} →
+                                    </div>
+                                    
+                                    <!-- Social Actions - Inside Paper -->
+                                    <div class="paper-actions-integrated">
+                                        <x-like-button 
+                                            :itemId="$item['id']"
+                                            itemType="poem"
+                                            :isLiked="$item['is_liked']"
+                                            :likesCount="$item['likes_count']"
+                                            size="sm" />
+                                        
+                                        <x-comment-button 
+                                            :itemId="$item['id']"
+                                            itemType="poem"
+                                            :commentsCount="$item['comments_count']"
+                                            size="sm" />
+                                        
+                                        <x-share-button 
+                                            :itemId="$item['id']"
+                                            itemType="poem"
+                                            size="sm" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                     @elseif($item['type'] === 'article')
-                        <!-- Article Card -->
-                        <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                            @if(isset($item['image']) && $item['image'])
-                                <div class="aspect-video overflow-hidden relative">
-                                    <img src="{{ $item['image'] }}" alt="{{ $item['title'] }}" 
-                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                    <div class="absolute top-4 left-4">
-                                        <span class="px-3 py-1 bg-accent text-white text-xs font-semibold rounded-full shadow-lg">
-                                            📝 {{ __('feed.article_badge') ?? 'Articolo' }}
-                                        </span>
+                        <!-- Article Card - Magazine Cover Style (Homepage Match) -->
+                        <?php
+                            $rotation = rand(-3, 3);
+                            $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
+                            $pinRotation = rand(-15, 15);
+                        ?>
+                        <article class="magazine-article-wrapper mb-6">
+                            <!-- Thumbtack/Puntina -->
+                            <div class="thumbtack" 
+                                 style="background: {{ $pinColor }}; transform: rotate({{ $pinRotation }}deg);">
+                                <div class="thumbtack-needle"></div>
+                            </div>
+                            
+                            <!-- Magazine Cover -->
+                            <div class="magazine-cover" style="transform: rotate({{ $rotation }}deg);">
+                                <div class="magazine-inner group">
+                                    <!-- Magazine Header -->
+                                    <div class="magazine-header">
+                                        <div class="magazine-logo">SLAMIN</div>
+                                        <div class="magazine-issue">Vol. {{ date('Y') }} · N.{{ str_pad($item['id'], 2, '0', STR_PAD_LEFT) }}</div>
                                     </div>
-                                </div>
-                            @endif
-
-                            <!-- Author Info -->
-                            <div class="p-6 flex items-center justify-between border-b border-neutral-100 dark:border-neutral-700">
-                                <div class="flex items-center gap-3">
-                                    <img src="{{ $item['author']['avatar'] }}" alt="{{ $item['author']['name'] }}" 
-                                         class="w-12 h-12 rounded-full object-cover ring-2 ring-accent/20">
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <h3 class="font-bold text-neutral-900 dark:text-white">{{ $item['author']['name'] }}</h3>
-                                            @if($item['author']['verified'])
-                                                <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                                </svg>
-                                            @endif
+                                    
+                                    <!-- Category Badge -->
+                                    <div class="magazine-category">
+                                        Cultura
+                                    </div>
+                                    
+                                    <!-- Featured Image -->
+                                    @if(isset($item['image']) && $item['image'])
+                                    <div class="magazine-image">
+                                        <img src="{{ $item['image'] }}" 
+                                             alt="{{ $item['title'] }}"
+                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                    </div>
+                                    @endif
+                                    
+                                    <!-- Article Title -->
+                                    <h3 class="magazine-title">
+                                        {{ $item['title'] }}
+                                    </h3>
+                                    
+                                    <!-- Excerpt -->
+                                    <p class="magazine-excerpt">
+                                        {{ $item['excerpt'] }}
+                                    </p>
+                                    
+                                    <!-- Author Info with Avatar -->
+                                    <div class="magazine-author">
+                                        <img src="{{ $item['author']['avatar'] }}" 
+                                             alt="{{ $item['author']['name'] }}"
+                                             class="magazine-avatar">
+                                        <div class="magazine-author-info">
+                                            <span class="magazine-author-name">
+                                                {{ $item['author']['name'] }}
+                                            </span>
+                                            <div class="magazine-author-date">{{ $item['created_at'] }}</div>
                                         </div>
-                                        <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ $item['created_at'] }}</p>
                                     </div>
                                 </div>
-                                <button class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300" title="{{ __('common.more_options') }}">
-                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
-                                    </svg>
-                                </button>
-                            </div>
-
-                            <!-- Article Content -->
-                            <div class="p-6">
-                                <h4 class="text-2xl font-bold text-neutral-900 dark:text-white mb-3 group-hover:text-accent transition-colors">
-                                    {{ $item['title'] }}
-                                </h4>
-                                <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed">
-                                    {{ $item['excerpt'] }}
-                                </p>
-                            </div>
-
-                             <!-- Actions -->
-                            <div class="p-6 border-t border-neutral-100 dark:border-neutral-700">
-                                <div class="flex items-center gap-6">
+                                
+                                <!-- Social Actions -->
+                                <div class="magazine-actions">
                                     <x-like-button 
-                                        :item-id="$item['id']"
-                                        :item-type="$item['type']"
-                                        :is-liked="$item['is_liked']"
-                                        :likes-count="$item['likes_count']"
-                                    />
+                                        :itemId="$item['id']"
+                                        itemType="article"
+                                        :isLiked="$item['is_liked']"
+                                        :likesCount="$item['likes_count']"
+                                        size="sm" />
                                     
                                     <x-comment-button 
-                                        :item-id="$item['id']"
-                                        :item-type="$item['type']"
-                                        :comments-count="$item['comments_count']"
-                                    />
+                                        :itemId="$item['id']"
+                                        itemType="article"
+                                        :commentsCount="$item['comments_count']"
+                                        size="sm" />
                                     
                                     <x-share-button 
-                                        :item-id="$item['id']"
-                                        :item-type="$item['type']"
-                                    />
+                                        :itemId="$item['id']"
+                                        itemType="article"
+                                        size="sm" />
                                 </div>
                             </div>
-                        </div>
+                        </article>
 
                     @elseif($item['type'] === 'event')
-                        <!-- Event Card -->
-                        <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                            <div class="relative">
-                                <div class="aspect-[21/9] overflow-hidden">
-                                    <img src="{{ $item['image'] }}" alt="{{ $item['title'] }}" 
-                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <!-- Event Card - Cinema Ticket Style (Homepage Match) -->
+                        <?php
+                            $tilt = rand(-3, 3);
+                            $ticketColors = [
+                                ['#fef7e6', '#fdf3d7', '#fcf0cc'],
+                                ['#fff5e1', '#fff0d4', '#ffecc7'],
+                                ['#f5f5dc', '#f0f0d0', '#ebebc4'],
+                            ];
+                            $selectedColors = $ticketColors[array_rand($ticketColors)];
+                            $stampRotation = rand(-8, 8);
+                        ?>
+                        <div class="mb-6">
+                            <div class="cinema-ticket group"
+                                 style="transform: rotate({{ $tilt }}deg); 
+                                        background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
+                                
+                                <!-- Perforated Left Edge -->
+                                <div class="ticket-perforation"></div>
+                                
+                                <!-- Watermark Logo -->
+                                <div class="ticket-watermark">
+                                    <img src="{{ asset('assets/images/filigrana.png') }}" 
+                                         alt="Slamin" 
+                                         class="w-32 h-auto md:w-40">
                                 </div>
-                                <div class="absolute top-4 left-4">
-                                    <span class="px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-full shadow-lg">
-                                        📅 {{ __('feed.event_badge') }}
-                                    </span>
+                                
+                                <!-- Ticket Main Content -->
+                                <div class="ticket-content">
+                                    <!-- Ticket Header -->
+                                    <div class="ticket-header">
+                                        <div class="ticket-admit">EVENTO</div>
+                                        <div class="ticket-serial">#{{ str_pad($item['id'], 4, '0', STR_PAD_LEFT) }}</div>
+                                    </div>
+                                    
+                                    <!-- Event Image (if available) -->
+                                    @if(isset($item['image']) && $item['image'])
+                                    <div class="ticket-image">
+                                        <img src="{{ $item['image'] }}" 
+                                             alt="{{ $item['title'] }}"
+                                             class="w-full h-full object-cover">
+                                    </div>
+                                    @endif
+                                    
+                                    <!-- Event Title -->
+                                    <h3 class="ticket-title">{{ $item['title'] }}</h3>
+                                    
+                                    <!-- Price Badge -->
+                                    <div class="ticket-price" style="transform: rotate({{ $stampRotation }}deg);">
+                                        GRATIS
+                                    </div>
+                                    
+                                    <!-- Event Details Grid -->
+                                    <div class="ticket-details">
+                                        <div class="ticket-detail-item">
+                                            <div class="ticket-detail-label">DATA</div>
+                                            <div class="ticket-detail-value">{{ $item['date'] }}</div>
+                                        </div>
+                                        
+                                        <div class="ticket-detail-item">
+                                            <div class="ticket-detail-label">LUOGO</div>
+                                            <div class="ticket-detail-value ticket-location">
+                                                <svg class="location-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                                </svg>
+                                                <span>{{ $item['location'] }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Attend Button -->
+                                    <button wire:click="attendEvent({{ $item['id'] }})" 
+                                            class="ticket-cta-button">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        {{ __('feed.attend_event') }}
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="p-6">
-                                <h4 class="text-2xl font-bold text-neutral-900 dark:text-white mb-3 group-hover:text-primary-600 transition-colors">
-                                    {{ $item['title'] }}
-                                </h4>
-                                <div class="space-y-2 mb-4">
-                                    <div class="flex items-center gap-3 text-neutral-600 dark:text-neutral-400">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                        </svg>
-                                        <span>{{ $item['date'] }}</span>
-                                    </div>
-                                    <div class="flex items-center gap-3 text-neutral-600 dark:text-neutral-400">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                        </svg>
-                                        <span>{{ $item['location'] }}</span>
-                                    </div>
-                                    <div class="flex items-center gap-3 text-neutral-600 dark:text-neutral-400">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                        </svg>
-                                        <span>{{ $item['participants_count'] }} {{ __('feed.participants') }}</span>
-                                    </div>
-                                </div>
-                                <button wire:click="attendEvent({{ $item['id'] }})" 
-                                        class="w-full px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    {{ __('feed.attend_event') }}
-                                </button>
                             </div>
                         </div>
 
                     @elseif($item['type'] === 'video')
-                        <!-- Video Card -->
-                        <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group">
-                            <div class="p-6 flex items-center justify-between border-b border-neutral-100 dark:border-neutral-700">
-                                <div class="flex items-center gap-3">
-                                    <img src="{{ $item['author']['avatar'] }}" alt="{{ $item['author']['name'] }}" 
-                                         class="w-12 h-12 rounded-full object-cover ring-2 ring-primary-200">
-                                    <div>
-                                        <h3 class="font-semibold text-neutral-900 dark:text-white">{{ $item['author']['name'] }}</h3>
-                                        <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ $item['created_at'] }}</p>
+                        <!-- Video Card - Film Strip Style (Homepage Match) -->
+                        <?php $tilt = rand(-1, 1); ?>
+                        <div class="mb-6">
+                            <div class="film-strip-container" style="transform: rotate({{ $tilt }}deg);">
+                                <!-- Film Perforations Left -->
+                                <div class="film-perforation film-perforation-left">
+                                    @for($h = 0; $h < 8; $h++)
+                                    <div class="perforation-hole"></div>
+                                    @endfor
+                                </div>
+                                
+                                <!-- Film Perforations Right -->
+                                <div class="film-perforation film-perforation-right">
+                                    @for($h = 0; $h < 8; $h++)
+                                    <div class="perforation-hole"></div>
+                                    @endfor
+                                </div>
+                                
+                                <!-- Film Edge Codes -->
+                                <div class="film-edge-code-top">SLAMIN</div>
+                                <div class="film-edge-code-bottom">ISO 400</div>
+                                
+                                <!-- Film Frame -->
+                                <div class="film-frame">
+                                    <!-- Frame Numbers -->
+                                    <div class="film-frame-number film-frame-number-tl">///{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</div>
+                                    <div class="film-frame-number film-frame-number-tr">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}A</div>
+                                
+                                    <!-- Video Container -->
+                                    <div class="relative aspect-video overflow-hidden bg-black cursor-pointer group">
+                                        <!-- Video Thumbnail -->
+                                        <img src="{{ $item['thumbnail'] }}" 
+                                             alt="{{ $item['title'] }}" 
+                                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                        
+                                        <!-- Dark Overlay -->
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40"></div>
+                                        
+                                        <!-- Play Button -->
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <div class="w-14 h-14 md:w-16 md:h-16 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-all duration-300">
+                                                <svg class="w-6 h-6 md:w-7 md:h-7 text-primary-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Title -->
+                                        <div class="absolute top-0 left-0 right-0 pt-4 px-4">
+                                            <h3 class="text-sm md:text-lg font-bold text-white drop-shadow-lg line-clamp-2" 
+                                                style="font-family: 'Crimson Pro', serif;">
+                                                {{ $item['title'] }}
+                                            </h3>
+                                        </div>
+                                        
+                                        <!-- Duration Badge -->
+                                        <div class="absolute bottom-4 right-4 px-2 py-1 bg-black/80 text-white text-xs font-semibold rounded">
+                                            {{ $item['duration'] }}
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="relative aspect-video overflow-hidden bg-neutral-900 group cursor-pointer">
-                                <img src="{{ $item['thumbnail'] }}" alt="{{ $item['title'] }}" 
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                                    <div class="w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-2xl">
-                                        <svg class="w-8 h-8 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="absolute bottom-4 right-4 px-3 py-1 bg-black/80 backdrop-blur-sm text-white text-sm font-semibold rounded-lg">
-                                    {{ $item['duration'] }}
-                                </div>
-                            </div>
-                            <div class="p-6">
-                                <h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">{{ $item['title'] }}</h4>
-                                <div class="flex items-center gap-6">
-                                    <x-like-button 
-                                        :item-id="$item['id']"
-                                        :item-type="$item['type']"
-                                        :is-liked="$item['is_liked']"
-                                        :likes-count="$item['likes_count']"
-                                    />
                                     
-                                    <!-- Views -->
-                                    <div class="flex items-center gap-2 text-neutral-500 dark:text-neutral-500">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                        </svg>
-                                        <span class="font-medium text-sm">{{ $item['views_count'] }}</span>
+                                    <!-- User & Social Stats -->
+                                    <div class="mt-3 px-3 pb-3 space-y-2">
+                                        <!-- User Info -->
+                                        <div class="flex items-center gap-2">
+                                            <img src="{{ $item['author']['avatar'] }}" 
+                                                 alt="{{ $item['author']['name'] }}"
+                                                 class="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover ring-1 ring-white/30">
+                                            <p class="font-semibold text-xs md:text-sm text-white/90">{{ $item['author']['name'] }}</p>
+                                        </div>
+                                        
+                                        <!-- Social Buttons -->
+                                        <div class="flex items-center gap-4 text-white/90">
+                                            <!-- Views -->
+                                            <div class="inline-flex items-center gap-1.5">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                </svg>
+                                                <span class="text-xs md:text-sm">{{ $item['views_count'] }}</span>
+                                            </div>
+                                            
+                                            <!-- Like -->
+                                            <x-like-button 
+                                                :itemId="$item['id']"
+                                                itemType="video"
+                                                :isLiked="$item['is_liked']"
+                                                :likesCount="$item['likes_count']"
+                                                size="sm"
+                                                class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4" />
+                                            
+                                            <!-- Share -->
+                                            <x-share-button 
+                                                :itemId="$item['id']"
+                                                itemType="video"
+                                                size="sm"
+                                                class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                        </div>
                                     </div>
-                                    
-                                    <x-share-button 
-                                        :item-id="$item['id']"
-                                        :item-type="$item['type']"
-                                    />
                                 </div>
                             </div>
                         </div>
