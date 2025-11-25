@@ -26,12 +26,34 @@ class PersonalizedFeed extends Component
         $user = Auth::user();
         $this->feedItems = [];
 
-        // Load real data from database
+        // Get IDs of users the current user follows
+        $followingIds = [];
+        if ($user) {
+            $followingIds = $user->following()->pluck('followed_id')->toArray();
+            
+            // Also get users followed by users you follow (second degree)
+            if (!empty($followingIds)) {
+                $secondDegreeIds = \DB::table('follows')
+                    ->whereIn('follower_id', $followingIds)
+                    ->pluck('followed_id')
+                    ->unique()
+                    ->toArray();
+                
+                // Merge and remove duplicates
+                $followingIds = array_unique(array_merge($followingIds, $secondDegreeIds));
+            }
+        }
+
+        // If user follows no one, show popular content
+        $whereUserClause = !empty($followingIds) 
+            ? fn($query) => $query->whereIn('user_id', $followingIds)
+            : fn($query) => $query->where('like_count', '>', 0);
         
-        // Recent poems
+        // Recent poems from followed users
         $poems = Poem::with('user')
             ->where('is_public', true)
             ->where('moderation_status', 'approved')
+            ->where($whereUserClause)
             ->latest('published_at')
             ->limit(3)
             ->get();
@@ -61,10 +83,11 @@ class PersonalizedFeed extends Component
             ];
         }
 
-        // Upcoming events
+        // Upcoming events from followed users
         $events = Event::where('is_public', true)
             ->where('moderation_status', 'approved')
             ->where('start_datetime', '>=', now())
+            ->where($whereUserClause)
             ->orderBy('start_datetime')
             ->limit(2)
             ->get();
@@ -86,10 +109,11 @@ class PersonalizedFeed extends Component
             ];
         }
 
-        // Videos
+        // Videos from followed users
         $videos = Video::with('user')
             ->where('is_public', true)
             ->where('moderation_status', 'approved')
+            ->where($whereUserClause)
             ->latest('created_at')
             ->limit(2)
             ->get();
@@ -121,10 +145,11 @@ class PersonalizedFeed extends Component
             ];
         }
 
-        // Articles
+        // Articles from followed users
         $articles = Article::with('user')
             ->where('is_public', true)
             ->where('moderation_status', 'approved')
+            ->where($whereUserClause)
             ->latest('published_at')
             ->limit(2)
             ->get();
@@ -222,11 +247,6 @@ class PersonalizedFeed extends Component
         }
     }
 
-    public function attendEvent($eventId)
-    {
-        // Handle event attendance
-        $this->dispatch('notify', ['message' => 'Ti sei iscritto all\'evento!', 'type' => 'success']);
-    }
 
     public function getTrendingTopics()
     {

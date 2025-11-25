@@ -22,7 +22,8 @@
                         <?php $paperRotation = rand(-2, 2); ?>
                         <div class="poetry-card-container mb-6">
                             <div class="paper-sheet-wrapper" style="transform: rotate({{ $paperRotation }}deg);">
-                                <div class="paper-sheet group">
+                                <div class="paper-sheet group cursor-pointer" 
+                                     onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $item['id'] }} })">
                                     <!-- Author Avatar & Name -->
                                     <div class="paper-author-info">
                                         <img src="{{ $item['author']['avatar'] }}" 
@@ -49,7 +50,7 @@
                                     </div>
                                     
                                     <!-- Social Actions - Inside Paper -->
-                                    <div class="paper-actions-integrated">
+                                    <div class="paper-actions-integrated" @click.stop>
                                         <x-like-button 
                                             :itemId="$item['id']"
                                             itemType="poem"
@@ -88,7 +89,8 @@
                             
                             <!-- Magazine Cover -->
                             <div class="magazine-cover" style="transform: rotate({{ $rotation }}deg);">
-                                <div class="magazine-inner group">
+                                <div onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $item['id'] }} })" 
+                                     class="magazine-inner group cursor-pointer">
                                     <!-- Magazine Header -->
                                     <div class="magazine-header">
                                         <div class="magazine-logo">SLAMIN</div>
@@ -134,7 +136,7 @@
                                 </div>
                                 
                                 <!-- Social Actions -->
-                                <div class="magazine-actions">
+                                <div class="magazine-actions" @click.stop>
                                     <x-like-button 
                                         :itemId="$item['id']"
                                         itemType="article"
@@ -169,7 +171,8 @@
                             $stampRotation = rand(-8, 8);
                         ?>
                         <div class="mb-6">
-                            <div class="cinema-ticket group"
+                            <div class="cinema-ticket group cursor-pointer"
+                                 onclick="Livewire.dispatch('openEventModal', { eventId: {{ $item['id'] }} })"
                                  style="transform: rotate({{ $tilt }}deg); 
                                         background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
                                 
@@ -225,15 +228,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Attend Button -->
-                                    <button wire:click="attendEvent({{ $item['id'] }})" 
-                                            class="ticket-cta-button">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                        </svg>
-                                        {{ __('feed.attend_event') }}
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -242,7 +236,9 @@
                         <!-- Video Card - Film Strip Style (Homepage Match) -->
                         <?php $tilt = rand(-1, 1); ?>
                         <div class="mb-6">
-                            <div class="film-strip-container" style="transform: rotate({{ $tilt }}deg);">
+                            <div class="film-strip-container cursor-pointer" 
+                                 onclick="Livewire.dispatch('openVideoModal', { videoId: {{ $item['id'] }} })"
+                                 style="transform: rotate({{ $tilt }}deg);">
                                 <!-- Film Perforations Left -->
                                 <div class="film-perforation film-perforation-left">
                                     @for($h = 0; $h < 8; $h++)
@@ -310,8 +306,8 @@
                                             <p class="font-semibold text-xs md:text-sm text-white/90">{{ $item['author']['name'] }}</p>
                                         </div>
                                         
-                                        <!-- Social Buttons -->
-                                        <div class="flex items-center gap-4 text-white/90">
+                                    <!-- Social Buttons -->
+                                    <div class="flex items-center gap-4 text-white/90" @click.stop>
                                             <!-- Views -->
                                             <div class="inline-flex items-center gap-1.5">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -462,3 +458,8 @@
     </div>
 </div>
 
+{{-- Modals for content --}}
+<livewire:poems.poem-modal />
+<livewire:articles.article-modal />
+<livewire:events.event-modal />
+<livewire:media.video-modal />
