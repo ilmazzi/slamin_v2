@@ -181,7 +181,7 @@
                             
                             <div class="poetry-paper-card cursor-pointer" 
                                  style="transform: rotate({{ $paperRotation }}deg);"
-                                 onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $poem->id }} })">
+                                 @click="Livewire.dispatch('openPoemModal', { poemId: {{ $poem->id }} })">
                                 {{-- Featured Cover --}}
                                 <div class="poetry-card-cover {{ $hasCover ? 'poetry-card-cover--image' : 'poetry-card-cover--placeholder' }}">
                                     @if($hasCover)
