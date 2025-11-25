@@ -3,8 +3,14 @@
     $primaryRole = optional($user->roles->first())->display_name ?? optional($user->roles->first())->name ?? null;
 @endphp
 
-<div class="profile-cinematic" x-data="{ scrollY: 0, scrollProgress: 0 }" 
-     @scroll.window="scrollY = window.scrollY; scrollProgress = Math.min(scrollY / 1000, 1)">
+<div class="profile-cinematic" 
+     x-data="{ scrollY: 0, scrollProgress: 0 }" 
+     x-init="
+         window.addEventListener('scroll', () => {
+             scrollY = window.scrollY;
+             scrollProgress = Math.min(scrollY / 1000, 1);
+         }, { passive: true });
+     ">
     
     {{-- HERO IMMERSIVO CON PARALLAX --}}
     <section class="hero-immersive">
