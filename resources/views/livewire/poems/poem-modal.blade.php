@@ -9,18 +9,23 @@
          x-transition:leave="transition ease-in duration-200"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
-         class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
-         style="overflow-y: auto;"
+         class="fixed inset-0 z-50 overflow-hidden"
          @keydown.escape.window="$wire.closeModal()"
          x-init="$watch('show', value => { if (value) { document.querySelectorAll('[x-data]').forEach(el => { if (el.__x && el.__x.$data.showMenu !== undefined) el.__x.$data.showMenu = false; }); } })"
-         x-effect="show ? document.body.style.overflow = 'hidden' : document.body.style.overflow = ''">
+         x-effect="show ? document.body.style.overflow = 'hidden' : document.body.style.overflow = ''"
+         @mousewheel.prevent
+         @touchmove.prevent>
         
         <!-- Dark Backdrop -->
         <div class="absolute inset-0 bg-black/80 -z-10"
              @click="$wire.closeModal()"></div>
         
-        <!-- Book Container -->
-        <div class="poem-book-container relative z-10"
+        <!-- Scrollable Wrapper -->
+        <div class="absolute inset-0 overflow-y-auto overflow-x-hidden z-10 flex items-center justify-center py-8 px-4 md:px-8"
+             @mousewheel.stop
+             @touchmove.stop>
+            <!-- Book Container -->
+            <div class="poem-book-container relative"
                  x-show="show"
                  x-transition:enter="transition-all ease-out duration-1000"
                  x-transition:enter-start="opacity-0 scale-95"
@@ -176,6 +181,7 @@
                     <!-- Centro libro (rilegatura) -->
                     <div class="poem-book-spine"></div>
                 </div>
+            </div>
         </div>
     </div>
     @endif
