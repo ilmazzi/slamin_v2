@@ -283,8 +283,15 @@ class PersonalizedFeed extends Component
         
         foreach ($articles as $article) {
             foreach ($article->tags as $tag) {
-                $tagName = \Str::lower($tag->name);
-                $trending[$tagName] = ($trending[$tagName] ?? 0) + 1;
+                // Handle both string and array (multilingua) tag names
+                $tagName = is_array($tag->name) 
+                    ? ($tag->name[app()->getLocale()] ?? $tag->name['it'] ?? reset($tag->name))
+                    : $tag->name;
+                
+                if (!empty($tagName)) {
+                    $tagName = \Str::lower($tagName);
+                    $trending[$tagName] = ($trending[$tagName] ?? 0) + 1;
+                }
             }
         }
         
