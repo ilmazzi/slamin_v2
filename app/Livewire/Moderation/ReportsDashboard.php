@@ -82,8 +82,15 @@ class ReportsDashboard extends Component
             return;
         }
 
+        $contentType = class_basename($report->reportable_type);
+        
+        // Eventi vanno alla pagina dedicata (non dovrebbe arrivare qui, ma per sicurezza)
+        if ($contentType === 'Event') {
+            return redirect()->route('events.show', $report->reportable_id);
+        }
+
         $this->selectedContent = [
-            'type' => class_basename($report->reportable_type),
+            'type' => $contentType,
             'data' => $report->reportable,
             'report' => $report,
         ];

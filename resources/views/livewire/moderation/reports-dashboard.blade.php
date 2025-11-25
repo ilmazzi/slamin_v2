@@ -204,10 +204,27 @@
                             @endif
                             
                             @if($report->reportable)
-                            <button wire:click="viewContent({{ $report->id }})"
-                                    class="px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors">
-                                👁️ {{ __('report.view_content') }}
-                            </button>
+                                @php
+                                    $contentType = class_basename($report->reportable_type);
+                                @endphp
+                                
+                                @if($contentType === 'Event')
+                                    {{-- Eventi: link diretto alla pagina --}}
+                                    <a href="{{ route('events.show', $report->reportable_id) }}" 
+                                       target="_blank"
+                                       class="px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center gap-2">
+                                        👁️ {{ __('report.view_content') }}
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                        </svg>
+                                    </a>
+                                @else
+                                    {{-- Altri contenuti: modal preview --}}
+                                    <button wire:click="viewContent({{ $report->id }})"
+                                            class="px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors">
+                                        👁️ {{ __('report.view_content') }}
+                                    </button>
+                                @endif
                             @endif
                         </div>
                         @endif
