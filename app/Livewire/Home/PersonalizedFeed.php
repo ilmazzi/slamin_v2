@@ -259,35 +259,33 @@ class PersonalizedFeed extends Component
         $trending = [];
         
         // Get tags from ALL poems (global, not time-limited)
-        $poemTags = Poem::where('is_public', true)
+        $poems = Poem::where('is_public', true)
             ->where('moderation_status', 'approved')
             ->whereNotNull('tags')
-            ->pluck('tags')
-            ->flatten()
-            ->filter()
-            ->countBy()
-            ->sortDesc()
-            ->take(10);
+            ->get();
         
-        foreach ($poemTags as $tag => $count) {
-            $trending[$tag] = ($trending[$tag] ?? 0) + $count;
+        foreach ($poems as $poem) {
+            if (is_array($poem->tags)) {
+                foreach ($poem->tags as $tag) {
+                    if (!empty($tag)) {
+                        $tag = \Str::lower($tag);
+                        $trending[$tag] = ($trending[$tag] ?? 0) + 1;
+                    }
+                }
+            }
         }
         
         // Get tags from ALL articles (global, not time-limited)
-        $articleTags = Article::where('is_public', true)
+        $articles = Article::where('is_public', true)
             ->where('moderation_status', 'approved')
-            ->withCount(['tags'])
             ->with('tags')
-            ->get()
-            ->pluck('tags')
-            ->flatten()
-            ->pluck('name')
-            ->filter()
-            ->countBy()
-            ->sortDesc();
+            ->get();
         
-        foreach ($articleTags as $tag => $count) {
-            $trending[$tag] = ($trending[$tag] ?? 0) + $count;
+        foreach ($articles as $article) {
+            foreach ($article->tags as $tag) {
+                $tagName = \Str::lower($tag->name);
+                $trending[$tagName] = ($trending[$tagName] ?? 0) + 1;
+            }
         }
         
         // Sort by count and take top 5
