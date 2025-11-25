@@ -186,7 +186,7 @@
                                      class="w-16 h-16 rounded-full mx-auto mb-3 object-cover">
                                 <h3 class="font-semibold text-neutral-900 dark:text-white">{{ $user->name }}</h3>
                                 @if($user->nickname)
-                                    <p class="text-sm text-neutral-500 dark:text-neutral-500">@{{ $user->nickname }}</p>
+                                    <p class="text-sm text-neutral-500 dark:text-neutral-500">{{ '@' . $user->nickname }}</p>
                                 @endif
                             </a>
                         @endforeach
