@@ -10,14 +10,15 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          class="fixed inset-0 z-50 overflow-hidden"
-         @keydown.escape.window="$wire.closeModal()">
+         @keydown.escape.window="$wire.closeModal()"
+         x-init="$watch('show', value => { if (value) { document.querySelectorAll('[x-data]').forEach(el => { if (el.__x && el.__x.$data.showMenu !== undefined) el.__x.$data.showMenu = false; }); } })">
         
         <!-- Dark Backdrop -->
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm z-0"
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"
              @click="$wire.closeModal()"></div>
         
         <!-- Book Container -->
-        <div class="absolute inset-0 flex items-center justify-center p-4 md:p-8 overflow-y-auto overflow-x-hidden z-10">
+        <div class="relative z-10 flex items-center justify-center p-4 md:p-8 w-full h-full overflow-y-auto overflow-x-hidden">
             
             <div class="poem-book-container"
                  x-show="show"
