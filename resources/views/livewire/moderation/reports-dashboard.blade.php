@@ -204,11 +204,16 @@
                             @endif
                             
                             @if($report->reportable)
-                            <a href="{{ $report->reportable->url ?? '#' }}" 
-                               target="_blank"
-                               class="px-4 py-2 bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white text-sm font-medium rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-center">
-                                👁️ {{ __('report.view_content') }}
-                            </a>
+                                @php
+                                    $contentUrl = $this->getContentUrl($report);
+                                @endphp
+                                @if($contentUrl && $contentUrl !== '#')
+                                <a href="{{ $contentUrl }}" 
+                                   target="_blank"
+                                   class="px-4 py-2 bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white text-sm font-medium rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-center">
+                                    👁️ {{ __('report.view_content') }}
+                                </a>
+                                @endif
                             @endif
                         </div>
                         @endif

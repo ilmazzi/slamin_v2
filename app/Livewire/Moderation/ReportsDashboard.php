@@ -170,6 +170,25 @@ class ReportsDashboard extends Component
         ];
     }
 
+    public function getContentUrl($report)
+    {
+        if (!$report->reportable) {
+            return null;
+        }
+
+        $type = class_basename($report->reportable_type);
+        $content = $report->reportable;
+
+        return match($type) {
+            'Poem' => route('poems.show', $content->slug ?? $content->id),
+            'Article' => route('articles.show', $content->id),
+            'Event' => route('events.show', $content->id),
+            'Video' => route('media.index') . '?tab=videos#video-' . $content->id,
+            'Photo' => route('media.index') . '?tab=photos#photo-' . $content->id,
+            default => null,
+        };
+    }
+
     public function render()
     {
         return view('livewire.moderation.reports-dashboard', [
