@@ -71,7 +71,7 @@
 </head>
 <body class="antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-x-hidden" 
       x-data="{ scrollY: 0, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' }" 
-      @scroll.window="scrollY = window.scrollY"
+      x-init="window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true })"
       @sidebar-changed.window="sidebarCollapsed = $event.detail.collapsed">
     
     <!-- Top Bar -->
