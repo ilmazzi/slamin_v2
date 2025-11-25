@@ -174,26 +174,30 @@
                                             :isLiked="false"
                                             :likesCount="$mostPopularVideo->like_count ?? 0"
                                             size="sm"
-                                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4" />
+                                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4"
+                                            @click.stop />
                                         
                                         <x-comment-button 
                                             :itemId="$mostPopularVideo->id"
                                             itemType="video"
                                             :commentsCount="$mostPopularVideo->comment_count ?? 0"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
+                                            @click.stop />
                                         
                                         <x-share-button 
                                             :itemId="$mostPopularVideo->id"
                                             itemType="video"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
+                                            @click.stop />
                                         
                                         <x-report-button 
                                             :itemId="$mostPopularVideo->id"
                                             itemType="video"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
+                                            @click.stop />
                                     </div>
                                 @endif
                             </div>
@@ -306,20 +310,30 @@
                                             :isLiked="false"
                                             :likesCount="$mostPopularPhoto->like_count ?? 0"
                                             size="sm"
-                                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4" />
+                                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4"
+                                            @click.stop />
                                         
                                         <x-comment-button 
                                             :itemId="$mostPopularPhoto->id"
                                             itemType="photo"
                                             :commentsCount="$mostPopularPhoto->comment_count ?? 0"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
+                                            @click.stop />
                                         
                                         <x-share-button 
                                             :itemId="$mostPopularPhoto->id"
                                             itemType="photo"
                                             size="sm"
-                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
+                                            @click.stop />
+                                        
+                                        <x-report-button 
+                                            :itemId="$mostPopularPhoto->id"
+                                            itemType="photo"
+                                            size="sm"
+                                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4"
+                                            @click.stop />
                                     </div>
                                 @endif
                             </div>
