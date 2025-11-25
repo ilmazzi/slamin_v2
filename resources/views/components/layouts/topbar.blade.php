@@ -31,25 +31,27 @@
 
             <!-- Search Bar (Desktop) -->
             <div class="hidden md:flex flex-1 max-w-2xl">
-                <div class="relative w-full">
+                <form action="{{ route('search') }}" method="GET" class="relative w-full">
                     <input type="search" 
-                           placeholder="Cerca poesie, eventi, persone..."
+                           name="q"
+                           value="{{ request('q') }}"
+                           placeholder="{{ __('search.placeholder') }}"
                            class="w-full px-4 py-2 pl-10 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-100 transition-all">
                     <svg class="absolute left-3 top-2.5 w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
-                </div>
+                </form>
             </div>
         </div>
 
         <!-- Right Side - Utilities -->
         <div class="flex items-center gap-2">
             <!-- Search Mobile -->
-            <button class="md:hidden p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg">
+            <a href="{{ route('search') }}" class="md:hidden p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg">
                 <svg class="w-5 h-5 text-neutral-700 dark:!text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-            </button>
+            </a>
 
             @auth
             <!-- Dashboard Direct Link -->

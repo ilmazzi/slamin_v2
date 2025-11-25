@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::get('/', \App\Livewire\Home\HomeIndex::class)->name('home');
 
+// Global Search
+Route::get('/search', \App\Livewire\Search\GlobalSearch::class)->name('search');
+
 // API Like Toggle
 Route::post('/api/like/toggle', [App\Http\Controllers\Api\LikeController::class, 'toggle'])
     ->middleware('auth')
