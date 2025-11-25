@@ -152,6 +152,11 @@
                         :itemId="$article->id"
                         itemType="article"
                         size="sm" />
+                    
+                    <x-report-button 
+                        :itemId="$article->id"
+                        itemType="article"
+                        size="sm" />
                 </div>
                 
             </div>

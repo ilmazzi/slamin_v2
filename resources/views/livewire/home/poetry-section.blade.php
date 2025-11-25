@@ -138,6 +138,11 @@
                                 :itemId="$poem->id"
                                 itemType="poem"
                                 size="sm" />
+                            
+                            <x-report-button 
+                                :itemId="$poem->id"
+                                itemType="poem"
+                                size="sm" />
                         </div>
                     </div>
                 </div>

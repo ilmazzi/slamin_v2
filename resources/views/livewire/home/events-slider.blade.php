@@ -275,6 +275,11 @@
                                 :itemId="$event->id"
                                 itemType="event"
                                 size="sm" />
+                            
+                            <x-report-button 
+                                :itemId="$event->id"
+                                itemType="event"
+                                size="sm" />
                         </div>
                     </div>
                     

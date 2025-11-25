@@ -69,6 +69,11 @@ $sizeClasses = [
                             itemType="photo"
                             size="sm"
                             class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5" />
+                        
+                        <x-report-button 
+                            :itemId="$photo->id"
+                            itemType="photo"
+                            size="sm" />
                     </div>
                 </div>
             </div>
