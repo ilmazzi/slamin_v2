@@ -7,6 +7,8 @@ return [
     'liked' => 'Ti piace!',
     'unliked' => 'Non ti piace più',
     'shared' => 'Condiviso!',
+    'link_copied' => 'Link copiato negli appunti!',
+    'copy_link' => 'Copia link',
     
     // Comments
     'comments_title' => '💬 Commenti',

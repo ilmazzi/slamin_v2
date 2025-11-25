@@ -7,6 +7,8 @@ return [
     'liked' => 'Liked!',
     'unliked' => 'Unliked',
     'shared' => 'Shared!',
+    'link_copied' => 'Link copied to clipboard!',
+    'copy_link' => 'Copy link',
     
     // Comments
     'comments_title' => '💬 Comments',

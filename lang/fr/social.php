@@ -7,6 +7,8 @@ return [
     'liked' => 'Aimé!',
     'unliked' => 'Plus aimé',
     'shared' => 'Partagé!',
+    'link_copied' => 'Lien copié dans le presse-papiers!',
+    'copy_link' => 'Copier le lien',
     
     // Comments
     'comments_title' => '💬 Commentaires',
