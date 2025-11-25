@@ -67,5 +67,13 @@ return [
     'delete_confirm' => 'Sei sicuro di voler eliminare questo elemento?',
     'quick_actions' => 'Azioni Rapide',
     'clear_all' => 'Pulisci Tutto',
+    
+    // Content Types (singular, lowercase for notifications)
+    'poem' => 'poesia',
+    'article' => 'articolo',
+    'video' => 'video',
+    'photo' => 'foto',
+    'event' => 'evento',
+    'comment' => 'commento',
 ];
 

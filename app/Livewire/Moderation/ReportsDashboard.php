@@ -155,7 +155,20 @@ class ReportsDashboard extends Component
         if ($report->reportable) {
             // Soft delete o hard delete in base al model
             try {
-                $report->reportable->delete();
+                $content = $report->reportable;
+                $contentType = class_basename(get_class($content));
+                $contentTitle = $content->title ?? ($content->name ?? 'Contenuto');
+                
+                // Get content owner
+                $ownerId = null;
+                if ($contentType === 'Event') {
+                    $ownerId = $content->organizer_id;
+                } else {
+                    $ownerId = $content->user_id ?? null;
+                }
+                
+                // Delete content
+                $content->delete();
                 
                 // Mark report as resolved
                 $report->update([
@@ -164,12 +177,30 @@ class ReportsDashboard extends Component
                     'resolved_at' => now(),
                     'resolution_notes' => 'Contenuto eliminato dal moderatore',
                 ]);
+                
+                // Notify content owner (anonymous - no moderator name)
+                if ($ownerId) {
+                    $owner = \App\Models\User::find($ownerId);
+                    if ($owner) {
+                        $owner->notify(new \App\Notifications\ContentRemovedNotification(
+                            $contentType,
+                            $contentTitle,
+                            $report->reason,
+                            'Il tuo contenuto è stato rimosso in seguito a una segnalazione.'
+                        ));
+                    }
+                }
 
                 $this->dispatch('notify', [
                     'message' => __('report.content_deleted'),
                     'type' => 'success'
                 ]);
             } catch (\Exception $e) {
+                \Log::error('Error deleting content', [
+                    'report_id' => $reportId,
+                    'error' => $e->getMessage()
+                ]);
+                
                 $this->dispatch('notify', [
                     'message' => __('report.error_deleting_content'),
                     'type' => 'error'

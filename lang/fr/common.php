@@ -49,5 +49,13 @@ return [
     'back_to_poems' => 'Retour aux poèmes',
     'back_to' => 'Retour à',
     'all' => 'Tous',
+    
+    // Content Types (singular, lowercase for notifications)
+    'poem' => 'poème',
+    'article' => 'article',
+    'video' => 'vidéo',
+    'photo' => 'photo',
+    'event' => 'événement',
+    'comment' => 'commentaire',
 ];
 

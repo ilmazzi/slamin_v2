@@ -32,4 +32,10 @@ return [
     'comment_received_message' => ':user ha commentato la tua :type ":title"',
     'like_received_title' => 'Nuovo Like',
     'like_received_message' => ':user ha messo like alla tua :type ":title"',
+    
+    // Moderation Notifications
+    'content_removed_title' => 'Contenuto Rimosso',
+    'content_removed_message' => 'Il tuo contenuto ":title" (:type) è stato rimosso dalla moderazione',
+    'content_moderated_title' => 'Contenuto Moderato',
+    'content_moderated_message' => 'Il tuo contenuto ":title" (:type) è stato modificato dalla moderazione',
 ];
