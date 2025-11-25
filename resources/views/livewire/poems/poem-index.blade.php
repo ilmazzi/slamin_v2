@@ -169,7 +169,7 @@
             @if($poems && $poems->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                     @foreach($poems as $index => $poem)
-                    <?php $paperRotation = rand(-2, 2); $hasCover = !empty($poem->thumbnail_url); ?>
+                    <?php $paperRotation = rand(-2, 2); ?>
                     <div class="poetry-card-wrapper"
                          x-data="{ visible: false }" 
                          x-intersect.once="visible = true">
@@ -179,66 +179,71 @@
                              x-transition:enter-end="opacity-100 translate-y-0"
                              style="transition-delay: {{ ($index % 9) * 100 }}ms">
                             
-                            <div class="poetry-paper-card cursor-pointer" 
-                                 style="transform: rotate({{ $paperRotation }}deg);"
-                                 @click="Livewire.dispatch('openPoemModal', { poemId: {{ $poem->id }} })">
-                                {{-- Featured Cover --}}
-                                <div class="poetry-card-cover {{ $hasCover ? 'poetry-card-cover--image' : 'poetry-card-cover--placeholder' }}">
-                                    @if($hasCover)
-                                        <img src="{{ $poem->thumbnail_url }}"
-                                             alt="{{ $poem->title ?: __('poems.untitled') }}"
-                                             class="poetry-card-cover-image">
-                                        <span class="poetry-card-cover-shadow"></span>
-                                    @else
-                                        <div class="poetry-card-cover-placeholder">
-                                            <i class="fa-solid fa-image text-light-500"></i>
-                                            <span>{{ __('poems.index.cover_placeholder') }}</span>
-                                        </div>
-                                    @endif
-                                </div>
-                                
-                                {{-- Title & Excerpt --}}
-                                <div>
-                                    <h3 class="poetry-card-title">
-                                        "{{ $poem->title ?: __('poems.untitled') }}"
-                                    </h3>
+                            {{-- COPIATO ESATTAMENTE DALLA HOMEPAGE --}}
+                            <div class="paper-sheet-wrapper" style="transform: rotate({{ $paperRotation }}deg);">
+                                <div class="paper-sheet group">
                                     
-                                    <div class="poetry-card-excerpt">
-                                        {{ $poem->description ?? Str::limit(strip_tags($poem->content), 150) }}
+                                    {{-- Content cliccabile --}}
+                                    <div class="block cursor-pointer hover:opacity-90 transition-opacity" 
+                                         onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $poem->id }} })">
+                                        
+                                        {{-- Date in alto a destra --}}
+                                        <div class="absolute top-3 right-3 text-xs text-neutral-500 dark:text-neutral-400 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm px-2 py-1 rounded-full z-10">
+                                            {{ $poem->created_at->diffForHumans() }}
+                                        </div>
+                                        
+                                        <div class="paper-author-info">
+                                            <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 80) }}" 
+                                                 alt="{{ $poem->user->name }}"
+                                                 class="paper-avatar">
+                                            <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($poem->user) }}" 
+                                               class="paper-author-name hover:underline transition-colors"
+                                               onclick="event.stopPropagation();">
+                                                {{ \App\Helpers\AvatarHelper::getDisplayName($poem->user) }}
+                                            </a>
+                                        </div>
+                                        
+                                        {{-- Poem Title --}}
+                                        <h3 class="paper-title">
+                                            "{{ $poem->title ?: __('poems.untitled') }}"
+                                        </h3>
+                                        
+                                        {{-- Poem Content --}}
+                                        <div class="paper-content">
+                                            {{ $poem->description ?? Str::limit(strip_tags($poem->content), 180) }}
+                                        </div>
+                                        
+                                        {{-- Read more hint --}}
+                                        <div class="paper-readmore">
+                                            {{ __('common.read_more') }} →
+                                        </div>
                                     </div>
-                                </div>
-                                
-                                {{-- Meta - Social buttons che NON aprono il modale --}}
-                                <div class="poetry-card-meta">
-                                    <div class="flex items-center gap-3" @click.stop>
+                                    
+                                    {{-- Social Actions - ESATTAMENTE COME HOMEPAGE --}}
+                                    <div class="paper-actions-integrated" @click.stop>
                                         <x-like-button 
                                             :itemId="$poem->id"
                                             itemType="poem"
                                             :isLiked="false"
                                             :likesCount="$poem->like_count ?? 0"
-                                            size="md"
-                                            class="[&_span]:!text-neutral-700 [&_svg]:!text-neutral-700 [&_svg]:w-5 [&_svg]:h-5 [&_span]:text-sm" />
+                                            size="sm" />
                                         
                                         <x-comment-button 
                                             :itemId="$poem->id"
                                             itemType="poem"
                                             :commentsCount="$poem->comment_count ?? 0"
-                                            size="md"
-                                            class="[&_button]:!text-neutral-700 [&_span]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-5 [&_svg]:h-5 [&_span]:text-sm" />
+                                            size="sm" />
                                         
                                         <x-share-button 
                                             :itemId="$poem->id"
                                             itemType="poem"
-                                            size="md"
-                                            class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-5 [&_svg]:h-5" />
+                                            size="sm" />
                                         
                                         <x-report-button 
                                             :itemId="$poem->id"
                                             itemType="poem"
-                                            size="md"
-                                            class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-5 [&_svg]:h-5" />
+                                            size="sm" />
                                     </div>
-                                    <span class="text-sm">{{ $poem->created_at->diffForHumans() }}</span>
                                 </div>
                             </div>
                         </div>
@@ -443,6 +448,7 @@
         }
         
         .poetry-paper-card {
+            position: relative;
             background: 
                 /* Gradient di luce poetica */
                 radial-gradient(circle at top left, 

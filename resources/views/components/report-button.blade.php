@@ -49,7 +49,7 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
     }
 }" {{ $attributes->merge(['class' => 'inline-flex items-center']) }}>
     <button type="button"
-            @click.stop="openReportModal()"
+            @click="openReportModal()"
             :disabled="reported"
             :title="reported ? '{{ __('report.already_reported') }}' : '{{ __('report.report_content') }}'"
             class="flex items-center gap-1.5 transition-all duration-300 group cursor-pointer hover:opacity-80"

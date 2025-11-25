@@ -96,7 +96,7 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
     }
 }" {{ $attributes->merge(['class' => 'inline-flex items-center gap-2']) }}>
     <button type="button"
-            @click.stop="toggleLike()"
+            @click="toggleLike()"
             class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
         <img src="{{ asset('assets/icon/new/like.svg') }}" 
              alt="Like" 
