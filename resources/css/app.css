@@ -15,6 +15,57 @@ body {
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* Follow Button Styles */
+.follow-button {
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.follow-button-sm {
+    @apply px-3 py-1.5 text-sm;
+}
+
+.follow-button-md {
+    @apply px-4 py-2 text-sm;
+}
+
+.follow-button-lg {
+    @apply px-6 py-3 text-base;
+}
+
+.follow-button-default {
+    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+}
+
+.follow-button-default.following {
+    @apply bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600;
+}
+
+.follow-button-outline {
+    @apply border-2 border-primary-600 text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus:ring-primary-500;
+}
+
+.follow-button-outline.following {
+    @apply border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800;
+}
+
+.follow-button-ghost {
+    @apply text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 focus:ring-primary-500;
+}
+
+.follow-button-ghost.following {
+    @apply text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800;
+}
+
+/* Polaroid specific styles */
+.polaroid-follow-btn-wrapper .follow-button {
+    @apply w-full justify-center;
+}
+
+.polaroid-follow-btn-wrapper .follow-button-sm {
+    @apply px-3 py-1.5 text-xs;
+}
+
 /* FORCE Tailwind to use ONLY .dark class, NOT prefers-color-scheme */
 @variant dark (.dark &);
 

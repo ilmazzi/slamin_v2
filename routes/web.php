@@ -417,6 +417,8 @@ Route::middleware('auth')->prefix('profile')->name('profile.')->group(function (
 
 // Public Profile Routes
 Route::get('/user/{user}', \App\Livewire\Profile\ProfileShow::class)->name('user.show');
+Route::get('/user/{user}/followers', \App\Livewire\Users\UserFollowers::class)->name('user.followers');
+Route::get('/user/{user}/following', \App\Livewire\Users\UserFollowing::class)->name('user.following');
 
 // Logout (simplified - would be handled by auth system)
 Route::post('/logout', function () {

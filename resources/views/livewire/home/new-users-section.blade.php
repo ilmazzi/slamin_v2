@@ -142,15 +142,14 @@
                         <div class="polaroid-name-large">{{ $user->name }}</div>
                         
                         {{-- Bio --}}
-                        <div class="polaroid-bio">{{ $userBio }}</div>
+                        @if($userBio)
+                            <div class="polaroid-bio">{{ $userBio }}</div>
+                        @endif
                         
                         {{-- Follow Button --}}
-                        <button class="polaroid-follow-btn" @click.stop>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
-                            {{ __('home.follow_user') }}
-                        </button>
+                        <div class="polaroid-follow-btn-wrapper" @click.stop>
+                            <livewire:components.follow-button :userId="$user->id" size="sm" variant="ghost" />
+                        </div>
                         
                         {{-- Stats Grid --}}
                         <div class="polaroid-stats">

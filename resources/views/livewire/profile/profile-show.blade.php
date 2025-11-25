@@ -114,7 +114,24 @@
                             <span class="stat-num">{{ $user->level ?? 1 }}</span>
                             <span class="stat-lbl">Livello</span>
                         </div>
+                        <div class="stat-divider"></div>
+                        <a href="{{ route('user.followers', $user) }}" class="stat-item hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer">
+                            <span class="stat-num">{{ $stats['followers'] }}</span>
+                            <span class="stat-lbl">{{ __('follow.followers') }}</span>
+                        </a>
+                        <div class="stat-divider"></div>
+                        <a href="{{ route('user.following', $user) }}" class="stat-item hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer">
+                            <span class="stat-num">{{ $stats['following'] }}</span>
+                            <span class="stat-lbl">{{ __('follow.following_users') }}</span>
+                        </a>
                     </div>
+
+                    {{-- Follow Button (only if not own profile) --}}
+                    @if(!$isOwnProfile)
+                        <div class="mt-4 flex justify-center">
+                            <livewire:components.follow-button :userId="$user->id" size="md" variant="default" />
+                        </div>
+                    @endif
 
                     {{-- Edit Profile Button (only for own profile) --}}
                     @if($isOwnProfile)

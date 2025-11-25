@@ -179,16 +179,21 @@
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         @foreach($results['users'] as $user)
-                            <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($user) }}" 
-                               class="block p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-700 text-center">
-                                <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($user, 64) }}" 
-                                     alt="{{ $user->name }}"
-                                     class="w-16 h-16 rounded-full mx-auto mb-3 object-cover">
-                                <h3 class="font-semibold text-neutral-900 dark:text-white">{{ $user->name }}</h3>
-                                @if($user->nickname)
-                                    <p class="text-sm text-neutral-500 dark:text-neutral-500">{{ '@' . $user->nickname }}</p>
-                                @endif
-                            </a>
+                            <div class="block p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-700 text-center">
+                                <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($user) }}" 
+                                   class="block">
+                                    <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($user, 64) }}" 
+                                         alt="{{ $user->name }}"
+                                         class="w-16 h-16 rounded-full mx-auto mb-3 object-cover">
+                                    <h3 class="font-semibold text-neutral-900 dark:text-white">{{ $user->name }}</h3>
+                                    @if($user->nickname)
+                                        <p class="text-sm text-neutral-500 dark:text-neutral-500">{{ '@' . $user->nickname }}</p>
+                                    @endif
+                                </a>
+                                <div class="mt-3">
+                                    <livewire:components.follow-button :userId="$user->id" size="sm" variant="outline" />
+                                </div>
+                            </div>
                         @endforeach
                     </div>
                 </div>
