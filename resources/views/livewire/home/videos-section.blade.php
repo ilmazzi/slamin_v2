@@ -206,10 +206,11 @@
             
             {{-- CTA - Simple Text --}}
             <div class="text-center mt-12">
-                <div class="inline-block text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300 cursor-pointer"
-                     style="font-family: 'Crimson Pro', serif;">
+                <a href="{{ route('media.index') }}" 
+                   class="inline-block text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300"
+                   style="font-family: 'Crimson Pro', serif;">
                     → {{ __('home.all_videos_button') }}
-                </div>
+                </a>
             </div>
         </div>
     </section>

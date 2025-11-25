@@ -66,6 +66,7 @@ return [
     'invitations_to_reply' => ':count invito da rispondere',
     'messages' => 'Messaggi',
     'unread_messages' => ':count messaggi non letti',
+    'friends_coming_soon' => 'La funzionalità Amici sarà disponibile a breve',
     
     // Upcoming Events
     'upcoming_events' => 'Eventi in Arrivo',

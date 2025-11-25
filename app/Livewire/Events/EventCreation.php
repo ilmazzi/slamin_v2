@@ -234,6 +234,18 @@ class EventCreation extends Component
             abort(403, 'Non hai i permessi per creare eventi. Richiedi il ruolo di organizzatore.');
         }
 
+        // Se c'è un parametro date nella query string, precompila la data di inizio
+        if (request()->has('date')) {
+            $date = request()->query('date');
+            try {
+                $parsedDate = \Carbon\Carbon::parse($date);
+                // Imposta la data alle 18:00 di default
+                $this->start_datetime = $parsedDate->setTime(18, 0)->format('Y-m-d\TH:i');
+            } catch (\Exception $e) {
+                // Ignora se la data non è valida
+            }
+        }
+
         // Load recent venues - convert to array for Livewire compatibility
         $this->recentVenues = RecentVenue::getPopularVenues(8)->toArray();
     }

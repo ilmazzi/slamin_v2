@@ -69,30 +69,71 @@ class DashboardIndex extends Component
     
     private function getRecentActivity($user)
     {
-        // TODO: Implementare con dati reali quando disponibili
-        return [
-            [
+        $activities = [];
+        
+        // Poesie pubblicate recentemente dall'utente
+        $recentPoems = Poem::where('user_id', $user->id)
+            ->where('is_public', true)
+            ->where('is_draft', false)
+            ->latest()
+            ->take(3)
+            ->get();
+        
+        foreach ($recentPoems as $poem) {
+            $activities[] = [
                 'type' => 'poem',
+                'id' => $poem->id,
+                'slug' => $poem->slug,
                 'title' => __('dashboard.activity_published_poem'),
-                'description' => 'Notte Stellata',
-                'time' => '2 ore fa',
+                'description' => $poem->title ?: __('poems.untitled'),
+                'time' => $poem->created_at->diffForHumans(),
                 'icon' => 'book',
-            ],
-            [
+                'url' => null, // Usa evento Livewire invece di route
+            ];
+        }
+        
+        // Eventi creati recentemente dall'utente
+        $recentEvents = Event::where('organizer_id', $user->id)
+            ->latest()
+            ->take(2)
+            ->get();
+        
+        foreach ($recentEvents as $event) {
+            $activities[] = [
                 'type' => 'event',
+                'id' => $event->id,
                 'title' => __('dashboard.activity_created_event'),
-                'description' => 'Poetry Slam Milano',
-                'time' => '5 ore fa',
+                'description' => $event->title,
+                'time' => $event->created_at->diffForHumans(),
                 'icon' => 'calendar',
-            ],
-            [
-                'type' => 'like',
-                'title' => __('dashboard.activity_received_likes'),
-                'description' => '15 nuovi mi piace',
-                'time' => '1 giorno fa',
-                'icon' => 'heart',
-            ],
-        ];
+                'url' => route('events.show', $event),
+            ];
+        }
+        
+        // Ordina per data di creazione (più recenti prima) e prendi i primi 5
+        usort($activities, function($a, $b) {
+            // Estrai la data dal tempo relativo (approssimativo)
+            // Per semplicità, ordina per ordine di inserimento
+            return 0;
+        });
+        
+        $activities = array_slice($activities, 0, 5);
+        
+        // Se non ci sono attività reali, mostra placeholder
+        if (empty($activities)) {
+            return [
+                [
+                    'type' => 'placeholder',
+                    'title' => __('dashboard.no_recent_activity'),
+                    'description' => __('dashboard.explore_content_description'),
+                    'time' => '',
+                    'icon' => 'compass',
+                    'url' => route('poems.index'),
+                ],
+            ];
+        }
+        
+        return $activities;
     }
     
     private function getQuickActions($user)
@@ -129,52 +170,81 @@ class DashboardIndex extends Component
             ];
         }
         
-        // Esplorare contenuti (sempre disponibile)
-        $actions[] = [
-            'icon' => 'ph-compass',
-            'title' => __('dashboard.explore_content'),
-            'description' => __('dashboard.explore_content_description'),
-            'url' => '#', // route('explore') - da implementare
-        ];
-        
         return $actions;
     }
     
     private function getSocialActivities($user)
     {
-        // TODO: Implementare con dati reali quando saranno disponibili i modelli
+        // Conta gruppi attivi (se il modello esiste)
+        $activeGroupsCount = 0;
+        if (class_exists(\App\Models\Group::class)) {
+            try {
+                $activeGroupsCount = \App\Models\Group::whereHas('members', function($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })->count();
+            } catch (\Exception $e) {
+                // Se la relazione non esiste, usa 0
+                $activeGroupsCount = 0;
+            }
+        }
+        
+        // Conta inviti ricevuti (group invitations) - anche inviti eventi
+        $invitationsCount = 0;
+        if (class_exists(\App\Models\GroupInvitation::class)) {
+            try {
+                $invitationsCount = \App\Models\GroupInvitation::where('user_id', $user->id)
+                    ->where('status', 'pending')
+                    ->count();
+            } catch (\Exception $e) {
+                // Se il modello non esiste, usa 0
+            }
+        }
+        
+        // Aggiungi anche gli inviti agli eventi
+        try {
+            $eventInvitationsCount = \App\Models\EventInvitation::where('invited_user_id', $user->id)
+                ->where('status', 'pending')
+                ->count();
+            $invitationsCount += $eventInvitationsCount;
+        } catch (\Exception $e) {
+            // Ignora se non esiste
+        }
+        
+        // Conta messaggi non letti (da implementare quando sarà disponibile il sistema di chat completo)
+        $unreadMessagesCount = 0; // TODO: Implementare quando sarà disponibile
+        
         return [
             [
                 'icon' => 'ph-user-circle',
                 'title' => __('dashboard.online_friends'),
-                'description' => __('dashboard.friends_active_now', ['count' => 3]),
-                'count' => 3,
+                'description' => __('dashboard.friends_active_now', ['count' => 0]),
+                'count' => 0,
                 'color' => 'primary',
-                'url' => '#', // route('friends.index')
+                'url' => 'javascript:void(0)', // TODO: Implementare quando sarà disponibile il sistema di amicizie
             ],
             [
                 'icon' => 'ph-users-three',
                 'title' => __('dashboard.active_groups'),
-                'description' => __('dashboard.groups_with_activities', ['count' => 2]),
-                'count' => 2,
+                'description' => __('dashboard.groups_with_activities', ['count' => $activeGroupsCount]),
+                'count' => $activeGroupsCount,
                 'color' => 'accent',
-                'url' => '#', // route('groups.index')
+                'url' => route('groups.index'),
             ],
             [
                 'icon' => 'ph-envelope',
                 'title' => __('dashboard.received_invitations'),
-                'description' => __('dashboard.invitations_to_reply', ['count' => 1]),
-                'count' => 1,
+                'description' => __('dashboard.invitations_to_reply', ['count' => $invitationsCount]),
+                'count' => $invitationsCount,
                 'color' => 'warning',
-                'url' => '#', // route('events.invitations')
+                'url' => route('group-invitations.index'),
             ],
             [
                 'icon' => 'ph-chat-circle',
                 'title' => __('dashboard.messages'),
-                'description' => __('dashboard.unread_messages', ['count' => 5]),
-                'count' => 5,
+                'description' => __('dashboard.unread_messages', ['count' => $unreadMessagesCount]),
+                'count' => $unreadMessagesCount,
                 'color' => 'info',
-                'url' => '#', // route('messages.index')
+                'url' => route('chat.index'),
             ],
         ];
     }

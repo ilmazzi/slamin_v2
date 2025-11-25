@@ -641,16 +641,27 @@
                                             @endforeach
                                         </div>
                                     @else
-                                        <!-- Giorno vuoto con hover colorato -->
-                                        <div class="absolute inset-0 flex items-center justify-center bg-neutral-50 dark:bg-neutral-800 group-hover:bg-primary-50 dark:group-hover:bg-primary-900/20 transition-all duration-300">
-                                            <div class="transform transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:scale-110">
-                                                <div class="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center shadow-lg">
-                                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-                                                    </svg>
+                                        <!-- Giorno vuoto con hover colorato e link per creare evento -->
+                                        @auth
+                                            @if(auth()->user()->canCreateEvent())
+                                            <a href="{{ route('events.create') }}?date={{ $day['date']->format('Y-m-d') }}" 
+                                               class="absolute inset-0 flex items-center justify-center bg-neutral-50 dark:bg-neutral-800 group-hover:bg-primary-50 dark:group-hover:bg-primary-900/20 transition-all duration-300">
+                                                <div class="transform transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:scale-110">
+                                                    <div class="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center shadow-lg">
+                                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                                                        </svg>
+                                                    </div>
                                                 </div>
+                                            </a>
+                                            @else
+                                            <div class="absolute inset-0 flex items-center justify-center bg-neutral-50 dark:bg-neutral-800">
                                             </div>
+                                            @endif
+                                        @else
+                                        <div class="absolute inset-0 flex items-center justify-center bg-neutral-50 dark:bg-neutral-800">
                                         </div>
+                                        @endauth
                                     @endif
                                 </div>
                             @endforeach
@@ -713,7 +724,8 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                     
                     <!-- AMICI ONLINE - Grande, 2 colonne su mobile -->
-                    <a href="{{ $socialActivities[0]['url'] }}"
+                    <a href="{{ $socialActivities[0]['url'] }}" 
+                       @if($socialActivities[0]['url'] === 'javascript:void(0)') onclick="event.preventDefault(); alert('{{ __('dashboard.friends_coming_soon') }}');" @endif
                        class="col-span-2 row-span-2 group relative overflow-hidden rounded-3xl bg-primary-600 dark:bg-primary-700 p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
                        x-show="visible"
                        x-transition:enter="transition ease-out duration-700 delay-100"
@@ -957,12 +969,30 @@
             @if(count($recentActivity) > 0)
                 <div class="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
                     @foreach($recentActivity as $index => $activity)
+                    @if(isset($activity['url']) && $activity['url'])
+                    <a href="{{ $activity['url'] }}"
+                       x-show="visible"
+                       x-transition:enter="transition ease-out duration-700"
+                       x-transition:enter-start="opacity-0 translate-x-8"
+                       x-transition:enter-end="opacity-100 translate-x-0"
+                       style="transition-delay: {{ $index * 150 }}ms"
+                       class="group flex-shrink-0 w-72 relative overflow-hidden rounded-2xl bg-white dark:bg-neutral-800 p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-neutral-200 dark:border-neutral-700 cursor-pointer">
+                    @elseif(isset($activity['type']) && $activity['type'] === 'poem' && isset($activity['id']))
+                    <div onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $activity['id'] }} })"
+                         x-show="visible"
+                         x-transition:enter="transition ease-out duration-700"
+                         x-transition:enter-start="opacity-0 translate-x-8"
+                         x-transition:enter-end="opacity-100 translate-x-0"
+                         style="transition-delay: {{ $index * 150 }}ms"
+                         class="group flex-shrink-0 w-72 relative overflow-hidden rounded-2xl bg-white dark:bg-neutral-800 p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-neutral-200 dark:border-neutral-700 cursor-pointer">
+                    @else
                     <div x-show="visible"
                          x-transition:enter="transition ease-out duration-700"
                          x-transition:enter-start="opacity-0 translate-x-8"
                          x-transition:enter-end="opacity-100 translate-x-0"
                          style="transition-delay: {{ $index * 150 }}ms"
                          class="group flex-shrink-0 w-72 relative overflow-hidden rounded-2xl bg-white dark:bg-neutral-800 p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-neutral-200 dark:border-neutral-700">
+                    @endif
                         
                         <!-- Decorative corner -->
                         <div class="absolute top-0 right-0 w-24 h-24 bg-primary-500/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-500"></div>
@@ -971,10 +1001,12 @@
                             <!-- Icon -->
                             <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                                 <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    @if($activity['icon'] === 'book')
+                                    @if(isset($activity['icon']) && $activity['icon'] === 'book')
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                    @elseif($activity['icon'] === 'calendar')
+                                    @elseif(isset($activity['icon']) && $activity['icon'] === 'calendar')
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    @elseif(isset($activity['icon']) && $activity['icon'] === 'compass')
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     @else
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                                     @endif
@@ -993,7 +1025,11 @@
                                 <span>{{ $activity['time'] }}</span>
                             </div>
                         </div>
+                    @if(isset($activity['url']) && $activity['url'])
+                    </a>
+                    @else
                     </div>
+                    @endif
                     @endforeach
                 </div>
             @else

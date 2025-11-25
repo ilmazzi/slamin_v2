@@ -73,26 +73,32 @@
                      x-transition
                      class="absolute left-0 sm:left-auto sm:right-0 mt-2 w-64 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2">
                     <div class="px-4 py-2 border-b border-neutral-200 dark:border-neutral-700">
-                        <p class="font-semibold text-sm text-neutral-900 dark:text-white">Azioni Rapide</p>
+                        <p class="font-semibold text-sm text-neutral-900 dark:text-white">{{ __('common.quick_actions') }}</p>
                     </div>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
+                    @if(auth()->user()->canCreatePoem())
+                    <a href="{{ route('poems.create') }}" class="flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
                         <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                         </svg>
-                        <span class="text-sm text-neutral-700 dark:!text-white">Scrivi Poesia</span>
+                        <span class="text-sm text-neutral-700 dark:!text-white">{{ __('dashboard.write_poem') }}</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
+                    @endif
+                    @if(auth()->user()->canCreateEvent())
+                    <a href="{{ route('events.create') }}" class="flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
                         <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <span class="text-sm text-neutral-700 dark:!text-white">Crea Evento</span>
+                        <span class="text-sm text-neutral-700 dark:!text-white">{{ __('dashboard.create_event') }}</span>
                     </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
+                    @endif
+                    @if(auth()->user()->canUploadVideo())
+                    <a href="{{ route('media.upload.video') }}" class="flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
                         <svg class="w-5 h-5 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                         </svg>
-                        <span class="text-sm text-neutral-700 dark:!text-white">Carica Video</span>
+                        <span class="text-sm text-neutral-700 dark:!text-white">{{ __('dashboard.upload_video') }}</span>
                     </a>
+                    @endif
                 </div>
             </div>
 
