@@ -29,13 +29,13 @@ class PersonalizedFeed extends Component
         // Get IDs of users the current user follows
         $followingIds = [];
         if ($user) {
-            $followingIds = $user->following()->pluck('followed_id')->toArray();
+            $followingIds = $user->following()->pluck('following_id')->toArray();
             
             // Also get users followed by users you follow (second degree)
             if (!empty($followingIds)) {
                 $secondDegreeIds = \DB::table('follows')
                     ->whereIn('follower_id', $followingIds)
-                    ->pluck('followed_id')
+                    ->pluck('following_id')
                     ->unique()
                     ->toArray();
                 
