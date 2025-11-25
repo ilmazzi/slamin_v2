@@ -16,6 +16,8 @@ class ReportsDashboard extends Component
     public $selectedReport = null;
     public $showResolveModal = false;
     public $resolutionNotes = '';
+    public $showContentModal = false;
+    public $selectedContent = null;
 
     protected $queryString = [
         'statusFilter' => ['except' => 'all'],
@@ -66,6 +68,33 @@ class ReportsDashboard extends Component
         $this->showResolveModal = false;
         $this->selectedReport = null;
         $this->resolutionNotes = '';
+    }
+
+    public function viewContent($reportId)
+    {
+        $report = Report::with(['reportable'])->findOrFail($reportId);
+        
+        if (!$report->reportable) {
+            $this->dispatch('notify', [
+                'message' => __('report.content_not_available'),
+                'type' => 'warning'
+            ]);
+            return;
+        }
+
+        $this->selectedContent = [
+            'type' => class_basename($report->reportable_type),
+            'data' => $report->reportable,
+            'report' => $report,
+        ];
+        
+        $this->showContentModal = true;
+    }
+
+    public function closeContentModal()
+    {
+        $this->showContentModal = false;
+        $this->selectedContent = null;
     }
 
     public function resolveReport()

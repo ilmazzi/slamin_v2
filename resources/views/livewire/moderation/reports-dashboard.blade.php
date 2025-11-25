@@ -204,16 +204,10 @@
                             @endif
                             
                             @if($report->reportable)
-                                @php
-                                    $contentUrl = $this->getContentUrl($report);
-                                @endphp
-                                @if($contentUrl && $contentUrl !== '#')
-                                <a href="{{ $contentUrl }}" 
-                                   target="_blank"
-                                   class="px-4 py-2 bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white text-sm font-medium rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors text-center">
-                                    👁️ {{ __('report.view_content') }}
-                                </a>
-                                @endif
+                            <button wire:click="viewContent({{ $report->id }})"
+                                    class="px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors">
+                                👁️ {{ __('report.view_content') }}
+                            </button>
                             @endif
                         </div>
                         @endif
@@ -280,6 +274,209 @@
                     <button wire:click="resolveReport"
                             class="flex-1 px-6 py-3 bg-gradient-to-br from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-lg hover:shadow-xl">
                         {{ __('report.resolve') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Content Preview Modal -->
+    @if($showContentModal && $selectedContent)
+    <div class="fixed inset-0 z-[9999] overflow-y-auto" 
+         x-data="{ show: @entangle('showContentModal') }"
+         x-show="show"
+         x-cloak
+         style="display: none;">
+        
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity"
+             @click="$wire.closeContentModal()">
+        </div>
+
+        <!-- Modal -->
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-white dark:bg-neutral-900 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+                 @click.stop>
+                
+                <!-- Header -->
+                <div class="sticky top-0 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 px-6 py-4 flex items-center justify-between z-10">
+                    <div>
+                        <h3 class="text-xl font-bold text-neutral-900 dark:text-white">
+                            {{ __('report.reported_content') }}
+                        </h3>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+                            {{ ucfirst($selectedContent['type']) }} #{{ $selectedContent['report']->reportable_id }}
+                        </p>
+                    </div>
+                    <button @click="$wire.closeContentModal()"
+                            class="p-2 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Content -->
+                <div class="p-6">
+                    @php
+                        $content = $selectedContent['data'];
+                        $type = $selectedContent['type'];
+                    @endphp
+
+                    @if($type === 'Poem')
+                        <!-- Poem Content -->
+                        <div class="prose dark:prose-invert max-w-none">
+                            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-4">{{ $content->title }}</h2>
+                            <div class="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-6 whitespace-pre-wrap">
+                                {{ $content->content }}
+                            </div>
+                            @if($content->tags && count($content->tags) > 0)
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                @foreach($content->tags as $tag)
+                                <span class="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm rounded-full">
+                                    #{{ $tag }}
+                                </span>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
+
+                    @elseif($type === 'Article')
+                        <!-- Article Content -->
+                        <div class="prose dark:prose-invert max-w-none">
+                            @php
+                                $locale = app()->getLocale();
+                                $title = is_array($content->title) ? ($content->title[$locale] ?? $content->title['it'] ?? '') : $content->title;
+                                $body = is_array($content->body) ? ($content->body[$locale] ?? $content->body['it'] ?? '') : $content->body;
+                            @endphp
+                            
+                            @if($content->featured_image_url)
+                            <img src="{{ $content->featured_image_url }}" 
+                                 alt="{{ $title }}"
+                                 class="w-full h-64 object-cover rounded-lg mb-6">
+                            @endif
+                            
+                            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-4">{{ $title }}</h2>
+                            <div class="text-neutral-700 dark:text-neutral-300">
+                                {!! nl2br(e($body)) !!}
+                            </div>
+                        </div>
+
+                    @elseif($type === 'Event')
+                        <!-- Event Content -->
+                        <div>
+                            @if($content->image_url)
+                            <img src="{{ $content->image_url }}" 
+                                 alt="{{ $content->title }}"
+                                 class="w-full h-64 object-cover rounded-lg mb-6">
+                            @endif
+                            
+                            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-4">{{ $content->title }}</h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="flex items-center gap-3 text-neutral-700 dark:text-neutral-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    {{ \Carbon\Carbon::parse($content->start_datetime)->format('d/m/Y H:i') }}
+                                </div>
+                                
+                                @if($content->venue_name || $content->city)
+                                <div class="flex items-center gap-3 text-neutral-700 dark:text-neutral-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                    {{ $content->venue_name ?? '' }}{{ $content->city ? ', ' . $content->city : '' }}
+                                </div>
+                                @endif
+                            </div>
+                            
+                            @if($content->description)
+                            <div class="prose dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300">
+                                {!! nl2br(e($content->description)) !!}
+                            </div>
+                            @endif
+                        </div>
+
+                    @elseif($type === 'Video')
+                        <!-- Video Content -->
+                        <div>
+                            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-4">{{ $content->title }}</h2>
+                            
+                            @if($content->thumbnail_url)
+                            <img src="{{ $content->thumbnail_url }}" 
+                                 alt="{{ $content->title }}"
+                                 class="w-full h-64 object-cover rounded-lg mb-4">
+                            @endif
+                            
+                            @if($content->description)
+                            <p class="text-neutral-700 dark:text-neutral-300 mb-4">{{ $content->description }}</p>
+                            @endif
+                            
+                            <div class="flex items-center gap-4 text-sm text-neutral-600 dark:text-neutral-400">
+                                <span>👁️ {{ number_format($content->view_count ?? 0) }} {{ __('common.views') }}</span>
+                                <span>❤️ {{ number_format($content->like_count ?? 0) }} {{ __('common.likes') }}</span>
+                            </div>
+                        </div>
+
+                    @elseif($type === 'Photo')
+                        <!-- Photo Content -->
+                        <div>
+                            @if($content->title)
+                            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-4">{{ $content->title }}</h2>
+                            @endif
+                            
+                            <img src="{{ $content->url ?? $content->image_url }}" 
+                                 alt="{{ $content->title ?? 'Photo' }}"
+                                 class="w-full rounded-lg mb-4">
+                            
+                            @if($content->description)
+                            <p class="text-neutral-700 dark:text-neutral-300 mb-4">{{ $content->description }}</p>
+                            @endif
+                            
+                            <div class="flex items-center gap-4 text-sm text-neutral-600 dark:text-neutral-400">
+                                <span>❤️ {{ number_format($content->like_count ?? 0) }} {{ __('common.likes') }}</span>
+                            </div>
+                        </div>
+
+                    @else
+                        <!-- Fallback -->
+                        <div class="text-center py-12">
+                            <p class="text-neutral-600 dark:text-neutral-400">
+                                {{ __('report.content_type_not_supported') }}
+                            </p>
+                        </div>
+                    @endif
+
+                    <!-- Report Info -->
+                    <div class="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+                        <h4 class="font-semibold text-neutral-900 dark:text-white mb-3">
+                            {{ __('report.report_details') }}
+                        </h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-600 dark:text-neutral-400">{{ __('report.reason') }}:</span>
+                                <span class="font-medium text-neutral-900 dark:text-white">
+                                    {{ __('report.reasons.' . $selectedContent['report']->reason) }}
+                                </span>
+                            </div>
+                            @if($selectedContent['report']->description)
+                            <div class="mt-3">
+                                <span class="text-neutral-600 dark:text-neutral-400">{{ __('report.description') }}:</span>
+                                <p class="mt-1 text-neutral-900 dark:text-white">{{ $selectedContent['report']->description }}</p>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer with Actions -->
+                <div class="sticky bottom-0 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 px-6 py-4 flex justify-end gap-3">
+                    <button @click="$wire.closeContentModal()"
+                            class="px-6 py-2 bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors">
+                        {{ __('common.close') }}
                     </button>
                 </div>
             </div>

@@ -80,4 +80,7 @@ return [
     'report_dismissed' => 'Signalement rejeté',
     'content_deleted' => 'Contenu supprimé avec succès',
     'error_deleting_content' => 'Erreur lors de la suppression du contenu',
+    'content_not_available' => 'Le contenu n\'est plus disponible',
+    'content_type_not_supported' => 'Type de contenu non pris en charge pour l\'aperçu',
+    'report_details' => 'Détails du Signalement',
 ];

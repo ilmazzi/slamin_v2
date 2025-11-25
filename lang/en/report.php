@@ -80,4 +80,7 @@ return [
     'report_dismissed' => 'Report dismissed',
     'content_deleted' => 'Content deleted successfully',
     'error_deleting_content' => 'Error deleting content',
+    'content_not_available' => 'Content is no longer available',
+    'content_type_not_supported' => 'Content type not supported for preview',
+    'report_details' => 'Report Details',
 ];

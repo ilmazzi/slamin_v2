@@ -88,6 +88,9 @@ return [
     'report_dismissed' => 'Segnalazione respinta',
     'content_deleted' => 'Contenuto eliminato con successo',
     'error_deleting_content' => 'Errore durante l\'eliminazione del contenuto',
+    'content_not_available' => 'Il contenuto non è più disponibile',
+    'content_type_not_supported' => 'Tipo di contenuto non supportato per l\'anteprima',
+    'report_details' => 'Dettagli Segnalazione',
     
     // Status
     'status_pending' => 'In Attesa',
