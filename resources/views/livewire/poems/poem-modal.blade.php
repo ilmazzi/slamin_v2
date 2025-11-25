@@ -19,7 +19,7 @@
              @click="$wire.closeModal()"></div>
         
         <!-- Book Container -->
-        <div class="relative z-10 flex items-start justify-center p-4 md:p-8 w-full min-h-full overflow-y-auto overflow-x-hidden">
+        <div class="relative z-10 flex items-center justify-center py-8 md:py-12 px-4 md:px-8 w-full min-h-full overflow-y-auto overflow-x-hidden">
             
             <div class="poem-book-container"
                  x-show="show"
