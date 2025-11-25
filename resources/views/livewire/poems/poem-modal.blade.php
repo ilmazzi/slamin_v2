@@ -145,7 +145,7 @@
                                     <x-like-button 
                                         :itemId="$poem->id"
                                         itemType="poem"
-                                        :isLiked="false"
+                                        :isLiked="$poem->is_liked ?? false"
                                         :likesCount="$poem->like_count ?? 0"
                                         size="md" />
                                     
@@ -156,6 +156,11 @@
                                         size="md" />
                                     
                                     <x-share-button 
+                                        :url="route('poems.show', $poem->slug)"
+                                        :title="$poem->title ?: __('poems.untitled')"
+                                        size="md" />
+                                    
+                                    <x-report-button 
                                         :itemId="$poem->id"
                                         itemType="poem"
                                         size="md" />
