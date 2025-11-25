@@ -79,6 +79,10 @@
                                 :itemId="$photo->id"
                                 itemType="photo"
                                 size="md" />
+                            <x-report-button 
+                                :itemId="$photo->id"
+                                itemType="photo"
+                                size="md" />
                         </div>
                     </div>
 

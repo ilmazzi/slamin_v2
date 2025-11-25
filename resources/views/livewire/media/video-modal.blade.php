@@ -322,6 +322,10 @@
                                 :itemId="$video->id"
                                 itemType="video"
                                 size="md" />
+                            <x-report-button 
+                                :itemId="$video->id"
+                                itemType="video"
+                                size="md" />
                         </div>
                     </div>
                 </div>

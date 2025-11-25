@@ -460,6 +460,16 @@
                                 :title="$poem->title"
                                 size="md" />
                         </div>
+                        
+                        <!-- Report -->
+                        <div class="flex items-center gap-2 px-6 py-3 rounded-xl 
+                                    bg-white dark:bg-neutral-800 shadow-lg
+                                    hover:shadow-xl transition-all duration-300">
+                            <x-report-button 
+                                :itemId="$poem->id"
+                                itemType="poem"
+                                size="md" />
+                        </div>
                     </div>
                     
                     <!-- Edit Button (owner only) -->
