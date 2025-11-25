@@ -269,6 +269,8 @@
             height: 100%;
             overflow-y: auto;
             overflow-x: hidden;
+            position: relative;
+            z-index: 10;
         }
         
         .poem-modal-cover {
@@ -398,7 +400,7 @@
             gap: 0.4rem;
             flex-wrap: wrap;
             position: relative;
-            z-index: 15;
+            z-index: 30;
         }
 
         .poem-owner-action {
@@ -479,6 +481,7 @@
                 inset 0 0 8px rgba(0, 0, 0, 0.5),
                 0 0 20px rgba(0, 0, 0, 0.4);
             z-index: 25;
+            pointer-events: none;
         }
         
         /* Contenuto poesia */
