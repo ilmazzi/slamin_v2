@@ -115,7 +115,7 @@ class="relative inline-block" {{ $attributes->only(['class']) }}>
          x-transition:leave="transition ease-in duration-150"
          x-transition:leave-start="opacity-100 scale-100"
          x-transition:leave-end="opacity-0 scale-95"
-         class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-white dark:bg-neutral-800 rounded-lg shadow-xl border border-neutral-200 dark:border-neutral-700 p-2 z-50"
+         class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 bg-white dark:bg-neutral-800 rounded-lg shadow-xl border border-neutral-200 dark:border-neutral-700 p-2 z-[100000]"
          style="display: none;">
         
         <button @click="copyLink()" 

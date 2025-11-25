@@ -13,11 +13,11 @@
          @keydown.escape.window="$wire.closeModal()">
         
         <!-- Dark Backdrop -->
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm z-0"
              @click="$wire.closeModal()"></div>
         
         <!-- Book Container -->
-        <div class="absolute inset-0 flex items-center justify-center p-4 md:p-8 overflow-y-auto overflow-x-hidden">
+        <div class="absolute inset-0 flex items-center justify-center p-4 md:p-8 overflow-y-auto overflow-x-hidden z-10">
             
             <div class="poem-book-container"
                  x-show="show"
