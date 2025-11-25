@@ -179,9 +179,9 @@
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         @foreach($results['users'] as $user)
-                            <a href="{{ route('profile.show', $user) }}" 
+                            <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($user) }}" 
                                class="block p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-700 text-center">
-                                <img src="{{ $user->profile_photo_url }}" 
+                                <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($user, 64) }}" 
                                      alt="{{ $user->name }}"
                                      class="w-16 h-16 rounded-full mx-auto mb-3 object-cover">
                                 <h3 class="font-semibold text-neutral-900 dark:text-white">{{ $user->name }}</h3>
