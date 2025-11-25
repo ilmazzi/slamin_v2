@@ -257,6 +257,9 @@
         </div>
     </section>
 
+    {{-- Carousel Section --}}
+    <livewire:home.hero-carousel />
+
     {{-- Video/Foto Community - FILM STUDIO SECTION --}}
     <div class="py-20 md:py-24 film-studio-section">
         <livewire:home.videos-section />

@@ -85,7 +85,7 @@ class CarouselList extends Component
         $this->is_active = $carousel->is_active ?? true;
         $this->start_date = $carousel->start_date ? $carousel->start_date->format('Y-m-d') : '';
         $this->end_date = $carousel->end_date ? $carousel->end_date->format('Y-m-d') : '';
-        $this->use_original_image = empty($carousel->image_path) || $carousel->hasContentReference();
+        $this->use_original_image = empty($carousel->image_path) || $carousel->isContentReference();
         $this->isEditing = true;
         $this->showModal = true;
     }
@@ -243,7 +243,7 @@ class CarouselList extends Component
                 $carousel->updateContentCache();
             }
 
-            session()->flash('message', 'Carousel salvato con successo');
+            session()->flash('message', $this->isEditing ? __('admin.sections.carousels.messages.updated') : __('admin.sections.carousels.messages.created'));
             $this->closeModal();
         } catch (\Exception $e) {
             session()->flash('error', 'Errore durante il salvataggio: ' . $e->getMessage());
@@ -264,14 +264,14 @@ class CarouselList extends Component
 
         $carousel->delete();
 
-        session()->flash('message', 'Carousel eliminato con successo');
+        session()->flash('message', __('admin.sections.carousels.messages.deleted'));
     }
 
     public function toggleActive($carouselId)
     {
         $carousel = Carousel::findOrFail($carouselId);
         $carousel->update(['is_active' => !$carousel->is_active]);
-        session()->flash('message', $carousel->is_active ? 'Carousel attivato' : 'Carousel disattivato');
+        session()->flash('message', $carousel->is_active ? __('admin.sections.carousels.messages.activated') : __('admin.sections.carousels.messages.deactivated'));
     }
 
     public function updateOrder($carouselIds)
@@ -280,17 +280,17 @@ class CarouselList extends Component
             Carousel::where('id', $carouselId)->update(['order' => $index]);
         }
 
-        session()->flash('message', 'Ordine aggiornato');
+        session()->flash('message', __('admin.sections.carousels.messages.order_updated'));
     }
 
     public function getAvailableContentTypesProperty()
     {
         return [
-            'video' => 'Video',
-            'event' => 'Evento',
-            'user' => 'Utente',
-            'poem' => 'Poesia',
-            'article' => 'Articolo',
+            'video' => __('admin.sections.carousels.form.content_type_video'),
+            'event' => __('admin.sections.carousels.form.content_type_event'),
+            'user' => __('admin.sections.carousels.form.content_type_user'),
+            'poem' => __('admin.sections.carousels.form.content_type_poem'),
+            'article' => __('admin.sections.carousels.form.content_type_article'),
         ];
     }
 

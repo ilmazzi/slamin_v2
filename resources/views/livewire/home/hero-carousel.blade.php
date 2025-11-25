@@ -4,7 +4,8 @@
     @endphp
     
     @if ($carouselSlides->count() > 0)
-    <section id="hero" class="relative h-[70vh] lg:h-[75vh] overflow-hidden"
+    <section class="relative py-12 md:py-16 bg-white dark:bg-neutral-900 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
              x-data="{
                  currentSlide: 0,
                  slides: {{ $carouselSlides->count() }},
@@ -14,90 +15,131 @@
                  if (slides > 1) {
                      autoplayInterval = setInterval(() => {
                          currentSlide = (currentSlide + 1) % slides;
-                     }, 8000);
+                     }, 6000);
                  }
              "
              @mouseenter="if (autoplayInterval) clearInterval(autoplayInterval)"
-             @mouseleave="if (slides > 1) autoplayInterval = setInterval(() => { currentSlide = (currentSlide + 1) % slides; }, 8000)">
-        
-        <!-- Slides -->
-        @foreach($carouselSlides as $index => $carousel)
-        <div class="absolute inset-0 transition-all duration-1000"
-             :class="currentSlide === {{ $index }} ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+             @mouseleave="if (slides > 1) autoplayInterval = setInterval(() => { currentSlide = (currentSlide + 1) % slides; }, 6000)">
             
-            <div class="absolute inset-0" x-data :style="`transform: translateY(${scrollY * 0.5}px) scale(1.1)`">
-                @if($carousel->video_path && $carousel->videoUrl)
-                    <video class="w-full h-full object-cover" autoplay muted loop playsinline>
-                        <source src="{{ $carousel->videoUrl }}" type="video/mp4">
-                    </video>
-                @elseif($carousel->image_path && $carousel->imageUrl)
-                    <img src="{{ $carousel->imageUrl }}" alt="{{ $carousel->title }}" class="w-full h-full object-cover">
-                @else
-                    <div class="w-full h-full bg-gradient-to-br from-primary-600 to-primary-800"></div>
-                @endif
-                <div class="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/80 to-primary-700/75"></div>
-            </div>
-            
-            <div class="absolute inset-0 flex items-center justify-center" x-data :style="`transform: translateY(${scrollY * 0.3}px); opacity: ${Math.max(0, 1 - (scrollY / 1200))}`">
-                <div class="text-center px-4 md:px-6 max-w-5xl mx-auto text-white"
-                     x-show="currentSlide === {{ $index }}"
-                     x-transition:enter="transition ease-out duration-700 delay-300"
-                     x-transition:enter-start="opacity-0 translate-y-8 scale-95"
-                     x-transition:enter-end="opacity-100 translate-y-0 scale-100">
-                    <h1 class="text-5xl md:text-6xl lg:text-8xl font-bold mb-6 md:mb-8 leading-tight" style="font-family: 'Crimson Pro', serif;">
-                        {!! $carousel->content_title ?? $carousel->title !!}
-                    </h1>
-                    @if($carousel->content_description ?? $carousel->description)
-                    <p class="text-xl md:text-2xl lg:text-3xl font-light mb-8 md:mb-12 text-white/90">
-                        {{ $carousel->content_description ?? $carousel->description }}
-                    </p>
-                    @endif
-                    @if($carousel->content_url ?? $carousel->link_url)
-                    <x-ui.buttons.primary :href="$carousel->content_url ?? $carousel->link_url" size="lg">
-                        {{ $carousel->link_text ?? __('common.discover_more') }}
-                    </x-ui.buttons.primary>
-                    @endif
-                </div>
-            </div>
-        </div>
-        @endforeach
-
-        @if($carouselSlides->count() > 1)
-        <button @click="currentSlide = (currentSlide - 1 + slides) % slides"
-                class="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/30 rounded-full items-center justify-center text-white hover:bg-white/20 transition-all">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-        </button>
-        
-        <button @click="currentSlide = (currentSlide + 1) % slides"
-                class="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/30 rounded-full items-center justify-center text-white hover:bg-white/20 transition-all">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-        </button>
-
-        <div class="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-3">
-            @foreach($carouselSlides as $index => $carousel)
-                <button @click="currentSlide = {{ $index }}">
-                    <div class="h-1.5 rounded-full bg-white/30 overflow-hidden transition-all duration-300"
-                         :class="currentSlide === {{ $index }} ? 'w-16' : 'w-8'">
-                        <div x-show="currentSlide === {{ $index }}" class="h-full bg-white" style="animation: progress 8s linear;"></div>
+            <div class="relative">
+                {{-- Slides Container --}}
+                <div class="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
+                    @foreach($carouselSlides as $index => $carousel)
+                    <div class="absolute inset-0 transition-all duration-700 ease-in-out"
+                         :class="currentSlide === {{ $index }} ? 'opacity-100 z-10' : 'opacity-0 z-0'">
+                        
+                        {{-- Background Image/Video --}}
+                        <div class="absolute inset-0">
+                            @if($carousel->video_path && $carousel->videoUrl)
+                                <video class="w-full h-full object-cover" autoplay muted loop playsinline>
+                                    <source src="{{ $carousel->videoUrl }}" type="video/mp4">
+                                </video>
+                            @elseif($carousel->image_url || $carousel->content_image_url)
+                                <img src="{{ $carousel->image_url ?? $carousel->content_image_url }}" 
+                                     alt="{{ $carousel->display_title }}"
+                                     class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800"></div>
+                            @endif
+                            
+                            {{-- Overlay Gradient --}}
+                            <div class="absolute inset-0 bg-gradient-to-r from-neutral-900/80 via-neutral-900/60 to-transparent"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/90 via-transparent to-transparent"></div>
+                        </div>
+                        
+                        {{-- Content Overlay --}}
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                                <div class="max-w-2xl"
+                                     x-show="currentSlide === {{ $index }}"
+                                     x-transition:enter="transition ease-out duration-700 delay-200"
+                                     x-transition:enter-start="opacity-0 translate-x-8"
+                                     x-transition:enter-end="opacity-100 translate-x-0">
+                                    
+                                    @if($carousel->display_title)
+                                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight" style="font-family: 'Crimson Pro', serif;">
+                                        {!! $carousel->display_title !!}
+                                    </h2>
+                                    @endif
+                                    
+                                    @if($carousel->display_description)
+                                    <p class="text-lg md:text-xl lg:text-2xl text-white/90 mb-6 md:mb-8 leading-relaxed">
+                                        {{ \Illuminate\Support\Str::limit($carousel->display_description, 200) }}
+                                    </p>
+                                    @endif
+                                    
+                                    @if($carousel->content_type && $carousel->content_id)
+                                        @if($carousel->content_type === 'poem')
+                                        <button onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $carousel->content_id }} })" 
+                                                class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                            <span>{{ $carousel->link_text ?: __('common.discover_more') }}</span>
+                                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                            </svg>
+                                        </button>
+                                        @elseif($carousel->content_type === 'article')
+                                        <button onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $carousel->content_id }} })" 
+                                                class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                            <span>{{ $carousel->link_text ?: __('common.discover_more') }}</span>
+                                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                            </svg>
+                                        </button>
+                                        @elseif($carousel->display_url)
+                                        <a href="{{ $carousel->display_url }}" 
+                                           class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                            <span>{{ $carousel->link_text ?: __('common.discover_more') }}</span>
+                                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                            </svg>
+                                        </a>
+                                        @endif
+                                    @elseif($carousel->display_url)
+                                    <a href="{{ $carousel->display_url }}" 
+                                       class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                        <span>{{ $carousel->link_text ?: __('common.discover_more') }}</span>
+                                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
+                </div>
+                
+                {{-- Navigation Arrows --}}
+                @if($carouselSlides->count() > 1)
+                <button @click="currentSlide = (currentSlide - 1 + slides) % slides"
+                        class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
                 </button>
-            @endforeach
-        </div>
-        @endif
-
-        <div class="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-            </svg>
+                
+                <button @click="currentSlide = (currentSlide + 1) % slides"
+                        class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                @endif
+                
+                {{-- Dots Indicator --}}
+                @if($carouselSlides->count() > 1)
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                    @foreach($carouselSlides as $index => $carousel)
+                        <button @click="currentSlide = {{ $index }}"
+                                class="transition-all duration-300"
+                                :class="currentSlide === {{ $index }} ? 'w-8 h-2 bg-white rounded-full' : 'w-2 h-2 bg-white/40 rounded-full hover:bg-white/60'">
+                        </button>
+                    @endforeach
+                </div>
+                @endif
+            </div>
         </div>
     </section>
     @endif
-    
-    <style>
-        @keyframes progress { from { width: 0%; } to { width: 100%; } }
-    </style>
 </div>

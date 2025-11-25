@@ -312,7 +312,7 @@ class Carousel extends Model
                 'content_title' => $content->title,
                 'content_description' => $content->description,
                 'content_image_url' => $content->thumbnail_url,
-                'content_url' => route('poems.show', $content),
+                'content_url' => null, // Usa evento Livewire invece di route
             ];
 
             case self::CONTENT_TYPE_ARTICLE:
@@ -320,7 +320,7 @@ class Carousel extends Model
                     'content_title' => $content->title,
                     'content_description' => $content->excerpt,
                     'content_image_url' => $content->featured_image_url,
-                    'content_url' => route('articles.show', $content),
+                    'content_url' => null, // Usa evento Livewire invece di route
                 ];
 
             default:

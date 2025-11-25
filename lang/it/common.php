@@ -62,5 +62,8 @@ return [
     'forum' => 'Forum',
     'collapse' => 'Comprimi',
     'close_menu' => 'Chiudi Menu',
+    'search' => 'Cerca',
+    'order' => 'Ordine',
+    'delete_confirm' => 'Sei sicuro di voler eliminare questo elemento?',
 ];
 
