@@ -659,4 +659,7 @@
     
     {{-- Video Modal Component --}}
     <livewire:media.video-modal />
+    
+    {{-- Photo Modal Component --}}
+    <livewire:media.photo-modal />
 </div>

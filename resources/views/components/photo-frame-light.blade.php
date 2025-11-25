@@ -48,7 +48,7 @@ $sizeClasses = [
                     @endif
                     
                     {{-- Social Buttons --}}
-                    <div class="flex items-center justify-center gap-2.5 mt-1">
+                    <div class="flex items-center justify-center gap-2.5 mt-1" @click.stop>
                         <x-like-button 
                             :itemId="$photo->id"
                             itemType="photo"
