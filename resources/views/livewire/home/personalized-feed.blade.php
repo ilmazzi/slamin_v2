@@ -171,10 +171,10 @@
                             $stampRotation = rand(-8, 8);
                         ?>
                         <div class="mb-6">
-                            <div class="cinema-ticket group cursor-pointer"
-                                 onclick="Livewire.dispatch('openEventModal', { eventId: {{ $item['id'] }} })"
-                                 style="transform: rotate({{ $tilt }}deg); 
-                                        background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
+                            <a href="{{ route('events.show', $item['id']) }}" 
+                               class="cinema-ticket group cursor-pointer block"
+                               style="transform: rotate({{ $tilt }}deg); 
+                                      background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
                                 
                                 <!-- Perforated Left Edge -->
                                 <div class="ticket-perforation"></div>
@@ -229,7 +229,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
 
                     @elseif($item['type'] === 'video')
@@ -461,5 +461,4 @@
 {{-- Modals for content --}}
 <livewire:poems.poem-modal />
 <livewire:articles.article-modal />
-<livewire:events.event-modal />
 <livewire:media.video-modal />
