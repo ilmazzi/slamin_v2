@@ -228,8 +228,7 @@
             border-radius: 12px 0 0 12px;
             box-shadow: 
                 inset -4px 0 12px rgba(180, 120, 70, 0.3),
-                inset 0 0 40px rgba(160, 100, 60, 0.15),
-                -20px 0 40px rgba(0, 0, 0, 0.3);
+                inset 0 0 40px rgba(160, 100, 60, 0.15);
             transform-origin: right center;
         }
         
@@ -237,8 +236,7 @@
             border-radius: 0 12px 12px 0;
             box-shadow: 
                 inset 4px 0 12px rgba(180, 120, 70, 0.3),
-                inset 0 0 40px rgba(160, 100, 60, 0.15),
-                20px 0 40px rgba(0, 0, 0, 0.3);
+                inset 0 0 40px rgba(160, 100, 60, 0.15);
             transform-origin: left center;
         }
         
@@ -480,7 +478,7 @@
             box-shadow: 
                 inset 0 0 8px rgba(0, 0, 0, 0.5),
                 0 0 20px rgba(0, 0, 0, 0.4);
-            z-index: 10;
+            z-index: 25;
         }
         
         /* Contenuto poesia */
