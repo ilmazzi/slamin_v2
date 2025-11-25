@@ -18,17 +18,19 @@
 
 .hero-immersive {
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     overflow: hidden;
+    padding-top: 0;
+    margin-top: -4rem; /* Compensa il pt-16 del layout main */
 }
 
 /* Parallax background */
 .parallax-bg {
     position: absolute;
-    inset: -10%;
+    inset: 0;
     z-index: 1;
 }
 
@@ -65,13 +67,14 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
+    padding-top: calc(6rem + env(safe-area-inset-top, 0px)); /* Spazio per topbar */
 }
 
 .hero-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3rem;
+    gap: 2rem;
 }
 
 /* Avatar 3D */
@@ -146,7 +149,8 @@
     text-align: center;
     color: white;
     max-width: 900px;
-    padding-bottom: 4rem;
+    padding-bottom: 2rem;
+    width: 100%;
 }
 
 .role-tag {
@@ -226,25 +230,20 @@
     background: linear-gradient(135deg, #2d5a3f, #4a7c59);
 }
 
-/* Stats inline */
+/* Stats inline - SENZA CARD DI SFONDO, SOLO CARD SINGOLE */
 .stats-inline {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
     margin-bottom: 2rem;
-    padding: 1.5rem 2rem;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border-radius: 2rem;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    padding: 0;
+    background: transparent;
+    backdrop-filter: none;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
     animation: fadeInUp 0.6s ease 0.4s both;
-}
-
-.dark .stats-inline {
-    background: rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .stat-item {
@@ -252,19 +251,29 @@
     flex-direction: column;
     align-items: center;
     gap: 0.375rem;
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 1.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
 
 .stat-item:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+}
+
+.dark .stat-item {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .dark .stat-item:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .stat-num {
@@ -320,8 +329,19 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 2rem;
+    margin-top: 1rem;
     animation: fadeInUp 0.6s ease 0.5s both;
+}
+
+/* User Badges - Spostati più in alto */
+.user-badges-large {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.6s ease 0.35s both;
 }
 
 .social-links {
@@ -1000,6 +1020,9 @@
     align-items: center;
     gap: 0.625rem;
     flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.6s ease 0.35s both;
 }
 
 .language-flag-tag {

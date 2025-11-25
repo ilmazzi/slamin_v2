@@ -1,171 +1,360 @@
-<div class="p-6">
-    <h1 class="text-3xl font-bold text-neutral-900 dark:text-white mb-6">{{ __('admin.translations.title') }}</h1>
-    <p class="text-neutral-600 dark:text-neutral-400 mb-8">{{ __('admin.translations.description') }}</p>
+<div class="p-6 max-w-7xl mx-auto">
+    {{-- Header --}}
+    <div class="mb-8">
+        <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-2" style="font-family: 'Crimson Pro', serif;">
+            {{ __('admin.translations.title') }}
+        </h1>
+        <p class="text-lg text-neutral-600 dark:text-neutral-400">{{ __('admin.translations.description') }}</p>
+    </div>
     
+    {{-- Flash Messages --}}
     @if(session()->has('success'))
-        <div class="mb-4 p-4 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded-lg">
-            {{ session('success') }}
+        <div class="mb-6 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl">
+            <p class="text-green-800 dark:text-green-400 font-semibold">{{ session('success') }}</p>
         </div>
     @endif
     
     @if(session()->has('error'))
-        <div class="mb-4 p-4 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 rounded-lg">
-            {{ session('error') }}
+        <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl">
+            <p class="text-red-800 dark:text-red-400 font-semibold">{{ session('error') }}</p>
         </div>
     @endif
     
-    {{-- Language Selection and Stats --}}
-    <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                {{ __('admin.translations.select_language') }}
-            </label>
-            <select wire:model.live="selectedLanguage" class="block w-full rounded-md border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800">
-                @foreach($this->languages as $lang)
-                    <option value="{{ $lang }}">{{ strtoupper($lang) }}</option>
-                @endforeach
-            </select>
+    {{-- Controls Bar --}}
+    <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            {{-- Language Selector --}}
+            <div>
+                <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
+                    {{ __('admin.translations.select_language') }}
+                </label>
+                <select wire:model.live="selectedLanguage" 
+                        class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    @foreach($this->languages as $lang)
+                        <option value="{{ $lang }}">{{ strtoupper($lang) }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
+            {{-- File Selector --}}
+            <div>
+                <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
+                    {{ __('admin.translations.select_file') }}
+                </label>
+                <select wire:model.live="selectedFile" 
+                        class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    @foreach($this->translationFiles as $fileKey => $fileDisplayName)
+                        <option value="{{ $fileKey }}">{{ $fileDisplayName }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Search --}}
+            <div>
+                <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
+                    🔍 Cerca
+                </label>
+                <input type="text" 
+                       wire:model.live.debounce.300ms="search"
+                       placeholder="Cerca chiave o testo..."
+                       class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+            </div>
+
+            {{-- Filter Status --}}
+            <div>
+                <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
+                    Filtra
+                </label>
+                <select wire:model.live="filterStatus" 
+                        class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option value="all">Tutte</option>
+                    <option value="translated">Tradotte</option>
+                    <option value="missing">Mancanti</option>
+                </select>
+            </div>
         </div>
-        
-        <div>
-            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                {{ __('admin.translations.select_file') }}
-            </label>
-            <select wire:model.live="selectedFile" class="block w-full rounded-md border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800">
-                @foreach($this->translationFiles as $fileKey => $fileDisplayName)
-                    <option value="{{ $fileKey }}">{{ $fileDisplayName }}</option>
-                @endforeach
-            </select>
-        </div>
-        
-        <div class="flex items-end gap-2">
-            <button wire:click="$toggle('showCreateLanguageModal')" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
-                {{ __('admin.translations.add_language') }}
+
+        {{-- Action Buttons --}}
+        <div class="flex flex-wrap gap-3">
+            <button wire:click="$toggle('showCreateLanguageModal')" 
+                    class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-colors">
+                ➕ {{ __('admin.translations.add_language') }}
             </button>
-            <button wire:click="syncLanguage('{{ $selectedLanguage }}')" class="px-4 py-2 bg-neutral-600 text-white rounded-lg hover:bg-neutral-700">
-                {{ __('admin.translations.sync') }}
+            <button wire:click="syncLanguage('{{ $selectedLanguage }}')" 
+                    class="px-5 py-2.5 bg-neutral-600 hover:bg-neutral-700 text-white font-bold rounded-xl transition-colors">
+                🔄 {{ __('admin.translations.sync') }}
+            </button>
+            <button wire:click="downloadExport('excel')" 
+                    wire:loading.attr="disabled"
+                    class="px-5 py-2.5 bg-green-600 hover:bg-green-700 disabled:bg-neutral-400 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-colors">
+                <span wire:loading.remove wire:target="downloadExport">📊 Esporta Excel (Tutti i file)</span>
+                <span wire:loading wire:target="downloadExport">⏳ Generazione Excel...</span>
+            </button>
+            <button wire:click="$toggle('showImportModal')" 
+                    class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors">
+                📤 {{ __('admin.translations.import') }}
             </button>
         </div>
     </div>
     
-    {{-- Stats for selected language --}}
+    {{-- Stats Cards --}}
     @if(isset($this->languageStats[$selectedLanguage]))
         @php $stats = $this->languageStats[$selectedLanguage]; @endphp
-        <div class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow">
-                <h3 class="text-sm text-neutral-500 dark:text-neutral-400">{{ __('admin.translations.total_keys') }}</h3>
-                <p class="text-2xl font-bold text-neutral-900 dark:text-white">{{ $stats['total_keys'] }}</p>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-2xl p-6 border-2 border-blue-200 dark:border-blue-800">
+                <h3 class="text-sm font-bold text-blue-600 dark:text-blue-400 mb-2">{{ __('admin.translations.total_keys') }}</h3>
+                <p class="text-4xl font-black text-blue-900 dark:text-blue-100">{{ $stats['total_keys'] }}</p>
             </div>
-            <div class="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow">
-                <h3 class="text-sm text-neutral-500 dark:text-neutral-400">{{ __('admin.translations.translated_keys') }}</h3>
-                <p class="text-2xl font-bold text-green-600 dark:text-green-400">{{ $stats['translated_keys'] }}</p>
+            <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-2xl p-6 border-2 border-green-200 dark:border-green-800">
+                <h3 class="text-sm font-bold text-green-600 dark:text-green-400 mb-2">{{ __('admin.translations.translated_keys') }}</h3>
+                <p class="text-4xl font-black text-green-900 dark:text-green-100">{{ $stats['translated_keys'] }}</p>
             </div>
-            <div class="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow">
-                <h3 class="text-sm text-neutral-500 dark:text-neutral-400">{{ __('admin.translations.missing_keys') }}</h3>
-                <p class="text-2xl font-bold text-red-600 dark:text-red-400">{{ $stats['missing_keys'] }}</p>
+            <div class="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-2xl p-6 border-2 border-red-200 dark:border-red-800">
+                <h3 class="text-sm font-bold text-red-600 dark:text-red-400 mb-2">{{ __('admin.translations.missing_keys') }}</h3>
+                <p class="text-4xl font-black text-red-900 dark:text-red-100">{{ $stats['missing_keys'] }}</p>
             </div>
-            <div class="p-4 bg-white dark:bg-neutral-800 rounded-lg shadow">
-                <h3 class="text-sm text-neutral-500 dark:text-neutral-400">{{ __('admin.translations.progress') }}</h3>
-                <p class="text-2xl font-bold text-primary-600 dark:text-primary-400">{{ $stats['progress_percentage'] }}%</p>
+            <div class="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-2xl p-6 border-2 border-primary-200 dark:border-primary-800">
+                <h3 class="text-sm font-bold text-primary-600 dark:text-primary-400 mb-2">{{ __('admin.translations.progress') }}</h3>
+                <p class="text-4xl font-black text-primary-900 dark:text-primary-100">{{ $stats['progress_percentage'] }}%</p>
             </div>
         </div>
     @endif
     
-    {{-- Translation Data Table --}}
-    <div class="bg-white dark:bg-neutral-800 rounded-lg shadow overflow-hidden">
-        <div class="p-4 border-b border-neutral-200 dark:border-neutral-700 flex justify-between items-center">
-            <h2 class="text-lg font-semibold text-neutral-900 dark:text-white">
-                {{ __('admin.translations.translations_for') }}: {{ strtoupper($selectedLanguage) }} - {{ $this->translationFiles[$selectedFile] ?? $selectedFile }}
-            </h2>
-            <div class="flex gap-2">
-                <button wire:click="copyFromItalian" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
-                    {{ __('admin.translations.copy_from_italian') }}
-                </button>
-                <button wire:click="clearAll" wire:confirm="{{ __('admin.translations.confirm_clear') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">
-                    {{ __('admin.translations.clear_all') }}
-                </button>
-            </div>
-        </div>
-        
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700">
-                <thead class="bg-neutral-50 dark:bg-neutral-900">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase">{{ __('admin.translations.key') }}</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase">{{ __('admin.translations.italian') }} (IT)</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase">{{ __('admin.translations.translation') }} ({{ strtoupper($selectedLanguage) }})</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase">{{ __('admin.translations.status') }}</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-neutral-800 divide-y divide-neutral-200 dark:divide-neutral-700">
-                    @forelse($this->translationData as $key => $data)
-                        <tr class="{{ $data['is_missing'] ? 'bg-red-50 dark:bg-red-900/20' : '' }}">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-neutral-900 dark:text-white">
-                                <code class="text-xs">{{ $key }}</code>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-neutral-600 dark:text-neutral-400">
-                                {{ $data['reference'] }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <input 
-                                    type="text" 
-                                    value="{{ $data['translation'] }}"
-                                    wire:change="saveTranslation('{{ $key }}', $event.target.value)"
-                                    class="block w-full rounded-md border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 text-sm"
-                                >
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                @if($data['is_translated'])
-                                    <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded">{{ __('admin.translations.translated') }}</span>
-                                @else
-                                    <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 rounded">{{ __('admin.translations.missing') }}</span>
+    {{-- Translations Grid (Card-based) --}}
+    <div class="space-y-4">
+        @php
+            $filtered = $this->getFilteredTranslationsProperty();
+            $perPage = 20;
+            $currentPage = $this->getPage();
+            $offset = ($currentPage - 1) * $perPage;
+            $paginated = array_slice($filtered, $offset, $perPage, true);
+        @endphp
+
+        @forelse($paginated as $key => $data)
+            <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg border-2 {{ $data['is_missing'] ? 'border-red-200 dark:border-red-800 bg-red-50/50 dark:bg-red-900/10' : 'border-neutral-200 dark:border-neutral-700' }} p-6 hover:shadow-xl transition-all duration-300">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2 flex-wrap">
+                            <div class="flex items-center gap-2">
+                                @if(str_contains($key, '.'))
+                                    <span class="text-xs text-neutral-400 dark:text-neutral-500">📁</span>
                                 @endif
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="px-6 py-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
-                                {{ __('admin.translations.no_translations') }}
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                                <code class="px-3 py-1.5 bg-neutral-100 dark:bg-neutral-900 rounded-lg text-sm font-bold text-neutral-900 dark:text-neutral-300 break-all">
+                                    {{ $key }}
+                                </code>
+                            </div>
+                            @if($data['is_translated'])
+                                <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded-lg text-xs font-bold">
+                                    ✅ {{ __('admin.translations.translated') }}
+                                </span>
+                            @else
+                                <span class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 rounded-lg text-xs font-bold">
+                                    ⚠️ {{ __('admin.translations.missing') }}
+                                </span>
+                            @endif
+                        </div>
+                        @if(str_contains($key, '.'))
+                            <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1 italic">
+                                Chiave annidata ({{ str_replace('.', ' → ', $key) }})
+                            </p>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Reference (Italian) --}}
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-neutral-500 dark:text-neutral-400 mb-2 uppercase tracking-wide">
+                        🇮🇹 Italiano (IT) - Riferimento
+                    </label>
+                    <div class="p-4 bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-700 min-h-[60px]">
+                        @if(!empty($data['reference']))
+                            <p class="text-neutral-700 dark:text-neutral-300 font-medium whitespace-pre-wrap">{{ $data['reference'] }}</p>
+                        @else
+                            <p class="text-neutral-400 dark:text-neutral-500 italic">Nessun testo di riferimento</p>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Translation (Editable) --}}
+                <div>
+                    <label class="block text-xs font-bold text-neutral-500 dark:text-neutral-400 mb-2 uppercase tracking-wide">
+                        {{ strtoupper($selectedLanguage) }} - {{ __('admin.translations.translation') }}
+                    </label>
+                    
+                    @if($editingKey === $key)
+                        {{-- Editing Mode --}}
+                        <div class="space-y-3">
+                            <textarea wire:model="editingValue" 
+                                      rows="6"
+                                      class="w-full px-4 py-3 rounded-xl border-2 border-primary-500 dark:border-primary-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-y"
+                                      placeholder="Inserisci la traduzione qui..."></textarea>
+                            <div class="flex gap-2">
+                                <button wire:click="saveEditing" 
+                                        wire:loading.attr="disabled"
+                                        class="px-5 py-2.5 bg-green-600 hover:bg-green-700 disabled:bg-neutral-400 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-colors">
+                                    <span wire:loading.remove wire:target="saveEditing">💾 Salva</span>
+                                    <span wire:loading wire:target="saveEditing">⏳ Salvataggio...</span>
+                                </button>
+                                <button wire:click="cancelEditing" 
+                                        wire:loading.attr="disabled"
+                                        class="px-5 py-2.5 bg-neutral-600 hover:bg-neutral-700 disabled:bg-neutral-400 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-colors">
+                                    ❌ Annulla
+                                </button>
+                            </div>
+                        </div>
+                    @else
+                        {{-- View Mode --}}
+                        <div class="space-y-3">
+                            <div class="p-4 bg-neutral-50 dark:bg-neutral-900 rounded-xl border-2 border-neutral-200 dark:border-neutral-700 min-h-[100px]">
+                                @if(!empty(trim($data['translation'])))
+                                    <p class="text-neutral-700 dark:text-neutral-300 font-medium whitespace-pre-wrap">{{ $data['translation'] }}</p>
+                                @else
+                                    <p class="text-neutral-400 dark:text-neutral-500 italic">⚠️ Nessuna traduzione - Clicca "Modifica" per aggiungerla</p>
+                                @endif
+                            </div>
+                            <button wire:click="startEditing('{{ $key }}')" 
+                                    class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-colors">
+                                ✏️ {{ empty(trim($data['translation'])) ? 'Aggiungi Traduzione' : 'Modifica' }}
+                            </button>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @empty
+            <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-12 text-center">
+                <div class="text-6xl mb-4">🔍</div>
+                <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-2">Nessuna traduzione trovata</h3>
+                <p class="text-neutral-600 dark:text-neutral-400">
+                    @if(!empty($search))
+                        Prova a modificare i criteri di ricerca
+                    @else
+                        Non ci sono traduzioni da mostrare
+                    @endif
+                </p>
+            </div>
+        @endforelse
+
+        {{-- Pagination --}}
+        @if(count($filtered) > $perPage)
+            <div class="mt-6 flex justify-center">
+                <div class="flex gap-2">
+                    @if($currentPage > 1)
+                        <button wire:click="previousPage" 
+                                class="px-4 py-2 bg-neutral-600 hover:bg-neutral-700 text-white font-bold rounded-xl transition-colors">
+                            ← Precedente
+                        </button>
+                    @endif
+                    
+                    <div class="px-4 py-2 bg-primary-600 text-white font-bold rounded-xl">
+                        Pagina {{ $currentPage }} di {{ ceil(count($filtered) / $perPage) }}
+                    </div>
+                    
+                    @if($currentPage < ceil(count($filtered) / $perPage))
+                        <button wire:click="nextPage" 
+                                class="px-4 py-2 bg-neutral-600 hover:bg-neutral-700 text-white font-bold rounded-xl transition-colors">
+                            Successiva →
+                        </button>
+                    @endif
+                </div>
+            </div>
+        @endif
     </div>
     
+    {{-- Modal per Import --}}
+    @if($showImportModal)
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div class="bg-white dark:bg-neutral-800 rounded-3xl shadow-2xl p-8 max-w-md w-full">
+                <h2 class="text-2xl font-black text-neutral-900 dark:text-white mb-6" style="font-family: 'Crimson Pro', serif;">
+                    {{ __('admin.translations.import_translations') }}
+                </h2>
+                
+                <form wire:submit="importTranslations" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
+                            {{ __('admin.translations.select_file') }}
+                        </label>
+                        <input type="file" 
+                               wire:model="importFile" 
+                               accept=".csv,.txt,.xlsx,.xls"
+                               class="block w-full text-sm text-neutral-500 dark:text-neutral-400
+                                      file:mr-4 file:py-3 file:px-5
+                                      file:rounded-xl file:border-0
+                                      file:text-sm file:font-bold
+                                      file:bg-primary-600 file:text-white
+                                      hover:file:bg-primary-700
+                                      cursor-pointer">
+                        @error('importFile') 
+                            <span class="text-red-600 text-sm mt-2 block">{{ $message }}</span> 
+                        @enderror
+                    </div>
+                    
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-200 dark:border-blue-800">
+                        <p class="text-sm font-bold text-blue-800 dark:text-blue-300 mb-2">📋 Formato File Supportato</p>
+                        <ul class="text-xs text-blue-700 dark:text-blue-400 space-y-1 list-disc list-inside">
+                            <li><strong>Excel (.xlsx, .xls):</strong> File Excel con fogli multipli (uno per file di traduzione)</li>
+                            <li><strong>CSV (.csv):</strong> File CSV con colonne: Chiave, Italiano, Traduzione, Stato, Note</li>
+                        </ul>
+                        <p class="text-xs text-blue-700 dark:text-blue-400 mt-3">
+                            <strong>Nota:</strong> Per Excel, ogni foglio corrisponde a un file di traduzione. Il sistema rileva automaticamente il file corretto dal nome del foglio.
+                        </p>
+                    </div>
+                    
+                    <div class="flex gap-3 justify-end">
+                        <button type="button" 
+                                wire:click="$toggle('showImportModal')" 
+                                class="px-6 py-3 bg-neutral-600 hover:bg-neutral-700 text-white font-bold rounded-xl transition-colors">
+                            {{ __('common.cancel') }}
+                        </button>
+                        <button type="submit" 
+                                class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-colors">
+                            {{ __('admin.translations.import') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
+
     {{-- Modal per nuova lingua --}}
     @if($showCreateLanguageModal)
-        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white dark:bg-neutral-800 rounded-lg p-6 max-w-md w-full mx-4">
-                <h2 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">{{ __('admin.translations.create_language') }}</h2>
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div class="bg-white dark:bg-neutral-800 rounded-3xl shadow-2xl p-8 max-w-md w-full">
+                <h2 class="text-2xl font-black text-neutral-900 dark:text-white mb-6" style="font-family: 'Crimson Pro', serif;">
+                    {{ __('admin.translations.create_language') }}
+                </h2>
                 
-                <div class="space-y-4">
+                <div class="space-y-6">
                     <div>
-                        <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                        <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
                             {{ __('admin.translations.language_code') }}
                         </label>
                         <input type="text" wire:model="newLanguageCode" maxlength="2" 
-                               class="block w-full rounded-md border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900"
+                               class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium"
                                placeholder="en, fr, es, etc.">
-                        @error('newLanguageCode') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                        @error('newLanguageCode') 
+                            <span class="text-red-600 text-sm mt-2 block">{{ $message }}</span> 
+                        @enderror
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                        <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
                             {{ __('admin.translations.language_name') }}
                         </label>
                         <input type="text" wire:model="newLanguageName" 
-                               class="block w-full rounded-md border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900"
+                               class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium"
                                placeholder="English, Français, Español, etc.">
-                        @error('newLanguageName') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                        @error('newLanguageName') 
+                            <span class="text-red-600 text-sm mt-2 block">{{ $message }}</span> 
+                        @enderror
                     </div>
                     
-                    <div class="flex gap-2 justify-end">
-                        <button wire:click="$toggle('showCreateLanguageModal')" class="px-4 py-2 bg-neutral-600 text-white rounded-lg hover:bg-neutral-700">
+                    <div class="flex gap-3 justify-end">
+                        <button wire:click="$toggle('showCreateLanguageModal')" 
+                                class="px-6 py-3 bg-neutral-600 hover:bg-neutral-700 text-white font-bold rounded-xl transition-colors">
                             {{ __('common.cancel') }}
                         </button>
-                        <button wire:click="createLanguage" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
+                        <button wire:click="createLanguage" 
+                                class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-colors">
                             {{ __('common.create') }}
                         </button>
                     </div>
@@ -174,4 +363,3 @@
         </div>
     @endif
 </div>
-

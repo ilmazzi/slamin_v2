@@ -12,6 +12,7 @@
         "laravel/reverb": "^1.6",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6",
+        "phpoffice/phpspreadsheet": "^5.3",
         "spatie/color": "^1.8"
     },
     "require-dev": {
