@@ -549,7 +549,7 @@
                                                        border-2 border-primary-300 dark:border-primary-700 text-neutral-900 dark:text-white appearance-none cursor-pointer
                                                        focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/20
                                                        transition-all duration-300 font-medium">
-                                            <option value="">📍 Seleziona da luoghi recenti...</option>
+                                            <option value="">📍 {{ __('events.create.select_from_recent_venues') }}</option>
                                             @foreach($recentVenues as $index => $venue)
                                                 <option value="{{ $index }}">
                                                     {{ $venue['venue_name'] }} - {{ $venue['city'] ?? '' }}
@@ -561,7 +561,7 @@
                                         </svg>
                                         <label for="recent_venue" 
                                                class="absolute left-5 -top-2.5 px-2 text-sm font-bold bg-white dark:bg-neutral-800 text-primary-600 dark:text-primary-400">
-                                            🏛️ Luoghi Recenti
+                                            🏛️ {{ __('events.create.recent_venues') }}
                                         </label>
                                     </div>
                                     @endif

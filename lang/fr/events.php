@@ -98,6 +98,8 @@ return [
         'saving' => 'Enregistrement...',
         'published_badge' => '🚀 Publié',
         'draft_badge' => '📝 Brouillon',
+        'recent_venues' => 'Lieux Récents',
+        'select_from_recent_venues' => 'Sélectionner parmi les lieux récents...',
     ],
 ];
 

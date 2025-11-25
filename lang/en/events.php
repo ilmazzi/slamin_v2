@@ -98,6 +98,8 @@ return [
         'saving' => 'Saving...',
         'published_badge' => '🚀 Published',
         'draft_badge' => '📝 Draft',
+        'recent_venues' => 'Recent Venues',
+        'select_from_recent_venues' => 'Select from recent venues...',
     ],
 ];
 

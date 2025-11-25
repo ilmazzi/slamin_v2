@@ -104,6 +104,8 @@ return [
         'saving' => 'Salvando...',
         'published_badge' => '🚀 Pubblicato',
         'draft_badge' => '📝 Bozza',
+        'recent_venues' => 'Luoghi Recenti',
+        'select_from_recent_venues' => 'Seleziona da luoghi recenti...',
     ],
     
     // Scoring
