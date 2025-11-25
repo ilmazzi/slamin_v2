@@ -6,6 +6,7 @@
     min-height: 100vh;
     background: #f5f1e8;
     overflow-x: hidden;
+    overflow-y: auto; /* Forza scroll verticale */
 }
 
 .dark .profile-cinematic {
@@ -25,6 +26,11 @@
     overflow: hidden;
     padding-top: 0;
     margin-top: -4rem; /* Compensa il pt-16 del layout main */
+    pointer-events: none; /* Lascia passare gli eventi di scroll */
+}
+
+.hero-immersive > * {
+    pointer-events: auto; /* Ma i figli catturano gli eventi */
 }
 
 /* Parallax background */
@@ -32,6 +38,7 @@
     position: absolute;
     inset: 0;
     z-index: 1;
+    pointer-events: none; /* Non bloccare gli eventi di scroll */
 }
 
 .banner-blur {
