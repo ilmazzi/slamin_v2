@@ -68,6 +68,7 @@
     margin: 0 auto;
     padding: 2rem;
     padding-top: calc(6rem + env(safe-area-inset-top, 0px)); /* Spazio per topbar */
+    pointer-events: auto; /* Assicura che catturi gli eventi del mouse */
 }
 
 .hero-inner {
@@ -434,6 +435,7 @@
 .content-sections {
     background: #f5f1e8;
     padding: 4rem 0;
+    pointer-events: auto; /* Assicura che catturi gli eventi del mouse per scroll */
 }
 
 .dark .content-sections {
