@@ -44,7 +44,7 @@ class ArticleCreate extends Component
         }
         
         // Load categories
-        $this->categories = ArticleCategory::orderBy('name')->get();
+        $this->categories = ArticleCategory::active()->ordered()->get();
     }
     
     protected function rules()
