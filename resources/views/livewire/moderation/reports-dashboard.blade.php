@@ -206,11 +206,21 @@
                             @if($report->reportable)
                                 @php
                                     $contentType = class_basename($report->reportable_type);
+                                    $contentUrl = null;
+                                    
+                                    // Genera URL per contenuti che hanno pagine dedicate
+                                    if ($contentType === 'Event') {
+                                        $contentUrl = route('events.show', $report->reportable_id);
+                                    } elseif ($contentType === 'Poem') {
+                                        $contentUrl = route('poems.show', $report->reportable->slug ?? $report->reportable_id);
+                                    } elseif ($contentType === 'Article') {
+                                        $contentUrl = route('articles.show', $report->reportable_id);
+                                    }
                                 @endphp
                                 
-                                @if($contentType === 'Event')
-                                    {{-- Eventi: link diretto alla pagina --}}
-                                    <a href="{{ route('events.show', $report->reportable_id) }}" 
+                                @if($contentUrl)
+                                    {{-- Contenuti con pagina dedicata: link diretto --}}
+                                    <a href="{{ $contentUrl }}" 
                                        target="_blank"
                                        class="px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center gap-2">
                                         👁️ {{ __('report.view_content') }}
@@ -219,7 +229,7 @@
                                         </svg>
                                     </a>
                                 @else
-                                    {{-- Altri contenuti: modal preview --}}
+                                    {{-- Video/Photo: modal preview --}}
                                     <button wire:click="viewContent({{ $report->id }})"
                                             class="px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors">
                                         👁️ {{ __('report.view_content') }}
@@ -341,83 +351,7 @@
                         $type = $selectedContent['type'];
                     @endphp
 
-                    @if($type === 'Poem')
-                        <!-- Poem Content -->
-                        <div class="prose dark:prose-invert max-w-none">
-                            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-4">{{ $content->title }}</h2>
-                            <div class="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-6 whitespace-pre-wrap">
-                                {{ $content->content }}
-                            </div>
-                            @if($content->tags && count($content->tags) > 0)
-                            <div class="mt-4 flex flex-wrap gap-2">
-                                @foreach($content->tags as $tag)
-                                <span class="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm rounded-full">
-                                    #{{ $tag }}
-                                </span>
-                                @endforeach
-                            </div>
-                            @endif
-                        </div>
-
-                    @elseif($type === 'Article')
-                        <!-- Article Content -->
-                        <div class="prose dark:prose-invert max-w-none">
-                            @php
-                                $locale = app()->getLocale();
-                                $title = is_array($content->title) ? ($content->title[$locale] ?? $content->title['it'] ?? '') : $content->title;
-                                $body = is_array($content->body) ? ($content->body[$locale] ?? $content->body['it'] ?? '') : $content->body;
-                            @endphp
-                            
-                            @if($content->featured_image_url)
-                            <img src="{{ $content->featured_image_url }}" 
-                                 alt="{{ $title }}"
-                                 class="w-full h-64 object-cover rounded-lg mb-6">
-                            @endif
-                            
-                            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-4">{{ $title }}</h2>
-                            <div class="text-neutral-700 dark:text-neutral-300">
-                                {!! nl2br(e($body)) !!}
-                            </div>
-                        </div>
-
-                    @elseif($type === 'Event')
-                        <!-- Event Content -->
-                        <div>
-                            @if($content->image_url)
-                            <img src="{{ $content->image_url }}" 
-                                 alt="{{ $content->title }}"
-                                 class="w-full h-64 object-cover rounded-lg mb-6">
-                            @endif
-                            
-                            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-4">{{ $content->title }}</h2>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                <div class="flex items-center gap-3 text-neutral-700 dark:text-neutral-300">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                    {{ \Carbon\Carbon::parse($content->start_datetime)->format('d/m/Y H:i') }}
-                                </div>
-                                
-                                @if($content->venue_name || $content->city)
-                                <div class="flex items-center gap-3 text-neutral-700 dark:text-neutral-300">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    </svg>
-                                    {{ $content->venue_name ?? '' }}{{ $content->city ? ', ' . $content->city : '' }}
-                                </div>
-                                @endif
-                            </div>
-                            
-                            @if($content->description)
-                            <div class="prose dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300">
-                                {!! nl2br(e($content->description)) !!}
-                            </div>
-                            @endif
-                        </div>
-
-                    @elseif($type === 'Video')
+                    @if($type === 'Video')
                         <!-- Video Content -->
                         <div>
                             <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-4">{{ $content->title }}</h2>

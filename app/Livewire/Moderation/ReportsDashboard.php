@@ -84,11 +84,18 @@ class ReportsDashboard extends Component
 
         $contentType = class_basename($report->reportable_type);
         
-        // Eventi vanno alla pagina dedicata (non dovrebbe arrivare qui, ma per sicurezza)
+        // Contenuti con pagine dedicate vanno alle loro route (non dovrebbero arrivare qui, ma per sicurezza)
         if ($contentType === 'Event') {
             return redirect()->route('events.show', $report->reportable_id);
         }
+        if ($contentType === 'Poem') {
+            return redirect()->route('poems.show', $report->reportable->slug ?? $report->reportable_id);
+        }
+        if ($contentType === 'Article') {
+            return redirect()->route('articles.show', $report->reportable_id);
+        }
 
+        // Solo Video e Photo usano il modal
         $this->selectedContent = [
             'type' => $contentType,
             'data' => $report->reportable,
