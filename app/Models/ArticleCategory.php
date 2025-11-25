@@ -23,7 +23,6 @@ class ArticleCategory extends Model
     ];
 
     protected $casts = [
-        'name' => 'array',
         'description' => 'array',
         'is_active' => 'boolean',
         'sort_order' => 'integer',
@@ -41,24 +40,67 @@ class ArticleCategory extends Model
 
     /**
      * Ottiene il nome nella lingua corrente
-     * L'accessor gestisce il fatto che 'name' è un array JSON (grazie al cast)
+     * L'accessor gestisce il fatto che 'name' è un JSON nel database
      */
     public function getNameAttribute($value)
     {
-        // Il cast JSON fa sì che $value sia già un array quando viene letto
         // Se non c'è valore o è null, restituisci stringa vuota
         if (!$value) {
             return '';
         }
         
-        // Se è già un array (dopo il cast JSON), restituisci il nome nella lingua corrente
+        // Se è una stringa JSON, decodificala
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                $locale = app()->getLocale();
+                return $decoded[$locale] ?? $decoded['it'] ?? $decoded['en'] ?? array_values($decoded)[0] ?? '';
+            }
+            // Se non è JSON valido, restituisci la stringa così com'è
+            return $value;
+        }
+        
+        // Se è già un array (potrebbe succedere in alcune situazioni), gestiscilo
         if (is_array($value)) {
             $locale = app()->getLocale();
             return $value[$locale] ?? $value['it'] ?? $value['en'] ?? array_values($value)[0] ?? '';
         }
         
-        // Fallback: se per qualche motivo non è un array, restituisci come stringa
-        return is_string($value) ? $value : '';
+        return '';
+    }
+
+    /**
+     * Salva il nome come JSON nel database
+     */
+    public function setNameAttribute($value)
+    {
+        // Se è già un array, codificalo come JSON
+        if (is_array($value)) {
+            $this->attributes['name'] = json_encode($value);
+        } 
+        // Se è una stringa, salvala così com'è (potrebbe essere già JSON o una stringa semplice)
+        else {
+            $this->attributes['name'] = $value;
+        }
+    }
+
+    /**
+     * Ottiene tutte le traduzioni del nome come array
+     */
+    public function getNameTranslationsAttribute(): array
+    {
+        $value = $this->attributes['name'] ?? null;
+        
+        if (!$value) {
+            return [];
+        }
+        
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            return (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) ? $decoded : [];
+        }
+        
+        return is_array($value) ? $value : [];
     }
 
     /**
