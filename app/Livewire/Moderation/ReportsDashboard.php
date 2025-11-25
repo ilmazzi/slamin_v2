@@ -25,7 +25,7 @@ class ReportsDashboard extends Component
     public function mount()
     {
         // Check if user is admin or moderator
-        if (!Auth::user()->hasRole(['admin', 'moderator'])) {
+        if (!Auth::user()->hasRole('admin') && !Auth::user()->hasRole('moderator')) {
             abort(403, 'Accesso non autorizzato');
         }
     }
