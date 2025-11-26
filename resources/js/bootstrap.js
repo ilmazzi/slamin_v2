@@ -20,7 +20,7 @@ window.Pusher.logToConsole = true;
 // Get Reverb config from environment variables
 const reverbKey = import.meta.env.VITE_REVERB_APP_KEY || 'local-key';
 const reverbHost = import.meta.env.VITE_REVERB_HOST || window.location.hostname;
-const reverbPort = import.meta.env.VITE_REVERB_PORT || (window.location.protocol === 'https:' ? 443 : 80);
+const reverbPort = parseInt(import.meta.env.VITE_REVERB_PORT || (window.location.protocol === 'https:' ? 443 : 80));
 const reverbScheme = import.meta.env.VITE_REVERB_SCHEME || (window.location.protocol === 'https:' ? 'https' : 'http');
 
 // Configure Pusher
