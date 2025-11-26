@@ -14,70 +14,12 @@ import Pusher from 'pusher-js';
 
 window.Pusher = Pusher;
 
-// Debug logging
-window.Pusher.logToConsole = true;
-
-// Get Reverb config from environment variables
-const reverbKey = import.meta.env.VITE_REVERB_APP_KEY || 'local-key';
-const reverbHost = import.meta.env.VITE_REVERB_HOST || window.location.hostname;
-const reverbPort = parseInt(import.meta.env.VITE_REVERB_PORT || (window.location.protocol === 'https:' ? 443 : 80));
-const reverbScheme = import.meta.env.VITE_REVERB_SCHEME || (window.location.protocol === 'https:' ? 'https' : 'http');
-
-console.log('🔧 Reverb config:', {
-    scheme: reverbScheme,
-    host: reverbHost,
-    port: reverbPort,
-    key: reverbKey
+window.Echo = new Echo({
+    broadcaster: 'reverb',
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
+    wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
+    forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+    enabledTransports: ['ws', 'wss'],
 });
-
-// Test Pusher directly without Echo
-try {
-    const pusherConfig = {
-        wsHost: reverbHost,
-        wsPort: reverbPort,
-        wssPort: reverbPort,
-        httpHost: reverbHost,
-        httpPort: reverbScheme === 'https' ? 443 : 80,
-        httpsPort: 443,
-        forceTLS: reverbScheme === 'https',
-        enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
-        cluster: 'mt1',
-        disableStats: true,
-    };
-    
-    console.log('🔧 Pusher config object:', pusherConfig);
-    
-    const pusher = new Pusher(reverbKey, pusherConfig);
-    
-    console.log('✅ Pusher initialized directly:', pusher);
-    
-    // Listen for connection state changes
-    pusher.connection.bind('state_change', function(states) {
-        console.log('🔄 Pusher state change:', states.previous, '->', states.current);
-    });
-    
-    pusher.connection.bind('error', function(err) {
-        console.error('❌ Pusher connection error:', err);
-    });
-    
-    pusher.connection.bind('connected', function() {
-        console.log('✅ Pusher connected! Socket ID:', pusher.connection.socket_id);
-    });
-    
-    // Now initialize Echo
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: reverbKey,
-        wsHost: reverbHost,
-        wsPort: reverbPort,
-        wssPort: reverbPort,
-        forceTLS: reverbScheme === 'https',
-        enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
-        cluster: 'mt1',
-        disableStats: true,
-    });
-    
-    console.log('✅ Echo initialized');
-} catch (error) {
-    console.error('❌ Error initializing Pusher/Echo:', error);
-}
