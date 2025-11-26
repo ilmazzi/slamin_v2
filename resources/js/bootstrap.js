@@ -30,17 +30,34 @@ console.log('🔧 Reverb config:', {
     key: reverbKey
 });
 
-// Configure Echo with Pusher broadcaster (compatible with Reverb)
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: reverbKey,
-    wsHost: reverbHost,
-    wsPort: reverbPort,
-    wssPort: reverbPort,
-    forceTLS: reverbScheme === 'https',
-    enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
-    cluster: 'mt1', // Required by pusher-js but ignored by Reverb
-    enableStats: false,
-});
-
-console.log('✅ Echo initialized');
+// Test Pusher directly without Echo
+try {
+    const pusher = new Pusher(reverbKey, {
+        wsHost: reverbHost,
+        wsPort: reverbPort,
+        wssPort: reverbPort,
+        forceTLS: reverbScheme === 'https',
+        enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
+        cluster: 'mt1',
+        disableStats: true,
+    });
+    
+    console.log('✅ Pusher initialized directly:', pusher);
+    
+    // Now initialize Echo
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: reverbKey,
+        wsHost: reverbHost,
+        wsPort: reverbPort,
+        wssPort: reverbPort,
+        forceTLS: reverbScheme === 'https',
+        enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
+        cluster: 'mt1',
+        disableStats: true,
+    });
+    
+    console.log('✅ Echo initialized');
+} catch (error) {
+    console.error('❌ Error initializing Pusher/Echo:', error);
+}
