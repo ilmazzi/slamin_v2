@@ -17,28 +17,31 @@ window.Pusher = Pusher;
 // Debug logging
 window.Pusher.logToConsole = true;
 
-// Detect if site is using HTTPS
-const isHttps = window.location.protocol === 'https:';
+// Get Reverb config from environment variables
+const reverbKey = import.meta.env.VITE_REVERB_APP_KEY || 'local-key';
+const reverbHost = import.meta.env.VITE_REVERB_HOST || window.location.hostname;
+const reverbPort = import.meta.env.VITE_REVERB_PORT || (window.location.protocol === 'https:' ? 443 : 80);
+const reverbScheme = import.meta.env.VITE_REVERB_SCHEME || (window.location.protocol === 'https:' ? 'https' : 'http');
 
-// Configure based on page protocol
+// Configure Pusher
 const pusherConfig = {
-    key: 'local-key',
-    wsHost: window.location.hostname, // Use same host as site
-    wsPort: isHttps ? 8080 : 8080,
-    wssPort: isHttps ? 8080 : 8080,
-    enabledTransports: isHttps ? ['wss'] : ['ws'], // Match page protocol
-    forceTLS: isHttps, // Use TLS if page is HTTPS
-    encrypted: isHttps,
+    key: reverbKey,
+    wsHost: reverbHost,
+    wsPort: reverbPort,
+    wssPort: reverbPort,
+    enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
+    forceTLS: reverbScheme === 'https',
+    encrypted: reverbScheme === 'https',
     disableStats: false,
     cluster: '',
     authEndpoint: '/broadcasting/auth',
 };
 
 console.log('🔧 Pusher config:', {
-    pageProtocol: window.location.protocol,
-    wsProtocol: isHttps ? 'wss://' : 'ws://',
-    host: window.location.hostname,
-    port: 8080,
+    scheme: reverbScheme,
+    host: reverbHost,
+    port: reverbPort,
+    wsUrl: `${reverbScheme === 'https' ? 'wss' : 'ws'}://${reverbHost}:${reverbPort}`,
     config: pusherConfig
 });
 
@@ -47,4 +50,4 @@ window.Echo = new Echo({
     ...pusherConfig,
 });
 
-console.log('✅ Echo initialized for', isHttps ? 'wss://' : 'ws://', window.location.hostname + ':8080');
+console.log('✅ Echo initialized');
