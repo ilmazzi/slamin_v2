@@ -36,8 +36,12 @@ try {
         wsHost: reverbHost,
         wsPort: reverbPort,
         wssPort: reverbPort,
+        httpHost: reverbHost,
+        httpPort: reverbScheme === 'https' ? 443 : 80,
+        httpsPort: 443,
         forceTLS: reverbScheme === 'https',
         enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
+        cluster: 'mt1',
         disableStats: true,
     };
     
