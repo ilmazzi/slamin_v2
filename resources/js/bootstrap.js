@@ -46,7 +46,7 @@ console.log('🔧 Pusher config:', {
 });
 
 window.Echo = new Echo({
-    broadcaster: 'pusher',
+    broadcaster: 'reverb',
     ...pusherConfig,
 });
 
