@@ -1,12 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Broadcast;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
+// Broadcasting Authentication
+Broadcast::routes(['middleware' => ['web', 'auth']]);
 
 // Public routes
 Route::get('/', \App\Livewire\Home\HomeIndex::class)->name('home');
@@ -37,6 +41,12 @@ Route::post('/api/comments', [App\Http\Controllers\Api\CommentController::class,
 Route::get('/api/users/search', [App\Http\Controllers\Api\UserSearchController::class, 'search'])
     ->middleware('auth')
     ->name('api.users.search');
+
+// Check user online status
+Route::get('/api/users/{user}/check-online', function(\App\Models\User $user) {
+    $onlineService = app(\App\Services\OnlineStatusService::class);
+    return response()->json(['online' => $onlineService->isOnline($user->id)]);
+})->middleware('auth')->name('api.users.check-online');
 
 // Color System
 Route::get('/colors', \App\Livewire\SimpleThemeManager::class)->name('colors');
@@ -444,6 +454,13 @@ Route::post('/logout', function () {
 Route::middleware(['auth'])->prefix('chat')->name('chat.')->group(function () {
     Route::get('/', \App\Livewire\Chat\ChatIndex::class)->name('index');
     Route::get('/{conversation}', \App\Livewire\Chat\ChatIndex::class)->name('show');
+});
+
+// Chat API Routes
+Route::middleware(['auth'])->prefix('api/chat')->name('api.chat.')->group(function () {
+    Route::post('/typing/start', [App\Http\Controllers\Api\ChatTypingController::class, 'startTyping'])->name('typing.start');
+    Route::post('/typing/stop', [App\Http\Controllers\Api\ChatTypingController::class, 'stopTyping'])->name('typing.stop');
+    Route::post('/messages/{message}/mark-read', [App\Http\Controllers\Api\ChatMessageController::class, 'markAsRead'])->name('messages.mark-read');
 });
 
 /*

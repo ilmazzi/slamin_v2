@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Events\PresenceUpdated;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 use Illuminate\Contracts\Auth\Authenticatable;
 
@@ -44,11 +44,10 @@ class OnlineStatusService
 
             // throttling broadcast per non spammare (es. max 1 evento/15s per utente)
             $throttleKey = "presence:broadcast:{$userId}";
-            if (Cache::add($throttleKey, 1, 15)) {
-                event(new PresenceUpdated($userId, 'online', $ttl));
-            }
+            // Throttled hook point for presence updates (event intentionally omitted if not defined)
+            Cache::add($throttleKey, 1, 15);
         } catch (\Throwable $e) {
-            \Log::error('OnlineStatusService setOnline error', [
+            Log::error('OnlineStatusService setOnline error', [
                 'key' => $key,
                 'ttl' => $this->ttlSeconds,
                 'error' => $e->getMessage(),
@@ -62,7 +61,7 @@ class OnlineStatusService
             $exists = Redis::connection($this->connection)->exists($this->key($userId));
             return (int) $exists >= 1;
         } catch (\Throwable $e) {
-            \Log::error('OnlineStatusService isOnline error', [
+            Log::error('OnlineStatusService isOnline error', [
                 'key' => $this->key($userId),
                 'error' => $e->getMessage(),
             ]);
@@ -97,9 +96,48 @@ class OnlineStatusService
         $lockKey = "last_seen_lock:user:{$user->getAuthIdentifier()}";
 
         if (Cache::add($lockKey, true, $this->dbUpdateInterval)) {
-            DB::table($user->getTable())
+            $table = method_exists($user, 'getTable')
+                ? call_user_func([$user, 'getTable'])
+                : (property_exists($user, 'table') ? $user->table : 'users');
+
+            DB::table($table)
                 ->where('id', $user->getAuthIdentifier())
                 ->update(['last_seen_at' => Carbon::now()]);
+        }
+    }
+
+    /**
+     * Ensure presence keys have a TTL and let Redis expire stale entries.
+     * Returns the number of keys that were fixed with a missing TTL.
+     */
+    public function cleanupExpired(): int
+    {
+        try {
+            $pattern = $this->redisPrefix . '*';
+            $keys = Redis::connection($this->connection)->keys($pattern);
+            $fixedCount = 0;
+
+            foreach ($keys as $key) {
+                $ttl = (int) Redis::connection($this->connection)->ttl($key);
+
+                // -2 => key does not exist (already expired), skip
+                if ($ttl === -2) {
+                    continue;
+                }
+
+                // -1 => key exists but has no TTL; enforce TTL so Redis can expire it
+                if ($ttl === -1) {
+                    Redis::connection($this->connection)->expire($key, $this->ttlSeconds);
+                    $fixedCount++;
+                }
+            }
+
+            return $fixedCount;
+        } catch (\Throwable $e) {
+            Log::error('OnlineStatusService cleanupExpired error', [
+                'error' => $e->getMessage(),
+            ]);
+            return 0;
         }
     }
 

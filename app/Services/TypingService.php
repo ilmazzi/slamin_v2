@@ -24,17 +24,24 @@ class TypingService
             'user_name' => $userName
         ]);
 
-        $roomKey = self::TYPING_PREFIX . $roomId;
-        $timestampKey = self::TIMESTAMP_PREFIX . $roomId;
-        $timestamp = microtime(true);
+        try {
+            $roomKey = self::TYPING_PREFIX . $roomId;
+            $timestampKey = self::TIMESTAMP_PREFIX . $roomId;
+            $timestamp = microtime(true);
 
-        // Aggiungi utente al set typing
-        Redis::hset($roomKey, "user:{$userId}", $userName);
-        Redis::zadd($timestampKey, $timestamp, "user:{$userId}");
+            // Aggiungi utente al set typing
+            Redis::hset($roomKey, "user:{$userId}", $userName);
+            Redis::zadd($timestampKey, $timestamp, "user:{$userId}");
 
-        // Imposta TTL per cleanup automatico
-        Redis::expire($roomKey, self::TYPING_TIMEOUT);
-        Redis::expire($timestampKey, self::TYPING_TIMEOUT);
+            // Imposta TTL per cleanup automatico
+            Redis::expire($roomKey, self::TYPING_TIMEOUT);
+            Redis::expire($timestampKey, self::TYPING_TIMEOUT);
+        } catch (\Throwable $e) {
+            Log::warning('TypingService: Redis not available, typing indicator disabled', [
+                'error' => $e->getMessage()
+            ]);
+            return [];
+        }
 
         // Ottieni lista aggiornata utenti typing
         $typingUsers = $this->getTypingUsers($roomId);
@@ -86,12 +93,19 @@ class TypingService
             'user_name' => $userName
         ]);
 
-        $roomKey = self::TYPING_PREFIX . $roomId;
-        $timestampKey = self::TIMESTAMP_PREFIX . $roomId;
+        try {
+            $roomKey = self::TYPING_PREFIX . $roomId;
+            $timestampKey = self::TIMESTAMP_PREFIX . $roomId;
 
-        // Rimuovi utente dal set typing
-        Redis::hdel($roomKey, "user:{$userId}");
-        Redis::zrem($timestampKey, "user:{$userId}");
+            // Rimuovi utente dal set typing
+            Redis::hdel($roomKey, "user:{$userId}");
+            Redis::zrem($timestampKey, "user:{$userId}");
+        } catch (\Throwable $e) {
+            Log::warning('TypingService: Redis not available, cannot stop typing', [
+                'error' => $e->getMessage()
+            ]);
+            return [];
+        }
 
         // Ottieni lista aggiornata utenti typing
         $typingUsers = $this->getTypingUsers($roomId);
@@ -127,8 +141,15 @@ class TypingService
      */
     public function getTypingUsers($roomId)
     {
-        $roomKey = self::TYPING_PREFIX . $roomId;
-        return Redis::hgetall($roomKey);
+        try {
+            $roomKey = self::TYPING_PREFIX . $roomId;
+            return Redis::hgetall($roomKey);
+        } catch (\Throwable $e) {
+            Log::warning('TypingService: Redis not available', [
+                'error' => $e->getMessage()
+            ]);
+            return [];
+        }
     }
 
     /**
@@ -136,8 +157,12 @@ class TypingService
      */
     public function isUserTyping($roomId, $userId)
     {
-        $roomKey = self::TYPING_PREFIX . $roomId;
-        return Redis::hexists($roomKey, "user:{$userId}");
+        try {
+            $roomKey = self::TYPING_PREFIX . $roomId;
+            return Redis::hexists($roomKey, "user:{$userId}");
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 
     /**

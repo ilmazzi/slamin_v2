@@ -43,8 +43,38 @@ class ChatShow extends Component
     {
         $this->conversation->refresh();
         $this->conversation->markAsRead(Auth::user());
+        
+        // Mark all unread messages from other users as read
+        $unreadMessages = $this->conversation->messages()
+            ->where('user_id', '!=', Auth::id())
+            ->whereNull('read_at')
+            ->get();
+        
+        foreach ($unreadMessages as $message) {
+            $message->markAsRead();
+        }
+        
+        // Mark all undelivered messages from current user as delivered
+        $this->conversation->messages()
+            ->where('user_id', Auth::id())
+            ->whereNull('delivered_at')
+            ->get()
+            ->each(function ($message) {
+                $message->markAsDelivered();
+            });
+        
         $this->dispatch('messagesLoaded');
         $this->dispatch('scrollToBottom'); // Trigger scroll
+    }
+
+    public function markMessageAsRead($messageId)
+    {
+        $message = Message::find($messageId);
+        
+        if ($message && $message->conversation_id === $this->conversation->id && $message->user_id !== Auth::id()) {
+            $message->markAsRead();
+            $this->dispatch('messageRead', ['messageId' => $messageId]);
+        }
     }
 
     public function sendMessage()
@@ -84,6 +114,10 @@ class ChatShow extends Component
         }
 
         $message = Message::create($messageData);
+
+        // Mark as delivered immediately for other participants (they will see it)
+        // We'll update this when they actually load the conversation
+        // For now, we mark it as delivered after a short delay (handled by frontend/observer)
 
         // Update conversation timestamp
         $this->conversation->touch();
@@ -133,9 +167,18 @@ class ChatShow extends Component
 
     public function render()
     {
+        $otherUser = $this->conversation->getOtherParticipant(Auth::user());
+        $isOnline = false;
+        
+        if ($otherUser) {
+            $onlineService = app(\App\Services\OnlineStatusService::class);
+            $isOnline = $onlineService->isOnline($otherUser->id);
+        }
+        
         return view('livewire.chat.chat-show', [
             'messages' => $this->messages,
             'replyTo' => $this->replyTo ? Message::find($this->replyTo) : null,
+            'isOnline' => $isOnline,
         ]);
     }
 }

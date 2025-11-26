@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Message extends Model
 {
@@ -15,11 +16,16 @@ class Message extends Model
         'type',
         'metadata',
         'reply_to',
+        'delivered_at',
+        'read_at',
     ];
 
     protected $casts = [
         'metadata' => 'array',
         'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'delivered_at' => 'datetime',
+        'read_at' => 'datetime',
     ];
 
     /**
@@ -91,11 +97,11 @@ class Message extends Model
     public function getAttachmentUrl(): ?string
     {
         if ($this->type === 'image' && isset($this->metadata['path'])) {
-            return \Storage::url($this->metadata['path']);
+            return Storage::url($this->metadata['path']);
         }
 
         if ($this->type === 'file' && isset($this->metadata['path'])) {
-            return \Storage::url($this->metadata['path']);
+            return Storage::url($this->metadata['path']);
         }
 
         return null;
@@ -126,6 +132,60 @@ class Message extends Model
             return round($bytes / 1024, 2) . ' KB';
         } else {
             return round($bytes / 1048576, 2) . ' MB';
+        }
+    }
+
+    /**
+     * Check if message is delivered
+     */
+    public function isDelivered(): bool
+    {
+        return $this->delivered_at !== null;
+    }
+
+    /**
+     * Check if message is read
+     */
+    public function isRead(): bool
+    {
+        return $this->read_at !== null;
+    }
+
+    /**
+     * Get status for display (sent, delivered, read)
+     */
+    public function getStatus(): string
+    {
+        if ($this->isRead()) {
+            return 'read';
+        }
+        if ($this->isDelivered()) {
+            return 'delivered';
+        }
+        return 'sent';
+    }
+
+    /**
+     * Mark message as delivered
+     */
+    public function markAsDelivered(): void
+    {
+        if (!$this->delivered_at) {
+            $this->update(['delivered_at' => now()]);
+        }
+    }
+
+    /**
+     * Mark message as read
+     */
+    public function markAsRead(): void
+    {
+        if (!$this->read_at) {
+            $this->update(['read_at' => now()]);
+            // Se non era ancora consegnato, marcarlo anche come consegnato
+            if (!$this->delivered_at) {
+                $this->update(['delivered_at' => now()]);
+            }
         }
     }
 }

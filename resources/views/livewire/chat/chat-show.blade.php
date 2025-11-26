@@ -10,7 +10,56 @@
 @endphp
 
 <div class="flex flex-col h-full" 
-     x-data="{ showInfo: false }"
+     x-data="{
+         showInfo: false,
+         typingUsers: [],
+         typingTimeout: null,
+         isOtherUserOnline: {{ $isOnline ? 'true' : 'false' }},
+         init() {
+             // Update online status every 30 seconds
+             @if($conversation->type === 'private' && $otherUser)
+             setInterval(() => {
+                 fetch('{{ route('api.users.check-online', $otherUser->id) }}', {
+                     method: 'GET',
+                     headers: {
+                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                     }
+                 })
+                 .then(response => response.json())
+                 .then(data => {
+                     this.isOtherUserOnline = data.online || false;
+                 })
+                 .catch(error => console.error('Error checking online status:', error));
+             }, 30000);
+             @endif
+             
+             // Listen for typing events via Echo
+             if (window.Echo) {
+                 window.Echo.private('conversation.{{ $conversation->id }}')
+                     .listen('.user.started.typing', (e) => {
+                         if (e.user_id !== {{ auth()->id() }}) {
+                             this.typingUsers.push(e.user_name);
+                             this.typingUsers = [...new Set(this.typingUsers)]; // Remove duplicates
+                             
+                             // Clear timeout if exists
+                             if (this.typingTimeout) {
+                                 clearTimeout(this.typingTimeout);
+                             }
+                             
+                             // Auto-hide after 3 seconds of inactivity
+                             this.typingTimeout = setTimeout(() => {
+                                 this.typingUsers = this.typingUsers.filter(u => u !== e.user_name);
+                             }, 3000);
+                         }
+                     })
+                     .listen('.user.stopped.typing', (e) => {
+                         if (e.user_id !== {{ auth()->id() }}) {
+                             this.typingUsers = this.typingUsers.filter(u => u !== e.user_name);
+                         }
+                     });
+             }
+         }
+     }"
      wire:poll.5s="loadMessages">
     <!-- Chat Header -->
     <div class="chat-header">
@@ -32,9 +81,7 @@
         <div class="chat-header-info">
             <h2 class="chat-header-name">{{ $displayName }}</h2>
             @if($conversation->type === 'private' && $otherUser)
-                <p class="chat-header-status">
-                    {{ $otherUser->is_online ? __('chat.online') : __('chat.offline') }}
-                </p>
+                <p class="chat-header-status" x-text="isOtherUserOnline ? '{{ __('chat.online') }}' : '{{ __('chat.offline') }}'"></p>
             @else
                 <p class="chat-header-status">
                     {{ $conversation->participants()->count() }} {{ __('chat.participants') }}
@@ -91,9 +138,7 @@
                 @endif
                 <h4 class="text-lg font-bold text-neutral-900 dark:text-white">{{ $displayName }}</h4>
                 @if($conversation->type === 'private' && $otherUser)
-                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
-                        {{ $otherUser->is_online ? __('chat.online') : __('chat.offline') }}
-                    </p>
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400" x-text="isOtherUserOnline ? '{{ __('chat.online') }}' : '{{ __('chat.offline') }}'"></p>
                     @if($otherUser->nickname)
                         <p class="text-sm text-neutral-500 dark:text-neutral-400">@\{{ $otherUser->nickname }}</p>
                     @endif
@@ -216,14 +261,58 @@
                     <div class="chat-message-meta">
                         <span>{{ $message->created_at->format('H:i') }}</span>
                         @if($message->user_id === auth()->id())
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
+                            <div class="flex items-center gap-0.5" title="{{ $message->status === 'read' ? __('chat.read') : ($message->status === 'delivered' ? __('chat.delivered') : __('chat.sent')) }}">
+                                @if($message->isRead())
+                                    <!-- Double checkmark (read) - blue -->
+                                    <svg class="w-4 h-4 text-blue-500 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0zm-5 4a1 1 0 010 1.414l-3 3a1 1 0 01-1.414 0l-1.5-1.5a1 1 0 111.414-1.414L8 13.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                @elseif($message->isDelivered())
+                                    <!-- Double checkmark (delivered) - gray -->
+                                    <svg class="w-4 h-4 text-neutral-400 dark:text-neutral-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0zm-5 4a1 1 0 010 1.414l-3 3a1 1 0 01-1.414 0l-1.5-1.5a1 1 0 111.414-1.414L8 13.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                @else
+                                    <!-- Single checkmark (sent) - gray -->
+                                    <svg class="w-4 h-4 text-neutral-400 dark:text-neutral-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                @endif
+                            </div>
                         @endif
                     </div>
                 </div>
             </div>
         @endforeach
+        
+        <!-- Typing Indicator -->
+        <div x-show="typingUsers.length > 0" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 translate-y-2"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 translate-y-2"
+             class="chat-message received">
+            <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($conversation->getOtherParticipant(auth()->user()), 48) }}" 
+                 alt="Typing" 
+                 class="chat-message-avatar">
+            <div class="chat-message-content">
+                <div class="chat-message-bubble">
+                    <div class="flex items-center gap-1 px-2 py-1">
+                        <span class="text-sm text-neutral-600 dark:text-neutral-400">
+                            <span x-text="typingUsers.length === 1 ? typingUsers[0] : typingUsers.join(', ')" class="font-semibold"></span>
+                            <span>{{ __('chat.typing') }}</span>
+                        </span>
+                        <div class="flex gap-1">
+                            <div class="w-2 h-2 bg-neutral-400 dark:bg-neutral-500 rounded-full animate-bounce" style="animation-delay: 0s;"></div>
+                            <div class="w-2 h-2 bg-neutral-400 dark:bg-neutral-500 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+                            <div class="w-2 h-2 bg-neutral-400 dark:bg-neutral-500 rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Input -->
@@ -285,6 +374,44 @@
             <textarea 
                 wire:model="newMessage" 
                 wire:keydown.enter.prevent="sendMessage"
+                x-on:input.debounce.500ms="
+                    if ($event.target.value.trim().length > 0) {
+                        fetch('{{ route('api.chat.typing.start') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                conversation_id: {{ $conversation->id }}
+                            })
+                        });
+                    }
+                "
+                x-on:keyup.enter="
+                    fetch('{{ route('api.chat.typing.stop') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            conversation_id: {{ $conversation->id }}
+                        })
+                    });
+                "
+                x-on:blur="
+                    fetch('{{ route('api.chat.typing.stop') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            conversation_id: {{ $conversation->id }}
+                        })
+                    });
+                "
                 class="chat-input-field"
                 placeholder="{{ __('chat.type_message') }}"
                 rows="1"></textarea>

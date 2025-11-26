@@ -25,6 +25,9 @@ return [
     'offline' => 'Offline',
     'typing' => 'sta scrivendo...',
     'participants' => 'partecipanti',
+    'sent' => 'Inviato',
+    'delivered' => 'Consegnato',
+    'read' => 'Letto',
     
     // Messages
     'you' => 'Tu',

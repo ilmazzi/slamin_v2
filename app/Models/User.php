@@ -1377,13 +1377,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->following()->count();
     }
 
-/**
+    /**
      * Accessor: stato presenza ('online'|'recent'|'idle'|'offline')
      */
     public function getPresenceStateAttribute(): string
     {
-        // return app(OnlineStatusService::class)->getPresenceState($this);
-        return 'offline'; // Default for now
+        return app(\App\Services\OnlineStatusService::class)->getPresenceState($this);
     }
 
     /**
