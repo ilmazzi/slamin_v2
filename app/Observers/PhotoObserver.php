@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Photo;
 use App\Services\ActivityService;
 use App\Services\BadgeService;
+use Illuminate\Support\Facades\Log;
 
 class PhotoObserver
 {
@@ -54,6 +55,43 @@ class PhotoObserver
                 $photo->title ?? 'Foto',
                 request()
             );
+        }
+
+        // Delete file from storage
+        $this->deletePhotoFiles($photo);
+    }
+
+    /**
+     * Delete photo files from storage
+     */
+    protected function deletePhotoFiles(Photo $photo): void
+    {
+        try {
+            // Delete main image
+            if ($photo->image_path) {
+                if (str_starts_with($photo->image_path, 'http')) {
+                    // External URL, skip file deletion
+                } elseif (str_starts_with($photo->image_path, '/storage/')) {
+                    $filePath = str_replace('/storage/', '', $photo->image_path);
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($filePath);
+                } else {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($photo->image_path);
+                }
+            }
+
+            // Delete thumbnail if exists
+            if ($photo->thumbnail_path) {
+                if (str_starts_with($photo->thumbnail_path, 'http')) {
+                    // External URL, skip file deletion
+                } elseif (str_starts_with($photo->thumbnail_path, '/storage/')) {
+                    $thumbPath = str_replace('/storage/', '', $photo->thumbnail_path);
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($thumbPath);
+                } else {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($photo->thumbnail_path);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error("Error deleting photo files for photo {$photo->id}: " . $e->getMessage());
         }
     }
 

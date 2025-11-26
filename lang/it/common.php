@@ -49,6 +49,7 @@ return [
     'back_to_poems' => 'Torna alle poesie',
     'back_to' => 'Torna a',
     'back_to_media' => 'Torna ai Media',
+    'back_to_profile' => 'Torna al Profilo',
     'all' => 'Tutti',
     'home' => 'Home',
     

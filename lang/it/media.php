@@ -98,7 +98,14 @@ return [
     'view' => 'Visualizza',
     'confirm_delete_video' => 'Sei sicuro di voler eliminare questo video?',
     'video_deleted_successfully' => 'Video eliminato con successo!',
+    'photo_deleted_successfully' => 'Foto eliminata con successo!',
+    'confirm_delete_photo' => 'Sei sicuro di voler eliminare questa foto? Questa azione non può essere annullata.',
     'no_videos_yet' => 'Nessun video ancora',
     'upload_your_first_video' => 'Carica il tuo primo video per iniziare!',
+    'photos' => 'Foto',
+    'search_my_photos' => 'Cerca nelle tue foto...',
+    'no_photos_yet' => 'Nessuna foto ancora',
+    'upload_your_first_photo' => 'Carica la tua prima foto per iniziare!',
+    'photo_upload_coming_soon' => 'Caricamento foto disponibile a breve',
 ];
 
