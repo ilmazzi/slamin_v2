@@ -300,13 +300,16 @@ class DashboardIndex extends Component
         $startDate = Carbon::create($this->currentYear, $this->currentMonth, 1)->startOfMonth();
         $endDate = Carbon::create($this->currentYear, $this->currentMonth, 1)->endOfMonth();
 
-        $events = Event::where('organizer_id', $user->id)
+        $calendarEvents = [];
+
+        // Eventi organizzati dall'utente
+        $organizedEvents = Event::where('organizer_id', $user->id)
             ->whereBetween('start_datetime', [$startDate, $endDate])
             ->where('is_public', true)
             ->get();
 
-        $this->calendarEvents = $events->map(function ($event) {
-            return [
+        foreach ($organizedEvents as $event) {
+            $calendarEvents[] = [
                 'id' => $event->id,
                 'title' => $event->title,
                 'start' => $event->start_datetime->format('Y-m-d'),
@@ -317,7 +320,29 @@ class DashboardIndex extends Component
                 'location' => $event->venue_name ?? $event->city ?? null,
                 'url' => route('events.show', $event),
             ];
-        })->toArray();
+        }
+
+        // Eventi nella wishlist dell'utente
+        $wishlistedEvents = $user->wishlistedEvents()
+            ->whereBetween('start_datetime', [$startDate, $endDate])
+            ->where('is_public', true)
+            ->get();
+
+        foreach ($wishlistedEvents as $event) {
+            $calendarEvents[] = [
+                'id' => $event->id,
+                'title' => $event->title,
+                'start' => $event->start_datetime->format('Y-m-d'),
+                'time' => $event->start_datetime->format('H:i'),
+                'type' => 'wishlist',
+                'color' => 'accent',
+                'image' => $event->image_url ?? null,
+                'location' => $event->venue_name ?? $event->city ?? null,
+                'url' => route('events.show', $event),
+            ];
+        }
+
+        $this->calendarEvents = $calendarEvents;
     }
 
     private function getCalendarData()

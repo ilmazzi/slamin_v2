@@ -50,6 +50,7 @@ return [
     'my_calendar' => 'Il Mio Calendario',
     'calendar_subtitle' => 'I tuoi eventi e impegni',
     'organized_events' => 'Eventi Organizzati',
+    'wishlist_events' => 'Eventi in Wishlist',
     'today' => 'Oggi',
     'hide' => 'Nascondi',
     'show' => 'Mostra',

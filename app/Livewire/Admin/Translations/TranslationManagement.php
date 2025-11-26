@@ -49,6 +49,25 @@ class TranslationManagement extends Component
     public $showImportModal = false;
     public $importFile;
     public $importFormat = 'csv'; // csv, excel
+    public $isImporting = false;
+    public $importProgress = 0;
+    public $importStatus = '';
+
+    public function updatedImportFile()
+    {
+        // Reset errori quando viene selezionato un nuovo file
+        $this->resetErrorBag('importFile');
+        
+        if ($this->importFile) {
+            $extension = strtolower($this->importFile->getClientOriginalExtension());
+            $allowedExtensions = ['csv', 'txt', 'xlsx', 'xls', 'ods'];
+            
+            if (!in_array($extension, $allowedExtensions)) {
+                $this->addError('importFile', 'Il file deve essere CSV, Excel (.xlsx, .xls) o LibreOffice (.ods).');
+                $this->importFile = null;
+            }
+        }
+    }
 
     public function mount()
     {
@@ -983,11 +1002,56 @@ class TranslationManagement extends Component
      */
     public function importTranslations()
     {
-        $this->validate([
-            'importFile' => 'required|file|mimes:csv,txt,xlsx,xls,ods|max:10240', // 10MB max
+        // Verifica che il file sia stato caricato
+        if (!$this->importFile) {
+            session()->flash('error', 'Nessun file selezionato. Seleziona un file prima di importare.');
+            return;
+        }
+
+        // Imposta lo stato di importazione PRIMA della validazione per mostrare subito la barra
+        $this->isImporting = true;
+        $this->importProgress = 0;
+        $this->importStatus = 'Validazione file...';
+        
+        // Log per debug
+        Log::info('Import started', [
+            'file' => $this->importFile ? $this->importFile->getClientOriginalName() : 'null',
+            'extension' => $this->importFile ? $this->importFile->getClientOriginalExtension() : 'null',
+            'size' => $this->importFile ? $this->importFile->getSize() : 'null'
         ]);
 
         try {
+            // Validazione più permissiva per ODS (il MIME type può variare)
+            $this->validate([
+                'importFile' => [
+                    'required',
+                    'file',
+                    'max:10240', // 10MB max
+                    function ($attribute, $value, $fail) {
+                        if (!$value) {
+                            $fail('Il file è obbligatorio.');
+                            return;
+                        }
+                        
+                        $extension = strtolower($value->getClientOriginalExtension());
+                        $allowedExtensions = ['csv', 'txt', 'xlsx', 'xls', 'ods'];
+                        
+                        if (!in_array($extension, $allowedExtensions)) {
+                            $fail('Il file deve essere CSV, Excel (.xlsx, .xls) o LibreOffice (.ods). Estensione rilevata: ' . $extension);
+                        }
+                    },
+                ],
+            ], [
+                'importFile.required' => 'Seleziona un file da importare.',
+                'importFile.file' => 'Il file selezionato non è valido.',
+                'importFile.max' => 'Il file è troppo grande. Dimensione massima: 10MB.',
+            ]);
+
+            $this->importStatus = 'Inizio importazione...';
+            $this->importProgress = 5;
+
+            $this->importStatus = 'Caricamento file...';
+            $this->importProgress = 10;
             $path = $this->importFile->store('temp-imports');
             $fullPath = Storage::path($path);
 
@@ -995,15 +1059,31 @@ class TranslationManagement extends Component
             $errors = [];
             $fileExtension = strtolower($this->importFile->getClientOriginalExtension());
 
+            $this->importStatus = 'Analisi file...';
+            $this->importProgress = 20;
+
             // Determina il tipo di file
             if (in_array($fileExtension, ['xlsx', 'xls', 'ods'])) {
+                $this->importStatus = 'Importazione da ' . strtoupper($fileExtension) . ' in corso...';
                 $imported = $this->importFromExcel($fullPath, $errors);
             } else {
+                $this->importStatus = 'Importazione da CSV in corso...';
                 $imported = $this->importFromCsv($fullPath, $errors);
             }
 
+            $this->importProgress = 90;
+            $this->importStatus = 'Pulizia file temporanei...';
+
             // Pulisci file temporaneo
             Storage::delete($path);
+
+            $this->importProgress = 100;
+            $this->importStatus = 'Completato!';
+            
+            Log::info('Import completed', [
+                'imported' => $imported,
+                'errors_count' => count($errors)
+            ]);
 
             if ($imported > 0) {
                 session()->flash('success', __('admin.translations.import_success', ['count' => $imported]));
@@ -1016,16 +1096,36 @@ class TranslationManagement extends Component
                 Log::warning('Translation import errors', ['errors' => $errors]);
             }
 
+            // Aspetta un attimo prima di chiudere per mostrare il messaggio
+            sleep(1);
+            
             $this->showImportModal = false;
             $this->importFile = null;
             $this->loadTranslationData();
             $this->loadStats();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Errore di validazione - ripristina lo stato
+            $this->isImporting = false;
+            $this->importProgress = 0;
+            $this->importStatus = '';
+            throw $e; // Rilancia per mostrare gli errori di validazione
         } catch (\Exception $e) {
+            $this->importStatus = 'Errore durante l\'importazione!';
+            
             session()->flash('error', __('admin.translations.import_error') . ': ' . $e->getMessage());
             Log::error('Translation import error', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'file' => $this->importFile ? $this->importFile->getClientOriginalName() : 'null'
             ]);
+        } finally {
+            // Ripristina lo stato solo se non è un errore di validazione
+            if ($this->isImporting) {
+                $this->isImporting = false;
+                $this->importProgress = 0;
+                $this->importStatus = '';
+                $this->dispatch('import-completed');
+            }
         }
     }
 
@@ -1104,14 +1204,38 @@ class TranslationManagement extends Component
         $imported = 0;
 
         try {
-            // Carica il file Excel
-            $spreadsheet = IOFactory::load($filePath);
-            $sheetCount = $spreadsheet->getSheetCount();
+            $this->importStatus = 'Caricamento file Excel/ODS...';
+            $this->importProgress = 30;
+
+            // Aumenta il limite di memoria e tempo per file grandi
+            $originalMemoryLimit = ini_get('memory_limit');
+            $originalMaxExecutionTime = ini_get('max_execution_time');
+            ini_set('memory_limit', '512M');
+            set_time_limit(300); // 5 minuti
+
+            try {
+                // Carica il file Excel/ODS
+                $spreadsheet = IOFactory::load($filePath);
+                $sheetCount = $spreadsheet->getSheetCount();
+
+                $this->importStatus = "Trovati {$sheetCount} fogli. Elaborazione in corso...";
+                $this->importProgress = 40;
+            } catch (\Exception $e) {
+                // Ripristina limiti
+                ini_set('memory_limit', $originalMemoryLimit);
+                set_time_limit($originalMaxExecutionTime);
+                throw $e;
+            }
 
             // Itera su tutti i fogli
             for ($i = 0; $i < $sheetCount; $i++) {
                 $sheet = $spreadsheet->getSheet($i);
                 $sheetName = $sheet->getTitle();
+
+                // Aggiorna progresso per ogni foglio
+                $sheetProgress = 40 + (($i + 1) / $sheetCount) * 50; // Da 40% a 90%
+                $this->importProgress = (int) $sheetProgress;
+                $this->importStatus = "Elaborazione foglio " . ($i + 1) . "/{$sheetCount}: {$sheetName}...";
 
                 // Salta il foglio ISTRUZIONI
                 if (stripos($sheetName, 'istruzioni') !== false || stripos($sheetName, 'readme') !== false) {
@@ -1131,10 +1255,31 @@ class TranslationManagement extends Component
                 $imported += $this->importFromSheet($sheet, $fileKey, $errors);
             }
 
+            $this->importStatus = "Importazione completata! {$imported} traduzioni importate.";
+            $this->importProgress = 90;
+
+            // Ripristina limiti
+            ini_set('memory_limit', $originalMemoryLimit);
+            set_time_limit($originalMaxExecutionTime);
+
             return $imported;
         } catch (\Exception $e) {
-            $errors[] = 'Errore durante la lettura del file Excel: ' . $e->getMessage();
-            Log::error('Excel import error', ['error' => $e->getMessage()]);
+            // Ripristina limiti anche in caso di errore
+            if (isset($originalMemoryLimit)) {
+                ini_set('memory_limit', $originalMemoryLimit);
+            }
+            if (isset($originalMaxExecutionTime)) {
+                set_time_limit($originalMaxExecutionTime);
+            }
+
+            $this->importStatus = 'Errore durante la lettura del file: ' . $e->getMessage();
+            $errors[] = 'Errore durante la lettura del file Excel/ODS: ' . $e->getMessage();
+            Log::error('Excel/ODS import error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'file' => $filePath,
+                'file_size' => file_exists($filePath) ? filesize($filePath) : 'unknown'
+            ]);
             return $imported;
         }
     }
@@ -1172,87 +1317,103 @@ class TranslationManagement extends Component
     {
         $imported = 0;
         
-        // Usa getHighestDataRow() invece di getHighestRow() per evitare celle vuote formattate
-        $highestDataRow = $sheet->getHighestDataRow();
-        $highestColumn = $sheet->getHighestColumn();
+        try {
+            // Usa getHighestDataRow() invece di getHighestRow() per evitare celle vuote formattate
+            $highestDataRow = $sheet->getHighestDataRow();
+            $highestColumn = $sheet->getHighestColumn();
 
-        // Trova le colonne (header in prima riga)
-        $headerRow = 1;
-        $keyColumn = null;
-        $translationColumn = null;
+            // Trova le colonne (header in prima riga)
+            $headerRow = 1;
+            $keyColumn = null;
+            $translationColumn = null;
 
-        // Cerca le colonne nell'header
-        for ($col = 'A'; $col <= $highestColumn; $col++) {
-            $cell = $sheet->getCell($col . $headerRow);
-            if ($cell->getDataType() === DataType::TYPE_NULL) {
-                continue;
+            // Cerca le colonne nell'header
+            for ($col = 'A'; $col <= $highestColumn; $col++) {
+                $cell = $sheet->getCell($col . $headerRow);
+                if ($cell->getDataType() === DataType::TYPE_NULL) {
+                    continue;
+                }
+                
+                $cellValue = $cell->getCalculatedValue();
+                $cellValue = strtolower(trim((string) $cellValue));
+
+                if (str_contains($cellValue, 'chiave') || str_contains($cellValue, 'key')) {
+                    $keyColumn = $col;
+                }
+                if (str_contains($cellValue, 'traduzione') || str_contains($cellValue, 'translation')) {
+                    $translationColumn = $col;
+                }
             }
+
+            if (!$keyColumn || !$translationColumn) {
+                $errors[] = "Impossibile trovare le colonne 'Chiave' e 'Traduzione' nel foglio '{$sheet->getTitle()}'";
+                return 0;
+            }
+
+            // Leggi le righe (inizia dalla riga 2, dopo l'header)
+            // Limita a 10000 righe per sicurezza
+            $maxRows = min($highestDataRow, 10000);
+            $totalRows = $maxRows - 1; // Escludi header
             
-            $cellValue = $cell->getCalculatedValue();
-            $cellValue = strtolower(trim((string) $cellValue));
-
-            if (str_contains($cellValue, 'chiave') || str_contains($cellValue, 'key')) {
-                $keyColumn = $col;
-            }
-            if (str_contains($cellValue, 'traduzione') || str_contains($cellValue, 'translation')) {
-                $translationColumn = $col;
-            }
-        }
-
-        if (!$keyColumn || !$translationColumn) {
-            $errors[] = "Impossibile trovare le colonne 'Chiave' e 'Traduzione' nel foglio '{$sheet->getTitle()}'";
-            return 0;
-        }
-
-        // Leggi le righe (inizia dalla riga 2, dopo l'header)
-        // Limita a 10000 righe per sicurezza
-        $maxRows = min($highestDataRow, 10000);
-        
-        for ($row = 2; $row <= $maxRows; $row++) {
-            try {
-                $keyCell = $sheet->getCell($keyColumn . $row);
-                $translationCell = $sheet->getCell($translationColumn . $row);
-                
-                // Salta se la cella chiave è vuota o non è testo
-                if ($keyCell->getDataType() === DataType::TYPE_NULL) {
-                    continue;
+            for ($row = 2; $row <= $maxRows; $row++) {
+                // Aggiorna progresso ogni 50 righe
+                if ($row % 50 === 0 && $totalRows > 0) {
+                    $rowProgress = (($row - 2) / $totalRows) * 100;
+                    // Non aggiorniamo troppo spesso per evitare troppi refresh
                 }
                 
-                $key = trim((string) $keyCell->getCalculatedValue());
-                $translation = trim((string) $translationCell->getCalculatedValue());
-
-                // Salta righe vuote
-                if (empty($key)) {
-                    continue;
-                }
-
-                // Valida che la chiave sia una stringa valida (non binari)
-                if (!$this->isValidTranslationKey($key)) {
-                    continue; // Salta chiavi non valide senza loggare (probabilmente dati binari)
-                }
-
-                // Importa solo se c'è una traduzione
-                if (!empty($translation)) {
-                    // Valida anche la traduzione
-                    if (!$this->isValidTranslationValue($translation)) {
+                try {
+                    $keyCell = $sheet->getCell($keyColumn . $row);
+                    $translationCell = $sheet->getCell($translationColumn . $row);
+                    
+                    // Salta se la cella chiave è vuota o non è testo
+                    if ($keyCell->getDataType() === DataType::TYPE_NULL) {
                         continue;
                     }
                     
-                    // Se la chiave contiene punti, è una chiave annidata
-                    // Salviamo come chiave piatta (il sistema ibrido gestirà la ricostruzione)
-                    TranslationOverride::setOverride(
-                        $this->selectedLanguage,
-                        $fileKey,
-                        $key,
-                        $translation,
-                        Auth::id()
-                    );
-                    $imported++;
+                    $key = trim((string) $keyCell->getCalculatedValue());
+                    $translation = trim((string) $translationCell->getCalculatedValue());
+
+                    // Salta righe vuote
+                    if (empty($key)) {
+                        continue;
+                    }
+
+                    // Valida che la chiave sia una stringa valida (non binari)
+                    if (!$this->isValidTranslationKey($key)) {
+                        continue; // Salta chiavi non valide senza loggare (probabilmente dati binari)
+                    }
+
+                    // Importa solo se c'è una traduzione
+                    if (!empty($translation)) {
+                        // Valida anche la traduzione
+                        if (!$this->isValidTranslationValue($translation)) {
+                            continue;
+                        }
+                        
+                        // Se la chiave contiene punti, è una chiave annidata
+                        // Salviamo come chiave piatta (il sistema ibrido gestirà la ricostruzione)
+                        TranslationOverride::setOverride(
+                            $this->selectedLanguage,
+                            $fileKey,
+                            $key,
+                            $translation,
+                            Auth::id()
+                        );
+                        $imported++;
+                    }
+                } catch (\Exception $e) {
+                    // Salta righe con errori senza loggare (probabilmente dati non validi)
+                    continue;
                 }
-            } catch (\Exception $e) {
-                // Salta righe con errori senza loggare (probabilmente dati non validi)
-                continue;
             }
+        } catch (\Exception $e) {
+            $errors[] = "Errore durante l'elaborazione del foglio '{$sheet->getTitle()}': " . $e->getMessage();
+            Log::error('Sheet import error', [
+                'sheet' => $sheet->getTitle(),
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
         }
 
         return $imported;

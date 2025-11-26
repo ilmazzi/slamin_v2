@@ -458,7 +458,7 @@
             </div>
 
             {{-- Action Buttons --}}
-            <div class="mt-16 flex flex-wrap gap-4">
+            <div class="mt-16 flex flex-wrap gap-4 items-center">
                 <a href="{{ route('events.index') }}" wire:navigate
                    class="inline-flex items-center gap-2 text-neutral-900 dark:text-white text-lg font-black hover:text-red-600 dark:hover:text-red-400 transition-colors group">
                     <svg class="w-6 h-6 group-hover:-translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -466,6 +466,9 @@
                     </svg>
                     TORNA AGLI EVENTI
                 </a>
+
+                {{-- Wishlist Button --}}
+                <livewire:components.wishlist-button :event="$event" />
 
                 @auth
                     @if(auth()->user()->id === $event->organizer_id || auth()->user()->canOrganizeEvents())

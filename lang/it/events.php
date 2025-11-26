@@ -34,6 +34,14 @@ return [
     'delete_event' => 'Elimina Evento',
     'loading' => 'Caricamento',
     
+    // Wishlist
+    'add_to_wishlist' => 'Aggiungi alla Wishlist',
+    'remove_from_wishlist' => 'Rimuovi dalla Wishlist',
+    'in_wishlist' => 'In Wishlist',
+    'added_to_wishlist' => 'Evento aggiunto alla wishlist!',
+    'removed_from_wishlist' => 'Evento rimosso dalla wishlist!',
+    'must_login_to_add_wishlist' => 'Devi effettuare il login per aggiungere eventi alla wishlist.',
+    
     // Statistics
     'total_events' => 'Eventi Totali',
     'public_events' => 'Eventi Pubblici',

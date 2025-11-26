@@ -268,30 +268,83 @@
     
     {{-- Modal per Import --}}
     @if($showImportModal)
-        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+             x-data="{ show: true }"
+             x-show="show"
+             @import-started.window="show = true"
+             @import-completed.window="setTimeout(() => show = false, 2000)">
             <div class="bg-white dark:bg-neutral-800 rounded-3xl shadow-2xl p-8 max-w-md w-full">
                 <h2 class="text-2xl font-black text-neutral-900 dark:text-white mb-6" style="font-family: 'Crimson Pro', serif;">
                     {{ __('admin.translations.import_translations') }}
                 </h2>
                 
-                <form wire:submit="importTranslations" class="space-y-6">
+                {{-- Progress Bar --}}
+                @if($isImporting)
+                    <div class="mb-6 space-y-3" 
+                         wire:poll.500ms
+                         wire:key="import-progress-{{ now()->timestamp }}">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-bold text-neutral-700 dark:text-neutral-300">
+                                {{ $importStatus ?: 'Importazione in corso...' }}
+                            </span>
+                            <span class="text-sm font-bold text-primary-600 dark:text-primary-400">
+                                {{ $importProgress }}%
+                            </span>
+                        </div>
+                        <div class="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-3 overflow-hidden">
+                            <div class="bg-gradient-to-r from-primary-500 to-primary-600 h-full rounded-full transition-all duration-500 ease-out"
+                                 style="width: {{ $importProgress }}%">
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                            <svg class="w-5 h-5 animate-spin text-primary-600" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <span>Elaborazione in corso, attendere...</span>
+                        </div>
+                    </div>
+                @endif
+                
+                <form wire:submit="importTranslations" 
+                      class="space-y-6" 
+                      @if($isImporting) style="display: none;" @endif>
                     <div>
                         <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
                             {{ __('admin.translations.select_file') }}
                         </label>
                         <input type="file" 
-                               wire:model="importFile" 
-                               accept=".csv,.txt,.xlsx,.xls"
+                               wire:model.live="importFile" 
+                               accept=".csv,.txt,.xlsx,.xls,.ods,application/vnd.oasis.opendocument.spreadsheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                               wire:loading.attr="disabled"
+                               wire:target="importFile"
                                class="block w-full text-sm text-neutral-500 dark:text-neutral-400
                                       file:mr-4 file:py-3 file:px-5
                                       file:rounded-xl file:border-0
                                       file:text-sm file:font-bold
                                       file:bg-primary-600 file:text-white
                                       hover:file:bg-primary-700
-                                      cursor-pointer">
+                                      cursor-pointer
+                                      disabled:opacity-50 disabled:cursor-not-allowed">
                         @error('importFile') 
-                            <span class="text-red-600 text-sm mt-2 block">{{ $message }}</span> 
+                            <div class="mt-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+                                <span class="text-red-600 dark:text-red-400 text-sm font-bold block">{{ $message }}</span>
+                                <p class="text-xs text-red-500 dark:text-red-500 mt-1">
+                                    Assicurati di aver selezionato un file valido (CSV, Excel o LibreOffice ODS).
+                                </p>
+                            </div>
                         @enderror
+                        
+                        @if($importFile)
+                            <div class="mt-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl">
+                                <p class="text-sm text-green-700 dark:text-green-400 font-bold">
+                                    ✓ File selezionato: {{ $importFile->getClientOriginalName() }}
+                                </p>
+                                <p class="text-xs text-green-600 dark:text-green-500 mt-1">
+                                    Dimensione: {{ number_format($importFile->getSize() / 1024, 2) }} KB
+                                </p>
+                            </div>
+                        @endif
                     </div>
                     
                     <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-200 dark:border-blue-800">
@@ -308,13 +361,26 @@
                     
                     <div class="flex gap-3 justify-end">
                         <button type="button" 
-                                wire:click="$toggle('showImportModal')" 
-                                class="px-6 py-3 bg-neutral-600 hover:bg-neutral-700 text-white font-bold rounded-xl transition-colors">
+                                wire:click="$toggle('showImportModal')"
+                                wire:loading.attr="disabled"
+                                wire:target="importTranslations"
+                                class="px-6 py-3 bg-neutral-600 hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-colors">
                             {{ __('common.cancel') }}
                         </button>
                         <button type="submit" 
-                                class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-colors">
-                            {{ __('admin.translations.import') }}
+                                wire:loading.attr="disabled"
+                                wire:target="importTranslations"
+                                class="px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-colors flex items-center gap-2">
+                            <span wire:loading.remove wire:target="importTranslations">
+                                {{ __('admin.translations.import') }}
+                            </span>
+                            <span wire:loading wire:target="importTranslations" class="flex items-center gap-2">
+                                <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Avvio...
+                            </span>
                         </button>
                     </div>
                 </form>

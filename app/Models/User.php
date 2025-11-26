@@ -856,7 +856,52 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function wishlistedEvents()
     {
-        return $this->belongsToMany(Event::class, 'wishlists', 'user_id', 'event_id');
+        return $this->belongsToMany(Event::class, 'wishlists', 'user_id', 'event_id')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Verifica se un evento è nella wishlist dell'utente
+     */
+    public function hasEventInWishlist(Event $event): bool
+    {
+        return $this->wishlistedEvents()->where('event_id', $event->id)->exists();
+    }
+
+    /**
+     * Aggiunge un evento alla wishlist
+     */
+    public function addToWishlist(Event $event): bool
+    {
+        if (!$this->hasEventInWishlist($event)) {
+            $this->wishlistedEvents()->attach($event->id);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Rimuove un evento dalla wishlist
+     */
+    public function removeFromWishlist(Event $event): bool
+    {
+        if ($this->hasEventInWishlist($event)) {
+            $this->wishlistedEvents()->detach($event->id);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Toggle wishlist per un evento
+     */
+    public function toggleWishlist(Event $event): bool
+    {
+        if ($this->hasEventInWishlist($event)) {
+            return $this->removeFromWishlist($event);
+        } else {
+            return $this->addToWishlist($event);
+        }
     }
 
     /**
