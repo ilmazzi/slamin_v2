@@ -23,31 +23,22 @@ const reverbHost = import.meta.env.VITE_REVERB_HOST || window.location.hostname;
 const reverbPort = parseInt(import.meta.env.VITE_REVERB_PORT || (window.location.protocol === 'https:' ? 443 : 80));
 const reverbScheme = import.meta.env.VITE_REVERB_SCHEME || (window.location.protocol === 'https:' ? 'https' : 'http');
 
-// Configure Pusher
-const pusherConfig = {
-    key: reverbKey,
-    wsHost: reverbHost,
-    wsPort: reverbScheme === 'https' ? 443 : reverbPort,
-    wssPort: reverbScheme === 'https' ? 443 : reverbPort,
-    wsPath: '/app',
-    enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
-    forceTLS: reverbScheme === 'https',
-    encrypted: reverbScheme === 'https',
-    enableStats: false,
-    authEndpoint: '/broadcasting/auth',
-};
-
-console.log('🔧 Pusher config:', {
+console.log('🔧 Reverb config:', {
     scheme: reverbScheme,
     host: reverbHost,
     port: reverbPort,
-    wsUrl: `${reverbScheme === 'https' ? 'wss' : 'ws'}://${reverbHost}:${reverbPort}`,
-    config: pusherConfig
+    key: reverbKey
 });
 
+// Configure Echo with Reverb
 window.Echo = new Echo({
     broadcaster: 'reverb',
-    ...pusherConfig,
+    key: reverbKey,
+    wsHost: reverbHost,
+    wsPort: reverbPort,
+    wssPort: reverbPort,
+    forceTLS: reverbScheme === 'https',
+    enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
 });
 
 console.log('✅ Echo initialized');
