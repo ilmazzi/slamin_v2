@@ -30,15 +30,17 @@ console.log('🔧 Reverb config:', {
     key: reverbKey
 });
 
-// Configure Echo with Reverb
+// Configure Echo with Pusher broadcaster (compatible with Reverb)
 window.Echo = new Echo({
-    broadcaster: 'reverb',
+    broadcaster: 'pusher',
     key: reverbKey,
     wsHost: reverbHost,
     wsPort: reverbPort,
     wssPort: reverbPort,
     forceTLS: reverbScheme === 'https',
     enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
+    cluster: 'mt1', // Required by pusher-js but ignored by Reverb
+    enableStats: false,
 });
 
 console.log('✅ Echo initialized');
