@@ -44,7 +44,7 @@ class TranslationOverride extends Model
      * Pulisce la cache per una specifica lingua e gruppo
      * Rimuove tutte le chiavi di cache correlate
      */
-    protected static function clearCacheForLocaleAndGroup(string $locale, string $group, ?string $key = null): void
+    public static function clearCacheForLocaleAndGroup(string $locale, string $group, ?string $key = null): void
     {
         // Pulisce la cache del gruppo completo
         Cache::forget("translation_overrides_{$locale}_{$group}");

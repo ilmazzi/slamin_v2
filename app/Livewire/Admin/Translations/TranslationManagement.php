@@ -8,6 +8,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\TranslationOverride;
 use Illuminate\Support\Facades\Storage;
@@ -1135,6 +1136,9 @@ class TranslationManagement extends Component
     private function importFromCsv(string $filePath, array &$errors): int
     {
         $imported = 0;
+        $batch = [];
+        $batchSize = 100;
+        $userId = Auth::id();
         $handle = fopen($filePath, 'r');
 
         if (!$handle) {
@@ -1178,20 +1182,46 @@ class TranslationManagement extends Component
 
             if (!empty($translation)) {
                 try {
-                    TranslationOverride::setOverride(
-                        $this->selectedLanguage,
-                        $this->selectedFile,
-                        $key,
-                        $translation,
-                        Auth::id()
-                    );
-                    $imported++;
+                    // Aggiungi al batch invece di salvare immediatamente
+                    $batch[] = [
+                        'locale' => $this->selectedLanguage,
+                        'group' => $this->selectedFile,
+                        'key' => $key,
+                        'value' => $translation,
+                        'created_by' => Auth::id(),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                    
+                    // Quando il batch raggiunge la dimensione, inserisci
+                    if (count($batch) >= 100) {
+                        DB::table('translation_overrides')->upsert(
+                            $batch,
+                            ['locale', 'group', 'key'],
+                            ['value', 'created_by', 'updated_at']
+                        );
+                        $imported += count($batch);
+                        $batch = [];
+                    }
                 } catch (\Exception $e) {
                     $errors[] = "Errore chiave '{$key}': " . $e->getMessage();
                 }
             }
         }
 
+        // Inserisci le traduzioni rimanenti nel batch
+        if (!empty($batch)) {
+            DB::table('translation_overrides')->upsert(
+                $batch,
+                ['locale', 'group', 'key'],
+                ['value', 'created_by', 'updated_at']
+            );
+            $imported += count($batch);
+        }
+        
+        // Pulisci la cache una volta alla fine
+        TranslationOverride::clearCacheForLocaleAndGroup($this->selectedLanguage, $this->selectedFile);
+        
         fclose($handle);
         return $imported;
     }
@@ -1210,8 +1240,8 @@ class TranslationManagement extends Component
             // Aumenta il limite di memoria e tempo per file grandi
             $originalMemoryLimit = ini_get('memory_limit');
             $originalMaxExecutionTime = ini_get('max_execution_time');
-            ini_set('memory_limit', '512M');
-            set_time_limit(300); // 5 minuti
+            ini_set('memory_limit', '1024M');
+            set_time_limit(600); // 10 minuti per file grandi
 
             try {
                 // Carica il file Excel/ODS
@@ -1316,6 +1346,9 @@ class TranslationManagement extends Component
     private function importFromSheet($sheet, string $fileKey, array &$errors): int
     {
         $imported = 0;
+        $batch = []; // Batch per inserimenti multipli
+        $batchSize = 100; // Inserisci ogni 100 record
+        $userId = Auth::id();
         
         try {
             // Usa getHighestDataRow() invece di getHighestRow() per evitare celle vuote formattate
@@ -1356,12 +1389,6 @@ class TranslationManagement extends Component
             $totalRows = $maxRows - 1; // Escludi header
             
             for ($row = 2; $row <= $maxRows; $row++) {
-                // Aggiorna progresso ogni 50 righe
-                if ($row % 50 === 0 && $totalRows > 0) {
-                    $rowProgress = (($row - 2) / $totalRows) * 100;
-                    // Non aggiorniamo troppo spesso per evitare troppi refresh
-                }
-                
                 try {
                     $keyCell = $sheet->getCell($keyColumn . $row);
                     $translationCell = $sheet->getCell($translationColumn . $row);
@@ -1391,22 +1418,38 @@ class TranslationManagement extends Component
                             continue;
                         }
                         
-                        // Se la chiave contiene punti, è una chiave annidata
-                        // Salviamo come chiave piatta (il sistema ibrido gestirà la ricostruzione)
-                        TranslationOverride::setOverride(
-                            $this->selectedLanguage,
-                            $fileKey,
-                            $key,
-                            $translation,
-                            Auth::id()
-                        );
-                        $imported++;
+                        // Aggiungi al batch invece di salvare immediatamente
+                        $batch[] = [
+                            'locale' => $this->selectedLanguage,
+                            'group' => $fileKey,
+                            'key' => $key,
+                            'value' => $translation,
+                            'created_by' => $userId,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                        
+                        // Quando il batch raggiunge la dimensione, inserisci
+                        if (count($batch) >= $batchSize) {
+                            $this->batchInsertTranslations($batch);
+                            $imported += count($batch);
+                            $batch = []; // Reset batch
+                        }
                     }
                 } catch (\Exception $e) {
                     // Salta righe con errori senza loggare (probabilmente dati non validi)
                     continue;
                 }
             }
+            
+            // Inserisci le traduzioni rimanenti nel batch
+            if (!empty($batch)) {
+                $this->batchInsertTranslations($batch);
+                $imported += count($batch);
+            }
+            
+            // Pulisci la cache una volta alla fine invece di per ogni elemento
+            TranslationOverride::clearCacheForLocaleAndGroup($this->selectedLanguage, $fileKey);
         } catch (\Exception $e) {
             $errors[] = "Errore durante l'elaborazione del foglio '{$sheet->getTitle()}': " . $e->getMessage();
             Log::error('Sheet import error', [
@@ -1468,6 +1511,31 @@ class TranslationManagement extends Component
         }
         
         return true;
+    }
+
+    /**
+     * Inserisce un batch di traduzioni in modo efficiente
+     */
+    private function batchInsertTranslations(array $batch): void
+    {
+        if (empty($batch)) {
+            return;
+        }
+
+        try {
+            // Usa upsert per inserire o aggiornare in batch
+            DB::table('translation_overrides')->upsert(
+                $batch,
+                ['locale', 'group', 'key'], // Chiavi uniche per il conflitto
+                ['value', 'created_by', 'updated_at'] // Colonne da aggiornare se esiste già
+            );
+        } catch (\Exception $e) {
+            Log::error('Batch insert translations error', [
+                'error' => $e->getMessage(),
+                'batch_size' => count($batch)
+            ]);
+            throw $e;
+        }
     }
 
     public function render()
