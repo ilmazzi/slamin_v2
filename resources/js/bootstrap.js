@@ -27,8 +27,9 @@ const reverbScheme = import.meta.env.VITE_REVERB_SCHEME || (window.location.prot
 const pusherConfig = {
     key: reverbKey,
     wsHost: reverbHost,
-    wsPort: reverbPort,
-    wssPort: reverbPort,
+    wsPort: reverbScheme === 'https' ? 443 : reverbPort,
+    wssPort: reverbScheme === 'https' ? 443 : reverbPort,
+    wsPath: '/app',
     enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
     forceTLS: reverbScheme === 'https',
     encrypted: reverbScheme === 'https',
