@@ -33,8 +33,7 @@ const pusherConfig = {
     enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
     forceTLS: reverbScheme === 'https',
     encrypted: reverbScheme === 'https',
-    disableStats: false,
-    cluster: '',
+    enableStats: false,
     authEndpoint: '/broadcasting/auth',
 };
 
