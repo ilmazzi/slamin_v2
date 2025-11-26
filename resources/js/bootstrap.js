@@ -32,7 +32,7 @@ console.log('🔧 Reverb config:', {
 
 // Test Pusher directly without Echo
 try {
-    const pusher = new Pusher(reverbKey, {
+    const pusherConfig = {
         wsHost: reverbHost,
         wsPort: reverbPort,
         wssPort: reverbPort,
@@ -40,9 +40,26 @@ try {
         enabledTransports: reverbScheme === 'https' ? ['wss'] : ['ws'],
         cluster: 'mt1',
         disableStats: true,
-    });
+    };
+    
+    console.log('🔧 Pusher config object:', pusherConfig);
+    
+    const pusher = new Pusher(reverbKey, pusherConfig);
     
     console.log('✅ Pusher initialized directly:', pusher);
+    
+    // Listen for connection state changes
+    pusher.connection.bind('state_change', function(states) {
+        console.log('🔄 Pusher state change:', states.previous, '->', states.current);
+    });
+    
+    pusher.connection.bind('error', function(err) {
+        console.error('❌ Pusher connection error:', err);
+    });
+    
+    pusher.connection.bind('connected', function() {
+        console.log('✅ Pusher connected! Socket ID:', pusher.connection.socket_id);
+    });
     
     // Now initialize Echo
     window.Echo = new Echo({
