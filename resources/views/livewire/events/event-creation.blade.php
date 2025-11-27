@@ -22,7 +22,7 @@
                 <div class="sticky top-24 backdrop-blur-xl bg-white dark:bg-neutral-800 rounded-3xl p-8 border border-neutral-200 dark:border-neutral-700 shadow-2xl">
                     <div class="mb-8">
                         <h1 class="text-4xl font-black text-neutral-900 dark:text-white mb-3 tracking-tight">
-                            Crea Evento
+                            {{ __('events.create.title') }}
                         </h1>
                         <p class="text-neutral-700 dark:text-neutral-300">
                             Segui i passaggi per pubblicare il tuo evento
@@ -117,7 +117,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">Informazioni Base</h2>
+                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ __('events.create.basic_info') }}</h2>
                                     <p class="text-neutral-700 dark:text-neutral-300">I dettagli essenziali del tuo evento</p>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@
                                                       peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-neutral-400 dark:peer-placeholder-shown:text-neutral-500
                                                       peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
                                                       transition-all duration-200">
-                                            Titolo Evento *
+                                            {{ __('events.create.event_title') }} *
                                         </label>
                                     </div>
                                     @error('title')
@@ -161,7 +161,7 @@
                                             <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
                                                         {{ $has_subtitle ? 'left-6' : 'left-1' }}"></div>
                                         </div>
-                                        <span class="text-neutral-900 dark:text-white font-medium">Aggiungi Sottotitolo</span>
+                                        <span class="text-neutral-900 dark:text-white font-medium">{{ __('events.create.add_subtitle') }}</span>
                                     </div>
                                     <span class="text-sm text-neutral-500 dark:text-neutral-400">Opzionale</span>
                                 </div>
@@ -346,7 +346,7 @@
                                                 <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                                                 </svg>
-                                                Evento Ricorrente
+                                                {{ __('events.create.recurring_event') }}
                                             </h3>
                                             <p class="text-sm text-neutral-600 dark:text-neutral-400">L'evento si ripete nel tempo</p>
                                         </div>
@@ -364,7 +364,7 @@
                                         <div class="space-y-4">
                                             <div class="grid md:grid-cols-3 gap-4">
                                                 <div>
-                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Tipo Ricorrenza *</label>
+                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{{ __('events.create.recurrence_type') }} *</label>
                                                     <select wire:model="recurrence_type" 
                                                             class="w-full px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
                                                         <option value="">Seleziona...</option>
@@ -380,7 +380,7 @@
                                                            class="w-full px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
                                                 </div>
                                                 <div>
-                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Numero Occorrenze</label>
+                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{{ __('events.create.recurrence_count') }}</label>
                                                     <input type="number" wire:model="recurrence_count" min="1" max="100" placeholder="Illimitate" 
                                                            class="w-full px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
                                                 </div>
@@ -423,7 +423,7 @@
                                                 <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                                                 </svg>
-                                                Basato su Disponibilità
+                                                {{ __('events.create.availability_based') }}
                                             </h3>
                                             <p class="text-sm text-neutral-600 dark:text-neutral-400">Gli invitati scelgono tra date/orari proposti</p>
                                         </div>
@@ -441,7 +441,7 @@
                                         <div class="space-y-4">
                                             <div class="grid md:grid-cols-2 gap-4">
                                                 <div>
-                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Scadenza Risposte</label>
+                                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{{ __('events.create.response_deadline') }}</label>
                                                     <input type="datetime-local" wire:model="availability_deadline" 
                                                            class="w-full px-4 py-2 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
                                                 </div>
@@ -454,10 +454,10 @@
 
                                             <div>
                                                 <div class="flex items-center justify-between mb-3">
-                                                    <label class="text-sm font-medium text-neutral-700 dark:text-neutral-300">Opzioni di Date/Orari</label>
+                                                    <label class="text-sm font-medium text-neutral-700 dark:text-neutral-300">{{ __('events.create.datetime_options') }}</label>
                                                     <button type="button" wire:click="addAvailabilityOption" 
                                                             class="px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-semibold transition-all hover:scale-105">
-                                                        + Aggiungi Opzione
+                                                        + {{ __('events.create.add_option') }}
                                                     </button>
                                                 </div>
                                                 
@@ -496,7 +496,7 @@
                                                 <svg class="w-8 h-8 mx-auto mb-2 transition-colors {{ !$is_online ? 'text-primary-600 dark:text-primary-400' : 'text-neutral-400 dark:text-neutral-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                                                 </svg>
-                                                <span class="font-bold {{ !$is_online ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400' }}">In Presenza</span>
+                                                <span class="font-bold {{ !$is_online ? 'text-neutral-900 dark:text-white' : 'text-neutral-600 dark:text-neutral-400' }}">{{ __('events.create.in_person') }}</span>
                                             </div>
                                         </label>
                                         <label class="relative cursor-pointer">
@@ -697,7 +697,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">Media & Biglietti</h2>
+                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ __('events.create.media_tickets') }}</h2>
                                     <p class="text-neutral-700 dark:text-neutral-300">Immagini, video e informazioni sui biglietti</p>
                                 </div>
                             </div>
@@ -714,7 +714,7 @@
 
                                     {{-- Image Upload --}}
                                     <div>
-                                        <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">Immagine Copertina</label>
+                                        <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">{{ __('events.create.cover_image') }}</label>
                                         <div class="relative">
                                             <input type="file"
                                                    wire:model="event_image"
@@ -753,7 +753,7 @@
                                                       peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
                                                       peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
                                                       transition-all duration-200">
-                                            Video Promozionale (URL)
+                                            {{ __('events.create.promotional_video') }}
                                         </label>
                                     </div>
                                 </div>
@@ -776,7 +776,7 @@
                                                 <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
                                                             {{ $is_paid_event ? 'left-6' : 'left-1' }}"></div>
                                             </div>
-                                            <span class="text-neutral-900 dark:text-white font-medium">Evento a Pagamento</span>
+                                            <span class="text-neutral-900 dark:text-white font-medium">{{ __('events.create.paid_event') }}</span>
                                         </div>
                                     </div>
 
@@ -825,7 +825,7 @@
                                             <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                             </svg>
-                                            <span class="font-semibold text-green-700 dark:text-green-300">Evento Gratuito</span>
+                                            <span class="font-semibold text-green-700 dark:text-green-300">{{ __('events.create.free_event') }}</span>
                                         </div>
                                     @endif
                                 </div>
@@ -839,7 +839,7 @@
                                             <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                                             </svg>
-                                            Collegato a un Gruppo
+                                            {{ __('events.create.linked_to_group') }}
                                         </h3>
                                         <p class="text-sm text-neutral-600 dark:text-neutral-400">L'evento fa parte di un gruppo esistente</p>
                                     </div>
@@ -858,7 +858,7 @@
                                         {{-- Search Groups --}}
                                         <div>
                                             <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                                                Cerca Gruppo
+                                                {{ __('events.create.search_group') }}
                                             </label>
                                             <input type="text" 
                                                    wire:model.live.debounce.300ms="groupSearch"
@@ -943,7 +943,7 @@
                                                 <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                                                 </svg>
-                                                Fa Parte di un Festival
+                                                {{ __('events.create.part_of_festival') }}
                                             </h3>
                                             <p class="text-sm text-neutral-600 dark:text-neutral-400">Questo evento è collegato a un festival</p>
                                         </div>
@@ -959,7 +959,7 @@
                                     
                                     @if($festival_id || $is_festival_event)
                                         <div>
-                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Seleziona Festival</label>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{{ __('events.create.select_festival') }}</label>
                                             <select wire:model="festival_id" 
                                                     class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border-2 border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
                                                            focus:border-purple-500 dark:focus:border-purple-400 focus:ring-4 focus:ring-purple-500/10
@@ -1056,7 +1056,7 @@
                                                   peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
                                                   peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
                                                   transition-all duration-200">
-                                        Numero Massimo Partecipanti
+                                        {{ __('events.create.max_participants') }}
                                     </label>
                                     <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">Lascia vuoto per nessun limite</p>
                                     @error('max_participants')
@@ -1067,7 +1067,7 @@
                                 {{-- Registration Deadline --}}
                                 <div class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700">
                                     <div class="flex items-center justify-between mb-4">
-                                        <label class="text-neutral-900 dark:text-white font-medium">Scadenza Registrazioni</label>
+                                        <label class="text-neutral-900 dark:text-white font-medium">{{ __('events.create.registration_deadline') }}</label>
                                         <div class="flex items-center gap-3">
                                             <div class="w-12 h-7 rounded-full relative transition-all duration-300 cursor-pointer
                                                         {{ $has_registration_deadline ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}"
@@ -1099,7 +1099,7 @@
                                                 <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                                 </svg>
-                                                Posizioni Lavorative
+                                                {{ __('events.create.job_positions') }}
                                                 <span class="text-sm bg-primary-600 dark:bg-primary-500 text-white px-2 py-1 rounded-lg">{{ count($gig_positions) }}</span>
                                             </h3>
                                             <p class="text-sm text-neutral-600 dark:text-neutral-400">Definisci le posizioni disponibili per l'evento</p>
@@ -1241,14 +1241,14 @@
                                         <svg class="w-5 h-5 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                                         </svg>
-                                        Invita Partecipanti (Performer/Organizer)
+                                        {{ __('events.create.invite_participants') }}
                                         <span class="text-sm bg-accent-600 dark:bg-accent-500 text-white px-2 py-1 rounded-lg">{{ count($invitations) }}</span>
                                     </h3>
                                     <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Cerca e invita artisti o organizzatori</p>
 
                                     {{-- Search --}}
                                     <div class="relative mb-4">
-                                        <input type="text" wire:model.live.debounce.300ms="userSearchQuery" placeholder="Cerca utenti..." 
+                                        <input type="text" wire:model.live.debounce.300ms="userSearchQuery" placeholder="{{ __('events.create.search_users') }}" 
                                                class="w-full px-4 py-3 pl-11 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
                                         <svg class="w-5 h-5 absolute left-3 top-3.5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -1310,14 +1310,14 @@
                                         <svg class="w-5 h-5 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
                                         </svg>
-                                        Invita Pubblico
+                                        {{ __('events.create.invite_audience') }}
                                         <span class="text-sm bg-neutral-600 dark:bg-neutral-500 text-white px-2 py-1 rounded-lg">{{ count($audienceInvitations) }}</span>
                                     </h3>
                                     <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Invita persone ad assistere all'evento</p>
 
                                     {{-- Search --}}
                                     <div class="relative mb-4">
-                                        <input type="text" wire:model.live.debounce.300ms="audienceSearchQuery" placeholder="Cerca utenti..." 
+                                        <input type="text" wire:model.live.debounce.300ms="audienceSearchQuery" placeholder="{{ __('events.create.search_users') }}" 
                                                class="w-full px-4 py-3 pl-11 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
                                         <svg class="w-5 h-5 absolute left-3 top-3.5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -1422,7 +1422,7 @@
                                             <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                             </svg>
-                                            Immagine Copertina
+                                            {{ __('events.create.cover_image') }}
                                         </h3>
                                         <div class="relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 border-2 border-neutral-200 dark:border-neutral-700">
                                             <img src="{{ $event_image->temporaryUrl() }}" 
@@ -1441,7 +1441,7 @@
                                         <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                         </svg>
-                                        Informazioni Base
+                                        {{ __('events.create.basic_info') }}
                                     </h3>
                                     <dl class="space-y-3 text-sm">
                                         <div class="flex justify-between items-start">
@@ -1489,7 +1489,7 @@
                                         </div>
                                         <div class="flex justify-between items-start">
                                             <dt class="font-medium text-neutral-600 dark:text-neutral-400">Modalità:</dt>
-                                            <dd class="font-semibold text-neutral-900 dark:text-white">{{ $is_online ? '🌐 Online' : '📍 In Presenza' }}</dd>
+                                            <dd class="font-semibold text-neutral-900 dark:text-white">{{ $is_online ? '🌐 ' . __('events.create.online') : '📍 ' . __('events.create.in_person') }}</dd>
                                         </div>
                                         @if(!$is_online && $city)
                                             <div class="flex justify-between items-start">
@@ -1754,7 +1754,7 @@
                                             <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                                             </svg>
-                                            Video Promozionale
+                                            {{ __('events.create.promotional_video') }}
                                         </h3>
                                         <div class="bg-white dark:bg-neutral-800 rounded-lg p-3 font-mono text-sm text-neutral-900 dark:text-white break-all">
                                             {{ $promotional_video }}
@@ -1787,8 +1787,8 @@
                                     </h3>
                                     <dl class="space-y-3 text-sm">
                                         <div class="flex justify-between items-start">
-                                            <dt class="font-medium text-neutral-600 dark:text-neutral-400">Max Partecipanti:</dt>
-                                            <dd class="font-semibold text-neutral-900 dark:text-white">{{ $max_participants ?: '∞ Illimitati' }}</dd>
+                                            <dt class="font-medium text-neutral-600 dark:text-neutral-400">{{ __('events.create.max_participants') }}:</dt>
+                                            <dd class="font-semibold text-neutral-900 dark:text-white">{{ $max_participants ?: '∞ ' . __('events.create.unlimited') }}</dd>
                                         </div>
                                         @if($registration_deadline)
                                             <div class="flex justify-between items-start">
@@ -1813,7 +1813,7 @@
                                     <svg class="w-16 h-16 mx-auto mb-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    <h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">Tutto Pronto!</h4>
+                                    <h4 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">{{ __('events.create.all_set') }}</h4>
                                     <p class="text-neutral-700 dark:text-neutral-300 mb-4">Clicca il pulsante in basso per {{ $status === 'published' ? 'pubblicare' : 'salvare' }} il tuo evento</p>
                                 </div>
                             </div>
