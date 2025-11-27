@@ -19,7 +19,7 @@
                 {{-- Welcome Text with Typewriter Effect --}}
                 <div class="space-y-4">
                     <h1 class="text-5xl md:text-7xl font-bold text-white" style="font-family: 'Crimson Pro', serif;">
-                        {{ __('home.hero_welcome') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">Slamin</span>
+                        {{ __('home.hero_welcome') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">{{ config('app.name') }}</span>
                     </h1>
                     <p class="text-xl md:text-2xl text-neutral-300 max-w-3xl mx-auto">
                         {{ __('home.hero_subtitle') }}
