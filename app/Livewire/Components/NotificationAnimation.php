@@ -28,11 +28,15 @@ class NotificationAnimation extends Component
             return;
         }
 
-        // Cerca notifiche create dopo l'ultimo check
+        // Cerca notifiche create dopo l'ultimo check, escludendo messaggi di chat
         $newNotifications = Auth::user()
             ->notifications()
             ->where('created_at', '>', $this->lastCheckedAt)
             ->whereNull('read_at')
+            ->where(function($query) {
+                $query->whereJsonDoesntContain('data->type', 'chat_new_message')
+                      ->orWhereNull('data->type');
+            })
             ->count();
 
         \Log::info('Polling for notifications', [
@@ -64,9 +68,17 @@ class NotificationAnimation extends Component
      * Listener per nuove notifiche via broadcast
      */
     #[On('notification-received')]
-    public function handleNewNotification()
+    public function handleNewNotification($notificationData = null)
     {
-        \Log::info('notification-received event triggered');
+        \Log::info('notification-received event triggered', ['data' => $notificationData]);
+        
+        // Skip animation for chat messages
+        if ($notificationData && isset($notificationData['type']) && $notificationData['type'] === 'chat_new_message') {
+            \Log::info('Skipping animation for chat message');
+            $this->lastCheckedAt = now();
+            return;
+        }
+        
         $this->showAnimation = true;
         $this->lastCheckedAt = now();
         $this->dispatch('auto-hide-notification');
@@ -89,6 +101,26 @@ class NotificationAnimation extends Component
         $this->showAnimation = false;
     }
 
+    /**
+     * Handle broadcast notification and check type
+     */
+    public function handleBroadcastNotification($event)
+    {
+        \Log::info('Broadcast notification received', ['event' => $event]);
+        
+        // Check if it's a chat message
+        if (isset($event['type']) && $event['type'] === 'chat_new_message') {
+            \Log::info('Skipping animation for chat message (broadcast)');
+            $this->lastCheckedAt = now();
+            return;
+        }
+        
+        // Show animation for other notification types
+        $this->showAnimation = true;
+        $this->lastCheckedAt = now();
+        $this->dispatch('auto-hide-notification');
+    }
+
     protected function getListeners()
     {
         if (!Auth::check()) {
@@ -96,7 +128,7 @@ class NotificationAnimation extends Component
         }
 
         return [
-            "echo-private:App.Models.User." . Auth::id() . ",.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated" => 'handleNewNotification',
+            "echo-private:App.Models.User." . Auth::id() . ",.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated" => 'handleBroadcastNotification',
             "echo-private:App.Models.User." . Auth::id() . ",.social-interaction" => 'handleSocialInteraction',
             'refresh-notifications' => 'handleNotificationRefresh',
             'notification-received' => 'handleNewNotification',
