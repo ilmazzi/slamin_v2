@@ -106,8 +106,16 @@ class NotificationAnimation extends Component
         \Log::info('notification-received event triggered', ['data' => $notificationData]);
         
         // Skip animation for chat messages
-        if ($notificationData && isset($notificationData['type']) && $notificationData['type'] === 'chat_new_message') {
-            \Log::info('Skipping animation for chat message');
+        // Check both class name and data type
+        $notificationClass = $notificationData['type'] ?? null;
+        $notificationDataType = $notificationData['data']['type'] ?? null;
+        
+        $isChatMessage = 
+            $notificationClass === 'App\\Notifications\\Chat\\NewMessageNotification' ||
+            $notificationDataType === 'chat_new_message';
+        
+        if ($isChatMessage) {
+            \Log::info('✅ Skipping animation for chat message (notification-received event)');
             $this->lastCheckedAt = now();
             return;
         }
@@ -139,21 +147,30 @@ class NotificationAnimation extends Component
      */
     public function handleBroadcastNotification($event)
     {
-        \Log::info('Broadcast notification received', [
+        \Log::info('Broadcast notification received in NotificationAnimation', [
             'event' => $event,
             'type' => $event['type'] ?? 'unknown'
         ]);
         
-        // Check if it's a chat message - try multiple possible structures
-        $notificationType = $event['type'] ?? ($event['data']['type'] ?? null);
+        // Check if it's a chat message
+        // In broadcast, Laravel sends the notification class name in 'type'
+        $notificationClass = $event['type'] ?? null;
+        $notificationDataType = $event['data']['type'] ?? null;
         
-        if ($notificationType === 'chat_new_message') {
-            \Log::info('Skipping animation for chat message (broadcast)', ['type' => $notificationType]);
+        $isChatMessage = 
+            $notificationClass === 'App\\Notifications\\Chat\\NewMessageNotification' ||
+            $notificationDataType === 'chat_new_message';
+        
+        if ($isChatMessage) {
+            \Log::info('✅ Skipping animation for chat message (broadcast)');
             $this->lastCheckedAt = now();
             return;
         }
         
-        \Log::info('Showing animation for notification', ['type' => $notificationType]);
+        \Log::info('⚠️ Showing animation for notification', [
+            'class' => $notificationClass,
+            'data_type' => $notificationDataType
+        ]);
         
         // Show animation for other notification types
         $this->showAnimation = true;

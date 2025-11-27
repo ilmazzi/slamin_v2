@@ -48,24 +48,22 @@ class NotificationCenter extends Component
         $this->loadNotifications();
         
         // Check if it's a chat message - don't trigger animation for chat
-        // Try multiple possible structures
-        $notificationType = null;
+        // In broadcast, Laravel sends the notification class name in 'type'
+        // We need to check both the class name and the data type
+        $notificationClass = $event['type'] ?? null;
+        $notificationDataType = $event['data']['type'] ?? null;
         
-        if (is_array($event)) {
-            $notificationType = $event['type'] ?? ($event['data']['type'] ?? null);
-        }
+        $isChatMessage = 
+            $notificationClass === 'App\\Notifications\\Chat\\NewMessageNotification' ||
+            $notificationDataType === 'chat_new_message';
         
         \Log::info('🔍 Checking notification type', [
-            'extracted_type' => $notificationType,
-            'is_chat' => $notificationType === 'chat_new_message',
-            'comparison' => [
-                'type' => $notificationType,
-                'expected' => 'chat_new_message',
-                'match' => $notificationType === 'chat_new_message'
-            ]
+            'notification_class' => $notificationClass,
+            'data_type' => $notificationDataType,
+            'is_chat' => $isChatMessage
         ]);
         
-        if ($notificationType === 'chat_new_message') {
+        if ($isChatMessage) {
             \Log::info('✅ Chat message detected - SKIPPING animation dispatch');
             return;
         }
