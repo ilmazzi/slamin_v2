@@ -218,6 +218,17 @@ Route::get('/articles/create', \App\Livewire\Articles\ArticleCreate::class)
     ->middleware('auth')
     ->name('articles.create');
 
+// Fallback route for article ID (redirects to slug for backward compatibility)
+// Must be before the slug route to catch numeric IDs
+Route::get('/articles/{id}', function ($id) {
+    $article = \App\Models\Article::findOrFail($id);
+    if ($article->slug) {
+        return redirect()->route('articles.show', $article->slug, 301);
+    }
+    abort(404);
+})->where('id', '[0-9]+');
+
+// Article show route - accepts slug (must be after ID route)
 Route::get('/articles/{article:slug}', function (\App\Models\Article $article) {
     return view('pages.article-show', compact('article'));
 })->name('articles.show');

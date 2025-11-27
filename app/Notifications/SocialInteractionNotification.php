@@ -105,7 +105,7 @@ class SocialInteractionNotification extends Notification // implements ShouldQue
     {
         return match(get_class($this->content)) {
             'App\Models\Poem' => route('poems.show', $this->content->slug),
-            'App\Models\Article' => route('articles.show', $this->content->id),
+            'App\Models\Article' => route('articles.show', $this->content->slug),
             'App\Models\Video' => route('videos.show', $this->content->uuid),
             'App\Models\Event' => route('events.show', $this->content->id),
             'App\Models\Photo' => route('photos.show', $this->content->id),
