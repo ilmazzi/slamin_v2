@@ -50,10 +50,28 @@ class ScoreEntry extends Component
     public function loadData()
     {
         $this->rounds = $this->event->rounds()->ordered()->get();
-        $this->participants = $this->event->participants()
+        
+        // Get all participants with confirmed/performed status
+        $allParticipants = $this->event->participants()
             ->whereIn('status', ['confirmed', 'performed'])
-            ->orderBy('performance_order')
             ->get();
+        
+        // Filter to show only participants who have accepted invitations as performers/artists
+        $this->participants = $allParticipants->filter(function($participant) {
+            // If participant is a guest (no user_id), include them
+            if ($participant->isGuest()) {
+                return true;
+            }
+            
+            // For registered users, check if they have an accepted invitation with role 'performer'
+            $acceptedInvitation = $this->event->invitations()
+                ->where('invited_user_id', $participant->user_id)
+                ->where('status', 'accepted')
+                ->where('role', 'performer')
+                ->first();
+            
+            return $acceptedInvitation !== null;
+        })->sortBy('performance_order')->values();
         
         // Load existing scores for selected round
         $this->loadScoresForRound();

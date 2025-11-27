@@ -53,10 +53,27 @@ class ParticipantManagement extends Component
 
     public function loadParticipants()
     {
-        $this->participants = $this->event->participants()
+        // Get all participants
+        $allParticipants = $this->event->participants()
             ->with(['user', 'ranking'])
-            ->orderBy('performance_order')
             ->get();
+        
+        // Filter to show only participants who have accepted invitations as performers/artists
+        $this->participants = $allParticipants->filter(function($participant) {
+            // If participant is a guest (no user_id), include them
+            if ($participant->isGuest()) {
+                return true;
+            }
+            
+            // For registered users, check if they have an accepted invitation with role 'performer'
+            $acceptedInvitation = $this->event->invitations()
+                ->where('invited_user_id', $participant->user_id)
+                ->where('status', 'accepted')
+                ->where('role', 'performer')
+                ->first();
+            
+            return $acceptedInvitation !== null;
+        })->sortBy('performance_order')->values();
     }
 
     public function openAddModal()

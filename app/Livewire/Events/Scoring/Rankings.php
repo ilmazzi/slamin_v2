@@ -42,15 +42,37 @@ class Rankings extends Component
             ->ordered()
             ->get();
 
+        // Get participants who have accepted invitations as performers
+        $acceptedParticipants = $this->event->participants()
+            ->whereIn('status', ['performed', 'confirmed'])
+            ->get()
+            ->filter(function($participant) {
+                // If participant is a guest (no user_id), include them
+                if ($participant->isGuest()) {
+                    return true;
+                }
+                
+                // For registered users, check if they have an accepted invitation with role 'performer'
+                $acceptedInvitation = $this->event->invitations()
+                    ->where('invited_user_id', $participant->user_id)
+                    ->where('status', 'accepted')
+                    ->where('role', 'performer')
+                    ->first();
+                
+                return $acceptedInvitation !== null;
+            });
+        
         // Check if we can calculate rankings
         // Need: participants with scores (rounds are configured in this phase)
-        $this->canCalculate = $this->event->scores()->exists() && $this->event->participants()->whereIn('status', ['performed', 'confirmed'])->exists();
+        $this->canCalculate = $this->event->scores()->exists() && $acceptedParticipants->count() > 0;
 
         // Load stats
         $this->stats = [
-            'total_participants' => $this->event->participants()->count(),
-            'with_scores' => $this->event->participants()
-                ->whereHas('scores')
+            'total_participants' => $acceptedParticipants->count(),
+            'with_scores' => $acceptedParticipants
+                ->filter(function($participant) {
+                    return $participant->scores()->exists();
+                })
                 ->count(),
             'total_scores' => $this->event->scores()->count(),
             'badges_awarded' => $this->rankings->where('badge_awarded', true)->count(),
