@@ -33,8 +33,14 @@ class NotificationModal extends Component
         $this->notifications = Auth::user()
             ->notifications()
             ->orderBy('created_at', 'desc')
-            ->take(20)
+            ->take(50) // Take more to ensure we have enough after filtering
             ->get()
+            ->filter(function($notification) {
+                // Filter out chat messages
+                $type = $notification->data['type'] ?? null;
+                return $type !== 'chat_new_message';
+            })
+            ->take(20) // Take only 20 after filtering
             ->map(function($notification) {
                 $data = $notification->data;
                 $type = $data['type'] ?? 'default';
@@ -51,9 +57,18 @@ class NotificationModal extends Component
                     'created_at' => $notification->created_at->diffForHumans(),
                     'data' => $data,
                 ];
-            });
+            })
+            ->values(); // Reset array keys
 
-        $this->unreadCount = Auth::user()->unreadNotifications()->count();
+        // Count unread excluding chat messages
+        $this->unreadCount = Auth::user()
+            ->unreadNotifications()
+            ->get()
+            ->filter(function($notification) {
+                $type = $notification->data['type'] ?? null;
+                return $type !== 'chat_new_message';
+            })
+            ->count();
     }
 
     private function getNotificationTitle($type, $data)
@@ -138,6 +153,13 @@ class NotificationModal extends Component
             $this->loadNotifications();
             $this->dispatch('refresh-notifications');
         }
+    }
+
+    public function clearAll()
+    {
+        Auth::user()->notifications()->delete();
+        $this->loadNotifications();
+        $this->dispatch('refresh-notifications');
     }
 
     public function render()
