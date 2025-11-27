@@ -5,6 +5,7 @@ namespace App\Livewire\Notifications;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
+use App\Models\EventParticipant;
 
 class NotificationModal extends Component
 {
@@ -230,6 +231,23 @@ class NotificationModal extends Component
 
             // Update invitation status
             $invitation->update(['status' => 'accepted']);
+
+            // Create EventParticipant if role is 'performer' and participant doesn't exist
+            if ($invitation->role === 'performer') {
+                $existingParticipant = EventParticipant::where('event_id', $invitation->event_id)
+                    ->where('user_id', $invitation->invited_user_id)
+                    ->first();
+                
+                if (!$existingParticipant) {
+                    EventParticipant::create([
+                        'event_id' => $invitation->event_id,
+                        'user_id' => $invitation->invited_user_id,
+                        'registration_type' => 'invited',
+                        'status' => 'confirmed',
+                        'added_by' => $invitation->inviter_id,
+                    ]);
+                }
+            }
 
             // Mark notification as read
             $notification->markAsRead();

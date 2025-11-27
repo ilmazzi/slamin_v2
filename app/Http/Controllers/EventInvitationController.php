@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EventInvitation;
+use App\Models\EventParticipant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -26,6 +27,23 @@ class EventInvitationController extends Controller
 
         // Update invitation status
         $invitation->update(['status' => 'accepted']);
+
+        // Create EventParticipant if role is 'performer' and participant doesn't exist
+        if ($invitation->role === 'performer') {
+            $existingParticipant = EventParticipant::where('event_id', $invitation->event_id)
+                ->where('user_id', $invitation->invited_user_id)
+                ->first();
+            
+            if (!$existingParticipant) {
+                EventParticipant::create([
+                    'event_id' => $invitation->event_id,
+                    'user_id' => $invitation->invited_user_id,
+                    'registration_type' => 'invited',
+                    'status' => 'confirmed',
+                    'added_by' => $invitation->inviter_id,
+                ]);
+            }
+        }
 
         // Optionally send notification to organizer
         try {
