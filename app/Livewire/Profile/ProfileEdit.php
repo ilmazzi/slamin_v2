@@ -137,9 +137,36 @@ class ProfileEdit extends Component
         }
     }
 
+    /**
+     * Normalizza un URL aggiungendo https:// se manca il protocollo
+     */
+    private function normalizeUrl($url)
+    {
+        if (empty($url)) {
+            return null;
+        }
+        
+        $url = trim($url);
+        
+        // Se l'URL non inizia con http:// o https://, aggiungi https://
+        if (!preg_match('/^https?:\/\//i', $url)) {
+            $url = 'https://' . $url;
+        }
+        
+        return $url;
+    }
+
     public function save()
     {
         try {
+            // Normalizza gli URL prima della validazione
+            $this->website = $this->normalizeUrl($this->website);
+            $this->social_facebook = $this->normalizeUrl($this->social_facebook);
+            $this->social_instagram = $this->normalizeUrl($this->social_instagram);
+            $this->social_twitter = $this->normalizeUrl($this->social_twitter);
+            $this->social_youtube = $this->normalizeUrl($this->social_youtube);
+            $this->social_linkedin = $this->normalizeUrl($this->social_linkedin);
+            
             $rules = [
                 'name' => 'required|string|max:255',
                 'nickname' => 'required|string|max:50|unique:users,nickname,' . $this->user->id,

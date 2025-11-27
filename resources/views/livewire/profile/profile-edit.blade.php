@@ -216,11 +216,12 @@
                         <input type="url" 
                                id="website"
                                wire:model="website" 
-                               placeholder="https://example.com"
+                               placeholder="www.example.com"
                                class="w-full px-4 py-2 border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-neutral-900 dark:text-white">
                         @error('website') 
                             <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> 
                         @enderror
+                        <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">{{ __('profile.edit.website_hint') }}</p>
                     </div>
                     
                     <div class="sm:col-span-2">

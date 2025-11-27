@@ -105,6 +105,7 @@ return [
         'location' => 'Posizione',
         'birth_date' => 'Data di nascita',
         'website' => 'Sito web',
+        'website_hint' => 'Puoi inserire anche solo "www.tuosito.it" - aggiungeremo https:// automaticamente',
         'bio' => 'Biografia',
         'bio_help' => 'Massimo 1000 caratteri',
         'social_links' => 'Link Social',

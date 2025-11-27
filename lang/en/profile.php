@@ -102,6 +102,7 @@ return [
         'location' => 'Location',
         'birth_date' => 'Birth Date',
         'website' => 'Website',
+        'website_hint' => 'You can enter just "www.yoursite.com" - we\'ll add https:// automatically',
         'bio' => 'Biography',
         'bio_help' => 'Maximum 1000 characters',
         'social_links' => 'Social Links',
