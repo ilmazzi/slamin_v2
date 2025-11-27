@@ -293,6 +293,7 @@ return [
         'cannot_modify_rounds_event_completed' => 'Impossibile modificare i turni. L\'evento è completato e la classifica è stata generata.',
         'cannot_delete_rounds_event_completed' => 'Impossibile eliminare i turni. L\'evento è completato e la classifica è stata generata.',
         'score_must_be_between_0_and_10' => 'Il punteggio deve essere tra 0.0 e 10.0!',
+        'score_must_be_positive' => 'Il punteggio deve essere un numero positivo!',
         'the_rankings_have_been_generated' => 'Le classifiche sono state generate e l\'evento è stato chiuso.',
         'participant_management' => 'Gestione Partecipanti',
         'add' => 'Aggiungi',

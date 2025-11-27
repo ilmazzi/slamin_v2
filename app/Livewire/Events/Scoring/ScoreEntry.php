@@ -143,9 +143,9 @@ class ScoreEntry extends Component
             return;
         }
 
-        // Validate score (0.0 - 10.0 with 1 decimal)
-        if ($score < 0 || $score > 10) {
-            $this->dispatch('swal:warning', ['title' => __('events.scoring.error'), 'text' => __('events.scoring.score_must_be_between_0_and_10')]);
+        // Validate score is a valid number (no upper limit)
+        if (!is_numeric($score) || $score < 0) {
+            $this->dispatch('swal:warning', ['title' => __('events.scoring.error'), 'text' => __('events.scoring.score_must_be_positive')]);
             return;
         }
 

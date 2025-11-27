@@ -207,14 +207,13 @@
                                     </div>
 
                                     <div>
-                                        <label class="block text-xs font-bold uppercase mb-2 text-[#8b7355] dark:text-[#a3a3a3]" style="letter-spacing: 0.05em;">{{ __('events.scoring.score') }} (0.0 - 10.0)</label>
+                                        <label class="block text-xs font-bold uppercase mb-2 text-[#8b7355] dark:text-[#a3a3a3]" style="letter-spacing: 0.05em;">{{ __('events.scoring.score') }}</label>
                                         <div class="flex gap-2">
                                             <input type="number" 
                                                    wire:model="scores.{{ $participant->id }}"
                                                    class="scoring-input flex-1" 
                                                    step="0.1" 
-                                                   min="0" 
-                                                   max="10"
+                                                   min="0"
                                                    placeholder="{{ __('events.scoring.example') }}: 9.5">
                                             <button wire:click="saveScore({{ $participant->id }})" 
                                                     class="scoring-button-primary">
@@ -233,7 +232,7 @@
                                     <tr>
                                         <th class="w-20">#</th>
                                         <th>{{ __('events.scoring.participant') }}</th>
-                                        <th class="w-64">{{ __('events.scoring.score') }} (0.0 - 10.0)</th>
+                                        <th class="w-64">{{ __('events.scoring.score') }}</th>
                                         <th class="w-32">{{ __('events.scoring.actions') }}</th>
                                     </tr>
                                 </thead>
@@ -264,8 +263,7 @@
                                                        wire:model="scores.{{ $participant->id }}"
                                                        class="scoring-input" 
                                                        step="0.1" 
-                                                       min="0" 
-                                                       max="10"
+                                                       min="0"
                                                        placeholder="{{ __('events.scoring.example') }}: 9.5">
                                             </td>
                                             <td>
