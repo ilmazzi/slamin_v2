@@ -63,6 +63,12 @@ class Badge extends Model
     public function translation($locale = null)
     {
         $locale = $locale ?? app()->getLocale();
+        
+        // Use loaded translations if available (eager loading)
+        if ($this->relationLoaded('translations')) {
+            return $this->translations->firstWhere('locale', $locale);
+        }
+        
         return $this->translations()->where('locale', $locale)->first();
     }
 

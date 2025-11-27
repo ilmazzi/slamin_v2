@@ -33,17 +33,28 @@ class LanguageHelper
      */
     public static function getAvailableLocales(): array
     {
-        $langPath = base_path('lang');
-        $locales = [];
-        
-        if (is_dir($langPath)) {
-            $directories = array_filter(glob($langPath . '/*'), 'is_dir');
-            foreach ($directories as $dir) {
-                $locale = basename($dir);
-                $locales[] = $locale;
+        // Cache the result to avoid repeated filesystem operations
+        return cache()->remember('available_locales', 3600, function () {
+            $langPath = base_path('lang');
+            $locales = [];
+            
+            if (is_dir($langPath)) {
+                $directories = array_filter(glob($langPath . '/*'), 'is_dir');
+                foreach ($directories as $dir) {
+                    $locale = basename($dir);
+                    $locales[] = $locale;
+                }
             }
-        }
-        
-        return $locales;
+            
+            return $locales;
+        });
+    }
+    
+    /**
+     * Clear the locales cache (call this when adding new languages)
+     */
+    public static function clearLocalesCache(): void
+    {
+        cache()->forget('available_locales');
     }
 }

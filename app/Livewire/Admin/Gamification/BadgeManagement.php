@@ -62,30 +62,31 @@ class BadgeManagement extends Component
     public function mount()
     {
         $this->loadBadges();
-        $this->loadAvailableLocales();
+        // Load locales only once at mount
+        $this->availableLocales = LanguageHelper::getAvailableLocales();
     }
 
-    public function loadAvailableLocales()
+    public function initializeTranslations()
     {
-        $this->availableLocales = LanguageHelper::getAvailableLocales();
-        
         // Initialize translations array for all locales
+        $this->translations = [];
         foreach ($this->availableLocales as $locale) {
-            if (!isset($this->translations[$locale])) {
-                $this->translations[$locale] = ['name' => '', 'description' => ''];
-            }
+            $this->translations[$locale] = ['name' => '', 'description' => ''];
         }
     }
 
     public function loadBadges()
     {
-        $this->badges = Badge::orderBy('type')->orderBy('category')->orderBy('order')->get();
+        $this->badges = Badge::with('translations')
+            ->orderBy('type')
+            ->orderBy('category')
+            ->orderBy('order')
+            ->get();
     }
 
     public function create()
     {
         $this->resetForm();
-        $this->loadAvailableLocales();
         $this->isEditing = false;
         $this->showModal = true;
     }
@@ -106,10 +107,10 @@ class BadgeManagement extends Component
         $this->is_active = $badge->is_active;
         $this->existing_icon = $badge->icon_path;
         
-        // Load available locales
-        $this->loadAvailableLocales();
+        // Initialize translations for all locales
+        $this->initializeTranslations();
         
-        // Load translations
+        // Load existing translations
         foreach ($badge->translations as $translation) {
             $this->translations[$translation->locale] = [
                 'name' => $translation->name,
@@ -273,11 +274,8 @@ class BadgeManagement extends Component
         $this->icon = null;
         $this->existing_icon = null;
         
-        // Reset translations for all available locales
-        $this->translations = [];
-        foreach ($this->availableLocales as $locale) {
-            $this->translations[$locale] = ['name' => '', 'description' => ''];
-        }
+        // Reset translations
+        $this->initializeTranslations();
     }
 
     public function render()
