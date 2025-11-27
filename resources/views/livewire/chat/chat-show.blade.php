@@ -264,18 +264,20 @@
                             <div class="flex items-center gap-0.5" title="{{ $message->status === 'read' ? __('chat.read') : ($message->status === 'delivered' ? __('chat.delivered') : __('chat.sent')) }}">
                                 @if($message->isRead())
                                     <!-- Double checkmark (read) - blue -->
-                                    <svg class="w-4 h-4 text-blue-500 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0zm-5 4a1 1 0 010 1.414l-3 3a1 1 0 01-1.414 0l-1.5-1.5a1 1 0 111.414-1.414L8 13.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    <svg class="w-4 h-4 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 13l4 4L23 7"/>
                                     </svg>
                                 @elseif($message->isDelivered())
                                     <!-- Double checkmark (delivered) - gray -->
-                                    <svg class="w-4 h-4 text-neutral-400 dark:text-neutral-500" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0zm-5 4a1 1 0 010 1.414l-3 3a1 1 0 01-1.414 0l-1.5-1.5a1 1 0 111.414-1.414L8 13.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    <svg class="w-4 h-4 text-neutral-400 dark:text-neutral-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 13l4 4L23 7"/>
                                     </svg>
                                 @else
                                     <!-- Single checkmark (sent) - gray -->
-                                    <svg class="w-4 h-4 text-neutral-400 dark:text-neutral-500" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    <svg class="w-4 h-4 text-neutral-400 dark:text-neutral-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                     </svg>
                                 @endif
                             </div>
