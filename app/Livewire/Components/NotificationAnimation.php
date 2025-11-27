@@ -61,7 +61,11 @@ class NotificationAnimation extends Component
     #[On('refresh-notifications')]
     public function handleNotificationRefresh()
     {
-        $this->pollForNewNotifications();
+        // Don't show animation on manual refresh
+        // Just update the timestamp
+        if (Auth::check()) {
+            $this->lastCheckedAt = now();
+        }
     }
 
     /**
@@ -106,14 +110,21 @@ class NotificationAnimation extends Component
      */
     public function handleBroadcastNotification($event)
     {
-        \Log::info('Broadcast notification received', ['event' => $event]);
+        \Log::info('Broadcast notification received', [
+            'event' => $event,
+            'type' => $event['type'] ?? 'unknown'
+        ]);
         
-        // Check if it's a chat message
-        if (isset($event['type']) && $event['type'] === 'chat_new_message') {
-            \Log::info('Skipping animation for chat message (broadcast)');
+        // Check if it's a chat message - try multiple possible structures
+        $notificationType = $event['type'] ?? ($event['data']['type'] ?? null);
+        
+        if ($notificationType === 'chat_new_message') {
+            \Log::info('Skipping animation for chat message (broadcast)', ['type' => $notificationType]);
             $this->lastCheckedAt = now();
             return;
         }
+        
+        \Log::info('Showing animation for notification', ['type' => $notificationType]);
         
         // Show animation for other notification types
         $this->showAnimation = true;
