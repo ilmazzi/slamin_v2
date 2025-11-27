@@ -12,9 +12,10 @@ class HelpIndex extends Component
 
     public function getHelpsProperty()
     {
+        // Non filtriamo per locale perché le traduzioni sono nella tabella help_translations
+        // Il modello usa gli accessor translated_title e translated_content
         $query = Help::active()
             ->ofType('help')
-            ->inLocale(app()->getLocale())
             ->ordered();
 
         if ($this->selectedCategory !== 'all') {
@@ -33,9 +34,9 @@ class HelpIndex extends Component
 
     public function getCategoriesProperty()
     {
+        // Non filtriamo per locale perché le categorie sono le stesse per tutte le lingue
         return Help::active()
             ->ofType('help')
-            ->inLocale(app()->getLocale())
             ->whereNotNull('category')
             ->distinct()
             ->pluck('category')

@@ -59,7 +59,7 @@
                                 </span>
                             @endif
                             <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
-                                {{ $faq->title }}
+                                {{ $faq->translated_title }}
                             </h3>
                         </div>
                         <svg class="w-6 h-6 text-neutral-400 transition-transform duration-200"
@@ -74,7 +74,7 @@
                          x-collapse
                          class="px-6 pb-6 pt-2">
                         <div class="pl-14 text-neutral-600 dark:text-neutral-400 prose dark:prose-invert max-w-none">
-                            {!! nl2br(e($faq->content)) !!}
+                            {!! nl2br(e($faq->translated_content)) !!}
                         </div>
                     </div>
                 </div>

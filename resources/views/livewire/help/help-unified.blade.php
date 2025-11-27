@@ -79,10 +79,10 @@
                                             </span>
                                         @endif
                                         <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">
-                                            {{ $faq->title }}
+                                            {{ $faq->translated_title }}
                                         </h3>
                                         <div class="text-neutral-600 dark:text-neutral-400 prose dark:prose-invert max-w-none">
-                                            {!! nl2br(e($faq->content)) !!}
+                                            {!! nl2br(e($faq->translated_content)) !!}
                                         </div>
                                     </div>
                                 </div>
@@ -117,10 +117,10 @@
                                             </span>
                                         @endif
                                         <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">
-                                            {{ $help->title }}
+                                            {{ $help->translated_title }}
                                         </h3>
                                         <div class="text-neutral-600 dark:text-neutral-400 prose dark:prose-invert max-w-none">
-                                            {!! nl2br(e($help->content)) !!}
+                                            {!! nl2br(e($help->translated_content)) !!}
                                         </div>
                                     </div>
                                 </div>
