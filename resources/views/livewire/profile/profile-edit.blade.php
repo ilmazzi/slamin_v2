@@ -45,8 +45,8 @@
         {{-- Profile Preview Card --}}
         <div class="bg-white dark:bg-neutral-800 rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-700 shadow-sm mb-6">
             <div class="relative h-32 sm:h-40 overflow-hidden bg-gradient-to-br from-primary-600 via-accent-600 to-primary-800">
-                @if($bannerPreview)
-                    <img src="{{ $bannerPreview }}" alt="Banner" class="w-full h-full object-cover opacity-90">
+                @if($banner)
+                    <img src="{{ $banner->temporaryUrl() }}" alt="Banner" class="w-full h-full object-cover opacity-90">
                 @elseif($user->banner_image_url)
                     <img src="{{ $user->banner_image_url }}" alt="Banner" class="w-full h-full object-cover opacity-90">
                 @endif
@@ -54,8 +54,8 @@
                 
                 {{-- Avatar Preview --}}
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
-                    @if($avatarPreview)
-                        <img src="{{ $avatarPreview }}" alt="Avatar" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white dark:border-neutral-900 shadow-xl object-cover">
+                    @if($avatar)
+                        <img src="{{ $avatar->temporaryUrl() }}" alt="Avatar" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white dark:border-neutral-900 shadow-xl object-cover">
                     @else
                         <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($user, 200) }}" alt="Avatar" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white dark:border-neutral-900 shadow-xl object-cover">
                     @endif
@@ -90,7 +90,7 @@
                         @error('avatar') 
                             <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> 
                         @enderror
-                        @if($avatarPreview || $user->profile_photo)
+                        @if($avatar || $user->profile_photo)
                             <button type="button" 
                                     wire:click="removeAvatar"
                                     class="mt-2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors">
@@ -112,7 +112,7 @@
                         @error('banner') 
                             <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> 
                         @enderror
-                        @if($bannerPreview || $user->banner_image)
+                        @if($banner || $user->banner_image)
                             <button type="button" 
                                     wire:click="removeBanner"
                                     class="mt-2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors">

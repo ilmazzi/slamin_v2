@@ -34,8 +34,6 @@ class ProfileEdit extends Component
     // Avatar and banner
     public $avatar;
     public $banner;
-    public $avatarPreview;
-    public $bannerPreview;
     
     // Privacy settings
     public $show_email = false;
@@ -96,24 +94,21 @@ class ProfileEdit extends Component
 
     public function updatedAvatar()
     {
-        $this->validateOnly('avatar');
-        if ($this->avatar) {
-            $this->avatarPreview = $this->avatar->temporaryUrl();
-        }
+        $this->validate([
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+        ]);
     }
 
     public function updatedBanner()
     {
-        $this->validateOnly('banner');
-        if ($this->banner) {
-            $this->bannerPreview = $this->banner->temporaryUrl();
-        }
+        $this->validate([
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120'
+        ]);
     }
 
     public function removeAvatar()
     {
         $this->avatar = null;
-        $this->avatarPreview = null;
         
         if ($this->user->profile_photo) {
             Storage::disk('public')->delete($this->user->profile_photo);
@@ -125,7 +120,6 @@ class ProfileEdit extends Component
     public function removeBanner()
     {
         $this->banner = null;
-        $this->bannerPreview = null;
         
         if ($this->user->banner_image) {
             Storage::disk('public')->delete($this->user->banner_image);
