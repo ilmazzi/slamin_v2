@@ -62,10 +62,10 @@
                                                  class="w-8 h-8 rounded-full object-cover">
                                         </td>
                                         <td class="px-4 py-4">
-                                            <div class="font-semibold text-neutral-900 dark:text-white">{{ $badge->name }}</div>
-                                            @if($badge->description)
+                                            <div class="font-semibold text-neutral-900 dark:text-white">{{ $badge->translated_name }}</div>
+                                            @if($badge->translated_description)
                                                 <div class="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-                                                    {{ Str::limit($badge->description, 50) }}
+                                                    {{ Str::limit($badge->translated_description, 50) }}
                                                 </div>
                                             @endif
                                         </td>
@@ -279,6 +279,63 @@
                                         {{ __('gamification.badge_active') }}
                                     </span>
                                 </label>
+                            </div>
+
+                            {{-- Translations Section --}}
+                            <div class="md:col-span-2 mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-700">
+                                <h4 class="text-md font-semibold text-neutral-900 dark:text-white mb-4">
+                                    {{ __('Traduzioni') }}
+                                </h4>
+                                
+                                {{-- Italian Translation --}}
+                                <div class="mb-4 p-4 bg-neutral-50 dark:bg-neutral-700/50 rounded-lg">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <span class="text-2xl">🇮🇹</span>
+                                        <h5 class="font-semibold text-neutral-900 dark:text-white">Italiano</h5>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                                Nome
+                                            </label>
+                                            <input type="text" wire:model="translations.it.name" 
+                                                   class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                                Descrizione
+                                            </label>
+                                            <textarea wire:model="translations.it.description" 
+                                                      rows="2"
+                                                      class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- English Translation --}}
+                                <div class="p-4 bg-neutral-50 dark:bg-neutral-700/50 rounded-lg">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <span class="text-2xl">🇬🇧</span>
+                                        <h5 class="font-semibold text-neutral-900 dark:text-white">English</h5>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                                Name
+                                            </label>
+                                            <input type="text" wire:model="translations.en.name" 
+                                                   class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                                Description
+                                            </label>
+                                            <textarea wire:model="translations.en.description" 
+                                                      rows="2"
+                                                      class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>

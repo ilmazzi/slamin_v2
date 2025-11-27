@@ -50,6 +50,41 @@ class Badge extends Model
     }
 
     /**
+     * Badge translations
+     */
+    public function translations(): HasMany
+    {
+        return $this->hasMany(BadgeTranslation::class);
+    }
+
+    /**
+     * Get translation for specific locale
+     */
+    public function translation($locale = null)
+    {
+        $locale = $locale ?? app()->getLocale();
+        return $this->translations()->where('locale', $locale)->first();
+    }
+
+    /**
+     * Get translated name
+     */
+    public function getTranslatedNameAttribute(): string
+    {
+        $translation = $this->translation();
+        return $translation ? $translation->name : $this->name;
+    }
+
+    /**
+     * Get translated description
+     */
+    public function getTranslatedDescriptionAttribute(): ?string
+    {
+        $translation = $this->translation();
+        return $translation ? $translation->description : $this->description;
+    }
+
+    /**
      * Event rankings that awarded this badge
      */
     public function eventRankings(): HasMany

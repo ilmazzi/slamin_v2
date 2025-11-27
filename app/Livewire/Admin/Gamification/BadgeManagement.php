@@ -31,6 +31,12 @@ class BadgeManagement extends Component
     public $is_active = true;
     public $icon;
     public $existing_icon;
+    
+    // Translations
+    public $translations = [
+        'it' => ['name' => '', 'description' => ''],
+        'en' => ['name' => '', 'description' => ''],
+    ];
 
     // Manual assignment
     public $showAssignModal = false;
@@ -73,7 +79,7 @@ class BadgeManagement extends Component
 
     public function edit($badgeId)
     {
-        $badge = Badge::findOrFail($badgeId);
+        $badge = Badge::with('translations')->findOrFail($badgeId);
         
         $this->badge = $badge;
         $this->type = $badge->type;
@@ -86,6 +92,14 @@ class BadgeManagement extends Component
         $this->order = $badge->order;
         $this->is_active = $badge->is_active;
         $this->existing_icon = $badge->icon_path;
+        
+        // Load translations
+        foreach ($badge->translations as $translation) {
+            $this->translations[$translation->locale] = [
+                'name' => $translation->name,
+                'description' => $translation->description,
+            ];
+        }
         
         $this->isEditing = true;
         $this->showModal = true;
@@ -121,10 +135,24 @@ class BadgeManagement extends Component
 
         if ($this->isEditing) {
             $this->badge->update($data);
+            $badge = $this->badge;
             session()->flash('message', __('gamification.badge_updated'));
         } else {
-            Badge::create($data);
+            $badge = Badge::create($data);
             session()->flash('message', __('gamification.badge_created'));
+        }
+
+        // Save translations
+        foreach ($this->translations as $locale => $translation) {
+            if (!empty($translation['name'])) {
+                $badge->translations()->updateOrCreate(
+                    ['locale' => $locale],
+                    [
+                        'name' => $translation['name'],
+                        'description' => $translation['description'] ?? '',
+                    ]
+                );
+            }
         }
 
         $this->loadBadges();
@@ -228,6 +256,10 @@ class BadgeManagement extends Component
         $this->is_active = true;
         $this->icon = null;
         $this->existing_icon = null;
+        $this->translations = [
+            'it' => ['name' => '', 'description' => ''],
+            'en' => ['name' => '', 'description' => ''],
+        ];
     }
 
     public function render()

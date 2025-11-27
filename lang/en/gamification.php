@@ -72,5 +72,29 @@ return [
   
   // Notifications
   'badge_earned_message' => 'You earned the badge: :badge!',
+  
+  // Badge Names (keys for badge names)
+  'badges' => [
+    'first_poem' => 'First Poem',
+    'first_poem_desc' => 'You published your first poem!',
+    'poem_master' => 'Poetry Master',
+    'poem_master_desc' => 'You published 10 poems',
+    'first_video' => 'First Video',
+    'first_video_desc' => 'You uploaded your first video!',
+    'video_creator' => 'Video Creator',
+    'video_creator_desc' => 'You uploaded 10 videos',
+    'first_article' => 'First Article',
+    'first_article_desc' => 'You wrote your first article!',
+    'article_writer' => 'Article Writer',
+    'article_writer_desc' => 'You wrote 10 articles',
+    'social_butterfly' => 'Social Butterfly',
+    'social_butterfly_desc' => 'You received 100 likes',
+    'community_star' => 'Community Star',
+    'community_star_desc' => 'You wrote 50 comments',
+    'event_participant' => 'Event Participant',
+    'event_participant_desc' => 'You participated in your first event',
+    'event_champion' => 'Event Champion',
+    'event_champion_desc' => 'You won an event',
+  ],
 ];
 
