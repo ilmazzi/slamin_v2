@@ -51,7 +51,7 @@
         <!-- Bottom Bar -->
         <div class="border-t border-neutral-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <p class="text-sm text-neutral-500">
-                &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('footer.copyright') }}
+                Everything by everyone on this site is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-primary-400 hover:text-primary-300 transition-colors" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
             </p>
             <div class="flex items-center gap-6">
                 <a href="#" class="text-neutral-400 hover:text-primary-400 transition-colors">

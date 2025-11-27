@@ -50,7 +50,7 @@
 
         <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
             <p class="text-center text-gray-600 dark:text-gray-300 text-sm">
-                &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('footer.copyright') }}
+                Everything by everyone on this site is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
             </p>
         </div>
     </div>
