@@ -824,13 +824,6 @@
         .hero-paper-wrapper {
             display: block;
             width: 130px;
-            transition: all 0.3s ease;
-            /* Prevent rendering artifacts */
-            isolation: isolate;
-        }
-        
-        .hero-paper-wrapper:hover {
-            transform: translateY(-6px) scale(1.05) translateZ(0);
         }
         
         .hero-paper-sheet {
@@ -848,26 +841,9 @@
             height: 150px;
             border-radius: 3px;
             box-shadow: 
-                /* Inset border (aged paper edge) */
-                inset 0 0 0 3px rgba(180, 120, 70, 0.85),
-                inset 0 0 18px 7px rgba(160, 100, 60, 0.55),
-                inset 0 0 28px 11px rgba(140, 90, 50, 0.35),
-                /* External shadows (3D depth) */
-                0 5px 8px rgba(0, 0, 0, 0.25),
-                0 10px 15px rgba(0, 0, 0, 0.2),
-                0 15px 22px rgba(0, 0, 0, 0.15),
-                0 20px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .hero-paper-wrapper:hover .hero-paper-sheet {
-            box-shadow: 
-                inset 0 0 0 3px rgba(180, 120, 70, 0.85),
-                inset 0 0 18px 7px rgba(160, 100, 60, 0.55),
-                inset 0 0 28px 11px rgba(140, 90, 50, 0.35),
-                0 10px 16px rgba(0, 0, 0, 0.3),
-                0 20px 30px rgba(0, 0, 0, 0.25),
-                0 30px 45px rgba(0, 0, 0, 0.2);
+                inset 0 0 0 2px rgba(180, 120, 70, 0.6),
+                0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: box-shadow 0.3s ease;
         }
         
         /* Poetry Title - Same as sections */
@@ -890,13 +866,6 @@
             display: block;
             width: 130px;
             position: relative;
-            transition: all 0.3s ease;
-            /* Prevent rendering artifacts */
-            isolation: isolate;
-        }
-        
-        .hero-magazine-wrapper:hover {
-            transform: translateY(-6px) translateZ(0);
         }
         
         .hero-thumbtack {
@@ -907,10 +876,7 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            box-shadow: 
-                0 3px 6px rgba(0, 0, 0, 0.35),
-                inset 0 1px 3px rgba(255, 255, 255, 0.4),
-                inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
             z-index: 10;
         }
         
@@ -938,15 +904,8 @@
             );
             border: 2px solid #2d2d2d;
             border-radius: 4px;
-            box-shadow: 
-                /* Main depth */
-                0 6px 10px rgba(0, 0, 0, 0.25),
-                0 12px 20px rgba(0, 0, 0, 0.2),
-                0 18px 30px rgba(0, 0, 0, 0.15),
-                /* Glossy highlight */
-                inset 0 1px 0 rgba(255, 255, 255, 0.6),
-                inset 0 2px 4px rgba(255, 255, 255, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: box-shadow 0.3s ease;
         }
         
         .hero-magazine-inner {
@@ -954,15 +913,6 @@
             height: 150px;
             display: flex;
             flex-direction: column;
-        }
-        
-        .hero-magazine-wrapper:hover .hero-magazine-cover {
-            box-shadow: 
-                0 10px 16px rgba(0, 0, 0, 0.3),
-                0 20px 32px rgba(0, 0, 0, 0.25),
-                0 30px 48px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6),
-                inset 0 2px 4px rgba(255, 255, 255, 0.3);
         }
         
         /* Magazine Title - Same as sections */
@@ -995,13 +945,6 @@
             display: block;
             width: 130px;
             position: relative;
-            transition: all 0.3s ease;
-            /* Prevent rendering artifacts */
-            isolation: isolate;
-        }
-        
-        .hero-notice-wrapper:hover {
-            transform: translateY(-6px) translateZ(0);
         }
         
         .hero-washi-tape {
@@ -1009,31 +952,13 @@
             left: 50%;
             height: 24px;
             border-radius: 1px;
-            background: 
-                /* Subtle shine */
-                linear-gradient(
-                    105deg,
-                    rgba(255, 255, 255, 0.25) 0%,
-                    transparent 30%,
-                    transparent 70%,
-                    rgba(255, 255, 255, 0.25) 100%
-                ),
-                /* SOFT YELLOW scotch gradient (overwrites inline) */
-                linear-gradient(180deg, 
-                    rgba(240, 210, 100, 0.92) 0%, 
-                    rgba(245, 220, 120, 0.90) 50%, 
-                    rgba(250, 230, 140, 0.92) 100%
-                );
-            box-shadow: 
-                /* Strong shadow for depth */
-                0 3px 8px rgba(0, 0, 0, 0.35),
-                0 1px 4px rgba(0, 0, 0, 0.25),
-                /* Glossy highlights */
-                inset 0 2px 5px rgba(255, 255, 255, 0.9),
-                inset 0 -1px 3px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(180deg, 
+                rgba(240, 210, 100, 0.92) 0%, 
+                rgba(245, 220, 120, 0.90) 50%, 
+                rgba(250, 230, 140, 0.92) 100%
+            );
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             z-index: 10;
-            border-top: 1px solid rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid rgba(200, 180, 100, 0.4);
             /* SERRATED EDGES on LEFT and RIGHT sides */
             clip-path: polygon(
                 /* Left edge - serrated */
@@ -1105,24 +1030,8 @@
             padding: 1.5rem 1rem;
             height: 150px;
             border-radius: 4px;
-            box-shadow: 
-                /* Paper shadows */
-                0 5px 8px rgba(0, 0, 0, 0.2),
-                0 10px 15px rgba(0, 0, 0, 0.15),
-                0 15px 22px rgba(0, 0, 0, 0.1),
-                /* Subtle inset highlight */
-                inset 0 1px 0 rgba(255, 255, 255, 0.8),
-                inset 0 2px 4px rgba(255, 255, 255, 0.4);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .hero-notice-wrapper:hover .hero-notice-paper {
-            box-shadow: 
-                0 8px 14px rgba(0, 0, 0, 0.25),
-                0 16px 28px rgba(0, 0, 0, 0.2),
-                0 24px 40px rgba(0, 0, 0, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8),
-                inset 0 2px 4px rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: box-shadow 0.3s ease;
         }
         
         /* Gigs Category Badge */
@@ -1136,22 +1045,13 @@
             background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
             padding: 0.5rem 1rem;
             border-radius: 0.375rem;
-            box-shadow: 
-                0 3px 6px rgba(0, 0, 0, 0.25),
-                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
         
         /* Events - Mini Cinema Ticket */
         .hero-ticket-wrapper {
             display: block;
             width: 130px;
-            transition: all 0.3s ease;
-            /* Prevent rendering artifacts */
-            isolation: isolate;
-        }
-        
-        .hero-ticket-wrapper:hover {
-            transform: translateY(-6px) scale(1.02) translateZ(0);
         }
         
         .hero-cinema-ticket {
@@ -1159,19 +1059,10 @@
             background: #fef7e6;
             border-radius: 6px;
             height: 150px;
-            box-shadow: 
-                0 6px 16px rgba(0, 0, 0, 0.4),
-                0 12px 32px rgba(0, 0, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
-        }
-        
-        .hero-ticket-wrapper:hover .hero-cinema-ticket {
-            box-shadow: 
-                0 10px 20px rgba(0, 0, 0, 0.5),
-                0 16px 40px rgba(0, 0, 0, 0.4),
-                0 0 0 2px rgba(218, 165, 32, 0.4);
         }
         
         /* Perforated Left Edge - EXACT COPY */
@@ -1235,40 +1126,17 @@
             opacity: 0.7;
             position: relative;
             transform: rotate(<?php echo rand(-8, 8); ?>deg);
-            box-shadow: 
-                0 2px 4px rgba(185, 28, 28, 0.2),
-                inset 0 1px 2px rgba(185, 28, 28, 0.1);
-        }
-        
-        .hero-ticket-stamp::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border: 1px solid rgba(185, 28, 28, 0.12);
-            border-radius: 2px;
-            pointer-events: none;
         }
         
         /* Videos - Mini Film Strip */
         .hero-film-wrapper {
             display: block;
             width: 130px;
-            transition: all 0.3s ease;
-            /* Prevent rendering artifacts */
-            isolation: isolate;
-        }
-        
-        .hero-film-wrapper:hover {
-            transform: translateY(-6px) scale(1.02) translateZ(0);
         }
         
         .hero-film-strip {
             position: relative;
-            background: linear-gradient(90deg, 
-                rgba(255, 255, 255, 0.08) 0%,
-                transparent 30%
-            ),
-            linear-gradient(180deg, 
+            background: linear-gradient(180deg, 
                 rgba(80, 55, 35, 0.95) 0%,
                 rgba(70, 48, 30, 0.97) 50%,
                 rgba(80, 55, 35, 0.95) 100%
@@ -1276,10 +1144,7 @@
             padding: 1rem 0.5rem;
             height: 150px;
             border-radius: 4px;
-            box-shadow: 
-                0 4px 8px rgba(0, 0, 0, 0.3),
-                0 8px 16px rgba(0, 0, 0, 0.25),
-                inset 0 2px 4px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
         /* Film codes */
@@ -1351,50 +1216,20 @@
             z-index: 1;
         }
         
-        /* Media text overlay - WOW Effect */
+        /* Media text overlay */
         .hero-film-text {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Crimson Pro', serif;
-            font-size: 1.5rem;
-            font-weight: 900;
+            font-size: 1.25rem;
+            font-weight: 700;
             color: white;
-            text-shadow: 
-                0 0 20px rgba(16, 185, 129, 0.8),
-                0 0 40px rgba(16, 185, 129, 0.6),
-                0 0 60px rgba(16, 185, 129, 0.4),
-                0 4px 8px rgba(0, 0, 0, 0.9),
-                0 2px 4px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
             z-index: 10;
             white-space: nowrap;
             letter-spacing: 0.05em;
-            animation: hero-film-glow 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes hero-film-glow {
-            0% {
-                text-shadow: 
-                    0 0 20px rgba(16, 185, 129, 0.8),
-                    0 0 40px rgba(16, 185, 129, 0.6),
-                    0 0 60px rgba(16, 185, 129, 0.4),
-                    0 4px 8px rgba(0, 0, 0, 0.9),
-                    0 2px 4px rgba(0, 0, 0, 0.8);
-            }
-            100% {
-                text-shadow: 
-                    0 0 30px rgba(16, 185, 129, 1),
-                    0 0 50px rgba(16, 185, 129, 0.8),
-                    0 0 80px rgba(16, 185, 129, 0.6),
-                    0 6px 12px rgba(0, 0, 0, 0.9),
-                    0 3px 6px rgba(0, 0, 0, 0.8);
-            }
-        }
-        
-        .hero-film-wrapper:hover .hero-film-text {
-            transform: translate(-50%, -50%) scale(1.1);
-            transition: transform 0.3s ease;
         }
         
         /* Frame numbers */
@@ -1425,39 +1260,29 @@
             width: 130px;
             min-width: 130px;
             max-width: 130px;
-            /* Fix GPU rendering artifacts */
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
         }
         
         .hero-card-container:hover > div:first-child {
-            transform: scale(1.15) translateY(-8px) translateZ(0) !important;
+            transform: scale(1.08) translateZ(0) !important;
             z-index: 10;
         }
         
         /* Hero Card Label - Appears below on hover */
         .hero-card-label {
             font-family: 'Crimson Pro', serif;
-            font-size: 1.25rem;
-            font-weight: 700;
+            font-size: 1.125rem;
+            font-weight: 600;
             color: white;
             text-align: center;
             opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-shadow: 
-                0 0 20px rgba(16, 185, 129, 0.8),
-                0 0 40px rgba(16, 185, 129, 0.6),
-                0 2px 4px rgba(0, 0, 0, 0.9);
+            transition: opacity 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             white-space: nowrap;
             pointer-events: none;
         }
         
         .hero-card-container:hover .hero-card-label {
             opacity: 1;
-            transform: translateY(0);
         }
         
         /* Enhanced hover for all card wrappers */
@@ -1466,24 +1291,9 @@
         .hero-notice-wrapper,
         .hero-ticket-wrapper,
         .hero-film-wrapper {
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
-            /* Fix GPU rendering artifacts */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
-            will-change: transform, filter;
-        }
-        
-        .hero-card-container:hover .hero-paper-wrapper,
-        .hero-card-container:hover .hero-magazine-wrapper,
-        .hero-card-container:hover .hero-notice-wrapper,
-        .hero-card-container:hover .hero-ticket-wrapper,
-        .hero-card-container:hover .hero-film-wrapper,
-        .hero-card-container:hover .hero-polaroid-wrapper {
-            filter: drop-shadow(0 20px 40px rgba(16, 185, 129, 0.4)) 
-                    drop-shadow(0 0 30px rgba(16, 185, 129, 0.3));
         }
         
         /* New Users - Mini Polaroid */
@@ -1491,14 +1301,9 @@
             display: block;
             width: 130px;
             position: relative;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
-            /* Fix GPU rendering artifacts */
+            transition: transform 0.3s ease;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
-            will-change: transform, filter;
         }
         
         .hero-polaroid-tape {
@@ -1522,10 +1327,7 @@
             );
             padding: 0.5rem 0.5rem 0.75rem 0.5rem;
             border-radius: 4px;
-            box-shadow: 
-                0 4px 8px rgba(0, 0, 0, 0.15),
-                0 8px 16px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
         .hero-polaroid-photo {
