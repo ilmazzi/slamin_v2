@@ -24,7 +24,9 @@ class NewMessageNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database', 'broadcast'];
+        // Only broadcast, don't save to database
+        // Chat messages are shown only in the chat widget badge
+        return ['broadcast'];
     }
 
     public function toArray(object $notifiable): array
