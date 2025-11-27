@@ -179,13 +179,30 @@
                 </div>
                 
                 <!-- Legend -->
-                <div class="absolute bottom-4 left-4 z-[1000] bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-amber-200/40 dark:border-amber-800/30">
-                    <h4 class="text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-2 uppercase tracking-wider">{{ __('events.legend') }}</h4>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach(['poetry_slam' => '#DC2626', 'workshop' => '#D97706', 'open_mic' => '#B45309', 'reading' => '#7C2D12', 'other' => '#78716C'] as $cat => $color)
+                <div class="absolute bottom-4 left-4 z-[1000] bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-amber-200/40 dark:border-amber-800/30 max-w-xs">
+                    <h4 class="text-xs font-bold text-neutral-700 dark:text-neutral-300 mb-3 uppercase tracking-wider">{{ __('events.legend') }}</h4>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-2">
+                        @php
+                            $eventCategories = [
+                                'poetry_slam' => '#DC2626',
+                                'workshop' => '#2563EB',
+                                'open_mic' => '#16A34A',
+                                'reading' => '#9333EA',
+                                'festival' => '#EA580C',
+                                'concert' => '#DB2777',
+                                'book_presentation' => '#0891B2',
+                                'conference' => '#65A30D',
+                                'contest' => '#C026D3',
+                                'poetry_art' => '#0D9488',
+                                'residency' => '#CA8A04',
+                                'spoken_word' => '#7C3AED',
+                                'other' => '#64748B'
+                            ];
+                        @endphp
+                        @foreach($eventCategories as $cat => $color)
                         <div class="flex items-center gap-1.5">
-                            <div class="w-3 h-3 rounded-full" style="background-color: {{ $color }}"></div>
-                            <span class="text-xs text-neutral-600 dark:text-neutral-400">{{ ucfirst(str_replace('_', ' ', $cat)) }}</span>
+                            <div class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: {{ $color }}"></div>
+                            <span class="text-xs text-neutral-600 dark:text-neutral-400 truncate">{{ __('events.category_' . $cat) }}</span>
                         </div>
                         @endforeach
                     </div>

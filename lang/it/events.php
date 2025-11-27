@@ -28,6 +28,21 @@ return [
     'event_details' => 'Dettagli Evento',
     'venue' => 'Sede',
     
+    // Event Categories
+    'category_poetry_slam' => 'Poetry Slam',
+    'category_workshop' => 'Workshop',
+    'category_open_mic' => 'Open Mic',
+    'category_reading' => 'Lettura',
+    'category_festival' => 'Festival',
+    'category_concert' => 'Concerto',
+    'category_book_presentation' => 'Presentazione Libro',
+    'category_conference' => 'Conferenza',
+    'category_contest' => 'Contest',
+    'category_poetry_art' => 'Arte Poetica',
+    'category_residency' => 'Residenza',
+    'category_spoken_word' => 'Spoken Word',
+    'category_other' => 'Altro',
+    
     // Actions
     'create_event' => 'Crea Evento',
     'view' => 'Visualizza',

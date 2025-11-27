@@ -28,6 +28,21 @@ return [
     'event_details' => 'Event Details',
     'venue' => 'Venue',
     
+    // Event Categories
+    'category_poetry_slam' => 'Poetry Slam',
+    'category_workshop' => 'Workshop',
+    'category_open_mic' => 'Open Mic',
+    'category_reading' => 'Reading',
+    'category_festival' => 'Festival',
+    'category_concert' => 'Concert',
+    'category_book_presentation' => 'Book Presentation',
+    'category_conference' => 'Conference',
+    'category_contest' => 'Contest',
+    'category_poetry_art' => 'Poetry Art',
+    'category_residency' => 'Residency',
+    'category_spoken_word' => 'Spoken Word',
+    'category_other' => 'Other',
+    
     // Actions
     'create_event' => 'Create Event',
     'view' => 'View',

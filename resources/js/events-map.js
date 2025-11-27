@@ -11,15 +11,21 @@ window.map = null;
 let currentTileLayer = null;
 let currentStyle = 'voyager';
 
-// Category colors matching legend - muted colors
+// Category colors matching legend - distinct colors
 const categoryColors = {
-    'poetry_slam': '#DC2626',      // Red (muted)
-    'workshop': '#D97706',         // Amber (muted)
-    'open_mic': '#B45309',         // Amber darker (instead of green)
-    'reading': '#7C2D12',          // Red darker
-    'festival': '#92400E',         // Amber darker
-    'concert': '#991B1B',          // Red darker
-    'book_presentation': '#78716C' // Neutral gray
+    'poetry_slam': '#DC2626',       // Red
+    'workshop': '#2563EB',          // Blue
+    'open_mic': '#16A34A',          // Green
+    'reading': '#9333EA',           // Purple
+    'festival': '#EA580C',          // Orange
+    'concert': '#DB2777',           // Pink
+    'book_presentation': '#0891B2', // Cyan
+    'conference': '#65A30D',        // Lime
+    'contest': '#C026D3',           // Fuchsia
+    'poetry_art': '#0D9488',        // Teal
+    'residency': '#CA8A04',         // Yellow
+    'spoken_word': '#7C3AED',       // Violet
+    'other': '#64748B'              // Slate
 };
 
 // Tile layers configuration
