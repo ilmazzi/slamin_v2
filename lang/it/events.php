@@ -169,10 +169,21 @@ return [
         // Settings
         'max_participants' => 'Numero massimo partecipanti',
         'registration_deadline' => 'Scadenza registrazioni',
+        'registration_deadline_description' => 'Imposta una data limite per le registrazioni',
         'job_positions' => 'Posizioni lavorative',
+        'add_gigs' => 'Aggiungi ingaggi',
+        'add_gigs_description' => 'Crea posizioni lavorative per le figure professionali di cui hai bisogno',
         'invite_participants' => 'Invita partecipanti (performer/organizer)',
+        'invite_participants_title' => 'Invita partecipanti',
+        'invite_participants_description' => 'Cerca e invita le persone che daranno vita all\'evento (artiste/i, organizzatrici/organizzatori, supporto tecnico, ecc...)',
         'invite_audience' => 'Invita pubblico',
+        'invite_audience_description' => 'Invita persone ad assistere all\'evento',
         'search_users' => 'Cerca utenze...',
+        'capacity_limit' => 'Limite capienza',
+        'capacity_limit_description' => 'Imposta un numero massimo di persone tra il pubblico',
+        'max_audience_placeholder' => 'Numero massimo di persone tra il pubblico',
+        'publish_status_title' => 'Stato pubblicazione',
+        'publish_status_description' => 'Scegli se pubblicare l\'evento immediatamente o salvarlo come bozza',
         
         // Preview
         'unlimited' => 'Illimitati',
