@@ -89,6 +89,7 @@ class EventEdit extends Component
     public $is_festival_event = false;
     public $festival_id = '';
     public $selected_festival_events = [];
+    public $festivalEventSearch = '';
 
     // Gig Positions
     public $gig_positions = [];
@@ -535,6 +536,26 @@ class EventEdit extends Component
         ]);
         
         return implode(', ', $addressParts);
+    }
+
+    public function getFilteredFestivalEventsProperty()
+    {
+        $query = Event::where('category', '!=', 'festival')
+            ->where('status', 'published')
+            ->where('id', '!=', $this->event->id) // Exclude current event
+            ->where(function($q) {
+                $q->whereNull('start_datetime')
+                  ->orWhere('start_datetime', '>=', now());
+            });
+
+        if (strlen($this->festivalEventSearch) >= 2) {
+            $query->where(function($q) {
+                $q->where('title', 'like', '%' . $this->festivalEventSearch . '%')
+                  ->orWhere('city', 'like', '%' . $this->festivalEventSearch . '%');
+            });
+        }
+
+        return $query->orderBy('start_datetime', 'asc')->get();
     }
 
     // Load a recent venue from select dropdown

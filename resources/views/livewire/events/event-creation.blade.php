@@ -989,10 +989,29 @@
                                     
                                     {{-- Festival Events Selector --}}
                                     <div class="space-y-4">
+                                        {{-- Search Bar --}}
                                         <div>
-                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">Eventi Disponibili</label>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Cerca Eventi</label>
+                                            <div class="relative">
+                                                <input type="text" 
+                                                       wire:model.live.debounce.300ms="festivalEventSearch"
+                                                       placeholder="Cerca per titolo o città..."
+                                                       class="w-full px-4 py-3 pl-11 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
+                                                              focus:border-amber-500 dark:focus:border-amber-400 focus:ring-4 focus:ring-amber-500/10
+                                                              transition-all duration-300">
+                                                <svg class="w-5 h-5 absolute left-3 top-3.5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
+                                                Eventi Disponibili
+                                                <span class="text-xs text-neutral-500">(solo eventi futuri)</span>
+                                            </label>
                                             <div class="max-h-64 overflow-y-auto space-y-2 bg-white dark:bg-neutral-900 rounded-xl p-4 border border-neutral-200 dark:border-neutral-700">
-                                                @foreach(\App\Models\Event::where('category', '!=', 'festival')->where('status', 'published')->get() as $availableEvent)
+                                                @forelse($this->filteredFestivalEvents as $availableEvent)
                                                     <label class="flex items-center gap-3 p-3 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-800 cursor-pointer transition-colors">
                                                         <input type="checkbox" 
                                                                wire:model="selected_festival_events" 
@@ -1006,7 +1025,15 @@
                                                             </div>
                                                         </div>
                                                     </label>
-                                                @endforeach
+                                                @empty
+                                                    <div class="text-center py-8 text-neutral-500 dark:text-neutral-400">
+                                                        <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                                        </svg>
+                                                        <p class="font-medium">Nessun evento trovato</p>
+                                                        <p class="text-sm mt-1">Prova a modificare i termini di ricerca</p>
+                                                    </div>
+                                                @endforelse
                                             </div>
                                             @if(count($selected_festival_events) > 0)
                                                 <div class="mt-3 text-sm text-amber-700 dark:text-amber-300 font-semibold">
@@ -1059,7 +1086,7 @@
                                         <svg class="w-5 h-5 absolute left-3 top-3.5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                                         </svg>
-                                    </div>
+                                </div>
 
                                     {{-- Search Results --}}
                                     @if(strlen($userSearchQuery) >= 2 && count($searchResults) > 0)
@@ -1071,7 +1098,7 @@
                                                         @if($result['nickname'])
                                                             <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ $result['nickname'] }}</div>
                                                         @endif
-                                                    </div>
+                                            </div>
                                                     <div class="flex gap-2">
                                                         <button type="button" wire:click="addInvitation({{ $result['id'] }}, 'performer')" 
                                                                 class="px-3 py-1 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm">
@@ -1081,10 +1108,10 @@
                                                                 class="px-3 py-1 bg-accent-600 hover:bg-accent-700 text-white rounded-lg text-sm">
                                                             Organizer
                                                         </button>
-                                                    </div>
-                                                </div>
-                                            @endforeach
                                         </div>
+                                    </div>
+                                            @endforeach
+                                            </div>
                                     @endif
 
                                     {{-- Invited List --}}
@@ -1103,7 +1130,7 @@
                                                                 class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
                                                             Rimuovi
                                                         </button>
-                                                    </div>
+                                            </div>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -1257,29 +1284,29 @@
                                 {{-- 3. Registration Deadline --}}
                                 <div class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700">
                                     <div class="flex items-center justify-between mb-4">
-                                        <div>
+                                                    <div>
                                             <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-2">{{ __('events.create.registration_deadline') }}</h3>
                                             <p class="text-sm text-neutral-600 dark:text-neutral-400">{{ __('events.create.registration_deadline_description') }}</p>
-                                        </div>
+                                                    </div>
                                         <div class="flex items-center gap-3">
                                             <div class="w-12 h-7 rounded-full relative transition-all duration-300 cursor-pointer
                                                         {{ $has_registration_deadline ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}"
                                                  wire:click="$toggle('has_registration_deadline')">
                                                 <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
                                                             {{ $has_registration_deadline ? 'left-6' : 'left-1' }}"></div>
-                                            </div>
+                                                    </div>
+                                                </div>
                                         </div>
-                                    </div>
                                     @if($has_registration_deadline)
                                         <div class="grid grid-cols-2 gap-4 mt-4">
                                             <div>
                                                 <input type="date" wire:model="registration_deadline_date" 
                                                        class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
-                                            </div>
+                                                    </div>
                                             <div>
                                                 <input type="time" wire:model="registration_deadline_time" 
                                                        class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
-                                            </div>
+                                                </div>
                                         </div>
                                     @endif
                                 </div>
