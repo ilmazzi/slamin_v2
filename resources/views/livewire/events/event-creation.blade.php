@@ -1235,7 +1235,7 @@
                                                     <div class="mt-3 p-4 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
                                                         <label class="flex items-center gap-2 cursor-pointer mb-3">
                                                             <input type="checkbox" wire:model.live="gig_positions.{{ $index }}.has_travel" class="w-5 h-5 text-primary-600 rounded">
-                                                            <span class="font-semibold text-neutral-900 dark:text-white">Spese di Viaggio</span>
+                                                            <span class="font-semibold text-neutral-900 dark:text-white">{{ __('events.create.travel_expenses') }}</span>
                                                         </label>
                                                         @if(isset($position['has_travel']) && $position['has_travel'])
                                                             <div class="grid grid-cols-2 gap-3">
@@ -1259,7 +1259,7 @@
                                                     <div class="mt-3 p-4 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
                                                         <label class="flex items-center gap-2 cursor-pointer mb-3">
                                                             <input type="checkbox" wire:model.live="gig_positions.{{ $index }}.has_accommodation" class="w-5 h-5 text-primary-600 rounded">
-                                                            <span class="font-semibold text-neutral-900 dark:text-white">Vitto e Alloggio</span>
+                                                            <span class="font-semibold text-neutral-900 dark:text-white">{{ __('events.create.accommodation') }}</span>
                                                         </label>
                                                         @if(isset($position['has_accommodation']) && $position['has_accommodation'])
                                                             <textarea wire:model="gig_positions.{{ $index }}.accommodation_details" rows="2" placeholder="Dettagli alloggio..." 

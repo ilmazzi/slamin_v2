@@ -188,6 +188,10 @@ return [
         // Preview
         'unlimited' => 'Illimitati',
         'all_set' => 'Tutto pronto!',
+        
+        // Gig benefits
+        'travel_expenses' => 'Spese di viaggio',
+        'accommodation' => 'Vitto e alloggio',
     ],
     
     // Scoring

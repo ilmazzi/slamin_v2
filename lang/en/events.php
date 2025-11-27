@@ -87,6 +87,10 @@ return [
         'publish_status_description' => 'Choose whether to publish the event immediately or save it as a draft',
         'unlimited' => 'Unlimited',
         'all_set' => 'All set!',
+        
+        // Gig benefits
+        'travel_expenses' => 'Travel expenses',
+        'accommodation' => 'Food and accommodation',
     ],
     
     // Actions
