@@ -9,7 +9,7 @@
                          alt="{{ config('app.name') }}" 
                          class="h-10 w-auto group-hover:scale-105 transition-transform dark:hidden">
                     <!-- Logo bianco su nero per dark mode -->
-                    <img src="{{ asset('assets/images/Logo_orizzontale_biancosunero.png') }}" 
+                    <img src="{{ asset('assets/images/Logo_orizzontale_bianco.png') }}" 
                          alt="{{ config('app.name') }}" 
                          class="h-10 w-auto group-hover:scale-105 transition-transform hidden dark:block">
                 </a>
