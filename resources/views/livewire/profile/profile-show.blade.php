@@ -444,23 +444,23 @@ document.addEventListener('livewire:init', () => {
         });
     }
 
-    // Horizontal scroll with mouse wheel (only when hovering the container)
+    // Horizontal scroll with mouse wheel (only when scrolling horizontally or holding Shift)
     document.querySelectorAll('.horizontal-scroll-container').forEach(container => {
-        let isHovering = false;
-        
-        container.addEventListener('mouseenter', () => {
-            isHovering = true;
-        });
-        
-        container.addEventListener('mouseleave', () => {
-            isHovering = false;
-        });
-        
         container.addEventListener('wheel', (e) => {
-            if (isHovering && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+            const isShiftPressed = e.shiftKey;
+            const canScrollHorizontally = container.scrollWidth > container.clientWidth;
+            
+            // Solo converti in scroll orizzontale se:
+            // 1. Si scrolla orizzontalmente (deltaX > deltaY) O si tiene premuto Shift
+            // 2. E il container può ancora scrollare orizzontalmente
+            // 3. Altrimenti, lascia che lo scroll verticale normale continui
+            if ((isHorizontalScroll || isShiftPressed) && canScrollHorizontally) {
                 e.preventDefault();
-                container.scrollLeft += e.deltaY;
+                container.scrollLeft += e.deltaX || e.deltaY;
             }
+            // Se non si scrolla orizzontalmente e non si tiene Shift, non fare nulla
+            // così lo scroll verticale normale può continuare
         }, { passive: false });
     });
 });
