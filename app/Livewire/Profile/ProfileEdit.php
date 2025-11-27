@@ -273,6 +273,18 @@ class ProfileEdit extends Component
 
             $this->user->update($data);
             
+            // Debug: log dei dati salvati
+            \Log::info('Profile updated', [
+                'user_id' => $this->user->id,
+                'website' => $this->user->website,
+                'phone' => $this->user->phone,
+                'birth_date' => $this->user->birth_date,
+                'bio' => $this->user->bio,
+                'show_email' => $this->user->show_email,
+                'show_phone' => $this->user->show_phone,
+                'show_birth_date' => $this->user->show_birth_date,
+            ]);
+            
             session()->flash('success', __('profile.updated_successfully'));
             
             $this->user->refresh();
