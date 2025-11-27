@@ -6,9 +6,9 @@
             profileOpen: false,
             langOpen: false
         }">
-    <div class="flex items-center justify-between h-16 px-4 lg:px-6">
+    <div class="flex items-center justify-between h-16 px-3 lg:px-6">
         <!-- Left Side -->
-        <div class="flex items-center gap-4 flex-1">
+        <div class="flex items-center gap-2 md:gap-4 flex-1">
             <!-- Sidebar Toggle (Mobile Only) -->
             <button @click="$dispatch('toggle-sidebar')" 
                     class="lg:hidden p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors">
@@ -19,14 +19,14 @@
 
             <!-- Logo (Responsive: piccolo su mobile, orizzontale su desktop) -->
             <a href="{{ route('home') }}" class="flex items-center">
-                <!-- Logo piccolo mobile - Light mode -->
+                <!-- Logo piccolo mobile - Light mode (più grande) -->
                 <img src="{{ asset('assets/images/loghino-biancosunero.png') }}" 
                      alt="{{ config('app.name') }}" 
-                     class="h-10 w-10 md:hidden dark:hidden object-contain">
-                <!-- Logo piccolo mobile - Dark mode -->
+                     class="h-12 w-auto md:hidden dark:hidden object-contain">
+                <!-- Logo piccolo mobile - Dark mode (più grande) -->
                 <img src="{{ asset('assets/images/loghino-nerosubianco.png') }}" 
                      alt="{{ config('app.name') }}" 
-                     class="h-10 w-10 hidden dark:block md:dark:hidden object-contain">
+                     class="h-12 w-auto hidden dark:block md:dark:hidden object-contain">
                 <!-- Logo orizzontale desktop - Light mode -->
                 <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
                      alt="{{ config('app.name') }}" 
@@ -53,10 +53,10 @@
         </div>
 
         <!-- Right Side - Utilities -->
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1">
             <!-- Search Mobile -->
-            <a href="{{ route('search') }}" class="md:hidden p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg">
-                <svg class="w-5 h-5 text-neutral-700 dark:!text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="{{ route('search') }}" class="md:hidden p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors">
+                <svg class="w-6 h-6 text-neutral-700 dark:!text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
             </a>
@@ -66,7 +66,7 @@
             <a href="{{ route('dashboard.index') }}" 
                class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors relative"
                title="Dashboard">
-                <svg class="w-5 h-5 text-neutral-700 dark:!text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-neutral-700 dark:!text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"/>
                 </svg>
             </a>
@@ -75,7 +75,7 @@
             <div class="relative" @click.away="shortcutsOpen = false">
                 <button @click="shortcutsOpen = !shortcutsOpen"
                         class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors relative">
-                    <svg class="w-5 h-5 text-neutral-700 dark:!text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-neutral-700 dark:!text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                 </button>
@@ -133,7 +133,7 @@
             <!-- Language Selector -->
             <div class="relative" @click.away="langOpen = false">
                 <button @click="langOpen = !langOpen"
-                        class="hidden md:flex items-center gap-2 p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors">
+                        class="flex items-center gap-1 p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors">
                     <span class="text-sm font-medium text-neutral-700 dark:!text-white uppercase">{{ strtoupper(app()->getLocale()) }}</span>
                     <svg class="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -170,11 +170,11 @@
             <button class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors"
                     @click="window.toggleDarkMode()">
                 <!-- Sun icon - shown in dark mode -->
-                <svg class="w-5 h-5 text-neutral-700 dark:!text-white hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-neutral-700 dark:!text-white hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
                 <!-- Moon icon - shown in light mode -->
-                <svg class="w-5 h-5 text-neutral-700 dark:!text-white dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-neutral-700 dark:!text-white dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
                 </svg>
             </button>
@@ -186,7 +186,7 @@
                         class="flex items-center gap-2 p-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors">
                     <img src="{{ auth()->user()->profile_photo_url }}" 
                          alt="{{ auth()->user()->name }}" 
-                         class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-200">
+                         class="w-9 h-9 rounded-full object-cover ring-2 ring-primary-200">
                     <span class="hidden lg:block text-sm font-medium text-neutral-700 dark:!text-white max-w-[120px] truncate">
                         {{ auth()->user()->name }}
                     </span>
