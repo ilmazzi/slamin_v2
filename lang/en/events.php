@@ -171,5 +171,15 @@ return [
         'recent_venues' => 'Recent Venues',
         'select_from_recent_venues' => 'Select from recent venues...',
     ],
+    
+    // Invitations
+    'invitation' => [
+        'notification_title' => 'Event Invitation',
+        'notification_message' => ':inviter invited you as :role to the event ":event"',
+        'role_performer' => 'performer',
+        'role_organizer' => 'organizer',
+        'role_audience' => 'audience',
+        'role_participant' => 'participant',
+    ],
 ];
 
