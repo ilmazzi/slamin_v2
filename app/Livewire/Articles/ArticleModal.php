@@ -12,6 +12,13 @@ class ArticleModal extends Component
     public $article = null;
     public $articleId = null;
     
+    public function mount($articleId = null)
+    {
+        if ($articleId) {
+            $this->openModal($articleId);
+        }
+    }
+    
     #[On('openArticleModal')]
     public function openModal($articleId)
     {

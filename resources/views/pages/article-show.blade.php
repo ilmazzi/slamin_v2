@@ -1,17 +1,6 @@
 <x-layouts.app>
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Open the article modal automatically when page loads
-            @if($article)
-                Livewire.dispatch('openArticleModal', {{ $article->id }});
-            @endif
-        });
-    </script>
-    @endpush
-
-    {{-- Article Modal Component --}}
-    <livewire:articles.article-modal />
+    {{-- Article Modal Component - Pass article ID to auto-open --}}
+    <livewire:articles.article-modal :articleId="$article->id ?? null" />
 
     {{-- Fallback content (shown while modal loads) --}}
     <div class="min-h-screen bg-neutral-50 dark:bg-neutral-900 py-12">
