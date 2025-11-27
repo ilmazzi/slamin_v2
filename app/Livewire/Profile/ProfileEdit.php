@@ -156,10 +156,41 @@ class ProfileEdit extends Component
         return $url;
     }
 
+    // Livewire lifecycle hooks - normalizza gli URL quando vengono aggiornati
+    public function updatedWebsite($value)
+    {
+        $this->website = $this->normalizeUrl($value);
+    }
+
+    public function updatedSocialFacebook($value)
+    {
+        $this->social_facebook = $this->normalizeUrl($value);
+    }
+
+    public function updatedSocialInstagram($value)
+    {
+        $this->social_instagram = $this->normalizeUrl($value);
+    }
+
+    public function updatedSocialTwitter($value)
+    {
+        $this->social_twitter = $this->normalizeUrl($value);
+    }
+
+    public function updatedSocialYoutube($value)
+    {
+        $this->social_youtube = $this->normalizeUrl($value);
+    }
+
+    public function updatedSocialLinkedin($value)
+    {
+        $this->social_linkedin = $this->normalizeUrl($value);
+    }
+
     public function save()
     {
         try {
-            // Normalizza gli URL prima della validazione
+            // Normalizza gli URL prima della validazione (doppia sicurezza)
             $this->website = $this->normalizeUrl($this->website);
             $this->social_facebook = $this->normalizeUrl($this->social_facebook);
             $this->social_instagram = $this->normalizeUrl($this->social_instagram);

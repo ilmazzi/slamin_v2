@@ -213,9 +213,9 @@
                         <label for="website" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
                             {{ __('profile.edit.website') }}
                         </label>
-                        <input type="url" 
+                        <input type="text" 
                                id="website"
-                               wire:model="website" 
+                               wire:model.blur="website" 
                                placeholder="www.example.com"
                                class="w-full px-4 py-2 border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-neutral-900 dark:text-white">
                         @error('website') 
@@ -250,10 +250,10 @@
                         <label for="social_facebook" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
                             Facebook
                         </label>
-                        <input type="url" 
+                        <input type="text" 
                                id="social_facebook"
-                               wire:model="social_facebook" 
-                               placeholder="https://facebook.com/username"
+                               wire:model.blur="social_facebook" 
+                               placeholder="facebook.com/username"
                                class="w-full px-4 py-2 border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-neutral-900 dark:text-white">
                         @error('social_facebook') 
                             <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> 
@@ -264,10 +264,10 @@
                         <label for="social_instagram" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
                             Instagram
                         </label>
-                        <input type="url" 
+                        <input type="text" 
                                id="social_instagram"
-                               wire:model="social_instagram" 
-                               placeholder="https://instagram.com/username"
+                               wire:model.blur="social_instagram" 
+                               placeholder="instagram.com/username"
                                class="w-full px-4 py-2 border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-neutral-900 dark:text-white">
                         @error('social_instagram') 
                             <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> 
@@ -278,10 +278,10 @@
                         <label for="social_twitter" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
                             Twitter
                         </label>
-                        <input type="url" 
+                        <input type="text" 
                                id="social_twitter"
-                               wire:model="social_twitter" 
-                               placeholder="https://twitter.com/username"
+                               wire:model.blur="social_twitter" 
+                               placeholder="twitter.com/username"
                                class="w-full px-4 py-2 border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-neutral-900 dark:text-white">
                         @error('social_twitter') 
                             <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> 
@@ -292,10 +292,10 @@
                         <label for="social_youtube" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
                             YouTube
                         </label>
-                        <input type="url" 
+                        <input type="text" 
                                id="social_youtube"
-                               wire:model="social_youtube" 
-                               placeholder="https://youtube.com/channel/..."
+                               wire:model.blur="social_youtube" 
+                               placeholder="youtube.com/channel/..."
                                class="w-full px-4 py-2 border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-neutral-900 dark:text-white">
                         @error('social_youtube') 
                             <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> 
@@ -306,10 +306,10 @@
                         <label for="social_linkedin" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
                             LinkedIn
                         </label>
-                        <input type="url" 
+                        <input type="text" 
                                id="social_linkedin"
-                               wire:model="social_linkedin" 
-                               placeholder="https://linkedin.com/in/username"
+                               wire:model.blur="social_linkedin" 
+                               placeholder="linkedin.com/in/username"
                                class="w-full px-4 py-2 border-2 border-neutral-300 dark:border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-neutral-900 dark:text-white">
                         @error('social_linkedin') 
                             <p class="mt-1 text-xs text-red-600 dark:text-red-400">{{ $message }}</p> 
