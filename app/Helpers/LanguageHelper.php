@@ -56,5 +56,71 @@ class LanguageHelper
     public static function clearLocalesCache(): void
     {
         cache()->forget('available_locales');
+        cache()->forget('available_languages');
+    }
+
+    /**
+     * Get all available languages with full information
+     */
+    public static function getAvailableLanguages(): array
+    {
+        return cache()->remember('available_languages', 3600, function () {
+            $languages = [];
+            $langPath = lang_path();
+
+            foreach (glob($langPath . '/*', GLOB_ONLYDIR) as $dir) {
+                $locale = basename($dir);
+                $languages[$locale] = [
+                    'code' => $locale,
+                    'name' => self::getLanguageName($locale),
+                    'flag' => self::getLanguageFlag($locale),
+                ];
+            }
+
+            // Sort by name for consistent display
+            uasort($languages, fn($a, $b) => strcmp($a['name'], $b['name']));
+            
+            return $languages;
+        });
+    }
+
+    /**
+     * Get language name from locale code
+     */
+    public static function getLanguageName(string $locale): string
+    {
+        return match ($locale) {
+            'en' => 'English',
+            'it' => 'Italiano',
+            'fr' => 'Français',
+            'de' => 'Deutsch',
+            'es' => 'Español',
+            'pt' => 'Português',
+            'ru' => 'Русский',
+            'zh' => '中文',
+            'ja' => '日本語',
+            'ar' => 'العربية',
+            default => ucfirst($locale),
+        };
+    }
+
+    /**
+     * Get language flag emoji from locale code
+     */
+    public static function getLanguageFlag(string $locale): string
+    {
+        return match ($locale) {
+            'en' => '🇬🇧',
+            'it' => '🇮🇹',
+            'fr' => '🇫🇷',
+            'de' => '🇩🇪',
+            'es' => '🇪🇸',
+            'pt' => '🇵🇹',
+            'ru' => '🇷🇺',
+            'zh' => '🇨🇳',
+            'ja' => '🇯🇵',
+            'ar' => '🇸🇦',
+            default => '🌐',
+        };
     }
 }
