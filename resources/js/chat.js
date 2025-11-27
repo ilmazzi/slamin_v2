@@ -229,8 +229,16 @@ function showEmojiPicker(button) {
     }
     
     const picker = document.createElement('div');
-    picker.className = 'emoji-picker absolute bottom-full mb-2 bg-white dark:bg-neutral-800 rounded-lg shadow-xl p-2 grid grid-cols-6 gap-2 z-50';
-    picker.style.left = button.offsetLeft + 'px';
+    picker.className = 'emoji-picker';
+    picker.style.position = 'absolute';
+    picker.style.bottom = '100%';
+    picker.style.marginBottom = '0.5rem';
+    picker.style.backgroundColor = window.matchMedia('(prefers-color-scheme: dark)').matches ? '#262626' : '#ffffff';
+    picker.style.borderRadius = '0.5rem';
+    picker.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
+    picker.style.zIndex = '9999';
+    picker.style.left = '0';
+    picker.style.right = 'auto';
     
     emojis.forEach(emoji => {
         const btn = document.createElement('button');
@@ -266,8 +274,17 @@ function showEmojiPicker(button) {
         picker.appendChild(btn);
     });
     
-    button.parentElement.style.position = 'relative';
-    button.parentElement.appendChild(picker);
+    // Ensure parent has relative positioning
+    const parent = button.closest('.chat-input-actions') || button.parentElement;
+    if (parent) {
+        parent.style.position = 'relative';
+        parent.appendChild(picker);
+        
+        // Adjust position to align with button
+        const buttonRect = button.getBoundingClientRect();
+        const parentRect = parent.getBoundingClientRect();
+        picker.style.left = (buttonRect.left - parentRect.left) + 'px';
+    }
     
     // Close on click outside
     setTimeout(() => {

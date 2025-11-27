@@ -17,16 +17,32 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }
 
+/* Emoji Picker Container */
+.emoji-picker {
+    display: grid !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem !important;
+    width: auto !important;
+    min-width: 200px !important;
+    position: absolute !important;
+}
+
 .emoji-picker button,
 .emoji-mart button,
 [class*="emoji"] button {
-    min-width: 32px !important;
-    min-height: 32px !important;
-    padding: 4px !important;
-    margin: 2px !important;
-    display: inline-flex !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 0.5rem !important;
+    margin: 0 !important;
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    font-size: 1.5rem !important;
+    line-height: 1 !important;
+    border: none !important;
+    background: transparent !important;
+    cursor: pointer !important;
 }
 
 /* Variables */
