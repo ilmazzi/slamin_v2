@@ -20,7 +20,8 @@ export default defineConfig({
                 'resources/css/forum.css',
                 'resources/js/forum.js',
                 'resources/css/chat.css',
-                'resources/js/chat.js'
+                'resources/js/chat.js',
+                'resources/css/scoring.css'
             ],
             refresh: true,
         }),
