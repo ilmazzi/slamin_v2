@@ -109,7 +109,7 @@
                     </p>
                     <a href="#" 
                        class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-bold shadow-lg hover:-translate-y-0.5 transition-all duration-300 opacity-50 cursor-not-allowed"
-                       title="{{ __('media.premium_coming_soon') ?? 'Funzionalità Premium in arrivo' }}">
+                       title="{{ __('media.premium_coming_soon') }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                         </svg>
@@ -157,11 +157,11 @@
                     <p class="text-lg font-bold text-neutral-900 dark:text-white">
                         @if($user->hasPremiumSubscription())
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-400">
-                                {{ __('premium.premium_package') ?? 'Premium' }}
+                                {{ __('premium.premium_package') }}
                             </span>
                         @else
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-300">
-                                {{ __('premium.free_package') ?? 'Gratuito' }}
+                                {{ __('premium.free_package') }}
                             </span>
                         @endif
                     </p>
@@ -232,7 +232,7 @@
             </a>
             <a href="#" 
                class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-bold shadow-lg hover:-translate-y-0.5 transition-all duration-300 opacity-50 cursor-not-allowed"
-               title="{{ __('media.premium_coming_soon') ?? 'Funzionalità Premium in arrivo' }}">
+               title="{{ __('media.premium_coming_soon') }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
                 </svg>
