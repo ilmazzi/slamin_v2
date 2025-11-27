@@ -214,8 +214,8 @@ function showImageModal(src) {
 const emojis = ['😀', '😂', '😍', '🥰', '😎', '🤔', '👍', '👏', '🎉', '❤️', '🔥', '✨'];
 
 document.addEventListener('click', function(e) {
-    if (e.target.closest('[title="Emoji"]')) {
-        const button = e.target.closest('[title="Emoji"]');
+    if (e.target.closest('[data-emoji-picker]') || e.target.closest('[title="Emoji"]')) {
+        const button = e.target.closest('[data-emoji-picker]') || e.target.closest('[title="Emoji"]');
         showEmojiPicker(button);
     }
 });
@@ -239,8 +239,26 @@ function showEmojiPicker(button) {
         btn.onclick = function() {
             const textarea = document.querySelector('.chat-input-field');
             if (textarea) {
-                textarea.value += emoji;
-                textarea.dispatchEvent(new Event('input'));
+                // Insert emoji at cursor position or append
+                const cursorPos = textarea.selectionStart || textarea.value.length;
+                const textBefore = textarea.value.substring(0, cursorPos);
+                const textAfter = textarea.value.substring(cursorPos);
+                textarea.value = textBefore + emoji + textAfter;
+                
+                // Set cursor position after emoji
+                const newPos = cursorPos + emoji.length;
+                textarea.setSelectionRange(newPos, newPos);
+                
+                // Trigger Livewire update
+                textarea.dispatchEvent(new Event('input', { bubbles: true }));
+                textarea.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                // Also trigger for Livewire wire:model
+                if (window.Livewire) {
+                    const event = new CustomEvent('input', { bubbles: true, detail: { value: textarea.value } });
+                    textarea.dispatchEvent(event);
+                }
+                
                 textarea.focus();
             }
             picker.remove();
