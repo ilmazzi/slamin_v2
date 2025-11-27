@@ -470,8 +470,7 @@ document.addEventListener('livewire:init', () => {
 {{-- Photo Modal Component --}}
 @livewire('media.photo-modal')
 
-</div>
-
+@push('styles')
 <style>
     .profile-info-compact {
         display: flex;
@@ -529,3 +528,6 @@ document.addEventListener('livewire:init', () => {
         }
     }
 </style>
+@endpush
+
+</div>
