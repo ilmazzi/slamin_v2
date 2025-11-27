@@ -148,33 +148,17 @@
 
                     <form wire:submit="save">
                         <div class="space-y-4">
-                            <div class="grid grid-cols-2 gap-4">
-                                {{-- Type --}}
-                                <div>
-                                    <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
-                                        Tipo *
-                                    </label>
-                                    <select wire:model="type" 
-                                            class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium">
-                                        <option value="faq">FAQ</option>
-                                        <option value="help">Help</option>
-                                    </select>
-                                    @error('type') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
-                                </div>
-
-                                {{-- Locale --}}
-                                <div>
-                                    <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
-                                        Lingua *
-                                    </label>
-                                    <select wire:model="locale" 
-                                            class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium">
-                                        @foreach($languages as $code => $language)
-                                            <option value="{{ $code }}">{{ $language['flag'] }} {{ $language['name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('locale') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
-                                </div>
+                            {{-- Type --}}
+                            <div>
+                                <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
+                                    Tipo *
+                                </label>
+                                <select wire:model="type" 
+                                        class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium">
+                                    <option value="faq">FAQ</option>
+                                    <option value="help">Help</option>
+                                </select>
+                                @error('type') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
 
                             {{-- Title --}}

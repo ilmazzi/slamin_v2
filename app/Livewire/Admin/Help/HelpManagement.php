@@ -34,7 +34,6 @@ class HelpManagement extends Component
     {
         return [
             'type' => 'required|in:help,faq',
-            'locale' => 'required|string|max:5',
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'category' => 'nullable|string|max:100',
@@ -114,7 +113,7 @@ class HelpManagement extends Component
             ['id' => $this->editingId],
             [
                 'type' => $this->type,
-                'locale' => $this->locale,
+                'locale' => app()->getLocale(), // Use default app locale
                 'title' => $this->title,
                 'content' => $this->content,
                 'category' => $this->category ?: null,
