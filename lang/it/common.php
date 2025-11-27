@@ -45,6 +45,8 @@ return [
     // Common Phrases
     'welcome' => 'Benvenuto',
     'loading' => 'Caricamento...',
+    'saving' => 'Salvataggio in corso...',
+    'please_wait' => 'Attendere prego',
     'no_results' => 'Nessun risultato trovato',
     'back_to_poems' => 'Torna alle poesie',
     'back_to' => 'Torna a',

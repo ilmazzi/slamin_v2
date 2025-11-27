@@ -1,6 +1,21 @@
 @push('styles')
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <style>
+    /* Fade in animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
     /* Quill Editor - Stile Redazione */
     .ql-container {
         font-family: 'Crimson Pro', Georgia, serif !important;
@@ -24,6 +39,25 @@
 </style>
 @endpush
 
+@push('scripts')
+<script>
+    // Scroll to messages when event is dispatched
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('scroll-to-messages', () => {
+            setTimeout(() => {
+                const container = document.getElementById('flash-messages-container');
+                if (container) {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 100);
+        });
+    });
+</script>
+@endpush
+
 <div class="min-h-screen bg-neutral-50 dark:bg-neutral-900 py-12">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Header --}}
@@ -36,38 +70,62 @@
             </p>
         </div>
 
-        {{-- Flash Messages --}}
-        @if (session()->has('message'))
-            <div x-data="{ show: true }" 
-                 x-show="show"
-                 x-init="setTimeout(() => show = false, 5000)"
-                 class="mb-6 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span class="font-semibold">{{ session('message') }}</span>
-                <button @click="show = false" class="ml-auto hover:bg-white/20 rounded p-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-        @endif
+        {{-- Flash Messages - Fixed at top --}}
+        <div id="flash-messages-container" class="fixed top-20 left-0 right-0 z-50 px-4 pointer-events-none">
+            <div class="max-w-4xl mx-auto">
+                @if (session()->has('message'))
+                    <div x-data="{ show: true }" 
+                         x-show="show"
+                         x-init="setTimeout(() => show = false, 5000); $nextTick(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); })"
+                         class="mb-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 pointer-events-auto animate-fade-in">
+                        <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span class="font-semibold">{{ session('message') }}</span>
+                        <button @click="show = false" class="ml-auto hover:bg-white/20 rounded p-1 flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                @endif
 
-        @if (session()->has('error'))
-            <div x-data="{ show: true }" 
+                @if (session()->has('error'))
+                    <div x-data="{ show: true }" 
+                         x-show="show"
+                         x-init="setTimeout(() => show = false, 8000); $nextTick(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); })"
+                         class="mb-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 pointer-events-auto animate-fade-in">
+                        <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="font-semibold">{{ session('error') }}</span>
+                        <button @click="show = false" class="ml-auto hover:bg-white/20 rounded p-1 flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        {{-- Loading Overlay --}}
+        @if($isSaving)
+            <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center" 
+                 x-data="{ show: true }" 
                  x-show="show"
-                 x-init="setTimeout(() => show = false, 8000)"
-                 class="mb-6 bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3">
-                <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <span class="font-semibold">{{ session('error') }}</span>
-                <button @click="show = false" class="ml-auto hover:bg-white/20 rounded p-1 flex-shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100">
+                <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 max-w-md mx-4 text-center">
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-primary-600 mx-auto mb-4"></div>
+                    <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+                        {{ __('common.saving') }}
+                    </h3>
+                    <p class="text-neutral-600 dark:text-neutral-400">
+                        {{ __('common.please_wait') }}
+                    </p>
+                </div>
             </div>
         @endif
 

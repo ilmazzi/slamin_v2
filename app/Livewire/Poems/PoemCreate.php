@@ -31,6 +31,9 @@ class PoemCreate extends Component
     // Preview
     public bool $showPreview = false;
     
+    // Loading state
+    public bool $isSaving = false;
+    
     public function mount()
     {
         // Check permissions
@@ -78,6 +81,9 @@ class PoemCreate extends Component
     
     public function save($silent = false, $isDraft = false)
     {
+        // Imposta loading state
+        $this->isSaving = true;
+        
         // Imposta isDraft basato sul parametro
         $this->isDraft = $isDraft;
         
@@ -107,6 +113,8 @@ class PoemCreate extends Component
             $errors = $e->validator->errors()->all();
             \Log::error('❌ Validation failed', ['errors' => $errors]);
             session()->flash('error', 'Errore di validazione: ' . implode(' ', $errors));
+            $this->isSaving = false;
+            $this->dispatch('scroll-to-messages');
             return;
         } catch (\Exception $e) {
             \Log::error('❌ Exception during validation', [
@@ -114,6 +122,8 @@ class PoemCreate extends Component
                 'trace' => $e->getTraceAsString()
             ]);
             session()->flash('error', 'Errore: ' . $e->getMessage());
+            $this->isSaving = false;
+            $this->dispatch('scroll-to-messages');
             return;
         }
         
@@ -167,11 +177,14 @@ class PoemCreate extends Component
             'silent' => $silent
         ]);
         
+        $this->isSaving = false;
+        
         if (!$silent) {
             if ($this->isDraft) {
                 \Log::info('📋 Showing draft success message');
                 session()->flash('success', 'Bozza salvata con successo! ID: ' . $poem->id);
                 $this->dispatch('poem-saved', ['id' => $poem->id]);
+                $this->dispatch('scroll-to-messages');
             } else {
                 \Log::info('🎉 Redirecting to poem show page', ['slug' => $poem->slug]);
                 session()->flash('success', 'Poesia pubblicata con successo!');

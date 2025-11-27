@@ -29,6 +29,9 @@ class ArticleCreate extends Component
     
     // Editor
     public $editorContent = '';
+    
+    // Loading state
+    public bool $isSaving = false;
 
     public function mount()
     {
@@ -79,6 +82,8 @@ class ArticleCreate extends Component
     
     public function save()
     {
+        $this->isSaving = true;
+        
         $this->validate();
         
         try {
@@ -127,6 +132,8 @@ class ArticleCreate extends Component
             
             $article->save();
             
+            $this->isSaving = false;
+            
             // Dispatch success message
             session()->flash('message', __('articles.create.created_successfully'));
             
@@ -134,10 +141,14 @@ class ArticleCreate extends Component
             return $this->redirect(route('articles.edit', $article->slug), navigate: true);
             
         } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->isSaving = false;
+            $this->dispatch('scroll-to-messages');
             // Validation errors are automatically handled by Livewire
             throw $e;
         } catch (\Exception $e) {
+            $this->isSaving = false;
             session()->flash('error', __('articles.create.create_error') . ': ' . $e->getMessage());
+            $this->dispatch('scroll-to-messages');
             \Log::error('Article create error', [
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),

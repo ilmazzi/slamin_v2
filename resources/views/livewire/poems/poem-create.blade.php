@@ -1,6 +1,22 @@
 @push('styles')
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <style>
+    /* Fade in animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+    
     /* Quill Editor - Stile Foglio di Carta */
     .ql-container {
         font-family: 'Crimson Pro', Georgia, serif !important;
@@ -216,37 +232,76 @@
                 "{{ __('poems.create.subtitle') }}"
             </p>
             
-            <!-- Success/Error Messages -->
-            @if(session('success'))
-                <div class="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-2xl
-                            bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-base shadow-lg
-                            animate-fade-in-scale">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                    <span class="font-medium">{{ session('success') }}</span>
+            <!-- Success/Error Messages - Fixed at top -->
+            <div id="flash-messages-container" class="fixed top-20 left-0 right-0 z-50 px-4 pointer-events-none">
+                <div class="max-w-4xl mx-auto">
+                    @if(session('success'))
+                        <div x-data="{ show: true }" 
+                             x-show="show"
+                             x-init="setTimeout(() => show = false, 5000); $nextTick(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); })"
+                             class="mb-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 pointer-events-auto animate-fade-in">
+                            <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="font-semibold">{{ session('success') }}</span>
+                            <button @click="show = false" class="ml-auto hover:bg-white/20 rounded p-1 flex-shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                    @endif
+                    
+                    @if(session('error'))
+                        <div x-data="{ show: true }" 
+                             x-show="show"
+                             x-init="setTimeout(() => show = false, 8000); $nextTick(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); })"
+                             class="mb-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 pointer-events-auto animate-fade-in">
+                            <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span class="font-semibold">{{ session('error') }}</span>
+                            <button @click="show = false" class="ml-auto hover:bg-white/20 rounded p-1 flex-shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                    @endif
+                    
+                    @if($errors->any())
+                        <div x-data="{ show: true }" 
+                             x-show="show"
+                             x-init="setTimeout(() => show = false, 8000); $nextTick(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); })"
+                             class="mb-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-2xl pointer-events-auto animate-fade-in">
+                            <p class="font-semibold mb-2">Errori di validazione:</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
-            @endif
-            
-            @if(session('error'))
-                <div class="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-2xl
-                            bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 text-base shadow-lg
-                            animate-fade-in-scale">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                    </svg>
-                    <span class="font-medium">{{ session('error') }}</span>
-                </div>
-            @endif
-            
-            @if($errors->any())
-                <div class="mt-4 px-6 py-4 rounded-2xl bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 shadow-lg">
-                    <p class="font-semibold mb-2">Errori di validazione:</p>
-                    <ul class="list-disc list-inside space-y-1">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+            </div>
+
+            {{-- Loading Overlay --}}
+            @if($isSaving)
+                <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center" 
+                     x-data="{ show: true }" 
+                     x-show="show"
+                     x-transition:enter="ease-out duration-300"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100">
+                    <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl p-8 max-w-md mx-4 text-center">
+                        <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-primary-600 mx-auto mb-4"></div>
+                        <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+                            {{ __('common.saving') }}
+                        </h3>
+                        <p class="text-neutral-600 dark:text-neutral-400">
+                            {{ __('common.please_wait') }}
+                        </p>
+                    </div>
                 </div>
             @endif
             
@@ -690,20 +745,27 @@
             </div>
         @endif
         
-        <!-- Success Message -->
-        @if (session()->has('success'))
-            <div class="fixed bottom-8 right-8 z-50 animate-fade-in">
-                <div class="backdrop-blur-xl bg-green-500/90 text-white px-6 py-4 rounded-2xl shadow-2xl
-                            flex items-center gap-3">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                    <span class="font-poem font-medium">{{ session('success') }}</span>
-                </div>
-            </div>
-        @endif
     </div>
 </div>
+
+@push('scripts')
+<script>
+    // Scroll to messages when event is dispatched
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('scroll-to-messages', () => {
+            setTimeout(() => {
+                const container = document.getElementById('flash-messages-container');
+                if (container) {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 100);
+        });
+    });
+</script>
+@endpush
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
