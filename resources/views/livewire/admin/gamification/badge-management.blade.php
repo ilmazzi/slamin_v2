@@ -297,46 +297,53 @@
                             </div>
 
                             {{-- Translations Section --}}
-                            <div class="md:col-span-2 mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-700" x-data="{ activeTab: '{{ $availableLocales[0] ?? 'it' }}' }">
+                            <div class="md:col-span-2 mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-700" x-data="{ activeTab: 'en' }">
                                 <h4 class="text-md font-semibold text-neutral-900 dark:text-white mb-4">
-                                    {{ __('Traduzioni') }}
+                                    🌍 {{ __('Traduzioni (altre lingue)') }}
                                 </h4>
+                                <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+                                    I campi sopra sono in italiano (lingua predefinita). Qui puoi aggiungere le traduzioni in altre lingue.
+                                </p>
                                 
-                                {{-- Language Tabs --}}
+                                {{-- Language Tabs (exclude Italian) --}}
                                 <div class="flex flex-wrap gap-2 mb-4">
                                     @foreach($availableLocales as $locale)
-                                        @php
-                                            $langInfo = \App\Helpers\LanguageHelper::getLanguageInfo($locale);
-                                        @endphp
-                                        <button type="button"
-                                                @click="activeTab = '{{ $locale }}'"
-                                                :class="activeTab === '{{ $locale }}' ? 'bg-primary-600 text-white' : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300'"
-                                                class="px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:opacity-80 flex items-center gap-2">
-                                            <span>{{ $langInfo['flag'] }}</span>
-                                            <span>{{ $langInfo['name'] }}</span>
-                                        </button>
+                                        @if($locale !== 'it')
+                                            @php
+                                                $langInfo = \App\Helpers\LanguageHelper::getLanguageInfo($locale);
+                                            @endphp
+                                            <button type="button"
+                                                    @click="activeTab = '{{ $locale }}'"
+                                                    :class="activeTab === '{{ $locale }}' ? 'bg-primary-600 text-white' : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300'"
+                                                    class="px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:opacity-80 flex items-center gap-2">
+                                                <span>{{ $langInfo['flag'] }}</span>
+                                                <span>{{ $langInfo['name'] }}</span>
+                                            </button>
+                                        @endif
                                     @endforeach
                                 </div>
                                 
-                                {{-- Translation Fields --}}
+                                {{-- Translation Fields (exclude Italian) --}}
                                 @foreach($availableLocales as $locale)
-                                    <div x-show="activeTab === '{{ $locale }}'" x-cloak class="space-y-3">
-                                        <div>
-                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                                                {{ __('gamification.badge_name') }}
-                                            </label>
-                                            <input type="text" wire:model="translations.{{ $locale }}.name" 
-                                                   class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                                    @if($locale !== 'it')
+                                        <div x-show="activeTab === '{{ $locale }}'" x-cloak class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                                    {{ __('gamification.badge_name') }}
+                                                </label>
+                                                <input type="text" wire:model="translations.{{ $locale }}.name" 
+                                                       class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                                    {{ __('gamification.badge_description') }}
+                                                </label>
+                                                <textarea wire:model="translations.{{ $locale }}.description" 
+                                                          rows="2"
+                                                          class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"></textarea>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                                                {{ __('gamification.badge_description') }}
-                                            </label>
-                                            <textarea wire:model="translations.{{ $locale }}.description" 
-                                                      rows="2"
-                                                      class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"></textarea>
-                                        </div>
-                                    </div>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
