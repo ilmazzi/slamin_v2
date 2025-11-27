@@ -74,7 +74,7 @@
                 </button>
                 <div x-show="shortcutsOpen"
                      x-transition
-                     class="absolute left-0 sm:left-auto sm:right-0 mt-2 w-64 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2">
+                     class="absolute left-0 sm:left-auto sm:right-0 mt-2 w-64 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2 z-[60]">
                     <div class="px-4 py-2 border-b border-neutral-200 dark:border-neutral-700">
                         <p class="font-semibold text-sm text-neutral-900 dark:text-white">{{ __('common.quick_actions') }}</p>
                     </div>
@@ -134,7 +134,7 @@
                 </button>
                 <div x-show="langOpen"
                      x-transition
-                     class="absolute right-0 mt-2 w-40 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2 mr-0 sm:mr-auto">
+                     class="absolute right-0 mt-2 w-40 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2 mr-0 sm:mr-auto z-[60]">
                     <a href="{{ request()->fullUrlWithQuery(['lang' => 'it']) }}" 
                        class="flex items-center gap-3 px-4 py-2 hover:bg-neutral-50 dark:hover:bg-neutral-700 {{ app()->getLocale() === 'it' ? 'bg-primary-50 dark:bg-primary-900/20' : '' }}">
                         <span class="text-sm">🇮🇹 Italiano</span>
@@ -189,7 +189,7 @@
                 </button>
                 <div x-show="profileOpen"
                      x-transition
-                     class="absolute right-0 mt-2 w-56 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2 mr-0">
+                     class="absolute right-0 mt-2 w-56 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 py-2 mr-0 z-[60]">
                     <div class="px-4 py-3 border-b border-neutral-200 dark:border-neutral-700">
                         <p class="font-semibold text-sm text-neutral-900 dark:text-white truncate">{{ auth()->user()->name }}</p>
                         <p class="text-xs text-neutral-500 truncate">{{ auth()->user()->email }}</p>
@@ -230,8 +230,8 @@
         </div>
     </div>
 
-    <!-- Mobile Search Bar (sotto la topbar) -->
-    <div class="md:hidden bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 px-3 py-2">
+    <!-- Mobile Search Bar (sotto la topbar, z-index inferiore) -->
+    <div class="md:hidden bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 px-3 py-2 relative z-40">
         <form action="{{ route('search') }}" method="GET" class="relative w-full">
             <input type="search" 
                    name="q"
