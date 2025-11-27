@@ -5,9 +5,9 @@
             <!-- Brand -->
             <div>
                 <a href="{{ route('home') }}" class="flex items-center mb-4 group">
-                    <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
+                    <img src="{{ asset('assets/images/Logo_orizzontale_biancosunero.png') }}" 
                          alt="{{ config('app.name') }}" 
-                         class="h-10 w-auto group-hover:scale-105 transition-transform brightness-0 invert">
+                         class="h-10 w-auto group-hover:scale-105 transition-transform">
                 </a>
                 <p class="text-sm text-neutral-400 leading-relaxed">
                     {{ __('footer.description') }}
