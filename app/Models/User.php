@@ -955,6 +955,46 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get current photo limit for user
+     */
+    public function getCurrentPhotoLimitAttribute(): int
+    {
+        $subscription = $this->activeSubscription;
+
+        if ($subscription) {
+            // Se ha subscription premium, usa il limite premium
+            return SystemSetting::get('premium_photo_limit', 50);
+        }
+
+        // Limite gratuito dalle impostazioni di sistema
+        return SystemSetting::get('default_photo_limit', 5);
+    }
+
+    /**
+     * Get current photo count for user
+     */
+    public function getCurrentPhotoCountAttribute(): int
+    {
+        return $this->photos()->count();
+    }
+
+    /**
+     * Check if user can upload more photos
+     */
+    public function canUploadMorePhotos(): bool
+    {
+        return $this->current_photo_count < $this->current_photo_limit;
+    }
+
+    /**
+     * Get remaining photo uploads
+     */
+    public function getRemainingPhotoUploadsAttribute(): int
+    {
+        return max(0, $this->current_photo_limit - $this->current_photo_count);
+    }
+
+    /**
      * Check if user has premium subscription
      */
     public function hasPremiumSubscription(): bool

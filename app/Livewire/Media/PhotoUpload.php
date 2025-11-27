@@ -23,7 +23,7 @@ class PhotoUpload extends Component
 
     protected function rules()
     {
-        $maxSize = SystemSetting::get('photo_max_size', 10240); // Default 10MB in KB
+        $maxSize = SystemSetting::get('image_max_size', 10240); // Default 10MB in KB
         
         return [
             'title' => 'nullable|string|max:255',
@@ -40,6 +40,11 @@ class PhotoUpload extends Component
         // Verifica permessi
         if (!$user->canUploadPhoto()) {
             abort(403, __('media.upload_not_allowed'));
+        }
+
+        // Verifica limiti upload
+        if (!$user->canUploadMorePhotos()) {
+            return $this->redirect(route('media.upload-limit'), navigate: false);
         }
     }
 
@@ -60,6 +65,12 @@ class PhotoUpload extends Component
         if (!$this->photo_file) {
             $this->addError('photo_file', __('media.photo_file_required'));
             return;
+        }
+
+        // Verifica limiti prima dell'upload
+        if (!$user->canUploadMorePhotos()) {
+            $this->addError('limit', __('media.upload_limit_reached'));
+            return $this->redirect(route('media.upload-limit'), navigate: false);
         }
 
         // Validazione
@@ -156,9 +167,14 @@ class PhotoUpload extends Component
     public function render()
     {
         $user = Auth::user();
+        $maxSize = SystemSetting::get('image_max_size', 10240); // Default 10MB in KB
         
         return view('livewire.media.photo-upload', [
             'user' => $user,
+            'currentPhotoCount' => $user->current_photo_count,
+            'currentPhotoLimit' => $user->current_photo_limit,
+            'remainingUploads' => $user->remaining_photo_uploads,
+            'maxSizeMB' => round($maxSize / 1024, 1), // Converti in MB per la visualizzazione
         ]);
     }
 }

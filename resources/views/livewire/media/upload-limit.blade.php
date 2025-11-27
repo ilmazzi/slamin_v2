@@ -18,38 +18,76 @@
 
         {{-- Current Usage Card --}}
         <div class="bg-white dark:bg-neutral-800 rounded-3xl shadow-xl p-8 mb-8 border-2 border-yellow-200 dark:border-yellow-800">
-            <div class="text-center">
+            <div class="text-center mb-8">
                 <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-6" style="font-family: 'Crimson Pro', serif;">
                     {{ __('media.current_usage') }}
                 </h2>
-                <div class="flex items-center justify-center gap-8 mb-6">
-                    <div class="text-center">
-                        <div class="text-4xl font-black text-yellow-600 dark:text-yellow-400 mb-2">
-                            {{ $currentVideoCount }}
+                
+                {{-- Video Usage --}}
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-neutral-700 dark:text-neutral-300 mb-4">{{ __('media.video') }}</h3>
+                    <div class="flex items-center justify-center gap-8 mb-6">
+                        <div class="text-center">
+                            <div class="text-4xl font-black text-yellow-600 dark:text-yellow-400 mb-2">
+                                {{ $currentVideoCount }}
+                            </div>
+                            <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">
+                                {{ __('media.videos_used') }}
+                            </div>
                         </div>
-                        <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">
-                            {{ __('media.videos_used') }}
+                        <div class="text-2xl text-neutral-400 dark:text-neutral-500 font-bold">
+                            /
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-black text-neutral-900 dark:text-white mb-2">
+                                {{ $currentVideoLimit }}
+                            </div>
+                            <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">
+                                {{ __('media.video_limit') }}
+                            </div>
                         </div>
                     </div>
-                    <div class="text-2xl text-neutral-400 dark:text-neutral-500 font-bold">
-                        /
+                    <div class="w-full max-w-md mx-auto bg-neutral-200 dark:bg-neutral-700 rounded-full h-4 mb-4">
+                        <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 h-4 rounded-full transition-all duration-300" 
+                             style="width: {{ min(100, ($currentVideoCount / max($currentVideoLimit, 1)) * 100) }}%"></div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-black text-neutral-900 dark:text-white mb-2">
-                            {{ $currentVideoLimit }}
-                        </div>
-                        <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">
-                            {{ __('media.video_limit') }}
-                        </div>
-                    </div>
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                        {{ __('media.videos_remaining') }}: <span class="font-bold {{ $remainingVideoUploads > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">{{ $remainingVideoUploads }}</span>
+                    </p>
                 </div>
-                <div class="w-full max-w-md mx-auto bg-neutral-200 dark:bg-neutral-700 rounded-full h-4 mb-4">
-                    <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 h-4 rounded-full transition-all duration-300" 
-                         style="width: {{ min(100, ($currentVideoCount / max($currentVideoLimit, 1)) * 100) }}%"></div>
+                
+                {{-- Photo Usage --}}
+                <div>
+                    <h3 class="text-lg font-semibold text-neutral-700 dark:text-neutral-300 mb-4">{{ __('media.photo') }}</h3>
+                    <div class="flex items-center justify-center gap-8 mb-6">
+                        <div class="text-center">
+                            <div class="text-4xl font-black text-accent-600 dark:text-accent-400 mb-2">
+                                {{ $currentPhotoCount }}
+                            </div>
+                            <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">
+                                {{ __('media.photos_used') }}
+                            </div>
+                        </div>
+                        <div class="text-2xl text-neutral-400 dark:text-neutral-500 font-bold">
+                            /
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-black text-neutral-900 dark:text-white mb-2">
+                                {{ $currentPhotoLimit }}
+                            </div>
+                            <div class="text-sm text-neutral-600 dark:text-neutral-400 font-medium">
+                                {{ __('media.photo_limit') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full max-w-md mx-auto bg-neutral-200 dark:bg-neutral-700 rounded-full h-4 mb-4">
+                        <div class="bg-gradient-to-r from-accent-500 to-accent-600 h-4 rounded-full transition-all duration-300" 
+                             style="width: {{ min(100, ($currentPhotoCount / max($currentPhotoLimit, 1)) * 100) }}%"></div>
+                    </div>
+                    <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                        {{ __('media.photos_remaining') }}: <span class="font-bold {{ $remainingPhotoUploads > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">{{ $remainingPhotoUploads }}</span>
+                    </p>
                 </div>
-                <p class="text-sm text-neutral-500 dark:text-neutral-400">
-                    {{ __('media.videos_remaining') }}: <span class="font-bold text-red-600 dark:text-red-400">0</span>
-                </p>
             </div>
         </div>
 
@@ -128,7 +166,8 @@
                         @endif
                     </p>
                 </div>
-                <div class="flex items-center gap-6">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    {{-- Video Stats --}}
                     <div class="text-center">
                         <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-1">
                             {{ __('media.video_limit') }}
@@ -149,8 +188,33 @@
                         <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-1">
                             {{ __('media.videos_remaining') }}
                         </p>
-                        <p class="text-xl font-bold text-red-600 dark:text-red-400">
-                            0
+                        <p class="text-xl font-bold {{ $remainingVideoUploads > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                            {{ $remainingVideoUploads }}
+                        </p>
+                    </div>
+                    {{-- Photo Stats --}}
+                    <div class="text-center">
+                        <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-1">
+                            {{ __('media.photo_limit') }}
+                        </p>
+                        <p class="text-xl font-bold text-neutral-900 dark:text-white">
+                            {{ $currentPhotoLimit }}
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-1">
+                            {{ __('media.photos_used') }}
+                        </p>
+                        <p class="text-xl font-bold text-accent-600 dark:text-accent-400">
+                            {{ $currentPhotoCount }}
+                        </p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-1">
+                            {{ __('media.photos_remaining') }}
+                        </p>
+                        <p class="text-xl font-bold {{ $remainingPhotoUploads > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                            {{ $remainingPhotoUploads }}
                         </p>
                     </div>
                 </div>

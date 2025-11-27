@@ -38,6 +38,34 @@
     <section class="relative py-8 md:py-12 lg:py-16 bg-neutral-50 dark:bg-neutral-900">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             
+            {{-- Upload Status Card --}}
+            <div class="bg-white dark:bg-neutral-800 rounded-xl shadow-sm p-4 sm:p-6 mb-6 md:mb-8 border border-neutral-200 dark:border-neutral-700">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div class="flex items-center gap-3 sm:gap-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-accent-100 dark:bg-accent-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <h3 class="text-base sm:text-lg font-semibold text-neutral-900 dark:text-white mb-1 truncate">{{ __('media.upload_status') }}</h3>
+                            <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
+                                {{ __('media.photos_remaining') }}: <strong class="text-accent-600 dark:text-accent-400">{{ $remainingUploads }}</strong>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="w-full sm:w-auto sm:min-w-[200px]">
+                        <div class="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-2 sm:h-3 mb-2">
+                            <div class="bg-accent-600 h-2 sm:h-3 rounded-full transition-all duration-300" 
+                                 style="width: {{ min(100, ($currentPhotoCount / max($currentPhotoLimit, 1)) * 100) }}%"></div>
+                        </div>
+                        <p class="text-xs text-neutral-600 dark:text-neutral-400 text-center font-medium">
+                            {{ $currentPhotoCount }} / {{ $currentPhotoLimit }} {{ __('media.photos_used') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             {{-- Upload Form --}}
             <div class="bg-white dark:bg-neutral-800 rounded-xl shadow-sm overflow-hidden border border-neutral-200 dark:border-neutral-700">
                 <div class="bg-gradient-to-r from-accent-600 to-accent-700 px-4 sm:px-6 py-4 sm:py-5">
@@ -91,7 +119,7 @@
                                     </svg>
                                     <h6 class="text-lg sm:text-xl md:text-2xl font-bold text-neutral-700 dark:text-neutral-300 mb-2 sm:mb-3" style="font-family: 'Crimson Pro', serif;">{{ __('media.drag_drop_photo') }}</h6>
                                     <p class="text-sm sm:text-base text-neutral-500 dark:text-neutral-400 mb-3 sm:mb-4 font-medium">{{ __('media.supported_photo_formats') }}</p>
-                                    <p class="text-xs sm:text-sm text-neutral-400 dark:text-neutral-500 mb-4 sm:mb-6">{{ __('media.max_photo_size') }}</p>
+                                    <p class="text-xs sm:text-sm text-neutral-400 dark:text-neutral-500 mb-4 sm:mb-6">{{ __('media.max_size') }}: {{ $maxSizeMB }}MB</p>
                                     <button type="button" 
                                             onclick="document.getElementById('photo_file_input').click()"
                                             class="px-6 sm:px-8 py-3 sm:py-4 bg-accent-600 hover:bg-accent-700 text-white font-semibold rounded-lg sm:rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 text-sm sm:text-base md:text-lg">

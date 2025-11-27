@@ -124,5 +124,8 @@ return [
     'alt_text_help' => 'Enter alternative text to describe the image (useful for accessibility and SEO)',
     'uploading' => 'Uploading...',
     'photo_uploaded_successfully' => 'Photo uploaded successfully!',
+    'photos_remaining' => 'Photos remaining',
+    'photos_used' => 'photos used',
+    'photo_limit' => 'Photo Limit',
 ];
 

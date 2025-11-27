@@ -128,5 +128,8 @@ return [
     'alt_text_help' => 'Inserisci un testo alternativo per descrivere l\'immagine (utile per accessibilità e SEO)',
     'uploading' => 'Caricamento in corso...',
     'photo_uploaded_successfully' => 'Foto caricata con successo!',
+    'photos_remaining' => 'Foto rimanenti',
+    'photos_used' => 'foto utilizzate',
+    'photo_limit' => 'Limite Foto',
 ];
 

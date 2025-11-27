@@ -149,6 +149,22 @@ class SystemSetting extends Model
                 'description' => 'Numero di video che gli utenti premium possono caricare'
             ],
 
+            // Photo limits
+            'default_photo_limit' => [
+                'value' => '5',
+                'type' => 'integer',
+                'group' => 'upload',
+                'display_name' => 'Limite foto di default',
+                'description' => 'Numero di foto che gli utenti gratuiti possono caricare'
+            ],
+            'premium_photo_limit' => [
+                'value' => '100',
+                'type' => 'integer',
+                'group' => 'upload',
+                'display_name' => 'Limite foto premium',
+                'description' => 'Numero di foto che gli utenti premium possono caricare'
+            ],
+
             // File types
             'allowed_image_types' => [
                 'value' => json_encode(['jpeg', 'jpg', 'png', 'gif', 'webp']),
