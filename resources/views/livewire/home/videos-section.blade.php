@@ -102,7 +102,7 @@
                         </div>
                         
                         <!-- Film Edge Codes -->
-                        <div class="film-edge-code-top">SLAMIN</div>
+                        <div class="film-edge-code-top">{{ strtoupper(config('app.name')) }}</div>
                         <div class="film-edge-code-bottom">ISO 400</div>
                         
                         <!-- Film Frame -->

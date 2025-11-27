@@ -63,7 +63,7 @@
                             <div class="hero-magazine-cover" style="transform: rotate({{ $rotation }}deg);">
                                 <div class="hero-magazine-inner">
                                     <div class="flex justify-between items-start mb-1">
-                                        <div class="text-xs font-bold text-neutral-900">SLAMIN</div>
+                                        <div class="text-xs font-bold text-neutral-900">{{ strtoupper(config('app.name')) }}</div>
                                         <div class="text-[8px] text-neutral-600">Vol. {{ date('Y') }} · N.{{ rand(10, 99) }}</div>
                                     </div>
                                     <div class="hero-magazine-image-area" style="background: url('<?php echo [
@@ -156,7 +156,7 @@
                              style="transform: rotate({{ $tilt }}deg);">
                             <div class="hero-film-strip">
                                 <!-- Film codes -->
-                                <div class="hero-film-code-top">SLAMIN</div>
+                                <div class="hero-film-code-top">{{ strtoupper(config('app.name')) }}</div>
                                 <div class="hero-film-code-bottom">ISO 400</div>
                                 
                                 <!-- Film frame with thumbnail -->

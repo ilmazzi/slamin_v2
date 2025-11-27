@@ -98,7 +98,7 @@
                                      class="magazine-inner group cursor-pointer">
                                     <!-- Magazine Header -->
                                     <div class="magazine-header">
-                                        <div class="magazine-logo">SLAMIN</div>
+                                        <div class="magazine-logo">{{ strtoupper(config('app.name')) }}</div>
                                         <div class="magazine-issue">Vol. {{ date('Y') }} · N.{{ str_pad($item['id'], 2, '0', STR_PAD_LEFT) }}</div>
                                     </div>
                                     
@@ -264,7 +264,7 @@
                                 </div>
                                 
                                 <!-- Film Edge Codes -->
-                                <div class="film-edge-code-top">SLAMIN</div>
+                                <div class="film-edge-code-top">{{ strtoupper(config('app.name')) }}</div>
                                 <div class="film-edge-code-bottom">ISO 400</div>
                                 
                                 <!-- Film Frame -->

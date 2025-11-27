@@ -89,7 +89,7 @@
                     
                     {{-- Magazine Header --}}
                     <div class="magazine-header">
-                        <div class="magazine-logo">SLAMIN</div>
+                        <div class="magazine-logo">{{ strtoupper(config('app.name')) }}</div>
                         <div class="magazine-issue">Vol. {{ date('Y') }} · N.{{ str_pad($article->id, 2, '0', STR_PAD_LEFT) }}</div>
                     </div>
                     
@@ -273,7 +273,7 @@
             font-family: 'Crimson Pro', serif;
             font-size: 1.5rem;
             font-weight: 900;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.15em;
             color: #000;
         }
         
