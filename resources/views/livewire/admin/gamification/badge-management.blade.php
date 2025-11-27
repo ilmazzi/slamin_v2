@@ -287,55 +287,35 @@
                                     {{ __('Traduzioni') }}
                                 </h4>
                                 
-                                {{-- Italian Translation --}}
-                                <div class="mb-4 p-4 bg-neutral-50 dark:bg-neutral-700/50 rounded-lg">
-                                    <div class="flex items-center gap-2 mb-3">
-                                        <span class="text-2xl">🇮🇹</span>
-                                        <h5 class="font-semibold text-neutral-900 dark:text-white">Italiano</h5>
-                                    </div>
-                                    <div class="space-y-3">
-                                        <div>
-                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                                                Nome
-                                            </label>
-                                            <input type="text" wire:model="translations.it.name" 
-                                                   class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                                @foreach($availableLocales as $locale)
+                                    @php
+                                        $langInfo = \App\Helpers\LanguageHelper::getLanguageInfo($locale);
+                                    @endphp
+                                    <div class="{{ !$loop->last ? 'mb-4' : '' }} p-4 bg-neutral-50 dark:bg-neutral-700/50 rounded-lg">
+                                        <div class="flex items-center gap-2 mb-3">
+                                            <span class="text-2xl">{{ $langInfo['flag'] }}</span>
+                                            <h5 class="font-semibold text-neutral-900 dark:text-white">{{ $langInfo['name'] }}</h5>
+                                            <span class="text-xs text-neutral-500 dark:text-neutral-400 uppercase">({{ $locale }})</span>
                                         </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                                                Descrizione
-                                            </label>
-                                            <textarea wire:model="translations.it.description" 
-                                                      rows="2"
-                                                      class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- English Translation --}}
-                                <div class="p-4 bg-neutral-50 dark:bg-neutral-700/50 rounded-lg">
-                                    <div class="flex items-center gap-2 mb-3">
-                                        <span class="text-2xl">🇬🇧</span>
-                                        <h5 class="font-semibold text-neutral-900 dark:text-white">English</h5>
-                                    </div>
-                                    <div class="space-y-3">
-                                        <div>
-                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                                                Name
-                                            </label>
-                                            <input type="text" wire:model="translations.en.name" 
-                                                   class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                                                Description
-                                            </label>
-                                            <textarea wire:model="translations.en.description" 
-                                                      rows="2"
-                                                      class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"></textarea>
+                                        <div class="space-y-3">
+                                            <div>
+                                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                                    {{ __('gamification.badge_name') }}
+                                                </label>
+                                                <input type="text" wire:model="translations.{{ $locale }}.name" 
+                                                       class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                                                    {{ __('gamification.badge_description') }}
+                                                </label>
+                                                <textarea wire:model="translations.{{ $locale }}.description" 
+                                                          rows="2"
+                                                          class="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"></textarea>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </form>

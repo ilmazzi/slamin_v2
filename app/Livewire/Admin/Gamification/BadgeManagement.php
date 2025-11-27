@@ -9,6 +9,7 @@ use App\Models\Badge;
 use App\Models\User;
 use App\Services\BadgeService;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\LanguageHelper;
 
 class BadgeManagement extends Component
 {
@@ -33,10 +34,8 @@ class BadgeManagement extends Component
     public $existing_icon;
     
     // Translations
-    public $translations = [
-        'it' => ['name' => '', 'description' => ''],
-        'en' => ['name' => '', 'description' => ''],
-    ];
+    public $translations = [];
+    public $availableLocales = [];
 
     // Manual assignment
     public $showAssignModal = false;
@@ -63,6 +62,19 @@ class BadgeManagement extends Component
     public function mount()
     {
         $this->loadBadges();
+        $this->loadAvailableLocales();
+    }
+
+    public function loadAvailableLocales()
+    {
+        $this->availableLocales = LanguageHelper::getAvailableLocales();
+        
+        // Initialize translations array for all locales
+        foreach ($this->availableLocales as $locale) {
+            if (!isset($this->translations[$locale])) {
+                $this->translations[$locale] = ['name' => '', 'description' => ''];
+            }
+        }
     }
 
     public function loadBadges()
@@ -73,6 +85,7 @@ class BadgeManagement extends Component
     public function create()
     {
         $this->resetForm();
+        $this->loadAvailableLocales();
         $this->isEditing = false;
         $this->showModal = true;
     }
@@ -92,6 +105,9 @@ class BadgeManagement extends Component
         $this->order = $badge->order;
         $this->is_active = $badge->is_active;
         $this->existing_icon = $badge->icon_path;
+        
+        // Load available locales
+        $this->loadAvailableLocales();
         
         // Load translations
         foreach ($badge->translations as $translation) {
@@ -256,10 +272,12 @@ class BadgeManagement extends Component
         $this->is_active = true;
         $this->icon = null;
         $this->existing_icon = null;
-        $this->translations = [
-            'it' => ['name' => '', 'description' => ''],
-            'en' => ['name' => '', 'description' => ''],
-        ];
+        
+        // Reset translations for all available locales
+        $this->translations = [];
+        foreach ($this->availableLocales as $locale) {
+            $this->translations[$locale] = ['name' => '', 'description' => ''];
+        }
     }
 
     public function render()
