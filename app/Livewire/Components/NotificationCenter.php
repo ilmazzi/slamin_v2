@@ -78,6 +78,7 @@ class NotificationCenter extends Component
 
     /**
      * Refresh notifications (can be called from other components)
+     * Exclude chat messages - they are shown only in the chat widget
      */
     #[On('refresh-notifications')]
     public function loadNotifications()
@@ -86,15 +87,28 @@ class NotificationCenter extends Component
             return;
         }
 
-        $this->notifications = Auth::user()
+        // Get all notifications and filter out chat messages
+        $allNotifications = Auth::user()
             ->notifications()
             ->orderBy('created_at', 'desc')
-            ->take(10)
+            ->take(50) // Take more to ensure we have 10 after filtering
             ->get();
 
-        $this->unreadCount = Auth::user()
+        // Filter out chat messages
+        $this->notifications = $allNotifications->filter(function($notification) {
+            $type = $notification->data['type'] ?? null;
+            return $type !== 'chat_new_message';
+        })->take(10);
+
+        // Count unread notifications excluding chat messages
+        $allUnread = Auth::user()
             ->unreadNotifications()
-            ->count();
+            ->get();
+        
+        $this->unreadCount = $allUnread->filter(function($notification) {
+            $type = $notification->data['type'] ?? null;
+            return $type !== 'chat_new_message';
+        })->count();
     }
 
     public function togglePanel()
