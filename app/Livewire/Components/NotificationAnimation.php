@@ -33,10 +33,7 @@ class NotificationAnimation extends Component
             ->notifications()
             ->where('created_at', '>', $this->lastCheckedAt)
             ->whereNull('read_at')
-            ->where(function($query) {
-                $query->whereJsonDoesntContain('data->type', 'chat_new_message')
-                      ->orWhereNull('data->type');
-            })
+            ->whereRaw("JSON_EXTRACT(data, '$.type') != 'chat_new_message' OR JSON_EXTRACT(data, '$.type') IS NULL")
             ->count();
 
         \Log::info('Polling for notifications', [
