@@ -145,7 +145,7 @@
 
     {{-- Create/Edit Modal --}}
     @if($showModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ show: @entangle('showModal') }" x-show="show" x-transition>
+        <div class="fixed inset-0 z-50 overflow-y-auto">
             <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
                 <div class="fixed inset-0 transition-opacity bg-neutral-500 bg-opacity-75" wire:click="$set('showModal', false)"></div>
                 
@@ -305,7 +305,7 @@
 
     {{-- Assign Badge Modal --}}
     @if($showAssignModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ show: @entangle('showAssignModal') }" x-show="show" x-transition>
+        <div class="fixed inset-0 z-50 overflow-y-auto">
             <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
                 <div class="fixed inset-0 transition-opacity bg-neutral-500 bg-opacity-75" wire:click="$set('showAssignModal', false)"></div>
                 
@@ -332,16 +332,16 @@
                                 <div class="bg-neutral-50 dark:bg-neutral-700 rounded-lg p-3 border border-neutral-200 dark:border-neutral-600">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-3">
-                                            <img src="{{ $selectedUser['avatar'] }}" 
-                                                 alt="{{ $selectedUser['display_name'] }}" 
+                                            <img src="{{ $selectedUser->profile_photo ? asset('storage/' . $selectedUser->profile_photo) : asset('assets/images/draghetto.png') }}" 
+                                                 alt="{{ $selectedUser->name }}" 
                                                  class="w-12 h-12 rounded-full object-cover">
                                             <div>
-                                                <div class="font-semibold text-neutral-900 dark:text-white">{{ $selectedUser['display_name'] }}</div>
-                                                <div class="text-sm text-neutral-500 dark:text-neutral-400">{{ $selectedUser['email'] }}</div>
+                                                <div class="font-semibold text-neutral-900 dark:text-white">{{ $selectedUser->name }}</div>
+                                                <div class="text-sm text-neutral-500 dark:text-neutral-400">{{ $selectedUser->email }}</div>
                                             </div>
                                         </div>
                                         <button type="button" 
-                                                wire:click="clearSelectedUser" 
+                                                wire:click="$set('selectedUser', null)" 
                                                 class="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -378,15 +378,15 @@
                                         <div class="mt-2 max-h-60 overflow-y-auto border border-neutral-200 dark:border-neutral-700 rounded-lg">
                                             @foreach($searchResults as $result)
                                                 <button type="button" 
-                                                        wire:click="selectUser({{ $result['id'] }})" 
+                                                        wire:click="selectUser({{ $result->id }})" 
                                                         class="w-full px-4 py-3 text-left hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors border-b border-neutral-200 dark:border-neutral-700 last:border-b-0">
                                                     <div class="flex items-center gap-3">
-                                                        <img src="{{ $result['avatar'] }}" 
-                                                             alt="{{ $result['display_name'] }}" 
+                                                        <img src="{{ $result->profile_photo ? asset('storage/' . $result->profile_photo) : asset('assets/images/draghetto.png') }}" 
+                                                             alt="{{ $result->name }}" 
                                                              class="w-10 h-10 rounded-full object-cover">
                                                         <div>
-                                                            <div class="font-semibold text-neutral-900 dark:text-white">{{ $result['display_name'] }}</div>
-                                                            <div class="text-sm text-neutral-500 dark:text-neutral-400">{{ $result['email'] }}</div>
+                                                            <div class="font-semibold text-neutral-900 dark:text-white">{{ $result->name }}</div>
+                                                            <div class="text-sm text-neutral-500 dark:text-neutral-400">{{ $result->email }}</div>
                                                         </div>
                                                     </div>
                                                 </button>
@@ -423,7 +423,7 @@
                             {{ __('gamification.cancel') }}
                         </button>
                         <button type="button" 
-                                wire:click="assignBadgeToUser"
+                                wire:click="assignBadge"
                                 @if(!$selectedUser) disabled @endif
                                 class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
