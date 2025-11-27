@@ -390,6 +390,28 @@ class EventCreation extends Component
         }
     }
 
+    public function updatedLatitude()
+    {
+        // Aggiorna il pin sulla mappa quando cambia la latitudine
+        if ($this->latitude && $this->longitude) {
+            $this->dispatch('update-map-location', 
+                latitude: floatval($this->latitude), 
+                longitude: floatval($this->longitude)
+            );
+        }
+    }
+
+    public function updatedLongitude()
+    {
+        // Aggiorna il pin sulla mappa quando cambia la longitudine
+        if ($this->latitude && $this->longitude) {
+            $this->dispatch('update-map-location', 
+                latitude: floatval($this->latitude), 
+                longitude: floatval($this->longitude)
+            );
+        }
+    }
+
     #[On('map-clicked')]
     public function handleMapClick($latitude, $longitude, $city, $address, $postcode, $country)
     {
@@ -437,6 +459,14 @@ class EventCreation extends Component
         $this->country = $venue['country'] ?? 'IT';
         $this->latitude = $venue['latitude'] ?? '';
         $this->longitude = $venue['longitude'] ?? '';
+        
+        // Update map location if coordinates are available
+        if ($this->latitude && $this->longitude) {
+            $this->dispatch('update-map-location', 
+                latitude: floatval($this->latitude), 
+                longitude: floatval($this->longitude)
+            );
+        }
 
         // Dispatch event to update map
         if ($this->latitude && $this->longitude) {
