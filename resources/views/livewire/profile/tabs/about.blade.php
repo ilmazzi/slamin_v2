@@ -3,6 +3,21 @@
      x-data="{ mounted: false }"
      x-init="mounted = true">
     
+    {{-- Debug (temporaneo) --}}
+    @if(config('app.debug'))
+    <div class="bg-yellow-100 dark:bg-yellow-900/30 p-4 rounded-lg text-xs">
+        <strong>Debug:</strong><br>
+        isOwnProfile: {{ $isOwnProfile ? 'true' : 'false' }}<br>
+        website: {{ $user->website ?? 'null' }}<br>
+        phone: {{ $user->phone ?? 'null' }}<br>
+        birth_date: {{ $user->birth_date ?? 'null' }}<br>
+        email: {{ $user->email ?? 'null' }}<br>
+        show_email: {{ $user->show_email ? 'true' : 'false' }}<br>
+        show_phone: {{ $user->show_phone ? 'true' : 'false' }}<br>
+        show_birth_date: {{ $user->show_birth_date ? 'true' : 'false' }}
+    </div>
+    @endif
+    
     {{-- About Card con animazione --}}
     <div class="bg-white dark:bg-neutral-800 rounded-xl p-6 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
          x-show="mounted"
@@ -65,7 +80,7 @@
         </div>
         @endif
 
-        @if($user->birth_date && ($isOwnProfile || $user->show_birth_date))
+        @if($user->birth_date && ($isOwnProfile ? true : $user->show_birth_date))
         <div class="group bg-white dark:bg-neutral-800 rounded-xl p-4 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
              x-show="mounted"
              x-transition:enter="transition ease-out duration-500 delay-200"
@@ -79,13 +94,19 @@
                 </div>
                 <div>
                     <div class="text-xs text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">{{ __('profile.about.birth_date') }}</div>
-                    <div class="font-semibold text-neutral-900 dark:text-white text-lg">{{ $user->birth_date->format('d/m/Y') }}</div>
+                    <div class="font-semibold text-neutral-900 dark:text-white text-lg">
+                        @if($user->birth_date instanceof \Carbon\Carbon)
+                            {{ $user->birth_date->format('d/m/Y') }}
+                        @elseif($user->birth_date)
+                            {{ \Carbon\Carbon::parse($user->birth_date)->format('d/m/Y') }}
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
         @endif
 
-        @if($user->phone && ($isOwnProfile || $user->show_phone))
+        @if($user->phone && ($isOwnProfile ? true : $user->show_phone))
         <div class="group bg-white dark:bg-neutral-800 rounded-xl p-4 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
              x-show="mounted"
              x-transition:enter="transition ease-out duration-500 delay-250"
@@ -105,7 +126,7 @@
         </div>
         @endif
 
-        @if($user->email && ($isOwnProfile || $user->show_email))
+        @if($user->email && ($isOwnProfile ? true : $user->show_email))
         <div class="group bg-white dark:bg-neutral-800 rounded-xl p-4 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
              x-show="mounted"
              x-transition:enter="transition ease-out duration-500 delay-300"
