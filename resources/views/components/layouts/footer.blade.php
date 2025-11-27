@@ -3,7 +3,11 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <!-- About -->
             <div class="col-span-1 md:col-span-2">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ config('app.name') }}</h3>
+                <a href="{{ route('home') }}" class="inline-block mb-4 group">
+                    <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
+                         alt="{{ config('app.name') }}" 
+                         class="h-10 w-auto group-hover:scale-105 transition-transform dark:brightness-0 dark:invert">
+                </a>
                 <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
                     {{ __('footer.description_alt') }}
                 </p>

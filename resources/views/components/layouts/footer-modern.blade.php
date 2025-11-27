@@ -4,12 +4,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-12">
             <!-- Brand -->
             <div>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">S</span>
-                    </div>
-                    <span class="text-xl font-bold text-white">{{ config('app.name') }}</span>
-                </div>
+                <a href="{{ route('home') }}" class="flex items-center mb-4 group">
+                    <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
+                         alt="{{ config('app.name') }}" 
+                         class="h-10 w-auto group-hover:scale-105 transition-transform brightness-0 invert">
+                </a>
                 <p class="text-sm text-neutral-400 leading-relaxed">
                     {{ __('footer.description') }}
                 </p>
