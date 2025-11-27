@@ -55,20 +55,20 @@ $sizeClasses = [
                             :isLiked="false"
                             :likesCount="$photo->like_count ?? 0"
                             size="sm"
-                            class="[&_span]:!text-neutral-700 [&_svg]:!text-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
+                            class="[&_span]:!text-neutral-700 [&_svg]:!text-neutral-700 [&_svg]:w-4 [&_svg]:h-4 md:[&_svg]:w-5 md:[&_svg]:h-5 [&_span]:text-xs" />
                         
                         <x-comment-button 
                             :itemId="$photo->id"
                             itemType="photo"
                             :commentsCount="$photo->comment_count ?? 0"
                             size="sm"
-                            class="[&_button]:!text-neutral-700 [&_span]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
+                            class="[&_button]:!text-neutral-700 [&_span]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-4 [&_svg]:h-4 md:[&_svg]:w-5 md:[&_svg]:h-5 [&_span]:text-xs" />
                         
                         <x-share-button 
                             :itemId="$photo->id"
                             itemType="photo"
                             size="sm"
-                            class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-3.5 [&_svg]:h-3.5" />
+                            class="[&_button]:!text-neutral-700 [&_svg]:!stroke-neutral-700 [&_svg]:w-4 [&_svg]:h-4 md:[&_svg]:w-5 md:[&_svg]:h-5" />
                         
                         <x-report-button 
                             :itemId="$photo->id"

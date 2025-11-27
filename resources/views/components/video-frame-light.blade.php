@@ -61,20 +61,20 @@ $sizeClasses = [
                             :isLiked="false"
                             :likesCount="$video->like_count ?? 0"
                             size="sm"
-                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
+                            class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4 md:[&_svg]:w-5 md:[&_svg]:h-5 [&_span]:text-xs" />
                         
                         <x-comment-button 
                             :itemId="$video->id"
                             itemType="video"
                             :commentsCount="$video->comment_count ?? 0"
                             size="sm"
-                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-3.5 [&_svg]:h-3.5 [&_span]:text-xs" />
+                            class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4 md:[&_svg]:w-5 md:[&_svg]:h-5 [&_span]:text-xs" />
                         
                         <x-share-button 
                             :itemId="$video->id"
                             itemType="video"
                             size="sm"
-                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-3.5 [&_svg]:h-3.5" />
+                            class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4 md:[&_svg]:w-5 md:[&_svg]:h-5" />
                     </div>
                 </div>
             </div>

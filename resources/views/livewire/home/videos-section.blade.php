@@ -169,7 +169,7 @@
                                         :isLiked="false"
                                         :likesCount="$item->like_count ?? 0"
                                         size="sm"
-                                        class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4" />
+                                        class="[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
                                     
                                     <!-- Comment -->
                                     <x-comment-button 
@@ -177,14 +177,14 @@
                                         itemType="video"
                                         :commentsCount="$item->comment_count ?? 0"
                                         size="sm"
-                                        class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                        class="[&_button]:!text-white/90 [&_span]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
                                     
                                     <!-- Share -->
                                     <x-share-button 
                                         :itemId="$item->id"
                                         itemType="video"
                                         size="sm"
-                                        class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4" />
+                                        class="[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6" />
                                     
                                     <!-- Report -->
                                     <x-report-button 
