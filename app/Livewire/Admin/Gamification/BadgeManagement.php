@@ -93,7 +93,12 @@ class BadgeManagement extends Component
 
     public function edit($badgeId)
     {
-        $badge = Badge::with('translations')->findOrFail($badgeId);
+        // Open modal immediately
+        $this->isEditing = true;
+        $this->showModal = true;
+        
+        // Load badge data
+        $badge = Badge::findOrFail($badgeId);
         
         $this->badge = $badge;
         $this->type = $badge->type;
@@ -110,16 +115,14 @@ class BadgeManagement extends Component
         // Initialize translations for all locales
         $this->initializeTranslations();
         
-        // Load existing translations
-        foreach ($badge->translations as $translation) {
+        // Load existing translations separately (lazy)
+        $translations = $badge->translations;
+        foreach ($translations as $translation) {
             $this->translations[$translation->locale] = [
                 'name' => $translation->name,
                 'description' => $translation->description,
             ];
         }
-        
-        $this->isEditing = true;
-        $this->showModal = true;
     }
 
     public function save()
