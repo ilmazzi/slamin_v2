@@ -4,14 +4,9 @@
             <!-- About -->
             <div class="col-span-1 md:col-span-2">
                 <a href="{{ route('home') }}" class="inline-block mb-4 group">
-                    <!-- Logo nero su bianco per light mode -->
                     <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
                          alt="{{ config('app.name') }}" 
-                         class="h-10 w-auto group-hover:scale-105 transition-transform dark:hidden">
-                    <!-- Logo bianco su nero per dark mode -->
-                    <img src="{{ asset('assets/images/Logo_orizzontale_biancosunero.png') }}" 
-                         alt="{{ config('app.name') }}" 
-                         class="h-10 w-auto group-hover:scale-105 transition-transform hidden dark:block">
+                         class="h-10 w-auto group-hover:scale-105 transition-transform dark:brightness-0 dark:invert">
                 </a>
                 <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
                     {{ __('footer.description_alt') }}
