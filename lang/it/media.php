@@ -107,5 +107,26 @@ return [
     'no_photos_yet' => 'Nessuna foto ancora',
     'upload_your_first_photo' => 'Carica la tua prima foto per iniziare!',
     'photo_upload_coming_soon' => 'Caricamento foto disponibile a breve',
+    
+    // Upload Photo
+    'upload_photo_title' => 'Carica',
+    'photo' => 'Foto',
+    'upload_photo_info' => 'Condividi le tue foto con la community',
+    'upload_photo_form' => 'Form Caricamento Foto',
+    'photo_file' => 'File Foto',
+    'photo_file_required' => 'Il file foto è obbligatorio.',
+    'drag_drop_photo' => 'Trascina e rilascia la foto qui',
+    'supported_photo_formats' => 'Formati supportati: JPG, PNG, GIF, WEBP',
+    'max_photo_size' => 'Dimensione massima: 10MB',
+    'photo_selected' => 'Foto selezionata',
+    'title_placeholder' => 'Inserisci un titolo (opzionale)',
+    'title_photo_help' => 'Inserisci un titolo per la tua foto (opzionale)',
+    'description_placeholder' => 'Inserisci una descrizione (opzionale)',
+    'description_photo_help' => 'Inserisci una descrizione per la tua foto (opzionale)',
+    'alt_text' => 'Testo Alternativo',
+    'alt_text_placeholder' => 'Descrizione dell\'immagine per accessibilità',
+    'alt_text_help' => 'Inserisci un testo alternativo per descrivere l\'immagine (utile per accessibilità e SEO)',
+    'uploading' => 'Caricamento in corso...',
+    'photo_uploaded_successfully' => 'Foto caricata con successo!',
 ];
 

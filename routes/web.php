@@ -135,9 +135,9 @@ Route::get('/media', \App\Livewire\Media\MediaIndex::class)->name('media.index')
 // Media Upload Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/media/upload/video', \App\Livewire\Media\VideoUpload::class)->name('media.upload.video');
+    Route::get('/media/upload/photo', \App\Livewire\Media\PhotoUpload::class)->name('media.upload.photo');
     Route::get('/media/upload-limit', \App\Livewire\Media\UploadLimit::class)->name('media.upload-limit');
     Route::get('/media/my-videos', \App\Livewire\Media\MyVideos::class)->name('media.my-videos');
-    // Route::get('/media/upload/photo', \App\Livewire\Media\PhotoUpload::class)->name('media.upload.photo'); // TODO: Da implementare
 });
 
 Route::get('/videos/{video}', function(\App\Models\Video $video) {
