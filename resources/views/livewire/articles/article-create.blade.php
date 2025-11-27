@@ -222,8 +222,9 @@
                     <select id="status"
                             wire:model="status"
                             class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
-                        <option value="draft">{{ __('articles.create.status_draft') }}</option>
-                        <option value="published">{{ __('articles.create.status_published') }}</option>
+                            <option value="published">{{ __('articles.create.status_published') }}</option>
+                            <option value="draft">{{ __('articles.create.status_draft') }}</option>
+                       
                         <option value="archived">{{ __('articles.create.status_archived') }}</option>
                     </select>
                     @error('status')

@@ -20,7 +20,7 @@ class ArticleCreate extends Component
     public $excerpt = '';
     public $category_id = null;
     public $featured_image;
-    public $status = 'draft';
+    public $status = 'published';
     public $is_public = true;
     public $published_at = null;
     
