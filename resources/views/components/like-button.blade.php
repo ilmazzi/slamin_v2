@@ -8,9 +8,9 @@
 
 @php
 $sizeClasses = [
-    'sm' => 'w-4 h-4',
-    'md' => 'w-5 h-5',
-    'lg' => 'w-6 h-6',
+    'sm' => 'w-5 h-5',
+    'md' => 'w-6 h-6',
+    'lg' => 'w-7 h-7',
 ];
 $iconSize = $sizeClasses[$size] ?? $sizeClasses['md'];
 
@@ -94,10 +94,10 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
             });
         });
     }
-}" {{ $attributes->merge(['class' => 'inline-flex items-center gap-2']) }}>
+}" {{ $attributes->merge(['class' => 'inline-flex items-center gap-1']) }}>
     <button type="button"
             @click="toggleLike()"
-            class="flex items-center gap-2 transition-all duration-300 group cursor-pointer hover:opacity-80">
+            class="flex items-center gap-1 transition-all duration-300 group cursor-pointer hover:opacity-80">
         <img src="{{ asset('assets/icon/new/like.svg') }}" 
              alt="Like" 
              class="{{ $iconSize }} group-hover:scale-125 transition-transform duration-300"
