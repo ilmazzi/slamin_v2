@@ -274,53 +274,88 @@ function showEmojiPicker(button) {
     picker.style.left = '0';
     picker.style.right = 'auto';
     
-    emojis.forEach((emoji, index) => {
+    emojis.forEach((emojiValue, index) => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.textContent = emoji;
+        btn.textContent = emojiValue;
         btn.className = 'text-2xl hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded p-1 transition';
-        btn.setAttribute('data-emoji', emoji); // Store emoji as data attribute
-        btn.onclick = function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Get emoji from button text or data attribute
-            const selectedEmoji = this.textContent || this.getAttribute('data-emoji') || emoji;
-            
-            const textarea = document.querySelector('.chat-input-field');
-            if (textarea) {
+        btn.setAttribute('data-emoji', emojiValue); // Store emoji as data attribute
+        
+        // Use closure to capture the emoji value
+        (function(emoji) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const textarea = document.querySelector('.chat-input-field');
+                if (!textarea) {
+                    picker.remove();
+                    return;
+                }
+                
+                // Get emoji from closure variable (most reliable)
+                const selectedEmoji = emoji;
+                
                 // Insert emoji at cursor position or append
                 const cursorPos = textarea.selectionStart || textarea.value.length;
                 const textBefore = textarea.value.substring(0, cursorPos);
                 const textAfter = textarea.value.substring(cursorPos);
-                textarea.value = textBefore + selectedEmoji + textAfter;
+                const newValue = textBefore + selectedEmoji + textAfter;
+                
+                // Set the value directly
+                textarea.value = newValue;
                 
                 // Set cursor position after emoji
                 const newPos = cursorPos + selectedEmoji.length;
                 textarea.setSelectionRange(newPos, newPos);
                 
-                // Trigger Livewire update - use native input event
-                const inputEvent = new Event('input', { bubbles: true, cancelable: true });
-                textarea.dispatchEvent(inputEvent);
-                
-                // Also trigger change event
-                const changeEvent = new Event('change', { bubbles: true, cancelable: true });
-                textarea.dispatchEvent(changeEvent);
-                
-                // Force Livewire to sync
+                // Try to find Livewire component and update directly
+                let updated = false;
                 if (window.Livewire) {
-                    const livewireEvent = new CustomEvent('input', { 
-                        bubbles: true, 
-                        cancelable: true,
-                        detail: { value: textarea.value }
-                    });
-                    textarea.dispatchEvent(livewireEvent);
+                    // Method 1: Find component by wire:id
+                    const wireId = textarea.closest('[wire\\:id]')?.getAttribute('wire:id');
+                    if (wireId) {
+                        try {
+                            const component = window.Livewire.find(wireId);
+                            if (component) {
+                                component.set('newMessage', newValue);
+                                updated = true;
+                            }
+                        } catch (err) {
+                            console.log('Livewire find failed:', err);
+                        }
+                    }
+                    
+                    // Method 2: Use Alpine.js if available
+                    if (!updated && textarea._x_model) {
+                        try {
+                            textarea._x_model.set(newValue);
+                            updated = true;
+                        } catch (err) {
+                            console.log('Alpine model update failed:', err);
+                        }
+                    }
                 }
                 
+                // Always trigger input event for Livewire to sync
+                const inputEvent = new Event('input', { 
+                    bubbles: true, 
+                    cancelable: true 
+                });
+                textarea.dispatchEvent(inputEvent);
+                
+                // Also trigger a change event
+                const changeEvent = new Event('change', { 
+                    bubbles: true, 
+                    cancelable: true 
+                });
+                textarea.dispatchEvent(changeEvent);
+                
                 textarea.focus();
-            }
-            picker.remove();
-        };
+                picker.remove();
+            });
+        })(emojiValue);
+        
         picker.appendChild(btn);
     });
     
