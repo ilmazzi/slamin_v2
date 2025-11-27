@@ -328,5 +328,15 @@ return [
         'removed' => 'Rimosso',
         'rankings_generated' => 'Le classifiche sono state generate e l\'evento è stato chiuso.',
     ],
+    
+    // Invitations
+    'invitation' => [
+        'notification_title' => 'Invito a Evento',
+        'notification_message' => ':inviter ti ha invitato come :role all\'evento ":event"',
+        'role_performer' => 'artista',
+        'role_organizer' => 'organizzatore',
+        'role_audience' => 'pubblico',
+        'role_participant' => 'partecipante',
+    ],
 ];
 

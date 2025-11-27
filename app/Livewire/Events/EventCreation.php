@@ -802,24 +802,36 @@ class EventCreation extends Component
             // Handle invitations (participants)
             if (!empty($this->invitations)) {
                 foreach ($this->invitations as $invitation) {
-                    $event->invitations()->create([
+                    $eventInvitation = $event->invitations()->create([
                         'invited_user_id' => $invitation['user_id'],
                         'inviter_id' => Auth::id(),
                         'role' => $invitation['role'],
                         'status' => 'pending',
                     ]);
+                    
+                    // Send notification to invited user
+                    $invitedUser = \App\Models\User::find($invitation['user_id']);
+                    if ($invitedUser) {
+                        $invitedUser->notify(new \App\Notifications\EventInvitationNotification($eventInvitation));
+                    }
                 }
             }
 
             // Handle audience invitations
             if (!empty($this->audienceInvitations)) {
                 foreach ($this->audienceInvitations as $audience) {
-                    $event->invitations()->create([
+                    $eventInvitation = $event->invitations()->create([
                         'invited_user_id' => $audience['user_id'],
                         'inviter_id' => Auth::id(),
                         'role' => 'audience',
                         'status' => 'pending',
                     ]);
+                    
+                    // Send notification to invited user
+                    $invitedUser = \App\Models\User::find($audience['user_id']);
+                    if ($invitedUser) {
+                        $invitedUser->notify(new \App\Notifications\EventInvitationNotification($eventInvitation));
+                    }
                 }
             }
 

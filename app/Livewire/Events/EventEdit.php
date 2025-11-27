@@ -938,28 +938,47 @@ class EventEdit extends Component
                 $event->groups()->detach();
             }
 
+            // Get existing invitation user IDs to avoid re-notifying
+            $existingInvitationUserIds = $event->invitations()->pluck('invited_user_id')->toArray();
+            
             // Delete and recreate invitations
             $event->invitations()->delete();
             
             if (!empty($this->invitations)) {
                 foreach ($this->invitations as $invitation) {
-                    $event->invitations()->create([
+                    $eventInvitation = $event->invitations()->create([
                         'invited_user_id' => $invitation['user_id'],
                         'inviter_id' => Auth::id(),
                         'role' => $invitation['role'],
                         'status' => 'pending',
                     ]);
+                    
+                    // Send notification only if user wasn't already invited (new invitation)
+                    if (!in_array($invitation['user_id'], $existingInvitationUserIds)) {
+                        $invitedUser = \App\Models\User::find($invitation['user_id']);
+                        if ($invitedUser) {
+                            $invitedUser->notify(new \App\Notifications\EventInvitationNotification($eventInvitation));
+                        }
+                    }
                 }
             }
 
             if (!empty($this->audienceInvitations)) {
                 foreach ($this->audienceInvitations as $audience) {
-                    $event->invitations()->create([
+                    $eventInvitation = $event->invitations()->create([
                         'invited_user_id' => $audience['user_id'],
                         'inviter_id' => Auth::id(),
                         'role' => 'audience',
                         'status' => 'pending',
                     ]);
+                    
+                    // Send notification only if user wasn't already invited (new invitation)
+                    if (!in_array($audience['user_id'], $existingInvitationUserIds)) {
+                        $invitedUser = \App\Models\User::find($audience['user_id']);
+                        if ($invitedUser) {
+                            $invitedUser->notify(new \App\Notifications\EventInvitationNotification($eventInvitation));
+                        }
+                    }
                 }
             }
 
