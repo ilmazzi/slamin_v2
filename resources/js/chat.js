@@ -211,7 +211,41 @@ function showImageModal(src) {
 /**
  * Emoji picker (simple implementation)
  */
-const emojis = ['😀', '😂', '😍', '🥰', '😎', '🤔', '👍', '👏', '🎉', '❤️', '🔥', '✨'];
+const emojis = [
+    // Faces
+    '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃',
+    '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜',
+    '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟',
+    '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠',
+    '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗',
+    '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧',
+    '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧',
+    // Gestures
+    '👍', '👎', '👊', '✊', '🤛', '🤜', '🤞', '✌️', '🤟', '🤘', '👌', '🤏',
+    '👈', '👉', '👆', '👇', '☝️', '👋', '🤚', '🖐', '✋', '🖖', '👏', '🙌',
+    '🤲', '🤝', '🙏', '✍️', '💪', '🦾', '🦿', '🦵', '🦶', '👂', '🦻', '👃',
+    // Hearts & Emotions
+    '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕',
+    '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉', '☸️',
+    '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌',
+    // Objects & Symbols
+    '🎉', '🎊', '🎈', '🎁', '🎀', '🏆', '🥇', '🥈', '🥉', '⚽', '🏀', '🏈',
+    '⚾', '🎾', '🏐', '🏉', '🎱', '🏓', '🏸', '🥅', '🏒', '🏑', '🏏', '⛳',
+    '🏹', '🎣', '🥊', '🥋', '🎽', '🛹', '🛷', '⛸', '🥌', '🎿', '⛷', '🏂',
+    '🏋️', '🤼', '🤸', '🤺', '⛹️', '🤹', '🤾', '🏌️', '🏇', '🧘', '🏄', '🏊',
+    '🤽', '🚣', '🧗', '🚵', '🚴', '🏇', '🚴', '🏃', '🚶', '🧍', '🧎', '🏃',
+    // Fire & Stars
+    '🔥', '✨', '⭐', '🌟', '💫', '⚡', '☄️', '💥', '💢', '💯', '💤', '💨',
+    // Food & Drinks
+    '🍕', '🍔', '🍟', '🌭', '🍿', '🧂', '🥓', '🥚', '🍳', '🥞', '🥐', '🥨',
+    '🧀', '🥖', '🥨', '🥯', '🥞', '🧇', '🥓', '🥩', '🍗', '🍖', '🌭', '🍔',
+    '🍟', '🍕', '🌮', '🌯', '🥙', '🥗', '🥘', '🥫', '🍝', '🍜', '🍲', '🍛',
+    '🍣', '🍱', '🥟', '🥠', '🥡', '🍘', '🍙', '🍚', '🍛', '🍜', '🍝', '🍠',
+    '🍢', '🍣', '🍤', '🍥', '🥮', '🍡', '🥧', '🍦', '🍧', '🍨', '🍩', '🍪',
+    '🎂', '🍰', '🧁', '🍫', '🍬', '🍭', '🍮', '🍯', '🍼', '🥛', '☕', '🍵',
+    '🍶', '🍾', '🍷', '🍸', '🍹', '🍺', '🍻', '🥂', '🥃', '🥤', '🧃', '🧉',
+    '🧊', '🥢', '🍽️', '🍴', '🥄', '🔪', '🏺'
+];
 
 document.addEventListener('click', function(e) {
     if (e.target.closest('[data-emoji-picker]') || e.target.closest('[title="Emoji"]')) {
@@ -240,31 +274,47 @@ function showEmojiPicker(button) {
     picker.style.left = '0';
     picker.style.right = 'auto';
     
-    emojis.forEach(emoji => {
+    emojis.forEach((emoji, index) => {
         const btn = document.createElement('button');
+        btn.type = 'button';
         btn.textContent = emoji;
         btn.className = 'text-2xl hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded p-1 transition';
-        btn.onclick = function() {
+        btn.setAttribute('data-emoji', emoji); // Store emoji as data attribute
+        btn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Get emoji from button text or data attribute
+            const selectedEmoji = this.textContent || this.getAttribute('data-emoji') || emoji;
+            
             const textarea = document.querySelector('.chat-input-field');
             if (textarea) {
                 // Insert emoji at cursor position or append
                 const cursorPos = textarea.selectionStart || textarea.value.length;
                 const textBefore = textarea.value.substring(0, cursorPos);
                 const textAfter = textarea.value.substring(cursorPos);
-                textarea.value = textBefore + emoji + textAfter;
+                textarea.value = textBefore + selectedEmoji + textAfter;
                 
                 // Set cursor position after emoji
-                const newPos = cursorPos + emoji.length;
+                const newPos = cursorPos + selectedEmoji.length;
                 textarea.setSelectionRange(newPos, newPos);
                 
-                // Trigger Livewire update
-                textarea.dispatchEvent(new Event('input', { bubbles: true }));
-                textarea.dispatchEvent(new Event('change', { bubbles: true }));
+                // Trigger Livewire update - use native input event
+                const inputEvent = new Event('input', { bubbles: true, cancelable: true });
+                textarea.dispatchEvent(inputEvent);
                 
-                // Also trigger for Livewire wire:model
+                // Also trigger change event
+                const changeEvent = new Event('change', { bubbles: true, cancelable: true });
+                textarea.dispatchEvent(changeEvent);
+                
+                // Force Livewire to sync
                 if (window.Livewire) {
-                    const event = new CustomEvent('input', { bubbles: true, detail: { value: textarea.value } });
-                    textarea.dispatchEvent(event);
+                    const livewireEvent = new CustomEvent('input', { 
+                        bubbles: true, 
+                        cancelable: true,
+                        detail: { value: textarea.value }
+                    });
+                    textarea.dispatchEvent(livewireEvent);
                 }
                 
                 textarea.focus();

@@ -24,8 +24,31 @@
     gap: 0.5rem !important;
     padding: 0.75rem !important;
     width: auto !important;
-    min-width: 200px !important;
+    min-width: 240px !important;
+    max-width: 300px !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
     position: absolute !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent !important;
+}
+
+.emoji-picker::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+.emoji-picker::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+.emoji-picker::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 3px !important;
+}
+
+.dark .emoji-picker::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .emoji-picker button,
