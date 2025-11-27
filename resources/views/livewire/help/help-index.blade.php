@@ -42,26 +42,39 @@
             </div>
         </div>
 
-        {{-- Help List --}}
-        <div class="space-y-4">
+        {{-- Help List (Accordion) --}}
+        <div class="space-y-3">
             @forelse($helps as $help)
-                <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-6">
-                    <div class="flex items-start gap-4">
+                <div x-data="{ open: false }" class="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg overflow-hidden">
+                    {{-- Accordion Header --}}
+                    <button @click="open = !open" 
+                            class="w-full px-6 py-4 flex items-center gap-4 hover:bg-neutral-50 dark:hover:bg-neutral-700/50 transition-colors text-left">
                         <div class="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
                             <span class="text-green-600 dark:text-green-400 font-bold text-lg">ℹ️</span>
                         </div>
                         <div class="flex-1">
                             @if($help->category)
-                                <span class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 mb-2">
+                                <span class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 mb-1">
                                     {{ $help->category }}
                                 </span>
                             @endif
-                            <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-3">
+                            <h3 class="text-lg font-bold text-neutral-900 dark:text-white">
                                 {{ $help->title }}
                             </h3>
-                            <div class="text-neutral-600 dark:text-neutral-400 prose dark:prose-invert max-w-none">
-                                {!! nl2br(e($help->content)) !!}
-                            </div>
+                        </div>
+                        <svg class="w-6 h-6 text-neutral-400 transition-transform duration-200"
+                             :class="{ 'rotate-180': open }"
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    
+                    {{-- Accordion Content --}}
+                    <div x-show="open" 
+                         x-collapse
+                         class="px-6 pb-6 pt-2">
+                        <div class="pl-14 text-neutral-600 dark:text-neutral-400 prose dark:prose-invert max-w-none">
+                            {!! nl2br(e($help->content)) !!}
                         </div>
                     </div>
                 </div>
