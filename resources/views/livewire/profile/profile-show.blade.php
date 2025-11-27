@@ -203,6 +203,15 @@
         </div>
     @endif
 
+    {{-- ABOUT SECTION --}}
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        @include('livewire.profile.tabs.about', [
+            'user' => $user,
+            'isOwnProfile' => $isOwnProfile,
+            'topBadges' => $topBadges
+        ])
+    </section>
+
     {{-- HORIZONTAL SCROLL SECTIONS --}}
     <div class="content-sections">
         
