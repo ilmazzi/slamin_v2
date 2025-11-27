@@ -104,6 +104,28 @@
             </div>
         </div>
         @endif
+
+        @if($user->email && ($isOwnProfile || $user->show_email))
+        <div class="group bg-white dark:bg-neutral-800 rounded-xl p-4 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+             x-show="mounted"
+             x-transition:enter="transition ease-out duration-500 delay-300"
+             x-transition:enter-start="opacity-0 translate-x-4"
+             x-transition:enter-end="opacity-100 translate-x-0">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="text-xs text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Email</div>
+                    <a href="mailto:{{ $user->email }}" class="font-semibold text-primary-600 dark:text-primary-400 hover:underline text-lg block transform transition-transform duration-300 hover:translate-x-1">
+                        {{ $user->email }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 
     {{-- Social Links con animazioni --}}

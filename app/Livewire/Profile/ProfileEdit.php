@@ -38,7 +38,6 @@ class ProfileEdit extends Component
     public $bannerPreview;
     
     // Privacy settings
-    public $is_public = true;
     public $show_email = false;
     public $show_phone = false;
     public $show_birth_date = false;
@@ -61,7 +60,6 @@ class ProfileEdit extends Component
             'social_linkedin' => 'nullable|url|max:255',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'is_public' => 'boolean',
             'show_email' => 'boolean',
             'show_phone' => 'boolean',
             'show_birth_date' => 'boolean',
@@ -91,7 +89,6 @@ class ProfileEdit extends Component
         $this->social_youtube = $this->user->social_youtube;
         $this->social_linkedin = $this->user->social_linkedin;
         
-        $this->is_public = $this->user->is_public ?? true;
         $this->show_email = $this->user->show_email ?? false;
         $this->show_phone = $this->user->show_phone ?? false;
         $this->show_birth_date = $this->user->show_birth_date ?? false;
@@ -212,7 +209,6 @@ class ProfileEdit extends Component
                 'social_twitter' => 'nullable|url|max:255',
                 'social_youtube' => 'nullable|url|max:255',
                 'social_linkedin' => 'nullable|url|max:255',
-                'is_public' => 'nullable|boolean',
                 'show_email' => 'nullable|boolean',
                 'show_phone' => 'nullable|boolean',
                 'show_birth_date' => 'nullable|boolean',
@@ -241,7 +237,6 @@ class ProfileEdit extends Component
                 'social_twitter' => $this->social_twitter,
                 'social_youtube' => $this->social_youtube,
                 'social_linkedin' => $this->social_linkedin,
-                'is_public' => $this->is_public,
                 'show_email' => $this->show_email,
                 'show_phone' => $this->show_phone,
                 'show_birth_date' => $this->show_birth_date,

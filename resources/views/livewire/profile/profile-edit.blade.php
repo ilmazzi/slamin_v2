@@ -321,44 +321,35 @@
             {{-- Privacy Settings --}}
             <div class="bg-white dark:bg-neutral-800 rounded-xl p-6 border border-neutral-200 dark:border-neutral-700 shadow-sm">
                 <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">{{ __('profile.edit.privacy') }}</h3>
+                <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">{{ __('profile.edit.privacy_description') }}</p>
                 
                 <div class="space-y-4">
-                    <label class="flex items-center gap-3 cursor-pointer">
+                    <label class="flex items-center gap-3 cursor-pointer group">
                         <input type="checkbox" 
-                               wire:model="is_public" 
-                               class="w-5 h-5 text-primary-600 rounded focus:ring-primary-500">
+                               wire:model.live="show_email" 
+                               class="w-5 h-5 text-primary-600 rounded focus:ring-primary-500 cursor-pointer">
                         <div>
-                            <div class="font-semibold text-neutral-900 dark:text-white">{{ __('profile.edit.is_public') }}</div>
-                            <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ __('profile.edit.is_public_help') }}</div>
-                        </div>
-                    </label>
-                    
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" 
-                               wire:model="show_email" 
-                               class="w-5 h-5 text-primary-600 rounded focus:ring-primary-500">
-                        <div>
-                            <div class="font-semibold text-neutral-900 dark:text-white">{{ __('profile.edit.show_email') }}</div>
+                            <div class="font-semibold text-neutral-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ __('profile.edit.show_email') }}</div>
                             <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ __('profile.edit.show_email_help') }}</div>
                         </div>
                     </label>
                     
-                    <label class="flex items-center gap-3 cursor-pointer">
+                    <label class="flex items-center gap-3 cursor-pointer group">
                         <input type="checkbox" 
-                               wire:model="show_phone" 
-                               class="w-5 h-5 text-primary-600 rounded focus:ring-primary-500">
+                               wire:model.live="show_phone" 
+                               class="w-5 h-5 text-primary-600 rounded focus:ring-primary-500 cursor-pointer">
                         <div>
-                            <div class="font-semibold text-neutral-900 dark:text-white">{{ __('profile.edit.show_phone') }}</div>
+                            <div class="font-semibold text-neutral-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ __('profile.edit.show_phone') }}</div>
                             <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ __('profile.edit.show_phone_help') }}</div>
                         </div>
                     </label>
                     
-                    <label class="flex items-center gap-3 cursor-pointer">
+                    <label class="flex items-center gap-3 cursor-pointer group">
                         <input type="checkbox" 
-                               wire:model="show_birth_date" 
-                               class="w-5 h-5 text-primary-600 rounded focus:ring-primary-500">
+                               wire:model.live="show_birth_date" 
+                               class="w-5 h-5 text-primary-600 rounded focus:ring-primary-500 cursor-pointer">
                         <div>
-                            <div class="font-semibold text-neutral-900 dark:text-white">{{ __('profile.edit.show_birth_date') }}</div>
+                            <div class="font-semibold text-neutral-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{{ __('profile.edit.show_birth_date') }}</div>
                             <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ __('profile.edit.show_birth_date_help') }}</div>
                         </div>
                     </label>
