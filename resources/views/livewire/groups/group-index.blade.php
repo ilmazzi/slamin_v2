@@ -4,8 +4,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Community</h1>
-                    <p class="text-primary-100">Scopri gruppi e utenti della community Slamin</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">{{ __('groups.community_title') }}</h1>
+                    <p class="text-primary-100">{{ __('groups.community_subtitle') }}</p>
                 </div>
                 @auth
                 <a href="{{ route('groups.create') }}" wire:navigate
@@ -13,7 +13,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    Crea Gruppo
+                    {{ __('groups.create_group') }}
                 </a>
                 @endauth
             </div>
@@ -30,7 +30,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
-                        Gruppi
+                        {{ __('groups.groups_tab') }}
                     </span>
                 </button>
                 <button wire:click="switchTab('users')"
@@ -39,7 +39,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
-                        Utenti
+                        {{ __('groups.users_tab') }}
                     </span>
                 </button>
             </div>
@@ -53,22 +53,22 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <input type="text" wire:model.live.debounce.300ms="groupSearch"
-                                   placeholder="Cerca gruppi..."
+                                   placeholder="{{ __('groups.search_groups') }}"
                                    class="w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500">
                         </div>
                         <div>
                             <select wire:model.live="groupFilter"
                                     class="w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500">
-                                <option value="">Tutti i gruppi</option>
-                                <option value="my_groups">I miei gruppi</option>
-                                <option value="my_admin_groups">Gruppi dove sono admin</option>
-                                <option value="public">Pubblici</option>
+                                <option value="">{{ __('groups.all_groups_filter') }}</option>
+                                <option value="my_groups">{{ __('groups.my_groups_filter') }}</option>
+                                <option value="my_admin_groups">{{ __('groups.my_admin_groups_filter') }}</option>
+                                <option value="public">{{ __('groups.public_filter') }}</option>
                             </select>
                         </div>
                         <div>
                             <button wire:click="clearGroupFilters"
                                     class="w-full px-4 py-3 rounded-xl bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors font-medium">
-                                Reset Filtri
+                                {{ __('groups.reset_filters') }}
                             </button>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                                         {{ $group->members_count }} {{ $group->members_count === 1 ? 'membro' : 'membri' }}
                                     </span>
                                     <span class="text-primary-600 dark:text-primary-400 font-medium">
-                                        Visualizza →
+                                        {{ __('groups.view_more') }} →
                                     </span>
                                 </div>
                             </div>
@@ -118,7 +118,7 @@
                             <svg class="w-20 h-20 mx-auto text-neutral-300 dark:text-neutral-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                             </svg>
-                            <p class="text-neutral-500 dark:text-neutral-500 text-lg">Nessun gruppo trovato</p>
+                            <p class="text-neutral-500 dark:text-neutral-500 text-lg">{{ __('groups.no_groups') }}</p>
                         </div>
                     @endforelse
                 </div>
@@ -136,21 +136,21 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <input type="text" wire:model.live.debounce.300ms="userSearch"
-                                   placeholder="Cerca utenti..."
+                                   placeholder="{{ __('groups.search_users') }}"
                                    class="w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500">
                         </div>
                         <div>
                             <select wire:model.live="userFilter"
                                     class="w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500">
-                                <option value="">Tutti gli utenti</option>
-                                <option value="poets">Poeti</option>
-                                <option value="organizers">Organizzatori</option>
+                                <option value="">{{ __('groups.all_users_filter') }}</option>
+                                <option value="poets">{{ __('groups.poets_filter') }}</option>
+                                <option value="organizers">{{ __('groups.organizers_filter') }}</option>
                             </select>
                         </div>
                         <div>
                             <button wire:click="clearUserFilters"
                                     class="w-full px-4 py-3 rounded-xl bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-colors font-medium">
-                                Reset Filtri
+                                {{ __('groups.reset_filters') }}
                             </button>
                         </div>
                     </div>
@@ -186,7 +186,7 @@
                             <svg class="w-20 h-20 mx-auto text-neutral-300 dark:text-neutral-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
-                            <p class="text-neutral-500 dark:text-neutral-500 text-lg">Nessun utente trovato</p>
+                            <p class="text-neutral-500 dark:text-neutral-500 text-lg">{{ __('groups.no_users') }}</p>
                         </div>
                     @endforelse
                 </div>

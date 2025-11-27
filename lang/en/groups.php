@@ -62,6 +62,25 @@ return [
     'no_members' => 'No members',
     'no_announcements' => 'No announcements',
     'no_events' => 'No events',
+    'no_users' => 'No users found',
+    
+    // Page Elements
+    'community_title' => 'Community',
+    'community_subtitle' => 'Discover groups and users from the Slamin community',
+    'users_tab' => 'Users',
+    'groups_tab' => 'Groups',
+    'search_groups' => 'Search groups...',
+    'search_users' => 'Search users...',
+    'all_groups_filter' => 'All groups',
+    'my_groups_filter' => 'My groups',
+    'my_admin_groups_filter' => 'Groups where I\'m admin',
+    'public_filter' => 'Public',
+    'all_users_filter' => 'All users',
+    'poets_filter' => 'Poets',
+    'organizers_filter' => 'Organizers',
+    'reset_filters' => 'Reset filters',
+    'view_more' => 'View',
+    'showing_results' => 'Showing :from-:to of :total results',
     
     // Member Management
     'member_promoted' => 'Member promoted to moderator',
