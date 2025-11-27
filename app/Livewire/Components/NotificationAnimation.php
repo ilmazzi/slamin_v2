@@ -66,18 +66,21 @@ class NotificationAnimation extends Component
             'filtered_notifications' => $newNotifications,
         ]);
 
-        // IMPORTANTE: Aggiorna sempre lastCheckedAt per evitare di ricontrollare le stesse notifiche
-        // anche se sono state filtrate (es. messaggi di chat)
-        if ($allNotifications->count() > 0) {
-            $this->lastCheckedAt = now();
-        }
-
         if ($newNotifications > 0) {
             \Log::info('New notification found! Showing animation');
             $this->showAnimation = true;
+            $this->lastCheckedAt = now();
             
             // Auto-hide dopo 10 secondi
             $this->dispatch('auto-hide-notification');
+        } else {
+            // IMPORTANTE: Se non ci sono notifiche da mostrare (incluse quelle filtrate),
+            // aggiorna lastCheckedAt a now() per evitare di ricontrollare continuamente
+            // le stesse notifiche di chat già filtrate
+            if ($allNotifications->count() > 0) {
+                \Log::info('Notifications found but all filtered (chat messages) - updating lastCheckedAt');
+                $this->lastCheckedAt = now();
+            }
         }
     }
 
