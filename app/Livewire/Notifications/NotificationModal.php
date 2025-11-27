@@ -45,6 +45,21 @@ class NotificationModal extends Component
                 $data = $notification->data;
                 $type = $data['type'] ?? 'default';
                 
+                // Check invitation status if it's an event invitation
+                $invitationStatus = null;
+                $isPending = false;
+                if ($type === 'event_invitation' && isset($data['invitation_id'])) {
+                    try {
+                        $invitation = \App\Models\EventInvitation::find($data['invitation_id']);
+                        if ($invitation) {
+                            $invitationStatus = $invitation->status;
+                            $isPending = $invitation->isPending();
+                        }
+                    } catch (\Exception $e) {
+                        // Ignore errors
+                    }
+                }
+                
                 // Format notification based on type
                 return [
                     'id' => $notification->id,
@@ -56,6 +71,8 @@ class NotificationModal extends Component
                     'read' => $notification->read_at !== null,
                     'created_at' => $notification->created_at->diffForHumans(),
                     'data' => $data,
+                    'invitation_status' => $invitationStatus,
+                    'invitation_is_pending' => $isPending,
                 ];
             })
             ->values(); // Reset array keys

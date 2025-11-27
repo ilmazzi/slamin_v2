@@ -133,22 +133,30 @@
                                         <div class="flex items-center gap-2">
                                             @if($notification['type'] === 'event_invitation' && isset($notification['data']['invitation_id']))
                                                 {{-- Event Invitation Actions --}}
-                                                @php
-                                                    $invitation = \App\Models\EventInvitation::find($notification['data']['invitation_id'] ?? null);
-                                                    $isPending = $invitation && $invitation->isPending();
-                                                @endphp
-                                                @if($isPending)
+                                                @if($notification['invitation_is_pending'] ?? false)
                                                     <button wire:click.stop="acceptEventInvitation('{{ $notification['id'] }}')"
-                                                            class="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded-lg transition-colors">
-                                                        ✓ {{ __('events.invitation.accept') }}
+                                                            wire:loading.attr="disabled"
+                                                            class="px-3 py-1.5 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white text-xs font-semibold rounded-lg transition-colors">
+                                                        <span wire:loading.remove wire:target="acceptEventInvitation('{{ $notification['id'] }}')">
+                                                            ✓ {{ __('events.invitation.accept') }}
+                                                        </span>
+                                                        <span wire:loading wire:target="acceptEventInvitation('{{ $notification['id'] }}')">
+                                                            ...
+                                                        </span>
                                                     </button>
                                                     <button wire:click.stop="declineEventInvitation('{{ $notification['id'] }}')"
-                                                            class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors">
-                                                        ✕ {{ __('events.invitation.decline') }}
+                                                            wire:loading.attr="disabled"
+                                                            class="px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-xs font-semibold rounded-lg transition-colors">
+                                                        <span wire:loading.remove wire:target="declineEventInvitation('{{ $notification['id'] }}')">
+                                                            ✕ {{ __('events.invitation.decline') }}
+                                                        </span>
+                                                        <span wire:loading wire:target="declineEventInvitation('{{ $notification['id'] }}')">
+                                                            ...
+                                                        </span>
                                                     </button>
                                                 @else
-                                                    <span class="text-xs {{ $invitation && $invitation->isAccepted() ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} font-medium">
-                                                        {{ $invitation && $invitation->isAccepted() ? __('events.invitation.accepted') : __('events.invitation.declined') }}
+                                                    <span class="text-xs {{ ($notification['invitation_status'] ?? '') === 'accepted' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} font-medium">
+                                                        {{ ($notification['invitation_status'] ?? '') === 'accepted' ? __('events.invitation.accepted') : __('events.invitation.declined') }}
                                                     </span>
                                                 @endif
                                             @else
