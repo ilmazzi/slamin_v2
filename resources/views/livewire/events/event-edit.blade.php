@@ -558,7 +558,7 @@
 
                                 {{-- Location Type Toggle --}}
                                 <div>
-                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">Modalità Evento *</label>
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">{{ __('events.create.event_mode') }} *</label>
                                     <div class="grid grid-cols-2 gap-4">
                                         <label class="relative cursor-pointer">
                                             <input type="radio" wire:model.live="is_online" value="0" class="sr-only peer">
@@ -600,9 +600,54 @@
                                                       peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
                                                       peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-accent-600 dark:peer-focus:text-accent-400
                                                       transition-all duration-200">
-                                            URL Evento Online *
+                                            {{ __('events.create.online_url') }} *
                                         </label>
                                         @error('online_url')
+                                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    
+                                    {{-- Timezone Field - Show only when Online --}}
+                                    <div class="relative group mt-4">
+                                        <select wire:model="timezone"
+                                                id="timezone"
+                                                class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white
+                                                       focus:border-accent-500 dark:focus:border-accent-400 focus:ring-4 focus:ring-accent-500/10
+                                                       transition-all duration-300 @error('timezone') border-red-500 ring-4 ring-red-500/10 @enderror">
+                                            @php
+                                                $timezones = timezone_identifiers_list();
+                                                $grouped = [];
+                                                foreach ($timezones as $tz) {
+                                                    $parts = explode('/', $tz);
+                                                    if (count($parts) > 1) {
+                                                        $group = $parts[0];
+                                                        if (!isset($grouped[$group])) {
+                                                            $grouped[$group] = [];
+                                                        }
+                                                        $grouped[$group][] = $tz;
+                                                    } else {
+                                                        if (!isset($grouped['Other'])) {
+                                                            $grouped['Other'] = [];
+                                                        }
+                                                        $grouped['Other'][] = $tz;
+                                                    }
+                                                }
+                                                ksort($grouped);
+                                            @endphp
+                                            @foreach($grouped as $group => $tzList)
+                                                <optgroup label="{{ $group }}">
+                                                    @foreach($tzList as $tz)
+                                                        <option value="{{ $tz }}" {{ $timezone === $tz ? 'selected' : '' }}>{{ str_replace($group . '/', '', $tz) }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endforeach
+                                        </select>
+                                        <label for="timezone" 
+                                               class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                                            {{ __('events.create.timezone') }} *
+                                        </label>
+                                        <p class="mt-2 text-xs text-neutral-500 dark:text-neutral-400">{{ __('events.create.timezone_help') }}</p>
+                                        @error('timezone')
                                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                         @enderror
                                     </div>

@@ -155,6 +155,10 @@ return [
         'add_option' => 'Aggiungi opzione',
         'in_person' => 'In presenza',
         'online' => 'Online',
+        'event_mode' => 'Modalità evento',
+        'online_url' => 'URL evento online',
+        'timezone' => 'Fuso orario',
+        'timezone_help' => 'Seleziona il fuso orario in cui si svolgerà l\'evento online',
         
         // Media & Tickets
         'cover_image' => 'Immagine copertina',
