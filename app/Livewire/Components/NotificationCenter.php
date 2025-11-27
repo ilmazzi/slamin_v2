@@ -39,17 +39,29 @@ class NotificationCenter extends Component
      */
     public function notificationReceived($event)
     {
-        \Log::info('NotificationCenter received broadcast', ['event' => $event]);
+        \Log::info('NotificationCenter received broadcast', [
+            'full_event' => $event,
+            'event_keys' => array_keys($event),
+            'type_direct' => $event['type'] ?? 'not_set',
+            'type_in_data' => $event['data']['type'] ?? 'not_set'
+        ]);
         
         $this->loadNotifications();
         
         // Check if it's a chat message - don't trigger animation for chat
         $notificationType = $event['type'] ?? ($event['data']['type'] ?? null);
         
+        \Log::info('Checking notification type', [
+            'extracted_type' => $notificationType,
+            'is_chat' => $notificationType === 'chat_new_message'
+        ]);
+        
         if ($notificationType === 'chat_new_message') {
-            \Log::info('Chat message received in NotificationCenter - skipping animation dispatch');
+            \Log::info('✅ Chat message detected - skipping animation dispatch');
             return;
         }
+        
+        \Log::info('⚠️ Non-chat notification - dispatching animation event');
         
         // Emette evento per attivare l'animazione della busta (solo per notifiche non-chat)
         $this->dispatch('notification-received', notificationData: $event);
