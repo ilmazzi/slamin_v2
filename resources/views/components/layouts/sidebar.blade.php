@@ -413,6 +413,7 @@
                     </a>
                 </li>
 
+                @auth
                 <!-- Ingaggi -->
                 <li>
                     <a href="{{ route('gigs.index') }}" 
@@ -424,6 +425,7 @@
                         <span class="text-sm font-medium">{{ __('common.gigs') }}</span>
                     </a>
                 </li>
+                @endauth
 
                 <!-- Poesie -->
                 <li>
@@ -474,7 +476,6 @@
                     </a>
                 </li>
 
-                @auth
                 <!-- Utenze/Gruppi -->
                 <li>
                     <a href="{{ route('groups.index') }}" 
@@ -487,7 +488,6 @@
                         <span class="text-sm font-medium">{{ __('common.users_groups') }}</span>
                     </a>
                 </li>
-                @endauth
 
                 @auth
                     @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('moderator'))
