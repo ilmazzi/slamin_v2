@@ -218,8 +218,7 @@ Route::get('/articles/create', \App\Livewire\Articles\ArticleCreate::class)
     ->middleware('auth')
     ->name('articles.create');
 
-Route::get('/articles/{article}', function ($id) {
-    $article = \App\Models\Article::findOrFail($id);
+Route::get('/articles/{article:slug}', function (\App\Models\Article $article) {
     return view('pages.article-show', compact('article'));
 })->name('articles.show');
 
