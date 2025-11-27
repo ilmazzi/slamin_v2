@@ -363,13 +363,18 @@
                     @endif
                 </div>
 
-                {{-- Sidebar (1/3) --}}
-                <div class="lg:col-span-1 space-y-8">
+                {{-- Sidebar (1/3) - Compact Info Cards --}}
+                <div class="lg:col-span-1 space-y-4">
                     
-                    {{-- Organizer --}}
+                    {{-- Organizer Card --}}
                     @if($event->organizer)
-                        <div class="border-l-4 border-red-500 pl-4">
-                            <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-3 uppercase">Organizzatore</div>
+                        <div class="bg-white dark:bg-neutral-800 rounded-2xl p-4 shadow-sm border border-neutral-200 dark:border-neutral-700 hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                                <div class="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Organizzatore</div>
+                            </div>
                             <x-ui.user-avatar 
                                 :user="$event->organizer" 
                                 size="sm" 
@@ -379,52 +384,64 @@
                         </div>
                     @endif
 
-                    {{-- Date/Time --}}
+                    {{-- Date/Time Card --}}
                     @if($event->start_datetime || $event->end_datetime)
-                        <div class="border-l-4 border-amber-500 pl-4">
-                            <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-3 uppercase">Data & Ora</div>
-                            <div class="space-y-3">
+                        <div class="bg-white dark:bg-neutral-800 rounded-2xl p-4 shadow-sm border border-neutral-200 dark:border-neutral-700 hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <div class="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">Data & Ora</div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
                                 @if($event->start_datetime)
-                                    <div>
-                                        <div class="text-xs text-neutral-500 font-bold mb-1">INIZIO</div>
-                                        <div class="text-neutral-900 dark:text-white font-black text-lg">{{ \Carbon\Carbon::parse($event->start_datetime)->format('d/m/Y H:i') }}</div>
+                                    <div class="bg-neutral-50 dark:bg-neutral-900 rounded-xl p-3">
+                                        <div class="text-xs text-neutral-500 dark:text-neutral-400 font-semibold mb-1">Inizio</div>
+                                        <div class="text-neutral-900 dark:text-white font-bold text-sm">{{ \Carbon\Carbon::parse($event->start_datetime)->format('d/m/Y') }}</div>
+                                        <div class="text-neutral-700 dark:text-neutral-300 font-semibold text-xs">{{ \Carbon\Carbon::parse($event->start_datetime)->format('H:i') }}</div>
                                     </div>
                                 @endif
                                 @if($event->end_datetime)
-                                    <div>
-                                        <div class="text-xs text-neutral-500 font-bold mb-1">FINE</div>
-                                        <div class="text-neutral-900 dark:text-white font-black text-lg">{{ \Carbon\Carbon::parse($event->end_datetime)->format('d/m/Y H:i') }}</div>
+                                    <div class="bg-neutral-50 dark:bg-neutral-900 rounded-xl p-3">
+                                        <div class="text-xs text-neutral-500 dark:text-neutral-400 font-semibold mb-1">Fine</div>
+                                        <div class="text-neutral-900 dark:text-white font-bold text-sm">{{ \Carbon\Carbon::parse($event->end_datetime)->format('d/m/Y') }}</div>
+                                        <div class="text-neutral-700 dark:text-neutral-300 font-semibold text-xs">{{ \Carbon\Carbon::parse($event->end_datetime)->format('H:i') }}</div>
                                     </div>
                                 @endif
                             </div>
                         </div>
                     @endif
 
-                    {{-- Location --}}
-                    <div class="border-l-4 border-red-500 pl-4">
-                        <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-3 uppercase">{{ $event->is_online ? 'Online' : 'Luogo' }}</div>
+                    {{-- Location Card --}}
+                    <div class="bg-white dark:bg-neutral-800 rounded-2xl p-4 shadow-sm border border-neutral-200 dark:border-neutral-700 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <svg class="w-4 h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <div class="text-xs font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">{{ $event->is_online ? 'Online' : 'Luogo' }}</div>
+                        </div>
                         @if($event->is_online)
-                            <a href="{{ $event->online_url }}" target="_blank" class="text-amber-600 dark:text-amber-400 font-bold hover:underline break-all">
+                            <a href="{{ $event->online_url }}" target="_blank" class="text-primary-600 dark:text-primary-400 font-semibold hover:underline break-all text-sm">
                                 {{ $event->online_url }}
                             </a>
                         @else
-                            <div class="space-y-1 text-neutral-900 dark:text-white">
+                            <div class="space-y-1">
                                 @if($event->venue_name)
-                                    <div class="font-black text-lg">{{ $event->venue_name }}</div>
+                                    <div class="font-bold text-neutral-900 dark:text-white">{{ $event->venue_name }}</div>
                                 @endif
                                 @if($event->venue_address)
-                                    <div class="text-neutral-700 dark:text-neutral-300">{{ $event->venue_address }}</div>
+                                    <div class="text-neutral-700 dark:text-neutral-300 text-sm">{{ $event->venue_address }}</div>
                                 @endif
                                 @if($event->city)
-                                    <div class="text-neutral-600 dark:text-neutral-400">{{ $event->postcode }} {{ $event->city }}</div>
+                                    <div class="text-neutral-600 dark:text-neutral-400 text-sm">{{ $event->postcode }} {{ $event->city }}</div>
                                 @endif
                             </div>
 
                             {{-- Mini Map --}}
                             @if($event->latitude && $event->longitude)
-                                <div class="mt-4">
+                                <div class="mt-3">
                                     <div id="eventShowMap" 
-                                         class="w-full h-48 rounded-xl overflow-hidden shadow-lg border-2 border-red-200 dark:border-red-800"
+                                         class="w-full h-32 rounded-xl overflow-hidden shadow-sm"
                                          data-lat="{{ $event->latitude }}"
                                          data-lng="{{ $event->longitude }}"
                                          data-name="{{ $event->venue_name ?? $event->title }}">
@@ -434,25 +451,42 @@
                         @endif
                     </div>
 
-                    {{-- Settings --}}
-                    <div class="border-t-2 border-neutral-300 dark:border-neutral-700 pt-6">
-                        <div class="text-neutral-500 dark:text-neutral-400 text-xs font-black tracking-wide mb-4 uppercase">Info</div>
-                        <div class="space-y-3 text-sm">
-                            <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-2">
-                                <span class="text-neutral-600 dark:text-neutral-400 font-bold uppercase">Capacity</span>
-                                <span class="text-neutral-900 dark:text-white font-black">{{ $event->max_participants ?: '∞' }}</span>
+                    {{-- Quick Info Cards Grid --}}
+                    <div class="grid grid-cols-2 gap-3">
+                        {{-- Capacity Card --}}
+                        <div class="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-xl p-4 border border-primary-200 dark:border-primary-800">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                <div class="text-xs font-semibold text-primary-700 dark:text-primary-300">Posti</div>
                             </div>
-                            <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-2">
-                                <span class="text-neutral-600 dark:text-neutral-400 font-bold uppercase">Requests</span>
-                                <span class="font-black {{ $event->allow_requests ? 'text-red-600 dark:text-red-400' : 'text-neutral-500' }}">{{ $event->allow_requests ? 'OPEN' : 'CLOSED' }}</span>
-                            </div>
-                            @if($event->registration_deadline)
-                                <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-2">
-                                    <span class="text-neutral-600 dark:text-neutral-400 font-bold uppercase">Deadline</span>
-                                    <span class="text-amber-600 dark:text-amber-400 font-black">{{ \Carbon\Carbon::parse($event->registration_deadline)->format('d/m') }}</span>
-                                </div>
-                            @endif
+                            <div class="text-2xl font-black text-primary-900 dark:text-primary-100">{{ $event->max_participants ?: '∞' }}</div>
                         </div>
+
+                        {{-- Requests Card --}}
+                        <div class="bg-gradient-to-br from-{{ $event->allow_requests ? 'green' : 'neutral' }}-50 to-{{ $event->allow_requests ? 'green' : 'neutral' }}-100 dark:from-{{ $event->allow_requests ? 'green' : 'neutral' }}-900/20 dark:to-{{ $event->allow_requests ? 'green' : 'neutral' }}-800/20 rounded-xl p-4 border border-{{ $event->allow_requests ? 'green' : 'neutral' }}-200 dark:border-{{ $event->allow_requests ? 'green' : 'neutral' }}-800">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg class="w-4 h-4 text-{{ $event->allow_requests ? 'green' : 'neutral' }}-600 dark:text-{{ $event->allow_requests ? 'green' : 'neutral' }}-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <div class="text-xs font-semibold text-{{ $event->allow_requests ? 'green' : 'neutral' }}-700 dark:text-{{ $event->allow_requests ? 'green' : 'neutral' }}-300">Richieste</div>
+                            </div>
+                            <div class="text-sm font-black text-{{ $event->allow_requests ? 'green' : 'neutral' }}-900 dark:text-{{ $event->allow_requests ? 'green' : 'neutral' }}-100">{{ $event->allow_requests ? 'Aperte' : 'Chiuse' }}</div>
+                        </div>
+
+                        {{-- Deadline Card --}}
+                        @if($event->registration_deadline)
+                            <div class="col-span-2 bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/20 rounded-xl p-4 border border-amber-200 dark:border-amber-800">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <svg class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <div class="text-xs font-semibold text-amber-700 dark:text-amber-300">Scadenza iscrizioni</div>
+                                </div>
+                                <div class="text-lg font-black text-amber-900 dark:text-amber-100">{{ \Carbon\Carbon::parse($event->registration_deadline)->format('d/m/Y H:i') }}</div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
