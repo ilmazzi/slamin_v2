@@ -23,6 +23,10 @@ class HelpManagement extends Component
     public $filterType = 'all'; // 'all', 'faq', 'help'
     public $filterLocale = 'all'; // 'all' o codice lingua
     public $search = '';
+    
+    // Translations
+    public $translations = [];
+    public $activeTranslationTab = 'it';
 
     protected $paginationTheme = 'tailwind';
 
@@ -50,7 +54,7 @@ class HelpManagement extends Component
     {
         $this->resetForm();
         if ($id) {
-            $help = Help::findOrFail($id);
+            $help = Help::with('translations')->findOrFail($id);
             $this->editingId = $help->id;
             $this->type = $help->type;
             $this->locale = $help->locale;
@@ -59,9 +63,25 @@ class HelpManagement extends Component
             $this->category = $help->category ?? '';
             $this->order = $help->order;
             $this->isActive = $help->is_active;
+            
+            // Load existing translations
+            foreach ($help->translations as $translation) {
+                $this->translations[$translation->locale] = [
+                    'title' => $translation->title,
+                    'content' => $translation->content,
+                ];
+            }
         } else {
             $this->type = $this->filterType !== 'all' ? $this->filterType : 'faq';
             $this->locale = $this->filterLocale !== 'all' ? $this->filterLocale : app()->getLocale();
+            
+            // Initialize empty translations for all languages
+            foreach (\App\Helpers\LanguageHelper::getAvailableLanguages() as $code => $language) {
+                $this->translations[$code] = [
+                    'title' => '',
+                    'content' => '',
+                ];
+            }
         }
         $this->showModal = true;
     }
@@ -82,13 +102,15 @@ class HelpManagement extends Component
         $this->category = '';
         $this->order = 0;
         $this->isActive = true;
+        $this->translations = [];
+        $this->activeTranslationTab = 'it';
     }
 
     public function save()
     {
         $this->validate();
 
-        Help::updateOrCreate(
+        $help = Help::updateOrCreate(
             ['id' => $this->editingId],
             [
                 'type' => $this->type,
@@ -101,6 +123,19 @@ class HelpManagement extends Component
                 'created_by' => Auth::id(),
             ]
         );
+
+        // Save translations
+        foreach ($this->translations as $locale => $translation) {
+            if (!empty($translation['title']) && !empty($translation['content'])) {
+                $help->translations()->updateOrCreate(
+                    ['locale' => $locale],
+                    [
+                        'title' => $translation['title'],
+                        'content' => $translation['content'],
+                    ]
+                );
+            }
+        }
 
         session()->flash('success', $this->editingId ? __('admin.help.updated') : __('admin.help.created'));
         $this->closeModal();

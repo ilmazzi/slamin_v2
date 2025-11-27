@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\App;
 
 class Help extends Model
 {
@@ -23,12 +25,40 @@ class Help extends Model
         'order' => 'integer',
     ];
 
+    protected $with = ['translations']; // Eager load translations by default
+
     /**
      * Relazione con l'utente che ha creato l'help
      */
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Relazione con le traduzioni
+     */
+    public function translations(): HasMany
+    {
+        return $this->hasMany(HelpTranslation::class);
+    }
+
+    /**
+     * Get translated title
+     */
+    public function getTranslatedTitleAttribute(): string
+    {
+        $translation = $this->translations->where('locale', App::getLocale())->first();
+        return $translation ? $translation->title : $this->title;
+    }
+
+    /**
+     * Get translated content
+     */
+    public function getTranslatedContentAttribute(): string
+    {
+        $translation = $this->translations->where('locale', App::getLocale())->first();
+        return $translation ? $translation->content : $this->content;
     }
 
     /**

@@ -199,6 +199,50 @@
                                 @error('content') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
 
+                            {{-- Translations --}}
+                            <div class="border-t-2 border-neutral-200 dark:border-neutral-700 pt-6">
+                                <h4 class="text-lg font-bold text-neutral-900 dark:text-white mb-4">
+                                    🌍 Traduzioni
+                                </h4>
+                                
+                                {{-- Language Tabs --}}
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    @foreach($this->languages as $code => $language)
+                                        <button type="button"
+                                                wire:click="$set('activeTranslationTab', '{{ $code }}')"
+                                                class="px-4 py-2 rounded-lg font-medium transition-all
+                                                       {{ $activeTranslationTab === $code 
+                                                          ? 'bg-primary-600 text-white shadow-lg' 
+                                                          : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700' }}">
+                                            {{ $language['flag'] }} {{ $language['name'] }}
+                                        </button>
+                                    @endforeach
+                                </div>
+
+                                {{-- Translation Fields --}}
+                                @foreach($this->languages as $code => $language)
+                                    <div class="{{ $activeTranslationTab === $code ? 'block' : 'hidden' }} space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                                Titolo ({{ $language['name'] }})
+                                            </label>
+                                            <input type="text" 
+                                                   wire:model="translations.{{ $code }}.title"
+                                                   class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white">
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                                Contenuto ({{ $language['name'] }})
+                                            </label>
+                                            <textarea wire:model="translations.{{ $code }}.content"
+                                                      rows="8"
+                                                      class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white"></textarea>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
                             {{-- Category --}}
                             <div>
                                 <label class="block text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">
