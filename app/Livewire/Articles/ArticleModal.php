@@ -11,9 +11,11 @@ class ArticleModal extends Component
     public $isOpen = false;
     public $article = null;
     public $articleId = null;
+    public $redirectOnClose = false;
     
-    public function mount($articleId = null)
+    public function mount($articleId = null, $redirectOnClose = false)
     {
+        $this->redirectOnClose = $redirectOnClose;
         if ($articleId) {
             $this->openModal($articleId);
         }
@@ -49,6 +51,11 @@ class ArticleModal extends Component
         $this->isOpen = false;
         $this->article = null;
         $this->articleId = null;
+        
+        // Redirect to articles index when modal is closed from article-show page
+        if ($this->redirectOnClose) {
+            return $this->redirect(route('articles.index'), navigate: true);
+        }
     }
     
     public function render()

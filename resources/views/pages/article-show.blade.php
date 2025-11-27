@@ -1,6 +1,6 @@
 <x-layouts.app>
-    {{-- Article Modal Component - Pass article ID to auto-open --}}
-    <livewire:articles.article-modal :articleId="$article->id ?? null" />
+    {{-- Article Modal Component - Pass article ID to auto-open and redirect on close --}}
+    <livewire:articles.article-modal :articleId="$article->id ?? null" :redirectOnClose="true" />
 
     {{-- Fallback content (shown while modal loads) --}}
     <div class="min-h-screen bg-neutral-50 dark:bg-neutral-900 py-12">
