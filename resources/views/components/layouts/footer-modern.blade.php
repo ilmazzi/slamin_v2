@@ -11,39 +11,39 @@
                     <span class="text-xl font-bold text-white">{{ config('app.name') }}</span>
                 </div>
                 <p class="text-sm text-neutral-400 leading-relaxed">
-                    La community poetica più innovativa d'Italia. Condividi, scopri e connettiti attraverso la poesia.
+                    {{ __('footer.description') }}
                 </p>
             </div>
 
             <!-- Quick Links -->
             <div>
-                <h3 class="text-white font-bold mb-4">Scopri</h3>
+                <h3 class="text-white font-bold mb-4">{{ __('footer.discover') }}</h3>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="{{ route('events.index') }}" class="hover:text-primary-400 transition-colors">Eventi</a></li>
-                    <li><a href="{{ route('poems.index') }}" class="hover:text-primary-400 transition-colors">Poesie</a></li>
-                    <li><a href="{{ route('articles.index') }}" class="hover:text-primary-400 transition-colors">Articoli</a></li>
-                    <li><a href="{{ route('media.index') }}" class="hover:text-primary-400 transition-colors">Media</a></li>
+                    <li><a href="{{ route('events.index') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.events') }}</a></li>
+                    <li><a href="{{ route('poems.index') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.poems') }}</a></li>
+                    <li><a href="{{ route('articles.index') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.articles') }}</a></li>
+                    <li><a href="{{ route('media.index') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.media') }}</a></li>
                 </ul>
             </div>
 
             <!-- Community -->
             <div>
-                <h3 class="text-white font-bold mb-4">Community</h3>
+                <h3 class="text-white font-bold mb-4">{{ __('footer.community') }}</h3>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="{{ route('faq') }}" class="hover:text-primary-400 transition-colors">{{ __('help.faq.title') }}</a></li>
-                    <li><a href="{{ route('help') }}" class="hover:text-primary-400 transition-colors">{{ __('help.help.title') }}</a></li>
-                    <li><a href="{{ route('support') }}" class="hover:text-primary-400 transition-colors">Supporto</a></li>
-                    <li><a href="{{ route('contact') }}" class="hover:text-primary-400 transition-colors">Contatti</a></li>
+                    <li><a href="{{ route('faq') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.faq') }}</a></li>
+                    <li><a href="{{ route('help') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.help') }}</a></li>
+                    <li><a href="{{ route('support') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.support') }}</a></li>
+                    <li><a href="{{ route('contact') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.contact') }}</a></li>
                 </ul>
             </div>
 
             <!-- Legal -->
             <div>
-                <h3 class="text-white font-bold mb-4">Legale</h3>
+                <h3 class="text-white font-bold mb-4">{{ __('footer.legal') }}</h3>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="{{ route('terms') }}" class="hover:text-primary-400 transition-colors">Termini di Servizio</a></li>
-                    <li><a href="{{ route('privacy') }}" class="hover:text-primary-400 transition-colors">Privacy Policy</a></li>
-                    <li><a href="{{ route('about') }}" class="hover:text-primary-400 transition-colors">Chi Siamo</a></li>
+                    <li><a href="{{ route('terms') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.terms') }}</a></li>
+                    <li><a href="{{ route('privacy') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.privacy') }}</a></li>
+                    <li><a href="{{ route('about') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.about') }}</a></li>
                 </ul>
             </div>
         </div>
@@ -51,7 +51,7 @@
         <!-- Bottom Bar -->
         <div class="border-t border-neutral-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <p class="text-sm text-neutral-500">
-                &copy; {{ date('Y') }} {{ config('app.name') }}. Tutti i diritti riservati.
+                &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('footer.copyright') }}
             </p>
             <div class="flex items-center gap-6">
                 <a href="#" class="text-neutral-400 hover:text-primary-400 transition-colors">

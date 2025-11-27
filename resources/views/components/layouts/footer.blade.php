@@ -3,10 +3,9 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <!-- About -->
             <div class="col-span-1 md:col-span-2">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">SLAMIN</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ config('app.name') }}</h3>
                 <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                    Un portale dedicato ai poeti per condividere le loro opere, partecipare ad eventi 
-                    e connettersi con la community letteraria.
+                    {{ __('footer.description_alt') }}
                 </p>
                 <div class="flex space-x-4">
                     <a href="#" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
@@ -29,29 +28,29 @@
 
             <!-- Links -->
             <div>
-                <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Link Utili</h4>
+                <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">{{ __('footer.useful_links') }}</h4>
                 <ul class="space-y-2">
-                    <li><a href="{{ route('about') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">Chi Siamo</a></li>
-                    <li><a href="{{ route('contact') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">Contatti</a></li>
-                    <li><a href="{{ route('terms') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">Termini</a></li>
-                    <li><a href="{{ route('privacy') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">Privacy</a></li>
+                    <li><a href="{{ route('about') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">{{ __('footer.about') }}</a></li>
+                    <li><a href="{{ route('contact') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">{{ __('footer.contact') }}</a></li>
+                    <li><a href="{{ route('terms') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">{{ __('footer.terms') }}</a></li>
+                    <li><a href="{{ route('privacy') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">{{ __('footer.privacy') }}</a></li>
                 </ul>
             </div>
 
             <!-- Resources -->
             <div>
-                <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Risorse</h4>
+                <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">{{ __('footer.resources') }}</h4>
                 <ul class="space-y-2">
-                    <li><a href="{{ route('guidelines') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">Linee Guida</a></li>
-                    <li><a href="{{ route('faq') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">FAQ</a></li>
-                    <li><a href="{{ route('support') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">Supporto</a></li>
+                    <li><a href="{{ route('guidelines') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">{{ __('footer.guidelines') }}</a></li>
+                    <li><a href="{{ route('faq') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">{{ __('footer.faq') }}</a></li>
+                    <li><a href="{{ route('support') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">{{ __('footer.support') }}</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
             <p class="text-center text-gray-600 dark:text-gray-300 text-sm">
-                &copy; {{ date('Y') }} SLAMIN. Tutti i diritti riservati.
+                &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('footer.copyright') }}
             </p>
         </div>
     </div>
