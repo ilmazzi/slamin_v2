@@ -107,6 +107,7 @@ class EventCreation extends Component
 
     // Event settings
     public $max_participants = '';
+    public $has_capacity_limit = false;
     public $allow_requests = false;
 
     // Invitations

@@ -1304,14 +1304,14 @@
                                             </div>
                                             <div class="flex items-center gap-3">
                                                 <div class="w-12 h-7 rounded-full relative transition-all duration-300 cursor-pointer
-                                                            {{ $max_participants ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}"
+                                                            {{ $has_capacity_limit ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}"
                                                      wire:click="$toggle('has_capacity_limit')">
                                                     <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
-                                                                {{ $max_participants ? 'left-6' : 'left-1' }}"></div>
+                                                                {{ $has_capacity_limit ? 'left-6' : 'left-1' }}"></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        @if($max_participants || $has_capacity_limit)
+                                        @if($has_capacity_limit)
                                             <div class="mt-3">
                                                 <input type="number"
                                                        wire:model="max_participants"
