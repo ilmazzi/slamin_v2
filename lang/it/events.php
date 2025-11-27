@@ -337,6 +337,10 @@ return [
         'role_organizer' => 'organizzatore',
         'role_audience' => 'pubblico',
         'role_participant' => 'partecipante',
+        'resend_button' => 'Reinvia Inviti',
+        'resend_confirm' => 'Sei sicuro di voler reinviare tutte le notifiche agli invitati pendenti?',
+        'resend_success' => ':count notifiche reinviate con successo!',
+        'no_pending_invitations' => 'Non ci sono inviti pendenti da reinviare.',
     ],
 ];
 

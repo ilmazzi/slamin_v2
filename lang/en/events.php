@@ -180,6 +180,10 @@ return [
         'role_organizer' => 'organizer',
         'role_audience' => 'audience',
         'role_participant' => 'participant',
+        'resend_button' => 'Resend Invitations',
+        'resend_confirm' => 'Are you sure you want to resend all notifications to pending invitees?',
+        'resend_success' => ':count notifications resent successfully!',
+        'no_pending_invitations' => 'There are no pending invitations to resend.',
     ],
 ];
 
