@@ -131,9 +131,31 @@
                                         </span>
 
                                         <div class="flex items-center gap-2">
-                                            <span class="text-xs text-primary-600 dark:text-primary-400 font-medium">
-                                                Visualizza →
-                                            </span>
+                                            @if($notification['type'] === 'event_invitation' && isset($notification['data']['invitation_id']))
+                                                {{-- Event Invitation Actions --}}
+                                                @php
+                                                    $invitation = \App\Models\EventInvitation::find($notification['data']['invitation_id'] ?? null);
+                                                    $isPending = $invitation && $invitation->isPending();
+                                                @endphp
+                                                @if($isPending)
+                                                    <button wire:click.stop="acceptEventInvitation('{{ $notification['id'] }}')"
+                                                            class="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded-lg transition-colors">
+                                                        ✓ {{ __('events.invitation.accept') }}
+                                                    </button>
+                                                    <button wire:click.stop="declineEventInvitation('{{ $notification['id'] }}')"
+                                                            class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors">
+                                                        ✕ {{ __('events.invitation.decline') }}
+                                                    </button>
+                                                @else
+                                                    <span class="text-xs {{ $invitation && $invitation->isAccepted() ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }} font-medium">
+                                                        {{ $invitation && $invitation->isAccepted() ? __('events.invitation.accepted') : __('events.invitation.declined') }}
+                                                    </span>
+                                                @endif
+                                            @else
+                                                <span class="text-xs text-primary-600 dark:text-primary-400 font-medium">
+                                                    Visualizza →
+                                                </span>
+                                            @endif
                                             
                                             <button wire:click.stop="deleteNotification('{{ $notification['id'] }}')"
                                                     class="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium">

@@ -86,6 +86,7 @@ class NotificationModal extends Component
             'forum_user_banned' => 'Bannato da subreddit',
             'forum_moderator_added' => 'Sei moderatore',
             'chat_new_message' => 'Nuovo messaggio',
+            'event_invitation' => $data['title'] ?? __('events.invitation.notification_title'),
             default => $data['title'] ?? 'Notifica',
         };
     }
@@ -105,6 +106,16 @@ class NotificationModal extends Component
             'forum_post_removed' => 'Il tuo post "' . \Str::limit($data['post_title'] ?? '', 50) . '" è stato rimosso' . (isset($data['reason']) ? ': ' . $data['reason'] : ''),
             'forum_user_banned' => 'Sei stato bannato da r/' . ($data['subreddit_name'] ?? '') . (isset($data['expires_at']) && !$data['is_permanent'] ? ' fino al ' . \Carbon\Carbon::parse($data['expires_at'])->format('d/m/Y') : ' permanentemente'),
             'forum_moderator_added' => 'Sei stato aggiunto come ' . __('forum.' . ($data['role'] ?? 'moderator')) . ' di r/' . ($data['subreddit_name'] ?? ''),
+            'event_invitation' => $data['message'] ?? __('events.invitation.notification_message', [
+                'inviter' => $data['sender_name'] ?? 'Qualcuno',
+                'event' => $data['event_title'] ?? 'un evento',
+                'role' => match($data['role'] ?? 'participant') {
+                    'performer' => __('events.invitation.role_performer'),
+                    'organizer' => __('events.invitation.role_organizer'),
+                    'audience' => __('events.invitation.role_audience'),
+                    default => __('events.invitation.role_participant'),
+                }
+            ]),
             default => $data['message'] ?? '',
         };
     }
@@ -122,6 +133,7 @@ class NotificationModal extends Component
             'forum_user_banned' => '🔨',
             'forum_moderator_added' => '👑',
             'chat_new_message' => '💬',
+            'event_invitation' => '📅',
             default => '🔔',
         };
     }
@@ -158,6 +170,118 @@ class NotificationModal extends Component
     public function clearAll()
     {
         Auth::user()->notifications()->delete();
+        $this->loadNotifications();
+        $this->dispatch('refresh-notifications');
+    }
+
+    public function acceptEventInvitation($notificationId)
+    {
+        $notification = Auth::user()->notifications()->find($notificationId);
+        
+        if (!$notification) {
+            session()->flash('error', __('events.invitation.invalid_invitation'));
+            return;
+        }
+
+        $data = $notification->data;
+        $invitationId = $data['invitation_id'] ?? null;
+
+        if (!$invitationId) {
+            session()->flash('error', __('events.invitation.invalid_invitation'));
+            return;
+        }
+
+        try {
+            $invitation = \App\Models\EventInvitation::find($invitationId);
+            
+            if (!$invitation) {
+                session()->flash('error', __('events.invitation.invalid_invitation'));
+                return;
+            }
+
+            // Check if the invitation belongs to the authenticated user
+            if ($invitation->invited_user_id !== Auth::id()) {
+                session()->flash('error', __('events.invitation.cannot_accept_others_invitation'));
+                return;
+            }
+
+            // Check if invitation is still pending
+            if (!$invitation->isPending()) {
+                session()->flash('info', __('events.invitation.already_responded'));
+                return;
+            }
+
+            // Update invitation status
+            $invitation->update(['status' => 'accepted']);
+
+            // Mark notification as read
+            $notification->markAsRead();
+
+            session()->flash('success', __('events.invitation.accepted_success'));
+        } catch (\Exception $e) {
+            \Log::error('Error accepting event invitation', [
+                'invitation_id' => $invitationId,
+                'error' => $e->getMessage()
+            ]);
+            session()->flash('error', __('events.invitation.accept_error'));
+        }
+
+        $this->loadNotifications();
+        $this->dispatch('refresh-notifications');
+    }
+
+    public function declineEventInvitation($notificationId)
+    {
+        $notification = Auth::user()->notifications()->find($notificationId);
+        
+        if (!$notification) {
+            session()->flash('error', __('events.invitation.invalid_invitation'));
+            return;
+        }
+
+        $data = $notification->data;
+        $invitationId = $data['invitation_id'] ?? null;
+
+        if (!$invitationId) {
+            session()->flash('error', __('events.invitation.invalid_invitation'));
+            return;
+        }
+
+        try {
+            $invitation = \App\Models\EventInvitation::find($invitationId);
+            
+            if (!$invitation) {
+                session()->flash('error', __('events.invitation.invalid_invitation'));
+                return;
+            }
+
+            // Check if the invitation belongs to the authenticated user
+            if ($invitation->invited_user_id !== Auth::id()) {
+                session()->flash('error', __('events.invitation.cannot_decline_others_invitation'));
+                return;
+            }
+
+            // Check if invitation is still pending
+            if (!$invitation->isPending()) {
+                session()->flash('info', __('events.invitation.already_responded'));
+                return;
+            }
+
+            // Update invitation status
+            $invitation->update(['status' => 'declined']);
+
+            // Mark notification as read
+            $notification->markAsRead();
+
+            session()->flash('success', __('events.invitation.declined_success'));
+        } catch (\Exception $e) {
+            \Log::error('Error declining event invitation', [
+                'invitation_id' => $invitationId,
+                'error' => $e->getMessage()
+            ]);
+            session()->flash('error', __('events.invitation.decline_error'));
+        }
+
         $this->loadNotifications();
         $this->dispatch('refresh-notifications');
     }

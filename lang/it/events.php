@@ -341,6 +341,18 @@ return [
         'resend_confirm' => 'Sei sicuro di voler reinviare tutte le notifiche agli invitati pendenti?',
         'resend_success' => ':count notifiche reinviate con successo!',
         'no_pending_invitations' => 'Non ci sono inviti pendenti da reinviare.',
+        'accept' => 'Accetta',
+        'decline' => 'Rifiuta',
+        'accepted' => 'Accettato',
+        'declined' => 'Rifiutato',
+        'accepted_success' => 'Invito accettato con successo!',
+        'declined_success' => 'Invito rifiutato.',
+        'accept_error' => 'Errore nell\'accettare l\'invito.',
+        'decline_error' => 'Errore nel rifiutare l\'invito.',
+        'cannot_accept_others_invitation' => 'Non puoi accettare inviti di altri utenti.',
+        'cannot_decline_others_invitation' => 'Non puoi rifiutare inviti di altri utenti.',
+        'already_responded' => 'Hai già risposto a questo invito.',
+        'invalid_invitation' => 'Invito non valido.',
     ],
 ];
 

@@ -184,6 +184,18 @@ return [
         'resend_confirm' => 'Are you sure you want to resend all notifications to pending invitees?',
         'resend_success' => ':count notifications resent successfully!',
         'no_pending_invitations' => 'There are no pending invitations to resend.',
+        'accept' => 'Accept',
+        'decline' => 'Decline',
+        'accepted' => 'Accepted',
+        'declined' => 'Declined',
+        'accepted_success' => 'Invitation accepted successfully!',
+        'declined_success' => 'Invitation declined.',
+        'accept_error' => 'Error accepting invitation.',
+        'decline_error' => 'Error declining invitation.',
+        'cannot_accept_others_invitation' => 'You cannot accept other users\' invitations.',
+        'cannot_decline_others_invitation' => 'You cannot decline other users\' invitations.',
+        'already_responded' => 'You have already responded to this invitation.',
+        'invalid_invitation' => 'Invalid invitation.',
     ],
 ];
 

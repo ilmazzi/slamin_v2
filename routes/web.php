@@ -158,8 +158,14 @@ Route::get('/events/create', \App\Livewire\Events\EventCreation::class)
 Route::get('/events/{event}', \App\Livewire\Events\EventShow::class)->name('events.show');
 
 Route::get('/events/{event}/edit', \App\Livewire\Events\EventEdit::class)
-    ->middleware('auth')
+->middleware('auth')
     ->name('events.edit');
+
+// Event Invitation Routes
+Route::middleware('auth')->prefix('event-invitations')->name('event-invitations.')->group(function () {
+    Route::post('/{invitation}/accept', [App\Http\Controllers\EventInvitationController::class, 'accept'])->name('accept');
+    Route::post('/{invitation}/decline', [App\Http\Controllers\EventInvitationController::class, 'decline'])->name('decline');
+});
 
 // Event Scoring Routes
 Route::middleware('auth')->prefix('events/{event}/scoring')->name('events.scoring.')->group(function () {
