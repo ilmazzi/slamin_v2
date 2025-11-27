@@ -94,6 +94,7 @@
                     <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.eventiLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">{{ __('common.events') }}</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
 
+                @auth
                 <!-- Ingaggi -->
                 <li class="relative" x-data="{ tooltip: false }">
                     <a href="{{ route('gigs.index') }}" 
@@ -118,6 +119,7 @@
                     </a>
                     <div x-show="tooltip && collapsed" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4 scale-95" x-transition:enter-end="opacity-100 translate-x-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-x-0 scale-100" x-transition:leave-end="opacity-0 translate-x-4 scale-95" class="fixed px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold rounded-xl shadow-2xl whitespace-nowrap z-[9999]" :style="`left: 88px; top: ${$refs.gigsLink.getBoundingClientRect().top}px;`" style="box-shadow: 0 10px 40px -10px rgba(5, 150, 105, 0.5);"><span class="relative z-10">{{ __('common.gigs') }}</span><div class="absolute inset-0 bg-primary-400/20 rounded-xl blur-xl -z-10"></div><div class="absolute right-full top-1/2 -translate-y-1/2 mr-0.5"><div class="w-0 h-0 border-t-[7px] border-t-transparent border-b-[7px] border-b-transparent border-r-[8px] border-r-primary-600"></div></div></div>
                 </li>
+                @endauth
 
                 <!-- Poesie -->
                 <li class="relative" x-data="{ tooltip: false }">
