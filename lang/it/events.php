@@ -29,18 +29,18 @@ return [
     'venue' => 'Sede',
     
     // Event Categories
-    'category_poetry_slam' => 'Poetry Slam',
+    'category_poetry_slam' => 'Poetry slam',
     'category_workshop' => 'Workshop',
-    'category_open_mic' => 'Open Mic',
+    'category_open_mic' => 'Open mic',
     'category_reading' => 'Lettura',
     'category_festival' => 'Festival',
     'category_concert' => 'Concerto',
-    'category_book_presentation' => 'Presentazione Libro',
+    'category_book_presentation' => 'Presentazione libro',
     'category_conference' => 'Conferenza',
     'category_contest' => 'Contest',
-    'category_poetry_art' => 'Arte Poetica',
+    'category_poetry_art' => 'Arte poetica',
     'category_residency' => 'Residenza',
-    'category_spoken_word' => 'Spoken Word',
+    'category_spoken_word' => 'Spoken word',
     'category_other' => 'Altro',
     
     // Actions
@@ -114,21 +114,69 @@ return [
     
     // Create/Edit
     'create' => [
-        'title' => 'Crea Evento',
-        'edit_title' => 'Modifica Evento',
-        'publish_status' => 'Stato Pubblicazione',
-        'publish_now' => 'Pubblica Subito',
-        'save_draft' => 'Salva Bozza',
+        'title' => 'Crea evento',
+        'edit_title' => 'Modifica evento',
+        'publish_status' => 'Stato pubblicazione',
+        'publish_now' => 'Pubblica subito',
+        'save_draft' => 'Salva bozza',
         'publish_later' => 'Pubblica più tardi',
-        'preview_confirm' => 'Anteprima & Conferma',
-        'publish_event' => 'Pubblica Evento',
-        'update_event' => 'Aggiorna Evento',
-        'save_changes' => 'Salva Modifiche',
+        'preview_confirm' => 'Anteprima e conferma',
+        'publish_event' => 'Pubblica evento',
+        'update_event' => 'Aggiorna evento',
+        'save_changes' => 'Salva modifiche',
         'saving' => 'Salvando...',
         'published_badge' => '🚀 Pubblicato',
         'draft_badge' => '📝 Bozza',
-        'recent_venues' => 'Luoghi Recenti',
+        'recent_venues' => 'Luoghi recenti',
         'select_from_recent_venues' => 'Seleziona da luoghi recenti...',
+        
+        // Form sections
+        'basic_info' => 'Informazioni base',
+        'date_location' => 'Data e luogo',
+        'media_tickets' => 'Media e biglietti',
+        'settings' => 'Impostazioni',
+        'preview' => 'Anteprima',
+        
+        // Basic info fields
+        'event_title' => 'Titolo evento',
+        'add_subtitle' => 'Aggiungi sottotitolo',
+        'subtitle' => 'Sottotitolo',
+        'description' => 'Descrizione',
+        'requirements' => 'Requisiti',
+        'category' => 'Categoria',
+        
+        // Date & Location
+        'recurring_event' => 'Evento ricorrente',
+        'recurrence_type' => 'Tipo ricorrenza',
+        'recurrence_count' => 'Numero occorrenze',
+        'availability_based' => 'Basato su disponibilità',
+        'response_deadline' => 'Scadenza risposte',
+        'datetime_options' => 'Opzioni di date e orari',
+        'add_option' => 'Aggiungi opzione',
+        'in_person' => 'In presenza',
+        'online' => 'Online',
+        
+        // Media & Tickets
+        'cover_image' => 'Immagine copertina',
+        'paid_event' => 'Evento a pagamento',
+        'free_event' => 'Evento gratuito',
+        'promotional_video' => 'Video promozionale (URL)',
+        'linked_to_group' => 'Collegato a un gruppo',
+        'search_group' => 'Cerca gruppo',
+        'part_of_festival' => 'Fa parte di un festival',
+        'select_festival' => 'Seleziona festival',
+        
+        // Settings
+        'max_participants' => 'Numero massimo partecipanti',
+        'registration_deadline' => 'Scadenza registrazioni',
+        'job_positions' => 'Posizioni lavorative',
+        'invite_participants' => 'Invita partecipanti (performer/organizer)',
+        'invite_audience' => 'Invita pubblico',
+        'search_users' => 'Cerca utenze...',
+        
+        // Preview
+        'unlimited' => 'Illimitati',
+        'all_set' => 'Tutto pronto!',
     ],
     
     // Scoring
