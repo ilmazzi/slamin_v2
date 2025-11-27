@@ -26,7 +26,7 @@ class HelpManagement extends Component
     
     // Translations
     public $translations = [];
-    public $activeTranslationTab = 'it';
+    public $activeTranslationTab = 'en'; // Default to English (first non-Italian language)
 
     protected $paginationTheme = 'tailwind';
 
@@ -102,7 +102,7 @@ class HelpManagement extends Component
         $this->order = 0;
         $this->isActive = true;
         $this->translations = [];
-        $this->activeTranslationTab = 'it';
+        $this->activeTranslationTab = 'en';
     }
 
     public function save()
