@@ -197,5 +197,11 @@ return [
         'already_responded' => 'You have already responded to this invitation.',
         'invalid_invitation' => 'Invalid invitation.',
     ],
+    
+    // Scoring
+    'scoring' => [
+        'score_must_be_positive' => 'Score must be a positive number!',
+        'score_must_be_between_0_and_10' => 'Score must be between 0.0 and 10.0!',
+    ],
 ];
 
