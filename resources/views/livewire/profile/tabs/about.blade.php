@@ -3,21 +3,6 @@
      x-data="{ mounted: false }"
      x-init="mounted = true">
     
-    {{-- Debug (temporaneo) --}}
-    @if(config('app.debug'))
-    <div class="bg-yellow-100 dark:bg-yellow-900/30 p-4 rounded-lg text-xs">
-        <strong>Debug:</strong><br>
-        isOwnProfile: {{ $isOwnProfile ? 'true' : 'false' }}<br>
-        website: {{ $user->website ?? 'null' }}<br>
-        phone: {{ $user->phone ?? 'null' }}<br>
-        birth_date: {{ $user->birth_date ?? 'null' }}<br>
-        email: {{ $user->email ?? 'null' }}<br>
-        show_email: {{ $user->show_email ? 'true' : 'false' }}<br>
-        show_phone: {{ $user->show_phone ? 'true' : 'false' }}<br>
-        show_birth_date: {{ $user->show_birth_date ? 'true' : 'false' }}
-    </div>
-    @endif
-    
     {{-- About Card con animazione --}}
     <div class="bg-white dark:bg-neutral-800 rounded-xl p-6 border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
          x-show="mounted"
