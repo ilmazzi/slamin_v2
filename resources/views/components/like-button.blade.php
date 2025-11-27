@@ -100,12 +100,12 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
             class="flex items-center gap-1 transition-all duration-300 group cursor-pointer hover:opacity-80">
         <img src="{{ asset('assets/icon/new/like.svg') }}" 
              alt="Like" 
-             class="{{ $iconSize }} group-hover:scale-125 transition-transform duration-300"
+             class="{{ $iconSize }} flex-shrink-0 group-hover:scale-125 transition-all duration-300"
              :style="liked 
-                ? 'filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(2618%) hue-rotate(346deg) brightness(94%) contrast(97%);' 
+                ? 'filter: brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);' 
                 : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
         <span class="font-medium {{ $textSize }}" 
-              :style="'color: ' + (liked ? '#dc2626' : '#525252')" 
+              :style="'color: ' + (liked ? '#16a34a' : '#525252')" 
               x-text="likesCount"></span>
     </button>
 </div>
