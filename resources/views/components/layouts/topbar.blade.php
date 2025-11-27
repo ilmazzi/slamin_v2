@@ -23,10 +23,14 @@
                 <img src="{{ asset('assets/images/logo.png') }}" 
                      alt="{{ config('app.name') }}" 
                      class="h-10 w-10 md:hidden object-contain">
-                <!-- Logo orizzontale desktop -->
+                <!-- Logo orizzontale desktop - Light mode -->
                 <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
                      alt="{{ config('app.name') }}" 
-                     class="hidden md:block h-8 w-auto">
+                     class="hidden md:block dark:hidden h-8 w-auto">
+                <!-- Logo orizzontale desktop - Dark mode -->
+                <img src="{{ asset('assets/images/Logo_orizzontale_bianco.png') }}" 
+                     alt="{{ config('app.name') }}" 
+                     class="hidden dark:md:block h-8 w-auto">
             </a>
 
             <!-- Search Bar (Desktop) -->
