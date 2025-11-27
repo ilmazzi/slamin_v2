@@ -147,11 +147,24 @@
 
     {{-- Create/Edit Modal --}}
     @if($showModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="fixed inset-0 z-50 overflow-y-auto" x-data x-transition>
             <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 transition-opacity bg-neutral-500 bg-opacity-75" wire:click="$set('showModal', false)"></div>
+                <div class="fixed inset-0 transition-opacity bg-black/30 backdrop-blur-sm" 
+                     wire:click="$set('showModal', false)"
+                     x-transition:enter="ease-out duration-300"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     x-transition:leave="ease-in duration-200"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"></div>
                 
-                <div class="relative inline-block align-bottom bg-white dark:bg-neutral-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full z-50">
+                <div class="relative inline-block align-bottom bg-white dark:bg-neutral-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full z-50"
+                     x-transition:enter="ease-out duration-300"
+                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                     x-transition:leave="ease-in duration-200"
+                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                     <div class="px-6 py-4 border-b border-neutral-200 dark:border-neutral-700 flex items-center justify-between">
                         <h3 class="text-lg font-semibold text-neutral-900 dark:text-white">
                             {{ $isEditing ? __('gamification.edit_badge') : __('gamification.create_badge') }}
@@ -351,11 +364,24 @@
 
     {{-- Assign Badge Modal --}}
     @if($showAssignModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="fixed inset-0 z-50 overflow-y-auto" x-data x-transition>
             <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 transition-opacity bg-neutral-500 bg-opacity-75" wire:click="$set('showAssignModal', false)"></div>
+                <div class="fixed inset-0 transition-opacity bg-black/30 backdrop-blur-sm" 
+                     wire:click="$set('showAssignModal', false)"
+                     x-transition:enter="ease-out duration-300"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     x-transition:leave="ease-in duration-200"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"></div>
                 
-                <div class="relative inline-block align-bottom bg-white dark:bg-neutral-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full z-50">
+                <div class="relative inline-block align-bottom bg-white dark:bg-neutral-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full z-50"
+                     x-transition:enter="ease-out duration-300"
+                     x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                     x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                     x-transition:leave="ease-in duration-200"
+                     x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                     <div class="px-6 py-4 border-b border-neutral-200 dark:border-neutral-700 flex items-center justify-between">
                         <h3 class="text-lg font-semibold text-neutral-900 dark:text-white">
                             {{ __('gamification.assign_to_user') }}
