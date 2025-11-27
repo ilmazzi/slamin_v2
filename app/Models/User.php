@@ -526,7 +526,12 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         
         // Verifica permesso diretto
-        return $this->hasPermissionTo('create.article');
+        if ($this->hasPermissionTo('create.article')) {
+            return true;
+        }
+        
+        // Verifica ruoli che possono creare articoli
+        return $this->hasAnyRole(['poet', 'organizer']);
     }
     
     /**
