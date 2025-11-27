@@ -273,7 +273,7 @@
             font-family: 'Crimson Pro', serif;
             font-size: 1.5rem;
             font-weight: 900;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.05em;
             color: #000;
         }
         
