@@ -53,6 +53,9 @@ class ParticipantManagement extends Component
 
     public function loadParticipants()
     {
+        // Sync accepted invitations with participants (create missing participants)
+        $this->syncAcceptedInvitationsToParticipants();
+        
         // Get all participants
         $allParticipants = $this->event->participants()
             ->with(['user', 'ranking'])
@@ -74,6 +77,33 @@ class ParticipantManagement extends Component
             
             return $acceptedInvitation !== null;
         })->sortBy('performance_order')->values();
+    }
+
+    /**
+     * Sync accepted invitations to participants (create missing EventParticipant records)
+     */
+    private function syncAcceptedInvitationsToParticipants()
+    {
+        $acceptedInvitations = $this->event->invitations()
+            ->where('status', 'accepted')
+            ->where('role', 'performer')
+            ->get();
+        
+        foreach ($acceptedInvitations as $invitation) {
+            $existingParticipant = \App\Models\EventParticipant::where('event_id', $this->event->id)
+                ->where('user_id', $invitation->invited_user_id)
+                ->first();
+            
+            if (!$existingParticipant) {
+                \App\Models\EventParticipant::create([
+                    'event_id' => $this->event->id,
+                    'user_id' => $invitation->invited_user_id,
+                    'registration_type' => 'invited',
+                    'status' => 'confirmed',
+                    'added_by' => $invitation->inviter_id,
+                ]);
+            }
+        }
     }
 
     public function openAddModal()

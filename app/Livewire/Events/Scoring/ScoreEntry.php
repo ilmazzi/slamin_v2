@@ -51,6 +51,9 @@ class ScoreEntry extends Component
     {
         $this->rounds = $this->event->rounds()->ordered()->get();
         
+        // Sync accepted invitations with participants (create missing participants)
+        $this->syncAcceptedInvitationsToParticipants();
+        
         // Get all participants with confirmed/performed status
         $allParticipants = $this->event->participants()
             ->whereIn('status', ['confirmed', 'performed'])
@@ -79,6 +82,33 @@ class ScoreEntry extends Component
         // Auto-create first round if none exist
         if ($this->rounds->count() === 0) {
             $this->createDefaultRound();
+        }
+    }
+
+    /**
+     * Sync accepted invitations to participants (create missing EventParticipant records)
+     */
+    private function syncAcceptedInvitationsToParticipants()
+    {
+        $acceptedInvitations = $this->event->invitations()
+            ->where('status', 'accepted')
+            ->where('role', 'performer')
+            ->get();
+        
+        foreach ($acceptedInvitations as $invitation) {
+            $existingParticipant = \App\Models\EventParticipant::where('event_id', $this->event->id)
+                ->where('user_id', $invitation->invited_user_id)
+                ->first();
+            
+            if (!$existingParticipant) {
+                \App\Models\EventParticipant::create([
+                    'event_id' => $this->event->id,
+                    'user_id' => $invitation->invited_user_id,
+                    'registration_type' => 'invited',
+                    'status' => 'confirmed',
+                    'added_by' => $invitation->inviter_id,
+                ]);
+            }
         }
     }
 
