@@ -98,23 +98,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'birth_date' => 'date',
-            'show_email' => 'boolean',
-            'show_phone' => 'boolean',
-            'show_birth_date' => 'boolean',
-        ];
-    }
-
-    /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>
@@ -134,6 +117,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'birth_date' => 'date',
             'peertube_token_expires_at' => 'datetime',
             'peertube_created_at' => 'datetime',
             'last_seen_at' => 'datetime',
@@ -145,6 +129,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'stripe_connected_at' => 'datetime',
             'paypal_connected_at' => 'datetime',
             'paypal_verified' => 'boolean',
+            // Profile privacy settings
+            'show_email' => 'boolean',
+            'show_phone' => 'boolean',
+            'show_birth_date' => 'boolean',
             'payout_method_configured' => 'boolean',
         ];
     }
