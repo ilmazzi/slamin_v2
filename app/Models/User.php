@@ -253,8 +253,9 @@ class User extends Authenticatable implements MustVerifyEmail
             }
         }
 
-        // Permessi tramite ruoli
-        foreach ($this->roles()->get() as $role) {
+        // Permessi tramite ruoli - carica i ruoli con i permessi per evitare query N+1
+        $roles = $this->roles()->with('permissions')->get();
+        foreach ($roles as $role) {
             if ($role->hasPermissionTo($permission)) {
                 return true;
             }

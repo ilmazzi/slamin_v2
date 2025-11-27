@@ -88,13 +88,24 @@ class Role extends Model
     public function syncPermissions(array $permissions): self
     {
         $permissionIds = collect($permissions)->map(function ($permission) {
+            // Se è già un ID numerico, restituiscilo direttamente
+            if (is_numeric($permission)) {
+                return (int) $permission;
+            }
+            
+            // Se è un oggetto Permission, prendi l'ID
             if ($permission instanceof Permission) {
                 return $permission->id;
             }
+            
+            // Altrimenti, cerca per nome
             return Permission::where('name', $permission)->first()?->id;
         })->filter()->toArray();
 
         $this->permissions()->sync($permissionIds);
+        
+        // Ricarica la relazione per assicurarsi che i permessi siano aggiornati
+        $this->load('permissions');
 
         return $this;
     }
@@ -104,6 +115,11 @@ class Role extends Model
      */
     public function hasPermissionTo(Permission|string $permission): bool
     {
+        // Se la relazione non è caricata, caricala
+        if (!$this->relationLoaded('permissions')) {
+            $this->load('permissions');
+        }
+        
         if (is_string($permission)) {
             return $this->permissions()->where('name', $permission)->exists();
         }
