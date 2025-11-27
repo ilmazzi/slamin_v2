@@ -35,16 +35,30 @@ class NotificationAnimation extends Component
             ->whereNull('read_at')
             ->get();
         
+        \Log::info('All notifications found', [
+            'total' => $allNotifications->count(),
+            'types' => $allNotifications->pluck('data.type')->toArray()
+        ]);
+        
         // Filtra manualmente escludendo i messaggi di chat
-        $newNotifications = $allNotifications->filter(function($notification) {
+        $filteredNotifications = $allNotifications->filter(function($notification) {
             $type = $notification->data['type'] ?? null;
-            return $type !== 'chat_new_message';
-        })->count();
+            $isChat = $type === 'chat_new_message';
+            \Log::info('Filtering notification', [
+                'type' => $type,
+                'is_chat' => $isChat,
+                'will_show' => !$isChat
+            ]);
+            return !$isChat;
+        });
+        
+        $newNotifications = $filteredNotifications->count();
 
         \Log::info('Polling for notifications', [
             'user_id' => Auth::id(),
             'last_checked_at' => $this->lastCheckedAt,
-            'new_notifications' => $newNotifications,
+            'total_notifications' => $allNotifications->count(),
+            'filtered_notifications' => $newNotifications,
         ]);
 
         if ($newNotifications > 0) {
