@@ -38,8 +38,8 @@
                 <select wire:model.live="filterLocale" 
                         class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium">
                     <option value="all">Tutte</option>
-                    @foreach($languages as $code => $name)
-                        <option value="{{ $code }}">{{ $name }}</option>
+                    @foreach($languages as $code => $language)
+                        <option value="{{ $code }}">{{ $language['flag'] }} {{ $language['name'] }}</option>
                     @endforeach
                 </select>
             </div>
@@ -169,8 +169,8 @@
                                     </label>
                                     <select wire:model="locale" 
                                             class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium">
-                                        @foreach($languages as $code => $name)
-                                            <option value="{{ $code }}">{{ $name }}</option>
+                                        @foreach($languages as $code => $language)
+                                            <option value="{{ $code }}">{{ $language['flag'] }} {{ $language['name'] }}</option>
                                         @endforeach
                                     </select>
                                     @error('locale') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror

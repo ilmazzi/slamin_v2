@@ -268,8 +268,8 @@
                         </p>
                         <select wire:model.live="language" 
                                 class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
-                            @foreach($this->languages as $code => $name)
-                                <option value="{{ $code }}">{{ $name }}</option>
+                            @foreach($this->languages as $code => $language)
+                                <option value="{{ $code }}">{{ $language['flag'] }} {{ $language['name'] }}</option>
                             @endforeach
                         </select>
                         @error('language')
