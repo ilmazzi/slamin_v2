@@ -46,12 +46,18 @@ class User extends Authenticatable implements MustVerifyEmail
         'status',
         'phone',
         'website',
+        'birth_date',
         'profile_photo',
         'banner_image',
         'social_facebook',
         'social_instagram',
         'social_youtube',
         'social_twitter',
+        'social_linkedin',
+        // Privacy settings
+        'show_email',
+        'show_phone',
+        'show_birth_date',
         // Online status fields
         'is_online',
         'last_seen_at',
@@ -90,6 +96,23 @@ class User extends Authenticatable implements MustVerifyEmail
         'peertube_password',
         'peertube_roles',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'birth_date' => 'date',
+            'show_email' => 'boolean',
+            'show_phone' => 'boolean',
+            'show_birth_date' => 'boolean',
+        ];
+    }
 
     /**
      * The attributes that should be hidden for serialization.
