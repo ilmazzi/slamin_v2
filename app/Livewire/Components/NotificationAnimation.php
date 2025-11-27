@@ -14,8 +14,13 @@ class NotificationAnimation extends Component
     public function mount()
     {
         if (Auth::check()) {
-            // Inizializza con il timestamp corrente
+            // Inizializza con il timestamp corrente per evitare di mostrare notifiche vecchie
             $this->lastCheckedAt = now();
+            
+            \Log::info('NotificationAnimation mounted', [
+                'user_id' => Auth::id(),
+                'last_checked_at' => $this->lastCheckedAt
+            ]);
         }
     }
 
@@ -61,12 +66,17 @@ class NotificationAnimation extends Component
             'filtered_notifications' => $newNotifications,
         ]);
 
+        // IMPORTANTE: Aggiorna sempre lastCheckedAt per evitare di ricontrollare le stesse notifiche
+        // anche se sono state filtrate (es. messaggi di chat)
+        if ($allNotifications->count() > 0) {
+            $this->lastCheckedAt = now();
+        }
+
         if ($newNotifications > 0) {
             \Log::info('New notification found! Showing animation');
             $this->showAnimation = true;
-            $this->lastCheckedAt = now();
             
-            // Auto-hide dopo 8 secondi
+            // Auto-hide dopo 10 secondi
             $this->dispatch('auto-hide-notification');
         }
     }
