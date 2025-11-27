@@ -19,10 +19,14 @@
 
             <!-- Logo (Responsive: piccolo su mobile, orizzontale su desktop) -->
             <a href="{{ route('home') }}" class="flex items-center">
-                <!-- Logo piccolo mobile -->
-                <img src="{{ asset('assets/images/logo.png') }}" 
+                <!-- Logo piccolo mobile - Light mode -->
+                <img src="{{ asset('assets/images/loghino-nerosubianco.png') }}" 
                      alt="{{ config('app.name') }}" 
-                     class="h-10 w-10 md:hidden object-contain">
+                     class="h-10 w-10 md:hidden dark:hidden object-contain">
+                <!-- Logo piccolo mobile - Dark mode -->
+                <img src="{{ asset('assets/images/loghino-biancosunero.png') }}" 
+                     alt="{{ config('app.name') }}" 
+                     class="h-10 w-10 hidden dark:block md:dark:hidden object-contain">
                 <!-- Logo orizzontale desktop - Light mode -->
                 <img src="{{ asset('assets/images/Logo_orizzontale_nerosubianco.png') }}" 
                      alt="{{ config('app.name') }}" 
