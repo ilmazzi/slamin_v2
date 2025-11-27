@@ -60,9 +60,16 @@
                             <select wire:model.live="groupFilter"
                                     class="w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500">
                                 <option value="">{{ __('groups.all_groups_filter') }}</option>
+                                @auth
                                 <option value="my_groups">{{ __('groups.my_groups_filter') }}</option>
                                 <option value="my_admin_groups">{{ __('groups.my_admin_groups_filter') }}</option>
+                                @endauth
                                 <option value="public">{{ __('groups.public_filter') }}</option>
+                                @auth
+                                @if(auth()->user()->hasRole('admin'))
+                                <option value="private">{{ __('groups.private_filter') }}</option>
+                                @endif
+                                @endauth
                             </select>
                         </div>
                         <div>

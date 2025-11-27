@@ -81,14 +81,24 @@ class GroupIndex extends Component
         if ($this->groupFilter) {
             switch ($this->groupFilter) {
                 case 'my_groups':
-                    $query->whereHas('members', function($q) use ($user) {
-                        $q->where('user_id', $user->id);
-                    });
+                    if ($user) {
+                        $query->whereHas('members', function($q) use ($user) {
+                            $q->where('user_id', $user->id);
+                        });
+                    } else {
+                        // If not authenticated, return empty result
+                        $query->whereRaw('1 = 0');
+                    }
                     break;
                 case 'my_admin_groups':
-                    $query->whereHas('members', function($q) use ($user) {
-                        $q->where('user_id', $user->id)->where('role', 'admin');
-                    });
+                    if ($user) {
+                        $query->whereHas('members', function($q) use ($user) {
+                            $q->where('user_id', $user->id)->where('role', 'admin');
+                        });
+                    } else {
+                        // If not authenticated, return empty result
+                        $query->whereRaw('1 = 0');
+                    }
                     break;
                 case 'public':
                     $query->where('visibility', 'public');
@@ -96,6 +106,9 @@ class GroupIndex extends Component
                 case 'private':
                     if ($user && $user->hasRole('admin')) {
                         $query->where('visibility', 'private');
+                    } else {
+                        // If not authenticated or not admin, return empty result
+                        $query->whereRaw('1 = 0');
                     }
                     break;
             }

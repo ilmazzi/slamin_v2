@@ -64,8 +64,11 @@ Route::get('/parallax-enhanced', function () {
 Route::get('/events', \App\Livewire\Events\EventsIndex::class)->name('events.index');
 
 // Groups Routes
+// Index route is public (no auth required)
+Route::get('/groups', \App\Livewire\Groups\GroupIndex::class)->name('groups.index');
+
+// Other groups routes require authentication
 Route::middleware('auth')->prefix('groups')->name('groups.')->group(function () {
-    Route::get('/', \App\Livewire\Groups\GroupIndex::class)->name('index');
     Route::get('/create', \App\Livewire\Groups\GroupCreate::class)->name('create');
     Route::get('/{group}/edit', \App\Livewire\Groups\GroupEdit::class)->name('edit');
     
