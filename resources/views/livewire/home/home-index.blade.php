@@ -28,7 +28,7 @@
                 
                 {{-- Categories Grid - Simple Icons with Section Themes --}}
                 <div class="pt-8 flex md:flex-wrap justify-start md:justify-center gap-4 max-w-6xl mx-auto overflow-x-auto md:overflow-x-visible scrollbar-hide px-4 md:px-0"
-                     style="-webkit-overflow-scrolling: touch;">
+                     style="-webkit-overflow-scrolling: touch; isolation: isolate; transform: translateZ(0);">
                     
                     {{-- Poetry - Mini Paper Sheet --}}
                     <?php $paperRotation = rand(-2, 2); ?>
@@ -825,10 +825,12 @@
             display: block;
             width: 130px;
             transition: all 0.3s ease;
+            /* Prevent rendering artifacts */
+            isolation: isolate;
         }
         
         .hero-paper-wrapper:hover {
-            transform: translateY(-6px) scale(1.05);
+            transform: translateY(-6px) scale(1.05) translateZ(0);
         }
         
         .hero-paper-sheet {
@@ -889,10 +891,12 @@
             width: 130px;
             position: relative;
             transition: all 0.3s ease;
+            /* Prevent rendering artifacts */
+            isolation: isolate;
         }
         
         .hero-magazine-wrapper:hover {
-            transform: translateY(-6px);
+            transform: translateY(-6px) translateZ(0);
         }
         
         .hero-thumbtack {
@@ -992,10 +996,12 @@
             width: 130px;
             position: relative;
             transition: all 0.3s ease;
+            /* Prevent rendering artifacts */
+            isolation: isolate;
         }
         
         .hero-notice-wrapper:hover {
-            transform: translateY(-6px);
+            transform: translateY(-6px) translateZ(0);
         }
         
         .hero-washi-tape {
@@ -1140,10 +1146,12 @@
             display: block;
             width: 130px;
             transition: all 0.3s ease;
+            /* Prevent rendering artifacts */
+            isolation: isolate;
         }
         
         .hero-ticket-wrapper:hover {
-            transform: translateY(-6px) scale(1.02);
+            transform: translateY(-6px) scale(1.02) translateZ(0);
         }
         
         .hero-cinema-ticket {
@@ -1246,10 +1254,12 @@
             display: block;
             width: 130px;
             transition: all 0.3s ease;
+            /* Prevent rendering artifacts */
+            isolation: isolate;
         }
         
         .hero-film-wrapper:hover {
-            transform: translateY(-6px) scale(1.02);
+            transform: translateY(-6px) scale(1.02) translateZ(0);
         }
         
         .hero-film-strip {
@@ -1415,10 +1425,15 @@
             width: 130px;
             min-width: 130px;
             max-width: 130px;
+            /* Fix GPU rendering artifacts */
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
         
         .hero-card-container:hover > div:first-child {
-            transform: scale(1.15) translateY(-8px) !important;
+            transform: scale(1.15) translateY(-8px) translateZ(0) !important;
             z-index: 10;
         }
         
@@ -1453,6 +1468,12 @@
         .hero-film-wrapper {
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+            /* Fix GPU rendering artifacts */
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform, filter;
         }
         
         .hero-card-container:hover .hero-paper-wrapper,
@@ -1472,6 +1493,12 @@
             position: relative;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+            /* Fix GPU rendering artifacts */
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform, filter;
         }
         
         .hero-polaroid-tape {
