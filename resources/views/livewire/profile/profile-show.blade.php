@@ -139,23 +139,6 @@
                         </div>
                     @endif
 
-                    {{-- Action Buttons (only for own profile) --}}
-                    @if($isOwnProfile)
-                        <div class="flex flex-col gap-3 mt-4">
-                            <a href="{{ route('profile.edit') }}" class="edit-profile-btn">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                </svg>
-                                {{ __('profile.edit_profile') }}
-                            </a>
-                            <a href="{{ route('profile.my-media') }}" class="edit-profile-btn">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                {{ __('profile.manage_media') }}
-                            </a>
-                        </div>
-                    @endif
 
                     {{-- Social Links --}}
                     @if($user->social_facebook || $user->social_instagram || $user->social_twitter || $user->social_youtube || $user->social_linkedin)
@@ -197,6 +180,28 @@
             <span>{{ __('profile.scroll_to_explore') }}</span>
         </div>
     </section>
+
+    {{-- Action Buttons Bar (only for own profile) - STICKY --}}
+    @if($isOwnProfile)
+        <div class="sticky top-16 z-40 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <a href="{{ route('profile.edit') }}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        {{ __('profile.edit_profile') }}
+                    </a>
+                    <a href="{{ route('profile.my-media') }}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-neutral-700 hover:bg-neutral-800 dark:bg-neutral-700 dark:hover:bg-neutral-600 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        {{ __('profile.manage_media') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
 
     {{-- HORIZONTAL SCROLL SECTIONS --}}
     <div class="content-sections">
