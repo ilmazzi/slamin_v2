@@ -72,8 +72,8 @@
                 </div>
 
                 <!-- Actions -->
-                @if($unreadCount > 0)
-                <div class="relative mt-4">
+                <div class="relative mt-4 flex items-center gap-3">
+                    @if($unreadCount > 0)
                     <button wire:click="markAllAsRead"
                             class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full text-sm font-medium transition-all duration-300 border border-white/30">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,8 +81,19 @@
                         </svg>
                         Segna tutte come lette
                     </button>
+                    @endif
+                    
+                    @if(count($notifications) > 0)
+                    <button wire:click="clearAll"
+                            wire:confirm="Sei sicuro di voler eliminare tutte le notifiche? Questa azione non può essere annullata."
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 backdrop-blur-sm text-white rounded-full text-sm font-medium transition-all duration-300 border border-red-300/30">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        Elimina tutte
+                    </button>
+                    @endif
                 </div>
-                @endif
             </div>
 
             <!-- Notifications List -->
