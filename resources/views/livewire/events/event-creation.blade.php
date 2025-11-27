@@ -1041,68 +1041,87 @@
                             </div>
 
                             <div class="space-y-6">
-                                {{-- Max Participants --}}
-                                <div class="relative group">
-                                    <input type="number"
-                                           wire:model="max_participants"
-                                           id="max_participants"
-                                           min="1"
-                                           placeholder=" "
-                                           class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
-                                                  focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                  transition-all duration-300 @error('max_participants') border-red-500 ring-4 ring-red-500/10 @enderror">
-                                    <label for="max_participants" 
-                                           class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
-                                                  peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                  peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
-                                                  transition-all duration-200">
-                                        {{ __('events.create.max_participants') }}
-                                    </label>
-                                    <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400">Lascia vuoto per nessun limite</p>
-                                    @error('max_participants')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                                {{-- 1. Invitations (Performers/Organizers) --}}
+                                <div class="bg-gradient-to-br from-accent-50 to-primary-50 dark:from-accent-900/20 dark:to-primary-900/20 rounded-2xl p-6 border border-accent-200 dark:border-accent-700">
+                                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2 mb-2">
+                                        <svg class="w-5 h-5 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                        </svg>
+                                        Invita partecipanti
+                                        <span class="text-sm bg-accent-600 dark:bg-accent-500 text-white px-2 py-1 rounded-lg">{{ count($invitations) }}</span>
+                                    </h3>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Cerca e invita le persone che daranno vita all'evento (artiste/i, organizzatrici/organizzatori, supporto tecnico, ecc...)</p>
 
-                                {{-- Registration Deadline --}}
-                                <div class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <label class="text-neutral-900 dark:text-white font-medium">{{ __('events.create.registration_deadline') }}</label>
-                                        <div class="flex items-center gap-3">
-                                            <div class="w-12 h-7 rounded-full relative transition-all duration-300 cursor-pointer
-                                                        {{ $has_registration_deadline ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}"
-                                                 wire:click="$toggle('has_registration_deadline')">
-                                                <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
-                                                            {{ $has_registration_deadline ? 'left-6' : 'left-1' }}"></div>
-                                            </div>
-                                        </div>
+                                    {{-- Search --}}
+                                    <div class="relative mb-4">
+                                        <input type="text" wire:model.live.debounce.300ms="userSearchQuery" placeholder="{{ __('events.create.search_users') }}" 
+                                               class="w-full px-4 py-3 pl-11 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                        <svg class="w-5 h-5 absolute left-3 top-3.5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                        </svg>
                                     </div>
-                                    @if($has_registration_deadline)
-                                        <div class="grid grid-cols-2 gap-4 mt-4">
-                                            <div>
-                                                <input type="date" wire:model="registration_deadline_date" 
-                                                       class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
-                                            </div>
-                                            <div>
-                                                <input type="time" wire:model="registration_deadline_time" 
-                                                       class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
-                                            </div>
+
+                                    {{-- Search Results --}}
+                                    @if(strlen($userSearchQuery) >= 2 && count($searchResults) > 0)
+                                        <div class="bg-white dark:bg-neutral-800 rounded-xl p-3 mb-4 max-h-64 overflow-y-auto">
+                                            @foreach($searchResults as $result)
+                                                <div class="flex items-center justify-between p-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg">
+                                                    <div>
+                                                        <div class="font-semibold text-neutral-900 dark:text-white">{{ $result['name'] }}</div>
+                                                        @if($result['nickname'])
+                                                            <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ $result['nickname'] }}</div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="flex gap-2">
+                                                        <button type="button" wire:click="addInvitation({{ $result['id'] }}, 'performer')" 
+                                                                class="px-3 py-1 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm">
+                                                            Artista
+                                                        </button>
+                                                        <button type="button" wire:click="addInvitation({{ $result['id'] }}, 'organizer')" 
+                                                                class="px-3 py-1 bg-accent-600 hover:bg-accent-700 text-white rounded-lg text-sm">
+                                                            Organizer
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
+
+                                    {{-- Invited List --}}
+                                    @if(count($invitations) > 0)
+                                        <div class="space-y-2">
+                                            @foreach($invitations as $index => $invitation)
+                                                <div class="bg-white dark:bg-neutral-800 rounded-lg p-3 flex items-center justify-between">
+                                                    <div class="font-semibold text-neutral-900 dark:text-white">{{ $invitation['name'] }}</div>
+                                                    <div class="flex items-center gap-3">
+                                                        <select wire:model="invitations.{{ $index }}.role" 
+                                                                class="px-3 py-1 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white text-sm">
+                                                            <option value="performer">Artista</option>
+                                                            <option value="organizer">Organizer</option>
+                                                        </select>
+                                                        <button type="button" wire:click="removeInvitation({{ $index }})" 
+                                                                class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
+                                                            Rimuovi
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @endforeach
                                         </div>
                                     @endif
                                 </div>
 
-                                {{-- Gig Positions --}}
+                                {{-- 2. Gig Positions --}}
                                 <div class="bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl p-6 border border-primary-200 dark:border-primary-700">
                                     <div class="flex items-center justify-between mb-4">
                                         <div>
-                                            <h3 class="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                                            <h3 class="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2 mb-2">
                                                 <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                                 </svg>
-                                                {{ __('events.create.job_positions') }}
+                                                Aggiungi ingaggi
                                                 <span class="text-sm bg-primary-600 dark:bg-primary-500 text-white px-2 py-1 rounded-lg">{{ count($gig_positions) }}</span>
                                             </h3>
-                                            <p class="text-sm text-neutral-600 dark:text-neutral-400">Definisci le posizioni disponibili per l'evento</p>
+                                            <p class="text-sm text-neutral-600 dark:text-neutral-400">Crea posizioni lavorative per le figure professionali di cui hai bisogno</p>
                                         </div>
                                         <button type="button" wire:click="addGigPosition" 
                                                 class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold shadow-lg hover:scale-105 transition-all flex items-center gap-2">
@@ -1235,85 +1254,75 @@
                                     @endif
                                 </div>
 
-                                {{-- Invitations (Performers/Organizers) --}}
-                                <div class="bg-gradient-to-br from-accent-50 to-primary-50 dark:from-accent-900/20 dark:to-primary-900/20 rounded-2xl p-6 border border-accent-200 dark:border-accent-700">
-                                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2 mb-4">
-                                        <svg class="w-5 h-5 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                        </svg>
-                                        {{ __('events.create.invite_participants') }}
-                                        <span class="text-sm bg-accent-600 dark:bg-accent-500 text-white px-2 py-1 rounded-lg">{{ count($invitations) }}</span>
-                                    </h3>
-                                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Cerca e invita artisti o organizzatori</p>
-
-                                    {{-- Search --}}
-                                    <div class="relative mb-4">
-                                        <input type="text" wire:model.live.debounce.300ms="userSearchQuery" placeholder="{{ __('events.create.search_users') }}" 
-                                               class="w-full px-4 py-3 pl-11 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
-                                        <svg class="w-5 h-5 absolute left-3 top-3.5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                        </svg>
-                                    </div>
-
-                                    {{-- Search Results --}}
-                                    @if(strlen($userSearchQuery) >= 2 && count($searchResults) > 0)
-                                        <div class="bg-white dark:bg-neutral-800 rounded-xl p-3 mb-4 max-h-64 overflow-y-auto">
-                                            @foreach($searchResults as $result)
-                                                <div class="flex items-center justify-between p-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg">
-                                                    <div>
-                                                        <div class="font-semibold text-neutral-900 dark:text-white">{{ $result['name'] }}</div>
-                                                        @if($result['nickname'])
-                                                            <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ $result['nickname'] }}</div>
-                                                        @endif
-                                                    </div>
-                                                    <div class="flex gap-2">
-                                                        <button type="button" wire:click="addInvitation({{ $result['id'] }}, 'performer')" 
-                                                                class="px-3 py-1 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm">
-                                                            Artista
-                                                        </button>
-                                                        <button type="button" wire:click="addInvitation({{ $result['id'] }}, 'organizer')" 
-                                                                class="px-3 py-1 bg-accent-600 hover:bg-accent-700 text-white rounded-lg text-sm">
-                                                            Organizer
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            @endforeach
+                                {{-- 3. Registration Deadline --}}
+                                <div class="bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-200 dark:border-neutral-700">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-2">Scadenza registrazioni</h3>
+                                            <p class="text-sm text-neutral-600 dark:text-neutral-400">Imposta una data limite per le registrazioni</p>
                                         </div>
-                                    @endif
-
-                                    {{-- Invited List --}}
-                                    @if(count($invitations) > 0)
-                                        <div class="space-y-2">
-                                            @foreach($invitations as $index => $invitation)
-                                                <div class="bg-white dark:bg-neutral-800 rounded-lg p-3 flex items-center justify-between">
-                                                    <div class="font-semibold text-neutral-900 dark:text-white">{{ $invitation['name'] }}</div>
-                                                    <div class="flex items-center gap-3">
-                                                        <select wire:model="invitations.{{ $index }}.role" 
-                                                                class="px-3 py-1 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white text-sm">
-                                                            <option value="performer">Artista</option>
-                                                            <option value="organizer">Organizer</option>
-                                                        </select>
-                                                        <button type="button" wire:click="removeInvitation({{ $index }})" 
-                                                                class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
-                                                            Rimuovi
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            @endforeach
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-12 h-7 rounded-full relative transition-all duration-300 cursor-pointer
+                                                        {{ $has_registration_deadline ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}"
+                                                 wire:click="$toggle('has_registration_deadline')">
+                                                <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
+                                                            {{ $has_registration_deadline ? 'left-6' : 'left-1' }}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if($has_registration_deadline)
+                                        <div class="grid grid-cols-2 gap-4 mt-4">
+                                            <div>
+                                                <input type="date" wire:model="registration_deadline_date" 
+                                                       class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                            </div>
+                                            <div>
+                                                <input type="time" wire:model="registration_deadline_time" 
+                                                       class="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
 
-                                {{-- Audience Invitations --}}
+                                {{-- 4. Audience Invitations with Capacity Limit --}}
                                 <div class="bg-neutral-100 dark:bg-neutral-900 rounded-2xl p-6 border border-neutral-300 dark:border-neutral-700">
-                                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2 mb-4">
+                                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2 mb-2">
                                         <svg class="w-5 h-5 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
                                         </svg>
-                                        {{ __('events.create.invite_audience') }}
+                                        Invita pubblico
                                         <span class="text-sm bg-neutral-600 dark:bg-neutral-500 text-white px-2 py-1 rounded-lg">{{ count($audienceInvitations) }}</span>
                                     </h3>
-                                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Invita persone ad assistere all'evento</p>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-6">Invita persone ad assistere all'evento</p>
+
+                                    {{-- Capacity Limit Toggle --}}
+                                    <div class="bg-white dark:bg-neutral-800 rounded-xl p-4 mb-4 border border-neutral-200 dark:border-neutral-700">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div>
+                                                <h4 class="font-semibold text-neutral-900 dark:text-white">Limite capienza</h4>
+                                                <p class="text-sm text-neutral-600 dark:text-neutral-400">Imposta un numero massimo di persone tra il pubblico</p>
+                                            </div>
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-12 h-7 rounded-full relative transition-all duration-300 cursor-pointer
+                                                            {{ $max_participants ? 'bg-gradient-to-r from-primary-500 to-accent-500' : 'bg-neutral-300 dark:bg-neutral-700' }}"
+                                                     wire:click="$toggle('has_capacity_limit')">
+                                                    <div class="absolute top-1 w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-300
+                                                                {{ $max_participants ? 'left-6' : 'left-1' }}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if($max_participants || $has_capacity_limit)
+                                            <div class="mt-3">
+                                                <input type="number"
+                                                       wire:model="max_participants"
+                                                       min="1"
+                                                       placeholder="Numero massimo di persone tra il pubblico"
+                                                       class="w-full px-4 py-3 rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white
+                                                              focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                              transition-all duration-300">
+                                            </div>
+                                        @endif
+                                    </div>
 
                                     {{-- Search --}}
                                     <div class="relative mb-4">
@@ -1360,9 +1369,10 @@
                                     @endif
                                 </div>
 
-                                {{-- Status --}}
-                                <div>
-                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">{{ __('events.create.publish_status') }} *</label>
+                                {{-- 5. Status --}}
+                                <div class="bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-2xl p-6 border border-primary-200 dark:border-primary-700">
+                                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-2">Stato pubblicazione *</h3>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">Scegli se pubblicare l'evento immediatamente o salvarlo come bozza</p>
                                     <div class="grid grid-cols-2 gap-4">
                                         <label class="relative cursor-pointer">
                                             <input type="radio" wire:model="status" value="published" class="sr-only peer">
