@@ -29,12 +29,17 @@ class NotificationAnimation extends Component
         }
 
         // Cerca notifiche create dopo l'ultimo check, escludendo messaggi di chat
-        $newNotifications = Auth::user()
+        $allNotifications = Auth::user()
             ->notifications()
             ->where('created_at', '>', $this->lastCheckedAt)
             ->whereNull('read_at')
-            ->whereRaw("JSON_EXTRACT(data, '$.type') != 'chat_new_message' OR JSON_EXTRACT(data, '$.type') IS NULL")
-            ->count();
+            ->get();
+        
+        // Filtra manualmente escludendo i messaggi di chat
+        $newNotifications = $allNotifications->filter(function($notification) {
+            $type = $notification->data['type'] ?? null;
+            return $type !== 'chat_new_message';
+        })->count();
 
         \Log::info('Polling for notifications', [
             'user_id' => Auth::id(),
