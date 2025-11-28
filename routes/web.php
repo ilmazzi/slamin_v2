@@ -183,6 +183,52 @@ Route::get('/events/{event}/manage', function(\App\Models\Event $event) {
     return view('livewire.events.event-manage', compact('event'));
 })->middleware('auth')->name('events.manage');
 
+// Delete Event
+Route::delete('/events/{event}', function(\App\Models\Event $event) {
+    // Check permissions
+    if (auth()->user()->id !== $event->organizer_id && !auth()->user()->hasRole('admin')) {
+        abort(403);
+    }
+    
+    // Delete badges awarded from this event
+    // Badges are stored in user_badges with metadata containing event info
+    $rankings = $event->rankings()->whereNotNull('badge_id')->where('badge_awarded', true)->get();
+    foreach ($rankings as $ranking) {
+        if ($ranking->participant && $ranking->participant->user_id) {
+            // Delete the user_badge entry
+            \App\Models\UserBadge::where('user_id', $ranking->participant->user_id)
+                ->where('badge_id', $ranking->badge_id)
+                ->delete();
+        }
+    }
+    
+    // Also delete badges by metadata (source_type = Event)
+    \App\Models\UserBadge::where('metadata->source_type', 'App\\Models\\Event')
+        ->where('metadata->source_id', $event->id)
+        ->delete();
+    
+    \App\Models\UserBadge::where('metadata->source_type', 'App\\Models\\EventRanking')
+        ->whereIn('metadata->source_id', $event->rankings()->pluck('id'))
+        ->delete();
+    
+    // Delete related data
+    $event->participants()->delete();
+    $event->invitations()->delete();
+    $event->rounds()->delete();
+    $event->scores()->delete();
+    $event->rankings()->delete();
+    
+    // Delete cover image if exists
+    if ($event->cover_image) {
+        \Storage::disk('public')->delete($event->cover_image);
+    }
+    
+    $eventTitle = $event->title;
+    $event->delete();
+    
+    return redirect()->route('events.index')->with('success', __('events.manage.event_deleted', ['title' => $eventTitle]));
+})->middleware('auth')->name('events.destroy');
+
 // Poems Routes (Livewire)
 Route::get('/poems', \App\Livewire\Poems\PoemIndex::class)->name('poems.index');
 

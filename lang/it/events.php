@@ -209,6 +209,26 @@ return [
         'accommodation' => 'Vitto e alloggio',
     ],
     
+    // Manage
+    'manage' => [
+        'title' => 'Gestione Evento',
+        'quick_actions' => 'Azioni Rapide',
+        'edit_event' => 'Modifica Evento',
+        'edit_event_desc' => 'Modifica titolo, data, descrizione e altro',
+        'scoring' => 'Punteggi e Classifica',
+        'scoring_desc' => 'Gestisci voti e classifica',
+        'participants' => 'Partecipanti',
+        'registered' => 'iscritti',
+        'view_event' => 'Visualizza Evento',
+        'view_event_desc' => 'Vedi la pagina pubblica dell\'evento',
+        'danger_zone' => 'Zona Pericolosa',
+        'delete_event' => 'Elimina Evento',
+        'delete_event_warning' => 'Questa azione è irreversibile. Tutti i dati dell\'evento, inclusi partecipanti, punteggi e classifiche, verranno eliminati permanentemente.',
+        'delete_confirm' => 'Sei sicuro di voler eliminare questo evento? Questa azione non può essere annullata!',
+        'delete_button' => 'Elimina Evento',
+        'event_deleted' => 'Evento ":title" eliminato con successo',
+    ],
+
     // Scoring
     'scoring' => [
         'dashboard' => 'Dashboard',
@@ -272,6 +292,7 @@ return [
         'sum' => 'Somma',
         'best_of' => 'Migliore',
         'recommended' => 'Consigliato',
+        'automatic' => 'Automatico',
         'example' => 'Esempio',
         'first_round' => 'Primo Turno',
         'semi_final' => 'Semifinale',
@@ -306,8 +327,9 @@ return [
         'sort_by_order' => 'Ordina per ordine di esecuzione',
         'sort_by_name' => 'Ordina per nome',
         'sort_by_score' => 'Ordina per punteggio',
-        'trimmed_mean' => 'Media Tagliata',
-        'remove_highest_lowest' => 'Togli max e min, somma il resto',
+        'trimmed_mean' => 'Somma senza estremi',
+        'trimmed_mean_tip' => 'Esclude il voto più alto e più basso, somma i rimanenti. Ideale per ridurre l\'impatto di voti anomali.',
+        'remove_highest_lowest' => 'Esclude estremi',
         'your_score' => 'Il Tuo Voto',
         'votes_received' => 'voti ricevuti',
         'votes' => 'voti',

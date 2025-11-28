@@ -209,6 +209,26 @@ return [
         'invalid_invitation' => 'Invalid invitation.',
     ],
     
+    // Manage
+    'manage' => [
+        'title' => 'Manage Event',
+        'quick_actions' => 'Quick Actions',
+        'edit_event' => 'Edit Event',
+        'edit_event_desc' => 'Edit title, date, description and more',
+        'scoring' => 'Scores & Rankings',
+        'scoring_desc' => 'Manage votes and rankings',
+        'participants' => 'Participants',
+        'registered' => 'registered',
+        'view_event' => 'View Event',
+        'view_event_desc' => 'See the public event page',
+        'danger_zone' => 'Danger Zone',
+        'delete_event' => 'Delete Event',
+        'delete_event_warning' => 'This action is irreversible. All event data, including participants, scores and rankings, will be permanently deleted.',
+        'delete_confirm' => 'Are you sure you want to delete this event? This action cannot be undone!',
+        'delete_button' => 'Delete Event',
+        'event_deleted' => 'Event ":title" deleted successfully',
+    ],
+
     // Scoring
     'scoring' => [
         'dashboard' => 'Dashboard',
@@ -272,6 +292,7 @@ return [
         'sum' => 'Sum',
         'best_of' => 'Best Of',
         'recommended' => 'Recommended',
+        'automatic' => 'Automatic',
         'example' => 'Example',
         'first_round' => 'First Round',
         'semi_final' => 'Semi Final',
@@ -349,8 +370,9 @@ return [
         'sort_by_order' => 'Sort by performance order',
         'sort_by_name' => 'Sort by name',
         'sort_by_score' => 'Sort by score',
-        'trimmed_mean' => 'Trimmed Mean',
-        'remove_highest_lowest' => 'Remove highest and lowest, sum the rest',
+        'trimmed_mean' => 'Sum without extremes',
+        'trimmed_mean_tip' => 'Excludes the highest and lowest scores, sums the rest. Ideal for reducing the impact of outlier votes.',
+        'remove_highest_lowest' => 'Excludes extremes',
         'your_score' => 'Your Score',
         'votes_received' => 'votes received',
         'votes' => 'votes',

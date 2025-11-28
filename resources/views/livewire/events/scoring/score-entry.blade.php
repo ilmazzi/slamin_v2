@@ -66,12 +66,12 @@
         @php
             $currentRound = $rounds->where('round_number', $selectedRound)->first();
             $judgesCount = $currentRound ? ($currentRound->judges_count ?? 5) : 5;
-            $scoringType = $currentRound ? ($currentRound->scoring_type ?? 'average') : 'average';
+            $scoringType = $currentRound ? ($currentRound->scoring_type ?? 'trimmed_mean') : 'trimmed_mean';
             $scoringTypeNames = [
-                'average' => __('events.scoring.average'),
-                'sum' => __('events.scoring.sum'),
-                'best_of' => __('events.scoring.best_of'),
                 'trimmed_mean' => __('events.scoring.trimmed_mean'),
+                'sum' => __('events.scoring.sum'),
+                'average' => __('events.scoring.average'),
+                'best_of' => __('events.scoring.best_of'),
             ];
         @endphp
 
@@ -315,20 +315,48 @@
                     {{-- Scoring Type --}}
                     <div>
                         <label class="block text-sm font-bold text-[#8b7355] dark:text-neutral-400 mb-2">{{ __('events.scoring.scoring_type') }}</label>
-                        <div class="grid grid-cols-2 gap-2">
+                        
+                        {{-- Primary Option: Somma senza estremi (trimmed_mean) --}}
+                        <button type="button" wire:click="$set('scoring_type', 'trimmed_mean')"
+                                class="w-full p-4 rounded-xl border-2 text-left transition-all mb-3
+                                       {{ $scoring_type === 'trimmed_mean' 
+                                          ? 'border-[#b91c1c] bg-[#b91c1c]/10 shadow-md' 
+                                          : 'border-[rgba(139,115,85,0.3)] hover:border-[rgba(139,115,85,0.5)]' }}">
+                            <div class="flex items-start gap-3">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0
+                                            {{ $scoring_type === 'trimmed_mean' ? 'bg-[#b91c1c] text-white' : 'bg-[rgba(139,115,85,0.1)] text-[#8b7355]' }}">
+                                    <i class="ph ph-scissors text-2xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-base font-bold {{ $scoring_type === 'trimmed_mean' ? 'text-[#b91c1c]' : 'text-[#1a1a1a] dark:text-white' }}">
+                                            {{ __('events.scoring.trimmed_mean') }}
+                                        </span>
+                                        <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 text-blue-700">
+                                            {{ __('events.scoring.automatic') }}
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-[#8b7355] dark:text-neutral-400 mt-1">
+                                        {{ __('events.scoring.trimmed_mean_tip') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        {{-- Secondary Options --}}
+                        <div class="grid grid-cols-3 gap-2">
                             @foreach([
-                                'average' => ['icon' => 'ph-chart-line', 'label' => __('events.scoring.average')],
                                 'sum' => ['icon' => 'ph-plus-circle', 'label' => __('events.scoring.sum')],
+                                'average' => ['icon' => 'ph-chart-line', 'label' => __('events.scoring.average')],
                                 'best_of' => ['icon' => 'ph-trophy', 'label' => __('events.scoring.best_of')],
-                                'trimmed_mean' => ['icon' => 'ph-scissors', 'label' => __('events.scoring.trimmed_mean')],
                             ] as $type => $data)
                                 <button type="button" wire:click="$set('scoring_type', '{{ $type }}')"
-                                        class="p-3 rounded-xl border-2 text-left transition-all
+                                        class="p-3 rounded-xl border-2 text-center transition-all
                                                {{ $scoring_type === $type 
                                                   ? 'border-[#b91c1c] bg-[#b91c1c]/5' 
                                                   : 'border-[rgba(139,115,85,0.2)] hover:border-[rgba(139,115,85,0.4)]' }}">
                                     <i class="ph {{ $data['icon'] }} text-xl {{ $scoring_type === $type ? 'text-[#b91c1c]' : 'text-[#8b7355]' }}"></i>
-                                    <div class="text-sm font-bold {{ $scoring_type === $type ? 'text-[#b91c1c]' : 'text-[#1a1a1a] dark:text-white' }}">
+                                    <div class="text-xs font-bold mt-1 {{ $scoring_type === $type ? 'text-[#b91c1c]' : 'text-[#1a1a1a] dark:text-white' }}">
                                         {{ $data['label'] }}
                                     </div>
                                 </button>

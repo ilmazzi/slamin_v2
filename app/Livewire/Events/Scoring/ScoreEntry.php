@@ -22,7 +22,7 @@ class ScoreEntry extends Component
     public $editingRound = null;
     public $round_number;
     public $round_name;
-    public $scoring_type = 'average';
+    public $scoring_type = 'trimmed_mean';
     public $selectedParticipants = []; // For participant selection when creating new round
 
     // Score entry
@@ -306,7 +306,7 @@ class ScoreEntry extends Component
             'event_id' => $this->event->id,
             'round_number' => 1,
             'name' => __('events.scoring.single_round'),
-            'scoring_type' => 'average',
+            'scoring_type' => 'trimmed_mean',
             'judges_count' => 5,
             'order' => 1,
         ]);
@@ -487,7 +487,7 @@ class ScoreEntry extends Component
     {
         $this->round_number = ($this->rounds->max('round_number') ?? 0) + 1;
         $this->round_name = '';
-        $this->scoring_type = 'average';
+        $this->scoring_type = 'trimmed_mean';
         $this->judges_count = 5;
     }
     
