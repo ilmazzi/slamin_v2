@@ -64,5 +64,12 @@ return [
     'verify_email_action' => 'Verify Email Address',
     'verify_email_line2' => 'If you did not create an account, no further action is required.',
     'verify_email_line3' => 'This verification link will expire in 60 minutes.',
+    
+    // Reset Password Email
+    'reset_password_notification' => 'Reset Your Password',
+    'reset_password_reason' => 'You are receiving this email because we received a password reset request for your account.',
+    'reset_password_action' => 'Reset Password',
+    'reset_password_expire' => 'This password reset link will expire in :count minutes.',
+    'reset_password_no_action' => 'If you did not request a password reset, no further action is required.',
 ];
 

@@ -71,5 +71,12 @@ return [
     'verify_email_line2' => 'Se non hai creato un account, non è necessaria alcuna azione.',
     'verify_email_line3' => 'Questo link di verifica scadrà tra 60 minuti.',
     'email_verified_success' => 'Email verificata con successo! Ora puoi accedere a tutte le funzionalità.',
+    
+    // Reset Password Email
+    'reset_password_notification' => 'Reimposta la tua Password',
+    'reset_password_reason' => 'Hai ricevuto questa email perché abbiamo ricevuto una richiesta di reset password per il tuo account.',
+    'reset_password_action' => 'Reimposta Password',
+    'reset_password_expire' => 'Questo link di reset password scadrà tra :count minuti.',
+    'reset_password_no_action' => 'Se non hai richiesto il reset della password, non è necessaria alcuna azione.',
 ];
 
