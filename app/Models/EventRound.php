@@ -17,17 +17,22 @@ class EventRound extends Model
         'name',
         'max_participants',
         'scoring_type',
+        'judges_count',
         'is_active',
         'order',
         'notes',
+        'selected_participants',
     ];
-
+    
     protected $casts = [
         'round_number' => 'integer',
         'max_participants' => 'integer',
+        'judges_count' => 'integer',
         'is_active' => 'boolean',
         'order' => 'integer',
+        'selected_participants' => 'array',
     ];
+
 
     /**
      * Event this round belongs to

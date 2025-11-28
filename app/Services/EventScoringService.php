@@ -205,8 +205,27 @@ class EventScoringService
             'sum' => $scores->sum('score'),
             'best_of' => $scores->max('score'),
             'average' => $scores->avg('score'),
+            'trimmed_mean' => $this->calculateTrimmedMean($scores),
             default => $scores->avg('score'),
         };
+    }
+    
+    /**
+     * Calculate trimmed mean: remove highest and lowest score, sum the rest
+     */
+    protected function calculateTrimmedMean($scores): float
+    {
+        $scoreValues = $scores->pluck('score');
+        $count = $scoreValues->count();
+        
+        // Need at least 3 scores to trim
+        if ($count < 3) {
+            return $scoreValues->sum();
+        }
+        
+        // Simple formula: sum - min - max
+        return $scoreValues->sum() - $scoreValues->min() - $scoreValues->max();
+    }
     }
 
     /**

@@ -63,8 +63,10 @@ class Rankings extends Component
             });
         
         // Check if we can calculate rankings
-        // Need: participants with scores (rounds are configured in this phase)
-        $this->canCalculate = $this->event->scores()->exists() && $acceptedParticipants->count() > 0;
+        // Need: at least 2 rounds with scores to calculate partial rankings
+        $roundsCount = $this->event->rounds()->count();
+        $hasScores = $this->event->scores()->exists();
+        $this->canCalculate = $roundsCount >= 2 && $hasScores && $acceptedParticipants->count() > 0;
 
         // Load stats
         $this->stats = [

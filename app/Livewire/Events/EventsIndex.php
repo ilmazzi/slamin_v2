@@ -111,24 +111,30 @@ class EventsIndex extends Component
         $query = Event::with(['organizer', 'venueOwner'])
             ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED]);
         
+        // Events are visible until end_datetime + 6 hours
+        $visibilityCutoff = Carbon::now()->subHours(6);
+        
         // Filter by past events if selected
         if ($this->quickFilter === 'past') {
-            $query->where(function ($q) {
-                $q->where('end_datetime', '<', Carbon::now())
-                  ->orWhere(function ($q2) {
+            $query->where(function ($q) use ($visibilityCutoff) {
+                $q->where(function ($q1) use ($visibilityCutoff) {
+                    $q1->whereNotNull('end_datetime')
+                       ->where('end_datetime', '<', $visibilityCutoff);
+                })
+                  ->orWhere(function ($q2) use ($visibilityCutoff) {
                       $q2->where('status', Event::STATUS_COMPLETED)
                          ->whereNotNull('end_datetime')
-                         ->where('end_datetime', '<', Carbon::now());
+                         ->where('end_datetime', '<', $visibilityCutoff);
                   });
             });
         } else {
-            // Default: show upcoming events
-            $query->where(function ($q) {
+            // Default: show upcoming events (including events that ended less than 6 hours ago)
+            $query->where(function ($q) use ($visibilityCutoff) {
                 $q->where('start_datetime', '>', Carbon::now())
                   ->orWhere('is_availability_based', true)
-                  ->orWhere(function ($q2) {
-                      $q2->where('status', Event::STATUS_COMPLETED)
-                         ->where('end_datetime', '>=', Carbon::now());
+                  ->orWhere(function ($q2) use ($visibilityCutoff) {
+                      $q2->whereNotNull('end_datetime')
+                         ->where('end_datetime', '>=', $visibilityCutoff);
                   });
             });
         }
@@ -313,13 +319,19 @@ class EventsIndex extends Component
     {
         $now = Carbon::now();
         $endOfToday = $now->copy()->endOfDay();
+        $visibilityCutoff = $now->copy()->subHours(6);
         
         $events = Event::with(['organizer', 'venueOwner'])
             ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
-            ->where(function ($q) use ($endOfToday) {
+            ->where(function ($q) use ($endOfToday, $visibilityCutoff) {
                 $q->where('start_datetime', '>', $endOfToday)
-                  ->orWhere(function ($q2) use ($endOfToday) {
-                      $q2->where('is_availability_based', true)
+                  ->orWhere(function ($q2) use ($endOfToday, $visibilityCutoff) {
+                      $q2->whereNotNull('end_datetime')
+                         ->where('end_datetime', '>=', $visibilityCutoff)
+                         ->where('start_datetime', '>', $endOfToday);
+                  })
+                  ->orWhere(function ($q3) use ($endOfToday) {
+                      $q3->where('is_availability_based', true)
                          ->where('start_datetime', '>', $endOfToday);
                   });
             })
@@ -363,18 +375,19 @@ class EventsIndex extends Component
     {
         $now = Carbon::now();
         $startOfToday = $now->copy()->startOfDay();
+        $visibilityCutoff = $now->copy()->subHours(6);
         
         $events = Event::with(['organizer', 'venueOwner'])
             ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
-            ->where(function ($q) use ($startOfToday) {
-                $q->where(function ($q2) use ($startOfToday) {
+            ->where(function ($q) use ($visibilityCutoff) {
+                $q->where(function ($q2) use ($visibilityCutoff) {
                       $q2->whereNotNull('end_datetime')
-                         ->where('end_datetime', '<', $startOfToday);
+                         ->where('end_datetime', '<', $visibilityCutoff);
                   })
-                  ->orWhere(function ($q3) use ($startOfToday) {
+                  ->orWhere(function ($q3) use ($visibilityCutoff) {
                       $q3->where('status', Event::STATUS_COMPLETED)
                          ->whereNotNull('end_datetime')
-                         ->where('end_datetime', '<', $startOfToday);
+                         ->where('end_datetime', '<', $visibilityCutoff);
                   });
             })
             ->orderBy('end_datetime', 'desc') // Più recente a sinistra

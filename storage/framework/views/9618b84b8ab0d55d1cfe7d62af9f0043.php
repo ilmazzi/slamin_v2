@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
-    <title>{{ isset($title) ? $title . ' - ' . config('app.name') : config('app.name') }}</title>
+    <title><?php echo e(isset($title) ? $title . ' - ' . config('app.name') : config('app.name')); ?></title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,34 +41,36 @@
     </script>
 
     <!-- Styles & Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+    <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
+
     
-    @stack('styles')
+    <?php echo $__env->yieldPushContent('styles'); ?>
     
-    {{-- Events Page Assets --}}
-    @if(request()->routeIs('events.index'))
+    
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(request()->routeIs('events.index')): ?>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-        @vite(['resources/css/events-map.css', 'resources/css/events-index.css', 'resources/css/event-ticket.css'])
-    @endif
+        <?php echo app('Illuminate\Foundation\Vite')(['resources/css/events-map.css', 'resources/css/events-index.css', 'resources/css/event-ticket.css']); ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     
-    {{-- Scoring Page Assets --}}
-    @if(request()->routeIs('events.scoring.*'))
-        @vite(['resources/css/scoring.css'])
-    @endif
     
-    {{-- Profile Page Assets --}}
-    @if(request()->routeIs('profile.*') || request()->routeIs('user.*'))
-        @vite(['resources/css/profile.css', 'resources/css/event-ticket.css', 'resources/js/profile.js'])
-    @endif
+    <?php if(request()->routeIs('events.scoring.*')): ?>
+        <?php echo app('Illuminate\Foundation\Vite')(['resources/css/scoring.css']); ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+    
+    
+    <?php if(request()->routeIs('profile.*') || request()->routeIs('user.*')): ?>
+        <?php echo app('Illuminate\Foundation\Vite')(['resources/css/profile.css', 'resources/css/event-ticket.css', 'resources/js/profile.js']); ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    {{-- Notification Animation Assets --}}
-    @vite(['resources/css/notification-animation.css'])
     
-    {{-- Article Modal Assets (needed on articles page and home page) --}}
-    @vite(['resources/css/article-modal.css'])
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/notification-animation.css']); ?>
+    
+    
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/article-modal.css']); ?>
 
-    {{ $head ?? '' }}
+    <?php echo e($head ?? ''); ?>
+
 </head>
 <body class="antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-x-hidden" 
       x-data="{ scrollY: 0, sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true' }" 
@@ -76,26 +78,104 @@
       @sidebar-changed.window="sidebarCollapsed = $event.detail.collapsed">
     
     <!-- Top Bar -->
-    <x-layouts.topbar />
+    <?php if (isset($component)) { $__componentOriginal5f954b3ba4e7a1a392c014525a6ffa48 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5f954b3ba4e7a1a392c014525a6ffa48 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.layouts.topbar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('layouts.topbar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5f954b3ba4e7a1a392c014525a6ffa48)): ?>
+<?php $attributes = $__attributesOriginal5f954b3ba4e7a1a392c014525a6ffa48; ?>
+<?php unset($__attributesOriginal5f954b3ba4e7a1a392c014525a6ffa48); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5f954b3ba4e7a1a392c014525a6ffa48)): ?>
+<?php $component = $__componentOriginal5f954b3ba4e7a1a392c014525a6ffa48; ?>
+<?php unset($__componentOriginal5f954b3ba4e7a1a392c014525a6ffa48); ?>
+<?php endif; ?>
 
     <!-- Sidebar -->
-    <x-layouts.sidebar />
+    <?php if (isset($component)) { $__componentOriginala12ee38770dfc9ba212665cdb25e4cfd = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginala12ee38770dfc9ba212665cdb25e4cfd = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.layouts.sidebar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('layouts.sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginala12ee38770dfc9ba212665cdb25e4cfd)): ?>
+<?php $attributes = $__attributesOriginala12ee38770dfc9ba212665cdb25e4cfd; ?>
+<?php unset($__attributesOriginala12ee38770dfc9ba212665cdb25e4cfd); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginala12ee38770dfc9ba212665cdb25e4cfd)): ?>
+<?php $component = $__componentOriginala12ee38770dfc9ba212665cdb25e4cfd; ?>
+<?php unset($__componentOriginala12ee38770dfc9ba212665cdb25e4cfd); ?>
+<?php endif; ?>
 
     <!-- Floating Chat Button -->
-    @livewire('chat.chat-button')
+    <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('chat.chat-button');
+
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2636047370-0', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
 
     <!-- Main Content Area -->
     <main class="pt-[7.5rem] md:pt-16 transition-all duration-300 lg:ml-0 overflow-x-hidden"
           :class="sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'">
         <div class="min-h-screen overflow-visible">
-            {{ $slot }}
+            <?php echo e($slot); ?>
+
         </div>
 
         <!-- Footer -->
-        <x-layouts.footer-modern />
+        <?php if (isset($component)) { $__componentOriginal7f75b765bca1e533f9d8c8fa950f02fb = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal7f75b765bca1e533f9d8c8fa950f02fb = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.layouts.footer-modern','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('layouts.footer-modern'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal7f75b765bca1e533f9d8c8fa950f02fb)): ?>
+<?php $attributes = $__attributesOriginal7f75b765bca1e533f9d8c8fa950f02fb; ?>
+<?php unset($__attributesOriginal7f75b765bca1e533f9d8c8fa950f02fb); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal7f75b765bca1e533f9d8c8fa950f02fb)): ?>
+<?php $component = $__componentOriginal7f75b765bca1e533f9d8c8fa950f02fb; ?>
+<?php unset($__componentOriginal7f75b765bca1e533f9d8c8fa950f02fb); ?>
+<?php endif; ?>
     </main>
     
-    {{ $scripts ?? '' }}
+    <?php echo e($scripts ?? ''); ?>
+
 
     <!-- Comments Modal -->
     <div x-data="{
@@ -115,7 +195,7 @@
         
         loadComments() {
             this.loading = true;
-            fetch(`{{ route('api.comments.index') }}?id=${this.contentId}&type=${this.contentType}`)
+            fetch(`<?php echo e(route('api.comments.index')); ?>?id=${this.contentId}&type=${this.contentType}`)
                 .then(res => res.json())
                 .then(data => {
                     this.comments = data.comments;
@@ -126,11 +206,11 @@
         addComment() {
             if(!this.newComment.trim()) return;
             
-            fetch('{{ route('api.comments.store') }}', {
+            fetch('<?php echo e(route('api.comments.store')); ?>', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                 },
                 body: JSON.stringify({
                     id: this.contentId,
@@ -170,7 +250,7 @@
             
             <!-- Header -->
             <div class="p-6 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
-                <h3 class="text-xl font-bold text-neutral-900 dark:text-white">{{ __('social.comments_title') }}</h3>
+                <h3 class="text-xl font-bold text-neutral-900 dark:text-white"><?php echo e(__('social.comments_title')); ?></h3>
                 <button @click="show = false" class="text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -181,11 +261,11 @@
             <!-- Comments List -->
             <div class="flex-1 overflow-y-auto p-6 space-y-4">
                 <template x-if="loading">
-                    <div class="text-center py-8 text-neutral-500">{{ __('common.loading') }}</div>
+                    <div class="text-center py-8 text-neutral-500"><?php echo e(__('common.loading')); ?></div>
                 </template>
                 
                 <template x-if="!loading && comments.length === 0">
-                    <div class="text-center py-8 text-neutral-500">{{ __('social.no_comments') }}</div>
+                    <div class="text-center py-8 text-neutral-500"><?php echo e(__('social.no_comments')); ?></div>
                 </template>
                 
                 <template x-for="comment in comments" :key="comment.id">
@@ -205,25 +285,26 @@
             </div>
             
             <!-- Comment Form -->
-            @auth
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
             <div class="p-6 border-t border-neutral-200 dark:border-neutral-800">
                 <form @submit.prevent="addComment()" class="flex gap-3">
-                    <img src="{{ auth()->user()->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=059669&color=fff' }}" 
-                         alt="{{ auth()->user()->name }}" 
+                    <img src="<?php echo e(auth()->user()->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=059669&color=fff'); ?>" 
+                         alt="<?php echo e(auth()->user()->name); ?>" 
                          class="w-10 h-10 rounded-full object-cover flex-shrink-0">
                     <div class="flex-1 flex gap-2">
                         <input type="text" 
                                x-model="newComment"
-                               placeholder="{{ __('social.write_comment_placeholder') }}"
+                               placeholder="<?php echo e(__('social.write_comment_placeholder')); ?>"
                                class="flex-1 px-4 py-2 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-neutral-900 dark:text-white">
                         <button type="submit"
                                 class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors">
-                            {{ __('social.send') }}
+                            <?php echo e(__('social.send')); ?>
+
                         </button>
                     </div>
                 </form>
             </div>
-            @endauth
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
 
@@ -283,14 +364,14 @@
             
             <!-- Like Animation -->
             <template x-if="animationType === 'like'">
-                <img src="{{ asset('assets/images/draghetto-like.png') }}" 
+                <img src="<?php echo e(asset('assets/images/draghetto-like.png')); ?>" 
                      alt="Like!" 
                      class="w-80 h-80 drop-shadow-2xl animate-bounce">
             </template>
             
             <!-- Snap Animation -->
             <template x-if="animationType === 'snap'">
-                <img src="{{ asset('assets/images/draghetto-snap.png') }}" 
+                <img src="<?php echo e(asset('assets/images/draghetto-snap.png')); ?>" 
                      alt="Snap!" 
                      class="w-80 h-80 drop-shadow-2xl animate-bounce">
             </template>
@@ -405,43 +486,119 @@
         </div>
     </div>
     
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
     
-    {{-- Events Page Scripts --}}
-    @if(request()->routeIs('events.index'))
+    
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(request()->routeIs('events.index')): ?>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-        @vite(['resources/js/events-map.js'])
-    @endif
+        <?php echo app('Illuminate\Foundation\Vite')(['resources/js/events-map.js']); ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    {{-- Badge Notification Component (Global) --}}
-    @auth
-        <livewire:badge-notification />
-    @endauth
     
-    {{-- Report Modal Component (Global) --}}
-    <livewire:moderation.report-modal />
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
+        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('badge-notification', []);
+
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2636047370-1', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     
-    {{-- Article and Poem Modals (needed on profile pages) --}}
-    @if(request()->routeIs('profile.*') || request()->routeIs('user.*'))
-        <livewire:articles.article-modal />
-        <livewire:poems.poem-modal />
-    @endif
+    
+    <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('moderation.report-modal', []);
+
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2636047370-2', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
+    
+    
+    <?php if(request()->routeIs('profile.*') || request()->routeIs('user.*')): ?>
+        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('articles.article-modal', []);
+
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2636047370-3', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
+        <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('poems.poem-modal', []);
+
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2636047370-4', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- Userback Widget -->
     <script>
         window.Userback = window.Userback || {};
         Userback.access_token = "A-XS47P2vKL4SvC5uR2tFpztFlb";
         
-        @if(auth()->check())
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->check()): ?>
         // Identify logged-in user
         Userback.user_data = {
-            id: "{!! auth()->id() !!}",
+            id: "<?php echo auth()->id(); ?>",
             info: {
-                name: "{!! addslashes(auth()->user()->name) !!}",
-                email: "{!! auth()->user()->email !!}"
+                name: "<?php echo addslashes(auth()->user()->name); ?>",
+                email: "<?php echo auth()->user()->email; ?>"
             }
         };
-        @endif
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         
         (function(d) {
             var s = d.createElement('script');
@@ -452,3 +609,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH C:\xampp\htdocs\slamin_v2\resources\views/components/layouts/app.blade.php ENDPATH**/ ?>

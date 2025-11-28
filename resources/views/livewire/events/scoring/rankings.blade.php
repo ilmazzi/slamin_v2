@@ -1,432 +1,273 @@
-<div class="min-h-screen bg-neutral-50 dark:bg-neutral-900">
+<div class="min-h-screen bg-[#fefaf3] dark:bg-neutral-900">
     
-    {{-- Success Toast --}}
+    {{-- Toasts --}}
     @if(session('success'))
-        <div class="fixed top-24 right-6 z-50"
-             x-data="{ show: true }"
-             x-show="show"
-             x-init="setTimeout(() => show = false, 5000)"
-             x-transition:enter="transition ease-out duration-500"
-             x-transition:enter-start="opacity-0 translate-x-full"
-             x-transition:enter-end="opacity-100 translate-x-0"
-             x-transition:leave="transition ease-in duration-300"
-             x-transition:leave-end="opacity-0 translate-x-full">
-            <div class="scoring-alert bg-gradient-to-br from-[rgba(34,197,94,0.1)] to-[rgba(22,163,74,0.05)] dark:from-[rgba(34,197,94,0.2)] dark:to-[rgba(22,163,74,0.15)] border-[rgba(34,197,94,0.3)] dark:border-[rgba(34,197,94,0.4)] text-[#16a34a] dark:text-[#4ade80]">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span class="font-bold">{{ session('success') }}</span>
+        <div class="fixed top-4 left-4 right-4 z-50" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
+            <div class="bg-green-600 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2">
+                <i class="ph ph-check-circle text-xl"></i>
+                <span class="font-medium">{{ session('success') }}</span>
             </div>
         </div>
     @endif
 
-    @if(session('error'))
-        <div class="fixed top-24 right-6 z-50"
-             x-data="{ show: true }"
-             x-show="show"
-             x-init="setTimeout(() => show = false, 5000)"
-             x-transition:enter="transition ease-out duration-500"
-             x-transition:enter-start="opacity-0 translate-x-full"
-             x-transition:enter-end="opacity-100 translate-x-0"
-             x-transition:leave="transition ease-in duration-300"
-             x-transition:leave-end="opacity-0 translate-x-full">
-            <div class="scoring-alert bg-gradient-to-br from-[rgba(185,28,28,0.1)] to-[rgba(220,38,38,0.05)] dark:from-[rgba(139,115,85,0.2)] dark:to-[rgba(166,139,91,0.15)] border-[rgba(185,28,28,0.3)] dark:border-[rgba(139,115,85,0.4)] text-[#b91c1c] dark:text-[#8b7355]">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-                <span class="font-bold">{{ session('error') }}</span>
-            </div>
-        </div>
-    @endif
-
-    {{-- Elegant Header with Ticket Styles --}}
-    <?php 
-        $selectedColors = [
-            ['#fefaf3', '#fdf8f0', '#faf5ec'],
-            ['#fef9f1', '#fdf7ef', '#faf4ea'],
-            ['#fffbf5', '#fef9f3', '#fdf7f1']
-        ][rand(0, 2)];
-        $selectedColorsDark = [
-            ['#1a1a1a', '#2d2d2d', '#1f1f1f'],
-            ['#1f1f1f', '#2d2d2d', '#262626'],
-            ['#1a1a1a', '#262626', '#1f1f1f']
-        ][rand(0, 2)];
-    ?>
-    <div class="relative py-4 overflow-hidden bg-gradient-to-br from-[#fefaf3] via-[#fdf8f0] to-[#faf5ec] dark:from-[#1a1a1a] dark:via-[#2d2d2d] dark:to-[#1f1f1f]"
-         x-data="{ 
-             lightColors: {{ json_encode($selectedColors) }},
-             darkColors: {{ json_encode($selectedColorsDark) }},
-             get bgStyle() { 
-                 return document.documentElement.classList.contains('dark') 
-                     ? `linear-gradient(135deg, ${this.darkColors[0]} 0%, ${this.darkColors[1]} 50%, ${this.darkColors[2]} 100%)`
-                     : `linear-gradient(135deg, ${this.lightColors[0]} 0%, ${this.lightColors[1]} 50%, ${this.lightColors[2]} 100%)`;
-             }
-         }"
-         x-bind:style="{ background: bgStyle }">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <div class="flex items-center justify-between mb-2 pb-2 border-b-2 border-dashed border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)]">
-                        <div class="text-xs font-black tracking-widest uppercase text-[#b91c1c] dark:text-[#8b7355]" style="letter-spacing: 0.1em;">{{ strtoupper(__('events.scoring.rankings')) }}</div>
-                        <div class="text-xs font-bold text-[#8b7355] dark:text-[#a3a3a3]" style="font-family: 'Courier New', monospace;">#{{ str_pad($event->id, 4, '0', STR_PAD_LEFT) }}</div>
-                    </div>
-                    <h1 class="text-xl md:text-2xl font-bold mb-3 text-[#1a1a1a] dark:text-[#e5e5e5]" style="font-family: 'Crimson Pro', serif;">{{ $event->title }}</h1>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <div>
-                            <div class="text-xs font-bold uppercase mb-1 text-[#8b7355] dark:text-[#a3a3a3]" style="letter-spacing: 0.05em;">{{ __('events.scoring.participants') }}</div>
-                            <div class="text-sm font-semibold text-[#b91c1c] dark:text-[#8b7355]" style="font-family: 'Crimson Pro', serif;">{{ $stats['total_participants'] }}</div>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold uppercase mb-1 text-[#8b7355] dark:text-[#a3a3a3]" style="letter-spacing: 0.05em;">{{ __('events.scoring.with_scores') }}</div>
-                            <div class="text-sm font-semibold text-[#b91c1c] dark:text-[#8b7355]" style="font-family: 'Crimson Pro', serif;">{{ $stats['with_scores'] }}</div>
-                        </div>
-                        <div>
-                            <div class="text-xs font-bold uppercase mb-1 text-[#8b7355] dark:text-[#a3a3a3]" style="letter-spacing: 0.05em;">{{ __('events.scoring.badges_awarded') }}</div>
-                            <div class="text-sm font-semibold text-[#b91c1c] dark:text-[#8b7355]" style="font-family: 'Crimson Pro', serif;">{{ $stats['badges_awarded'] }}</div>
-                        </div>
-                        @if($event->status === \App\Models\Event::STATUS_COMPLETED)
-                        <div>
-                            <div class="text-xs font-bold uppercase mb-1 text-[#8b7355] dark:text-[#a3a3a3]" style="letter-spacing: 0.05em;">{{ __('events.scoring.status') }}</div>
-                            <div class="text-sm font-semibold text-[#16a34a] dark:text-[#4ade80]" style="font-family: 'Crimson Pro', serif;">{{ __('events.scoring.completed') }}</div>
-                        </div>
-                        @endif
+    {{-- Compact Header --}}
+    <div class="sticky top-0 z-40 bg-[#fefaf3] dark:bg-neutral-900 border-b border-[rgba(139,115,85,0.2)] dark:border-neutral-700 shadow-sm">
+        <div class="px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex-1 min-w-0">
+                    <h1 class="text-lg font-bold text-[#1a1a1a] dark:text-white truncate" style="font-family: 'Crimson Pro', serif;">
+                        {{ $event->title }}
+                    </h1>
+                    <div class="flex items-center gap-3 text-xs text-[#8b7355] dark:text-neutral-400">
+                        <span><i class="ph ph-users"></i> {{ $stats['total_participants'] }}</span>
+                        <span><i class="ph ph-medal"></i> {{ $stats['badges_awarded'] }} badges</span>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- CONTENT --}}
-    <div class="relative py-8">
-        <div class="max-w-6xl mx-auto px-6">
-            
-            {{-- Navigation --}}
-            <div class="mb-6 flex flex-wrap gap-2">
-                <a href="{{ route('events.scoring.scores', $event) }}" wire:navigate class="scoring-nav-button">
-                    <i class="ph ph-pencil-line"></i>
-                    {{ __('events.scoring.scores') }}
-                </a>
-                <a href="{{ route('events.scoring.participants', $event) }}" wire:navigate class="scoring-nav-button">
-                    <i class="ph ph-users"></i>
-                    {{ __('events.scoring.participants') }}
-                </a>
-                <a href="{{ route('events.scoring.rankings', $event) }}" wire:navigate class="scoring-nav-button scoring-nav-active">
-                    <i class="ph ph-ranking"></i>
-                    {{ __('events.scoring.rankings') }}
-                </a>
-            </div>
-
-            {{-- Actions Section --}}
-            @if($event->status !== \App\Models\Event::STATUS_COMPLETED)
-            <div class="mb-6">
-                <div class="scoring-card">
-                    <div class="scoring-card-content">
-                    {{-- Stats --}}
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div class="scoring-stat-card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%); border-color: rgba(59, 130, 246, 0.3);">
-                            <div class="text-2xl font-bold mb-1" style="color: #2563eb; font-family: 'Crimson Pro', serif;">{{ $stats['with_scores'] }}/{{ $stats['total_participants'] }}</div>
-                            <div class="text-xs font-bold uppercase" style="color: #8b7355; letter-spacing: 0.05em;">{{ __('events.scoring.with_scores') }}</div>
-                        </div>
-                        <div class="scoring-stat-card" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%); border-color: rgba(34, 197, 94, 0.3);">
-                            <div class="text-2xl font-bold mb-1" style="color: #16a34a; font-family: 'Crimson Pro', serif;">{{ $stats['badges_awarded'] }}</div>
-                            <div class="text-xs font-bold uppercase" style="color: #8b7355; letter-spacing: 0.05em;">{{ __('events.scoring.badges_awarded') }}</div>
-                        </div>
-                    </div>
-
-                    {{-- Action Buttons Grid --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        @if($canCalculate)
-                        <div class="scoring-action-card bg-gradient-to-br from-[rgba(234,179,8,0.1)] to-[rgba(202,138,4,0.05)] dark:from-[rgba(234,179,8,0.2)] dark:to-[rgba(202,138,4,0.15)] border-[rgba(234,179,8,0.3)] dark:border-[rgba(234,179,8,0.4)]">
-                            <div class="text-3xl mb-2">🧮</div>
-                            <h4 class="text-base font-bold mb-1 text-[#1a1a1a] dark:text-[#e5e5e5]" style="font-family: 'Crimson Pro', serif;">{{ __('events.scoring.calculate_partial_rankings') }}</h4>
-                            <p class="text-xs mb-3 text-[#8b7355] dark:text-[#a3a3a3]">{{ __('events.scoring.update_rankings_without_closing_event') }}</p>
-                            <button wire:click="calculatePartialRankings" class="scoring-button-secondary w-full">
-                                {{ __('events.scoring.calculate_partial_rankings') }}
-                            </button>
-                        </div>
-                    @endif
-
-                    @if($canCalculate && $stats['with_scores'] > 0)
-                        <div class="scoring-action-card bg-gradient-to-br from-[rgba(34,197,94,0.1)] to-[rgba(22,163,74,0.05)] dark:from-[rgba(34,197,94,0.2)] dark:to-[rgba(22,163,74,0.15)] border-[rgba(34,197,94,0.3)] dark:border-[rgba(34,197,94,0.4)]">
-                            <div class="text-3xl mb-2">🏆</div>
-                            <h4 class="text-base font-bold mb-1 text-[#1a1a1a] dark:text-[#e5e5e5]" style="font-family: 'Crimson Pro', serif;">{{ __('events.scoring.finalize_event') }}</h4>
-                            <p class="text-xs mb-3 text-[#8b7355] dark:text-[#a3a3a3]">{{ __('events.scoring.this_action_will_complete_the_event') }}</p>
-                            <button onclick="confirmFinalize()" class="scoring-button-primary w-full">
-                                {{ __('events.scoring.terminate_event') }}
-                            </button>
-                        </div>
-                    @endif
-                    </div>
-
-                    @if(!$canCalculate || $stats['with_scores'] === 0)
-                        <div class="mt-6 scoring-alert scoring-alert-info">
-                            <p class="text-sm flex items-center gap-2" style="font-family: 'Crimson Pro', serif;">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                {{ __('events.scoring.insert_scores_before_generating_rankings') }}
-                            </p>
-                        </div>
-                    @endif
-                </div>
-            </div>
-                    @else
-                    {{-- Event Completed Banner --}}
-                    <div class="mb-6 scoring-alert scoring-alert-info" style="padding: 0.75rem 1rem;">
-                        <p class="text-sm flex items-center gap-2" style="font-family: 'Crimson Pro', serif; margin: 0;">
-                            <span>🎊</span>
-                            <strong>{{ __('events.scoring.event_completed') }}</strong> - {{ __('events.scoring.final_rankings_published') }}
-                        </p>
-                    </div>
-                    @endif
-
-            {{-- Rankings Section --}}
-            <div>
-                <div class="text-xs font-black tracking-[0.3em] mb-4 uppercase text-[#b91c1c] dark:text-[#8b7355]" style="letter-spacing: 0.3em;">{{ __('events.scoring.final_rankings') }}</div>
-                
-                @if($rankings->count() > 0)
-                    {{-- Podium for Top 3 --}}
-                    @if($rankings->where('position', '<=', 3)->count() > 0)
-                    <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                        @php
-                            $topThree = $rankings->where('position', '<=', 3)->sortBy('position');
-                            $second = $topThree->where('position', 2)->first();
-                            $first = $topThree->where('position', 1)->first();
-                            $third = $topThree->where('position', 3)->first();
-                        @endphp
-                        
-                        {{-- 2nd Place --}}
-                        @if($second)
-                        <div class="order-2 md:order-1 text-center">
-                            <div class="rounded-t-lg p-4 mb-3 h-36 flex flex-col items-center justify-end shadow bg-gradient-to-br from-[#fefaf3] via-[#fdf8f0] to-[#faf5ec] dark:from-[#1a1a1a] dark:via-[#2d2d2d] dark:to-[#1f1f1f] border-2 border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)] border-b-0">
-                                <div class="text-3xl mb-1">🥈</div>
-                                @if($second->participant && $second->participant->user)
-                                    <img src="{{ $second->participant->user->profile_photo_url ?? asset('assets/images/avatar/default-avatar.webp') }}" 
-                                         alt="{{ $second->participant->display_name }}"
-                                         class="w-12 h-12 rounded-full object-cover border-2 mb-1 border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)]">
-                                @endif
-                                <div class="font-bold text-xs truncate w-full text-[#1a1a1a] dark:text-[#e5e5e5]" style="font-family: 'Crimson Pro', serif;">{{ $second->participant->display_name ?? '-' }}</div>
-                                <div class="text-lg font-bold text-[#b91c1c] dark:text-[#8b7355]" style="font-family: 'Crimson Pro', serif;">{{ number_format($second->total_score, 1) }}</div>
-                            </div>
-                            <div class="rounded-b-lg p-2 bg-gradient-to-br from-[rgba(254,250,243,0.5)] to-[rgba(253,248,240,0.5)] dark:from-[rgba(26,26,26,0.5)] dark:to-[rgba(45,45,45,0.5)] border-2 border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)] border-t-0">
-                                <div class="text-xs font-bold uppercase mb-1 text-[#8b7355] dark:text-[#a3a3a3]" style="font-family: 'Crimson Pro', serif;">2°</div>
-                                @if($second->badge)
-                                    <img src="{{ $second->badge->icon_url }}" alt="{{ $second->badge->name }}" class="w-6 h-6 mx-auto object-contain">
-                                @endif
-                            </div>
-                        </div>
-                        @endif
-
-                        {{-- 1st Place --}}
-                        @if($first)
-                        <div class="order-1 md:order-2 text-center">
-                            <div class="rounded-t-lg p-5 mb-3 h-44 flex flex-col items-center justify-end shadow-lg bg-gradient-to-br from-[#a8d5ba] to-[#7fc49e] dark:from-[#166534] dark:to-[#15803d] border-2 border-[rgba(34,197,94,0.3)] dark:border-[rgba(34,197,94,0.5)] border-b-0">
-                                <div class="text-4xl mb-2">🥇</div>
-                                @if($first->participant && $first->participant->user)
-                                    <img src="{{ $first->participant->user->profile_photo_url ?? asset('assets/images/avatar/default-avatar.webp') }}" 
-                                         alt="{{ $first->participant->display_name }}"
-                                         class="w-16 h-16 rounded-full object-cover border-2 mb-2 shadow border-[rgba(34,197,94,0.3)] dark:border-[rgba(34,197,94,0.5)]">
-                                @endif
-                                <div class="font-bold text-sm truncate w-full mb-1 text-[#1a1a1a] dark:text-white" style="font-family: 'Crimson Pro', serif;">{{ $first->participant->display_name ?? '-' }}</div>
-                                <div class="text-2xl font-bold text-[#15803d] dark:text-[#86efac]" style="font-family: 'Crimson Pro', serif;">{{ number_format($first->total_score, 1) }}</div>
-                            </div>
-                            <div class="rounded-b-lg p-2 bg-gradient-to-br from-[rgba(168,213,186,0.4)] to-[rgba(127,196,158,0.3)] dark:from-[rgba(22,101,52,0.4)] dark:to-[rgba(21,128,61,0.3)] border-2 border-[rgba(34,197,94,0.3)] dark:border-[rgba(34,197,94,0.5)] border-t-0">
-                                <div class="text-xs font-bold uppercase mb-1 text-[#15803d] dark:text-[#86efac]" style="font-family: 'Crimson Pro', serif;">1°</div>
-                                @if($first->badge)
-                                    <img src="{{ $first->badge->icon_url }}" alt="{{ $first->badge->name }}" class="w-8 h-8 mx-auto object-contain">
-                                @endif
-                            </div>
-                        </div>
-                        @endif
-
-                        {{-- 3rd Place --}}
-                        @if($third)
-                        <div class="order-3 text-center">
-                            <div class="rounded-t-lg p-4 mb-3 h-32 flex flex-col items-center justify-end shadow bg-gradient-to-br from-[#fefaf3] via-[#fdf8f0] to-[#faf5ec] dark:from-[#1a1a1a] dark:via-[#2d2d2d] dark:to-[#1f1f1f] border-2 border-[rgba(139,115,85,0.5)] dark:border-[rgba(139,115,85,0.6)] border-b-0">
-                                <div class="text-2xl mb-1">🥉</div>
-                                @if($third->participant && $third->participant->user)
-                                    <img src="{{ $third->participant->user->profile_photo_url ?? asset('assets/images/avatar/default-avatar.webp') }}" 
-                                         alt="{{ $third->participant->display_name }}"
-                                         class="w-12 h-12 rounded-full object-cover border-2 mb-1 border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)]">
-                                @endif
-                                <div class="font-bold text-xs truncate w-full text-[#1a1a1a] dark:text-[#e5e5e5]" style="font-family: 'Crimson Pro', serif;">{{ $third->participant->display_name ?? '-' }}</div>
-                                <div class="text-lg font-bold text-[#b91c1c] dark:text-[#8b7355]" style="font-family: 'Crimson Pro', serif;">{{ number_format($third->total_score, 1) }}</div>
-                            </div>
-                            <div class="rounded-b-lg p-2 bg-gradient-to-br from-[rgba(254,250,243,0.5)] to-[rgba(253,248,240,0.5)] dark:from-[rgba(26,26,26,0.5)] dark:to-[rgba(45,45,45,0.5)] border-2 border-[rgba(139,115,85,0.5)] dark:border-[rgba(139,115,85,0.6)] border-t-0">
-                                <div class="text-xs font-bold uppercase mb-1 text-[#8b7355] dark:text-[#a3a3a3]" style="font-family: 'Crimson Pro', serif;">3°</div>
-                                @if($third->badge)
-                                    <img src="{{ $third->badge->icon_url }}" alt="{{ $third->badge->name }}" class="w-6 h-6 mx-auto object-contain">
-                                @endif
-                            </div>
-                        </div>
-                        @endif
-                    </div>
-                    @endif
-
-                    {{-- Full Rankings Table --}}
-                    <div class="scoring-card">
-                        <div class="scoring-card-header">
-                            <h2 class="scoring-card-title">
-                                <i class="ph-duotone ph-ranking"></i>
-                                {{ __('events.scoring.complete_rankings') }}
-                            </h2>
-                        </div>
-
-                        <div class="scoring-card-content">
-                            {{-- Mobile View --}}
-                            <div class="block md:hidden space-y-4">
-                                @foreach($rankings as $ranking)
-                                    @if($ranking->position > 3)
-                                    <div class="scoring-participant-card border-l-4 border-l-[rgba(139,115,85,0.3)] dark:border-l-[rgba(139,115,85,0.4)]">
-                                        <div class="flex items-center gap-4">
-                                            <div class="flex-shrink-0">
-                                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold bg-gradient-to-br from-[rgba(254,250,243,0.5)] to-[rgba(253,248,240,0.5)] dark:from-[rgba(26,26,26,0.5)] dark:to-[rgba(45,45,45,0.5)] border-2 border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)] text-[#1a1a1a] dark:text-[#e5e5e5]" style="font-family: 'Crimson Pro', serif;">
-                                                    {{ $ranking->position }}
-                                                </div>
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <div class="flex items-center gap-2 mb-2">
-                                                    @if($ranking->participant && $ranking->participant->user)
-                                                        <img src="{{ $ranking->participant->user->profile_photo_url ?? asset('assets/images/avatar/default-avatar.webp') }}" 
-                                                             alt="{{ $ranking->participant->display_name }}"
-                                                             class="w-10 h-10 rounded-full object-cover border-2 border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)]">
-                                                    @endif
-                                                    <div class="font-bold truncate text-[#1a1a1a] dark:text-[#e5e5e5]" style="font-family: 'Crimson Pro', serif;">{{ $ranking->participant->display_name ?? '-' }}</div>
-                                                </div>
-                                                <div class="flex flex-wrap gap-2">
-                                                    <span class="scoring-badge bg-gradient-to-br from-[rgba(185,28,28,0.1)] to-[rgba(220,38,38,0.05)] dark:from-[rgba(139,115,85,0.2)] dark:to-[rgba(166,139,91,0.15)] border-[rgba(185,28,28,0.3)] dark:border-[rgba(139,115,85,0.4)] text-[#b91c1c] dark:text-[#8b7355]">
-                                                        {{ number_format($ranking->total_score, 1) }} {{ __('events.scoring.points') }}
-                                                    </span>
-                                                    @if($ranking->badge)
-                                                        <span class="scoring-badge {{ $ranking->badge_awarded ? 'scoring-badge-confirmed' : 'bg-gradient-to-br from-[rgba(254,250,243,0.5)] to-[rgba(253,248,240,0.5)] dark:from-[rgba(26,26,26,0.5)] dark:to-[rgba(45,45,45,0.5)] border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)] text-[#8b7355] dark:text-[#a3a3a3]' }}">
-                                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                                                            </svg>
-                                                            {{ $ranking->badge->name }}
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endif
-                                @endforeach
-                            </div>
-
-                            {{-- Desktop Table --}}
-                            <div class="hidden md:block overflow-x-auto">
-                                <table class="scoring-table">
-                                    <thead>
-                                        <tr>
-                                            <th class="w-20">{{ __('events.scoring.position') }}</th>
-                                            <th>{{ __('events.scoring.participant_name') }}</th>
-                                            <th>{{ __('events.scoring.round_scores') }}</th>
-                                            <th class="w-32">{{ __('events.scoring.total_score') }}</th>
-                                            <th>{{ __('events.scoring.badge') }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($rankings as $ranking)
-                                            <tr class="{{ $ranking->position <= 3 ? 'bg-gradient-to-r from-[rgba(254,250,243,0.3)] to-[rgba(253,248,240,0.3)] dark:from-[rgba(26,26,26,0.5)] dark:to-[rgba(45,45,45,0.5)]' : '' }}">
-                                                <td>
-                                                    <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg {{ $ranking->position <= 3 ? ($ranking->position == 1 ? 'bg-gradient-to-br from-[#a8d5ba] to-[#7fc49e] dark:from-[#166534] dark:to-[#15803d] border-2 border-[rgba(34,197,94,0.3)] dark:border-[rgba(34,197,94,0.5)] text-[#15803d] dark:text-[#86efac]' : 'bg-gradient-to-br from-[#b91c1c] to-[#dc2626] dark:from-[#8b7355] dark:to-[#a68b5b] border-2 border-[#b91c1c] dark:border-[#8b7355] text-white') : 'bg-gradient-to-br from-[rgba(254,250,243,0.5)] to-[rgba(253,248,240,0.5)] dark:from-[rgba(26,26,26,0.5)] dark:to-[rgba(45,45,45,0.5)] border-2 border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)] text-[#1a1a1a] dark:text-[#e5e5e5]' }}" style="font-family: 'Crimson Pro', serif;">
-                                                        {{ $ranking->medal ?: $ranking->position }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    @if($ranking->participant)
-                                                        <div class="flex items-center gap-3">
-                                                            @if($ranking->participant->user)
-                                                                <img src="{{ $ranking->participant->user->profile_photo_url ?? asset('assets/images/avatar/default-avatar.webp') }}" 
-                                                                     alt="{{ $ranking->participant->display_name }}"
-                                                                     class="w-12 h-12 rounded-full object-cover border-2 border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)]">
-                                                            @else
-                                                                <div class="w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br from-[rgba(254,250,243,0.5)] to-[rgba(253,248,240,0.5)] dark:from-[rgba(26,26,26,0.5)] dark:to-[rgba(45,45,45,0.5)] border-2 border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)]">
-                                                                    <svg class="w-6 h-6 text-[#8b7355] dark:text-[#a3a3a3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                                                    </svg>
-                                                                </div>
-                                                            @endif
-                                                            <div>
-                                                                <div class="font-bold text-sm text-[#1a1a1a] dark:text-[#e5e5e5]" style="font-family: 'Crimson Pro', serif;">{{ $ranking->participant->display_name }}</div>
-                                                                @if($ranking->participant->isGuest())
-                                                                    <span class="scoring-badge scoring-badge-pending">{{ __('events.scoring.guest') }}</span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if($ranking->round_scores)
-                                                        <div class="flex flex-wrap gap-2">
-                                                            @foreach($ranking->round_scores as $round => $score)
-                                                                <span class="scoring-badge bg-gradient-to-br from-[rgba(59,130,246,0.1)] to-[rgba(37,99,235,0.05)] dark:from-[rgba(59,130,246,0.2)] dark:to-[rgba(37,99,235,0.15)] border-[rgba(59,130,246,0.3)] dark:border-[rgba(59,130,246,0.4)] text-[#2563eb] dark:text-[#60a5fa]">
-                                                                    T{{ $round }}: {{ number_format($score, 1) }}
-                                                                </span>
-                                                            @endforeach
-                                                        </div>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <span class="scoring-badge bg-gradient-to-r from-[#b91c1c] to-[#dc2626] dark:from-[#8b7355] dark:to-[#a68b5b] border-[#b91c1c] dark:border-[#8b7355] text-white text-base px-4 py-2">
-                                                        {{ number_format($ranking->total_score, 1) }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    @if($ranking->badge)
-                                                        <div class="flex items-center gap-3">
-                                                            <img src="{{ $ranking->badge->icon_url }}" 
-                                                                 alt="{{ $ranking->badge->name }}"
-                                                                 class="w-10 h-10 object-contain">
-                                                            <div>
-                                                                <div class="font-bold text-sm text-[#1a1a1a] dark:text-[#e5e5e5]" style="font-family: 'Crimson Pro', serif;">{{ $ranking->badge->name }}</div>
-                                                                @if($ranking->badge_awarded)
-                                                                    <span class="scoring-badge scoring-badge-confirmed">{{ __('events.scoring.assigned') }}</span>
-                                                                @else
-                                                                    <span class="scoring-badge bg-gradient-to-br from-[rgba(254,250,243,0.5)] to-[rgba(253,248,240,0.5)] dark:from-[rgba(26,26,26,0.5)] dark:to-[rgba(45,45,45,0.5)] border-[rgba(139,115,85,0.3)] dark:border-[rgba(139,115,85,0.4)] text-[#8b7355] dark:text-[#a3a3a3]">{{ __('events.scoring.to_assign') }}</span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                @else
-                    <div class="scoring-card">
-                        <div class="scoring-card-content text-center">
-                            <div class="text-5xl mb-4">📊</div>
-                            <h3 class="text-lg font-bold mb-2 text-[#1a1a1a] dark:text-[#e5e5e5]" style="font-family: 'Crimson Pro', serif;">{{ __('gamification.no_rankings') }}</h3>
-                            
-                            @if($canCalculate)
-                                <p class="mb-4 text-sm text-[#8b7355] dark:text-[#a3a3a3]">{{ __('events.scoring.you_have_participants_with_scores') }}</p>
-                                <button wire:click="calculatePartialRankings" class="scoring-button-secondary">
-                                    {{ __('events.scoring.calculate_partial_rankings') }}
-                                </button>
-                            @else
-                                <p class="mb-4 text-sm text-[#8b7355] dark:text-[#a3a3a3]">{{ __('events.scoring.insert_scores_before_generating_rankings') }}</p>
-                            @endif
-                        </div>
-                    </div>
+                @if($event->status === \App\Models\Event::STATUS_COMPLETED)
+                    <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-lg text-xs font-bold">
+                        <i class="ph ph-check-circle"></i> {{ __('events.scoring.completed') }}
+                    </span>
                 @endif
             </div>
         </div>
+        
+        {{-- Navigation Tabs --}}
+        <div class="flex border-t border-[rgba(139,115,85,0.1)] dark:border-neutral-800">
+            <a href="{{ route('events.scoring.scores', $event) }}" wire:navigate 
+               class="flex-1 py-3 text-center text-sm font-medium text-[#8b7355] dark:text-neutral-400 hover:bg-[rgba(139,115,85,0.1)]">
+                <i class="ph ph-pencil-line"></i>
+                <span class="hidden sm:inline ml-1">{{ __('events.scoring.scores') }}</span>
+            </a>
+            <a href="{{ route('events.scoring.participants', $event) }}" wire:navigate 
+               class="flex-1 py-3 text-center text-sm font-medium text-[#8b7355] dark:text-neutral-400 hover:bg-[rgba(139,115,85,0.1)]">
+                <i class="ph ph-users"></i>
+                <span class="hidden sm:inline ml-1">{{ __('events.scoring.participants') }}</span>
+            </a>
+            <a href="{{ route('events.scoring.rankings', $event) }}" wire:navigate 
+               class="flex-1 py-3 text-center text-sm font-bold bg-[#b91c1c] text-white">
+                <i class="ph ph-trophy"></i>
+                <span class="hidden sm:inline ml-1">{{ __('events.scoring.rankings') }}</span>
+            </a>
+        </div>
     </div>
 
+    {{-- Main Content --}}
+    <div class="px-4 py-4 space-y-4 pb-24">
+        
+        {{-- Action Buttons (if not completed) --}}
+        @if($event->status !== \App\Models\Event::STATUS_COMPLETED)
+            <div class="grid grid-cols-2 gap-3">
+                @if($canCalculate)
+                    <button wire:click="calculatePartialRankings" 
+                            class="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-200 dark:border-amber-800 text-center">
+                        <div class="text-3xl mb-1">🧮</div>
+                        <div class="text-sm font-bold text-amber-700 dark:text-amber-400">{{ __('events.scoring.calculate') }}</div>
+                    </button>
+                @endif
+                
+                @if($canCalculate && $stats['with_scores'] > 0)
+                    <button onclick="confirmFinalize()" 
+                            class="p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 text-center">
+                        <div class="text-3xl mb-1">🏆</div>
+                        <div class="text-sm font-bold text-green-700 dark:text-green-400">{{ __('events.scoring.finalize_event') }}</div>
+                    </button>
+                @endif
+            </div>
+            
+            @if(!$canCalculate || $stats['with_scores'] === 0)
+                <div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+                    <p class="text-sm text-blue-700 dark:text-blue-400 flex items-center gap-2">
+                        <i class="ph ph-info text-lg"></i>
+                        {{ __('events.scoring.insert_scores_before_generating_rankings') }}
+                    </p>
+                </div>
+            @endif
+        @else
+            <div class="p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
+                <p class="text-sm text-green-700 dark:text-green-400 flex items-center gap-2">
+                    <span class="text-xl">🎊</span>
+                    <strong>{{ __('events.scoring.event_completed') }}</strong> - {{ __('events.scoring.final_rankings_published') }}
+                </p>
+            </div>
+        @endif
 
+        {{-- Podium (Top 3) --}}
+        @if($rankings->where('position', '<=', 3)->count() > 0)
+            @php
+                $first = $rankings->where('position', 1)->first();
+                $second = $rankings->where('position', 2)->first();
+                $third = $rankings->where('position', 3)->first();
+            @endphp
+            
+            <div class="grid grid-cols-3 gap-2 items-end">
+                {{-- 2nd Place --}}
+                <div class="text-center">
+                    @if($second)
+                        <div class="bg-gradient-to-b from-gray-100 to-gray-200 dark:from-neutral-700 dark:to-neutral-800 rounded-t-xl p-3 h-28 flex flex-col items-center justify-end">
+                            <div class="text-2xl">🥈</div>
+                            @if($second->participant && $second->participant->user)
+                                <img src="{{ $second->participant->user->profile_photo_url ?? asset('assets/images/avatar/default-avatar.webp') }}" 
+                                     class="w-10 h-10 rounded-full border-2 border-white shadow">
+                            @else
+                                <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+                                    <i class="ph ph-user"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="bg-gray-200 dark:bg-neutral-700 rounded-b-xl p-2">
+                            <div class="text-xs font-bold text-[#1a1a1a] dark:text-white truncate">{{ $second->participant->display_name ?? '-' }}</div>
+                            <div class="text-lg font-bold text-[#b91c1c]">{{ number_format($second->total_score, 1) }}</div>
+                        </div>
+                    @endif
+                </div>
+                
+                {{-- 1st Place --}}
+                <div class="text-center">
+                    @if($first)
+                        <div class="bg-gradient-to-b from-yellow-100 to-yellow-200 dark:from-yellow-900/50 dark:to-yellow-800/50 rounded-t-xl p-3 h-36 flex flex-col items-center justify-end shadow-lg">
+                            <div class="text-3xl">🥇</div>
+                            @if($first->participant && $first->participant->user)
+                                <img src="{{ $first->participant->user->profile_photo_url ?? asset('assets/images/avatar/default-avatar.webp') }}" 
+                                     class="w-14 h-14 rounded-full border-4 border-yellow-400 shadow-lg">
+                            @else
+                                <div class="w-14 h-14 rounded-full bg-yellow-300 flex items-center justify-center">
+                                    <i class="ph ph-user text-2xl"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="bg-yellow-200 dark:bg-yellow-800/50 rounded-b-xl p-2">
+                            <div class="text-sm font-bold text-[#1a1a1a] dark:text-white truncate">{{ $first->participant->display_name ?? '-' }}</div>
+                            <div class="text-2xl font-bold text-yellow-700 dark:text-yellow-400">{{ number_format($first->total_score, 1) }}</div>
+                        </div>
+                    @endif
+                </div>
+                
+                {{-- 3rd Place --}}
+                <div class="text-center">
+                    @if($third)
+                        <div class="bg-gradient-to-b from-orange-100 to-orange-200 dark:from-orange-900/30 dark:to-orange-800/30 rounded-t-xl p-3 h-24 flex flex-col items-center justify-end">
+                            <div class="text-xl">🥉</div>
+                            @if($third->participant && $third->participant->user)
+                                <img src="{{ $third->participant->user->profile_photo_url ?? asset('assets/images/avatar/default-avatar.webp') }}" 
+                                     class="w-10 h-10 rounded-full border-2 border-white shadow">
+                            @else
+                                <div class="w-10 h-10 rounded-full bg-orange-300 flex items-center justify-center">
+                                    <i class="ph ph-user"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="bg-orange-200 dark:bg-orange-800/30 rounded-b-xl p-2">
+                            <div class="text-xs font-bold text-[#1a1a1a] dark:text-white truncate">{{ $third->participant->display_name ?? '-' }}</div>
+                            <div class="text-lg font-bold text-orange-700 dark:text-orange-400">{{ number_format($third->total_score, 1) }}</div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
+
+        {{-- Full Rankings List --}}
+        @if($rankings->count() > 0)
+            <div class="space-y-2">
+                <h3 class="text-xs font-black uppercase tracking-widest text-[#8b7355] dark:text-neutral-500">
+                    {{ __('events.scoring.complete_rankings') }}
+                </h3>
+                
+                @foreach($rankings as $ranking)
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl p-4 shadow-sm border border-[rgba(139,115,85,0.15)] dark:border-neutral-700
+                                {{ $ranking->position <= 3 ? 'border-l-4 ' . ($ranking->position == 1 ? 'border-l-yellow-400' : ($ranking->position == 2 ? 'border-l-gray-400' : 'border-l-orange-400')) : '' }}">
+                        <div class="flex items-center gap-3">
+                            {{-- Position --}}
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0
+                                        {{ $ranking->position == 1 ? 'bg-yellow-100 text-yellow-700' : 
+                                           ($ranking->position == 2 ? 'bg-gray-100 text-gray-700' : 
+                                           ($ranking->position == 3 ? 'bg-orange-100 text-orange-700' : 'bg-[rgba(139,115,85,0.1)] text-[#8b7355]')) }}">
+                                {{ $ranking->medal ?: $ranking->position }}
+                            </div>
+                            
+                            {{-- Avatar --}}
+                            @if($ranking->participant && $ranking->participant->user)
+                                <img src="{{ $ranking->participant->user->profile_photo_url ?? asset('assets/images/avatar/default-avatar.webp') }}" 
+                                     class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+                            @else
+                                <div class="w-10 h-10 rounded-full bg-[rgba(139,115,85,0.1)] flex items-center justify-center flex-shrink-0">
+                                    <i class="ph ph-user text-[#8b7355]"></i>
+                                </div>
+                            @endif
+                            
+                            {{-- Info --}}
+                            <div class="flex-1 min-w-0">
+                                <div class="font-bold text-[#1a1a1a] dark:text-white truncate" style="font-family: 'Crimson Pro', serif;">
+                                    {{ $ranking->participant->display_name ?? '-' }}
+                                </div>
+                                @if($ranking->round_scores)
+                                    <div class="flex flex-wrap gap-1 mt-1">
+                                        @foreach($ranking->round_scores as $round => $score)
+                                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 font-medium">
+                                                T{{ $round }}: {{ number_format($score, 1) }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+                            
+                            {{-- Score --}}
+                            <div class="text-right">
+                                <div class="text-xl font-bold text-[#b91c1c] dark:text-[#8b7355]">{{ number_format($ranking->total_score, 1) }}</div>
+                                @if($ranking->badge)
+                                    <div class="flex items-center gap-1 justify-end mt-1">
+                                        <img src="{{ $ranking->badge->icon_url }}" class="w-4 h-4">
+                                        <span class="text-[10px] text-green-600 font-bold">{{ $ranking->badge_awarded ? '✓' : '' }}</span>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            {{-- No Rankings --}}
+            <div class="text-center py-12">
+                <div class="text-6xl mb-4">📊</div>
+                <h4 class="text-xl font-bold text-[#1a1a1a] dark:text-white mb-2">{{ __('gamification.no_rankings') }}</h4>
+                <p class="text-[#8b7355] dark:text-neutral-400 mb-4">{{ __('events.scoring.insert_scores_before_generating_rankings') }}</p>
+                @if($canCalculate)
+                    <button wire:click="calculatePartialRankings" 
+                            class="px-6 py-3 bg-[#b91c1c] text-white rounded-xl font-bold">
+                        {{ __('events.scoring.calculate_partial_rankings') }}
+                    </button>
+                @endif
+            </div>
+        @endif
+    </div>
 
     @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmFinalize() {
-            if (confirm('{{ __('events.scoring.confirm_finalize_event') }}\n\n{{ __('events.scoring.this_action_will_complete_the_event') }}\n- {{ __('events.scoring.calculate_final_rankings') }}\n- {{ __('events.scoring.assign_badges_to_winners') }}\n- {{ __('events.scoring.close_event') }}\n- {{ __('events.scoring.publish_results') }}\n\n{{ __('events.scoring.warning') }}: {{ __('events.scoring.you_will_not_be_able_to_modify_scores') }}')) {
-                @this.call('finalizeEvent');
-            }
+            Swal.fire({
+                title: '{{ __('events.scoring.confirm_finalize_event') }}',
+                text: '{{ __('events.scoring.this_action_will_complete_the_event') }}',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#b91c1c',
+                cancelButtonColor: '#8b7355',
+                confirmButtonText: '{{ __('events.scoring.finalize_event') }}',
+                cancelButtonText: '{{ __('events.scoring.cancel') }}'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.call('finalizeEvent');
+                }
+            });
         }
+
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('swal:success', (data) => {
+                Swal.fire({ icon: 'success', title: data[0].title, text: data[0].text, toast: true, position: 'top', showConfirmButton: false, timer: 2000 });
+            });
+            Livewire.on('swal:error', (data) => {
+                Swal.fire({ icon: 'error', title: data[0].title, text: data[0].text, confirmButtonColor: '#b91c1c' });
+            });
+        });
     </script>
     @endpush
 </div>
-

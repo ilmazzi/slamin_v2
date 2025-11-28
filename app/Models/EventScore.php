@@ -14,14 +14,16 @@ class EventScore extends Model
         'event_id',
         'participant_id',
         'judge_id',
+        'judge_number',
         'round',
         'score',
         'notes',
         'scored_at',
     ];
-
+    
     protected $casts = [
         'round' => 'integer',
+        'judge_number' => 'integer',
         'score' => 'decimal:1',
         'scored_at' => 'datetime',
     ];
