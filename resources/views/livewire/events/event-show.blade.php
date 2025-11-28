@@ -505,7 +505,7 @@
                 <livewire:components.wishlist-button :event="$event" />
 
                 @auth
-                    @if(auth()->user()->id === $event->organizer_id || auth()->user()->canOrganizeEvents())
+                    @if(auth()->user()->id === $event->organizer_id || auth()->user()->hasRole('admin'))
                         <a href="{{ route('events.edit', $event) }}" wire:navigate
                            class="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-wide transition-all hover:scale-105">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
