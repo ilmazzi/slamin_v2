@@ -30,6 +30,15 @@ return [
     'events_section_title' => '<span class="italic text-primary-600">Upcoming</span> Events',
     'events_section_subtitle' => 'Don\'t miss the next poetry gatherings',
     'all_events_button' => 'All Events',
+    
+    // Completed Events Section
+    'completed_events_title' => '<span class="italic text-primary-600">Recently Completed</span> Events',
+    'completed_events_subtitle' => 'Events completed in the last 3 days',
+    'completed_poetry_slams_title' => '<span class="italic text-primary-600">Completed</span> Poetry Slams',
+    'completed_poetry_slams_subtitle' => 'Discover the winners of the latest Poetry Slams',
+    'view_full_rankings' => 'View full rankings',
+    'podium' => 'Podium',
+    'all_completed_events' => 'All completed events',
 
     // Gigs Section
     'gigs_section_title' => '<span class="italic text-accent-600">Creative</span> Opportunities',

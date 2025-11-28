@@ -280,6 +280,16 @@
         <div class="section-separator"></div>
     </div>
 
+    {{-- Poetry Slam Conclusi - PODIO SECTION --}}
+    <div class="py-20 md:py-24 cinema-wall-section">
+        <livewire:home.completed-poetry-slams />
+    </div>
+
+    {{-- Decorative Separator --}}
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+        <div class="section-separator"></div>
+    </div>
+
     {{-- Poesie - WOODEN DESK SECTION --}}
     <div class="py-20 md:py-24 wooden-desk-section">
         <livewire:home.poetry-section />

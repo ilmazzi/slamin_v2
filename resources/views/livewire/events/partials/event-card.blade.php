@@ -53,10 +53,22 @@
     </div>
     
     <!-- Floating Category Badge -->
-    <div class="absolute top-4 right-4 z-10 transform transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3">
-        <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase rounded-full border border-white/30 shadow-lg">
-            {{ str_replace('_', ' ', $event->category ?? 'Event') }}
-        </span>
+    <div class="absolute top-4 right-4 z-10 flex flex-col gap-2 items-end">
+        @if($event->status === \App\Models\Event::STATUS_COMPLETED || ($event->end_datetime && $event->end_datetime->isPast()))
+        <div class="transform transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3">
+            <span class="px-3 py-1 bg-gradient-to-r from-amber-500/90 to-amber-600/90 backdrop-blur-md text-white text-xs font-bold uppercase rounded-full border border-amber-400/50 shadow-lg flex items-center gap-1">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                </svg>
+                {{ __('events.completed') }}
+            </span>
+        </div>
+        @endif
+        <div class="transform transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3">
+            <span class="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase rounded-full border border-white/30 shadow-lg">
+                {{ str_replace('_', ' ', $event->category ?? 'Event') }}
+            </span>
+        </div>
     </div>
     
     <!-- Content -->

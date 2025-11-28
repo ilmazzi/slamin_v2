@@ -284,41 +284,280 @@
     </div>
     @endif
 
-    {{-- Upcoming Events Section --}}
+    {{-- Timeline Eventi di Oggi --}}
+    @if($todayEventsTimeline->count() > 0)
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12 bg-gradient-to-br from-red-50/50 via-white to-red-50/30 dark:from-red-900/10 dark:via-neutral-800 dark:to-red-900/10">
+        <div class="mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
+                {{ __('events.today_events') }}
+            </h2>
+            <p class="text-neutral-600 dark:text-neutral-400">
+                {{ __('events.today_events_description') }}
+            </p>
+        </div>
+        
+        <div class="relative" x-data="{ 
+            scrollTimeline(direction) {
+                const container = this.$refs.todayTimeline;
+                if (!container) return;
+                const containerRect = container.getBoundingClientRect();
+                const scrollLeft = container.scrollLeft;
+                const scrollAmount = containerRect.width * 0.8;
+                const newScrollLeft = direction > 0 
+                    ? Math.min(container.scrollWidth - containerRect.width, scrollLeft + scrollAmount)
+                    : Math.max(0, scrollLeft - scrollAmount);
+                container.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
+            }
+        }">
+            <!-- Left Arrow (Desktop Only) -->
+            <button @click="scrollTimeline(-1)" 
+                    class="hidden md:flex absolute -left-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-full shadow-xl hover:scale-110 transition-all duration-300 items-center justify-center text-neutral-900 dark:text-white group">
+                <svg class="w-6 h-6 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            
+            <!-- Right Arrow (Desktop Only) -->
+            <button @click="scrollTimeline(1)" 
+                    class="hidden md:flex absolute -right-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-full shadow-xl hover:scale-110 transition-all duration-300 items-center justify-center text-neutral-900 dark:text-white group">
+                <svg class="w-6 h-6 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+            
+            <!-- Mobile Scroll Indicator -->
+            <div class="md:hidden relative mb-4">
+                <div class="flex items-center justify-center gap-2 text-neutral-600 dark:text-neutral-400 text-sm">
+                    <svg class="w-5 h-5 animate-bounce-horizontal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                    </svg>
+                    <span>{{ __('events.scroll_to_see_more') }}</span>
+                </div>
+            </div>
+            
+            <!-- Timeline with DeLorean -->
+            <div class="relative mb-8" 
+                 x-data="{
+                    deloreanPosition: 0,
+                    isDragging: false,
+                    init() {
+                        this.deloreanPosition = 0;
+                    },
+                    handleDragStart(e) {
+                        this.isDragging = true;
+                        e.preventDefault();
+                        e.stopPropagation();
+                    },
+                    handleDrag(e) {
+                        if (!this.isDragging) return;
+                        const timelineContainer = this.$refs.todayTimelineContainer;
+                        if (!timelineContainer) return;
+                        const rect = timelineContainer.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const maxX = rect.width - 48;
+                        this.deloreanPosition = Math.max(0, Math.min(x, maxX));
+                        this.scrollToPosition();
+                    },
+                    handleDragEnd() {
+                        this.isDragging = false;
+                    },
+                    scrollToPosition() {
+                        const eventsContainer = this.$refs.todayTimeline;
+                        if (!eventsContainer) return;
+                        
+                        const containerWidth = eventsContainer.getBoundingClientRect().width;
+                        const scrollWidth = eventsContainer.scrollWidth;
+                        const maxScroll = scrollWidth - containerWidth;
+                        
+                        // Calculate scroll position based on DeLorean position
+                        const scrollRatio = this.deloreanPosition / (containerWidth - 48);
+                        const targetScroll = scrollRatio * maxScroll;
+                        
+                        eventsContainer.scrollLeft = Math.max(0, Math.min(maxScroll, targetScroll));
+                    }
+                 }">
+                <!-- Timeline Line Container -->
+                <div x-ref="todayTimelineContainer" class="relative h-12 px-8 md:px-12"
+                     @mousemove="handleDrag($event)"
+                     @mouseup="handleDragEnd()"
+                     @mouseleave="handleDragEnd()">
+                    <!-- Timeline Line -->
+                    <div class="absolute top-6 left-8 right-8 h-1 bg-gradient-to-r from-red-600 via-primary-500 to-primary-600 dark:from-red-400 dark:via-primary-400 dark:to-primary-400 opacity-60"></div>
+                    
+                    <!-- DeLorean Time Machine -->
+                    <img src="{{ asset('assets/images/delorean.png') }}" 
+                         alt="DeLorean"
+                         class="absolute w-12 h-auto z-20 cursor-grab active:cursor-grabbing pointer-events-auto"
+                         style="top: 0px; will-change: left;"
+                         :style="'left: ' + deloreanPosition + 'px; transform: translateX(-50%);'"
+                         @mousedown="handleDragStart($event)"
+                         draggable="false">
+                </div>
+            </div>
+            
+            <div x-ref="todayTimeline" class="flex gap-6 overflow-x-auto pb-16 pt-4 px-8 md:px-12 scrollbar-hide relative"
+                 style="-webkit-overflow-scrolling: touch;"
+                 x-init="
+                    const container = $refs.todayTimeline;
+                    const deloreanContainer = $refs.todayTimelineContainer;
+                    if (container && deloreanContainer) {
+                        container.addEventListener('scroll', () => {
+                            const scrollRatio = container.scrollLeft / (container.scrollWidth - container.getBoundingClientRect().width);
+                            const maxX = deloreanContainer.getBoundingClientRect().width - 48;
+                            const newPosition = scrollRatio * maxX;
+                            if (!$data.isDragging) {
+                                $data.deloreanPosition = Math.max(0, Math.min(maxX, newPosition));
+                            }
+                        });
+                    }
+                 ">
+                @foreach($todayEventsTimeline as $i => $event)
+                    <div class="flex-shrink-0 timeline-event" 
+                         data-event-index="{{ $i }}" 
+                         data-timeline-type="today">
+                        @include('livewire.events.partials.timeline-ticket', ['event' => $event, 'index' => $i])
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    @endif
+
+    {{-- Timeline Eventi Futuri --}}
     <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12">
-        @if($upcomingEvents->count() > 0)
         <div class="mb-10">
             <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
                 {{ __('events.upcoming_events') }}
             </h2>
             <p class="text-neutral-600 dark:text-neutral-400">
-                {{ __('events.upcoming_soon') }}
+                {{ __('events.timeline_upcoming_description') }}
             </p>
         </div>
         
-        {{-- Asymmetric Bento Style Layout --}}
-        @php
-            $sizes = [
-                'xl' => 'col-span-2 row-span-2 min-h-[500px]',
-                'lg' => 'col-span-2 row-span-1 min-h-[280px]',
-                'md' => 'col-span-1 row-span-2 min-h-[450px]',
-                'sm' => 'col-span-1 row-span-1 min-h-[280px]',
-            ];
-            $pattern = ['xl', 'sm', 'sm', 'lg', 'md', 'sm', 'sm', 'lg'];
-        @endphp
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 auto-rows-auto">
-            @foreach($upcomingEvents->take(10) as $index => $event)
-                @php
-                    $sizeKey = $pattern[$index % count($pattern)];
-                    $sizeClass = $sizes[$sizeKey];
-                    $isLarge = in_array($sizeKey, ['xl', 'lg', 'md']);
-                @endphp
-                
-                <div class="{{ $sizeClass }}">
-                    @include('livewire.events.partials.event-card', ['event' => $event, 'index' => $index, 'isLarge' => $isLarge])
+        @if($upcomingEventsTimeline->count() > 0)
+        <div class="relative" x-data="{ 
+            scrollTimeline(direction) {
+                const container = this.$refs.upcomingTimeline;
+                if (!container) return;
+                const containerRect = container.getBoundingClientRect();
+                const scrollLeft = container.scrollLeft;
+                const scrollAmount = containerRect.width * 0.8;
+                const newScrollLeft = direction > 0 
+                    ? Math.min(container.scrollWidth - containerRect.width, scrollLeft + scrollAmount)
+                    : Math.max(0, scrollLeft - scrollAmount);
+                container.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
+            }
+        }">
+            <!-- Left Arrow (Desktop Only) -->
+            <button @click="scrollTimeline(-1)" 
+                    class="hidden md:flex absolute -left-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-full shadow-xl hover:scale-110 transition-all duration-300 items-center justify-center text-neutral-900 dark:text-white group">
+                <svg class="w-6 h-6 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            
+            <!-- Right Arrow (Desktop Only) -->
+            <button @click="scrollTimeline(1)" 
+                    class="hidden md:flex absolute -right-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-full shadow-xl hover:scale-110 transition-all duration-300 items-center justify-center text-neutral-900 dark:text-white group">
+                <svg class="w-6 h-6 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+            
+            <!-- Mobile Scroll Indicator -->
+            <div class="md:hidden relative mb-4">
+                <div class="flex items-center justify-center gap-2 text-neutral-600 dark:text-neutral-400 text-sm">
+                    <svg class="w-5 h-5 animate-bounce-horizontal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                    </svg>
+                    <span>{{ __('events.scroll_to_see_more') }}</span>
                 </div>
-            @endforeach
+            </div>
+            
+            <!-- Timeline with DeLorean -->
+            <div class="relative mb-8" 
+                 x-data="{
+                    deloreanPosition: 0,
+                    isDragging: false,
+                    init() {
+                        this.deloreanPosition = 0;
+                    },
+                    handleDragStart(e) {
+                        this.isDragging = true;
+                        e.preventDefault();
+                        e.stopPropagation();
+                    },
+                    handleDrag(e) {
+                        if (!this.isDragging) return;
+                        const timelineContainer = this.$refs.upcomingTimelineContainer;
+                        if (!timelineContainer) return;
+                        const rect = timelineContainer.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const maxX = rect.width - 48;
+                        this.deloreanPosition = Math.max(0, Math.min(x, maxX));
+                        this.scrollToPosition();
+                    },
+                    handleDragEnd() {
+                        this.isDragging = false;
+                    },
+                    scrollToPosition() {
+                        const eventsContainer = this.$refs.upcomingTimeline;
+                        if (!eventsContainer) return;
+                        
+                        const containerWidth = eventsContainer.getBoundingClientRect().width;
+                        const scrollWidth = eventsContainer.scrollWidth;
+                        const maxScroll = scrollWidth - containerWidth;
+                        
+                        // Calculate scroll position based on DeLorean position
+                        const scrollRatio = this.deloreanPosition / (containerWidth - 48);
+                        const targetScroll = scrollRatio * maxScroll;
+                        
+                        eventsContainer.scrollLeft = Math.max(0, Math.min(maxScroll, targetScroll));
+                    }
+                 }">
+                <!-- Timeline Line Container -->
+                <div x-ref="upcomingTimelineContainer" class="relative h-12 px-8 md:px-12"
+                     @mousemove="handleDrag($event)"
+                     @mouseup="handleDragEnd()"
+                     @mouseleave="handleDragEnd()">
+                    <!-- Timeline Line -->
+                    <div class="absolute top-6 left-8 right-8 h-1 bg-gradient-to-r from-red-600 via-primary-500 to-primary-600 dark:from-red-400 dark:via-primary-400 dark:to-primary-400 opacity-60"></div>
+                    
+                    <!-- DeLorean Time Machine -->
+                    <img src="{{ asset('assets/images/delorean.png') }}" 
+                         alt="DeLorean"
+                         class="absolute w-12 h-auto z-20 cursor-grab active:cursor-grabbing pointer-events-auto"
+                         style="top: 0px; will-change: left;"
+                         :style="'left: ' + deloreanPosition + 'px; transform: translateX(-50%);'"
+                         @mousedown="handleDragStart($event)"
+                         draggable="false">
+                </div>
+            </div>
+            
+            <div x-ref="upcomingTimeline" class="flex gap-6 overflow-x-auto pb-16 pt-4 px-8 md:px-12 scrollbar-hide relative"
+                 style="-webkit-overflow-scrolling: touch;"
+                 x-init="
+                    const container = $refs.upcomingTimeline;
+                    const deloreanContainer = $refs.upcomingTimelineContainer;
+                    if (container && deloreanContainer) {
+                        container.addEventListener('scroll', () => {
+                            const scrollRatio = container.scrollLeft / (container.scrollWidth - container.getBoundingClientRect().width);
+                            const maxX = deloreanContainer.getBoundingClientRect().width - 48;
+                            const newPosition = scrollRatio * maxX;
+                            if (!$data.isDragging) {
+                                $data.deloreanPosition = Math.max(0, Math.min(maxX, newPosition));
+                            }
+                        });
+                    }
+                 ">
+                @foreach($upcomingEventsTimeline as $i => $event)
+                    <div class="flex-shrink-0 timeline-event" 
+                         data-event-index="{{ $i }}" 
+                         data-timeline-type="upcoming">
+                        @include('livewire.events.partials.timeline-ticket', ['event' => $event, 'index' => $i])
+                    </div>
+                @endforeach
+            </div>
         </div>
         @else
         <div class="text-center py-16">
@@ -332,6 +571,159 @@
             </h3>
             <p class="text-neutral-600 dark:text-neutral-400">
                 {{ __('events.no_upcoming_events_description') }}
+            </p>
+        </div>
+        @endif
+    </div>
+
+    {{-- Timeline Eventi Passati --}}
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12 border-t-2 border-amber-300/50 dark:border-amber-700/50 bg-gradient-to-b from-transparent via-amber-50/20 to-transparent dark:via-amber-900/10">
+        <div class="mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold text-red-700 dark:text-red-400 mb-2" style="font-family: 'Crimson Pro', serif;">
+                {{ __('events.past_events') }}
+            </h2>
+            <p class="text-neutral-600 dark:text-neutral-400">
+                {{ __('events.timeline_past_description') }}
+            </p>
+        </div>
+        
+        @if($pastEventsTimeline->count() > 0)
+        <div class="relative" x-data="{ 
+            scrollTimeline(direction) {
+                const container = this.$refs.pastTimeline;
+                if (!container) return;
+                const containerRect = container.getBoundingClientRect();
+                const scrollLeft = container.scrollLeft;
+                const scrollAmount = containerRect.width * 0.8;
+                const newScrollLeft = direction > 0 
+                    ? Math.min(container.scrollWidth - containerRect.width, scrollLeft + scrollAmount)
+                    : Math.max(0, scrollLeft - scrollAmount);
+                container.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
+            }
+        }">
+            <!-- Left Arrow (Desktop Only) -->
+            <button @click="scrollTimeline(-1)" 
+                    class="hidden md:flex absolute -left-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-full shadow-xl hover:scale-110 transition-all duration-300 items-center justify-center text-neutral-900 dark:text-white group">
+                <svg class="w-6 h-6 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            
+            <!-- Right Arrow (Desktop Only) -->
+            <button @click="scrollTimeline(1)" 
+                    class="hidden md:flex absolute -right-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-full shadow-xl hover:scale-110 transition-all duration-300 items-center justify-center text-neutral-900 dark:text-white group">
+                <svg class="w-6 h-6 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+            
+            <!-- Mobile Scroll Indicator -->
+            <div class="md:hidden relative mb-4">
+                <div class="flex items-center justify-center gap-2 text-neutral-600 dark:text-neutral-400 text-sm">
+                    <svg class="w-5 h-5 animate-bounce-horizontal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                    </svg>
+                    <span>{{ __('events.scroll_to_see_more') }}</span>
+                </div>
+            </div>
+            
+            <!-- Timeline with DeLorean -->
+            <div class="relative mb-8"
+                 x-data="{
+                    deloreanPosition: 0,
+                    isDragging: false,
+                    init() {
+                        this.deloreanPosition = 0;
+                    },
+                    handleDragStart(e) {
+                        this.isDragging = true;
+                        e.preventDefault();
+                        e.stopPropagation();
+                    },
+                    handleDrag(e) {
+                        if (!this.isDragging) return;
+                        const timelineContainer = this.$refs.pastTimelineContainer;
+                        if (!timelineContainer) return;
+                        const rect = timelineContainer.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const maxX = rect.width - 48;
+                        this.deloreanPosition = Math.max(0, Math.min(x, maxX));
+                        this.scrollToPosition();
+                    },
+                    handleDragEnd() {
+                        this.isDragging = false;
+                    },
+                    scrollToPosition() {
+                        const eventsContainer = this.$refs.pastTimeline;
+                        if (!eventsContainer) return;
+                        
+                        const containerWidth = eventsContainer.getBoundingClientRect().width;
+                        const scrollWidth = eventsContainer.scrollWidth;
+                        const maxScroll = scrollWidth - containerWidth;
+                        
+                        // Calculate scroll position based on DeLorean position
+                        const scrollRatio = this.deloreanPosition / (containerWidth - 48);
+                        const targetScroll = scrollRatio * maxScroll;
+                        
+                        eventsContainer.scrollLeft = Math.max(0, Math.min(maxScroll, targetScroll));
+                    }
+                 }">
+                <!-- Timeline Line Container -->
+                <div x-ref="pastTimelineContainer" class="relative h-12 px-8 md:px-12"
+                     @mousemove="handleDrag($event)"
+                     @mouseup="handleDragEnd()"
+                     @mouseleave="handleDragEnd()">
+                    <!-- Timeline Line -->
+                    <div class="absolute top-6 left-8 right-8 h-1 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 dark:from-amber-400 dark:via-amber-400 dark:to-amber-400 opacity-60"></div>
+                    
+                    <!-- DeLorean Time Machine -->
+                    <img src="{{ asset('assets/images/delorean.png') }}" 
+                         alt="DeLorean"
+                         class="absolute w-12 h-auto z-20 cursor-grab active:cursor-grabbing pointer-events-auto"
+                         style="top: 0px; will-change: left;"
+                         :style="'left: ' + deloreanPosition + 'px; transform: translateX(-50%);'"
+                         @mousedown="handleDragStart($event)"
+                         draggable="false">
+                </div>
+            </div>
+            
+            <div x-ref="pastTimeline" class="flex gap-6 overflow-x-auto pb-16 pt-4 px-8 md:px-12 scrollbar-hide relative"
+                 style="-webkit-overflow-scrolling: touch;"
+                 x-init="
+                    const container = $refs.pastTimeline;
+                    const deloreanContainer = $refs.pastTimelineContainer;
+                    if (container && deloreanContainer) {
+                        container.addEventListener('scroll', () => {
+                            const scrollRatio = container.scrollLeft / (container.scrollWidth - container.getBoundingClientRect().width);
+                            const maxX = deloreanContainer.getBoundingClientRect().width - 48;
+                            const newPosition = scrollRatio * maxX;
+                            if (!$data.isDragging) {
+                                $data.deloreanPosition = Math.max(0, Math.min(maxX, newPosition));
+                            }
+                        });
+                    }
+                 ">
+                @foreach($pastEventsTimeline as $i => $event)
+                    <div class="flex-shrink-0 timeline-event" 
+                         data-event-index="{{ $i }}" 
+                         data-timeline-type="past">
+                        @include('livewire.events.partials.timeline-ticket', ['event' => $event, 'index' => $i])
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @else
+        <div class="text-center py-16">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-100 dark:bg-amber-900/30 mb-4">
+                <svg class="w-10 h-10 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+                {{ __('events.no_past_events') }}
+            </h3>
+            <p class="text-neutral-600 dark:text-neutral-400">
+                {{ __('events.no_past_events_description') }}
             </p>
         </div>
         @endif
@@ -420,4 +812,520 @@
             <p class="mt-4 text-neutral-900 dark:text-white font-medium">{{ __('events.loading') }}...</p>
         </div>
     </div>
+    
+    @push('styles')
+    <style>
+    /* ========================================
+       CINEMA TICKETS - REALISTIC DESIGN
+       ======================================== */
+    
+    /* Cinema Ticket */
+    .cinema-ticket {
+        display: flex;
+        background: #fef7e6;
+        border-radius: 8px;
+        box-shadow: 
+            0 8px 24px rgba(0, 0, 0, 0.4),
+            0 16px 48px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Heavy Worn/Vintage Effect */
+    .ticket-worn::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: 
+            url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.25'/%3E%3C/svg%3E"),
+            radial-gradient(ellipse at var(--spot1-x) var(--spot1-y), 
+                rgba(139, 115, 85, var(--wear-opacity)) 0%, 
+                rgba(150, 120, 90, calc(var(--wear-opacity) * 0.6)) 15%,
+                transparent 25%),
+            radial-gradient(circle at var(--spot2-x) var(--spot2-y), 
+                rgba(160, 130, 95, calc(var(--wear-opacity) * 0.7)) 0%, 
+                transparent 18%),
+            radial-gradient(ellipse at var(--spot3-x) var(--spot3-y), 
+                rgba(145, 120, 88, calc(var(--wear-opacity) * 0.5)) 0%, 
+                transparent 20%),
+            radial-gradient(circle at var(--spot4-x) var(--spot4-y), 
+                rgba(155, 125, 92, calc(var(--wear-opacity) * 0.4)) 0%, 
+                transparent 12%),
+            radial-gradient(ellipse at center, 
+                transparent 40%,
+                rgba(139, 115, 85, calc(var(--wear-opacity) * 0.15)) 100%);
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .ticket-worn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: rgba(139, 115, 85, calc(var(--wear-opacity) * 0.5));
+        transform: translateY(-50%);
+        box-shadow: 
+            0 1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.3)),
+            0 -1px 2px rgba(139, 115, 85, calc(var(--wear-opacity) * 0.3));
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .ticket-watermark {
+        position: absolute;
+        top: 20%;
+        right: -3rem;
+        transform: translateY(-50%) rotate(-90deg);
+        transform-origin: center;
+        z-index: 3;
+        pointer-events: none;
+    }
+    
+    .ticket-watermark img {
+        opacity: 0.3;
+    }
+    
+    .ticket-content {
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .cinema-ticket:hover {
+        transform: translateY(-12px) scale(1.02) !important;
+        box-shadow: 
+            0 16px 32px rgba(0, 0, 0, 0.5),
+            0 24px 64px rgba(0, 0, 0, 0.4),
+            0 0 0 2px rgba(218, 165, 32, 0.4);
+    }
+    
+    .ticket-clickable-area {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    .ticket-perforation {
+        width: 24px;
+        background: linear-gradient(135deg, 
+            rgba(139, 115, 85, 0.15) 0%,
+            rgba(160, 140, 110, 0.1) 100%
+        );
+        position: relative;
+        flex-shrink: 0;
+    }
+    
+    .ticket-perforation::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        bottom: -5px;
+        right: 0;
+        width: 12px;
+        background: 
+            radial-gradient(circle at 0 8px, transparent 4px, currentColor 4px) 0 0 / 12px 16px repeat-y;
+        color: inherit;
+    }
+    
+    .ticket-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px dashed rgba(139, 115, 85, 0.3);
+    }
+    
+    .ticket-admit {
+        font-size: 0.75rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        color: #b91c1c;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .ticket-serial {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #8b7355;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .ticket-image {
+        width: 100%;
+        height: 140px;
+        border-radius: 4px;
+        overflow: hidden;
+        border: 2px solid rgba(139, 115, 85, 0.2);
+        margin: 0.5rem 0;
+    }
+    
+    .ticket-title {
+        font-family: 'Crimson Pro', serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        line-height: 1.3;
+        text-align: center;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin: 0.5rem 0;
+    }
+    
+    /* Rankings Section */
+    .ticket-rankings {
+        margin: 0.75rem 0;
+        padding: 0.75rem;
+        background: rgba(139, 115, 85, 0.05);
+        border-radius: 6px;
+        border: 1px dashed rgba(139, 115, 85, 0.2);
+    }
+    
+    .ticket-rankings-title {
+        font-size: 0.75rem;
+        font-weight: 900;
+        color: #b91c1c;
+        text-align: center;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+        font-family: 'Crimson Pro', serif;
+    }
+    
+    .ticket-rankings-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .ticket-ranking-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.375rem;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 4px;
+        font-size: 0.75rem;
+    }
+    
+    .ticket-ranking-first {
+        background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.15) 100%);
+        border: 1px solid rgba(217, 119, 6, 0.3);
+    }
+    
+    .ticket-ranking-second {
+        background: linear-gradient(135deg, rgba(229, 231, 235, 0.3) 0%, rgba(209, 213, 219, 0.2) 100%);
+        border: 1px solid rgba(156, 163, 175, 0.3);
+    }
+    
+    .ticket-ranking-third {
+        background: linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(184, 115, 51, 0.15) 100%);
+        border: 1px solid rgba(160, 82, 45, 0.3);
+    }
+    
+    .ticket-ranking-medal {
+        font-size: 1.25rem;
+        flex-shrink: 0;
+    }
+    
+    .ticket-ranking-name {
+        flex: 1;
+        font-weight: 600;
+        color: #1a1a1a;
+        font-family: 'Crimson Pro', serif;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .ticket-ranking-score {
+        font-weight: 900;
+        color: #b91c1c;
+        font-family: 'Crimson Pro', serif;
+        flex-shrink: 0;
+    }
+    
+    .ticket-price {
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: #b91c1c;
+        font-family: 'Special Elite', 'Courier New', monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.25rem 0.625rem;
+        margin: 0.5rem auto;
+        width: fit-content;
+        border: 2px solid #b91c1c;
+        border-radius: 3px;
+        opacity: 0.75;
+        position: relative;
+        box-shadow: 
+            0 1px 3px rgba(185, 28, 28, 0.15),
+            inset 0 0 6px rgba(185, 28, 28, 0.04);
+        background: 
+            radial-gradient(ellipse at 30% 40%, rgba(185, 28, 28, 0.03) 0%, transparent 60%),
+            radial-gradient(ellipse at 70% 70%, rgba(185, 28, 28, 0.025) 0%, transparent 50%);
+        pointer-events: none;
+    }
+    
+    .ticket-price::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border: 1px solid rgba(185, 28, 28, 0.12);
+        border-radius: 2px;
+        pointer-events: none;
+    }
+    
+    .ticket-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        padding: 1rem 0;
+        border-top: 1px dashed rgba(139, 115, 85, 0.25);
+        border-bottom: 1px dashed rgba(139, 115, 85, 0.25);
+    }
+    
+    .ticket-detail-item {
+        text-align: center;
+    }
+    
+    .ticket-detail-label {
+        font-size: 0.625rem;
+        font-weight: 700;
+        color: #8b7355;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.25rem;
+    }
+    
+    .ticket-detail-value {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #2d2d2d;
+        font-family: 'Crimson Pro', serif;
+    }
+    
+    .ticket-location {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.375rem;
+    }
+    
+    .location-icon {
+        width: 14px;
+        height: 14px;
+        color: #8b7355;
+        flex-shrink: 0;
+    }
+    
+    .ticket-barcode-wrapper {
+        position: relative;
+        margin-top: 0.5rem;
+    }
+    
+    .ticket-barcode {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.375rem;
+        cursor: help;
+        transition: all 0.3s ease;
+    }
+    
+    .ticket-barcode:hover {
+        transform: scale(1.05);
+    }
+    
+    .barcode-lines {
+        display: flex;
+        align-items: flex-end;
+        gap: 1px;
+        height: 45px;
+        padding: 0 1rem;
+    }
+    
+    .barcode-line {
+        background: #000;
+        align-self: flex-end;
+    }
+    
+    .barcode-number {
+        font-size: 0.625rem;
+        font-weight: 600;
+        color: #666;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.1em;
+    }
+    
+    .barcode-tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 0.75rem;
+        background: linear-gradient(135deg, 
+            #fef9f0 0%,
+            #fdf5e6 50%,
+            #fcf1dc 100%
+        );
+        color: #2d2d2d;
+        padding: 1rem 1.25rem;
+        border-radius: 6px;
+        border: 2px solid rgba(139, 115, 85, 0.3);
+        box-shadow: 
+            0 8px 20px rgba(0, 0, 0, 0.3),
+            0 4px 12px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        z-index: 50;
+        min-width: 260px;
+        max-width: 300px;
+    }
+    
+    .barcode-tooltip::before {
+        content: '';
+        position: absolute;
+        inset: 4px;
+        border: 1px solid rgba(139, 115, 85, 0.15);
+        border-radius: 4px;
+        pointer-events: none;
+    }
+    
+    .barcode-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 8px solid transparent;
+        border-top-color: #fdf5e6;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+    
+    .tooltip-title {
+        font-size: 0.75rem;
+        font-weight: 900;
+        color: #b91c1c;
+        margin-bottom: 0.625rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        text-align: center;
+        border-bottom: 2px solid rgba(185, 28, 28, 0.2);
+        padding-bottom: 0.5rem;
+    }
+    
+    .tooltip-description {
+        font-size: 0.75rem;
+        line-height: 1.5;
+        color: #4a4035;
+        margin-bottom: 0.75rem;
+        font-style: italic;
+        text-align: center;
+    }
+    
+    .tooltip-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.6875rem;
+        padding: 0.5rem 0;
+        border-top: 1px dashed rgba(139, 115, 85, 0.2);
+    }
+    
+    .tooltip-label {
+        color: #8b7355;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-size: 0.625rem;
+    }
+    
+    .tooltip-value {
+        color: #2d2d2d;
+        font-weight: 600;
+        font-family: 'Crimson Pro', serif;
+    }
+    
+    .ticket-social {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        padding-top: 1rem;
+        margin-top: 0.75rem;
+        border-top: 1px dashed rgba(139, 115, 85, 0.25);
+    }
+    
+    .ticket-stub {
+        width: 80px;
+        background: linear-gradient(180deg, 
+            rgba(139, 115, 85, 0.08) 0%,
+            rgba(160, 140, 110, 0.05) 100%
+        );
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-left: 2px dashed rgba(139, 115, 85, 0.3);
+        flex-shrink: 0;
+    }
+    
+    .stub-perforation {
+        position: absolute;
+        top: -5px;
+        bottom: -5px;
+        left: -6px;
+        width: 12px;
+        background: 
+            radial-gradient(circle at 12px 8px, transparent 4px, currentColor 4px) 0 0 / 12px 16px repeat-y;
+    }
+    
+    .stub-content {
+        writing-mode: vertical-rl;
+        text-align: center;
+        transform: rotate(180deg);
+        padding: 1rem 0.5rem;
+    }
+    
+    .stub-date {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: #2d2d2d;
+        font-family: 'Crimson Pro', serif;
+        margin-bottom: 0.75rem;
+    }
+    
+    .stub-serial {
+        font-size: 0.625rem;
+        font-weight: 700;
+        color: #8b7355;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.05em;
+    }
+    
+    @keyframes fade-in { 
+        from { opacity: 0; transform: scale(0.95); } 
+        to { opacity: 1; transform: scale(1); } 
+    }
+    .animate-fade-in { 
+        animation: fade-in 0.5s ease-out forwards; 
+        opacity: 0; 
+    }
+    
+    
+    </style>
+    @endpush
+    
+    @push('scripts')
+    @endpush
 </div>

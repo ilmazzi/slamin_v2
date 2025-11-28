@@ -39,12 +39,14 @@ class EventsIndex extends Component
             case 'today':
                 $this->dateFrom = $now->format('Y-m-d');
                 $this->dateTo = $now->format('Y-m-d');
+                $this->quickFilter = '';
                 break;
             
             case 'tomorrow':
                 $tomorrow = $now->copy()->addDay();
                 $this->dateFrom = $tomorrow->format('Y-m-d');
                 $this->dateTo = $tomorrow->format('Y-m-d');
+                $this->quickFilter = '';
                 break;
             
             case 'weekend':
@@ -52,14 +54,26 @@ class EventsIndex extends Component
                 $sunday = $saturday->copy()->addDay();
                 $this->dateFrom = $saturday->format('Y-m-d');
                 $this->dateTo = $sunday->format('Y-m-d');
+                $this->quickFilter = '';
                 break;
             
             case 'free':
                 $this->freeOnly = true;
+                $this->quickFilter = '';
+                break;
+            
+            case 'past':
+                $this->quickFilter = 'past';
+                $this->dateFrom = '';
+                $this->dateTo = '';
+                $this->freeOnly = false;
                 break;
             
             case 'my':
                 $this->quickFilter = 'my';
+                $this->dateFrom = '';
+                $this->dateTo = '';
+                $this->freeOnly = false;
                 break;
             
             default:
@@ -95,12 +109,29 @@ class EventsIndex extends Component
     public function getEventsProperty()
     {
         $query = Event::with(['organizer', 'venueOwner'])
-            ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
-            ->where(function ($q) {
+            ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED]);
+        
+        // Filter by past events if selected
+        if ($this->quickFilter === 'past') {
+            $query->where(function ($q) {
+                $q->where('end_datetime', '<', Carbon::now())
+                  ->orWhere(function ($q2) {
+                      $q2->where('status', Event::STATUS_COMPLETED)
+                         ->whereNotNull('end_datetime')
+                         ->where('end_datetime', '<', Carbon::now());
+                  });
+            });
+        } else {
+            // Default: show upcoming events
+            $query->where(function ($q) {
                 $q->where('start_datetime', '>', Carbon::now())
                   ->orWhere('is_availability_based', true)
-                  ->orWhere('status', Event::STATUS_COMPLETED);
+                  ->orWhere(function ($q2) {
+                      $q2->where('status', Event::STATUS_COMPLETED)
+                         ->where('end_datetime', '>=', Carbon::now());
+                  });
             });
+        }
 
         // Search filter
         if ($this->search) {
@@ -199,6 +230,167 @@ class EventsIndex extends Component
             ->limit(10)
             ->withCount(['views', 'likes', 'comments'])
             ->get();
+
+        // Check if user has liked each event
+        if (Auth::check()) {
+            foreach ($events as $event) {
+                $event->is_liked = UnifiedLike::where('user_id', Auth::id())
+                    ->where('likeable_type', Event::class)
+                    ->where('likeable_id', $event->id)
+                    ->exists();
+            }
+        } else {
+            foreach ($events as $event) {
+                $event->is_liked = false;
+            }
+        }
+
+        return $events;
+    }
+
+    /**
+     * Get today's events for timeline
+     */
+    public function getTodayEventsTimelineProperty()
+    {
+        $now = Carbon::now();
+        $startOfToday = $now->copy()->startOfDay();
+        $endOfToday = $now->copy()->endOfDay();
+        
+        $events = Event::with(['organizer', 'venueOwner'])
+            ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
+            ->where(function ($q) use ($startOfToday, $endOfToday) {
+                $q->whereBetween('start_datetime', [$startOfToday, $endOfToday])
+                  ->orWhere(function ($q2) use ($startOfToday, $endOfToday) {
+                      $q2->whereNotNull('end_datetime')
+                         ->whereBetween('end_datetime', [$startOfToday, $endOfToday]);
+                  })
+                  ->orWhere(function ($q3) use ($startOfToday, $endOfToday) {
+                      $q3->where('start_datetime', '<=', $startOfToday)
+                         ->where(function ($q4) use ($endOfToday) {
+                             $q4->whereNull('end_datetime')
+                                ->orWhere('end_datetime', '>=', $endOfToday);
+                         });
+                  });
+            })
+            ->orderBy('start_datetime', 'asc')
+            ->withCount(['views', 'likes', 'comments'])
+            ->get();
+
+        // Load rankings for Poetry Slam events
+        foreach ($events as $event) {
+            if ($event->category === Event::CATEGORY_POETRY_SLAM) {
+                $event->load(['rankings' => function($query) {
+                    $query->where('position', '<=', 3)
+                          ->with(['participant.user', 'badge'])
+                          ->ordered();
+                }]);
+            }
+        }
+
+        // Check if user has liked each event
+        if (Auth::check()) {
+            foreach ($events as $event) {
+                $event->is_liked = UnifiedLike::where('user_id', Auth::id())
+                    ->where('likeable_type', Event::class)
+                    ->where('likeable_id', $event->id)
+                    ->exists();
+            }
+        } else {
+            foreach ($events as $event) {
+                $event->is_liked = false;
+            }
+        }
+
+        return $events;
+    }
+
+    /**
+     * Get upcoming events for timeline (ordered by start_datetime ASC - closest first)
+     * Excludes today's events
+     */
+    public function getUpcomingEventsTimelineProperty()
+    {
+        $now = Carbon::now();
+        $endOfToday = $now->copy()->endOfDay();
+        
+        $events = Event::with(['organizer', 'venueOwner'])
+            ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
+            ->where(function ($q) use ($endOfToday) {
+                $q->where('start_datetime', '>', $endOfToday)
+                  ->orWhere(function ($q2) use ($endOfToday) {
+                      $q2->where('is_availability_based', true)
+                         ->where('start_datetime', '>', $endOfToday);
+                  });
+            })
+            ->orderBy('start_datetime', 'asc') // Più vicino a sinistra
+            ->withCount(['views', 'likes', 'comments'])
+            ->get();
+
+        // Load rankings for Poetry Slam events
+        foreach ($events as $event) {
+            if ($event->category === Event::CATEGORY_POETRY_SLAM) {
+                $event->load(['rankings' => function($query) {
+                    $query->where('position', '<=', 3)
+                          ->with(['participant.user', 'badge'])
+                          ->ordered();
+                }]);
+            }
+        }
+
+        // Check if user has liked each event
+        if (Auth::check()) {
+            foreach ($events as $event) {
+                $event->is_liked = UnifiedLike::where('user_id', Auth::id())
+                    ->where('likeable_type', Event::class)
+                    ->where('likeable_id', $event->id)
+                    ->exists();
+            }
+        } else {
+            foreach ($events as $event) {
+                $event->is_liked = false;
+            }
+        }
+
+        return $events;
+    }
+
+    /**
+     * Get past events for timeline (ordered by end_datetime DESC - most recent first)
+     * Excludes today's events
+     */
+    public function getPastEventsTimelineProperty()
+    {
+        $now = Carbon::now();
+        $startOfToday = $now->copy()->startOfDay();
+        
+        $events = Event::with(['organizer', 'venueOwner'])
+            ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
+            ->where(function ($q) use ($startOfToday) {
+                $q->where(function ($q2) use ($startOfToday) {
+                      $q2->whereNotNull('end_datetime')
+                         ->where('end_datetime', '<', $startOfToday);
+                  })
+                  ->orWhere(function ($q3) use ($startOfToday) {
+                      $q3->where('status', Event::STATUS_COMPLETED)
+                         ->whereNotNull('end_datetime')
+                         ->where('end_datetime', '<', $startOfToday);
+                  });
+            })
+            ->orderBy('end_datetime', 'desc') // Più recente a sinistra
+            ->withCount(['views', 'likes', 'comments'])
+            ->get();
+
+        // Load rankings for Poetry Slam events
+        foreach ($events as $event) {
+            if ($event->category === Event::CATEGORY_POETRY_SLAM) {
+                $event->load(['rankings' => function($query) {
+                    $query->where('position', '<=', 3)
+                          ->with(['participant.user', 'badge'])
+                          ->ordered();
+                }]);
+            }
+        }
 
         // Check if user has liked each event
         if (Auth::check()) {
@@ -328,6 +520,9 @@ class EventsIndex extends Component
         return view('livewire.events.events-index', [
             'events' => $this->events,
             'upcomingEvents' => $this->upcomingEvents,
+            'todayEventsTimeline' => $this->todayEventsTimeline,
+            'upcomingEventsTimeline' => $this->upcomingEventsTimeline,
+            'pastEventsTimeline' => $this->pastEventsTimeline,
             'personalizedEvents' => $this->personalizedEvents,
             'statistics' => $this->statistics,
             'cities' => $this->cities,
