@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 // use Spatie\Permission\Traits\HasRoles; // Removed for now - install spatie/laravel-permission if needed
 use App\Models\UserSubscription;
 use App\Models\VideoComment;
@@ -23,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable; // HasRoles removed for now
+    use HasFactory, Notifiable, SoftDeletes; // HasRoles removed for now
 
     /**
      * The attributes that are mass assignable.
@@ -98,6 +99,9 @@ class User extends Authenticatable implements MustVerifyEmail
         // Terms and Privacy acceptance
         'terms_accepted_at',
         'privacy_accepted_at',
+        
+        // Account deletion
+        'deletion_reason',
     ];
 
     /**

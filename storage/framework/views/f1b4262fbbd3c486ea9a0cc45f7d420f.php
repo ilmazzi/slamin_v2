@@ -378,9 +378,18 @@
                                                 <!-- Elegant dark overlay for readability -->
                                                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                                             <?php else: ?>
-                                                <div class="w-full h-full bg-primary-600 dark:bg-primary-700"></div>
+                                                <div class="w-full h-full <?php echo e($event['type'] === 'wishlist' ? 'bg-accent-600 dark:bg-accent-700' : 'bg-primary-600 dark:bg-primary-700'); ?>"></div>
                                                 <!-- Lighter overlay for solid background -->
                                                 <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                            
+                                            <!-- Wishlist Badge -->
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event['type'] === 'wishlist'): ?>
+                                                <div class="absolute top-4 right-4 px-2 py-1 bg-accent-600 text-white text-xs font-bold rounded-lg shadow-lg">
+                                                    <svg class="w-3 h-3 inline" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                                    </svg>
+                                                </div>
                                             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                             
                                             <!-- Time Badge -->
@@ -524,11 +533,20 @@
                                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                                 
                                                 <!-- Time Badge -->
-                                                <div class="absolute top-2 right-2 px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-lg">
-                                                    <span class="text-xs font-bold text-neutral-900">
-                                                        <?php echo e(\Carbon\Carbon::parse($event['start'])->format('H:i')); ?>
+                                                <div class="absolute top-2 right-2 flex items-center gap-2">
+                                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event['type'] === 'wishlist'): ?>
+                                                        <span class="px-2 py-1 bg-accent-600 text-white text-xs font-bold rounded-lg shadow-lg" title="<?php echo e(__('events.in_wishlist')); ?>">
+                                                            <svg class="w-3 h-3 inline" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                                            </svg>
+                                                        </span>
+                                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                                    <div class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-lg">
+                                                        <span class="text-xs font-bold text-neutral-900">
+                                                            <?php echo e(\Carbon\Carbon::parse($event['start'])->format('H:i')); ?>
 
-                                                    </span>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 
                                                 <!-- Title -->
@@ -637,7 +655,16 @@
                                                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                                                     <?php else: ?>
                                                         <!-- Evento senza immagine - Sfondo pulito -->
-                                                        <div class="absolute inset-0 bg-primary-50 dark:bg-primary-900/20"></div>
+                                                        <div class="absolute inset-0 <?php echo e($event['type'] === 'wishlist' ? 'bg-accent-50 dark:bg-accent-900/20' : 'bg-primary-50 dark:bg-primary-900/20'); ?>"></div>
+                                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                                    
+                                                    <!-- Wishlist Badge -->
+                                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event['type'] === 'wishlist'): ?>
+                                                        <div class="absolute top-2 left-2 px-2 py-1 bg-accent-600 text-white text-xs font-bold rounded-lg shadow-lg">
+                                                            <svg class="w-3 h-3 inline" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                                            </svg>
+                                                        </div>
                                                     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                                     
                                                     <!-- Content -->
@@ -646,7 +673,7 @@
                                                             <?php echo e($event['title']); ?>
 
                                                         </div>
-                                                        <div class="text-xs font-medium <?php echo e($event['image'] ?? false ? 'text-white/90 drop-shadow' : 'text-primary-600 dark:text-primary-400'); ?>">
+                                                        <div class="text-xs font-medium <?php echo e($event['image'] ?? false ? 'text-white/90 drop-shadow' : ($event['type'] === 'wishlist' ? 'text-accent-600 dark:text-accent-400' : 'text-primary-600 dark:text-primary-400')); ?>">
                                                             🕐 <?php echo e($event['time']); ?>
 
                                                         </div>
@@ -704,6 +731,10 @@
                 <div class="flex items-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-primary-500"></div>
                     <span class="text-sm text-neutral-600 dark:text-neutral-400"><?php echo e(__('dashboard.organized_events')); ?></span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-accent-500"></div>
+                    <span class="text-sm text-neutral-600 dark:text-neutral-400"><?php echo e(__('dashboard.wishlist_events')); ?></span>
                 </div>
                 <div class="flex items-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-accent"></div>

@@ -74,8 +74,8 @@
                 </div>
 
                 <!-- Actions -->
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($unreadCount > 0): ?>
-                <div class="relative mt-4">
+                <div class="relative mt-4 flex items-center gap-3">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($unreadCount > 0): ?>
                     <button wire:click="markAllAsRead"
                             class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-full text-sm font-medium transition-all duration-300 border border-white/30">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,8 +83,19 @@
                         </svg>
                         Segna tutte come lette
                     </button>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($notifications) > 0): ?>
+                    <button wire:click="clearAll"
+                            wire:confirm="Sei sicuro di voler eliminare tutte le notifiche? Questa azione non può essere annullata."
+                            class="inline-flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 backdrop-blur-sm text-white rounded-full text-sm font-medium transition-all duration-300 border border-red-300/30">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        Elimina tutte
+                    </button>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
-                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
 
             <!-- Notifications List -->
@@ -125,9 +136,42 @@
                                         </span>
 
                                         <div class="flex items-center gap-2">
-                                            <span class="text-xs text-primary-600 dark:text-primary-400 font-medium">
-                                                Visualizza →
-                                            </span>
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($notification['type'] === 'event_invitation' && isset($notification['data']['invitation_id'])): ?>
+                                                
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($notification['invitation_is_pending'] ?? false): ?>
+                                                    <button wire:click.stop="acceptEventInvitation('<?php echo e($notification['id']); ?>')"
+                                                            wire:loading.attr="disabled"
+                                                            class="px-3 py-1.5 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white text-xs font-semibold rounded-lg transition-colors">
+                                                        <span wire:loading.remove wire:target="acceptEventInvitation('<?php echo e($notification['id']); ?>')">
+                                                            ✓ <?php echo e(__('events.invitation.accept')); ?>
+
+                                                        </span>
+                                                        <span wire:loading wire:target="acceptEventInvitation('<?php echo e($notification['id']); ?>')">
+                                                            ...
+                                                        </span>
+                                                    </button>
+                                                    <button wire:click.stop="declineEventInvitation('<?php echo e($notification['id']); ?>')"
+                                                            wire:loading.attr="disabled"
+                                                            class="px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-xs font-semibold rounded-lg transition-colors">
+                                                        <span wire:loading.remove wire:target="declineEventInvitation('<?php echo e($notification['id']); ?>')">
+                                                            ✕ <?php echo e(__('events.invitation.decline')); ?>
+
+                                                        </span>
+                                                        <span wire:loading wire:target="declineEventInvitation('<?php echo e($notification['id']); ?>')">
+                                                            ...
+                                                        </span>
+                                                    </button>
+                                                <?php else: ?>
+                                                    <span class="text-xs <?php echo e(($notification['invitation_status'] ?? '') === 'accepted' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'); ?> font-medium">
+                                                        <?php echo e(($notification['invitation_status'] ?? '') === 'accepted' ? __('events.invitation.accepted') : __('events.invitation.declined')); ?>
+
+                                                    </span>
+                                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                            <?php else: ?>
+                                                <span class="text-xs text-primary-600 dark:text-primary-400 font-medium">
+                                                    Visualizza →
+                                                </span>
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                             
                                             <button wire:click.stop="deleteNotification('<?php echo e($notification['id']); ?>')"
                                                     class="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium">
