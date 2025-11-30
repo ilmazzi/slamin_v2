@@ -42,6 +42,7 @@
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ route('terms') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.terms') }}</a></li>
                     <li><a href="{{ route('privacy') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.privacy') }}</a></li>
+                    <li><a href="{{ route('cookies') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.cookies') }}</a></li>
                     <li><a href="{{ route('about') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.about') }}</a></li>
                 </ul>
             </div>

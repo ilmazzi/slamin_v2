@@ -427,6 +427,9 @@
         <livewire:poems.poem-modal />
     @endif
 
+    <!-- Cookie Banner -->
+    @livewire('cookie-banner')
+    
     <!-- Userback Widget -->
     <script>
         window.Userback = window.Userback || {};

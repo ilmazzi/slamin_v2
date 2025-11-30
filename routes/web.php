@@ -398,6 +398,10 @@ Route::get('/privacy', function () {
     return view('pages.privacy');
 })->name('privacy');
 
+Route::get('/cookies', function () {
+    return view('pages.cookies');
+})->name('cookies');
+
 Route::get('/guidelines', function () {
     return view('pages.guidelines');
 })->name('guidelines');

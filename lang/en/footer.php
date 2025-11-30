@@ -28,6 +28,7 @@ return [
     // Legal links
     'terms' => 'Terms of Service',
     'privacy' => 'Privacy Policy',
+    'cookies' => 'Cookie Policy',
     'about' => 'About Us',
     
     // Copyright
