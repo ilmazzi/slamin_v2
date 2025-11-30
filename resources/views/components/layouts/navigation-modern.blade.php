@@ -34,7 +34,7 @@
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full"></span>
                     </span>
                 </a>
-                <a href="#" 
+                <a href="{{ route('media.index') }}" 
                    class="group flex items-center gap-2 font-medium text-neutral-700 dark:text-neutral-300 transition-all hover:text-primary-600 relative py-1">
                     <svg class="w-4 h-4 transition-transform group-hover:scale-110 group-hover:-rotate-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
@@ -61,16 +61,6 @@
                     </svg>
                     <span class="relative">
                         Articoli
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full"></span>
-                    </span>
-                </a>
-                <a href="{{ route('gallery.index') }}" 
-                   class="group flex items-center gap-2 font-medium text-neutral-700 dark:text-neutral-300 transition-all hover:text-primary-600 relative py-1">
-                    <svg class="w-4 h-4 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                    <span class="relative">
-                        Galleria
                         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-300 group-hover:w-full"></span>
                     </span>
                 </a>
@@ -110,9 +100,9 @@
              class="lg:hidden py-4 space-y-2 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
             <a href="{{ route('home') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Home</a>
             <a href="{{ route('events.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Eventi</a>
+            <a href="{{ route('media.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Media</a>
             <a href="{{ route('poems.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Poesie</a>
             <a href="{{ route('articles.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Articoli</a>
-            <a href="{{ route('gallery.index') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Galleria</a>
             <div class="pt-2 mt-2 border-t border-neutral-200 dark:border-neutral-700 space-y-2">
                 <a href="{{ route('login') }}" class="block px-4 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">Accedi</a>
                 <a href="{{ route('register') }}" class="block px-4 py-2 bg-primary-600 text-white rounded-lg text-center font-semibold">Registrati</a>

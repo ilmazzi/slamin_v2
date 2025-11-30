@@ -1,8 +1,4 @@
 <div>
-    @php
-    $newUsers = \App\Models\User::latest()->limit(4)->get();
-    @endphp
-    
     @if($newUsers && $newUsers->count() > 0)
     <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
         
@@ -118,21 +114,24 @@
                             --tape-rotation: {{ $tapeRotation }}deg; 
                             transform: translateX(-50%) rotate({{ $tapeRotation }}deg);"></div>
                 
-                {{-- Polaroid Card with Link --}}
-                <a href="{{ route('user.show', $user) }}" 
-                   class="polaroid-card"
-                   style="transform: rotate({{ $rotation }}deg);">
+                {{-- Polaroid Card --}}
+                <div class="polaroid-card"
+                     style="transform: rotate({{ $rotation }}deg);">
                     
-                    {{-- Photo --}}
-                    <div class="polaroid-photo">
-                        <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($user, 400) }}" 
-                             alt="{{ $user->name }}"
-                             class="polaroid-img">
-                    </div>
+                    {{-- Photo with Link --}}
+                    <a href="{{ route('user.show', $user) }}" class="polaroid-photo-link">
+                        <div class="polaroid-photo">
+                            <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($user, 400) }}" 
+                                 alt="{{ $user->name }}"
+                                 class="polaroid-img">
+                        </div>
+                    </a>
                     
                     {{-- Caption with Enhanced INFO --}}
                     <div class="polaroid-caption">
-                        <div class="polaroid-name-large">{{ $user->name }}</div>
+                        <a href="{{ route('user.show', $user) }}" class="polaroid-name-link">
+                            <div class="polaroid-name-large">{{ $user->name }}</div>
+                        </a>
                         
                         {{-- Bio --}}
                         @if($userBio)
@@ -140,7 +139,7 @@
                         @endif
                         
                         {{-- Follow Button --}}
-                        <div class="polaroid-follow-btn-wrapper" @click.stop>
+                        <div class="polaroid-follow-btn-wrapper">
                             <livewire:components.follow-button :userId="$user->id" size="sm" variant="ghost" />
                         </div>
                         
@@ -160,7 +159,7 @@
                             </div>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
             @endforeach
             </div>
@@ -244,8 +243,6 @@
                 0 8px 16px rgba(0, 0, 0, 0.06),
                 0 16px 32px rgba(0, 0, 0, 0.04);
             transition: all 0.3s ease;
-            text-decoration: none;
-            cursor: pointer;
             border-radius: 2px;
         }
         
@@ -261,6 +258,22 @@
                 0 8px 16px rgba(0, 0, 0, 0.1),
                 0 16px 32px rgba(0, 0, 0, 0.08),
                 0 32px 64px rgba(0, 0, 0, 0.06);
+        }
+        
+        /* Links dentro la card */
+        .polaroid-photo-link {
+            display: block;
+            text-decoration: none;
+        }
+        
+        .polaroid-name-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .polaroid-name-link:hover .polaroid-name-large {
+            color: #059669;
         }
         
         /* FOTO - Stile pulito */
