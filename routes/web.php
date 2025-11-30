@@ -408,9 +408,7 @@ Route::get('/guidelines', function () {
 
 Route::get('/help', \App\Livewire\Help\HelpIndex::class)->name('help');
 Route::get('/faq', \App\Livewire\Help\FaqIndex::class)->name('faq');
-Route::get('/support', function () {
-    return view('pages.support');
-})->name('support');
+Route::get('/support', \App\Livewire\Support\SupportForm::class)->name('support');
 
 // Test Livewire
 Route::get('/test-livewire', function () {
