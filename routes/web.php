@@ -493,6 +493,13 @@ Route::middleware('auth')->prefix('profile')->name('profile.')->group(function (
     Route::get('/', \App\Livewire\Profile\ProfileShow::class)->name('show');
     Route::get('/edit', \App\Livewire\Profile\ProfileEdit::class)->name('edit');
     Route::get('/delete', \App\Livewire\Profile\DeleteAccount::class)->name('delete');
+    Route::get('/export', \App\Livewire\Profile\ExportData::class)->name('export');
+    Route::get('/export/download', function() {
+        $user = auth()->user();
+        $service = new \App\Services\UserDataExportService();
+        $filePath = $service->generateDownloadableFile($user);
+        return \Illuminate\Support\Facades\Storage::disk('local')->download($filePath);
+    })->name('export.download');
     Route::get('/languages', \App\Livewire\Profile\LanguageManagement::class)->name('languages');
     Route::get('/badges', \App\Livewire\Profile\MyBadges::class)->name('badges');
     Route::get('/my-media', \App\Livewire\Profile\MyMedia::class)->name('my-media');
