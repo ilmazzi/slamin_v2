@@ -50,6 +50,13 @@ return [
     // Messages
     'registration_completed' => '🎉 Registration completed! You have :roles assigned. Check your email to verify your account and access all features.',
     
+    // Terms and Privacy
+    'accept_terms' => 'I accept the',
+    'terms_of_service' => 'Terms of Service',
+    'and' => 'and the',
+    'privacy_policy' => 'Privacy Policy',
+    'accept_terms_required' => 'You must accept the Terms of Service and Privacy Policy to register.',
+    
     // Role Names
     'role_admin_name' => 'Administrator',
     'role_moderator_name' => 'Moderator',

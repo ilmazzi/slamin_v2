@@ -95,6 +95,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'peertube_created_at',
         'peertube_password',
         'peertube_roles',
+        // Terms and Privacy acceptance
+        'terms_accepted_at',
+        'privacy_accepted_at',
     ];
 
     /**
@@ -134,6 +137,9 @@ class User extends Authenticatable implements MustVerifyEmail
             'show_phone' => 'boolean',
             'show_birth_date' => 'boolean',
             'payout_method_configured' => 'boolean',
+            // Terms and Privacy acceptance
+            'terms_accepted_at' => 'datetime',
+            'privacy_accepted_at' => 'datetime',
         ];
     }
 

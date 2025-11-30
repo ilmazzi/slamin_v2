@@ -1,6 +1,25 @@
 <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950">
     <!-- Navigation Header -->
-    <x-layouts.navigation-modern />
+    <?php if (isset($component)) { $__componentOriginalf3d89a6becff7fafd48b3236eb38787d = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalf3d89a6becff7fafd48b3236eb38787d = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.layouts.navigation-modern','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('layouts.navigation-modern'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalf3d89a6becff7fafd48b3236eb38787d)): ?>
+<?php $attributes = $__attributesOriginalf3d89a6becff7fafd48b3236eb38787d; ?>
+<?php unset($__attributesOriginalf3d89a6becff7fafd48b3236eb38787d); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalf3d89a6becff7fafd48b3236eb38787d)): ?>
+<?php $component = $__componentOriginalf3d89a6becff7fafd48b3236eb38787d; ?>
+<?php unset($__componentOriginalf3d89a6becff7fafd48b3236eb38787d); ?>
+<?php endif; ?>
     
     <!-- Main Content -->
     <div class="pt-16 md:pt-20">
@@ -14,33 +33,35 @@
 
             <div class="max-w-full w-full relative z-10 text-white px-4 py-6">
                 <h3 class="text-2xl xl:text-3xl font-bold mb-4 text-center" style="font-family: 'Crimson Pro', serif;">
-                    {{ __('register.home_for_poetry') }}
+                    <?php echo e(__('register.home_for_poetry')); ?>
+
                 </h3>
                 <p class="text-base xl:text-lg text-white/90 mb-6 text-center px-4">
-                    {{ __('register.platform_description') }}
+                    <?php echo e(__('register.platform_description')); ?>
+
                 </p>
                 
-                {{-- Categories Grid - Hero Cards from Homepage - Horizontal Layout --}}
+                
                 <div class="flex flex-wrap justify-center gap-3 max-w-full mx-auto px-4 pt-6 pb-4"
                      style="-webkit-overflow-scrolling: touch;">
                     
-                    {{-- Poetry - Mini Paper Sheet --}}
+                    
                     <?php $paperRotation = rand(-2, 2); ?>
                     <div class="hero-card-container flex-shrink-0">
                         <div class="hero-paper-wrapper cursor-pointer"
-                             style="transform: rotate({{ $paperRotation }}deg);">
+                             style="transform: rotate(<?php echo e($paperRotation); ?>deg);">
                             <div class="hero-paper-sheet">
                                 <div class="flex items-center justify-center h-full">
                                     <h3 class="hero-paper-title">
-                                        "{{ __('home.hero_category_poems') }}"
+                                        "<?php echo e(__('home.hero_category_poems')); ?>"
                                     </h3>
                                 </div>
                             </div>
                         </div>
-                        <div class="hero-card-label">{{ strip_tags(__('home.poetry_section_title')) }}</div>
+                        <div class="hero-card-label"><?php echo e(strip_tags(__('home.poetry_section_title'))); ?></div>
                     </div>
                     
-                    {{-- Articles - Mini Magazine --}}
+                    
                     <?php 
                         $rotation = rand(-3, 3);
                         $pinColor = ['#e53e3e', '#3182ce', '#38a169', '#d69e2e', '#805ad5'][rand(0, 4)];
@@ -49,14 +70,14 @@
                     <div class="hero-card-container flex-shrink-0">
                         <div class="hero-magazine-wrapper cursor-pointer">
                             <div class="hero-thumbtack" 
-                                 style="background: {{ $pinColor }}; transform: rotate({{ $pinRotation }}deg);">
+                                 style="background: <?php echo e($pinColor); ?>; transform: rotate(<?php echo e($pinRotation); ?>deg);">
                                 <div class="hero-thumbtack-needle"></div>
                             </div>
-                            <div class="hero-magazine-cover" style="transform: rotate({{ $rotation }}deg);">
+                            <div class="hero-magazine-cover" style="transform: rotate(<?php echo e($rotation); ?>deg);">
                                 <div class="hero-magazine-inner">
                                     <div class="flex justify-between items-start mb-1">
                                         <div class="text-xs font-bold text-neutral-900">SLAMIN</div>
-                                        <div class="text-[8px] text-neutral-600">Vol. {{ date('Y') }} · N.{{ rand(10, 99) }}</div>
+                                        <div class="text-[8px] text-neutral-600">Vol. <?php echo e(date('Y')); ?> · N.<?php echo e(rand(10, 99)); ?></div>
                                     </div>
                                     <div class="hero-magazine-image-area" style="background: url('<?php echo [
                                         'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
@@ -66,7 +87,8 @@
                                     ][rand(0, 3)]; ?>') center/cover;">
                                     </div>
                                     <h3 class="hero-magazine-title mt-2">
-                                        {{ __('home.hero_category_articles') }}
+                                        <?php echo e(__('home.hero_category_articles')); ?>
+
                                     </h3>
                                     <div class="h-[1px] bg-neutral-300 my-1"></div>
                                     <p class="text-[7px] text-neutral-500 leading-[0.6rem]">
@@ -75,10 +97,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="hero-card-label">{{ strip_tags(__('home.articles_section_title')) }}</div>
+                        <div class="hero-card-label"><?php echo e(strip_tags(__('home.articles_section_title'))); ?></div>
                     </div>
                     
-                    {{-- Gigs - Mini Notice Board --}}
+                    
                     <?php
                         $tapeWidth = rand(80, 100);
                         $tapeRotation = rand(-4, 4);
@@ -88,21 +110,21 @@
                     <div class="hero-card-container flex-shrink-0">
                         <div class="hero-notice-wrapper cursor-pointer">
                             <div class="hero-washi-tape hero-washi-top" 
-                                 style="width: {{ $tapeWidth }}px; 
-                                        transform: translate(calc(-50%), 0) rotate({{ $tapeRotation }}deg);"></div>
-                            <div class="hero-notice-paper" style="transform: rotate({{ $paperRotation }}deg);">
+                                 style="width: <?php echo e($tapeWidth); ?>px; 
+                                        transform: translate(calc(-50%), 0) rotate(<?php echo e($tapeRotation); ?>deg);"></div>
+                            <div class="hero-notice-paper" style="transform: rotate(<?php echo e($paperRotation); ?>deg);">
                                 <div class="flex items-center justify-center h-full">
-                                    <div class="hero-notice-badge">{{ strtoupper(__('home.hero_category_gigs')) }}</div>
+                                    <div class="hero-notice-badge"><?php echo e(strtoupper(__('home.hero_category_gigs'))); ?></div>
                                 </div>
                             </div>
                             <div class="hero-washi-tape hero-washi-bottom" 
-                                 style="width: {{ $tapeWidth }}px; 
-                                        transform: translate(calc(-50%), 0) rotate({{ $tapeBottomRotation }}deg);"></div>
+                                 style="width: <?php echo e($tapeWidth); ?>px; 
+                                        transform: translate(calc(-50%), 0) rotate(<?php echo e($tapeBottomRotation); ?>deg);"></div>
                         </div>
-                        <div class="hero-card-label">{{ strip_tags(__('home.gigs_section_title')) }}</div>
+                        <div class="hero-card-label"><?php echo e(strip_tags(__('home.gigs_section_title'))); ?></div>
                     </div>
                     
-                    {{-- Events - Mini Cinema Ticket --}}
+                    
                     <?php 
                         $tilt = rand(-3, 3);
                         $selectedColors = [
@@ -113,36 +135,36 @@
                     ?>
                     <div class="hero-card-container flex-shrink-0">
                         <div class="hero-ticket-wrapper cursor-pointer"
-                             style="transform: rotate({{ $tilt }}deg);">
+                             style="transform: rotate(<?php echo e($tilt); ?>deg);">
                             <div class="hero-cinema-ticket"
-                                 style="background: linear-gradient(135deg, {{ $selectedColors[0] }} 0%, {{ $selectedColors[1] }} 50%, {{ $selectedColors[2] }} 100%);">
+                                 style="background: linear-gradient(135deg, <?php echo e($selectedColors[0]); ?> 0%, <?php echo e($selectedColors[1]); ?> 50%, <?php echo e($selectedColors[2]); ?> 100%);">
                                 <div class="hero-ticket-perforation"></div>
                                 <div class="hero-ticket-content">
                                     <div class="ticket-mini-header">
                                         <div class="text-[8px] font-black tracking-wider text-red-700">TICKET</div>
-                                        <div class="text-[7px] font-bold text-amber-700">#0{{ rand(1, 9) }}{{ rand(0, 9) }}{{ rand(0, 9) }}</div>
+                                        <div class="text-[7px] font-bold text-amber-700">#0<?php echo e(rand(1, 9)); ?><?php echo e(rand(0, 9)); ?><?php echo e(rand(0, 9)); ?></div>
                                     </div>
                                     <div class="flex-1 flex items-center justify-center">
-                                        <div class="hero-ticket-stamp">{{ strtoupper(__('home.hero_category_events')) }}</div>
+                                        <div class="hero-ticket-stamp"><?php echo e(strtoupper(__('home.hero_category_events'))); ?></div>
                                     </div>
                                     <div class="ticket-mini-barcode">
                                         <div class="flex justify-center gap-[1px]">
-                                            @for($j = 0; $j < 20; $j++)
-                                            <div style="width: {{ rand(1, 2) }}px; height: {{ rand(12, 18) }}px; background: #2d2520;"></div>
-                                            @endfor
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($j = 0; $j < 20; $j++): ?>
+                                            <div style="width: <?php echo e(rand(1, 2)); ?>px; height: <?php echo e(rand(12, 18)); ?>px; background: #2d2520;"></div>
+                                            <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="hero-card-label">{{ strip_tags(__('home.events_section_title')) }}</div>
+                        <div class="hero-card-label"><?php echo e(strip_tags(__('home.events_section_title'))); ?></div>
                     </div>
                     
-                    {{-- Videos - Mini Film Strip --}}
+                    
                     <?php $tilt = rand(-2, 2); ?>
                     <div class="hero-card-container flex-shrink-0">
                         <div class="hero-film-wrapper cursor-pointer"
-                             style="transform: rotate({{ $tilt }}deg);">
+                             style="transform: rotate(<?php echo e($tilt); ?>deg);">
                             <div class="hero-film-strip">
                                 <!-- Film codes -->
                                 <div class="hero-film-code-top">SLAMIN</div>
@@ -152,22 +174,22 @@
                                 <div class="hero-film-frame">
                                     <!-- Left perforation -->
                                     <div class="hero-film-perf-left">
-                                        @for($h = 0; $h < 8; $h++)
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($h = 0; $h < 8; $h++): ?>
                                         <div class="hero-perf-hole"></div>
-                                        @endfor
+                                        <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
                                     
                                     <!-- Right perforation -->
                                     <div class="hero-film-perf-right">
-                                        @for($h = 0; $h < 8; $h++)
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($h = 0; $h < 8; $h++): ?>
                                         <div class="hero-perf-hole"></div>
-                                        @endfor
+                                        <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </div>
                                     
                                     <div class="hero-frame-number-tl">///01</div>
                                     <div class="hero-frame-number-tr">01A</div>
                                     <div class="hero-frame-number-bl">35MM</div>
-                                    <div class="hero-frame-number-br">{{ rand(1, 9) }}</div>
+                                    <div class="hero-frame-number-br"><?php echo e(rand(1, 9)); ?></div>
                                     
                                     <!-- Thumbnail background with random image -->
                                     <div class="hero-film-thumbnail" style="background: url('<?php echo [
@@ -182,15 +204,16 @@
                                     
                                     <!-- Media text overlay -->
                                     <div class="hero-film-text">
-                                        {{ __('home.hero_category_videos') }}
+                                        <?php echo e(__('home.hero_category_videos')); ?>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="hero-card-label">{{ strip_tags(__('home.videos_section_title')) }}</div>
+                        <div class="hero-card-label"><?php echo e(strip_tags(__('home.videos_section_title'))); ?></div>
                     </div>
                     
-                    {{-- New Users - Mini Polaroid --}}
+                    
                     <?php 
                         $rotation = rand(-3, 3);
                         $tapeRotation = rand(-8, 8);
@@ -205,12 +228,12 @@
                     ?>
                     <div class="hero-card-container flex-shrink-0">
                         <div class="hero-polaroid-wrapper cursor-pointer"
-                             style="transform: rotate({{ $rotation }}deg);">
+                             style="transform: rotate(<?php echo e($rotation); ?>deg);">
                             <!-- Tape -->
                             <div class="hero-polaroid-tape" 
-                                 style="width: {{ $tapeWidth }}px; 
-                                        transform: rotate({{ $tapeRotation }}deg);
-                                        background: linear-gradient(135deg, {{ $selectedTape[0] }}, {{ $selectedTape[1] }}, {{ $selectedTape[2] }});"></div>
+                                 style="width: <?php echo e($tapeWidth); ?>px; 
+                                        transform: rotate(<?php echo e($tapeRotation); ?>deg);
+                                        background: linear-gradient(135deg, <?php echo e($selectedTape[0]); ?>, <?php echo e($selectedTape[1]); ?>, <?php echo e($selectedTape[2]); ?>);"></div>
                             
                             <!-- Polaroid Card -->
                             <div class="hero-polaroid-card">
@@ -225,11 +248,12 @@
                                     </svg>
                                 </div>
                                 <div class="hero-polaroid-caption">
-                                    {{ __('home.hero_category_users') }}
+                                    <?php echo e(__('home.hero_category_users')); ?>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="hero-card-label">{{ strip_tags(__('home.new_users_title')) }}</div>
+                        <div class="hero-card-label"><?php echo e(strip_tags(__('home.new_users_title'))); ?></div>
                     </div>
                     
                 </div>
@@ -242,155 +266,208 @@
                 <!-- Header -->
                 <div class="text-center mb-8">
                     <h2 class="text-4xl font-bold text-neutral-900 dark:text-white mb-2" style="font-family: 'Crimson Pro', serif;">
-                        {{ __('register.create_account') }}
+                        <?php echo e(__('register.create_account')); ?>
+
                     </h2>
                     <p class="text-neutral-600 dark:text-neutral-400">
-                        {{ __('register.complete_profile') }}
+                        <?php echo e(__('register.complete_profile')); ?>
+
                     </p>
                 </div>
 
                 <!-- Error Message -->
-                @error('error')
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['error'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                     <div class="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
-                        <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        <p class="text-sm text-red-600 dark:text-red-400"><?php echo e($message); ?></p>
                     </div>
-                @enderror
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                 <!-- Register Form -->
                 <form wire:submit="register" class="space-y-5">
                     <!-- Selezione Lingua -->
                     <div>
                         <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
-                            <strong>🌐 {{ __('register.preferred_language') }}</strong>
+                            <strong>🌐 <?php echo e(__('register.preferred_language')); ?></strong>
                         </label>
                         <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-2">
-                            {{ __('register.language_tip') }}
+                            <?php echo e(__('register.language_tip')); ?>
+
                         </p>
                         <select wire:model.live="language" 
                                 class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
-                            @foreach($this->languages as $code => $language)
-                                <option value="{{ $code }}">{{ $language['flag'] }} {{ $language['name'] }}</option>
-                            @endforeach
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $this->languages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $language): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($code); ?>"><?php echo e($language['flag']); ?> <?php echo e($language['name']); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </select>
-                        @error('language')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['language'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- Nome Completo -->
                     <div>
                         <label for="name" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
-                            {{ __('register.full_name') }} *
+                            <?php echo e(__('register.full_name')); ?> *
                         </label>
                         <input id="name" 
                                wire:model="name"
                                type="text" 
                                required 
-                               placeholder="{{ __('register.full_name_placeholder') }}"
+                               placeholder="<?php echo e(__('register.full_name_placeholder')); ?>"
                                class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
-                        @error('name')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- Nickname (Opzionale) -->
                     <div>
                         <label for="nickname" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
-                            {{ __('register.nickname') }} 
-                            <span class="text-xs text-neutral-500">({{ __('register.optional') }})</span>
+                            <?php echo e(__('register.nickname')); ?> 
+                            <span class="text-xs text-neutral-500">(<?php echo e(__('register.optional')); ?>)</span>
                         </label>
                         <input id="nickname" 
                                wire:model="nickname"
                                type="text" 
-                               placeholder="{{ __('register.nickname_placeholder') }}"
+                               placeholder="<?php echo e(__('register.nickname_placeholder')); ?>"
                                class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
-                        @error('nickname')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['nickname'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- Email -->
                     <div>
                         <label for="email" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
-                            {{ __('register.email') }} *
+                            <?php echo e(__('register.email')); ?> *
                         </label>
                         <input id="email" 
                                wire:model="email"
                                type="email" 
                                required 
-                               placeholder="{{ __('register.email_placeholder') }}"
+                               placeholder="<?php echo e(__('register.email_placeholder')); ?>"
                                class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
-                        @error('email')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- Password -->
                     <div>
                         <label for="password" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
-                            {{ __('register.password') }} *
+                            <?php echo e(__('register.password')); ?> *
                         </label>
                         <input id="password" 
                                wire:model="password"
                                type="password" 
                                required 
-                               placeholder="{{ __('auth.password_placeholder') }}"
+                               placeholder="<?php echo e(__('auth.password_placeholder')); ?>"
                                class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
-                        <p class="mt-1 text-xs text-neutral-500">{{ __('register.password_min_characters') }}</p>
-                        @error('password')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <p class="mt-1 text-xs text-neutral-500"><?php echo e(__('register.password_min_characters')); ?></p>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- Confirm Password -->
                     <div>
                         <label for="password_confirmation" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
-                            {{ __('register.confirm_password') }} *
+                            <?php echo e(__('register.confirm_password')); ?> *
                         </label>
                         <input id="password_confirmation" 
                                wire:model="password_confirmation"
                                type="password" 
                                required 
-                               placeholder="{{ __('auth.confirm_password_placeholder') }}"
+                               placeholder="<?php echo e(__('auth.confirm_password_placeholder')); ?>"
                                class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
                     </div>
 
                     <!-- Selezione Ruoli -->
                     <div>
                         <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
-                            <strong>🎭 {{ __('register.choose_role') }}</strong>
+                            <strong>🎭 <?php echo e(__('register.choose_role')); ?></strong>
                         </label>
                         <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
-                            {{ __('register.choose_role_description') }}
+                            <?php echo e(__('register.choose_role_description')); ?>
+
                         </p>
 
                         <div class="grid grid-cols-1 gap-3">
-                            @foreach($this->roles as $role)
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $this->roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <div class="border-2 rounded-xl p-3 transition-all cursor-pointer
-                                    @if(in_array($role['name'], $selectedRoles))
+                                    <?php if(in_array($role['name'], $selectedRoles)): ?>
                                         border-primary-500 bg-primary-50 dark:bg-primary-900/20
-                                    @else
+                                    <?php else: ?>
                                         border-neutral-200 dark:border-neutral-700 hover:border-primary-300 dark:hover:border-primary-700
-                                    @endif">
+                                    <?php endif; ?>">
                                     <label class="flex items-start cursor-pointer">
                                         <input type="checkbox"
-                                               wire:click="toggleRole('{{ $role['name'] }}')"
-                                               @checked(in_array($role['name'], $selectedRoles))
+                                               wire:click="toggleRole('<?php echo e($role['name']); ?>')"
+                                               <?php if(in_array($role['name'], $selectedRoles)): echo 'checked'; endif; ?>
                                                class="mt-1 w-4 h-4 text-primary-600 border-neutral-300 rounded focus:ring-primary-500 flex-shrink-0">
                                         <div class="ml-3 flex-1 min-w-0">
                                             <div class="flex items-center gap-2">
-                                                <span class="text-xl flex-shrink-0">{{ $role['icon'] }}</span>
-                                                <strong class="text-neutral-900 dark:text-white text-sm sm:text-base">{{ $role['display_name'] }}</strong>
+                                                <span class="text-xl flex-shrink-0"><?php echo e($role['icon']); ?></span>
+                                                <strong class="text-neutral-900 dark:text-white text-sm sm:text-base"><?php echo e($role['display_name']); ?></strong>
                                             </div>
-                                            <p class="text-xs text-neutral-600 dark:text-neutral-400 mt-1 break-words">{{ $role['description'] }}</p>
+                                            <p class="text-xs text-neutral-600 dark:text-neutral-400 mt-1 break-words"><?php echo e($role['description']); ?></p>
                                         </div>
                                     </label>
                                 </div>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
-                        @error('selectedRoles')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['selectedRoles'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- Terms and Privacy Acceptance -->
@@ -407,33 +484,47 @@
                             </div>
                             <div class="ml-3 text-sm">
                                 <label for="acceptTerms" class="text-neutral-700 dark:text-neutral-300">
-                                    {{ __('register.accept_terms') }}
-                                    <a href="{{ route('terms') }}" target="_blank" class="font-semibold text-primary-600 hover:text-primary-700 hover:underline">
-                                        {{ __('register.terms_of_service') }}
+                                    <?php echo e(__('register.accept_terms')); ?>
+
+                                    <a href="<?php echo e(route('terms')); ?>" target="_blank" class="font-semibold text-primary-600 hover:text-primary-700 hover:underline">
+                                        <?php echo e(__('register.terms_of_service')); ?>
+
                                     </a>
-                                    {{ __('register.and') }}
-                                    <a href="{{ route('privacy') }}" target="_blank" class="font-semibold text-primary-600 hover:text-primary-700 hover:underline">
-                                        {{ __('register.privacy_policy') }}
+                                    <?php echo e(__('register.and')); ?>
+
+                                    <a href="<?php echo e(route('privacy')); ?>" target="_blank" class="font-semibold text-primary-600 hover:text-primary-700 hover:underline">
+                                        <?php echo e(__('register.privacy_policy')); ?>
+
                                     </a>
                                 </label>
                             </div>
                         </div>
-                        @error('acceptTerms')
-                            <p class="ml-7 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                        @enderror
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['acceptTerms'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <p class="ml-7 text-sm text-red-600 dark:text-red-400"><?php echo e($message); ?></p>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
 
                     <!-- Submit Button -->
                     <button type="submit" class="w-full px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors">
-                        {{ __('register.join_slam_in') }}
+                        <?php echo e(__('register.join_slam_in')); ?>
+
                     </button>
 
                     <!-- Login Link -->
                     <div class="text-center">
                         <p class="text-sm text-neutral-600 dark:text-neutral-400">
-                            {{ __('register.already_have_account') }}
-                            <a href="{{ route('login') }}" class="font-semibold text-primary-600 hover:text-primary-700">
-                                {{ __('register.login') }}
+                            <?php echo e(__('register.already_have_account')); ?>
+
+                            <a href="<?php echo e(route('login')); ?>" class="font-semibold text-primary-600 hover:text-primary-700">
+                                <?php echo e(__('register.login')); ?>
+
                             </a>
                         </p>
                     </div>
@@ -444,7 +535,26 @@
     </div>
     
     <!-- Footer -->
-    <x-layouts.footer-modern />
+    <?php if (isset($component)) { $__componentOriginal7f75b765bca1e533f9d8c8fa950f02fb = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal7f75b765bca1e533f9d8c8fa950f02fb = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.layouts.footer-modern','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('layouts.footer-modern'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal7f75b765bca1e533f9d8c8fa950f02fb)): ?>
+<?php $attributes = $__attributesOriginal7f75b765bca1e533f9d8c8fa950f02fb; ?>
+<?php unset($__attributesOriginal7f75b765bca1e533f9d8c8fa950f02fb); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal7f75b765bca1e533f9d8c8fa950f02fb)): ?>
+<?php $component = $__componentOriginal7f75b765bca1e533f9d8c8fa950f02fb; ?>
+<?php unset($__componentOriginal7f75b765bca1e533f9d8c8fa950f02fb); ?>
+<?php endif; ?>
     
     <style>
     /* Scrollbar Hide */
@@ -1097,3 +1207,4 @@
     }
 </style>
 </div>
+<?php /**PATH /Users/mazzi/slamin_v2/resources/views/livewire/auth/register.blade.php ENDPATH**/ ?>

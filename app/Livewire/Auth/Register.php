@@ -22,6 +22,7 @@ class Register extends Component
     public $password_confirmation = '';
     public $language = '';
     public $selectedRoles = [];
+    public $acceptTerms = false;
 
     protected function rules()
     {
@@ -35,6 +36,7 @@ class Register extends Component
             'language' => 'required|string|in:' . implode(',', $availableLanguages),
             'selectedRoles' => 'nullable|array',
             'selectedRoles.*' => 'exists:roles,name',
+            'acceptTerms' => 'required|accepted',
         ];
     }
 
@@ -51,6 +53,8 @@ class Register extends Component
             'password.confirmed' => __('validation.confirmed', ['attribute' => __('register.password')]),
             'language.required' => __('validation.required', ['attribute' => __('register.preferred_language')]),
             'language.in' => __('validation.in', ['attribute' => __('register.preferred_language')]),
+            'acceptTerms.required' => __('register.accept_terms_required'),
+            'acceptTerms.accepted' => __('register.accept_terms_required'),
         ];
     }
 
@@ -93,6 +97,8 @@ class Register extends Component
                 'password' => Hash::make($this->password),
                 'status' => 'active',
                 'email_verified_at' => null, // Non verificato inizialmente
+                'terms_accepted_at' => now(),
+                'privacy_accepted_at' => now(),
             ]);
 
             // Assegna i ruoli selezionati
