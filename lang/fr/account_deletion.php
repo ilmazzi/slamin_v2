@@ -11,9 +11,10 @@ return [
     // What happens
     'what_happens_title' => 'Que se passe-t-il lorsque vous supprimez votre compte?',
     'what_happens_1' => 'Votre profil et vos informations personnelles seront supprimés définitivement',
-    'what_happens_2' => 'Votre contenu (poèmes, articles, etc.) restera visible mais anonymisé',
-    'what_happens_3' => 'Vos commentaires et interactions resteront mais ne seront plus associés à vous',
-    'what_happens_4' => 'Vous avez 30 jours pour nous contacter si vous voulez restaurer votre compte',
+    'what_happens_2' => 'Votre compte PeerTube (vidéos) sera supprimé avec toutes vos vidéos',
+    'what_happens_3' => 'Votre contenu textuel (poèmes, articles) restera visible mais anonymisé',
+    'what_happens_4' => 'Vos commentaires et interactions resteront mais ne seront plus associés à vous',
+    'what_happens_5' => 'Vous avez 30 jours pour nous contacter si vous voulez restaurer votre compte',
     
     // Form
     'reason_label' => 'Pourquoi voulez-vous supprimer votre compte?',

@@ -11,9 +11,10 @@ return [
     // What happens
     'what_happens_title' => 'What happens when you delete your account?',
     'what_happens_1' => 'Your profile and personal information will be permanently deleted',
-    'what_happens_2' => 'Your content (poems, articles, etc.) will remain visible but anonymized',
-    'what_happens_3' => 'Your comments and interactions will remain but no longer be associated with you',
-    'what_happens_4' => 'You have 30 days to contact us if you want to restore your account',
+    'what_happens_2' => 'Your PeerTube account (videos) will be deleted along with all your videos',
+    'what_happens_3' => 'Your text content (poems, articles) will remain visible but anonymized',
+    'what_happens_4' => 'Your comments and interactions will remain but no longer be associated with you',
+    'what_happens_5' => 'You have 30 days to contact us if you want to restore your account',
     
     // Form
     'reason_label' => 'Why do you want to delete your account?',

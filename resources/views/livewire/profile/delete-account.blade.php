@@ -37,23 +37,30 @@
                         </div>
                         
                         <div class="flex items-start gap-3">
-                            <span class="text-xl">📝</span>
+                            <span class="text-xl">🎥</span>
                             <p class="text-neutral-700 dark:text-neutral-300">
                                 {{ __('account_deletion.what_happens_2') }}
                             </p>
                         </div>
                         
                         <div class="flex items-start gap-3">
-                            <span class="text-xl">💬</span>
+                            <span class="text-xl">📝</span>
                             <p class="text-neutral-700 dark:text-neutral-300">
                                 {{ __('account_deletion.what_happens_3') }}
                             </p>
                         </div>
                         
                         <div class="flex items-start gap-3">
-                            <span class="text-xl">⏰</span>
+                            <span class="text-xl">💬</span>
                             <p class="text-neutral-700 dark:text-neutral-300">
                                 {{ __('account_deletion.what_happens_4') }}
+                            </p>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl">⏰</span>
+                            <p class="text-neutral-700 dark:text-neutral-300">
+                                {{ __('account_deletion.what_happens_5') }}
                             </p>
                         </div>
                     </div>
@@ -122,7 +129,7 @@
                     <!-- Action Buttons -->
                     <div class="flex flex-col sm:flex-row gap-3 pt-4">
                         <a 
-                            href="{{ route('profile.settings') }}" 
+                            href="{{ route('profile.edit') }}" 
                             class="flex-1 px-6 py-3 text-center bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white font-semibold rounded-lg transition-colors"
                         >
                             {{ __('account_deletion.cancel') }}

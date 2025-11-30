@@ -11,9 +11,10 @@ return [
     // What happens
     'what_happens_title' => 'Cosa succede quando elimini il tuo account?',
     'what_happens_1' => 'Il tuo profilo e le informazioni personali verranno eliminate permanentemente',
-    'what_happens_2' => 'I tuoi contenuti (poesie, articoli, ecc.) rimarranno visibili ma anonimizzati',
-    'what_happens_3' => 'I tuoi commenti e interazioni rimarranno ma non saranno più associati a te',
-    'what_happens_4' => 'Hai 30 giorni per contattarci se vuoi ripristinare il tuo account',
+    'what_happens_2' => 'Il tuo account PeerTube (video) verrà eliminato insieme a tutti i tuoi video',
+    'what_happens_3' => 'I tuoi contenuti testuali (poesie, articoli) rimarranno visibili ma anonimizzati',
+    'what_happens_4' => 'I tuoi commenti e interazioni rimarranno ma non saranno più associati a te',
+    'what_happens_5' => 'Hai 30 giorni per contattarci se vuoi ripristinare il tuo account',
     
     // Form
     'reason_label' => 'Perché vuoi eliminare il tuo account?',

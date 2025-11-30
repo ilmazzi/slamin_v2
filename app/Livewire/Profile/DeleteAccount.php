@@ -5,6 +5,8 @@ namespace App\Livewire\Profile;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use App\Services\PeerTubeService;
 
 class DeleteAccount extends Component
 {
@@ -47,6 +49,33 @@ class DeleteAccount extends Component
         if (!Hash::check($this->password, $user->password)) {
             $this->addError('password', __('account_deletion.password_incorrect'));
             return;
+        }
+        
+        // Delete PeerTube account if exists
+        if ($user->peertube_user_id) {
+            try {
+                $peerTubeService = app(PeerTubeService::class);
+                $deleted = $peerTubeService->deleteUser($user->peertube_user_id);
+                
+                if ($deleted) {
+                    Log::info('Account PeerTube eliminato con successo', [
+                        'user_id' => $user->id,
+                        'peertube_user_id' => $user->peertube_user_id
+                    ]);
+                } else {
+                    Log::warning('Impossibile eliminare account PeerTube, continuo con eliminazione locale', [
+                        'user_id' => $user->id,
+                        'peertube_user_id' => $user->peertube_user_id
+                    ]);
+                }
+            } catch (\Exception $e) {
+                Log::error('Errore eliminazione account PeerTube', [
+                    'user_id' => $user->id,
+                    'peertube_user_id' => $user->peertube_user_id,
+                    'error' => $e->getMessage()
+                ]);
+                // Continua comunque con l'eliminazione locale
+            }
         }
         
         // Save deletion reason
