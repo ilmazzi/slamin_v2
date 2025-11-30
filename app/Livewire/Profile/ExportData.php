@@ -54,6 +54,8 @@ class ExportData extends Component
     
     public function render()
     {
-        return view('livewire.profile.export-data');
+        return view('livewire.profile.export-data')
+            ->layout('components.layouts.app')
+            ->title(__('data_export.page_title'));
     }
 }

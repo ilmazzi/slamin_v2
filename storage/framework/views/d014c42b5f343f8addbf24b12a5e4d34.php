@@ -1,16 +1,4 @@
-<?php if (isset($component)) { $__componentOriginal5863877a5171c196453bfa0bd807e410 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal5863877a5171c196453bfa0bd807e410 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.layouts.app','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('layouts.app'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-     <?php $__env->slot('title', null, []); ?> <?php echo e(__('data_export.page_title')); ?> <?php $__env->endSlot(); ?>
-
-    <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950 py-12">
+<div class="min-h-screen bg-neutral-50 dark:bg-neutral-950 py-12">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- Header -->
@@ -215,14 +203,4 @@
             </div>
         </div>
     </div>
- <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal5863877a5171c196453bfa0bd807e410)): ?>
-<?php $attributes = $__attributesOriginal5863877a5171c196453bfa0bd807e410; ?>
-<?php unset($__attributesOriginal5863877a5171c196453bfa0bd807e410); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal5863877a5171c196453bfa0bd807e410)): ?>
-<?php $component = $__componentOriginal5863877a5171c196453bfa0bd807e410; ?>
-<?php unset($__componentOriginal5863877a5171c196453bfa0bd807e410); ?>
-<?php endif; ?>
 <?php /**PATH /Users/mazzi/slamin_v2/resources/views/livewire/profile/export-data.blade.php ENDPATH**/ ?>

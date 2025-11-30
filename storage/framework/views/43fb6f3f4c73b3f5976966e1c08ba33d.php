@@ -163,7 +163,7 @@
                                      class="magazine-inner group cursor-pointer">
                                     <!-- Magazine Header -->
                                     <div class="magazine-header">
-                                        <div class="magazine-logo">SLAMIN</div>
+                                        <div class="magazine-logo"><?php echo e(strtoupper(config('app.name'))); ?></div>
                                         <div class="magazine-issue">Vol. <?php echo e(date('Y')); ?> · N.<?php echo e(str_pad($item['id'], 2, '0', STR_PAD_LEFT)); ?></div>
                                     </div>
                                     
@@ -393,7 +393,7 @@
                                 </div>
                                 
                                 <!-- Film Edge Codes -->
-                                <div class="film-edge-code-top">SLAMIN</div>
+                                <div class="film-edge-code-top"><?php echo e(strtoupper(config('app.name'))); ?></div>
                                 <div class="film-edge-code-bottom">ISO 400</div>
                                 
                                 <!-- Film Frame -->
@@ -461,14 +461,14 @@
                                             <!-- Like -->
                                             <?php if (isset($component)) { $__componentOriginal332a28e2e55aa3574ada95b4497eb0b2 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal332a28e2e55aa3574ada95b4497eb0b2 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.like-button','data' => ['itemId' => $item['id'],'itemType' => 'video','isLiked' => $item['is_liked'],'likesCount' => $item['likes_count'],'size' => 'sm','class' => '[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.like-button','data' => ['itemId' => $item['id'],'itemType' => 'video','isLiked' => $item['is_liked'],'likesCount' => $item['likes_count'],'size' => 'sm','class' => '[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('like-button'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['itemId' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($item['id']),'itemType' => 'video','isLiked' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($item['is_liked']),'likesCount' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($item['likes_count']),'size' => 'sm','class' => '[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-4 [&_svg]:h-4']); ?>
+<?php $component->withAttributes(['itemId' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($item['id']),'itemType' => 'video','isLiked' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($item['is_liked']),'likesCount' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($item['likes_count']),'size' => 'sm','class' => '[&_span]:!text-white/90 [&_svg]:!text-white/90 [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal332a28e2e55aa3574ada95b4497eb0b2)): ?>
@@ -483,14 +483,14 @@
                                             <!-- Share -->
                                             <?php if (isset($component)) { $__componentOriginalb32cd1c2ffd206a678a9d8db2f247966 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalb32cd1c2ffd206a678a9d8db2f247966 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.share-button','data' => ['itemId' => $item['id'],'itemType' => 'video','size' => 'sm','class' => '[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.share-button','data' => ['itemId' => $item['id'],'itemType' => 'video','size' => 'sm','class' => '[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('share-button'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['itemId' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($item['id']),'itemType' => 'video','size' => 'sm','class' => '[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-4 [&_svg]:h-4']); ?>
+<?php $component->withAttributes(['itemId' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($item['id']),'itemType' => 'video','size' => 'sm','class' => '[&_button]:!text-white/90 [&_svg]:!stroke-white [&_svg]:w-5 [&_svg]:h-5 md:[&_svg]:w-6 md:[&_svg]:h-6']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalb32cd1c2ffd206a678a9d8db2f247966)): ?>

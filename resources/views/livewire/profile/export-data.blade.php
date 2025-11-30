@@ -1,7 +1,4 @@
-<x-layouts.app>
-    <x-slot name="title">{{ __('data_export.page_title') }}</x-slot>
-
-    <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950 py-12">
+<div class="min-h-screen bg-neutral-50 dark:bg-neutral-950 py-12">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- Header -->
@@ -187,4 +184,3 @@
             </div>
         </div>
     </div>
-</x-layouts.app>

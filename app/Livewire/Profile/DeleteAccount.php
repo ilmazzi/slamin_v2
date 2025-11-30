@@ -99,6 +99,8 @@ class DeleteAccount extends Component
     
     public function render()
     {
-        return view('livewire.profile.delete-account');
+        return view('livewire.profile.delete-account')
+            ->layout('components.layouts.app')
+            ->title(__('account_deletion.page_title'));
     }
 }
