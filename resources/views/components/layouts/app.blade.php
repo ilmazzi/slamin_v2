@@ -428,7 +428,7 @@
     @endif
 
     <!-- Cookie Banner -->
-    @livewire('cookie-banner')
+    <x-cookie-banner />
     
     <!-- Userback Widget -->
     <script>

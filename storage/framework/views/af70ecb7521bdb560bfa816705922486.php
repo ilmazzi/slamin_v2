@@ -585,26 +585,26 @@ if (isset($__slots)) unset($__slots);
     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- Cookie Banner -->
-    <?php
-$__split = function ($name, $params = []) {
-    return [$name, $params];
-};
-[$__name, $__params] = $__split('cookie-banner');
-
-$key = null;
-
-$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2559968631-5', null);
-
-$__html = app('livewire')->mount($__name, $__params, $key);
-
-echo $__html;
-
-unset($__html);
-unset($__name);
-unset($__params);
-unset($__split);
-if (isset($__slots)) unset($__slots);
-?>
+    <?php if (isset($component)) { $__componentOriginalceaf3fe1766c78c4907eaa2dfb569a19 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalceaf3fe1766c78c4907eaa2dfb569a19 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.cookie-banner','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('cookie-banner'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalceaf3fe1766c78c4907eaa2dfb569a19)): ?>
+<?php $attributes = $__attributesOriginalceaf3fe1766c78c4907eaa2dfb569a19; ?>
+<?php unset($__attributesOriginalceaf3fe1766c78c4907eaa2dfb569a19); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalceaf3fe1766c78c4907eaa2dfb569a19)): ?>
+<?php $component = $__componentOriginalceaf3fe1766c78c4907eaa2dfb569a19; ?>
+<?php unset($__componentOriginalceaf3fe1766c78c4907eaa2dfb569a19); ?>
+<?php endif; ?>
     
     <!-- Userback Widget -->
     <script>
