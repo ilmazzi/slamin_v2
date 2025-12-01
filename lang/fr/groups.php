@@ -32,9 +32,16 @@ return [
     // Actions
     'join' => 'Rejoindre',
     'leave' => 'Quitter',
+    'leave_group' => 'Quitter le Groupe',
     'request_access' => 'Demander l\'accès',
     'invite_members' => 'Inviter des Membres',
+    'invite_user' => 'Inviter un Utilisateur',
     'manage_members' => 'Gérer les Membres',
+    'edit' => 'Modifier',
+    'cancel' => 'Annuler',
+    'save_changes' => 'Enregistrer les Modifications',
+    'delete_group' => 'Supprimer le Groupe',
+    'create_group' => 'Créer un Groupe',
     
     // Messages
     'group_created' => 'Groupe créé avec succès',
@@ -49,9 +56,12 @@ return [
     
     // Sections
     'about' => 'À propos',
+    'group_info' => 'Informations sur le Groupe',
     'announcements' => 'Annonces',
     'events' => 'Événements',
     'photos' => 'Photos',
+    'back_to_group' => 'Retour au groupe',
+    'back_to_groups' => 'Retour aux groupes',
     
     // Social
     'website' => 'Site Web',
@@ -61,7 +71,11 @@ return [
     'no_groups' => 'Aucun groupe trouvé',
     'no_members' => 'Aucun membre',
     'no_announcements' => 'Aucune annonce',
+    'no_announcements_available' => 'Aucune annonce disponible',
     'no_events' => 'Aucun événement',
+    'no_events_available' => 'Aucun événement disponible',
+    'no_users' => 'Aucun utilisateur trouvé',
+    'no_pending_invitations' => 'Aucune invitation en attente',
     
     // Member Management
     'member_promoted' => 'Membre promu modérateur',
@@ -71,6 +85,7 @@ return [
     'user_already_member' => 'L\'utilisateur est déjà membre',
     
     // Invitations
+    'my_invitations' => 'Mes Invitations',
     'invitation_sent' => 'Invitation envoyée avec succès',
     'invitation_accepted' => 'Invitation acceptée',
     'invitation_declined' => 'Invitation refusée',
@@ -103,6 +118,60 @@ return [
     'no_permission_accept_requests' => 'Vous n\'avez pas la permission d\'accepter les demandes',
     'no_permission_decline_requests' => 'Vous n\'avez pas la permission de refuser les demandes',
     'no_permission_view_stats' => 'Vous n\'avez pas la permission de voir les statistiques',
+    
+    // Group Details
+    'members_count' => 'Membres',
+    'created' => 'Créé',
+    'social_links' => 'Liens Sociaux',
+    'website' => 'Site Web',
+    'facebook' => 'Facebook',
+    'instagram' => 'Instagram',
+    'youtube' => 'YouTube',
+    'public_anyone_join' => 'Public - N\'importe qui peut rejoindre',
+    'private_requires_approval' => 'Privé - Nécessite une approbation',
+    'social_links_optional' => 'Liens Sociaux (Optionnels)',
+    'group_name' => 'Nom du Groupe',
+    'group_image' => 'Image du Groupe',
+    'update_group_info' => 'Mettre à jour les informations de votre groupe',
+    'create_group_description' => 'Créer un groupe pour rassembler des personnes ayant des intérêts communs',
+    
+    // Announcements
+    'new_announcement' => 'Nouvelle Annonce',
+    'create_new_announcement' => 'Créer une Nouvelle Annonce',
+    'announcement_title' => 'Titre',
+    'announcement_title_placeholder' => 'Titre de l\'annonce...',
+    'announcement_content' => 'Contenu',
+    'announcement_content_placeholder' => 'Écrivez le contenu de l\'annonce...',
+    'pin_announcement' => 'Épingler en haut',
+    'unpin_announcement' => 'Désépingler',
+    'publish_announcement' => 'Publier l\'Annonce',
+    
+    // Invitations
+    'invite_user_to' => 'Inviter un Utilisateur à',
+    'pending_invitations' => 'Invitations en Attente',
+    'view_pending_invitations' => 'Voir les invitations en attente',
+    'select_user' => 'Sélectionner un Utilisateur',
+    'search_user' => 'Rechercher un utilisateur...',
+    'send_invitation' => 'Envoyer l\'Invitation',
+    'cancel_invitation' => 'Annuler l\'Invitation',
+    'invited_by' => 'Invitée par',
+    'expires_at' => 'Expire le:',
+    'access_request' => 'demande d\'accès',
+    'access_requests' => 'demandes d\'accès',
+    'access_requests_text' => '',
+    'pending_invitation' => 'invitation en attente',
+    'pending_invitations_text' => 'invitations en attente',
+    'manage_requests_invitations' => 'Gérer les demandes et les invitations',
+    'requests' => 'Demandes',
+    'invitations' => 'Invitations',
+    
+    // Danger Zone
+    'danger_zone' => 'Zone de Danger',
+    'delete_group_warning' => 'Une fois le groupe supprimé, il ne pourra pas être récupéré. Cette action est irréversible.',
+    'delete_group_confirm' => 'Êtes-vous sûr de vouloir supprimer ce groupe? Cette action est irréversible.',
+    'leave_group_confirm' => 'Êtes-vous sûr de vouloir quitter ce groupe?',
+    'cancel_invitation_confirm' => 'Êtes-vous sûr de vouloir annuler cette invitation?',
+    'delete_announcement_confirm' => 'Êtes-vous sûr de vouloir supprimer cette annonce?',
     
     // Additional Messages
     'already_admin' => 'L\'utilisateur est déjà admin',

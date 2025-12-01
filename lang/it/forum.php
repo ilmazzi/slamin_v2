@@ -49,6 +49,8 @@ return [
     'subreddit_slug' => 'URL Slug',
     'subreddit_description' => 'Descrizione',
     'subreddit_rules' => 'Regole',
+    'description' => 'Descrizione',
+    'rules' => 'Regole',
     'subreddit_color' => 'Colore Tema',
     'private_subreddit' => 'Subreddit Privato',
     'public_subreddit' => 'Subreddit Pubblico',

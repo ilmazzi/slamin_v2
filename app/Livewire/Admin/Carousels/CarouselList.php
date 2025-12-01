@@ -50,6 +50,30 @@ class CarouselList extends Component
     public $contentSearchResults = [];
     public $showContentSearch = false;
 
+    public function updatedContentSearch()
+    {
+        // Reset results se il campo è vuoto
+        if (empty($this->contentSearch)) {
+            $this->contentSearchResults = [];
+            return;
+        }
+        
+        // Cerca solo se ci sono almeno 2 caratteri
+        if (strlen($this->contentSearch) >= 2) {
+            $this->searchContent();
+        } else {
+            $this->contentSearchResults = [];
+        }
+    }
+    
+    public function updatedContentType()
+    {
+        // Reset search quando cambia il tipo di contenuto
+        $this->contentSearch = '';
+        $this->contentSearchResults = [];
+        $this->content_id = null;
+    }
+
     public function mount()
     {
         if (!Auth::check() || !Auth::user()->hasRole('admin')) {
@@ -111,16 +135,23 @@ class CarouselList extends Component
 
     public function searchContent()
     {
+        // Reset results
+        $this->contentSearchResults = [];
+        
+        // Verifica lunghezza minima
         if (strlen($this->contentSearch) < 2) {
-            $this->contentSearchResults = [];
             return;
         }
 
-        $this->contentSearchResults = [];
+        // Verifica che content_type sia selezionato
+        if (empty($this->content_type)) {
+            return;
+        }
+
         $search = '%' . $this->contentSearch . '%';
 
         // Cerca in base al content_type selezionato
-        if ($this->content_type) {
+        try {
             switch ($this->content_type) {
                 case 'video':
                     $this->contentSearchResults = Video::where('title', 'like', $search)
@@ -135,18 +166,45 @@ class CarouselList extends Component
                         ->map(fn($e) => ['id' => $e->id, 'title' => $e->title, 'type' => 'event']);
                     break;
                 case 'poem':
-                    $this->contentSearchResults = Poem::whereRaw("JSON_EXTRACT(title, '$.it') LIKE ?", [$search])
-                        ->limit(10)
-                        ->get()
-                        ->map(fn($p) => ['id' => $p->id, 'title' => $p->title['it'] ?? 'N/A', 'type' => 'poem']);
+                    $this->contentSearchResults = Poem::where(function($query) use ($search) {
+                        // Cerca nei titoli JSON validi
+                        $query->whereRaw("JSON_VALID(title) = 1 AND JSON_EXTRACT(title, '$.it') LIKE ?", [$search])
+                              // Oppure nei titoli come stringa semplice (se non è JSON valido e non è NULL)
+                              ->orWhere(function($q) use ($search) {
+                                  $q->whereRaw("JSON_VALID(title) = 0")
+                                    ->whereNotNull('title')
+                                    ->where('title', 'like', $search);
+                              });
+                    })
+                    ->limit(10)
+                    ->get()
+                    ->map(function($p) {
+                        $title = is_array($p->title) ? ($p->title['it'] ?? $p->title['en'] ?? $p->title['fr'] ?? 'N/A') : ($p->title ?? 'N/A');
+                        return ['id' => $p->id, 'title' => $title, 'type' => 'poem'];
+                    });
                     break;
                 case 'article':
-                    $this->contentSearchResults = Article::whereRaw("JSON_EXTRACT(title, '$.it') LIKE ?", [$search])
-                        ->limit(10)
-                        ->get()
-                        ->map(fn($a) => ['id' => $a->id, 'title' => $a->title['it'] ?? 'N/A', 'type' => 'article']);
+                    $this->contentSearchResults = Article::where(function($query) use ($search) {
+                        // Cerca nei titoli JSON validi
+                        $query->whereRaw("JSON_VALID(title) = 1 AND JSON_EXTRACT(title, '$.it') LIKE ?", [$search])
+                              // Oppure nei titoli come stringa semplice (se non è JSON valido e non è NULL)
+                              ->orWhere(function($q) use ($search) {
+                                  $q->whereRaw("JSON_VALID(title) = 0")
+                                    ->whereNotNull('title')
+                                    ->where('title', 'like', $search);
+                              });
+                    })
+                    ->limit(10)
+                    ->get()
+                    ->map(function($a) {
+                        $title = is_array($a->title) ? ($a->title['it'] ?? $a->title['en'] ?? $a->title['fr'] ?? 'N/A') : ($a->title ?? 'N/A');
+                        return ['id' => $a->id, 'title' => $title, 'type' => 'article'];
+                    });
                     break;
             }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Carousel search error: ' . $e->getMessage());
+            $this->contentSearchResults = [];
         }
     }
 
@@ -273,6 +331,7 @@ class CarouselList extends Component
         $carousel->update(['is_active' => !$carousel->is_active]);
         session()->flash('message', $carousel->is_active ? __('admin.sections.carousels.messages.activated') : __('admin.sections.carousels.messages.deactivated'));
     }
+
 
     public function updateOrder($carouselIds)
     {

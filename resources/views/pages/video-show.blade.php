@@ -46,6 +46,10 @@
                             :itemId="$video->id"
                             itemType="video"
                             size="md" />
+                        <x-add-to-carousel-button 
+                            :contentId="$video->id"
+                            contentType="video"
+                            size="md" />
                     </div>
                 </div>
             </div>

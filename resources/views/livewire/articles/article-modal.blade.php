@@ -206,6 +206,15 @@
                                         itemType="article"
                                         size="md" />
                                     
+                                    @auth
+                                        @if(auth()->user()->hasRole(['admin', 'editor']))
+                                            <x-add-to-carousel-button 
+                                                :contentId="$article->id"
+                                                contentType="article"
+                                                size="md" />
+                                        @endif
+                                    @endauth
+                                    
                                     <x-report-button 
                                         :itemId="$article->id"
                                         itemType="article"

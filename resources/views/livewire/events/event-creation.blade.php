@@ -33,11 +33,11 @@
                     <div class="space-y-4">
                         @php
                             $steps = [
-                                ['icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'title' => 'Base', 'desc' => 'Informazioni essenziali'],
-                                ['icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', 'title' => 'Data & Luogo', 'desc' => 'Quando e dove'],
-                                ['icon' => 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z', 'title' => 'Media', 'desc' => 'Immagini e video'],
-                                ['icon' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z', 'title' => 'Impostazioni', 'desc' => 'Dettagli finali'],
-                                ['icon' => 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z', 'title' => 'Anteprima', 'desc' => 'Revisione finale']
+                                ['icon' => 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', 'title' => __('events.create.step_base'), 'desc' => __('events.create.step_base_desc')],
+                                ['icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', 'title' => __('events.create.step_date_location'), 'desc' => __('events.create.step_date_location_desc')],
+                                ['icon' => 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z', 'title' => __('events.create.step_media'), 'desc' => __('events.create.step_media_desc')],
+                                ['icon' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z', 'title' => __('events.create.step_settings'), 'desc' => __('events.create.step_settings_desc')],
+                                ['icon' => 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z', 'title' => __('events.create.step_preview'), 'desc' => __('events.create.step_preview_desc')]
                             ];
                         @endphp
                         
@@ -299,8 +299,8 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">Data & Luogo</h2>
-                                    <p class="text-neutral-700 dark:text-neutral-300">Quando e dove si terrà l'evento</p>
+                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ __('events.create.date_location_title') }}</h2>
+                                    <p class="text-neutral-700 dark:text-neutral-300">{{ __('events.create.date_location_subtitle') }}</p>
                                 </div>
                             </div>
 
@@ -315,7 +315,7 @@
                                                       focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
                                                       transition-all duration-300 @error('start_datetime') border-red-500 ring-4 ring-red-500/10 @enderror">
                                         <label for="start_datetime" class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
-                                            Data/Ora Inizio *
+                                            {{ __('events.create.start_datetime_label') }} *
                                         </label>
                                         @error('start_datetime')
                                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -330,7 +330,7 @@
                                                       focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
                                                       transition-all duration-300 @error('end_datetime') border-red-500 ring-4 ring-red-500/10 @enderror">
                                         <label for="end_datetime" class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
-                                            Data/Ora Fine *
+                                            {{ __('events.create.end_datetime_label') }} *
                                         </label>
                                         @error('end_datetime')
                                             <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -624,7 +624,7 @@
                                                       peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
                                                       peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
                                                       transition-all duration-200">
-                                            Nome Venue
+                                            {{ __('events.create.venue_name_label') }}
                                         </label>
                                     </div>
 
@@ -1107,7 +1107,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">Impostazioni</h2>
+                                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ __('events.create.step_settings') }}</h2>
                                     <p class="text-neutral-700 dark:text-neutral-300">Partecipanti e pubblicazione</p>
                                 </div>
                             </div>
@@ -1558,7 +1558,7 @@
                                         <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                         </svg>
-                                        Data & Luogo
+                                        {{ __('events.create.step_date_location') }}
                                     </h3>
                                     <dl class="space-y-3 text-sm">
                                         <div class="flex justify-between items-start">
@@ -1865,7 +1865,7 @@
                                         <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                         </svg>
-                                        Impostazioni
+                                        {{ __('events.create.step_settings') }}
                                     </h3>
                                     <dl class="space-y-3 text-sm">
                                         <div class="flex justify-between items-start">

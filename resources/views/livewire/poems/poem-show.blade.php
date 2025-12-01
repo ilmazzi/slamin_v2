@@ -461,6 +461,20 @@
                                 size="md" />
                         </div>
                         
+                        <!-- Add to Carousel -->
+                        @auth
+                            @if(auth()->user()->hasRole(['admin', 'editor']))
+                                <div class="flex items-center gap-2 px-6 py-3 rounded-xl 
+                                            bg-white dark:bg-neutral-800 shadow-lg
+                                            hover:shadow-xl transition-all duration-300">
+                                    <x-add-to-carousel-button 
+                                        :contentId="$poem->id"
+                                        contentType="poem"
+                                        size="md" />
+                                </div>
+                            @endif
+                        @endauth
+                        
                         <!-- Report -->
                         <div class="flex items-center gap-2 px-6 py-3 rounded-xl 
                                     bg-white dark:bg-neutral-800 shadow-lg

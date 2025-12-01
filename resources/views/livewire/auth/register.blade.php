@@ -414,29 +414,25 @@
 
                     <!-- Terms and Privacy Acceptance -->
                     <div class="space-y-2">
-                        <div class="flex items-start">
-                            <div class="flex items-center h-5">
-                                <input 
-                                    id="acceptTerms" 
-                                    wire:model="acceptTerms" 
-                                    type="checkbox" 
-                                    class="w-4 h-4 border-neutral-300 rounded text-primary-600 focus:ring-primary-500 dark:border-neutral-600 dark:bg-neutral-700"
-                                    required
-                                >
-                            </div>
-                            <div class="ml-3 text-sm">
-                                <label for="acceptTerms" class="text-neutral-700 dark:text-neutral-300">
-                                    {{ __('register.accept_terms') }}
-                                    <a href="{{ route('terms') }}" target="_blank" class="font-semibold text-primary-600 hover:text-primary-700 hover:underline">
-                                        {{ __('register.terms_of_service') }}
-                                    </a>
-                                    {{ __('register.and') }}
-                                    <a href="{{ route('privacy') }}" target="_blank" class="font-semibold text-primary-600 hover:text-primary-700 hover:underline">
-                                        {{ __('register.privacy_policy') }}
-                                    </a>
-                                </label>
-                            </div>
-                        </div>
+                        <label for="acceptTerms" class="flex items-start gap-3 cursor-pointer group">
+                            <input 
+                                id="acceptTerms" 
+                                wire:model="acceptTerms" 
+                                type="checkbox" 
+                                class="mt-1 w-4 h-4 border-neutral-300 rounded text-primary-600 focus:ring-primary-500 dark:border-neutral-600 dark:bg-neutral-700 cursor-pointer flex-shrink-0 relative z-10"
+                                required
+                            >
+                            <span class="text-sm text-neutral-700 dark:text-neutral-300 flex-1">
+                                {{ __('register.accept_terms') }}
+                                <a href="{{ route('terms') }}" target="_blank" class="font-semibold text-primary-600 hover:text-primary-700 hover:underline" onclick="event.stopPropagation();">
+                                    {{ __('register.terms_of_service') }}
+                                </a>
+                                {{ __('register.and') }}
+                                <a href="{{ route('privacy') }}" target="_blank" class="font-semibold text-primary-600 hover:text-primary-700 hover:underline" onclick="event.stopPropagation();">
+                                    {{ __('register.privacy_policy') }}
+                                </a>
+                            </span>
+                        </label>
                         @error('acceptTerms')
                             <p class="ml-7 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                         @enderror

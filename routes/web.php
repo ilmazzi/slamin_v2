@@ -375,6 +375,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     // Carousels
     Route::get('/carousels', \App\Livewire\Admin\Carousels\CarouselList::class)
         ->name('carousels.index');
+    Route::post('/carousels/add/{type}/{id}', [\App\Http\Controllers\Admin\CarouselController::class, 'addToCarousel'])
+        ->name('carousels.add');
+    
+    // Subreddits
+    Route::get('/subreddits', \App\Livewire\Admin\Subreddits\SubredditList::class)
+        ->name('subreddits.index');
     
     // Gamification (già esiste)
     Route::get('/gamification/badges', \App\Livewire\Admin\Gamification\BadgeManagement::class)

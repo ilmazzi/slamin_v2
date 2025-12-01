@@ -141,7 +141,19 @@ return [
         'recent_venues' => 'Luoghi recenti',
         'select_from_recent_venues' => 'Seleziona da luoghi recenti...',
         
-        // Form sections
+        // Form sections / Step titles
+        'step_base' => 'Base',
+        'step_base_desc' => 'Informazioni essenziali',
+        'step_date_location' => 'Data & Luogo',
+        'step_date_location_desc' => 'Quando e dove',
+        'step_media' => 'Media',
+        'step_media_desc' => 'Immagini e video',
+        'step_settings' => 'Impostazioni',
+        'step_settings_desc' => 'Dettagli finali',
+        'step_preview' => 'Anteprima',
+        'step_preview_desc' => 'Revisione finale',
+        
+        // Form sections (legacy - keep for compatibility)
         'basic_info' => 'Informazioni base',
         'date_location' => 'Data e luogo',
         'media_tickets' => 'Media e biglietti',
@@ -157,6 +169,11 @@ return [
         'category' => 'Categoria',
         
         // Date & Location
+        'date_location_title' => 'Data & Luogo',
+        'date_location_subtitle' => 'Quando e dove si terrà l\'evento',
+        'start_datetime_label' => 'Data/Ora inizio',
+        'end_datetime_label' => 'Data/Ora fine',
+        'venue_name_label' => 'Nome luogo',
         'recurring_event' => 'Evento ricorrente',
         'recurrence_type' => 'Tipo ricorrenza',
         'recurrence_count' => 'Numero occorrenze',

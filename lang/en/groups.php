@@ -32,9 +32,16 @@ return [
     // Actions
     'join' => 'Join',
     'leave' => 'Leave',
+    'leave_group' => 'Leave Group',
     'request_access' => 'Request Access',
     'invite_members' => 'Invite Members',
+    'invite_user' => 'Invite User',
     'manage_members' => 'Manage Members',
+    'edit' => 'Edit',
+    'cancel' => 'Cancel',
+    'save_changes' => 'Save Changes',
+    'delete_group' => 'Delete Group',
+    'create_group' => 'Create Group',
     
     // Messages
     'group_created' => 'Group created successfully',
@@ -49,9 +56,12 @@ return [
     
     // Sections
     'about' => 'About',
+    'group_info' => 'Group Information',
     'announcements' => 'Announcements',
     'events' => 'Events',
     'photos' => 'Photos',
+    'back_to_group' => 'Back to group',
+    'back_to_groups' => 'Back to groups',
     
     // Social
     'website' => 'Website',
@@ -61,8 +71,11 @@ return [
     'no_groups' => 'No groups found',
     'no_members' => 'No members',
     'no_announcements' => 'No announcements',
+    'no_announcements_available' => 'No announcements available',
     'no_events' => 'No events',
+    'no_events_available' => 'No events available',
     'no_users' => 'No users found',
+    'no_pending_invitations' => 'No pending invitations',
     
     // Page Elements
     'community_title' => 'Community',
@@ -90,6 +103,7 @@ return [
     'user_already_member' => 'User is already a member',
     
     // Invitations
+    'my_invitations' => 'My Invitations',
     'invitation_sent' => 'Invitation sent successfully',
     'invitation_accepted' => 'Invitation accepted',
     'invitation_declined' => 'Invitation declined',
@@ -122,6 +136,60 @@ return [
     'no_permission_accept_requests' => 'You don\'t have permission to accept requests',
     'no_permission_decline_requests' => 'You don\'t have permission to decline requests',
     'no_permission_view_stats' => 'You don\'t have permission to view statistics',
+    
+    // Group Details
+    'members_count' => 'Members',
+    'created' => 'Created',
+    'social_links' => 'Social Links',
+    'website' => 'Website',
+    'facebook' => 'Facebook',
+    'instagram' => 'Instagram',
+    'youtube' => 'YouTube',
+    'public_anyone_join' => 'Public - Anyone can join',
+    'private_requires_approval' => 'Private - Requires approval',
+    'social_links_optional' => 'Social Links (Optional)',
+    'group_name' => 'Group Name',
+    'group_image' => 'Group Image',
+    'update_group_info' => 'Update your group information',
+    'create_group_description' => 'Create a group to bring together people with common interests',
+    
+    // Announcements
+    'new_announcement' => 'New Announcement',
+    'create_new_announcement' => 'Create New Announcement',
+    'announcement_title' => 'Title',
+    'announcement_title_placeholder' => 'Announcement title...',
+    'announcement_content' => 'Content',
+    'announcement_content_placeholder' => 'Write the announcement content...',
+    'pin_announcement' => 'Pin to top',
+    'unpin_announcement' => 'Unpin',
+    'publish_announcement' => 'Publish Announcement',
+    
+    // Invitations
+    'invite_user_to' => 'Invite User to',
+    'pending_invitations' => 'Pending Invitations',
+    'view_pending_invitations' => 'View pending invitations',
+    'select_user' => 'Select User',
+    'search_user' => 'Search user...',
+    'send_invitation' => 'Send Invitation',
+    'cancel_invitation' => 'Cancel Invitation',
+    'invited_by' => 'Invited by',
+    'expires_at' => 'Expires:',
+    'access_request' => 'access request',
+    'access_requests' => 'access requests',
+    'access_requests_text' => '',
+    'pending_invitation' => 'pending invitation',
+    'pending_invitations_text' => 'pending invitations',
+    'manage_requests_invitations' => 'Manage requests and invitations',
+    'requests' => 'Requests',
+    'invitations' => 'Invitations',
+    
+    // Danger Zone
+    'danger_zone' => 'Danger Zone',
+    'delete_group_warning' => 'Once you delete the group, it cannot be recovered. This action is irreversible.',
+    'delete_group_confirm' => 'Are you sure you want to delete this group? This action is irreversible.',
+    'leave_group_confirm' => 'Are you sure you want to leave this group?',
+    'cancel_invitation_confirm' => 'Are you sure you want to cancel this invitation?',
+    'delete_announcement_confirm' => 'Are you sure you want to delete this announcement?',
     
     // Additional Messages
     'already_admin' => 'User is already admin',

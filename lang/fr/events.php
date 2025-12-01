@@ -100,6 +100,25 @@ return [
         'draft_badge' => '📝 Brouillon',
         'recent_venues' => 'Lieux Récents',
         'select_from_recent_venues' => 'Sélectionner parmi les lieux récents...',
+        
+        // Form sections / Step titles
+        'step_base' => 'Base',
+        'step_base_desc' => 'Informations essentielles',
+        'step_date_location' => 'Date & Lieu',
+        'step_date_location_desc' => 'Quand et où',
+        'step_media' => 'Média',
+        'step_media_desc' => 'Images et vidéos',
+        'step_settings' => 'Paramètres',
+        'step_settings_desc' => 'Détails finaux',
+        'step_preview' => 'Aperçu',
+        'step_preview_desc' => 'Révision finale',
+        
+        // Date & Location
+        'date_location_title' => 'Date & Lieu',
+        'date_location_subtitle' => 'Quand et où l\'événement aura lieu',
+        'start_datetime_label' => 'Date/Heure début',
+        'end_datetime_label' => 'Date/Heure fin',
+        'venue_name_label' => 'Nom du lieu',
     ],
 ];
 

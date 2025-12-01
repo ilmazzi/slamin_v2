@@ -59,8 +59,10 @@ return [
     'video_uploaded_successfully' => 'Vidéo téléversée avec succès! La vidéo sera disponible sous peu une fois le traitement terminé.',
     'title_help' => 'Entrez un titre pour votre vidéo',
     'description_help' => 'Entrez une description pour votre vidéo (optionnel)',
+    'tags' => 'Tags',
     'tags_help' => 'Entrez les tags séparés par des virgules (max 5)',
     'tags_placeholder' => 'ex: musique, poésie, performance',
+    'thumbnail' => 'Miniature',
     
     'video_selected' => 'Vidéo sélectionnée',
     'retrieving_thumbnail' => 'Récupération de la miniature depuis PeerTube...',

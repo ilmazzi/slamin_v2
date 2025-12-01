@@ -59,8 +59,10 @@ return [
     'video_uploaded_successfully' => 'Video uploaded successfully! The video will be available shortly once processing is complete.',
     'title_help' => 'Enter a title for your video',
     'description_help' => 'Enter a description for your video (optional)',
+    'tags' => 'Tags',
     'tags_help' => 'Enter tags separated by commas (max 5)',
     'tags_placeholder' => 'e.g.: music, poetry, performance',
+    'thumbnail' => 'Thumbnail',
     
     'video_selected' => 'Video selected',
     'retrieving_thumbnail' => 'Retrieving thumbnail from PeerTube...',

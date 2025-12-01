@@ -32,9 +32,16 @@ return [
     // Actions
     'join' => 'Unisciti',
     'leave' => 'Lascia',
+    'leave_group' => 'Lascia Gruppo',
     'request_access' => 'Richiedi Accesso',
     'invite_members' => 'Invita Membri',
+    'invite_user' => 'Invita Utente',
     'manage_members' => 'Gestisci Membri',
+    'edit' => 'Modifica',
+    'cancel' => 'Annulla',
+    'save_changes' => 'Salva Modifiche',
+    'delete_group' => 'Elimina Gruppo',
+    'create_group' => 'Crea Gruppo',
     
     // Messages
     'group_created' => 'Gruppo creato con successo',
@@ -49,9 +56,12 @@ return [
     
     // Sections
     'about' => 'Informazioni',
+    'group_info' => 'Informazioni sul Gruppo',
     'announcements' => 'Annunci',
     'events' => 'Eventi',
     'photos' => 'Foto',
+    'back_to_group' => 'Torna al gruppo',
+    'back_to_groups' => 'Torna ai gruppi',
     
     // Social
     'website' => 'Sito Web',
@@ -61,8 +71,11 @@ return [
     'no_groups' => 'Nessun gruppo trovato',
     'no_members' => 'Nessun membro',
     'no_announcements' => 'Nessun annuncio',
+    'no_announcements_available' => 'Nessun annuncio disponibile',
     'no_events' => 'Nessun evento',
+    'no_events_available' => 'Nessun evento disponibile',
     'no_users' => 'Nessuna utenza trovata',
+    'no_pending_invitations' => 'Nessun invito pendente',
     
     // Page Elements
     'community_title' => 'Community',
@@ -90,6 +103,7 @@ return [
     'user_already_member' => 'L\'utente è già membro del gruppo',
     
     // Invitations
+    'my_invitations' => 'I Miei Inviti',
     'invitation_sent' => 'Invito inviato con successo',
     'invitation_accepted' => 'Invito accettato',
     'invitation_declined' => 'Invito rifiutato',
@@ -122,6 +136,60 @@ return [
     'no_permission_accept_requests' => 'Non hai i permessi per accettare richieste',
     'no_permission_decline_requests' => 'Non hai i permessi per rifiutare richieste',
     'no_permission_view_stats' => 'Non hai i permessi per visualizzare le statistiche',
+    
+    // Group Details
+    'members_count' => 'Membri',
+    'created' => 'Creato',
+    'social_links' => 'Link Social',
+    'website' => 'Website',
+    'facebook' => 'Facebook',
+    'instagram' => 'Instagram',
+    'youtube' => 'YouTube',
+    'public_anyone_join' => 'Pubblico - Chiunque può unirsi',
+    'private_requires_approval' => 'Privato - Richiede approvazione',
+    'social_links_optional' => 'Link Social (Opzionali)',
+    'group_name' => 'Nome Gruppo',
+    'group_image' => 'Immagine Gruppo',
+    'update_group_info' => 'Aggiorna le informazioni del tuo gruppo',
+    'create_group_description' => 'Crea un gruppo per riunire persone con interessi comuni',
+    
+    // Announcements
+    'new_announcement' => 'Nuovo Annuncio',
+    'create_new_announcement' => 'Crea Nuovo Annuncio',
+    'announcement_title' => 'Titolo',
+    'announcement_title_placeholder' => 'Titolo dell\'annuncio...',
+    'announcement_content' => 'Contenuto',
+    'announcement_content_placeholder' => 'Scrivi il contenuto dell\'annuncio...',
+    'pin_announcement' => 'Fissa in alto',
+    'unpin_announcement' => 'Rimuovi fissaggio',
+    'publish_announcement' => 'Pubblica Annuncio',
+    
+    // Invitations
+    'invite_user_to' => 'Invita Utente a',
+    'pending_invitations' => 'Inviti Pendenti',
+    'view_pending_invitations' => 'Vedi inviti pendenti',
+    'select_user' => 'Seleziona Utente',
+    'search_user' => 'Cerca utente...',
+    'send_invitation' => 'Invia Invito',
+    'cancel_invitation' => 'Cancella Invito',
+    'invited_by' => 'Invitato da',
+    'expires_at' => 'Scade:',
+    'access_request' => 'richiesta',
+    'access_requests' => 'richieste',
+    'access_requests_text' => 'di accesso',
+    'pending_invitation' => 'invito pendente',
+    'pending_invitations_text' => 'inviti pendenti',
+    'manage_requests_invitations' => 'Gestisci le richieste e gli inviti',
+    'requests' => 'Richieste',
+    'invitations' => 'Inviti',
+    
+    // Danger Zone
+    'danger_zone' => 'Zona Pericolosa',
+    'delete_group_warning' => 'Una volta eliminato il gruppo, non sarà possibile recuperarlo. Questa azione è irreversibile.',
+    'delete_group_confirm' => 'Sei sicuro di voler eliminare questo gruppo? Questa azione è irreversibile.',
+    'leave_group_confirm' => 'Sei sicuro di voler lasciare questo gruppo?',
+    'cancel_invitation_confirm' => 'Sei sicuro di voler cancellare questo invito?',
+    'delete_announcement_confirm' => 'Sei sicuro di voler eliminare questo annuncio?',
     
     // Additional Messages
     'already_admin' => 'L\'utente è già admin',

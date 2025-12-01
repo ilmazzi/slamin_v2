@@ -62,8 +62,10 @@ return [
     'video_uploaded_successfully' => 'Video caricato con successo! Il video sarà disponibile a breve una volta completata l\'elaborazione.',
     'title_help' => 'Inserisci un titolo per il tuo video',
     'description_help' => 'Inserisci una descrizione per il tuo video (opzionale)',
+    'tags' => 'Tag',
     'tags_help' => 'Inserisci i tag separati da virgola (max 5)',
     'tags_placeholder' => 'es: musica, poesia, performance',
+    'thumbnail' => 'Thumbnail',
     'loading' => 'Caricamento in corso...',
     'video_selected' => 'Video selezionato',
     

@@ -13,15 +13,15 @@
                     <h1 class="text-3xl md:text-4xl font-bold text-white">{{ $group->name }}</h1>
                     @if($group->visibility === 'private')
                         <span class="px-3 py-1 bg-amber-500 text-white text-sm font-semibold rounded-lg">
-                            Privato
+                            {{ __('groups.private') }}
                         </span>
                     @endif
                 </div>
                 <p class="text-white/90 text-lg mb-4">{{ $group->description }}</p>
                 <div class="flex items-center gap-4 text-white/80 text-sm">
-                    <span>{{ $group->members()->count() }} membri</span>
+                    <span>{{ $group->members()->count() }} {{ __('groups.members') }}</span>
                     <span>•</span>
-                    <span>Creato da {{ $group->creator->name }}</span>
+                    <span>{{ __('groups.created_by') }} {{ $group->creator->name }}</span>
                 </div>
             </div>
             
@@ -30,20 +30,20 @@
                 @if($isAdmin)
                     <a href="{{ route('groups.edit', $group) }}" wire:navigate
                        class="px-6 py-3 bg-white text-primary-600 rounded-xl font-semibold hover:bg-primary-50 transition-all shadow-lg">
-                        Modifica
+                        {{ __('groups.edit') }}
                     </a>
                 @endif
                 
                 @if($isMember)
-                    <button wire:click="leaveGroup" wire:confirm="Sei sicuro di voler lasciare questo gruppo?"
+                    <button wire:click="leaveGroup" wire:confirm="{{ __('groups.leave_group_confirm') }}"
                             class="px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-all shadow-lg">
-                        Lascia Gruppo
+                        {{ __('groups.leave_group') }}
                     </button>
                 @else
                     @auth
                         <button wire:click="joinGroup"
                                 class="px-6 py-3 bg-white text-primary-600 rounded-xl font-semibold hover:bg-primary-50 transition-all shadow-lg">
-                            {{ $group->visibility === 'public' ? 'Unisciti' : 'Richiedi Accesso' }}
+                            {{ $group->visibility === 'public' ? __('groups.join') : __('groups.request_access') }}
                         </button>
                     @endauth
                 @endif
@@ -68,27 +68,27 @@
                             <div>
                                 <p class="font-semibold text-amber-800 dark:text-amber-200">
                                     @if($pendingRequestsCount > 0)
-                                        {{ $pendingRequestsCount }} {{ $pendingRequestsCount === 1 ? 'richiesta' : 'richieste' }} di accesso
+                                        {{ $pendingRequestsCount }} {{ $pendingRequestsCount === 1 ? __('groups.access_request') : __('groups.access_requests') }} {{ __('groups.access_requests_text') }}
                                     @endif
                                     @if($pendingRequestsCount > 0 && $pendingInvitationsCount > 0) • @endif
                                     @if($pendingInvitationsCount > 0)
-                                        {{ $pendingInvitationsCount }} {{ $pendingInvitationsCount === 1 ? 'invito pendente' : 'inviti pendenti' }}
+                                        {{ $pendingInvitationsCount }} {{ $pendingInvitationsCount === 1 ? __('groups.pending_invitation') : __('groups.pending_invitations_text') }}
                                     @endif
                                 </p>
-                                <p class="text-sm text-amber-700 dark:text-amber-300">Gestisci le richieste e gli inviti</p>
+                                <p class="text-sm text-amber-700 dark:text-amber-300">{{ __('groups.manage_requests_invitations') }}</p>
                             </div>
                         </div>
                         <div class="flex gap-2">
                             @if($pendingRequestsCount > 0)
                                 <a href="{{ route('groups.requests.pending', $group) }}"
                                    class="px-4 py-2 bg-amber-600 text-white rounded-xl font-semibold hover:bg-amber-700 transition-all">
-                                    Richieste
+                                    {{ __('groups.requests') }}
                                 </a>
                             @endif
                             @if($pendingInvitationsCount > 0)
                                 <a href="{{ route('groups.invitations.pending', $group) }}"
                                    class="px-4 py-2 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all">
-                                    Inviti
+                                    {{ __('groups.invitations') }}
                                 </a>
                             @endif
                         </div>
@@ -99,12 +99,12 @@
 
         {{-- About Section --}}
         <div class="bg-white dark:bg-neutral-900 rounded-2xl shadow-sm p-6 md:p-8">
-            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-6">Informazioni sul Gruppo</h2>
+            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-6">{{ __('groups.group_info') }}</h2>
             
             <div class="space-y-6">
                 @if($group->description)
                     <div>
-                        <h3 class="text-lg font-semibold text-neutral-900 dark:text-white mb-2">Descrizione</h3>
+                        <h3 class="text-lg font-semibold text-neutral-900 dark:text-white mb-2">{{ __('groups.description') }}</h3>
                         <p class="text-neutral-600 dark:text-neutral-400 whitespace-pre-line">{{ $group->description }}</p>
                     </div>
                 @endif
@@ -112,7 +112,7 @@
                 {{-- Social Links --}}
                 @if($group->website || $group->social_facebook || $group->social_instagram || $group->social_youtube)
                     <div>
-                        <h3 class="text-lg font-semibold text-neutral-900 dark:text-white mb-3">Link Social</h3>
+                        <h3 class="text-lg font-semibold text-neutral-900 dark:text-white mb-3">{{ __('groups.social_links') }}</h3>
                         <div class="flex flex-wrap gap-3">
                             @if($group->website)
                                 <a href="{{ $group->website }}" target="_blank"
@@ -120,25 +120,25 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
                                     </svg>
-                                    Website
+                                    {{ __('groups.website') }}
                                 </a>
                             @endif
                             @if($group->social_facebook)
                                 <a href="{{ $group->social_facebook }}" target="_blank"
                                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-xl hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors">
-                                    Facebook
+                                    {{ __('groups.facebook') }}
                                 </a>
                             @endif
                             @if($group->social_instagram)
                                 <a href="{{ $group->social_instagram }}" target="_blank"
                                    class="inline-flex items-center gap-2 px-4 py-2 bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300 rounded-xl hover:bg-pink-200 dark:hover:bg-pink-800 transition-colors">
-                                    Instagram
+                                    {{ __('groups.instagram') }}
                                 </a>
                             @endif
                             @if($group->social_youtube)
                                 <a href="{{ $group->social_youtube }}" target="_blank"
                                    class="inline-flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-xl hover:bg-red-200 dark:hover:bg-red-800 transition-colors">
-                                    YouTube
+                                    {{ __('groups.youtube') }}
                                 </a>
                             @endif
                         </div>
@@ -147,15 +147,15 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl">
-                        <p class="text-sm text-neutral-500 dark:text-neutral-400">Visibilità</p>
-                        <p class="text-lg font-semibold text-neutral-900 dark:text-white capitalize">{{ $group->visibility === 'public' ? 'Pubblico' : 'Privato' }}</p>
+                        <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ __('groups.visibility') }}</p>
+                        <p class="text-lg font-semibold text-neutral-900 dark:text-white capitalize">{{ $group->visibility === 'public' ? __('groups.public') : __('groups.private') }}</p>
                     </div>
                     <div class="p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl">
-                        <p class="text-sm text-neutral-500 dark:text-neutral-400">Membri</p>
+                        <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ __('groups.members_count') }}</p>
                         <p class="text-lg font-semibold text-neutral-900 dark:text-white">{{ $group->members()->count() }}</p>
                     </div>
                     <div class="p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl">
-                        <p class="text-sm text-neutral-500 dark:text-neutral-400">Creato</p>
+                        <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ __('groups.created') }}</p>
                         <p class="text-lg font-semibold text-neutral-900 dark:text-white">{{ $group->created_at->format('d/m/Y') }}</p>
                     </div>
                 </div>
@@ -165,11 +165,11 @@
         {{-- Announcements Section --}}
         <div class="bg-white dark:bg-neutral-900 rounded-2xl shadow-sm p-6 md:p-8">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">Annunci</h2>
+                <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ __('groups.announcements') }}</h2>
                 @if($isModerator)
                     <button wire:click="$toggle('showAnnouncementForm')"
                             class="px-4 py-2 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-all">
-                        {{ $showAnnouncementForm ? 'Annulla' : 'Nuovo Annuncio' }}
+                        {{ $showAnnouncementForm ? __('groups.cancel') : __('groups.new_announcement') }}
                     </button>
                 @endif
             </div>
@@ -177,25 +177,25 @@
             {{-- Create Announcement Form --}}
             @if($isModerator && $showAnnouncementForm)
                 <div class="bg-gradient-to-br from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-2xl p-6 mb-6 border border-primary-200 dark:border-primary-800">
-                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-4">Crea Nuovo Annuncio</h3>
+                    <h3 class="text-lg font-bold text-neutral-900 dark:text-white mb-4">{{ __('groups.create_new_announcement') }}</h3>
                     <form wire:submit="createAnnouncement" class="space-y-4">
                         <div>
                             <label for="announcementTitle" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                                Titolo
+                                {{ __('groups.announcement_title') }}
                             </label>
                             <input type="text" id="announcementTitle" wire:model="announcementTitle"
                                    class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 focus:ring-2 focus:ring-primary-500 focus:border-transparent text-neutral-900 dark:text-white"
-                                   placeholder="Titolo dell'annuncio..." required>
+                                   placeholder="{{ __('groups.announcement_title_placeholder') }}" required>
                             @error('announcementTitle') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
                         <div>
                             <label for="announcementContent" class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                                Contenuto
+                                {{ __('groups.announcement_content') }}
                             </label>
                             <textarea id="announcementContent" wire:model="announcementContent" rows="4"
                                       class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 focus:ring-2 focus:ring-primary-500 focus:border-transparent text-neutral-900 dark:text-white"
-                                      placeholder="Scrivi il contenuto dell'annuncio..." required></textarea>
+                                      placeholder="{{ __('groups.announcement_content_placeholder') }}" required></textarea>
                             @error('announcementContent') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
@@ -203,18 +203,18 @@
                             <input type="checkbox" id="isPinned" wire:model="announcementIsPinned"
                                    class="w-5 h-5 text-primary-600 rounded focus:ring-primary-500">
                             <label for="isPinned" class="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                                Fissa in alto
+                                {{ __('groups.pin_announcement') }}
                             </label>
                         </div>
 
                         <div class="flex gap-3">
                             <button type="submit"
                                     class="px-6 py-2.5 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-all">
-                                Pubblica Annuncio
+                                {{ __('groups.publish_announcement') }}
                             </button>
                             <button type="button" wire:click="$set('showAnnouncementForm', false)"
                                     class="px-6 py-2.5 bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 rounded-xl font-semibold hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-all">
-                                Annulla
+                                {{ __('groups.cancel') }}
                             </button>
                         </div>
                     </form>
@@ -248,13 +248,13 @@
                                 <div class="flex gap-2">
                                     <button wire:click="togglePinAnnouncement({{ $announcement->id }})"
                                             class="text-neutral-500 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
-                                            title="{{ $announcement->is_pinned ? 'Rimuovi fissaggio' : 'Fissa in alto' }}">
+                                            title="{{ $announcement->is_pinned ? __('groups.unpin_announcement') : __('groups.pin_announcement') }}">
                                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M10 3a1 1 0 011 1v5h3a1 1 0 110 2h-3v5a1 1 0 11-2 0v-5H6a1 1 0 110-2h3V4a1 1 0 011-1z"/>
                                         </svg>
                                     </button>
                                     <button wire:click="deleteAnnouncement({{ $announcement->id }})"
-                                            wire:confirm="Sei sicuro di voler eliminare questo annuncio?"
+                                            wire:confirm="{{ __('groups.delete_announcement_confirm') }}"
                                             class="text-neutral-500 hover:text-red-600 dark:hover:text-red-400 transition-colors">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -266,7 +266,7 @@
                         <p class="text-neutral-600 dark:text-neutral-400 whitespace-pre-line">{{ $announcement->content }}</p>
                     </div>
                 @empty
-                    <p class="text-center text-neutral-500 dark:text-neutral-400 py-12">Nessun annuncio disponibile</p>
+                    <p class="text-center text-neutral-500 dark:text-neutral-400 py-12">{{ __('groups.no_announcements_available') }}</p>
                 @endforelse
             </div>
         </div>
@@ -274,16 +274,16 @@
         {{-- Members Section --}}
         <div class="bg-white dark:bg-neutral-900 rounded-2xl shadow-sm p-6 md:p-8">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">Membri ({{ $group->members()->count() }})</h2>
+                <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ __('groups.members_count') }} ({{ $group->members()->count() }})</h2>
                 @if($isModerator)
                     <div class="flex gap-2">
                         <a href="{{ route('groups.invitations.create', $group) }}"
                            class="px-4 py-2 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-all">
-                            Invita Utente
+                            {{ __('groups.invite_user') }}
                         </a>
                         <a href="{{ route('groups.members.index', $group) }}"
                            class="px-4 py-2 bg-neutral-600 text-white rounded-xl font-semibold hover:bg-neutral-700 transition-all">
-                            Gestisci Membri
+                            {{ __('groups.manage_members') }}
                         </a>
                     </div>
                 @endif
@@ -302,7 +302,7 @@
                                 {{ $member->user->name }}
                             </h3>
                             <p class="text-sm text-neutral-500 dark:text-neutral-400 capitalize">
-                                {{ $member->role === 'admin' ? 'Amministratore' : ($member->role === 'moderator' ? 'Moderatore' : 'Membro') }}
+                                {{ $member->role === 'admin' ? __('groups.admin') : ($member->role === 'moderator' ? __('groups.moderator') : __('groups.member')) }}
                             </p>
                         </div>
                     </a>
@@ -312,7 +312,7 @@
 
         {{-- Events Section --}}
         <div class="bg-white dark:bg-neutral-900 rounded-2xl shadow-sm p-6 md:p-8">
-            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-6">Eventi</h2>
+            <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-6">{{ __('groups.events') }}</h2>
             
             @forelse($events as $event)
                 <a href="{{ route('events.show', $event) }}"
@@ -355,7 +355,7 @@
                     </div>
                 </a>
             @empty
-                <p class="text-center text-neutral-500 dark:text-neutral-500 py-12">Nessun evento disponibile</p>
+                <p class="text-center text-neutral-500 dark:text-neutral-500 py-12">{{ __('groups.no_events_available') }}</p>
             @endforelse
         </div>
     </div>

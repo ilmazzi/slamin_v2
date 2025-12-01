@@ -56,11 +56,31 @@ return [
     
     // Create/Edit - Additional fields
     'create' => [
+        // Form sections / Step titles
+        'step_base' => 'Base',
+        'step_base_desc' => 'Essential information',
+        'step_date_location' => 'Date & Location',
+        'step_date_location_desc' => 'When and where',
+        'step_media' => 'Media',
+        'step_media_desc' => 'Images and videos',
+        'step_settings' => 'Settings',
+        'step_settings_desc' => 'Final details',
+        'step_preview' => 'Preview',
+        'step_preview_desc' => 'Final review',
+        
+        // Form sections (legacy - keep for compatibility)
         'basic_info' => 'Basic information',
         'date_location' => 'Date & location',
         'media_tickets' => 'Media & tickets',
         'settings' => 'Settings',
         'preview' => 'Preview',
+        // Date & Location
+        'date_location_title' => 'Date & Location',
+        'date_location_subtitle' => 'When and where the event will take place',
+        'start_datetime_label' => 'Date/Time start',
+        'end_datetime_label' => 'Date/Time end',
+        'venue_name_label' => 'Venue name',
+        
         'event_title' => 'Event title',
         'add_subtitle' => 'Add subtitle',
         'recurring_event' => 'Recurring event',

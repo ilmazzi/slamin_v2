@@ -188,19 +188,31 @@
                             </label>
                             <div class="relative">
                                 <input type="text" 
-                                       wire:model.live.debounce.300ms="contentSearch"
+                                       wire:model.live.debounce.500ms="contentSearch"
+                                       wire:keydown.enter.prevent="$wire.searchContent()"
                                        placeholder="{{ __('admin.sections.carousels.form.content_search_placeholder') }}"
                                        class="w-full px-4 py-3 rounded-xl border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white font-medium">
+                                @if($contentSearch && strlen($contentSearch) < 2)
+                                    <p class="mt-2 text-sm text-yellow-600 dark:text-yellow-400">
+                                        {{ __('admin.sections.carousels.form.min_chars', ['min' => 2]) }}
+                                    </p>
+                                @endif
                                 @if(!empty($contentSearchResults))
-                                    <div class="absolute z-10 w-full mt-2 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 max-h-60 overflow-y-auto">
+                                    <div class="absolute z-50 w-full mt-2 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 max-h-60 overflow-y-auto">
                                         @foreach($contentSearchResults as $result)
                                             <button type="button"
                                                     wire:click="selectContent({{ $result['id'] }})"
-                                                    class="w-full px-4 py-3 text-left hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors">
+                                                    class="w-full px-4 py-3 text-left hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors border-b border-neutral-100 dark:border-neutral-700 last:border-b-0">
                                                 <div class="font-medium text-neutral-900 dark:text-white">{{ $result['title'] }}</div>
-                                                <div class="text-xs text-neutral-500">{{ $result['type'] }}</div>
+                                                <div class="text-xs text-neutral-500 uppercase">{{ $result['type'] }}</div>
                                             </button>
                                         @endforeach
+                                    </div>
+                                @elseif($contentSearch && strlen($contentSearch) >= 2 && empty($contentSearchResults))
+                                    <div class="absolute z-50 w-full mt-2 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 p-4">
+                                        <p class="text-sm text-neutral-500 dark:text-neutral-400 text-center">
+                                            {{ __('admin.sections.carousels.form.no_results') }}
+                                        </p>
                                     </div>
                                 @endif
                             </div>
