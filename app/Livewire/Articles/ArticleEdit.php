@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Article;
 use App\Models\ArticleCategory;
+use App\Models\ArticleTag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -27,6 +28,7 @@ class ArticleEdit extends Component
     public $status = 'draft';
     public $is_public = true;
     public $published_at = null;
+    public $tags = ''; // Stringa separata da virgole
     
     // Categories
     public $categories = [];
@@ -80,6 +82,27 @@ class ArticleEdit extends Component
         $this->status = $this->article->status ?? 'draft';
         $this->is_public = $this->article->is_public ?? true;
         $this->published_at = $this->article->published_at ? $this->article->published_at->format('Y-m-d\TH:i') : null;
+        
+        // Load tags
+        $this->loadTags();
+    }
+    
+    protected function loadTags()
+    {
+        $locale = app()->getLocale();
+        $tags = $this->article->tags()->get();
+        $tagNames = [];
+        
+        foreach ($tags as $tag) {
+            $name = is_array($tag->name) 
+                ? ($tag->name[$locale] ?? $tag->name['it'] ?? $tag->name['en'] ?? '')
+                : $tag->name;
+            if (!empty($name)) {
+                $tagNames[] = $name;
+            }
+        }
+        
+        $this->tags = implode(', ', $tagNames);
     }
     
     protected function rules()
@@ -93,6 +116,7 @@ class ArticleEdit extends Component
             'status' => 'required|in:draft,published,archived',
             'is_public' => 'boolean',
             'published_at' => 'nullable|date',
+            'tags' => 'nullable|string|max:500',
         ];
     }
     
@@ -163,6 +187,9 @@ class ArticleEdit extends Component
             
             $this->article->save();
             
+            // Handle tags
+            $this->syncTags($this->article, $this->tags);
+            
             // Dispatch success message
             session()->flash('message', __('articles.edit.saved_successfully'));
             
@@ -180,6 +207,62 @@ class ArticleEdit extends Component
                 'trace' => $e->getTraceAsString()
             ]);
         }
+    }
+    
+    /**
+     * Sincronizza i tag con l'articolo
+     */
+    protected function syncTags(Article $article, string $tagsString)
+    {
+        $locale = app()->getLocale();
+        $tagNames = array_map('trim', explode(',', $tagsString));
+        $tagNames = array_filter($tagNames); // Rimuovi vuoti
+        
+        $tagIds = [];
+        $oldTagIds = $article->tags()->pluck('article_tags.id')->toArray();
+        
+        foreach ($tagNames as $tagName) {
+            // Rimuovi # se presente
+            $tagName = ltrim($tagName, '#');
+            if (empty($tagName)) continue;
+            
+            // Cerca tag esistente per slug
+            $slug = Str::slug($tagName);
+            $tag = ArticleTag::where('slug', $slug)->first();
+            
+            if (!$tag) {
+                // Crea nuovo tag
+                $tag = ArticleTag::create([
+                    'name' => [$locale => $tagName],
+                    'slug' => $slug,
+                    'is_active' => true,
+                    'usage_count' => 0,
+                ]);
+            }
+            
+            $tagIds[] = $tag->id;
+            
+            // Incrementa usage solo se non era già associato
+            if (!in_array($tag->id, $oldTagIds)) {
+                $tag->incrementUsage();
+            }
+        }
+        
+        // Decrementa usage per tag rimossi (solo se non sono più associati ad altri articoli)
+        $removedTagIds = array_diff($oldTagIds, $tagIds);
+        foreach ($removedTagIds as $removedTagId) {
+            $tag = ArticleTag::find($removedTagId);
+            if ($tag) {
+                // Verifica se il tag è ancora associato ad altri articoli
+                $otherArticlesCount = $tag->articles()->where('articles.id', '!=', $article->id)->count();
+                if ($otherArticlesCount === 0) {
+                    $tag->decrementUsage();
+                }
+            }
+        }
+        
+        // Sincronizza i tag con l'articolo
+        $article->tags()->sync($tagIds);
     }
     
     public function render()

@@ -17,6 +17,8 @@ return [
     'comments_title' => '💬 Commenti',
     'no_comments' => 'Nessun commento ancora. Sii il primo a commentare!',
     'write_comment_placeholder' => 'Scrivi un commento...',
+    'add_comment' => 'Aggiungi commento',
+    'post_comment' => 'Pubblica commento',
     'send' => 'Invia',
     'comment_added' => 'Commento aggiunto!',
     'comment_deleted' => 'Commento eliminato',

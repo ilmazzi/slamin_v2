@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Article;
 use App\Models\ArticleCategory;
+use App\Models\ArticleTag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -23,6 +24,7 @@ class ArticleCreate extends Component
     public $status = 'published';
     public $is_public = true;
     public $published_at = null;
+    public $tags = ''; // Stringa separata da virgole
     
     // Categories
     public $categories = [];
@@ -61,6 +63,7 @@ class ArticleCreate extends Component
             'status' => 'required|in:draft,published,archived',
             'is_public' => 'boolean',
             'published_at' => 'nullable|date',
+            'tags' => 'nullable|string|max:500',
         ];
     }
     
@@ -132,6 +135,11 @@ class ArticleCreate extends Component
             
             $article->save();
             
+            // Handle tags
+            if ($this->tags) {
+                $this->syncTags($article, $this->tags);
+            }
+            
             $this->isSaving = false;
             
             // Dispatch success message
@@ -155,6 +163,44 @@ class ArticleCreate extends Component
                 'trace' => $e->getTraceAsString()
             ]);
         }
+    }
+    
+    /**
+     * Sincronizza i tag con l'articolo
+     */
+    protected function syncTags(Article $article, string $tagsString)
+    {
+        $locale = app()->getLocale();
+        $tagNames = array_map('trim', explode(',', $tagsString));
+        $tagNames = array_filter($tagNames); // Rimuovi vuoti
+        
+        $tagIds = [];
+        
+        foreach ($tagNames as $tagName) {
+            // Rimuovi # se presente
+            $tagName = ltrim($tagName, '#');
+            if (empty($tagName)) continue;
+            
+            // Cerca tag esistente per slug
+            $slug = Str::slug($tagName);
+            $tag = ArticleTag::where('slug', $slug)->first();
+            
+            if (!$tag) {
+                // Crea nuovo tag
+                $tag = ArticleTag::create([
+                    'name' => [$locale => $tagName],
+                    'slug' => $slug,
+                    'is_active' => true,
+                    'usage_count' => 0,
+                ]);
+            }
+            
+            $tagIds[] = $tag->id;
+            $tag->incrementUsage();
+        }
+        
+        // Sincronizza i tag con l'articolo
+        $article->tags()->sync($tagIds);
     }
     
     public function render()

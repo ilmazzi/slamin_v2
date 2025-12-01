@@ -17,6 +17,8 @@ return [
     'comments_title' => '💬 Comments',
     'no_comments' => 'No comments yet. Be the first to comment!',
     'write_comment_placeholder' => 'Write a comment...',
+    'add_comment' => 'Add comment',
+    'post_comment' => 'Post comment',
     'send' => 'Send',
     'comment_added' => 'Comment added!',
     'comment_deleted' => 'Comment deleted',

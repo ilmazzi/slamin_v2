@@ -179,6 +179,24 @@
                 @enderror
             </div>
 
+            {{-- Tags --}}
+            <div>
+                <label for="tags" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
+                    {{ __('articles.create.tags_label') }}
+                </label>
+                <input type="text" 
+                       id="tags"
+                       wire:model="tags"
+                       class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all"
+                       placeholder="{{ __('articles.create.tags_placeholder') }}">
+                <p class="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                    {{ __('articles.create.tags_hint') }}
+                </p>
+                @error('tags')
+                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                @enderror
+            </div>
+
             {{-- Featured Image --}}
             <div>
                 <label class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
