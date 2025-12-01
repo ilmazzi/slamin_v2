@@ -30,7 +30,18 @@ return [
     'events_section_title' => 'Événements <span class="italic text-primary-600">à Venir</span>',
     'events_section_subtitle' => 'Ne manquez pas les prochains rendez-vous poétiques',
     'all_events_button' => 'Tous les Événements',
-
+    
+    // Completed Events Section
+    'completed_events_title' => 'Événements <span class="italic text-primary-600">Récemment Terminés</span>',
+    'completed_events_subtitle' => 'Les événements terminés dans les 3 derniers jours',
+    'completed_poetry_slams_title' => 'Poetry Slams <span class="italic text-primary-600">Terminés</span>',
+    'completed_poetry_slams_subtitle' => 'Découvrez les gagnants des derniers Poetry Slams',
+    'view_full_rankings' => 'Voir le classement complet',
+    'podium' => 'Podium',
+    'all_completed_events' => 'Tous les événements terminés',
+    'no_completed_events' => 'Il n\'y a pas d\'événements récemment terminés. Revenez bientôt pour voir les résultats des prochains événements !',
+    'view_all_events' => 'Voir tous les événements',
+    
     // Gigs Section
     'gigs_section_title' => 'Opportunités <span class="italic text-accent-600">Créatives</span>',
     'gigs_section_subtitle' => 'Trouvez votre prochaine collaboration artistique',

@@ -39,6 +39,8 @@ return [
     'view_full_rankings' => 'Vedi classifica completa',
     'podium' => 'Podio',
     'all_completed_events' => 'Tutti gli eventi conclusi',
+    'no_completed_events' => 'Non ci sono eventi conclusi di recente. Torna presto per vedere i risultati dei prossimi eventi!',
+    'view_all_events' => 'Vedi tutti gli eventi',
 
     // Gigs Section
     'gigs_section_title' => 'Opportunità <span class="italic text-accent-600">Creative</span>',

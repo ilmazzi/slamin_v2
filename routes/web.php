@@ -298,6 +298,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/dashboard', \App\Livewire\Admin\Dashboard\AdminDashboard::class)
         ->name('dashboard');
     
+    // Statistics
+    Route::get('/statistics', \App\Livewire\Admin\Statistics\StatisticsPage::class)
+        ->name('statistics');
+    
     // Users
     Route::get('/users', \App\Livewire\Admin\Users\UserList::class)
         ->name('users.index');

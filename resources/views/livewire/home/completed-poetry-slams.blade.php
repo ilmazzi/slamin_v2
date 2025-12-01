@@ -1,11 +1,11 @@
 <div>
-    @if ($completedEvents && $completedEvents->count() > 0)
     <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
+    @if ($completedEvents && $completedEvents->count() > 0)
         
         {{-- Header --}}
         <div class="text-center mb-12 section-title-fade">
             <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif;">
-                🏆 {!! __('home.completed_events_title') !!}
+                {!! __('home.completed_events_title') !!}
             </h2>
             <p class="text-lg text-neutral-200 font-medium">
                 {{ __('home.completed_events_subtitle') }}
@@ -335,7 +335,29 @@
             </a>
         </div>
     </div>
+    @else
+        {{-- Placeholder quando non ci sono eventi passati --}}
+        <div class="text-center py-16 md:py-24">
+            <div class="max-w-2xl mx-auto">
+                <div class="mb-8">
+                    <svg class="w-24 h-24 mx-auto text-neutral-400 dark:text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white" style="font-family: 'Crimson Pro', serif;">
+                    {!! __('home.completed_events_title') !!}
+                </h2>
+                <p class="text-lg text-neutral-300 dark:text-neutral-400 mb-6">
+                    {{ __('home.no_completed_events') }}
+                </p>
+                <a href="{{ route('events.index') }}" 
+                   class="inline-block px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors backdrop-blur-sm border border-white/20">
+                    {{ __('home.view_all_events') }}
+                </a>
+            </div>
+        </div>
     @endif
+    </div>
     
     <style>
     /* ========================================

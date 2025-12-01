@@ -708,22 +708,6 @@
                                             </label>
                                         </div>
                                         <div class="relative group">
-                                            <input type="text"
-                                                   wire:model="postcode"
-                                                   id="postcode"
-                                                   placeholder=" "
-                                                   class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
-                                                          focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                          transition-all duration-300">
-                                            <label for="postcode" 
-                                                   class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
-                                                          peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                          peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
-                                                          transition-all duration-200">
-                                                CAP
-                                            </label>
-                                        </div>
-                                        <div class="relative group">
                                             <select wire:model="country"
                                                     id="country"
                                                     class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white appearance-none cursor-pointer
@@ -742,6 +726,22 @@
                                             <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400 dark:text-neutral-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                             </svg>
+                                        </div>
+                                        <div class="relative group">
+                                            <input type="text"
+                                                   wire:model="postcode"
+                                                   id="postcode"
+                                                   placeholder=" "
+                                                   class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
+                                                          focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                          transition-all duration-300">
+                                            <label for="postcode" 
+                                                   class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
+                                                          peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
+                                                          peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
+                                                          transition-all duration-200">
+                                                CAP
+                                            </label>
                                         </div>
                                     </div>
 
@@ -2191,6 +2191,11 @@ function initCreationMap() {
                     if (data.address.postcode) {
                         @this.set('postcode', data.address.postcode);
                     }
+                    // Set country from reverse geocoding if available
+                    if (data.address.country_code) {
+                        const countryCode = data.address.country_code.toUpperCase();
+                        @this.set('country', countryCode);
+                    }
                     if (data.address.road && data.address.house_number) {
                         @this.set('venue_address', data.address.road + ', ' + data.address.house_number);
                     } else if (data.address.road) {
@@ -2264,18 +2269,24 @@ function geocodeAddress() {
 
     const address = @this.get('venue_address') || '';
     const city = @this.get('city') || '';
-    const country = @this.get('country') || '';
+    const country = @this.get('country') || 'IT'; // Default to Italy if not set
 
     if (!address && !city) {
         console.log('❌ No address or city to geocode');
         return;
     }
 
-    const fullAddress = [address, city, country].filter(Boolean).join(', ');
+    const fullAddress = [address, city].filter(Boolean).join(', ');
     
-    console.log('🔍 Geocoding address:', fullAddress);
+    // Build Nominatim URL with country restriction
+    let nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}&accept-language=it&limit=1`;
+    if (country) {
+        nominatimUrl += `&countrycodes=${country}`;
+    }
+    
+    console.log('🔍 Geocoding address:', fullAddress, 'in country:', country);
 
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}&accept-language=it&limit=1`)
+    fetch(nominatimUrl)
         .then(response => response.json())
         .then(data => {
             if (data && data.length > 0) {
