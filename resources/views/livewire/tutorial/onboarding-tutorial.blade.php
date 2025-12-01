@@ -294,10 +294,11 @@
         x-show="$wire.show"
         x-cloak
     >
-        <!-- Overlay uniforme - sempre presente -->
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
+        <!-- Overlay uniforme - molto più trasparente quando c'è elemento evidenziato -->
+        <div class="absolute inset-0 pointer-events-auto"
              @click.self="$wire.close()"
-             style="z-index: 1;">
+             style="z-index: 1;"
+             x-bind:class="highlightRect && highlightedElement ? 'bg-black/10' : 'bg-black/40 backdrop-blur-sm'">
         </div>
         
         <!-- Bordo pulsante attorno all'elemento evidenziato (sopra overlay) -->
@@ -390,11 +391,17 @@
         outline: 8px solid #8b5cf6 !important;
         outline-offset: 8px;
         border-radius: 12px;
+        background: rgba(255, 255, 255, 0.95) !important;
         box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.3),
                     0 0 0 16px rgba(139, 92, 246, 0.2),
                     0 0 40px rgba(139, 92, 246, 1),
-                    0 0 80px rgba(139, 92, 246, 0.6) !important;
+                    0 0 80px rgba(139, 92, 246, 0.6),
+                    0 4px 20px rgba(0, 0, 0, 0.15) !important;
         animation: pulse-highlight 2s infinite;
+    }
+    
+    .dark .tutorial-highlight {
+        background: rgba(23, 23, 23, 0.95) !important;
     }
 
     .tutorial-spotlight {

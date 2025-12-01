@@ -294,35 +294,10 @@
         x-show="$wire.show"
         x-cloak
     >
-        <!-- Overlay base -->
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
+        <!-- Overlay uniforme - sempre presente -->
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
              @click.self="$wire.close()"
-             style="z-index: 1;"
-             x-show="!highlightRect || !highlightedElement">
-        </div>
-        
-        <!-- Overlay con buco - 4 div che coprono tutto tranne l'elemento -->
-        <div x-show="highlightRect && highlightedElement"
-             x-cloak
-             class="absolute inset-0 pointer-events-none"
-             style="z-index: 2;"
-             x-effect="if (highlightRect && highlightedElement) { 
-                 console.log('Overlay hole should be visible', highlightRect);
-                 console.log('Overlay styles:', {
-                     top: overlayTopStyle,
-                     bottom: overlayBottomStyle,
-                     left: overlayLeftStyle,
-                     right: overlayRightStyle
-                 });
-             }">
-            <div class="absolute top-0 left-0 right-0 bg-black/60 backdrop-blur-sm"
-                 x-bind:style="overlayTopStyle"></div>
-            <div class="absolute left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm"
-                 x-bind:style="overlayBottomStyle"></div>
-            <div class="absolute bg-black/60 backdrop-blur-sm"
-                 x-bind:style="overlayLeftStyle"></div>
-            <div class="absolute bg-black/60 backdrop-blur-sm"
-                 x-bind:style="overlayRightStyle"></div>
+             style="z-index: 1;">
         </div>
         
         <!-- Bordo pulsante attorno all'elemento evidenziato (sopra overlay) -->
@@ -410,37 +385,66 @@
     .tutorial-highlight {
         position: relative !important;
         z-index: 1000002 !important;
-        transform: scale(1.05);
+        transform: scale(1.02);
         transition: transform 0.3s ease;
-        outline: 4px solid #8b5cf6 !important;
-        outline-offset: 4px;
-        border-radius: 8px;
+        outline: 8px solid #8b5cf6 !important;
+        outline-offset: 8px;
+        border-radius: 12px;
+        box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.3),
+                    0 0 0 16px rgba(139, 92, 246, 0.2),
+                    0 0 40px rgba(139, 92, 246, 1),
+                    0 0 80px rgba(139, 92, 246, 0.6) !important;
+        animation: pulse-highlight 2s infinite;
     }
 
     .tutorial-spotlight {
-        border: 6px solid #8b5cf6;
-        border-radius: 16px;
-        background: rgba(139, 92, 246, 0.1);
-        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5),
-                    0 0 30px rgba(139, 92, 246, 0.8),
-                    0 0 60px rgba(139, 92, 246, 0.4);
+        border: 10px solid #8b5cf6;
+        border-radius: 20px;
+        background: rgba(139, 92, 246, 0.15);
+        box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.8),
+                    0 0 0 16px rgba(139, 92, 246, 0.4),
+                    0 0 50px rgba(139, 92, 246, 1),
+                    0 0 100px rgba(139, 92, 246, 0.8),
+                    inset 0 0 30px rgba(139, 92, 246, 0.3);
         animation: pulse-border 2s infinite;
+        z-index: 1000001 !important;
+    }
+
+    @keyframes pulse-highlight {
+        0%, 100% {
+            outline-color: #8b5cf6;
+            box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.3),
+                        0 0 0 16px rgba(139, 92, 246, 0.2),
+                        0 0 40px rgba(139, 92, 246, 1),
+                        0 0 80px rgba(139, 92, 246, 0.6);
+        }
+        50% {
+            outline-color: #a78bfa;
+            box-shadow: 0 0 0 12px rgba(139, 92, 246, 0.5),
+                        0 0 0 24px rgba(139, 92, 246, 0.3),
+                        0 0 60px rgba(139, 92, 246, 1.2),
+                        0 0 120px rgba(139, 92, 246, 0.8);
+        }
     }
 
     @keyframes pulse-border {
         0%, 100% {
             border-color: #8b5cf6;
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5),
-                        0 0 30px rgba(139, 92, 246, 0.8),
-                        0 0 60px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.8),
+                        0 0 0 16px rgba(139, 92, 246, 0.4),
+                        0 0 50px rgba(139, 92, 246, 1),
+                        0 0 100px rgba(139, 92, 246, 0.8),
+                        inset 0 0 30px rgba(139, 92, 246, 0.3);
             transform: scale(1);
         }
         50% {
             border-color: #a78bfa;
-            box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.7),
-                        0 0 40px rgba(139, 92, 246, 1),
-                        0 0 80px rgba(139, 92, 246, 0.6);
-            transform: scale(1.02);
+            box-shadow: 0 0 0 12px rgba(255, 255, 255, 1),
+                        0 0 0 24px rgba(139, 92, 246, 0.6),
+                        0 0 70px rgba(139, 92, 246, 1.2),
+                        0 0 140px rgba(139, 92, 246, 1),
+                        inset 0 0 40px rgba(139, 92, 246, 0.5);
+            transform: scale(1.01);
         }
     }
     </style>
