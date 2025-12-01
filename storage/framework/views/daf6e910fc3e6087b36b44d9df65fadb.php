@@ -4,7 +4,6 @@
             currentStep: <?php echo \Illuminate\Support\Js::from($currentStep)->toHtml() ?>,
             steps: <?php echo \Illuminate\Support\Js::from($this->steps)->toHtml() ?>,
             highlightedElement: null,
-            highlightedElement: null,
             highlightRect: null,
             get currentStepData() {
                 return this.steps[this.currentStep] || this.steps[0];
@@ -17,6 +16,26 @@
                     width: ${this.highlightRect.width + 16}px;
                     height: ${this.highlightRect.height + 16}px;
                 `;
+            },
+            get overlayClipPath() {
+                if (!this.highlightRect) return 'none';
+                const x = this.highlightRect.x - 8;
+                const y = this.highlightRect.y - 8;
+                const w = this.highlightRect.width + 16;
+                const h = this.highlightRect.height + 16;
+                // Crea un buco rettangolare nell'overlay
+                return `polygon(
+                    0% 0%, 
+                    0% 100%, 
+                    ${x}px 100%, 
+                    ${x}px ${y}px, 
+                    ${x + w}px ${y}px, 
+                    ${x + w}px ${y + h}px, 
+                    ${x}px ${y + h}px, 
+                    ${x}px 100%, 
+                    100% 100%, 
+                    100% 0%
+                )`;
             },
             updateHighlight() {
                 // Remove previous highlights
@@ -83,18 +102,17 @@
         x-show="$wire.show"
         x-cloak
     >
-        <!-- Overlay scuro con buco per elemento evidenziato -->
-        <div class="absolute inset-0"
-             @click.self="$wire.close()">
-            <!-- Overlay base -->
-            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-            
-            <!-- Buco per elemento evidenziato -->
-            <div x-show="highlightRect && highlightedElement"
-                 class="absolute pointer-events-none tutorial-spotlight"
-                 x-bind:style="highlightStyle"
-                 style="display: none;">
-            </div>
+        <!-- Overlay scuro -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+             @click.self="$wire.close()"
+             style="z-index: 1;">
+        </div>
+        
+        <!-- Bordo pulsante attorno all'elemento evidenziato (sopra overlay) -->
+        <div x-show="highlightRect && highlightedElement"
+             class="fixed pointer-events-none tutorial-spotlight"
+             x-bind:style="highlightStyle"
+             style="display: none; z-index: 1000001;">
         </div>
 
         <!-- Tutorial Modal -->
