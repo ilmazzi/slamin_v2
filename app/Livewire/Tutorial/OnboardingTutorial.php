@@ -90,7 +90,7 @@ class OnboardingTutorial extends Component
                 'title' => __('tutorial.profile.title'),
                 'content' => __('tutorial.profile.content'),
                 'showButtons' => true,
-                'focusElement' => 'user-menu',
+                'focusElement' => 'profile-sidebar',
             ],
             [
                 'title' => __('tutorial.home.title'),
@@ -108,7 +108,7 @@ class OnboardingTutorial extends Component
                 'title' => __('tutorial.gigs.title'),
                 'content' => __('tutorial.gigs.content'),
                 'showButtons' => true,
-                'focusElement' => null, // Solo quando è nella pagina gigs
+                'focusElement' => 'gigs-link',
             ],
         ];
     }
