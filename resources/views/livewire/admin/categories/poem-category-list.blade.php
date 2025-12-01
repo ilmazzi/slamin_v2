@@ -173,27 +173,89 @@
                             </div>
 
                             <!-- Colore e Icona -->
-                            <div class="grid grid-cols-3 gap-4">
+                            <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                                         Colore *
                                     </label>
                                     <input type="color" wire:model="color" 
-                                           class="mt-1 block w-full h-10 rounded-md border-neutral-300 dark:border-neutral-700">
+                                           class="block w-full h-10 rounded-md border-neutral-300 dark:border-neutral-700">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                                        Icona
-                                    </label>
-                                    <input type="text" wire:model="icon" placeholder="emoji o simbolo"
-                                           class="mt-1 block w-full rounded-md border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                                    <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                                         Ordine
                                     </label>
                                     <input type="number" wire:model="sort_order" 
-                                           class="mt-1 block w-full rounded-md border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white">
+                                           class="block w-full rounded-md border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white">
+                                </div>
+                            </div>
+
+                            <!-- Icona Picker -->
+                            <div x-data="{ showPicker: false }" class="relative">
+                                <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                                    Icona
+                                </label>
+                                <button type="button" 
+                                        @click="showPicker = !showPicker"
+                                        class="w-full flex items-center justify-between px-4 py-2 border border-neutral-300 dark:border-neutral-700 rounded-md bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800">
+                                    <div class="flex items-center gap-2">
+                                        @if($icon)
+                                            <span class="text-2xl">{{ $icon }}</span>
+                                            <span class="text-sm text-neutral-500 dark:text-neutral-400">Icona selezionata</span>
+                                        @else
+                                            <span class="text-sm text-neutral-500 dark:text-neutral-400">Nessuna icona selezionata</span>
+                                        @endif
+                                    </div>
+                                    <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                
+                                <!-- Icon Picker Dropdown -->
+                                <div x-show="showPicker" 
+                                     @click.away="showPicker = false"
+                                     x-transition:enter="transition ease-out duration-200"
+                                     x-transition:enter-start="opacity-0 scale-95"
+                                     x-transition:enter-end="opacity-100 scale-100"
+                                     x-transition:leave="transition ease-in duration-150"
+                                     x-transition:leave-start="opacity-100 scale-100"
+                                     x-transition:leave-end="opacity-0 scale-95"
+                                     class="absolute z-50 mt-2 w-full bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg shadow-lg p-4 max-h-64 overflow-y-auto"
+                                     style="display: none;">
+                                    <div class="grid grid-cols-8 gap-2">
+                                        @php
+                                            $icons = [
+                                                '💕', '📖', '🎭', '🎨', '✍️', '📝', '📚', '📰',
+                                                '🎪', '🎬', '🎵', '🎤', '🎸', '🎹', '🎺', '🥁',
+                                                '🎨', '🖌️', '🖍️', '✏️', '📐', '📏', '📌', '📍',
+                                                '💭', '💡', '🔥', '⭐', '🌟', '✨', '💫', '⚡',
+                                                '🌙', '☀️', '🌈', '☁️', '❄️', '🌊', '🌍', '🌎',
+                                                '🎯', '🏆', '🥇', '🎖️', '🏅', '🎗️', '🎁', '🎀',
+                                                '💌', '📧', '📮', '✉️', '📬', '📭', '📪', '📫',
+                                                '🎪', '🎭', '🎨', '🎬', '🎤', '🎧', '🎵', '🎶',
+                                                '📱', '💻', '⌚', '📷', '📹', '📺', '📻', '🎙️',
+                                                '🎮', '🕹️', '🎲', '🃏', '🀄', '🎴', '🎯', '🎳',
+                                                '🚀', '✈️', '🚁', '🚢', '⛵', '🚤', '🛸', '🛰️',
+                                                '❤️', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎',
+                                            ];
+                                        @endphp
+                                        @foreach($icons as $emoji)
+                                            <button type="button"
+                                                    wire:click="$set('icon', '{{ $emoji }}'); $dispatch('icon-selected')"
+                                                    @click="showPicker = false"
+                                                    class="w-10 h-10 flex items-center justify-center text-2xl rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors {{ $icon === $emoji ? 'bg-primary-100 dark:bg-primary-900/30 ring-2 ring-primary-500' : '' }}">
+                                                {{ $emoji }}
+                                            </button>
+                                        @endforeach
+                                    </div>
+                                    <div class="mt-3 pt-3 border-t border-neutral-200 dark:border-neutral-700">
+                                        <button type="button"
+                                                wire:click="$set('icon', '')"
+                                                @click="showPicker = false"
+                                                class="w-full px-3 py-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-md transition-colors">
+                                            Rimuovi icona
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
