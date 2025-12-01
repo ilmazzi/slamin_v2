@@ -17,26 +17,6 @@
                     height: ${this.highlightRect.height + 16}px;
                 `;
             },
-            get overlayClipPath() {
-                if (!this.highlightRect) return 'none';
-                const x = this.highlightRect.x - 8;
-                const y = this.highlightRect.y - 8;
-                const w = this.highlightRect.width + 16;
-                const h = this.highlightRect.height + 16;
-                // Crea un buco rettangolare nell'overlay
-                return `polygon(
-                    0% 0%, 
-                    0% 100%, 
-                    ${x}px 100%, 
-                    ${x}px ${y}px, 
-                    ${x + w}px ${y}px, 
-                    ${x + w}px ${y + h}px, 
-                    ${x}px ${y + h}px, 
-                    ${x}px 100%, 
-                    100% 100%, 
-                    100% 0%
-                )`;
-            },
             updateHighlight() {
                 // Remove previous highlights
                 document.querySelectorAll('.tutorial-highlight').forEach(el => {
@@ -54,6 +34,9 @@
                             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             setTimeout(() => {
                                 element.classList.add('tutorial-highlight');
+                                // Forza l'elemento sopra l'overlay
+                                element.style.position = 'relative';
+                                element.style.zIndex = '1000002';
                                 this.updateHighlightRect();
                                 // Update rect periodically
                                 const interval = setInterval(() => {
@@ -64,6 +47,8 @@
                                     }
                                 }, 100);
                             }, 500);
+                        } else {
+                            console.warn('Tutorial: Element not found:', stepData.focusElement);
                         }
                     }, 200);
                 }
@@ -102,8 +87,41 @@
         x-show="$wire.show"
         x-cloak
     >
-        <!-- Overlay scuro -->
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        <!-- Overlay scuro con buco per elemento evidenziato -->
+        <div x-show="highlightRect && highlightedElement"
+             class="absolute inset-0 pointer-events-auto"
+             style="z-index: 1; display: none;"
+             @click.self="$wire.close()">
+            <!-- Sopra -->
+            <div class="absolute top-0 left-0 right-0 bg-black/60 backdrop-blur-sm"
+                 x-bind:style="highlightRect ? `height: ${Math.max(0, highlightRect.y - 8)}px;` : ''"></div>
+            
+            <!-- Sotto -->
+            <div class="absolute left-0 right-0 bg-black/60 backdrop-blur-sm"
+                 x-bind:style="highlightRect ? `top: ${highlightRect.y + highlightRect.height + 8}px; bottom: 0;` : ''"></div>
+            
+            <!-- Sinistra -->
+            <div class="absolute bg-black/60 backdrop-blur-sm"
+                 x-bind:style="highlightRect ? `
+                     left: 0;
+                     top: ${Math.max(0, highlightRect.y - 8)}px;
+                     width: ${Math.max(0, highlightRect.x - 8)}px;
+                     height: ${highlightRect.height + 16}px;
+                 ` : ''"></div>
+            
+            <!-- Destra -->
+            <div class="absolute bg-black/60 backdrop-blur-sm"
+                 x-bind:style="highlightRect ? `
+                     right: 0;
+                     top: ${Math.max(0, highlightRect.y - 8)}px;
+                     width: ${Math.max(0, window.innerWidth - highlightRect.x - highlightRect.width - 8)}px;
+                     height: ${highlightRect.height + 16}px;
+                 ` : ''"></div>
+        </div>
+        
+        <!-- Overlay completo quando non c'è elemento evidenziato -->
+        <div x-show="!highlightRect || !highlightedElement"
+             class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
              @click.self="$wire.close()"
              style="z-index: 1;">
         </div>
@@ -116,7 +134,7 @@
         </div>
 
         <!-- Tutorial Modal -->
-        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none" style="z-index: 1000000;">
             <div class="relative bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl max-w-2xl w-full p-6 md:p-8 pointer-events-auto"
                  x-transition:enter="transition ease-out duration-300"
                  x-transition:enter-start="opacity-0 scale-95"
@@ -191,34 +209,39 @@
     
     <style>
     .tutorial-highlight {
-        position: relative;
-        z-index: 1000000 !important;
-        transform: scale(1.02);
+        position: relative !important;
+        z-index: 1000002 !important;
+        transform: scale(1.05);
         transition: transform 0.3s ease;
+        outline: 4px solid #8b5cf6 !important;
+        outline-offset: 4px;
+        border-radius: 8px;
     }
 
     .tutorial-spotlight {
-        border: 4px solid #8b5cf6;
-        border-radius: 12px;
-        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6),
-                    0 0 20px rgba(139, 92, 246, 0.5),
-                    inset 0 0 20px rgba(139, 92, 246, 0.2);
-        z-index: 999999;
+        border: 6px solid #8b5cf6;
+        border-radius: 16px;
+        background: rgba(139, 92, 246, 0.1);
+        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5),
+                    0 0 30px rgba(139, 92, 246, 0.8),
+                    0 0 60px rgba(139, 92, 246, 0.4);
         animation: pulse-border 2s infinite;
     }
 
     @keyframes pulse-border {
         0%, 100% {
             border-color: #8b5cf6;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6),
-                        0 0 20px rgba(139, 92, 246, 0.5),
-                        inset 0 0 20px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5),
+                        0 0 30px rgba(139, 92, 246, 0.8),
+                        0 0 60px rgba(139, 92, 246, 0.4);
+            transform: scale(1);
         }
         50% {
             border-color: #a78bfa;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6),
-                        0 0 30px rgba(139, 92, 246, 0.8),
-                        inset 0 0 30px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.7),
+                        0 0 40px rgba(139, 92, 246, 1),
+                        0 0 80px rgba(139, 92, 246, 0.6);
+            transform: scale(1.02);
         }
     }
     </style>
