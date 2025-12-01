@@ -28,6 +28,7 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
     showTooltip: false,
     likers: [],
     loadingLikers: false,
+    loadError: false,
     tooltipTimeout: null,
     hideTimeout: null,
     
@@ -35,11 +36,13 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
         if (this.likesCount === 0 || this.loadingLikers || this.likers.length > 0) return;
         
         this.loadingLikers = true;
+        this.loadError = false;
         try {
-            const url = `/api/like/likers?id={{ $itemId }}&type={{ json_encode($itemType) }}`;
+            const url = `/api/like/likers?id={{ $itemId }}&type={{ $itemType }}`;
             const response = await fetch(url);
             
             if (!response.ok) {
+                this.loadError = true;
                 this.loadingLikers = false;
                 return;
             }
@@ -51,6 +54,7 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
                 this.likers = [];
             }
         } catch (error) {
+            this.loadError = true;
             this.likers = [];
         } finally {
             this.loadingLikers = false;
@@ -188,13 +192,19 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
         <div class="max-h-64 overflow-y-auto">
             <template x-if="loadingLikers">
                 <div class="p-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
-                    <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg class="animate-spin h-5 w-5 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
+                    <div>Caricamento...</div>
                 </div>
             </template>
-            <template x-if="!loadingLikers && likers.length > 0">
+            <template x-if="!loadingLikers && loadError">
+                <div class="p-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
+                    <div>Errore nel caricamento</div>
+                </div>
+            </template>
+            <template x-if="!loadingLikers && !loadError && likers.length > 0">
                 <div class="divide-y divide-neutral-200 dark:divide-neutral-700">
                     <template x-for="user in likers" :key="user.id">
                         <a :href="`/users/${user.id}`" 
@@ -208,6 +218,11 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
                             </div>
                         </a>
                     </template>
+                </div>
+            </template>
+            <template x-if="!loadingLikers && !loadError && likers.length === 0">
+                <div class="p-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
+                    <div>Nessun utente trovato</div>
                 </div>
             </template>
         </div>

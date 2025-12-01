@@ -113,64 +113,105 @@ class LikeController extends Controller
 
     public function getLikers(Request $request)
     {
-        $request->validate([
-            'id' => 'required|integer',
-            'type' => 'required|string|in:poem,video,article,event,photo',
-        ]);
+        try {
+            $request->validate([
+                'id' => 'required|integer',
+                'type' => 'required|string|in:poem,video,article,event,photo',
+            ]);
 
-        $modelMap = [
-            'poem' => Poem::class,
-            'video' => Video::class,
-            'article' => Article::class,
-            'event' => Event::class,
-            'photo' => Photo::class,
-        ];
+            $modelMap = [
+                'poem' => Poem::class,
+                'video' => Video::class,
+                'article' => Article::class,
+                'event' => Event::class,
+                'photo' => Photo::class,
+            ];
 
-        $modelClass = $modelMap[$request->type] ?? null;
-        if (!$modelClass) {
+            $modelClass = $modelMap[$request->type] ?? null;
+            if (!$modelClass) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid content type'
+                ], 400);
+            }
+
+            // Recupera tutti gli utenti che hanno messo like
+            $likes = UnifiedLike::where('likeable_type', $modelClass)
+                ->where('likeable_id', $request->id)
+                ->with('user') // Carica tutti i campi dell'utente
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            $users = $likes->map(function ($like) {
+                $user = $like->user;
+                
+                // Skip se l'utente non esiste (soft deleted o altro)
+                if (!$user) {
+                    return null;
+                }
+                
+                $name = trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? ''));
+                if (empty($name)) {
+                    $name = $user->name ?? 'Utente';
+                }
+                
+                // Determina l'avatar (prova diversi campi)
+                $avatar = null;
+                if (isset($user->profile_picture) && !empty($user->profile_picture)) {
+                    $avatar = $user->profile_picture;
+                } elseif (isset($user->profile_photo) && !empty($user->profile_photo)) {
+                    $avatar = $user->profile_photo;
+                }
+                
+                return [
+                    'id' => $user->id,
+                    'name' => $name,
+                    'nickname' => $user->nickname ?? null,
+                    'avatar' => $avatar,
+                ];
+            })->filter(); // Rimuove i null
+
+            // Se l'utente è autenticato, ordina i follow per primi
+            if (Auth::check()) {
+                try {
+                    $currentUser = Auth::user();
+                    $followingIds = $currentUser->following()->pluck('id')->toArray();
+                    
+                    $users = $users->sortByDesc(function ($user) use ($followingIds) {
+                        return in_array($user['id'], $followingIds) ? 1 : 0;
+                    })->values();
+                } catch (\Exception $e) {
+                    // Se c'è un errore con la relazione following, continua senza ordinare
+                    \Log::warning('Error sorting likers by following', [
+                        'error' => $e->getMessage(),
+                        'user_id' => Auth::id()
+                    ]);
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'users' => $users->take(10)->values(), // Limita a 10 utenti
+                'total' => $likes->count(),
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid content type'
-            ], 400);
-        }
-
-        // Recupera tutti gli utenti che hanno messo like
-        $likes = UnifiedLike::where('likeable_type', $modelClass)
-            ->where('likeable_id', $request->id)
-            ->with('user:id,first_name,last_name,name,nickname,avatar,profile_picture,profile_photo')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $users = $likes->map(function ($like) {
-            $user = $like->user;
-            $name = trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? ''));
-            if (empty($name)) {
-                $name = $user->name ?? 'Utente';
-            }
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Error in getLikers', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request' => $request->all()
+            ]);
             
-            return [
-                'id' => $user->id,
-                'name' => $name,
-                'nickname' => $user->nickname,
-                'avatar' => $user->avatar ?? $user->profile_picture ?? $user->profile_photo ?? null,
-            ];
-        });
-
-        // Se l'utente è autenticato, ordina i follow per primi
-        if (Auth::check()) {
-            $currentUser = Auth::user();
-            $followingIds = $currentUser->following()->pluck('users.id')->toArray();
-            
-            $users = $users->sortByDesc(function ($user) use ($followingIds) {
-                return in_array($user['id'], $followingIds) ? 1 : 0;
-            })->values();
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while loading likers'
+            ], 500);
         }
-
-        return response()->json([
-            'success' => true,
-            'users' => $users->take(10)->values(), // Limita a 10 utenti
-            'total' => $likes->count(),
-        ]);
     }
 }
 
