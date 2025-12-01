@@ -1,4 +1,4 @@
-@if($show)
+<div>
     <div 
         x-data="{
             currentStep: @js($currentStep),
@@ -115,26 +115,26 @@
             </div>
         </div>
     </div>
-@endif
-
-<style>
-.tutorial-highlight {
-    position: relative;
-    z-index: 999999 !important;
-    outline: 3px solid #8b5cf6 !important;
-    outline-offset: 4px;
-    border-radius: 8px;
-    animation: pulse-highlight 2s infinite;
-}
-
-@keyframes pulse-highlight {
-    0%, 100% {
-        outline-color: #8b5cf6;
-        box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+    
+    <style>
+    .tutorial-highlight {
+        position: relative;
+        z-index: 999999 !important;
+        outline: 3px solid #8b5cf6 !important;
+        outline-offset: 4px;
+        border-radius: 8px;
+        animation: pulse-highlight 2s infinite;
     }
-    50% {
-        outline-color: #a78bfa;
-        box-shadow: 0 0 0 8px rgba(139, 92, 246, 0);
+
+    @keyframes pulse-highlight {
+        0%, 100% {
+            outline-color: #8b5cf6;
+            box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+        }
+        50% {
+            outline-color: #a78bfa;
+            box-shadow: 0 0 0 8px rgba(139, 92, 246, 0);
+        }
     }
-}
-</style>
+    </style>
+</div>
