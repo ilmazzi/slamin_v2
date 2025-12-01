@@ -22,10 +22,6 @@
                 // Rimuovi tutto
                 document.querySelectorAll('.tutorial-highlight').forEach(el => {
                     el.classList.remove('tutorial-highlight');
-                    el.style.zIndex = '';
-                    if (el.style.position === 'relative' && window.getComputedStyle(el).position === 'static') {
-                        el.style.position = '';
-                    }
                 });
                 this.highlightedElement = null;
                 this.highlightRect = null;
@@ -47,13 +43,6 @@
                         if (rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden') {
                             this.highlightedElement = element;
                             element.classList.add('tutorial-highlight');
-                            
-                            // Forza position se necessario per z-index
-                            const currentPosition = style.position;
-                            if (currentPosition === 'static') {
-                                element.style.position = 'relative';
-                            }
-                            element.style.zIndex = '1000003';
                             
                             const updateRect = () => {
                                 const r = element.getBoundingClientRect();
@@ -106,12 +95,33 @@
         x-show="$wire.show"
         x-cloak
     >
-        <div class="absolute inset-0 pointer-events-auto"
+        <!-- Overlay completo quando non c'è elemento -->
+        <div x-show="!highlightRect || !highlightedElement"
+             class="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
              @click.self="$wire.close()"
-             style="z-index: 1;"
-             :class="highlightRect && highlightedElement ? 'bg-black/5' : 'bg-black/40 backdrop-blur-sm'">
+             style="z-index: 1;">
         </div>
         
+        <!-- Overlay con buco quando c'è elemento evidenziato -->
+        <div x-show="highlightRect && highlightedElement"
+             class="absolute inset-0 pointer-events-auto"
+             style="z-index: 1; display: none;"
+             @click.self="$wire.close()">
+            <!-- Sopra -->
+            <div class="absolute top-0 left-0 right-0 bg-black/40 backdrop-blur-sm"
+                 :style="highlightRect ? `height: ${Math.max(0, highlightRect.y - 8)}px;` : ''"></div>
+            <!-- Sotto -->
+            <div class="absolute left-0 right-0 bottom-0 bg-black/40 backdrop-blur-sm"
+                 :style="highlightRect ? `top: ${highlightRect.y + highlightRect.height + 8}px;` : ''"></div>
+            <!-- Sinistra -->
+            <div class="absolute bg-black/40 backdrop-blur-sm"
+                 :style="highlightRect ? `left: 0; top: ${Math.max(0, highlightRect.y - 8)}px; width: ${Math.max(0, highlightRect.x - 8)}px; height: ${highlightRect.height + 16}px;` : ''"></div>
+            <!-- Destra -->
+            <div class="absolute bg-black/40 backdrop-blur-sm"
+                 :style="highlightRect ? `right: 0; top: ${Math.max(0, highlightRect.y - 8)}px; left: ${highlightRect.x + highlightRect.width + 8}px; height: ${highlightRect.height + 16}px;` : ''"></div>
+        </div>
+        
+        <!-- Bordo pulsante verde -->
         <div x-show="highlightRect && highlightedElement"
              class="fixed pointer-events-none tutorial-spotlight"
              :style="highlightStyle"
@@ -162,7 +172,6 @@
     
     <style>
     .tutorial-highlight {
-        position: relative !important;
         z-index: 1000003 !important;
         outline: 6px solid #059669 !important;
         outline-offset: 6px;
