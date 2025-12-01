@@ -68,10 +68,13 @@
                                 <div class="flex items-center">
                                     <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-lg" 
                                          style="background-color: {{ $category->color }}">
-                                        @if($category->icon)
-                                            <span class="text-xl">{{ $category->icon }}</span>
+                                        @php
+                                            $icon = $category->attributes['icon'] ?? $category->getOriginal('icon') ?? null;
+                                        @endphp
+                                        @if(!empty($icon))
+                                            <span class="text-xl leading-none">{{ $icon }}</span>
                                         @else
-                                            {{ strtoupper(substr($category->display_name, 0, 1)) }}
+                                            <span class="text-sm">{{ strtoupper(substr($category->display_name, 0, 1)) }}</span>
                                         @endif
                                     </div>
                                     <div class="ml-4">

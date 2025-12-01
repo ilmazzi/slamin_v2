@@ -112,6 +112,14 @@ class ArticleCategory extends Model
     }
 
     /**
+     * Ottiene l'icona della categoria
+     */
+    public function getIconAttribute($value)
+    {
+        return $value ?: null;
+    }
+
+    /**
      * Scope per ottenere solo le categorie attive
      */
     public function scopeActive(Builder $query): Builder
