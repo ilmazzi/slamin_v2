@@ -8,6 +8,7 @@ class PlaceholderHelper
 {
     /**
      * Pulisce il contenuto HTML rimuovendo tag, entità HTML e spazi multipli
+     * Preserva gli a capo convertendo <br> e </p><p> in newline
      */
     public static function cleanHtmlContent($content, $limit = null)
     {
@@ -15,7 +16,16 @@ class PlaceholderHelper
             return '';
         }
         
-        // Rimuovi tag HTML
+        // Converti <br> e <br/> in newline prima di rimuovere i tag
+        $content = preg_replace('/<br\s*\/?>/i', "\n", $content);
+        
+        // Converti </p><p> e </p>\s*<p> in doppio newline (paragrafo)
+        $content = preg_replace('/<\/p>\s*<p[^>]*>/i', "\n\n", $content);
+        
+        // Converti </p> e <p> in newline
+        $content = preg_replace('/<\/?p[^>]*>/i', "\n", $content);
+        
+        // Rimuovi altri tag HTML (dopo aver convertito br e p)
         $content = strip_tags($content);
         
         // Decodifica entità HTML (come &nbsp;, &amp;, etc.)
@@ -24,15 +34,35 @@ class PlaceholderHelper
         // Sostituisci &nbsp; con spazi normali (per sicurezza, anche se già decodificato)
         $content = str_replace(['&nbsp;', "\xC2\xA0"], ' ', $content);
         
-        // Rimuovi spazi multipli e sostituiscili con uno spazio singolo
-        $content = preg_replace('/\s+/', ' ', $content);
+        // Normalizza newline multipli (max 2 consecutivi)
+        $content = preg_replace('/\n{3,}/', "\n\n", $content);
         
-        // Trim
+        // Rimuovi spazi multipli su ogni riga (ma preserva i newline)
+        $lines = explode("\n", $content);
+        $lines = array_map(function($line) {
+            // Rimuovi spazi multipli sulla riga
+            $line = preg_replace('/\s+/', ' ', $line);
+            return trim($line);
+        }, $lines);
+        $content = implode("\n", $lines);
+        
+        // Rimuovi righe vuote all'inizio e alla fine
         $content = trim($content);
         
-        // Limita se richiesto
+        // Limita se richiesto (preservando i newline)
         if ($limit !== null) {
-            $content = \Illuminate\Support\Str::limit($content, $limit);
+            // Se il contenuto è più lungo del limite, taglia ma preserva i newline
+            if (mb_strlen($content) > $limit) {
+                $content = mb_substr($content, 0, $limit);
+                // Assicurati di non tagliare a metà una parola se possibile
+                $lastSpace = mb_strrpos($content, ' ');
+                $lastNewline = mb_strrpos($content, "\n");
+                $lastBreak = max($lastSpace, $lastNewline);
+                if ($lastBreak !== false && $lastBreak > $limit * 0.7) {
+                    $content = mb_substr($content, 0, $lastBreak);
+                }
+                $content .= '...';
+            }
         }
         
         return $content;

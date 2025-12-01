@@ -41,7 +41,7 @@
                                     
                                     <!-- Poem Content -->
                                     <div class="paper-content">
-                                        {{ $item['excerpt'] }}
+                                        {!! nl2br(e($item['excerpt'])) !!}
                                     </div>
                                     
                                     <!-- Read more hint -->
@@ -123,7 +123,7 @@
                                     
                                     <!-- Excerpt -->
                                     <p class="magazine-excerpt">
-                                        {{ $item['excerpt'] }}
+                                        {!! nl2br(e($item['excerpt'])) !!}
                                     </p>
                                     
                                     <!-- Author Info with Avatar -->
