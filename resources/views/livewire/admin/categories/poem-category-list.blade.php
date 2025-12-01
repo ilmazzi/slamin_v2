@@ -66,9 +66,13 @@
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold" 
+                                    <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-lg" 
                                          style="background-color: {{ $category->color }}">
-                                        {{ $category->icon ?: substr($category->display_name, 0, 1) }}
+                                        @if($category->icon)
+                                            <span class="text-xl">{{ $category->icon }}</span>
+                                        @else
+                                            {{ strtoupper(substr($category->display_name, 0, 1)) }}
+                                        @endif
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-neutral-900 dark:text-white">
