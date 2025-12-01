@@ -50,6 +50,14 @@ return [
             'title' => 'Gestion des articles',
             'description' => 'Créer et gérer des articles',
         ],
+        'article_categories' => [
+            'title' => 'Catégories d\'articles',
+            'description' => 'Gérer les catégories d\'articles',
+        ],
+        'poem_categories' => [
+            'title' => 'Catégories de poèmes',
+            'description' => 'Gérer les catégories de poèmes',
+        ],
         'carousels' => [
             'title' => 'Gestion des carrousels',
             'description' => 'Gérer le carrousel de la page d\'accueil',

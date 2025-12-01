@@ -38,6 +38,16 @@ class AdminSettings extends Component
                 'key' => 'articles',
             ],
             [
+                'route' => route('admin.categories.articles'),
+                'icon' => 'categories',
+                'key' => 'article_categories',
+            ],
+            [
+                'route' => route('admin.categories.poems'),
+                'icon' => 'categories',
+                'key' => 'poem_categories',
+            ],
+            [
                 'route' => route('admin.carousels.index'),
                 'icon' => 'carousel',
                 'key' => 'carousels',

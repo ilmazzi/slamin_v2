@@ -50,6 +50,14 @@ return [
             'title' => 'Article Management',
             'description' => 'Create and manage articles',
         ],
+        'article_categories' => [
+            'title' => 'Article Categories',
+            'description' => 'Manage article categories',
+        ],
+        'poem_categories' => [
+            'title' => 'Poem Categories',
+            'description' => 'Manage poem categories',
+        ],
         'carousels' => [
             'title' => 'Carousel Management',
             'description' => 'Manage homepage carousel',
