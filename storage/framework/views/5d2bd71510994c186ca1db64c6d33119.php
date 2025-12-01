@@ -36,8 +36,8 @@
                     <li><a href="<?php echo e(route('contact')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.contact')); ?></a></li>
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
                     <li>
-                        <button wire:click="$dispatch('openTutorial')" 
-                                class="hover:text-primary-400 transition-colors flex items-center gap-2">
+                        <button onclick="Livewire.dispatch('openTutorial')" 
+                                class="hover:text-primary-400 transition-colors flex items-center gap-2 text-left">
                             <span>📚</span>
                             <span><?php echo e(__('footer.tutorial')); ?></span>
                         </button>

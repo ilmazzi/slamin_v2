@@ -1,4 +1,4 @@
-<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($show): ?>
+<div>
     <div 
         x-data="{
             currentStep: <?php echo \Illuminate\Support\Js::from($currentStep)->toHtml() ?>,
@@ -42,19 +42,6 @@
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"
              @click.self="$wire.close()"></div>
 
-        <!-- Spotlight effect -->
-        <div class="absolute inset-0 pointer-events-none">
-            <svg class="w-full h-full">
-                <defs>
-                    <mask id="tutorial-mask">
-                        <rect width="100%" height="100%" fill="black"/>
-                        <circle id="spotlight-circle" cx="50%" cy="50%" r="200" fill="white"/>
-                    </mask>
-                </defs>
-                <rect width="100%" height="100%" fill="rgba(0,0,0,0.5)" mask="url(#tutorial-mask)"/>
-            </svg>
-        </div>
-
         <!-- Tutorial Modal -->
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
             <div class="relative bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl max-w-2xl w-full p-6 md:p-8 pointer-events-auto"
@@ -95,7 +82,7 @@
                 <div class="mb-6">
                     <div class="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-2">
                         <div class="bg-primary-600 h-2 rounded-full transition-all duration-300"
-                             :style="`width: ${(($wire.currentStep + 1) / <?php echo e($this->getTotalSteps()); ?>) * 100}%`"></div>
+                             :style="`width: ${((currentStep + 1) / steps.length) * 100}%`"></div>
                     </div>
                 </div>
 
@@ -107,50 +94,48 @@
                     </button>
                     
                     <div class="flex gap-3">
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currentStep > 0): ?>
-                            <button @click="$wire.previous()" 
-                                    class="px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 rounded-lg transition-colors">
-                                Indietro
-                            </button>
-                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        <button x-show="currentStep > 0"
+                                @click="$wire.previous()" 
+                                class="px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 rounded-lg transition-colors">
+                            Indietro
+                        </button>
                         
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($currentStep < $this->getTotalSteps() - 1): ?>
-                            <button @click="$wire.next()" 
-                                    class="px-6 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors shadow-lg">
-                                Prosegui
-                            </button>
-                        <?php else: ?>
-                            <button @click="$wire.close()" 
-                                    class="px-6 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors shadow-lg">
-                                Inizia a esplorare!
-                            </button>
-                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        <button x-show="currentStep < steps.length - 1"
+                                @click="$wire.next()" 
+                                class="px-6 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors shadow-lg">
+                            Prosegui
+                        </button>
+                        <button x-show="currentStep >= steps.length - 1"
+                                @click="$wire.close()" 
+                                class="px-6 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors shadow-lg">
+                            Inizia a esplorare!
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-
-<style>
-.tutorial-highlight {
-    position: relative;
-    z-index: 999999 !important;
-    outline: 3px solid #8b5cf6 !important;
-    outline-offset: 4px;
-    border-radius: 8px;
-    animation: pulse-highlight 2s infinite;
-}
-
-@keyframes pulse-highlight {
-    0%, 100% {
-        outline-color: #8b5cf6;
-        box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+    
+    <style>
+    .tutorial-highlight {
+        position: relative;
+        z-index: 999999 !important;
+        outline: 3px solid #8b5cf6 !important;
+        outline-offset: 4px;
+        border-radius: 8px;
+        animation: pulse-highlight 2s infinite;
     }
-    50% {
-        outline-color: #a78bfa;
-        box-shadow: 0 0 0 8px rgba(139, 92, 246, 0);
+
+    @keyframes pulse-highlight {
+        0%, 100% {
+            outline-color: #8b5cf6;
+            box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+        }
+        50% {
+            outline-color: #a78bfa;
+            box-shadow: 0 0 0 8px rgba(139, 92, 246, 0);
+        }
     }
-}
-</style>
+    </style>
+</div>
 <?php /**PATH /Users/mazzi/slamin_v2/resources/views/livewire/tutorial/onboarding-tutorial.blade.php ENDPATH**/ ?>
