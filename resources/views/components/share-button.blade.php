@@ -96,11 +96,12 @@ class="relative inline-block" {{ $attributes->only(['class']) }}>
     </button>
     
     <!-- Share Modal -->
-    <div x-show="showModal"
-         x-cloak
-         @keydown.escape.window="showModal = false"
-         class="fixed inset-0 z-[999999] flex items-center justify-center p-4"
-         style="display: none;">
+    <template x-teleport="body">
+        <div x-show="showModal"
+             x-cloak
+             @keydown.escape.window="showModal = false"
+             class="fixed inset-0 z-[999999] flex items-center justify-center p-4"
+             style="display: none;">
         
         <!-- Backdrop -->
         <div x-show="showModal"
@@ -238,6 +239,7 @@ class="relative inline-block" {{ $attributes->only(['class']) }}>
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+    </template>
 </div>
 
