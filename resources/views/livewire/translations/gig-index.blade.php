@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gradient-to-br from-neutral-50 via-white to-primary-50/30 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 overflow-hidden">
     
     {{-- HERO con Cork Board Card + Titolo (come media ed eventi) --}}
-    <section class="relative py-12 md:py-20 overflow-hidden cork-board-section">
+    <section class="relative pt-16 pb-12 md:pb-20 overflow-hidden cork-board-section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
                 

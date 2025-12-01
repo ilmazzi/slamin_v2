@@ -85,7 +85,7 @@
     @livewire('chat.chat-button')
 
     <!-- Main Content Area -->
-    <main class="pt-[7.5rem] md:pt-16 transition-all duration-300 lg:ml-0 overflow-x-hidden"
+    <main class="transition-all duration-300 lg:ml-0 overflow-x-hidden"
           :class="sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'">
         <div class="min-h-screen overflow-visible">
             {{ $slot }}

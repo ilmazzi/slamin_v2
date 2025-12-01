@@ -1,6 +1,6 @@
 <div class="min-h-screen">
     {{-- HERO con Film Card + Titolo --}}
-    <section class="relative py-12 md:py-20 overflow-hidden bg-neutral-900 dark:bg-black">
+    <section class="relative pt-16 pb-12 md:pb-20 overflow-hidden bg-neutral-900 dark:bg-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
                 <!-- FILM CARD -->
