@@ -3,44 +3,99 @@
         x-data="{
             currentStep: <?php echo \Illuminate\Support\Js::from($currentStep)->toHtml() ?>,
             steps: <?php echo \Illuminate\Support\Js::from($this->steps)->toHtml() ?>,
+            highlightedElement: null,
+            highlightedElement: null,
+            highlightRect: null,
             get currentStepData() {
                 return this.steps[this.currentStep] || this.steps[0];
             },
-            highlightElement() {
+            get highlightStyle() {
+                if (!this.highlightRect) return 'display: none;';
+                return `
+                    left: ${this.highlightRect.x - 8}px;
+                    top: ${this.highlightRect.y - 8}px;
+                    width: ${this.highlightRect.width + 16}px;
+                    height: ${this.highlightRect.height + 16}px;
+                `;
+            },
+            updateHighlight() {
                 // Remove previous highlights
                 document.querySelectorAll('.tutorial-highlight').forEach(el => {
                     el.classList.remove('tutorial-highlight');
                 });
+                this.highlightedElement = null;
+                this.highlightRect = null;
                 
                 const stepData = this.currentStepData;
                 if (stepData && stepData.focusElement) {
                     setTimeout(() => {
                         const element = document.querySelector(`[data-tutorial-focus='${stepData.focusElement}']`);
                         if (element) {
+                            this.highlightedElement = element;
                             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             setTimeout(() => {
                                 element.classList.add('tutorial-highlight');
-                            }, 300);
+                                this.updateHighlightRect();
+                                // Update rect periodically
+                                const interval = setInterval(() => {
+                                    if (this.highlightedElement && this.highlightedElement.classList.contains('tutorial-highlight')) {
+                                        this.updateHighlightRect();
+                                    } else {
+                                        clearInterval(interval);
+                                    }
+                                }, 100);
+                            }, 500);
                         }
-                    }, 100);
+                    }, 200);
+                }
+            },
+            updateHighlightRect() {
+                if (this.highlightedElement) {
+                    const rect = this.highlightedElement.getBoundingClientRect();
+                    // Usa coordinate viewport perché l'overlay è fixed
+                    this.highlightRect = {
+                        x: rect.left,
+                        y: rect.top,
+                        width: rect.width,
+                        height: rect.height
+                    };
                 }
             }
         }"
         x-init="
             $watch('$wire.currentStep', (value) => {
                 currentStep = value;
-                highlightElement();
+                updateHighlight();
             });
-            highlightElement();
+            $watch('$wire.show', (value) => {
+                if (value) {
+                    setTimeout(() => updateHighlight(), 300);
+                }
+            });
+            if ($wire.show) {
+                setTimeout(() => updateHighlight(), 300);
+            }
+            window.addEventListener('scroll', () => updateHighlightRect());
+            window.addEventListener('resize', () => updateHighlightRect());
         "
         class="fixed inset-0 z-[999998]"
         style="display: none;"
         x-show="$wire.show"
         x-cloak
     >
-        <!-- Overlay scuro -->
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"
-             @click.self="$wire.close()"></div>
+        <!-- Overlay scuro con buco per elemento evidenziato -->
+        <div class="absolute inset-0"
+             @click.self="$wire.close()">
+            <!-- Overlay base -->
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+            
+            <!-- Buco per elemento evidenziato -->
+            <div x-show="highlightRect && highlightedElement"
+                 class="absolute pointer-events-none tutorial-spotlight"
+                 x-bind:style="highlightStyle"
+                 style="display: none;">
+            </div>
+        </div>
 
         <!-- Tutorial Modal -->
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
@@ -119,21 +174,33 @@
     <style>
     .tutorial-highlight {
         position: relative;
-        z-index: 999999 !important;
-        outline: 3px solid #8b5cf6 !important;
-        outline-offset: 4px;
-        border-radius: 8px;
-        animation: pulse-highlight 2s infinite;
+        z-index: 1000000 !important;
+        transform: scale(1.02);
+        transition: transform 0.3s ease;
     }
 
-    @keyframes pulse-highlight {
+    .tutorial-spotlight {
+        border: 4px solid #8b5cf6;
+        border-radius: 12px;
+        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6),
+                    0 0 20px rgba(139, 92, 246, 0.5),
+                    inset 0 0 20px rgba(139, 92, 246, 0.2);
+        z-index: 999999;
+        animation: pulse-border 2s infinite;
+    }
+
+    @keyframes pulse-border {
         0%, 100% {
-            outline-color: #8b5cf6;
-            box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6),
+                        0 0 20px rgba(139, 92, 246, 0.5),
+                        inset 0 0 20px rgba(139, 92, 246, 0.2);
         }
         50% {
-            outline-color: #a78bfa;
-            box-shadow: 0 0 0 8px rgba(139, 92, 246, 0);
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6),
+                        0 0 30px rgba(139, 92, 246, 0.8),
+                        inset 0 0 30px rgba(139, 92, 246, 0.4);
         }
     }
     </style>
