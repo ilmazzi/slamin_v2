@@ -161,6 +161,18 @@
                         width: rect.width,
                         height: rect.height
                     };
+                    console.log('Tutorial: updateHighlightRect called', {
+                        element: this.highlightedElement,
+                        rect: rect,
+                        highlightRect: this.highlightRect
+                    });
+                    // Forza re-render di Alpine.js
+                    this.$nextTick(() => {
+                        // Trigger reactivity
+                        this.highlightRect = { ...this.highlightRect };
+                    });
+                } else {
+                    console.warn('Tutorial: updateHighlightRect called but no highlightedElement');
                 }
             }
         }"
@@ -185,43 +197,24 @@
         x-show="$wire.show"
         x-cloak
     >
-        <!-- Overlay scuro con buco per elemento evidenziato -->
-        <div x-show="highlightRect && highlightedElement"
-             class="absolute inset-0 pointer-events-auto"
-             style="z-index: 1; display: none;"
-             @click.self="$wire.close()">
-            <!-- Sopra -->
-            <div class="absolute top-0 left-0 right-0 bg-black/60 backdrop-blur-sm"
-                 x-bind:style="`height: ${overlayTopHeight};`"></div>
-            
-            <!-- Sotto -->
-            <div class="absolute left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm"
-                 x-bind:style="`top: ${overlayBottomTop};`"></div>
-            
-            <!-- Sinistra -->
-            <div class="absolute bg-black/60 backdrop-blur-sm"
-                 x-bind:style="`
-                     left: 0;
-                     top: ${overlayTopHeight};
-                     width: ${overlayLeftWidth};
-                     height: ${highlightRect ? highlightRect.height + 16 + 'px' : '0px'};
-                 `"></div>
-            
-            <!-- Destra -->
-            <div class="absolute bg-black/60 backdrop-blur-sm"
-                 x-bind:style="`
-                     right: 0;
-                     top: ${overlayTopHeight};
-                     width: ${overlayRightWidth};
-                     height: ${highlightRect ? highlightRect.height + 16 + 'px' : '0px'};
-                 `"></div>
-        </div>
-        
-        <!-- Overlay completo quando non c'è elemento evidenziato -->
-        <div x-show="!highlightRect || !highlightedElement"
-             class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
+        <!-- Overlay base sempre presente -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
              @click.self="$wire.close()"
              style="z-index: 1;">
+        </div>
+        
+        <!-- Buco nell'overlay usando box-shadow trick -->
+        <div x-show="highlightRect && highlightedElement"
+             class="fixed pointer-events-none"
+             style="z-index: 2; display: none;"
+             x-bind:style="highlightRect ? `
+                 left: ${highlightRect.x - 8}px;
+                 top: ${highlightRect.y - 8}px;
+                 width: ${highlightRect.width + 16}px;
+                 height: ${highlightRect.height + 16}px;
+                 box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+                 border-radius: 12px;
+             ` : ''">
         </div>
         
         <!-- Bordo pulsante attorno all'elemento evidenziato (sopra overlay) -->

@@ -38,6 +38,32 @@
                 const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
                 return `${Math.max(0, viewportWidth - this.highlightRect.x - this.highlightRect.width - 8)}px`;
             },
+            get overlayTopStyle() {
+                if (!this.highlightRect) return '';
+                return `height: ${Math.max(0, this.highlightRect.y - 8)}px;`;
+            },
+            get overlayBottomStyle() {
+                if (!this.highlightRect) return '';
+                return `top: ${this.highlightRect.y + this.highlightRect.height + 8}px;`;
+            },
+            get overlayLeftStyle() {
+                if (!this.highlightRect) return '';
+                return `
+                    left: 0;
+                    top: ${Math.max(0, this.highlightRect.y - 8)}px;
+                    width: ${Math.max(0, this.highlightRect.x - 8)}px;
+                    height: ${this.highlightRect.height + 16}px;
+                `;
+            },
+            get overlayRightStyle() {
+                if (!this.highlightRect) return '';
+                return `
+                    right: 0;
+                    top: ${Math.max(0, this.highlightRect.y - 8)}px;
+                    left: ${this.highlightRect.x + this.highlightRect.width + 8}px;
+                    height: ${this.highlightRect.height + 16}px;
+                `;
+            },
             updateHighlight() {
                 // Remove previous highlights
                 document.querySelectorAll('.tutorial-highlight').forEach(el => {
@@ -186,6 +212,9 @@
                     setTimeout(() => updateHighlight(), 300);
                 }
             });
+            $watch('highlightRect', (value) => {
+                console.log('Tutorial: highlightRect changed', value);
+            });
             if ($wire.show) {
                 setTimeout(() => updateHighlight(), 300);
             }
@@ -197,43 +226,26 @@
         x-show="$wire.show"
         x-cloak
     >
-        <!-- Overlay scuro con buco per elemento evidenziato -->
-        <div x-show="highlightRect && highlightedElement"
-             class="absolute inset-0 pointer-events-auto"
-             style="z-index: 1; display: none;"
-             @click.self="$wire.close()">
-            <!-- Sopra -->
-            <div class="absolute top-0 left-0 right-0 bg-black/60 backdrop-blur-sm"
-                 x-bind:style="highlightRect ? `height: ${Math.max(0, highlightRect.y - 8)}px;` : 'height: 0px;'"></div>
-            
-            <!-- Sotto -->
-            <div class="absolute left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm"
-                 x-bind:style="highlightRect ? `top: ${highlightRect.y + highlightRect.height + 8}px;` : 'top: 100%;'"></div>
-            
-            <!-- Sinistra -->
-            <div class="absolute bg-black/60 backdrop-blur-sm"
-                 x-bind:style="highlightRect ? `
-                     left: 0;
-                     top: ${Math.max(0, highlightRect.y - 8)}px;
-                     width: ${Math.max(0, highlightRect.x - 8)}px;
-                     height: ${highlightRect.height + 16}px;
-                 ` : 'display: none;'"></div>
-            
-            <!-- Destra -->
-            <div class="absolute bg-black/60 backdrop-blur-sm"
-                 x-bind:style="highlightRect ? `
-                     right: 0;
-                     top: ${Math.max(0, highlightRect.y - 8)}px;
-                     left: ${highlightRect.x + highlightRect.width + 8}px;
-                     height: ${highlightRect.height + 16}px;
-                 ` : 'display: none;'"></div>
+        <!-- Overlay base -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
+             @click.self="$wire.close()"
+             style="z-index: 1;"
+             x-show="!highlightRect || !highlightedElement">
         </div>
         
-        <!-- Overlay completo quando non c'è elemento evidenziato -->
-        <div x-show="!highlightRect || !highlightedElement"
-             class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
-             @click.self="$wire.close()"
-             style="z-index: 1;">
+        <!-- Overlay con buco - 4 div che coprono tutto tranne l'elemento -->
+        <div x-show="highlightRect && highlightedElement"
+             class="absolute inset-0 pointer-events-none"
+             style="z-index: 2; display: none;"
+             x-effect="if (highlightRect && highlightedElement) { console.log('Overlay hole should be visible', highlightRect); }">
+            <div class="absolute top-0 left-0 right-0 bg-black/60 backdrop-blur-sm"
+                 x-bind:style="overlayTopStyle"></div>
+            <div class="absolute left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm"
+                 x-bind:style="overlayBottomStyle"></div>
+            <div class="absolute bg-black/60 backdrop-blur-sm"
+                 x-bind:style="overlayLeftStyle"></div>
+            <div class="absolute bg-black/60 backdrop-blur-sm"
+                 x-bind:style="overlayRightStyle"></div>
         </div>
         
         <!-- Bordo pulsante attorno all'elemento evidenziato (sopra overlay) -->
