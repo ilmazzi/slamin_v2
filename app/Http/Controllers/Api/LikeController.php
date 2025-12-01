@@ -12,6 +12,7 @@ use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\SocialInteractionReceived;
+use App\Helpers\AvatarHelper;
 
 class LikeController extends Controller
 {
@@ -150,24 +151,12 @@ class LikeController extends Controller
                     return null;
                 }
                 
-                $name = trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? ''));
-                if (empty($name)) {
-                    $name = $user->name ?? 'Utente';
-                }
-                
-                // Determina l'avatar (prova diversi campi)
-                $avatar = null;
-                if (isset($user->profile_picture) && !empty($user->profile_picture)) {
-                    $avatar = $user->profile_picture;
-                } elseif (isset($user->profile_photo) && !empty($user->profile_photo)) {
-                    $avatar = $user->profile_photo;
-                }
-                
                 return [
                     'id' => $user->id,
-                    'name' => $name,
+                    'name' => AvatarHelper::getDisplayName($user),
                     'nickname' => $user->nickname ?? null,
-                    'avatar' => $avatar,
+                    'avatar' => AvatarHelper::getUserAvatarUrl($user, 40),
+                    'profile_url' => AvatarHelper::getUserProfileUrl($user),
                 ];
             })->filter(); // Rimuove i null
 
@@ -189,10 +178,14 @@ class LikeController extends Controller
                 }
             }
 
+            $totalLikes = $likes->count();
+            $displayedUsers = $users->take(15)->values(); // Mostra max 15 utenti
+            
             return response()->json([
                 'success' => true,
-                'users' => $users->take(10)->values(), // Limita a 10 utenti
-                'total' => $likes->count(),
+                'users' => $displayedUsers,
+                'total' => $totalLikes,
+                'remaining' => max(0, $totalLikes - $displayedUsers->count()),
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([

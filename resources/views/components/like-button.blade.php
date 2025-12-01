@@ -27,6 +27,8 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
     likesCount: {{ $likesCount }},
     showTooltip: false,
     likers: [],
+    totalLikes: {{ $likesCount }},
+    remainingLikes: 0,
     loadingLikers: false,
     loadError: false,
     tooltipTimeout: null,
@@ -50,8 +52,10 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
             const data = await response.json();
             if (data.success && data.users) {
                 this.likers = data.users;
+                this.remainingLikes = data.remaining || 0;
             } else {
                 this.likers = [];
+                this.remainingLikes = 0;
             }
         } catch (error) {
             this.loadError = true;
@@ -120,6 +124,7 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
                 // Aggiorna il conteggio reale dal server
                 if(data.count !== undefined) {
                     this.likesCount = data.count;
+                    this.totalLikes = data.count;
                 }
                 
                 // Aggiorna lo stato reale
@@ -182,17 +187,17 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
          x-transition:leave-end="opacity-0 scale-95"
          @mouseenter="if (hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }"
          @mouseleave="hideLikersTooltip()"
-         class="absolute bottom-full left-0 mb-2 w-64 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 z-50 overflow-hidden"
+         class="absolute bottom-full left-0 mb-2 w-56 bg-white dark:bg-neutral-800 rounded-lg shadow-xl border border-neutral-200 dark:border-neutral-700 z-50 overflow-hidden"
          style="display: none;">
-        <div class="p-3 border-b border-neutral-200 dark:border-neutral-700">
-            <h4 class="font-semibold text-sm text-neutral-900 dark:text-white">
+        <div class="px-3 py-2 border-b border-neutral-200 dark:border-neutral-700">
+            <h4 class="font-semibold text-xs text-neutral-900 dark:text-white">
                 <span x-text="likesCount"></span> <span x-text="likesCount === 1 ? 'mi piace' : 'mi piace'"></span>
             </h4>
         </div>
-        <div class="max-h-64 overflow-y-auto">
+        <div class="max-h-80 overflow-y-auto">
             <template x-if="loadingLikers">
-                <div class="p-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
-                    <svg class="animate-spin h-5 w-5 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <div class="p-3 text-center text-xs text-neutral-500 dark:text-neutral-400">
+                    <svg class="animate-spin h-4 w-4 mx-auto mb-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -200,28 +205,32 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
                 </div>
             </template>
             <template x-if="!loadingLikers && loadError">
-                <div class="p-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
+                <div class="p-3 text-center text-xs text-neutral-500 dark:text-neutral-400">
                     <div>Errore nel caricamento</div>
                 </div>
             </template>
             <template x-if="!loadingLikers && !loadError && likers.length > 0">
-                <div class="divide-y divide-neutral-200 dark:divide-neutral-700">
+                <div>
                     <template x-for="user in likers" :key="user.id">
-                        <a :href="`/users/${user.id}`" 
-                           class="flex items-center gap-3 p-3 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
-                            <img :src="user.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.name) + '&background=059669&color=fff'"
+                        <a :href="user.profile_url || `/users/${user.id}`" 
+                           class="flex items-center gap-2 px-2 py-1.5 hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
+                            <img :src="user.avatar"
                                  :alt="user.name"
-                                 class="w-10 h-10 rounded-full object-cover ring-2 ring-neutral-200 dark:ring-neutral-700">
+                                 class="w-6 h-6 rounded-full object-cover flex-shrink-0">
                             <div class="flex-1 min-w-0">
-                                <div class="font-medium text-sm text-neutral-900 dark:text-white truncate" x-text="user.nickname || user.name"></div>
-                                <div class="text-xs text-neutral-500 dark:text-neutral-400 truncate" x-text="user.nickname ? user.name : ''"></div>
+                                <div class="font-medium text-xs text-neutral-900 dark:text-white truncate" x-text="user.name"></div>
                             </div>
                         </a>
+                    </template>
+                    <template x-if="remainingLikes > 0">
+                        <div class="px-2 py-1.5 text-xs text-neutral-500 dark:text-neutral-400 border-t border-neutral-200 dark:border-neutral-700">
+                            e altri <span x-text="remainingLikes"></span>
+                        </div>
                     </template>
                 </div>
             </template>
             <template x-if="!loadingLikers && !loadError && likers.length === 0">
-                <div class="p-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
+                <div class="p-3 text-center text-xs text-neutral-500 dark:text-neutral-400">
                     <div>Nessun utente trovato</div>
                 </div>
             </template>
