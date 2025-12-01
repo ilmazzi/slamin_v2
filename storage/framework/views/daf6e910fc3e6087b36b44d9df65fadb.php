@@ -12,17 +12,17 @@
             
             get highlightStyle() {
                 if (!this.highlightRect) return '';
-                return `left: ${this.highlightRect.x - 8}px; top: ${this.highlightRect.y - 8}px; width: ${this.highlightRect.width + 16}px; height: ${this.highlightRect.height + 16}px;`;
+                const r = this.highlightRect;
+                return `left: ${r.x - 8}px; top: ${r.y - 8}px; width: ${r.width + 16}px; height: ${r.height + 16}px;`;
             },
             
             updateHighlight() {
                 const stepData = this.currentStepData;
                 
-                // Rimuovi highlight precedente
+                // Rimuovi tutto
                 document.querySelectorAll('.tutorial-highlight').forEach(el => {
                     el.classList.remove('tutorial-highlight');
                 });
-                
                 this.highlightedElement = null;
                 this.highlightRect = null;
                 
@@ -30,96 +30,83 @@
                     return;
                 }
                 
-                // Cerca l'elemento
-                const element = document.querySelector(`[data-tutorial-focus='${stepData.focusElement}']`);
+                const selector = `[data-tutorial-focus='${stepData.focusElement}']`;
                 
-                if (!element) {
-                    return;
-                }
-                
-                const rect = element.getBoundingClientRect();
-                
-                if (rect.width > 0 && rect.height > 0) {
-                    this.highlightedElement = element;
-                    element.classList.add('tutorial-highlight');
+                // Prova a trovare l'elemento con più tentativi
+                const tryFind = (attempt = 0) => {
+                    const element = document.querySelector(selector);
                     
-                    // Imposta rect immediatamente
-                    this.highlightRect = {
-                        x: rect.left,
-                        y: rect.top,
-                        width: rect.width,
-                        height: rect.height
-                    };
-                    
-                    // Scroll se necessario
-                    if (window.getComputedStyle(element).position !== 'fixed') {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        // Aggiorna dopo scroll
-                        setTimeout(() => {
-                            const newRect = element.getBoundingClientRect();
-                            this.highlightRect = {
-                                x: newRect.left,
-                                y: newRect.top,
-                                width: newRect.width,
-                                height: newRect.height
+                    if (element) {
+                        const rect = element.getBoundingClientRect();
+                        const style = window.getComputedStyle(element);
+                        
+                        if (rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden') {
+                            this.highlightedElement = element;
+                            element.classList.add('tutorial-highlight');
+                            
+                            const updateRect = () => {
+                                const r = element.getBoundingClientRect();
+                                this.highlightRect = {
+                                    x: r.left,
+                                    y: r.top,
+                                    width: r.width,
+                                    height: r.height
+                                };
                             };
-                        }, 500);
+                            
+                            updateRect();
+                            
+                            if (style.position !== 'fixed') {
+                                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                setTimeout(updateRect, 600);
+                            }
+                            
+                            return;
+                        }
                     }
-                }
+                    
+                    // Riprova se non trovato
+                    if (attempt < 5) {
+                        setTimeout(() => tryFind(attempt + 1), 200 * (attempt + 1));
+                    }
+                };
+                
+                tryFind();
             }
         }"
         x-init="
             $watch('$wire.currentStep', () => {
                 currentStep = $wire.currentStep;
-                setTimeout(() => updateHighlight(), 100);
+                updateHighlight();
             });
             
             $watch('$wire.show', (value) => {
                 if (value) {
-                    setTimeout(() => updateHighlight(), 200);
+                    setTimeout(() => updateHighlight(), 100);
                 }
             });
             
             if ($wire.show) {
-                setTimeout(() => updateHighlight(), 200);
+                setTimeout(() => updateHighlight(), 100);
             }
-            
-            // Aggiorna rect su scroll/resize
-            const updateRect = () => {
-                if (highlightedElement) {
-                    const rect = highlightedElement.getBoundingClientRect();
-                    highlightRect = {
-                        x: rect.left,
-                        y: rect.top,
-                        width: rect.width,
-                        height: rect.height
-                    };
-                }
-            };
-            
-            window.addEventListener('scroll', updateRect, { passive: true });
-            window.addEventListener('resize', updateRect);
         "
         class="fixed inset-0 z-[999998]"
         style="display: none;"
         x-show="$wire.show"
         x-cloak
     >
-        <!-- Overlay -->
         <div class="absolute inset-0 pointer-events-auto"
              @click.self="$wire.close()"
              style="z-index: 1;"
              :class="highlightRect && highlightedElement ? 'bg-black/10' : 'bg-black/40 backdrop-blur-sm'">
         </div>
         
-        <!-- Bordo pulsante verde -->
         <div x-show="highlightRect && highlightedElement"
              class="fixed pointer-events-none tutorial-spotlight"
              :style="highlightStyle"
              style="z-index: 1000001;">
         </div>
 
-        <!-- Modal Tutorial -->
         <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none" style="z-index: 1000000;">
             <div class="relative bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl max-w-2xl w-full p-6 md:p-8 pointer-events-auto">
                 <div class="flex items-center justify-between mb-6">
@@ -142,31 +129,20 @@
                         </svg>
                     </button>
                 </div>
-
                 <div class="mb-6">
                     <div class="prose prose-sm dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300" x-html="currentStepData.content"></div>
                 </div>
-
                 <div class="mb-6">
                     <div class="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-2">
                         <div class="bg-primary-600 h-2 rounded-full transition-all duration-300" :style="`width: ${((currentStep + 1) / steps.length) * 100}%`"></div>
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between gap-3">
-                    <button @click="$wire.skip()" class="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors">
-                        Salta tutorial
-                    </button>
+                    <button @click="$wire.skip()" class="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors">Salta tutorial</button>
                     <div class="flex gap-3">
-                        <button x-show="currentStep > 0" @click="$wire.previous()" class="px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 rounded-lg transition-colors">
-                            Indietro
-                        </button>
-                        <button x-show="currentStep < steps.length - 1" @click="$wire.next()" class="px-6 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors shadow-lg">
-                            Prosegui
-                        </button>
-                        <button x-show="currentStep >= steps.length - 1" @click="$wire.close()" class="px-6 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors shadow-lg">
-                            Inizia a esplorare!
-                        </button>
+                        <button x-show="currentStep > 0" @click="$wire.previous()" class="px-4 py-2 text-sm font-medium text-neutral-700 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 rounded-lg transition-colors">Indietro</button>
+                        <button x-show="currentStep < steps.length - 1" @click="$wire.next()" class="px-6 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors shadow-lg">Prosegui</button>
+                        <button x-show="currentStep >= steps.length - 1" @click="$wire.close()" class="px-6 py-2 text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors shadow-lg">Inizia a esplorare!</button>
                     </div>
                 </div>
             </div>
