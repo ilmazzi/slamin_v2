@@ -112,8 +112,7 @@
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach($results['poems'] as $poem)
-                            <a href="javascript:void(0)" 
-                               onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $poem->id }} })"
+                            <a href="{{ route('poems.show', $poem->slug ?? $poem->id) }}" 
                                class="block p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-700">
                                 <h3 class="font-semibold text-neutral-900 dark:text-white mb-2 line-clamp-2">{{ $poem->title }}</h3>
                                 <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">{{ Str::limit(strip_tags($poem->content), 100) }}</p>
@@ -135,7 +134,7 @@
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach($results['articles'] as $article)
-                            <a href="{{ route('articles.show', $article->slug) }}" 
+                            <a href="{{ route('articles.show', $article->slug ?? $article->id) }}" 
                                class="block p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-700">
                                 <h3 class="font-semibold text-neutral-900 dark:text-white mb-2 line-clamp-2">{{ $article->title }}</h3>
                                 <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">{{ Str::limit($article->excerpt ?? strip_tags($article->content), 100) }}</p>

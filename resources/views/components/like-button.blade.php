@@ -35,13 +35,26 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
         
         this.loadingLikers = true;
         try {
-            const response = await fetch(`{{ route('api.like.likers') }}?id={{ $itemId }}&type={{ json_encode($itemType) }}`);
+            // Costruisci l'URL manualmente per evitare errori se la route non esiste
+            const url = `/api/like/likers?id={{ $itemId }}&type={{ json_encode($itemType) }}`;
+            const response = await fetch(url);
+            
+            if (!response.ok) {
+                console.error('Error loading likers: HTTP', response.status);
+                this.loadingLikers = false;
+                return;
+            }
+            
             const data = await response.json();
-            if (data.success) {
-                this.likers = data.users || [];
+            if (data.success && data.users) {
+                this.likers = data.users;
+            } else {
+                console.error('Error loading likers: Invalid response', data);
+                this.likers = [];
             }
         } catch (error) {
             console.error('Error loading likers:', error);
+            this.likers = [];
         } finally {
             this.loadingLikers = false;
         }
@@ -58,7 +71,8 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
         // Mostra tooltip dopo un breve delay
         this.tooltipTimeout = setTimeout(() => {
             this.showTooltip = true;
-            if (this.likers.length === 0) {
+            // Carica sempre i likers quando si apre il tooltip (se non già caricati)
+            if (this.likers.length === 0 && !this.loadingLikers) {
                 this.loadLikers();
             }
         }, 300);
@@ -179,9 +193,9 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
                     Caricamento...
                 </div>
             </template>
-            <template x-if="!loadingLikers && likers.length === 0">
+            <template x-if="!loadingLikers && likers.length === 0 && likesCount > 0">
                 <div class="p-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
-                    Nessun mi piace ancora
+                    Caricamento utenti...
                 </div>
             </template>
             <template x-if="!loadingLikers && likers.length > 0">
