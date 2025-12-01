@@ -9,6 +9,9 @@ return [
     'shared' => 'Shared!',
     'link_copied' => 'Link copied to clipboard!',
     'copy_link' => 'Copy link',
+    'copy_link_description' => 'Copy the link to share anywhere',
+    'share_title' => 'Share',
+    'share_on_social' => 'Or share on',
     
     // Comments
     'comments_title' => '💬 Comments',

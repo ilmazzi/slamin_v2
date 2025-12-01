@@ -4,7 +4,6 @@
         showPreferences: false,
         necessary: true,
         analytics: false,
-        marketing: false,
         
         init() {
             // Check if user has already made a choice
@@ -17,7 +16,6 @@
         acceptAll() {
             this.necessary = true;
             this.analytics = true;
-            this.marketing = true;
             this.savePreferences();
             this.showBanner = false;
         },
@@ -25,7 +23,6 @@
         acceptNecessary() {
             this.necessary = true;
             this.analytics = false;
-            this.marketing = false;
             this.savePreferences();
             this.showBanner = false;
         },
@@ -40,7 +37,6 @@
             const preferences = {
                 necessary: this.necessary,
                 analytics: this.analytics,
-                marketing: this.marketing,
                 timestamp: new Date().toISOString()
             };
             localStorage.setItem('cookie_consent', JSON.stringify(preferences));
@@ -49,23 +45,12 @@
             if (this.analytics) {
                 this.loadAnalytics();
             }
-            
-            // Load marketing scripts if accepted
-            if (this.marketing) {
-                this.loadMarketing();
-            }
         },
         
         loadAnalytics() {
             // Example: Load Google Analytics or similar
             console.log('Analytics cookies enabled');
             // window.gtag && window.gtag('consent', 'update', { 'analytics_storage': 'granted' });
-        },
-        
-        loadMarketing() {
-            // Example: Load marketing scripts
-            console.log('Marketing cookies enabled');
-            // window.gtag && window.gtag('consent', 'update', { 'ad_storage': 'granted' });
         }
     }"
     x-show="showBanner"
@@ -202,23 +187,22 @@
                         </div>
                     </div>
                     
-                    <!-- Marketing Cookies -->
-                    <div class="flex items-start justify-between p-4 bg-white dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-neutral-700">
-                        <div class="flex-1 pr-4">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-lg">🎯</span>
-                                <h5 class="text-sm font-bold text-neutral-900 dark:text-white">
-                                    <?php echo e(__('cookies.marketing_title')); ?>
+                    <!-- Anti-Marketing Statement -->
+                    <div class="p-4 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-lg border-2 border-red-200 dark:border-red-800">
+                        <div class="flex items-start gap-3">
+                            <span class="text-2xl flex-shrink-0">🚫</span>
+                            <div>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h5 class="text-sm font-bold text-red-900 dark:text-red-300">
+                                        <?php echo e(__('cookies.no_marketing_title')); ?>
 
-                                </h5>
+                                    </h5>
+                                </div>
+                                <p class="text-xs text-red-800 dark:text-red-300 leading-relaxed font-medium">
+                                    <?php echo e(__('cookies.no_marketing_statement')); ?>
+
+                                </p>
                             </div>
-                            <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                                <?php echo e(__('cookies.marketing_description')); ?>
-
-                            </p>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <input type="checkbox" x-model="marketing" class="w-5 h-5 rounded border-neutral-300 text-primary-600 focus:ring-primary-500 cursor-pointer">
                         </div>
                     </div>
                 </div>

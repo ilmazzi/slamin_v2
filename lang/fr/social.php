@@ -9,6 +9,9 @@ return [
     'shared' => 'Partagé!',
     'link_copied' => 'Lien copié dans le presse-papiers!',
     'copy_link' => 'Copier le lien',
+    'copy_link_description' => 'Copiez le lien pour le partager n\'importe où',
+    'share_title' => 'Partager',
+    'share_on_social' => 'Ou partager sur',
     
     // Comments
     'comments_title' => '💬 Commentaires',

@@ -9,6 +9,9 @@ return [
     'shared' => 'Condiviso!',
     'link_copied' => 'Link copiato negli appunti!',
     'copy_link' => 'Copia link',
+    'copy_link_description' => 'Copia il link da condividere ovunque',
+    'share_title' => 'Condividi',
+    'share_on_social' => 'Oppure condividi su',
     
     // Comments
     'comments_title' => '💬 Commenti',
