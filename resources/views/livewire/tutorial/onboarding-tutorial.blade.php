@@ -161,6 +161,18 @@
                         width: rect.width,
                         height: rect.height
                     };
+                    console.log('Tutorial: updateHighlightRect called', {
+                        element: this.highlightedElement,
+                        rect: rect,
+                        highlightRect: this.highlightRect
+                    });
+                    // Forza re-render di Alpine.js
+                    this.$nextTick(() => {
+                        // Trigger reactivity
+                        this.highlightRect = { ...this.highlightRect };
+                    });
+                } else {
+                    console.warn('Tutorial: updateHighlightRect called but no highlightedElement');
                 }
             }
         }"
@@ -192,29 +204,29 @@
              @click.self="$wire.close()">
             <!-- Sopra -->
             <div class="absolute top-0 left-0 right-0 bg-black/60 backdrop-blur-sm"
-                 x-bind:style="`height: ${overlayTopHeight};`"></div>
+                 x-bind:style="highlightRect ? `height: ${Math.max(0, highlightRect.y - 8)}px;` : 'height: 0px;'"></div>
             
             <!-- Sotto -->
             <div class="absolute left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm"
-                 x-bind:style="`top: ${overlayBottomTop};`"></div>
+                 x-bind:style="highlightRect ? `top: ${highlightRect.y + highlightRect.height + 8}px;` : 'top: 100%;'"></div>
             
             <!-- Sinistra -->
             <div class="absolute bg-black/60 backdrop-blur-sm"
-                 x-bind:style="`
+                 x-bind:style="highlightRect ? `
                      left: 0;
-                     top: ${overlayTopHeight};
-                     width: ${overlayLeftWidth};
-                     height: ${highlightRect ? highlightRect.height + 16 + 'px' : '0px'};
-                 `"></div>
+                     top: ${Math.max(0, highlightRect.y - 8)}px;
+                     width: ${Math.max(0, highlightRect.x - 8)}px;
+                     height: ${highlightRect.height + 16}px;
+                 ` : 'display: none;'"></div>
             
             <!-- Destra -->
             <div class="absolute bg-black/60 backdrop-blur-sm"
-                 x-bind:style="`
+                 x-bind:style="highlightRect ? `
                      right: 0;
-                     top: ${overlayTopHeight};
-                     width: ${overlayRightWidth};
-                     height: ${highlightRect ? highlightRect.height + 16 + 'px' : '0px'};
-                 `"></div>
+                     top: ${Math.max(0, highlightRect.y - 8)}px;
+                     left: ${highlightRect.x + highlightRect.width + 8}px;
+                     height: ${highlightRect.height + 16}px;
+                 ` : 'display: none;'"></div>
         </div>
         
         <!-- Overlay completo quando non c'è elemento evidenziato -->
