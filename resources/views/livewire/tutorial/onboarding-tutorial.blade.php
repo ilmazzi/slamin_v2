@@ -70,6 +70,7 @@
                 document.querySelectorAll('.tutorial-highlight').forEach(el => {
                     el.classList.remove('tutorial-highlight');
                 });
+                console.log('Tutorial: updateHighlight - clearing previous highlight');
                 this.highlightedElement = null;
                 this.highlightRect = null;
                 
@@ -82,29 +83,33 @@
                         const selector = `[data-tutorial-focus='${stepData.focusElement}']`;
                         console.log('Tutorial: Searching for selector:', selector);
                         const allElements = document.querySelectorAll(selector);
-                        console.log('Tutorial: Found elements:', allElements.length, allElements);
+                        console.log('Tutorial: Found elements:', allElements.length, Array.from(allElements));
                         
                         let element = null;
                         
-                        // Cerca l'elemento visibile
+                        // Cerca l'elemento - meno restrittivo
                         for (let el of allElements) {
                             const rect = el.getBoundingClientRect();
                             const style = window.getComputedStyle(el);
+                            const isVisible = rect.width > 0 && rect.height > 0 && 
+                                            style.display !== 'none' && 
+                                            style.visibility !== 'hidden';
+                            
                             console.log('Tutorial: Checking element:', el, {
                                 tagName: el.tagName,
                                 rect: { width: rect.width, height: rect.height, left: rect.left, top: rect.top },
                                 display: style.display,
                                 visibility: style.visibility,
-                                opacity: style.opacity
+                                opacity: style.opacity,
+                                isVisible: isVisible
                             });
                             
-                            if (rect.width > 0 && rect.height > 0 && 
-                                style.display !== 'none' && 
-                                style.visibility !== 'hidden' &&
-                                parseFloat(style.opacity) > 0) {
+                            // Accetta elementi visibili (anche con opacity bassa)
+                            if (isVisible) {
                                 // Preferisci nav se disponibile
                                 if (el.tagName === 'NAV' || !element) {
                                     element = el;
+                                    console.log('Tutorial: Element selected:', element);
                                 }
                             }
                         }
@@ -114,22 +119,41 @@
                             this.highlightElement(element);
                         } else {
                             console.warn('Tutorial: No visible element found for:', stepData.focusElement);
-                            console.warn('Tutorial: All elements with data-tutorial-focus:', document.querySelectorAll('[data-tutorial-focus]'));
+                            const allTutorialElements = document.querySelectorAll('[data-tutorial-focus]');
+                            console.warn('Tutorial: All elements with data-tutorial-focus:', Array.from(allTutorialElements).map(el => ({
+                                focus: el.getAttribute('data-tutorial-focus'),
+                                tag: el.tagName,
+                                visible: el.getBoundingClientRect().width > 0
+                            })));
                             this.highlightRect = null;
                             this.highlightedElement = null;
                         }
                     };
                     
                     // Prova subito
-                    setTimeout(findAndHighlight, 200);
+                    setTimeout(findAndHighlight, 100);
                     
-                    // Riprova dopo un po' se non trovato
+                    // Riprova più volte se non trovato
                     setTimeout(() => {
                         if (!this.highlightedElement) {
-                            console.log('Tutorial: Retrying to find element...');
+                            console.log('Tutorial: Retry 1 - finding element...');
+                            findAndHighlight();
+                        }
+                    }, 500);
+                    
+                    setTimeout(() => {
+                        if (!this.highlightedElement) {
+                            console.log('Tutorial: Retry 2 - finding element...');
                             findAndHighlight();
                         }
                     }, 1000);
+                    
+                    setTimeout(() => {
+                        if (!this.highlightedElement) {
+                            console.log('Tutorial: Retry 3 - finding element...');
+                            findAndHighlight();
+                        }
+                    }, 2000);
                 }
             },
             highlightElement(element) {
@@ -267,8 +291,15 @@
                     setTimeout(() => updateHighlight(), 300);
                 }
             });
-            $watch('highlightRect', (value) => {
-                console.log('Tutorial: highlightRect changed', value);
+            $watch('highlightRect', (value, oldValue) => {
+                console.log('Tutorial: highlightRect changed', {
+                    from: oldValue,
+                    to: value,
+                    hasHighlightedElement: !!highlightedElement
+                });
+            });
+            $watch('highlightedElement', (value) => {
+                console.log('Tutorial: highlightedElement changed', value ? value.getAttribute('data-tutorial-focus') : null);
             });
             if ($wire.show) {
                 setTimeout(() => updateHighlight(), 300);
@@ -298,9 +329,10 @@
         
         <!-- Bordo pulsante attorno all'elemento evidenziato (sopra overlay) -->
         <div x-show="highlightRect && highlightedElement"
+             x-cloak
              class="fixed pointer-events-none tutorial-spotlight"
              x-bind:style="highlightStyle"
-             style="display: none; z-index: 1000001;">
+             style="z-index: 1000001;">
         </div>
 
         <!-- Tutorial Modal -->
