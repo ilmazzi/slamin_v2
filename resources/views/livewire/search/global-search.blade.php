@@ -115,7 +115,7 @@
                             <a href="{{ route('poems.show', $poem->slug ?? $poem->id) }}" 
                                class="block p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-700">
                                 <h3 class="font-semibold text-neutral-900 dark:text-white mb-2 line-clamp-2">{{ $poem->title }}</h3>
-                                <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">{{ Str::limit(strip_tags($poem->content), 100) }}</p>
+                                <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">{{ \App\Helpers\PlaceholderHelper::cleanHtmlContent($poem->content, 100) }}</p>
                                 <p class="text-xs text-neutral-500 dark:text-neutral-500 mt-2">{{ $poem->user->name }}</p>
                             </a>
                         @endforeach
@@ -137,7 +137,7 @@
                             <a href="{{ route('articles.show', $article->slug ?? $article->id) }}" 
                                class="block p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors border border-neutral-200 dark:border-neutral-700">
                                 <h3 class="font-semibold text-neutral-900 dark:text-white mb-2 line-clamp-2">{{ $article->title }}</h3>
-                                <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">{{ Str::limit($article->excerpt ?? strip_tags($article->content), 100) }}</p>
+                                <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">{{ $article->excerpt ?? \App\Helpers\PlaceholderHelper::cleanHtmlContent($article->content, 100) }}</p>
                                 <p class="text-xs text-neutral-500 dark:text-neutral-500 mt-2">{{ $article->user->name }}</p>
                             </a>
                         @endforeach

@@ -79,7 +79,7 @@
             
             <!-- Excerpt -->
             <p class="text-neutral-700 dark:text-neutral-300 italic line-clamp-3 text-sm mb-4 font-poem leading-relaxed flex-1">
-                {{ $poem->description ?? Str::limit(strip_tags($poem->content), 100) }}
+                {{ \App\Helpers\PlaceholderHelper::cleanHtmlContent($poem->description ?? $poem->content, 100) }}
             </p>
             
             <!-- Tags -->

@@ -10,7 +10,7 @@
                 ->limit(8)
                 ->get()
                 ->map(function($p) {
-                    $content = strip_tags($p->content);
+                    $content = \App\Helpers\PlaceholderHelper::cleanHtmlContent($p->content);
                     $lines = array_filter(explode("\n", $content));
                     if (empty($lines)) return null;
                     $verse = trim($lines[array_rand($lines)]);
@@ -105,7 +105,7 @@
                         <!-- Estratto GRANDE -->
                         <p class="text-xl md:text-2xl text-neutral-600 dark:text-neutral-400 
                                   font-poem italic leading-relaxed mb-8 line-clamp-4">
-                            {{ strip_tags($poem->content) ? Str::limit(strip_tags($poem->content), 280) : $poem->description }}
+                            {{ \App\Helpers\PlaceholderHelper::cleanHtmlContent($poem->content ?: $poem->description, 280) }}
                         </p>
                         
                         <div class="flex items-center justify-between pt-6 border-t border-neutral-200 dark:border-neutral-700">
@@ -158,7 +158,7 @@
                             
                             <p class="text-neutral-600 dark:text-neutral-400 
                                       font-poem italic line-clamp-3 mb-6">
-                                {{ strip_tags($p->content) ? Str::limit(strip_tags($p->content), 150) : $p->description }}
+                                {{ \App\Helpers\PlaceholderHelper::cleanHtmlContent($p->content ?: $p->description, 150) }}
                             </p>
                             
                             <div class="flex items-center justify-between pt-4 border-t border-neutral-200 dark:border-neutral-700">
@@ -210,7 +210,7 @@
                             
                             <p class="text-lg text-neutral-600 dark:text-neutral-400 
                                       font-poem italic leading-relaxed line-clamp-5 mb-6">
-                                {{ strip_tags($poem->content) ? Str::limit(strip_tags($poem->content), 300) : $poem->description }}
+                                {{ \App\Helpers\PlaceholderHelper::cleanHtmlContent($poem->content ?: $poem->description, 300) }}
                             </p>
                             
                             <div class="flex items-center justify-between pt-6 border-t border-neutral-200 dark:border-neutral-700">
@@ -272,7 +272,7 @@
                     <div class="text-xl md:text-2xl text-neutral-700 dark:text-neutral-300 
                                 font-poem italic leading-relaxed mb-8 
                                 line-clamp-6 max-w-3xl mx-auto whitespace-pre-line">
-                        {{ strip_tags($poem->content) ? Str::limit(strip_tags($poem->content), 400) : $poem->description }}
+                        {{ \App\Helpers\PlaceholderHelper::cleanHtmlContent($poem->content ?: $poem->description, 400) }}
                     </div>
                     
                     <!-- Footer -->
@@ -315,7 +315,7 @@
                             
                             <p class="text-lg text-neutral-600 dark:text-neutral-400 
                                       font-poem italic leading-relaxed line-clamp-4 mb-6">
-                                {{ strip_tags($poem->content) ? Str::limit(strip_tags($poem->content), 220) : $poem->description }}
+                                {{ \App\Helpers\PlaceholderHelper::cleanHtmlContent($poem->content ?: $poem->description, 220) }}
                             </p>
                             
                             <div class="flex items-center justify-between">

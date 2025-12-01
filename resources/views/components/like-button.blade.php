@@ -29,18 +29,17 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
     likers: [],
     loadingLikers: false,
     tooltipTimeout: null,
+    hideTimeout: null,
     
     async loadLikers() {
-        if (this.likesCount === 0 || this.loadingLikers) return;
+        if (this.likesCount === 0 || this.loadingLikers || this.likers.length > 0) return;
         
         this.loadingLikers = true;
         try {
-            // Costruisci l'URL manualmente per evitare errori se la route non esiste
             const url = `/api/like/likers?id={{ $itemId }}&type={{ json_encode($itemType) }}`;
             const response = await fetch(url);
             
             if (!response.ok) {
-                console.error('Error loading likers: HTTP', response.status);
                 this.loadingLikers = false;
                 return;
             }
@@ -49,11 +48,9 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
             if (data.success && data.users) {
                 this.likers = data.users;
             } else {
-                console.error('Error loading likers: Invalid response', data);
                 this.likers = [];
             }
         } catch (error) {
-            console.error('Error loading likers:', error);
             this.likers = [];
         } finally {
             this.loadingLikers = false;
@@ -63,27 +60,33 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
     showLikersTooltip() {
         if (this.likesCount === 0) return;
         
-        // Cancella timeout precedente
-        if (this.tooltipTimeout) {
-            clearTimeout(this.tooltipTimeout);
+        // Cancella timeout di nascondimento
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+            this.hideTimeout = null;
         }
         
-        // Mostra tooltip dopo un breve delay
-        this.tooltipTimeout = setTimeout(() => {
-            this.showTooltip = true;
-            // Carica sempre i likers quando si apre il tooltip (se non già caricati)
-            if (this.likers.length === 0 && !this.loadingLikers) {
-                this.loadLikers();
-            }
-        }, 300);
+        // Carica i dati immediatamente
+        this.loadLikers();
+        
+        // Mostra tooltip immediatamente (senza delay)
+        this.showTooltip = true;
     },
     
     hideLikersTooltip() {
-        if (this.tooltipTimeout) {
-            clearTimeout(this.tooltipTimeout);
-        }
-        this.showTooltip = false;
+        // Piccolo delay per permettere di spostare il mouse sul tooltip
+        this.hideTimeout = setTimeout(() => {
+            this.showTooltip = false;
+        }, 150);
     },
+    
+    init() {
+        // Pre-carica i dati se ci sono like (in background)
+        if (this.likesCount > 0 && this.likesCount <= 10) {
+            // Pre-carica solo se ci sono pochi like (per non sovraccaricare)
+            setTimeout(() => this.loadLikers(), 500);
+        }
+    }
     
     toggleLike() {
         @guest
@@ -153,7 +156,9 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
             });
         });
     }
-}" {{ $attributes->merge(['class' => 'inline-flex items-center gap-1 relative']) }}>
+}" 
+     x-init="init()"
+     {{ $attributes->merge(['class' => 'inline-flex items-center gap-1 relative']) }}>
     <button type="button"
             @click="toggleLike()"
             @mouseenter="showLikersTooltip()"
@@ -178,7 +183,7 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
          x-transition:leave="transition ease-in duration-150"
          x-transition:leave-start="opacity-100 scale-100"
          x-transition:leave-end="opacity-0 scale-95"
-         @mouseenter="showTooltip = true"
+         @mouseenter="if (hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; }"
          @mouseleave="hideLikersTooltip()"
          class="absolute bottom-full left-0 mb-2 w-64 bg-white dark:bg-neutral-800 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-700 z-50 overflow-hidden"
          style="display: none;">
@@ -190,12 +195,10 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
         <div class="max-h-64 overflow-y-auto">
             <template x-if="loadingLikers">
                 <div class="p-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
-                    Caricamento...
-                </div>
-            </template>
-            <template x-if="!loadingLikers && likers.length === 0 && likesCount > 0">
-                <div class="p-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
-                    Caricamento utenti...
+                    <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
                 </div>
             </template>
             <template x-if="!loadingLikers && likers.length > 0">

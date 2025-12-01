@@ -281,7 +281,7 @@
                                 </a>
                             </div>
                             <h3>"{{ $poem->title ?: __('poems.untitled') }}"</h3>
-                            <p>{{ Str::limit(strip_tags($poem->content), 150) }}</p>
+                            <p>{{ \App\Helpers\PlaceholderHelper::cleanHtmlContent($poem->content, 150) }}</p>
                             <div class="paper-footer" @click.stop>
                                 <x-like-button :itemId="$poem->id" itemType="poem" :isLiked="$poem->is_liked ?? false" :likesCount="$poem->like_count ?? 0" size="sm" />
                                 <x-comment-button :itemId="$poem->id" itemType="poem" :commentsCount="$poem->comment_count ?? 0" size="sm" />

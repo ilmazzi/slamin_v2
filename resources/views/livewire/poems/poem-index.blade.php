@@ -210,7 +210,7 @@
                                         
                                         {{-- Poem Content --}}
                                         <div class="paper-content">
-                                            {{ $poem->description ?? Str::limit(strip_tags($poem->content), 180) }}
+                                            {{ \App\Helpers\PlaceholderHelper::cleanHtmlContent($poem->description ?? $poem->content, 180) }}
                                         </div>
                                         
                                         {{-- Read more hint --}}

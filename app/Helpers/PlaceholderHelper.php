@@ -7,6 +7,38 @@ use App\Models\PlaceholderSetting;
 class PlaceholderHelper
 {
     /**
+     * Pulisce il contenuto HTML rimuovendo tag, entità HTML e spazi multipli
+     */
+    public static function cleanHtmlContent($content, $limit = null)
+    {
+        if (empty($content)) {
+            return '';
+        }
+        
+        // Rimuovi tag HTML
+        $content = strip_tags($content);
+        
+        // Decodifica entità HTML (come &nbsp;, &amp;, etc.)
+        $content = html_entity_decode($content, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        
+        // Sostituisci &nbsp; con spazi normali (per sicurezza, anche se già decodificato)
+        $content = str_replace(['&nbsp;', "\xC2\xA0"], ' ', $content);
+        
+        // Rimuovi spazi multipli e sostituiscili con uno spazio singolo
+        $content = preg_replace('/\s+/', ' ', $content);
+        
+        // Trim
+        $content = trim($content);
+        
+        // Limita se richiesto
+        if ($limit !== null) {
+            $content = \Illuminate\Support\Str::limit($content, $limit);
+        }
+        
+        return $content;
+    }
+
+    /**
      * Genera l'URL del placeholder per una poesia (ora usa data URI)
      */
     public static function getPoemPlaceholderUrl($width = 300, $height = 200)
