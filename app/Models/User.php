@@ -99,6 +99,7 @@ class User extends Authenticatable implements MustVerifyEmail
         // Terms and Privacy acceptance
         'terms_accepted_at',
         'privacy_accepted_at',
+        'tutorial_completed_at',
         
         // Account deletion
         'deletion_reason',
@@ -144,6 +145,7 @@ class User extends Authenticatable implements MustVerifyEmail
             // Terms and Privacy acceptance
             'terms_accepted_at' => 'datetime',
             'privacy_accepted_at' => 'datetime',
+            'tutorial_completed_at' => 'datetime',
         ];
     }
 

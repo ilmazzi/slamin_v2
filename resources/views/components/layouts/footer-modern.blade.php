@@ -33,6 +33,15 @@
                     <li><a href="{{ route('help') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.help') }}</a></li>
                     <li><a href="{{ route('support') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.support') }}</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.contact') }}</a></li>
+                    @auth
+                    <li>
+                        <button onclick="Livewire.dispatch('openTutorial')" 
+                                class="hover:text-primary-400 transition-colors flex items-center gap-2 text-left">
+                            <span>📚</span>
+                            <span>{{ __('footer.tutorial') }}</span>
+                        </button>
+                    </li>
+                    @endauth
                 </ul>
             </div>
 

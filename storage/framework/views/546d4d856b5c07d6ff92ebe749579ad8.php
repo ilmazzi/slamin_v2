@@ -9,7 +9,7 @@
      })">
 
 <!-- Desktop Sidebar - Hidden on Mobile -->
-<aside class="hidden lg:fixed lg:block left-0 top-16 bottom-0 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transition-all duration-300 z-40 overflow-visible"
+<aside data-tutorial-focus="sidebar-nav" class="hidden lg:fixed lg:block left-0 top-16 bottom-0 bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800 transition-all duration-300 z-40 overflow-visible"
        :class="collapsed ? 'w-20' : 'w-64'">
     
     <!-- Sidebar Content -->

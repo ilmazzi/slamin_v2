@@ -427,6 +427,11 @@
         <livewire:poems.poem-modal />
     @endif
 
+    <!-- Tutorial Onboarding -->
+    @auth
+        <livewire:tutorial.onboarding-tutorial />
+    @endauth
+    
     <!-- Cookie Banner -->
     <x-cookie-banner />
     

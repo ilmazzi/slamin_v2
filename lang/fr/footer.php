@@ -20,10 +20,11 @@ return [
     
     // Community links
     'faq' => 'FAQ',
-    'help' => 'Aiuto',
-    'support' => 'Supporto',
-    'contact' => 'Contatti',
-    'guidelines' => 'Linee Guida',
+    'help' => 'Aide',
+    'support' => 'Support',
+    'contact' => 'Contact',
+    'guidelines' => 'Lignes Directrices',
+    'tutorial' => 'Tutoriel',
     
     // Legal links
     'terms' => 'Termini di Servizio',

@@ -24,6 +24,7 @@ return [
     'support' => 'Supporto',
     'contact' => 'Contatti',
     'guidelines' => 'Linee Guida',
+    'tutorial' => 'Tutorial',
     
     // Legal links
     'terms' => 'Termini di Servizio',

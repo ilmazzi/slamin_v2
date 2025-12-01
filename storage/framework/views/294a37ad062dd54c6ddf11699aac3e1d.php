@@ -18,7 +18,7 @@
             </button>
 
             <!-- Logo (Responsive: piccolo su mobile, orizzontale su desktop) -->
-            <a href="<?php echo e(route('home')); ?>" class="flex items-center">
+            <a href="<?php echo e(route('home')); ?>" data-tutorial-focus="logo-link" class="flex items-center">
                 <!-- Logo piccolo mobile - Light mode (più grande) -->
                 <img src="<?php echo e(asset('assets/images/loghino-biancosunero.png')); ?>" 
                      alt="<?php echo e(config('app.name')); ?>" 
@@ -57,6 +57,7 @@
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
             <!-- Dashboard Direct Link -->
             <a href="<?php echo e(route('dashboard.index')); ?>" 
+               data-tutorial-focus="dashboard-link"
                class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors relative"
                title="Dashboard">
                 <svg class="w-6 h-6 text-neutral-700 dark:!text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -233,6 +234,7 @@ if (isset($__slots)) unset($__slots);
             <!-- Profile Menu -->
             <div class="relative" @click.away="profileOpen = false">
                 <button @click="profileOpen = !profileOpen"
+                        data-tutorial-focus="user-menu"
                         class="flex items-center gap-2 p-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors">
                     <img src="<?php echo e(auth()->user()->profile_photo_url); ?>" 
                          alt="<?php echo e(auth()->user()->name); ?>" 

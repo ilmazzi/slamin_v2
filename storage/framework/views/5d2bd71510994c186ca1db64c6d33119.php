@@ -34,6 +34,15 @@
                     <li><a href="<?php echo e(route('help')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.help')); ?></a></li>
                     <li><a href="<?php echo e(route('support')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.support')); ?></a></li>
                     <li><a href="<?php echo e(route('contact')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.contact')); ?></a></li>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
+                    <li>
+                        <button wire:click="$dispatch('openTutorial')" 
+                                class="hover:text-primary-400 transition-colors flex items-center gap-2">
+                            <span>📚</span>
+                            <span><?php echo e(__('footer.tutorial')); ?></span>
+                        </button>
+                    </li>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </ul>
             </div>
 
