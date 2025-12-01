@@ -314,6 +314,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/articles/layout', \App\Livewire\Admin\ArticleLayoutManager::class)
         ->name('articles.layout');
     
+    // Categories
+    Route::get('/categories/articles', \App\Livewire\Admin\Categories\ArticleCategoryList::class)
+        ->name('categories.articles');
+    Route::get('/categories/poems', \App\Livewire\Admin\Categories\PoemCategoryList::class)
+        ->name('categories.poems');
+    
     // Admin Settings (Main page with all links)
     Route::get('/settings', \App\Livewire\Admin\Settings\AdminSettings::class)
         ->name('settings');
