@@ -66,11 +66,13 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
             this.hideTimeout = null;
         }
         
-        // Carica i dati immediatamente
-        this.loadLikers();
-        
-        // Mostra tooltip immediatamente (senza delay)
+        // Mostra tooltip immediatamente
         this.showTooltip = true;
+        
+        // Carica i dati se non già caricati
+        if (this.likers.length === 0 && !this.loadingLikers) {
+            this.loadLikers();
+        }
     },
     
     hideLikersTooltip() {
@@ -79,14 +81,6 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
             this.showTooltip = false;
         }, 150);
     },
-    
-    init() {
-        // Pre-carica i dati se ci sono like (in background)
-        if (this.likesCount > 0 && this.likesCount <= 10) {
-            // Pre-carica solo se ci sono pochi like (per non sovraccaricare)
-            setTimeout(() => this.loadLikers(), 500);
-        }
-    }
     
     toggleLike() {
         @guest
@@ -157,7 +151,6 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
         });
     }
 }" 
-     x-init="init()"
      {{ $attributes->merge(['class' => 'inline-flex items-center gap-1 relative']) }}>
     <button type="button"
             @click="toggleLike()"
@@ -172,7 +165,7 @@ $textSize = $textSizeClasses[$size] ?? $textSizeClasses['md'];
                 : 'filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(89%) contrast(86%);'">
         <span class="font-medium {{ $textSize }}" 
               :style="'color: ' + (liked ? '#059669' : '#525252')" 
-              x-text="likesCount"></span>
+              x-text="likesCount">{{ $likesCount }}</span>
     </button>
     
     <!-- Tooltip con utenti che hanno messo like -->
