@@ -38,6 +38,32 @@
                 const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
                 return `${Math.max(0, viewportWidth - this.highlightRect.x - this.highlightRect.width - 8)}px`;
             },
+            get overlayTopStyle() {
+                if (!this.highlightRect) return '';
+                return `height: ${Math.max(0, this.highlightRect.y - 8)}px;`;
+            },
+            get overlayBottomStyle() {
+                if (!this.highlightRect) return '';
+                return `top: ${this.highlightRect.y + this.highlightRect.height + 8}px;`;
+            },
+            get overlayLeftStyle() {
+                if (!this.highlightRect) return '';
+                return `
+                    left: 0;
+                    top: ${Math.max(0, this.highlightRect.y - 8)}px;
+                    width: ${Math.max(0, this.highlightRect.x - 8)}px;
+                    height: ${this.highlightRect.height + 16}px;
+                `;
+            },
+            get overlayRightStyle() {
+                if (!this.highlightRect) return '';
+                return `
+                    right: 0;
+                    top: ${Math.max(0, this.highlightRect.y - 8)}px;
+                    left: ${this.highlightRect.x + this.highlightRect.width + 8}px;
+                    height: ${this.highlightRect.height + 16}px;
+                `;
+            },
             updateHighlight() {
                 // Remove previous highlights
                 document.querySelectorAll('.tutorial-highlight').forEach(el => {
@@ -47,54 +73,62 @@
                 this.highlightRect = null;
                 
                 const stepData = this.currentStepData;
+                console.log('Tutorial: updateHighlight called for step', this.currentStep, 'focusElement:', stepData?.focusElement);
+                
                 if (stepData && stepData.focusElement) {
-                    setTimeout(() => {
-                        // Prova a trovare l'elemento - preferisci nav se disponibile
-                        let element = null;
-                        const allElements = document.querySelectorAll(`[data-tutorial-focus='${stepData.focusElement}']`);
+                    // Funzione per cercare e evidenziare l'elemento
+                    const findAndHighlight = () => {
+                        const selector = `[data-tutorial-focus='${stepData.focusElement}']`;
+                        console.log('Tutorial: Searching for selector:', selector);
+                        const allElements = document.querySelectorAll(selector);
+                        console.log('Tutorial: Found elements:', allElements.length, allElements);
                         
-                        if (allElements.length > 0) {
-                            // Se ci sono più elementi, preferisci nav o l'elemento più piccolo/visibile
-                            for (let el of allElements) {
-                                const rect = el.getBoundingClientRect();
-                                if (rect.width > 0 && rect.height > 0) {
-                                    // Preferisci nav se disponibile, altrimenti il primo visibile
-                                    if (el.tagName === 'NAV' || !element) {
-                                        element = el;
-                                    }
+                        let element = null;
+                        
+                        // Cerca l'elemento visibile
+                        for (let el of allElements) {
+                            const rect = el.getBoundingClientRect();
+                            const style = window.getComputedStyle(el);
+                            console.log('Tutorial: Checking element:', el, {
+                                tagName: el.tagName,
+                                rect: { width: rect.width, height: rect.height, left: rect.left, top: rect.top },
+                                display: style.display,
+                                visibility: style.visibility,
+                                opacity: style.opacity
+                            });
+                            
+                            if (rect.width > 0 && rect.height > 0 && 
+                                style.display !== 'none' && 
+                                style.visibility !== 'hidden' &&
+                                parseFloat(style.opacity) > 0) {
+                                // Preferisci nav se disponibile
+                                if (el.tagName === 'NAV' || !element) {
+                                    element = el;
                                 }
                             }
                         }
                         
-                        // Se non trovato, aspetta un po' e riprova (per elementi che potrebbero essere caricati dinamicamente)
-                        if (!element) {
-                            setTimeout(() => {
-                                const retryElements = document.querySelectorAll(`[data-tutorial-focus='${stepData.focusElement}']`);
-                                if (retryElements.length > 0) {
-                                    for (let el of retryElements) {
-                                        const rect = el.getBoundingClientRect();
-                                        if (rect.width > 0 && rect.height > 0) {
-                                            if (el.tagName === 'NAV' || !element) {
-                                                element = el;
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                                if (element) {
-                                    this.highlightElement(element);
-                                } else {
-                                    console.warn('Tutorial: Element not found after retry:', stepData.focusElement);
-                                    console.warn('Tutorial: Found elements:', document.querySelectorAll(`[data-tutorial-focus]`));
-                                    // Se non trovato, nascondi l'overlay per non bloccare l'utente
-                                    this.highlightRect = null;
-                                    this.highlightedElement = null;
-                                }
-                            }, 500);
-                        } else {
+                        if (element) {
+                            console.log('Tutorial: Element found, highlighting:', element);
                             this.highlightElement(element);
+                        } else {
+                            console.warn('Tutorial: No visible element found for:', stepData.focusElement);
+                            console.warn('Tutorial: All elements with data-tutorial-focus:', document.querySelectorAll('[data-tutorial-focus]'));
+                            this.highlightRect = null;
+                            this.highlightedElement = null;
                         }
-                    }, 200);
+                    };
+                    
+                    // Prova subito
+                    setTimeout(findAndHighlight, 200);
+                    
+                    // Riprova dopo un po' se non trovato
+                    setTimeout(() => {
+                        if (!this.highlightedElement) {
+                            console.log('Tutorial: Retrying to find element...');
+                            findAndHighlight();
+                        }
+                    }, 1000);
                 }
             },
             highlightElement(element) {
@@ -109,25 +143,30 @@
                 
                 // Verifica che l'elemento sia visibile
                 const rect = element.getBoundingClientRect();
-                console.log('Tutorial: Element rect:', rect);
+                const style = window.getComputedStyle(element);
+                console.log('Tutorial: Element rect:', rect, 'style:', {
+                    display: style.display,
+                    visibility: style.visibility,
+                    opacity: style.opacity,
+                    position: style.position
+                });
                 
                 if (rect.width === 0 || rect.height === 0) {
                     console.warn('Tutorial: Element found but not visible (width or height is 0):', element);
-                    // Prova a forzare la visibilità se è nascosto
-                    const computedStyle = window.getComputedStyle(element);
-                    if (computedStyle.display === 'none') {
-                        console.warn('Tutorial: Element is display:none, cannot highlight');
-                    }
                     this.highlightRect = null;
                     this.highlightedElement = null;
                     return;
                 }
                 
                 // Scroll solo se necessario (non per elementi fixed)
-                const isFixed = window.getComputedStyle(element).position === 'fixed';
+                const isFixed = style.position === 'fixed';
                 if (!isFixed) {
                     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
+                
+                // Aggiorna il rect immediatamente PRIMA di aggiungere la classe
+                this.updateHighlightRect();
+                console.log('Tutorial: Initial highlight rect:', this.highlightRect);
                 
                 setTimeout(() => {
                     element.classList.add('tutorial-highlight');
@@ -137,9 +176,15 @@
                     }
                     element.style.zIndex = '1000002';
                     
-                    // Aggiorna il rect immediatamente
+                    // Aggiorna il rect di nuovo dopo lo scroll
                     this.updateHighlightRect();
-                    console.log('Tutorial: Highlight rect updated:', this.highlightRect);
+                    console.log('Tutorial: Highlight rect after scroll:', this.highlightRect);
+                    
+                    // Forza reattività di Alpine.js
+                    this.$nextTick(() => {
+                        this.highlightRect = { ...this.highlightRect };
+                        console.log('Tutorial: Forced reactivity update, highlightRect:', this.highlightRect);
+                    });
                     
                     // Update rect periodically per gestire scroll/resize
                     const interval = setInterval(() => {
@@ -186,6 +231,9 @@
                     setTimeout(() => updateHighlight(), 300);
                 }
             });
+            $watch('highlightRect', (value) => {
+                console.log('Tutorial: highlightRect changed', value);
+            });
             if ($wire.show) {
                 setTimeout(() => updateHighlight(), 300);
             }
@@ -197,24 +245,35 @@
         x-show="$wire.show"
         x-cloak
     >
-        <!-- Overlay base sempre presente -->
+        <!-- Overlay base -->
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
              @click.self="$wire.close()"
-             style="z-index: 1;">
+             style="z-index: 1;"
+             x-show="!highlightRect || !highlightedElement">
         </div>
         
-        <!-- Buco nell'overlay usando box-shadow trick -->
+        <!-- Overlay con buco - 4 div che coprono tutto tranne l'elemento -->
         <div x-show="highlightRect && highlightedElement"
-             class="fixed pointer-events-none"
-             style="z-index: 2; display: none;"
-             x-bind:style="highlightRect ? `
-                 left: ${highlightRect.x - 8}px;
-                 top: ${highlightRect.y - 8}px;
-                 width: ${highlightRect.width + 16}px;
-                 height: ${highlightRect.height + 16}px;
-                 box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
-                 border-radius: 12px;
-             ` : ''">
+             x-cloak
+             class="absolute inset-0 pointer-events-none"
+             style="z-index: 2;"
+             x-effect="if (highlightRect && highlightedElement) { 
+                 console.log('Overlay hole should be visible', highlightRect);
+                 console.log('Overlay styles:', {
+                     top: overlayTopStyle,
+                     bottom: overlayBottomStyle,
+                     left: overlayLeftStyle,
+                     right: overlayRightStyle
+                 });
+             }">
+            <div class="absolute top-0 left-0 right-0 bg-black/60 backdrop-blur-sm"
+                 x-bind:style="overlayTopStyle"></div>
+            <div class="absolute left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm"
+                 x-bind:style="overlayBottomStyle"></div>
+            <div class="absolute bg-black/60 backdrop-blur-sm"
+                 x-bind:style="overlayLeftStyle"></div>
+            <div class="absolute bg-black/60 backdrop-blur-sm"
+                 x-bind:style="overlayRightStyle"></div>
         </div>
         
         <!-- Bordo pulsante attorno all'elemento evidenziato (sopra overlay) -->
