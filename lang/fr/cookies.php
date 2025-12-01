@@ -26,6 +26,10 @@ return [
     'marketing_title' => 'Cookies Marketing',
     'marketing_description' => 'Ces cookies suivent les visiteurs sur les sites web pour afficher des publicités pertinentes et engageantes.',
     
+    // Anti-Marketing Statement
+    'no_marketing_title' => 'Cookies Marketing',
+    'no_marketing_statement' => 'Ce site ne collecte pas et ne collectera jamais de cookies de marketing, car nous refusons la logique capitaliste qui exploite la désinformation et la bienveillance des gens à des fins lucratives. Pour cette raison, nous n\'avons pas besoin de demander votre consentement, car cet aspect de la vie privée et de la sécurité est protégé.',
+    
     // Cookie Policy Page
     'policy_title' => 'Politique des Cookies',
     'policy_version' => 'v1.0 - Décembre 2025',
