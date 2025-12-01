@@ -17,6 +17,7 @@
         <!-- User Info (Top) -->
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
         <a href="<?php echo e(route('profile.show')); ?>"
+           data-tutorial-focus="profile-sidebar"
            class="p-4 border-b border-neutral-200 dark:border-neutral-800 block"
            :class="collapsed && 'px-2'">
             <div class="flex items-center gap-3"
@@ -100,6 +101,7 @@
                 <!-- Ingaggi -->
                 <li class="relative" x-data="{ tooltip: false }">
                     <a href="<?php echo e(route('gigs.index')); ?>" 
+                       data-tutorial-focus="gigs-link"
                        @mouseenter="collapsed && (tooltip = true)"
                        @mouseleave="tooltip = false"
                        x-ref="gigsLink"
@@ -362,7 +364,7 @@
     <div class="flex flex-col h-full">
         <!-- User Info (Top) -->
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
-        <a href="<?php echo e(route('profile.show')); ?>" class="block p-4 border-b border-neutral-200 dark:border-neutral-800">
+        <a href="<?php echo e(route('profile.show')); ?>" data-tutorial-focus="profile-sidebar" class="block p-4 border-b border-neutral-200 dark:border-neutral-800">
             <div class="flex items-center gap-3">
                 <img src="<?php echo e(auth()->user()->profile_photo_url); ?>"
                      alt="<?php echo e(auth()->user()->name); ?>"
@@ -422,6 +424,7 @@
                 <!-- Ingaggi -->
                 <li>
                     <a href="<?php echo e(route('gigs.index')); ?>" 
+                       data-tutorial-focus="gigs-link"
                        @click="mobileOpen = false"
                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-neutral-700 dark:text-neutral-300 hover:text-primary-600 transition-all group">
                         <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -68,12 +68,13 @@ class OnboardingTutorial extends Component
 
     public function getTotalSteps()
     {
-        return 6; // Benvenuto + 5 step
+        $steps = $this->steps;
+        return count($steps);
     }
 
     public function getStepsProperty()
     {
-        return [
+        $steps = [
             [
                 'title' => __('tutorial.welcome.title'),
                 'content' => __('tutorial.welcome.content'),
@@ -111,6 +112,13 @@ class OnboardingTutorial extends Component
                 'focusElement' => 'gigs-link',
             ],
         ];
+        
+        // Rimuovi l'ultimo step (ingaggi) se l'utente è audience
+        if (Auth::check() && Auth::user()->hasRole('audience')) {
+            array_pop($steps);
+        }
+        
+        return $steps;
     }
 
     public function getCurrentStepData()
