@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\UnifiedLike;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Helpers\PlaceholderHelper;
 
 class PersonalizedFeed extends Component
 {
@@ -80,7 +81,7 @@ class PersonalizedFeed extends Component
                     'verified' => false,
                 ],
                 'title' => $poem->title,
-                'excerpt' => \Str::limit($poem->content, 150),
+                'excerpt' => PlaceholderHelper::cleanHtmlContent($poem->description ?? $poem->content, 150),
                 'likes_count' => $poem->like_count ?? 0,
                 'comments_count' => $poem->comment_count ?? 0,
                 'created_at' => $poem->published_at ? Carbon::parse($poem->published_at)->diffForHumans() : Carbon::parse($poem->created_at)->diffForHumans(),
@@ -176,7 +177,9 @@ class PersonalizedFeed extends Component
                     'verified' => false,
                 ],
                 'title' => is_array($article->title) ? ($article->title[$locale] ?? $article->title['it'] ?? '') : $article->title,
-                'excerpt' => is_array($article->excerpt) ? \Str::limit($article->excerpt[$locale] ?? $article->excerpt['it'] ?? '', 150) : \Str::limit($article->excerpt, 150),
+                'excerpt' => is_array($article->excerpt) 
+                    ? PlaceholderHelper::cleanHtmlContent($article->excerpt[$locale] ?? $article->excerpt['it'] ?? '', 150) 
+                    : PlaceholderHelper::cleanHtmlContent($article->excerpt ?? '', 150),
                 'likes_count' => $article->like_count ?? 0,
                 'comments_count' => $article->comment_count ?? 0,
                 'created_at' => $article->published_at ? Carbon::parse($article->published_at)->diffForHumans() : Carbon::parse($article->created_at)->diffForHumans(),
