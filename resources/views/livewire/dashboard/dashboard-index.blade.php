@@ -455,7 +455,7 @@
 
                 <!-- Week Days -->
                 @php
-                    $startOfWeek = \Carbon\Carbon::now()->addWeeks($weekPage)->startOfWeek();
+                    $startOfWeek = \Carbon\Carbon::now()->addWeeks($weekPage)->startOfWeek(\Carbon\Carbon::MONDAY);
                 @endphp
 
                 <div class="space-y-4"

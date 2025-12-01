@@ -349,8 +349,11 @@ class DashboardIndex extends Component
     {
         $firstDay = Carbon::create($this->currentYear, $this->currentMonth, 1)->startOfMonth();
         $lastDay = Carbon::create($this->currentYear, $this->currentMonth, 1)->endOfMonth();
-        $startDay = $firstDay->copy()->startOfWeek()->addDay(); // Lunedì
-        $endDay = $lastDay->copy()->endOfWeek()->addDay();
+        
+        // Inizia dal lunedì della settimana che contiene il primo giorno del mese
+        $startDay = $firstDay->copy()->startOfWeek(Carbon::MONDAY);
+        // Termina alla domenica della settimana che contiene l'ultimo giorno del mese
+        $endDay = $lastDay->copy()->endOfWeek(Carbon::SUNDAY);
         
         $weeks = [];
         $currentDate = $startDay->copy();

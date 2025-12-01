@@ -14,11 +14,18 @@
          x-effect="if (show) { leftOpen = false; rightOpen = false; requestAnimationFrame(() => { leftOpen = true; rightOpen = true; }); } else { leftOpen = false; rightOpen = false; }">
         
         <!-- Dark Backdrop -->
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        <div x-show="show"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="absolute inset-0 bg-black/80 backdrop-blur-sm z-0"
              @click="$wire.closeModal()"></div>
         
         <!-- Newspaper Container -->
-        <div class="absolute inset-0 flex items-center justify-center p-4 md:p-8 overflow-y-auto overflow-x-hidden">
+        <div class="absolute inset-0 flex items-center justify-center p-4 md:p-8 overflow-y-auto overflow-x-hidden z-10">
             
             <div class="article-newspaper-container"
                  x-show="show"
