@@ -99,7 +99,7 @@ class="relative inline-block" {{ $attributes->only(['class']) }}>
     <div x-show="showModal"
          x-cloak
          @keydown.escape.window="showModal = false"
-         class="fixed inset-0 z-[100000] flex items-center justify-center p-4"
+         class="fixed inset-0 z-[999999] flex items-center justify-center p-4"
          style="display: none;">
         
         <!-- Backdrop -->
