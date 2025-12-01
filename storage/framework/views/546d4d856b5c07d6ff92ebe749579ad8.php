@@ -349,6 +349,7 @@
 <!-- Mobile Sidebar -->
 <aside x-show="mobileOpen"
        x-cloak
+       data-tutorial-focus="sidebar-nav"
        x-transition:enter="transition ease-in-out duration-300"
        x-transition:enter-start="-translate-x-full"
        x-transition:enter-end="translate-x-0"

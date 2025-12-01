@@ -10,12 +10,33 @@
             },
             get highlightStyle() {
                 if (!this.highlightRect) return 'display: none;';
-                return `
-                    left: ${this.highlightRect.x - 8}px;
-                    top: ${this.highlightRect.y - 8}px;
-                    width: ${this.highlightRect.width + 16}px;
-                    height: ${this.highlightRect.height + 16}px;
-                `;
+                const x = Math.max(0, this.highlightRect.x - 8);
+                const y = Math.max(0, this.highlightRect.y - 8);
+                const w = this.highlightRect.width + 16;
+                const h = this.highlightRect.height + 16;
+                return `left: ${x}px; top: ${y}px; width: ${w}px; height: ${h}px;`;
+            },
+            get overlayTopHeight() {
+                if (!this.highlightRect) return '0px';
+                return `${Math.max(0, this.highlightRect.y - 8)}px`;
+            },
+            get overlayBottomTop() {
+                if (!this.highlightRect) return '0px';
+                return `${this.highlightRect.y + this.highlightRect.height + 8}px`;
+            },
+            get overlayLeftWidth() {
+                if (!this.highlightRect) return '0px';
+                return `${Math.max(0, this.highlightRect.x - 8)}px`;
+            },
+            get overlayRightLeft() {
+                if (!this.highlightRect) return '0px';
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+                return `${this.highlightRect.x + this.highlightRect.width + 8}px`;
+            },
+            get overlayRightWidth() {
+                if (!this.highlightRect) return '0px';
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+                return `${Math.max(0, viewportWidth - this.highlightRect.x - this.highlightRect.width - 8)}px`;
             },
             updateHighlight() {
                 // Remove previous highlights
@@ -28,17 +49,43 @@
                 const stepData = this.currentStepData;
                 if (stepData && stepData.focusElement) {
                     setTimeout(() => {
-                        // Prova a trovare l'elemento
-                        let element = document.querySelector(`[data-tutorial-focus='${stepData.focusElement}']`);
+                        // Prova a trovare l'elemento - preferisci nav se disponibile
+                        let element = null;
+                        const allElements = document.querySelectorAll(`[data-tutorial-focus='${stepData.focusElement}']`);
+                        
+                        if (allElements.length > 0) {
+                            // Se ci sono più elementi, preferisci nav o l'elemento più piccolo/visibile
+                            for (let el of allElements) {
+                                const rect = el.getBoundingClientRect();
+                                if (rect.width > 0 && rect.height > 0) {
+                                    // Preferisci nav se disponibile, altrimenti il primo visibile
+                                    if (el.tagName === 'NAV' || !element) {
+                                        element = el;
+                                    }
+                                }
+                            }
+                        }
                         
                         // Se non trovato, aspetta un po' e riprova (per elementi che potrebbero essere caricati dinamicamente)
                         if (!element) {
                             setTimeout(() => {
-                                element = document.querySelector(`[data-tutorial-focus='${stepData.focusElement}']`);
+                                const retryElements = document.querySelectorAll(`[data-tutorial-focus='${stepData.focusElement}']`);
+                                if (retryElements.length > 0) {
+                                    for (let el of retryElements) {
+                                        const rect = el.getBoundingClientRect();
+                                        if (rect.width > 0 && rect.height > 0) {
+                                            if (el.tagName === 'NAV' || !element) {
+                                                element = el;
+                                            }
+                                        }
+                                    }
+                                }
+                                
                                 if (element) {
                                     this.highlightElement(element);
                                 } else {
                                     console.warn('Tutorial: Element not found after retry:', stepData.focusElement);
+                                    console.warn('Tutorial: Found elements:', document.querySelectorAll(`[data-tutorial-focus]`));
                                     // Se non trovato, nascondi l'overlay per non bloccare l'utente
                                     this.highlightRect = null;
                                     this.highlightedElement = null;
@@ -51,27 +98,50 @@
                 }
             },
             highlightElement(element) {
-                if (!element) return;
+                if (!element) {
+                    console.warn('Tutorial: highlightElement called with null element');
+                    return;
+                }
+                
+                console.log('Tutorial: Highlighting element:', element, element.getAttribute('data-tutorial-focus'));
                 
                 this.highlightedElement = element;
                 
                 // Verifica che l'elemento sia visibile
                 const rect = element.getBoundingClientRect();
+                console.log('Tutorial: Element rect:', rect);
+                
                 if (rect.width === 0 || rect.height === 0) {
-                    console.warn('Tutorial: Element found but not visible:', element);
+                    console.warn('Tutorial: Element found but not visible (width or height is 0):', element);
+                    // Prova a forzare la visibilità se è nascosto
+                    const computedStyle = window.getComputedStyle(element);
+                    if (computedStyle.display === 'none') {
+                        console.warn('Tutorial: Element is display:none, cannot highlight');
+                    }
                     this.highlightRect = null;
                     this.highlightedElement = null;
                     return;
                 }
                 
-                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Scroll solo se necessario (non per elementi fixed)
+                const isFixed = window.getComputedStyle(element).position === 'fixed';
+                if (!isFixed) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                
                 setTimeout(() => {
                     element.classList.add('tutorial-highlight');
-                    // Forza l'elemento sopra l'overlay
-                    element.style.position = 'relative';
+                    // Forza l'elemento sopra l'overlay solo se non è già fixed
+                    if (!isFixed) {
+                        element.style.position = 'relative';
+                    }
                     element.style.zIndex = '1000002';
+                    
+                    // Aggiorna il rect immediatamente
                     this.updateHighlightRect();
-                    // Update rect periodically
+                    console.log('Tutorial: Highlight rect updated:', this.highlightRect);
+                    
+                    // Update rect periodically per gestire scroll/resize
                     const interval = setInterval(() => {
                         if (this.highlightedElement && this.highlightedElement.classList.contains('tutorial-highlight')) {
                             this.updateHighlightRect();
@@ -79,7 +149,7 @@
                             clearInterval(interval);
                         }
                     }, 100);
-                }, 500);
+                }, isFixed ? 100 : 500);
             },
             updateHighlightRect() {
                 if (this.highlightedElement) {
@@ -122,29 +192,29 @@
              @click.self="$wire.close()">
             <!-- Sopra -->
             <div class="absolute top-0 left-0 right-0 bg-black/60 backdrop-blur-sm"
-                 x-bind:style="highlightRect ? `height: ${Math.max(0, highlightRect.y - 8)}px;` : ''"></div>
+                 x-bind:style="`height: ${overlayTopHeight};`"></div>
             
             <!-- Sotto -->
-            <div class="absolute left-0 right-0 bg-black/60 backdrop-blur-sm"
-                 x-bind:style="highlightRect ? `top: ${highlightRect.y + highlightRect.height + 8}px; bottom: 0;` : ''"></div>
+            <div class="absolute left-0 right-0 bottom-0 bg-black/60 backdrop-blur-sm"
+                 x-bind:style="`top: ${overlayBottomTop};`"></div>
             
             <!-- Sinistra -->
             <div class="absolute bg-black/60 backdrop-blur-sm"
-                 x-bind:style="highlightRect ? `
+                 x-bind:style="`
                      left: 0;
-                     top: ${Math.max(0, highlightRect.y - 8)}px;
-                     width: ${Math.max(0, highlightRect.x - 8)}px;
-                     height: ${highlightRect.height + 16}px;
-                 ` : ''"></div>
+                     top: ${overlayTopHeight};
+                     width: ${overlayLeftWidth};
+                     height: ${highlightRect ? highlightRect.height + 16 + 'px' : '0px'};
+                 `"></div>
             
             <!-- Destra -->
             <div class="absolute bg-black/60 backdrop-blur-sm"
-                 x-bind:style="highlightRect ? `
+                 x-bind:style="`
                      right: 0;
-                     top: ${Math.max(0, highlightRect.y - 8)}px;
-                     width: ${Math.max(0, window.innerWidth - highlightRect.x - highlightRect.width - 8)}px;
-                     height: ${highlightRect.height + 16}px;
-                 ` : ''"></div>
+                     top: ${overlayTopHeight};
+                     width: ${overlayRightWidth};
+                     height: ${highlightRect ? highlightRect.height + 16 + 'px' : '0px'};
+                 `"></div>
         </div>
         
         <!-- Overlay completo quando non c'è elemento evidenziato -->

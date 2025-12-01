@@ -28,30 +28,58 @@
                 const stepData = this.currentStepData;
                 if (stepData && stepData.focusElement) {
                     setTimeout(() => {
-                        const element = document.querySelector(`[data-tutorial-focus='${stepData.focusElement}']`);
-                        if (element) {
-                            this.highlightedElement = element;
-                            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Prova a trovare l'elemento
+                        let element = document.querySelector(`[data-tutorial-focus='${stepData.focusElement}']`);
+                        
+                        // Se non trovato, aspetta un po' e riprova (per elementi che potrebbero essere caricati dinamicamente)
+                        if (!element) {
                             setTimeout(() => {
-                                element.classList.add('tutorial-highlight');
-                                // Forza l'elemento sopra l'overlay
-                                element.style.position = 'relative';
-                                element.style.zIndex = '1000002';
-                                this.updateHighlightRect();
-                                // Update rect periodically
-                                const interval = setInterval(() => {
-                                    if (this.highlightedElement && this.highlightedElement.classList.contains('tutorial-highlight')) {
-                                        this.updateHighlightRect();
-                                    } else {
-                                        clearInterval(interval);
-                                    }
-                                }, 100);
+                                element = document.querySelector(`[data-tutorial-focus='${stepData.focusElement}']`);
+                                if (element) {
+                                    this.highlightElement(element);
+                                } else {
+                                    console.warn('Tutorial: Element not found after retry:', stepData.focusElement);
+                                    // Se non trovato, nascondi l'overlay per non bloccare l'utente
+                                    this.highlightRect = null;
+                                    this.highlightedElement = null;
+                                }
                             }, 500);
                         } else {
-                            console.warn('Tutorial: Element not found:', stepData.focusElement);
+                            this.highlightElement(element);
                         }
                     }, 200);
                 }
+            },
+            highlightElement(element) {
+                if (!element) return;
+                
+                this.highlightedElement = element;
+                
+                // Verifica che l'elemento sia visibile
+                const rect = element.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) {
+                    console.warn('Tutorial: Element found but not visible:', element);
+                    this.highlightRect = null;
+                    this.highlightedElement = null;
+                    return;
+                }
+                
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => {
+                    element.classList.add('tutorial-highlight');
+                    // Forza l'elemento sopra l'overlay
+                    element.style.position = 'relative';
+                    element.style.zIndex = '1000002';
+                    this.updateHighlightRect();
+                    // Update rect periodically
+                    const interval = setInterval(() => {
+                        if (this.highlightedElement && this.highlightedElement.classList.contains('tutorial-highlight')) {
+                            this.updateHighlightRect();
+                        } else {
+                            clearInterval(interval);
+                        }
+                    }, 100);
+                }, 500);
             },
             updateHighlightRect() {
                 if (this.highlightedElement) {
