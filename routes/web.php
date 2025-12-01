@@ -23,6 +23,10 @@ Route::post('/api/like/toggle', [App\Http\Controllers\Api\LikeController::class,
     ->middleware('auth')
     ->name('api.like.toggle');
 
+// API Get Likers
+Route::get('/api/like/likers', [App\Http\Controllers\Api\LikeController::class, 'getLikers'])
+    ->name('api.like.likers');
+
 Route::post('/api/snaps', [App\Http\Controllers\Api\SnapController::class, 'store'])
     ->middleware('auth')
     ->name('api.snaps.store');
