@@ -54,15 +54,17 @@
                             </p>
                         </article>
 
-                        <!-- Marketing cookies -->
-                        <article class="mb-8">
-                            <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-3 flex items-center gap-2">
-                                <span class="text-2xl">🎯</span>
-                                {{ __('cookies.marketing_cookies_title') }}
+                        <!-- NO Marketing cookies - Political Statement -->
+                        <article class="mb-8 p-6 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl border-2 border-red-200 dark:border-red-800">
+                            <h3 class="text-xl font-bold text-red-900 dark:text-red-300 mb-3 flex items-center gap-2">
+                                <span class="text-2xl">🚫</span>
+                                {{ __('cookies.no_marketing_title') }}
                             </h3>
-                            <p>{{ __('cookies.marketing_cookies_text') }}</p>
-                            <p class="mt-2 text-sm italic text-neutral-600 dark:text-neutral-400">
-                                {{ __('cookies.marketing_cookies_examples') }}
+                            <p class="text-red-800 dark:text-red-300 font-semibold leading-relaxed">
+                                {{ __('cookies.no_marketing_statement') }}
+                            </p>
+                            <p class="mt-4 text-red-900 dark:text-red-400 font-bold text-lg">
+                                {{ __('cookies.no_marketing_emphasis') }}
                             </p>
                         </article>
                     </section>

@@ -29,6 +29,7 @@ return [
     // Anti-Marketing Statement
     'no_marketing_title' => 'Marketing Cookies',
     'no_marketing_statement' => 'This site does not collect and will never collect marketing cookies, because we reject the capitalist logic that exploits misinformation and people\'s goodwill for profit. For this reason, we do not need to ask for your consent, as this aspect of privacy and security is protected.',
+    'no_marketing_emphasis' => '🔒 No marketing cookies. Ever. By principle.',
     
     // Cookie Policy Page
     'policy_title' => 'Cookie Policy',
@@ -48,12 +49,12 @@ return [
     'necessary_cookies_examples' => 'Examples: user authentication, language preferences, shopping cart.',
     
     'analytics_cookies_title' => 'Analytics cookies',
-    'analytics_cookies_text' => 'These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site. They help us to know which pages are the most and least popular and see how visitors move around the site.',
-    'analytics_cookies_examples' => 'Examples: Google Analytics, visitor count, time on page.',
+    'analytics_cookies_text' => 'These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site. They help us to know which pages are the most and least popular and see how visitors move around the site. We exclusively use open-source and privacy-respecting tools like Matomo, self-hosted on our servers.',
+    'analytics_cookies_examples' => 'Tools: Matomo (open-source, self-hosted), visitor count, time on page.',
     
     'marketing_cookies_title' => 'Marketing cookies',
-    'marketing_cookies_text' => 'These cookies may be set through our site by our advertising partners. They may be used by those companies to build a profile of your interests and show you relevant adverts on other sites.',
-    'marketing_cookies_examples' => 'Examples: Google Ads, Facebook Pixel, remarketing.',
+    'marketing_cookies_text' => 'Marketing cookies are used to track visitors across websites and build profiles to show targeted advertising.',
+    'marketing_cookies_examples' => 'Common examples: Google Ads, Facebook Pixel, remarketing.',
     
     'manage_title' => 'Managing preferences',
     'manage_text' => 'You can manage your cookie preferences at any time by clicking the cookie icon at the bottom of the page or by visiting your browser settings.',
