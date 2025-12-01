@@ -15,7 +15,8 @@ use App\Helpers\LanguageHelper;
 
 class Register extends Component
 {
-    public $name = '';
+    public $first_name = '';
+    public $last_name = '';
     public $nickname = '';
     public $email = '';
     public $password = '';
@@ -29,7 +30,8 @@ class Register extends Component
         $availableLanguages = array_keys(LanguageHelper::getAvailableLanguages());
         
         return [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'nickname' => 'nullable|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
@@ -43,7 +45,8 @@ class Register extends Component
     protected function messages()
     {
         return [
-            'name.required' => __('validation.required', ['attribute' => __('register.full_name')]),
+            'first_name.required' => __('validation.required', ['attribute' => __('register.first_name')]),
+            'last_name.required' => __('validation.required', ['attribute' => __('register.last_name')]),
             'nickname.unique' => __('validation.unique', ['attribute' => __('register.nickname')]),
             'email.required' => __('validation.required', ['attribute' => __('register.email')]),
             'email.email' => __('validation.email', ['attribute' => __('register.email')]),
@@ -91,7 +94,8 @@ class Register extends Component
         try {
             // Crea l'utente (senza verifica email iniziale)
             $user = User::create([
-                'name' => $this->name,
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
                 'nickname' => $this->nickname ?: null,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),

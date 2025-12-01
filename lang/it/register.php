@@ -19,8 +19,10 @@ return [
     'complete_profile' => 'Compila i tuoi dati per iniziare',
     
     // Form Fields
-    'full_name' => 'Nome Completo',
-    'full_name_placeholder' => 'Mario Rossi',
+    'first_name' => 'Nome',
+    'first_name_placeholder' => 'Mario',
+    'last_name' => 'Cognome',
+    'last_name_placeholder' => 'Rossi',
     'nickname' => 'Nickname',
     'optional' => 'opzionale',
     'nickname_placeholder' => '@mario_poet',

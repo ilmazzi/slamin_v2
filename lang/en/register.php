@@ -19,8 +19,10 @@ return [
     'complete_profile' => 'Fill in your details to get started',
     
     // Form Fields
-    'full_name' => 'Full Name',
-    'full_name_placeholder' => 'John Doe',
+    'first_name' => 'First Name',
+    'first_name_placeholder' => 'John',
+    'last_name' => 'Last Name',
+    'last_name_placeholder' => 'Doe',
     'nickname' => 'Nickname',
     'optional' => 'optional',
     'nickname_placeholder' => '@john_poet',

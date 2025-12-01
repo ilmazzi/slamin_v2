@@ -277,20 +277,39 @@
                         @enderror
                     </div>
 
-                    <!-- Nome Completo -->
-                    <div>
-                        <label for="name" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
-                            {{ __('register.full_name') }} *
-                        </label>
-                        <input id="name" 
-                               wire:model="name"
-                               type="text" 
-                               required 
-                               placeholder="{{ __('register.full_name_placeholder') }}"
-                               class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
-                        @error('name')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                    <!-- Nome e Cognome -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Nome -->
+                        <div>
+                            <label for="first_name" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
+                                {{ __('register.first_name') }} *
+                            </label>
+                            <input id="first_name" 
+                                   wire:model="first_name"
+                                   type="text" 
+                                   required 
+                                   placeholder="{{ __('register.first_name_placeholder') }}"
+                                   class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
+                            @error('first_name')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Cognome -->
+                        <div>
+                            <label for="last_name" class="block text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
+                                {{ __('register.last_name') }} *
+                            </label>
+                            <input id="last_name" 
+                                   wire:model="last_name"
+                                   type="text" 
+                                   required 
+                                   placeholder="{{ __('register.last_name_placeholder') }}"
+                                   class="w-full px-4 py-3 border-2 border-neutral-200 dark:border-neutral-700 rounded-xl focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:bg-neutral-800 dark:text-white transition-all">
+                            @error('last_name')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
 
                     <!-- Nickname (Opzionale) -->

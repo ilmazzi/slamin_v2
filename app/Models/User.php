@@ -33,6 +33,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name',
+        'first_name',
+        'last_name',
         'nickname',
         'email',
         'password',
@@ -114,6 +116,24 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
+
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Popola automaticamente 'name' quando first_name e last_name sono presenti
+        static::saving(function ($user) {
+            if ($user->first_name || $user->last_name) {
+                $fullName = trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? ''));
+                if ($fullName) {
+                    $user->attributes['name'] = $fullName;
+                }
+            }
+        });
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -400,16 +420,29 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get name attribute - concatena first_name e last_name, o usa name se non disponibili
+     */
+    public function getNameAttribute($value): string
+    {
+        // Se first_name e last_name sono popolati, li usa
+        $firstName = $this->attributes['first_name'] ?? null;
+        $lastName = $this->attributes['last_name'] ?? null;
+        
+        if ($firstName || $lastName) {
+            $fullName = trim(($firstName ?? '') . ' ' . ($lastName ?? ''));
+            return $fullName ?: ($value ?? '');
+        }
+        
+        // Altrimenti usa il valore originale (per retrocompatibilità)
+        return $value ?? '';
+    }
+
+    /**
      * Get display name (nickname if available, otherwise name)
      */
     public function getDisplayName(): string
     {
         return $this->nickname ?: $this->name;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
     }
 
     /**

@@ -19,8 +19,10 @@ return [
     'complete_profile' => 'Remplissez vos informations pour commencer',
     
     // Form Fields
-    'full_name' => 'Nom Complet',
-    'full_name_placeholder' => 'Jean Dupont',
+    'first_name' => 'Prénom',
+    'first_name_placeholder' => 'Jean',
+    'last_name' => 'Nom',
+    'last_name_placeholder' => 'Dupont',
     'nickname' => 'Pseudo',
     'optional' => 'optionnel',
     'nickname_placeholder' => '@jean_poete',
