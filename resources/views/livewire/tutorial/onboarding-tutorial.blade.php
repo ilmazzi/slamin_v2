@@ -188,13 +188,8 @@
                     this.isScrolling = false;
                 }
                 
-                // Aggiungi la classe e gli stili immediatamente
+                // Aggiungi la classe immediatamente - il CSS gestisce tutto
                 element.classList.add('tutorial-highlight');
-                // Forza l'elemento sopra l'overlay solo se non è già fixed
-                if (!isFixed) {
-                    element.style.position = 'relative';
-                }
-                element.style.zIndex = '1000002';
                 
                 // Forza reattività di Alpine.js immediatamente
                 this.$nextTick(() => {
@@ -384,73 +379,66 @@
     
     <style>
     .tutorial-highlight {
-        position: relative !important;
         z-index: 1000002 !important;
-        transform: scale(1.02);
+        transform: scale(1.01);
         transition: transform 0.3s ease;
-        outline: 8px solid #8b5cf6 !important;
-        outline-offset: 8px;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.95) !important;
-        box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.3),
-                    0 0 0 16px rgba(139, 92, 246, 0.2),
-                    0 0 40px rgba(139, 92, 246, 1),
-                    0 0 80px rgba(139, 92, 246, 0.6),
-                    0 4px 20px rgba(0, 0, 0, 0.15) !important;
+        outline: 6px solid #059669 !important;
+        outline-offset: 6px;
+        border-radius: 8px;
+        box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.3),
+                    0 0 0 8px rgba(5, 150, 105, 0.2),
+                    0 0 30px rgba(5, 150, 105, 0.8),
+                    0 0 60px rgba(5, 150, 105, 0.5) !important;
         animation: pulse-highlight 2s infinite;
-    }
-    
-    .dark .tutorial-highlight {
-        background: rgba(23, 23, 23, 0.95) !important;
     }
 
     .tutorial-spotlight {
-        border: 10px solid #8b5cf6;
+        border: 10px solid #059669;
         border-radius: 20px;
-        background: rgba(139, 92, 246, 0.15);
+        background: rgba(5, 150, 105, 0.15);
         box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.8),
-                    0 0 0 16px rgba(139, 92, 246, 0.4),
-                    0 0 50px rgba(139, 92, 246, 1),
-                    0 0 100px rgba(139, 92, 246, 0.8),
-                    inset 0 0 30px rgba(139, 92, 246, 0.3);
+                    0 0 0 16px rgba(5, 150, 105, 0.4),
+                    0 0 50px rgba(5, 150, 105, 1),
+                    0 0 100px rgba(5, 150, 105, 0.8),
+                    inset 0 0 30px rgba(5, 150, 105, 0.3);
         animation: pulse-border 2s infinite;
         z-index: 1000001 !important;
     }
 
     @keyframes pulse-highlight {
         0%, 100% {
-            outline-color: #8b5cf6;
-            box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.3),
-                        0 0 0 16px rgba(139, 92, 246, 0.2),
-                        0 0 40px rgba(139, 92, 246, 1),
-                        0 0 80px rgba(139, 92, 246, 0.6);
+            outline-color: #059669;
+            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.3),
+                        0 0 0 8px rgba(5, 150, 105, 0.2),
+                        0 0 30px rgba(5, 150, 105, 0.8),
+                        0 0 60px rgba(5, 150, 105, 0.5);
         }
         50% {
-            outline-color: #a78bfa;
-            box-shadow: 0 0 0 12px rgba(139, 92, 246, 0.5),
-                        0 0 0 24px rgba(139, 92, 246, 0.3),
-                        0 0 60px rgba(139, 92, 246, 1.2),
-                        0 0 120px rgba(139, 92, 246, 0.8);
+            outline-color: #10b981;
+            box-shadow: 0 0 0 6px rgba(5, 150, 105, 0.5),
+                        0 0 0 12px rgba(5, 150, 105, 0.3),
+                        0 0 40px rgba(5, 150, 105, 1),
+                        0 0 80px rgba(5, 150, 105, 0.7);
         }
     }
 
     @keyframes pulse-border {
         0%, 100% {
-            border-color: #8b5cf6;
+            border-color: #059669;
             box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.8),
-                        0 0 0 16px rgba(139, 92, 246, 0.4),
-                        0 0 50px rgba(139, 92, 246, 1),
-                        0 0 100px rgba(139, 92, 246, 0.8),
-                        inset 0 0 30px rgba(139, 92, 246, 0.3);
+                        0 0 0 16px rgba(5, 150, 105, 0.4),
+                        0 0 50px rgba(5, 150, 105, 1),
+                        0 0 100px rgba(5, 150, 105, 0.8),
+                        inset 0 0 30px rgba(5, 150, 105, 0.3);
             transform: scale(1);
         }
         50% {
-            border-color: #a78bfa;
+            border-color: #10b981;
             box-shadow: 0 0 0 12px rgba(255, 255, 255, 1),
-                        0 0 0 24px rgba(139, 92, 246, 0.6),
-                        0 0 70px rgba(139, 92, 246, 1.2),
-                        0 0 140px rgba(139, 92, 246, 1),
-                        inset 0 0 40px rgba(139, 92, 246, 0.5);
+                        0 0 0 24px rgba(5, 150, 105, 0.6),
+                        0 0 70px rgba(5, 150, 105, 1.2),
+                        0 0 140px rgba(5, 150, 105, 1),
+                        inset 0 0 40px rgba(5, 150, 105, 0.5);
             transform: scale(1.01);
         }
     }
