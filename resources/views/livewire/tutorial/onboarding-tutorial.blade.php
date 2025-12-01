@@ -5,6 +5,7 @@
             steps: @js($this->steps),
             highlightedElement: null,
             highlightRect: null,
+            isScrolling: false,
             get currentStepData() {
                 return this.steps[this.currentStep] || this.steps[0];
             },
@@ -160,33 +161,49 @@
                 
                 // Scroll solo se necessario (non per elementi fixed)
                 const isFixed = style.position === 'fixed';
+                
+                // Imposta il rect immediatamente PRIMA di qualsiasi scroll
+                this.highlightRect = {
+                    x: rect.left,
+                    y: rect.top,
+                    width: rect.width,
+                    height: rect.height
+                };
+                console.log('Tutorial: Initial highlight rect set:', this.highlightRect);
+                
                 if (!isFixed) {
+                    // Imposta flag per prevenire aggiornamenti durante lo scroll
+                    this.isScrolling = true;
                     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Aspetta che lo scroll finisca
+                    setTimeout(() => {
+                        this.isScrolling = false;
+                        // Aggiorna il rect dopo lo scroll
+                        this.updateHighlightRect();
+                        console.log('Tutorial: Scroll completed, highlight rect:', this.highlightRect);
+                    }, 800); // Tempo sufficiente per lo scroll smooth
+                } else {
+                    // Per elementi fixed, aggiorna subito
+                    this.isScrolling = false;
                 }
                 
-                // Aggiorna il rect immediatamente PRIMA di aggiungere la classe
-                this.updateHighlightRect();
-                console.log('Tutorial: Initial highlight rect:', this.highlightRect);
+                // Aggiungi la classe e gli stili immediatamente
+                element.classList.add('tutorial-highlight');
+                // Forza l'elemento sopra l'overlay solo se non è già fixed
+                if (!isFixed) {
+                    element.style.position = 'relative';
+                }
+                element.style.zIndex = '1000002';
                 
+                // Forza reattività di Alpine.js immediatamente
+                this.$nextTick(() => {
+                    this.highlightRect = { ...this.highlightRect };
+                    console.log('Tutorial: Forced reactivity update, highlightRect:', this.highlightRect);
+                });
+                
+                // Update rect periodically per gestire scroll/resize (solo dopo lo scroll iniziale)
                 setTimeout(() => {
-                    element.classList.add('tutorial-highlight');
-                    // Forza l'elemento sopra l'overlay solo se non è già fixed
-                    if (!isFixed) {
-                        element.style.position = 'relative';
-                    }
-                    element.style.zIndex = '1000002';
-                    
-                    // Aggiorna il rect di nuovo dopo lo scroll
-                    this.updateHighlightRect();
-                    console.log('Tutorial: Highlight rect after scroll:', this.highlightRect);
-                    
-                    // Forza reattività di Alpine.js
-                    this.$nextTick(() => {
-                        this.highlightRect = { ...this.highlightRect };
-                        console.log('Tutorial: Forced reactivity update, highlightRect:', this.highlightRect);
-                    });
-                    
-                    // Update rect periodically per gestire scroll/resize
                     const interval = setInterval(() => {
                         if (this.highlightedElement && this.highlightedElement.classList.contains('tutorial-highlight')) {
                             this.updateHighlightRect();
@@ -194,28 +211,52 @@
                             clearInterval(interval);
                         }
                     }, 100);
-                }, isFixed ? 100 : 500);
+                }, isFixed ? 100 : 900);
             },
             updateHighlightRect() {
+                // Non aggiornare durante lo scroll iniziale
+                if (this.isScrolling) {
+                    console.log('Tutorial: Skipping updateHighlightRect during initial scroll');
+                    return;
+                }
+                
                 if (this.highlightedElement) {
                     const rect = this.highlightedElement.getBoundingClientRect();
+                    
+                    // Verifica che l'elemento sia ancora visibile
+                    if (rect.width === 0 || rect.height === 0) {
+                        console.warn('Tutorial: Element became invisible, skipping update');
+                        return;
+                    }
+                    
                     // Usa coordinate viewport perché l'overlay è fixed
-                    this.highlightRect = {
+                    const newRect = {
                         x: rect.left,
                         y: rect.top,
                         width: rect.width,
                         height: rect.height
                     };
-                    console.log('Tutorial: updateHighlightRect called', {
-                        element: this.highlightedElement,
-                        rect: rect,
-                        highlightRect: this.highlightRect
-                    });
-                    // Forza re-render di Alpine.js
-                    this.$nextTick(() => {
-                        // Trigger reactivity
-                        this.highlightRect = { ...this.highlightRect };
-                    });
+                    
+                    // Aggiorna solo se le coordinate sono cambiate significativamente
+                    if (!this.highlightRect || 
+                        Math.abs(this.highlightRect.x - newRect.x) > 1 ||
+                        Math.abs(this.highlightRect.y - newRect.y) > 1 ||
+                        Math.abs(this.highlightRect.width - newRect.width) > 1 ||
+                        Math.abs(this.highlightRect.height - newRect.height) > 1) {
+                        
+                        this.highlightRect = newRect;
+                        console.log('Tutorial: updateHighlightRect updated', {
+                            element: this.highlightedElement,
+                            rect: rect,
+                            highlightRect: this.highlightRect
+                        });
+                        
+                        // Forza re-render di Alpine.js
+                        this.$nextTick(() => {
+                            // Trigger reactivity
+                            this.highlightRect = { ...this.highlightRect };
+                        });
+                    }
                 } else {
                     console.warn('Tutorial: updateHighlightRect called but no highlightedElement');
                 }
@@ -237,8 +278,16 @@
             if ($wire.show) {
                 setTimeout(() => updateHighlight(), 300);
             }
-            window.addEventListener('scroll', () => updateHighlightRect());
-            window.addEventListener('resize', () => updateHighlightRect());
+            window.addEventListener('scroll', () => {
+                if (!isScrolling) {
+                    updateHighlightRect();
+                }
+            });
+            window.addEventListener('resize', () => {
+                if (!isScrolling) {
+                    updateHighlightRect();
+                }
+            });
         "
         class="fixed inset-0 z-[999998]"
         style="display: none;"
