@@ -30,7 +30,7 @@
         
         @if($showCategory && $article->category)
             <div class="absolute top-3 left-3">
-                <span class="px-2.5 py-1 bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm text-xs font-semibold text-neutral-700 dark:text-neutral-300 rounded-full">
+                <span class="px-2.5 py-1 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm text-xs font-semibold text-neutral-900 dark:text-white rounded-full shadow-lg">
                     {{ $article->category->name }}
                 </span>
             </div>
