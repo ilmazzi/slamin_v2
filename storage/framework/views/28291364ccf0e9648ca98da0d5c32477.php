@@ -145,16 +145,15 @@
                 
                 
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($carouselSlides->count() > 1): ?>
-                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $carouselSlides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $carousel): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <button @click="currentSlide = <?php echo e($index); ?>"
                                 class="transition-all duration-300"
-                                :class="currentSlide === <?php echo e($index); ?> ? 'w-8 h-2 bg-white rounded-full' : 'w-2 h-2 bg-white/40 rounded-full hover:bg-white/60'">
+                                :class="currentSlide === <?php echo e($index); ?> ? 'w-10 h-3 bg-white rounded-full shadow-lg' : 'w-3 h-3 bg-white/50 rounded-full hover:bg-white/70 hover:scale-110'">
                         </button>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            </div>
         </div>
     </section>
     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
