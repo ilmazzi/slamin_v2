@@ -76,8 +76,15 @@ class TranslationWorkspace extends Component
             
             $this->translation->incrementVersion(Auth::id(), 'Text updated');
             
-            // Notify the other party
-            $this->notifyOtherParty('translation_updated');
+            // Notify the OTHER party (not current user)
+            $isAuthor = Auth::id() === $this->application->gig->poem->user_id;
+            $otherUser = $isAuthor ? $this->application->user : $this->application->gig->poem->user;
+            
+            if ($otherUser && $otherUser->id !== Auth::id()) {
+                $otherUser->notify(new TranslationWorkspaceNotification($this->translation, 'translation_updated'));
+                $this->dispatch('refresh-notifications');
+                $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+            }
             
             session()->flash('success', 'Traduzione salvata! Versione ' . $this->translation->version);
         } else {
@@ -111,8 +118,15 @@ class TranslationWorkspace extends Component
             'comment' => $this->newComment,
         ]);
         
-        // Notify the other party
-        $this->notifyOtherParty('comment_added');
+        // Notify the OTHER party (not current user)
+        $isAuthor = Auth::id() === $this->application->gig->poem->user_id;
+        $otherUser = $isAuthor ? $this->application->user : $this->application->gig->poem->user;
+        
+        if ($otherUser && $otherUser->id !== Auth::id()) {
+            $otherUser->notify(new TranslationWorkspaceNotification($this->translation, 'comment_added'));
+            $this->dispatch('refresh-notifications');
+            $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+        }
         
         $this->reset(['newComment', 'selectedText', 'selectionStart', 'selectionEnd', 'showCommentForm']);
         $this->translation->load('comments.user');
@@ -128,9 +142,11 @@ class TranslationWorkspace extends Component
             $comment->resolve(Auth::id());
             $this->translation->load('comments.user');
             
-            // Notify if comment was from other user
+            // Notify the COMMENT AUTHOR (not current user)
             if ($comment->user_id !== Auth::id()) {
-                $this->notifyOtherParty('comment_resolved');
+                $comment->user->notify(new TranslationWorkspaceNotification($this->translation, 'comment_resolved'));
+                $this->dispatch('refresh-notifications');
+                $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
             }
             
             session()->flash('success', 'Commento risolto!');
@@ -144,8 +160,13 @@ class TranslationWorkspace extends Component
             'submitted_at' => now(),
         ]);
         
-        // Notify poem author
-        $this->notifyOtherParty('submitted_for_review');
+        // Notify poem AUTHOR (not translator)
+        $author = $this->application->gig->poem->user;
+        if ($author && $author->id !== Auth::id()) {
+            $author->notify(new TranslationWorkspaceNotification($this->translation, 'submitted_for_review'));
+            $this->dispatch('refresh-notifications');
+            $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+        }
         
         session()->flash('success', 'Traduzione inviata per revisione!');
         $this->translation->refresh();
@@ -168,26 +189,18 @@ class TranslationWorkspace extends Component
         // Update application status
         $this->application->update(['status' => 'completed']);
         
-        // Notify translator
-        $this->notifyOtherParty('translation_approved');
+        // Notify TRANSLATOR (not author)
+        $translator = $this->application->user;
+        if ($translator && $translator->id !== Auth::id()) {
+            $translator->notify(new TranslationWorkspaceNotification($this->translation, 'translation_approved'));
+            $this->dispatch('refresh-notifications');
+            $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+        }
         
         session()->flash('success', 'Traduzione approvata! Ora puoi procedere al pagamento.');
         $this->translation->refresh();
     }
     
-    protected function notifyOtherParty($type)
-    {
-        $isAuthor = Auth::id() === $this->application->gig->poem->user_id;
-        $otherUser = $isAuthor ? $this->application->user : $this->application->gig->poem->user;
-        
-        if ($otherUser && $otherUser->id !== Auth::id()) {
-            $otherUser->notify(new TranslationWorkspaceNotification($this->translation, $type));
-            
-            // Dispatch global notification refresh
-            $this->dispatch('refresh-notifications');
-            $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
-        }
-    }
     
     public function render()
     {
