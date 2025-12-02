@@ -55,8 +55,8 @@
                         <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
                             di {{ $application->gig->poem->user->name }}
                         </p>
-                        <div class="whitespace-pre-wrap font-poem text-neutral-700 dark:text-neutral-300">
-                            {{ $application->gig->poem->content }}
+                        <div class="font-poem text-neutral-700 dark:text-neutral-300 leading-relaxed">
+                            {!! $application->gig->poem->content !!}
                         </div>
                     </div>
                 </div>
