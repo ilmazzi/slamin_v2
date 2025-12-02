@@ -11,7 +11,7 @@
     };
 @endphp
 
-<article class="group bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+<article class="group bg-white dark:bg-neutral-800 rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full">
     {{-- Immagine --}}
     <div class="relative overflow-hidden {{ $heightClass }}">
         @if($article->featured_image_url)
@@ -30,7 +30,7 @@
         
         @if($showCategory && $article->category)
             <div class="absolute top-3 left-3">
-                <span class="px-2.5 py-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-xs font-semibold text-gray-700 dark:text-gray-300 rounded-full">
+                <span class="px-2.5 py-1 bg-white/90 dark:bg-neutral-800/90 backdrop-blur-sm text-xs font-semibold text-neutral-700 dark:text-neutral-300 rounded-full">
                     {{ $article->category->name }}
                 </span>
             </div>
@@ -39,37 +39,37 @@
 
     {{-- Contenuto --}}
     <div class="p-6 flex-1 flex flex-col">
-        <h3 class="{{ $titleSize }} font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
+        <h3 class="{{ $titleSize }} font-bold text-neutral-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
             <div onclick="Livewire.dispatch('openArticleModal', { articleId: {{ $article->id }} })" class="cursor-pointer">
                 {{ $article->title }}
             </div>
         </h3>
         
         @if($showExcerpt && $article->excerpt)
-            <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 flex-1">
+            <p class="text-neutral-600 dark:text-neutral-300 mb-4 line-clamp-3 flex-1">
                 {{ $article->excerpt }}
             </p>
         @endif
         
-        <div class="flex flex-col gap-4 pt-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
-            <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 flex-wrap">
+        <div class="flex flex-col gap-4 pt-4 border-t border-neutral-200 dark:border-neutral-700 mt-auto">
+            <div class="flex items-center gap-3 text-sm text-neutral-500 dark:text-neutral-400 flex-wrap">
                 @if($showAuthor && $article->user)
                     <div class="flex items-center gap-2">
                         <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($article->user, 64) }}" 
                              alt="{{ \App\Helpers\AvatarHelper::getDisplayName($article->user) }}"
-                             class="w-7 h-7 rounded-full object-cover ring-2 ring-white/80 dark:ring-gray-700 shadow-sm">
-                        <span class="font-medium text-gray-700 dark:text-gray-200">
+                             class="w-7 h-7 rounded-full object-cover ring-2 ring-white/80 dark:ring-neutral-700 shadow-sm">
+                        <span class="font-medium text-neutral-700 dark:text-neutral-200">
                             <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($article->user) }}" 
                                class="hover:underline transition-colors">
                                 {{ \App\Helpers\AvatarHelper::getDisplayName($article->user) }}
                             </a>
                         </span>
                     </div>
-                    <span class="text-gray-400">•</span>
+                    <span class="text-neutral-400">•</span>
                 @endif
                 <span>{{ $article->published_at->format('d M Y') }}</span>
                 @if($showStats)
-                    <span class="text-gray-400">•</span>
+                    <span class="text-neutral-400">•</span>
                     <span>{{ $article->read_time }} min</span>
                 @endif
             </div>

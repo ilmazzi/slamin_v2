@@ -601,7 +601,7 @@ if (isset($__slots)) unset($__slots);
             
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($showAllArticles || $search || $selectedCategory): ?>
                 <div class="mb-8 flex items-center justify-between">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">
                         <?php echo e(__('articles.index.all_articles')); ?>
 
                     </h2>
