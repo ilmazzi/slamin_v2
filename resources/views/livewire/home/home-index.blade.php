@@ -257,6 +257,11 @@
         </div>
     </section>
 
+    {{-- Decorative Separator --}}
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+        <div class="section-separator"></div>
+    </div>
+
     {{-- Carousel Section --}}
     <livewire:home.hero-carousel />
 

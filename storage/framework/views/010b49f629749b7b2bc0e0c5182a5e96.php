@@ -262,6 +262,11 @@
     </section>
 
     
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+        <div class="section-separator"></div>
+    </div>
+
+    
     <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
