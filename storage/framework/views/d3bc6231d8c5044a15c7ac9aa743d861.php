@@ -1,40 +1,61 @@
 <div>
-    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($recentEvents && $recentEvents->count() > 0): ?>
     <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($completedEvents && $completedEvents->count() > 0): ?>
         
         
         <div class="text-center mb-12 section-title-fade">
             <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif;">
-                <?php echo __('home.events_section_title'); ?>
+                <?php echo __('home.completed_events_title'); ?>
 
             </h2>
             <p class="text-lg text-neutral-200 font-medium">
-                <?php echo e(__('home.events_section_subtitle')); ?>
+                <?php echo e(__('home.completed_events_subtitle')); ?>
 
             </p>
         </div>
 
         
         <div class="relative" x-data="{ 
-            scrollHorizontal(direction) {
-                const container = $refs.scrollContainer;
-                const scrollAmount = container.offsetWidth * 0.8;
-                container.scrollBy({ 
-                    left: direction * scrollAmount, 
-                    behavior: 'smooth' 
-                });
+            scroll(direction) {
+                const container = this.$refs.scrollContainer;
+                const cards = container.children;
+                if (cards.length === 0) return;
+                
+                const containerRect = container.getBoundingClientRect();
+                const scrollLeft = container.scrollLeft;
+                
+                let targetCard = null;
+                for (let i = 0; i < cards.length; i++) {
+                    const card = cards[i];
+                    const cardLeft = card.offsetLeft;
+                    
+                    if (direction > 0) {
+                        if (cardLeft > scrollLeft + containerRect.width - 100) {
+                            targetCard = card;
+                            break;
+                        }
+                    } else {
+                        if (cardLeft < scrollLeft - 50) {
+                            targetCard = card;
+                        }
+                    }
+                }
+                
+                if (targetCard) {
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                }
             }
         }">
-            <!-- Left Arrow (Desktop Only) - OUTSIDE content -->
-            <button @click="scrollHorizontal(-1)" 
+            <!-- Left Arrow (Desktop Only) -->
+            <button @click="scroll(-1)" 
                     class="hidden md:flex absolute -left-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-full shadow-xl hover:scale-110 transition-all duration-300 items-center justify-center text-neutral-900 dark:text-white group">
                 <svg class="w-6 h-6 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
             </button>
             
-            <!-- Right Arrow (Desktop Only) - OUTSIDE content -->
-            <button @click="scrollHorizontal(1)" 
+            <!-- Right Arrow (Desktop Only) -->
+            <button @click="scroll(1)" 
                     class="hidden md:flex absolute -right-16 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-sm rounded-full shadow-xl hover:scale-110 transition-all duration-300 items-center justify-center text-neutral-900 dark:text-white group">
                 <svg class="w-6 h-6 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -53,7 +74,7 @@
             
         <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-16 pt-12 px-8 md:px-12 scrollbar-hide"
              style="-webkit-overflow-scrolling: touch;">
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $recentEvents->take(6); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $event): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $completedEvents->take(6); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $event): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php
                 // Random ticket tilt
                 $tilt = rand(-3, 3);
@@ -80,6 +101,11 @@
                 $spot3Y = rand(5, 95);
                 $spot4X = rand(5, 95);
                 $spot4Y = rand(5, 95);
+                
+                // Check if Poetry Slam with rankings
+                $isPoetrySlam = $event->category === \App\Models\Event::CATEGORY_POETRY_SLAM;
+                $hasRankings = $isPoetrySlam && $event->rankings && $event->rankings->where('position', '<=', 3)->count() > 0;
+                $top3 = $hasRankings ? $event->rankings->where('position', '<=', 3)->sortBy('position') : collect();
             ?>
             <div class="w-80 md:w-96 flex-shrink-0 fade-scale-item"
                  x-data
@@ -119,9 +145,7 @@
                         
                         <div class="ticket-header">
                             <div class="ticket-admit"><?php echo e(strtoupper($event->category ?? 'Evento')); ?></div>
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event->start_date): ?>
                             <div class="ticket-serial">#<?php echo e(str_pad($event->id, 4, '0', STR_PAD_LEFT)); ?></div>
-                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                         
                         
@@ -148,25 +172,49 @@
                         </div>
                         
                         
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasRankings): ?>
+                        <div class="ticket-rankings">
+                            <div class="ticket-rankings-title">🏆 <?php echo e(__('home.podium')); ?></div>
+                            <div class="ticket-rankings-list">
+                                <?php
+                                    $first = $top3->where('position', 1)->first();
+                                    $second = $top3->where('position', 2)->first();
+                                    $third = $top3->where('position', 3)->first();
+                                ?>
+                                
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($first): ?>
+                                <div class="ticket-ranking-item ticket-ranking-first">
+                                    <span class="ticket-ranking-medal">🥇</span>
+                                    <span class="ticket-ranking-name"><?php echo e(Str::limit($first->participant->display_name ?? '-', 20)); ?></span>
+                                    <span class="ticket-ranking-score"><?php echo e(number_format($first->total_score, 1)); ?></span>
+                                </div>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($second): ?>
+                                <div class="ticket-ranking-item ticket-ranking-second">
+                                    <span class="ticket-ranking-medal">🥈</span>
+                                    <span class="ticket-ranking-name"><?php echo e(Str::limit($second->participant->display_name ?? '-', 20)); ?></span>
+                                    <span class="ticket-ranking-score"><?php echo e(number_format($second->total_score, 1)); ?></span>
+                                </div>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($third): ?>
+                                <div class="ticket-ranking-item ticket-ranking-third">
+                                    <span class="ticket-ranking-medal">🥉</span>
+                                    <span class="ticket-ranking-name"><?php echo e(Str::limit($third->participant->display_name ?? '-', 20)); ?></span>
+                                    <span class="ticket-ranking-score"><?php echo e(number_format($third->total_score, 1)); ?></span>
+                                </div>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            </div>
+                        </div>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        
+                        
                         <div class="ticket-details">
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event->start_date): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event->end_datetime): ?>
                             <div class="ticket-detail-item">
                                 <div class="ticket-detail-label">DATA</div>
-                                <div class="ticket-detail-value"><?php echo e($event->start_date->locale('it')->isoFormat('D MMM YYYY')); ?></div>
-                            </div>
-                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                            
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event->start_time): ?>
-                            <div class="ticket-detail-item">
-                                <div class="ticket-detail-label">ORARIO</div>
-                                <div class="ticket-detail-value">
-                                    <?php echo e(\Carbon\Carbon::parse($event->start_time)->format('H:i')); ?>
-
-                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event->end_time): ?>
-                                    - <?php echo e(\Carbon\Carbon::parse($event->end_time)->format('H:i')); ?>
-
-                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                </div>
+                                <div class="ticket-detail-value"><?php echo e($event->end_datetime->locale('it')->isoFormat('D MMM YYYY')); ?></div>
                             </div>
                             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             
@@ -182,12 +230,12 @@
                             </div>
                             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event->user): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event->organizer): ?>
                             <div class="ticket-detail-item">
                                 <div class="ticket-detail-label">ORGANIZZATO DA</div>
-                                <a href="<?php echo e(\App\Helpers\AvatarHelper::getUserProfileUrl($event->user)); ?>" 
+                                <a href="<?php echo e(route('user.show', $event->organizer)); ?>" 
                                    class="ticket-detail-value hover:underline transition-colors">
-                                    <?php echo e(Str::limit(\App\Helpers\AvatarHelper::getDisplayName($event->user), 20)); ?>
+                                    <?php echo e(Str::limit($event->organizer->name ?? __('events.organizer'), 20)); ?>
 
                                 </a>
                             </div>
@@ -227,10 +275,10 @@
                                     <span class="tooltip-value"><?php echo e($event->venue_name); ?></span>
                                 </div>
                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event->max_participants): ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasRankings): ?>
                                 <div class="tooltip-row">
-                                    <span class="tooltip-label"><?php echo e(__('events.max_participants')); ?>:</span>
-                                    <span class="tooltip-value"><?php echo e($event->max_participants); ?></span>
+                                    <span class="tooltip-label"><?php echo e(__('home.view_full_rankings')); ?>:</span>
+                                    <span class="tooltip-value"><a href="<?php echo e(route('events.show', $event)); ?>#rankings" class="underline"><?php echo e(__('events.view')); ?></a></span>
                                 </div>
                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
@@ -330,8 +378,8 @@
                         <div class="stub-perforation"></div>
                         <div class="stub-content">
                             <div class="stub-date">
-                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event->start_date): ?>
-                                <?php echo e($event->start_date->format('d/m')); ?>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($event->end_datetime): ?>
+                                <?php echo e($event->end_datetime->format('d/m')); ?>
 
                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
@@ -344,15 +392,41 @@
             </div>
         </div>
 
-        <!-- CTA - Simple Text -->
+        <!-- CTA -->
         <div class="text-center mt-12">
-            <a href="<?php echo e(route('events.index')); ?>" 
+            <a href="<?php echo e(route('events.index', ['filter' => 'past'])); ?>" 
                class="inline-block text-2xl md:text-3xl font-bold text-white hover:text-primary-400 transition-colors duration-300"
                style="font-family: 'Crimson Pro', serif;">
-                → <?php echo e(__('home.all_events_button')); ?>
+                → <?php echo e(__('home.all_completed_events')); ?>
 
             </a>
         </div>
+    </div>
+    <?php else: ?>
+        
+        <div class="text-center py-16 md:py-24">
+            <div class="max-w-2xl mx-auto">
+                <div class="mb-8">
+                    <svg class="w-24 h-24 mx-auto text-neutral-400 dark:text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white" style="font-family: 'Crimson Pro', serif;">
+                    <?php echo __('home.completed_events_title'); ?>
+
+                </h2>
+                <p class="text-lg text-neutral-300 dark:text-neutral-400 mb-6">
+                    <?php echo e(__('home.no_completed_events')); ?>
+
+                </p>
+                <a href="<?php echo e(route('events.index')); ?>" 
+                   class="inline-block px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors backdrop-blur-sm border border-white/20">
+                    <?php echo e(__('home.view_all_events')); ?>
+
+                </a>
+            </div>
+        </div>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
     
     <style>
@@ -373,15 +447,13 @@
         overflow: hidden;
     }
     
-    /* Heavy Worn/Vintage Effect - No fingerprints */
+    /* Heavy Worn/Vintage Effect */
     .ticket-worn::before {
         content: '';
         position: absolute;
         inset: 0;
         background: 
-            /* Heavy paper texture/grain */
             url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.25'/%3E%3C/svg%3E"),
-            /* Age spots - larger and more visible */
             radial-gradient(ellipse at var(--spot1-x) var(--spot1-y), 
                 rgba(139, 115, 85, var(--wear-opacity)) 0%, 
                 rgba(150, 120, 90, calc(var(--wear-opacity) * 0.6)) 15%,
@@ -395,7 +467,6 @@
             radial-gradient(circle at var(--spot4-x) var(--spot4-y), 
                 rgba(155, 125, 92, calc(var(--wear-opacity) * 0.4)) 0%, 
                 transparent 12%),
-            /* Vignette effect (darker edges) */
             radial-gradient(ellipse at center, 
                 transparent 40%,
                 rgba(139, 115, 85, calc(var(--wear-opacity) * 0.15)) 100%);
@@ -403,7 +474,6 @@
         z-index: 1;
     }
     
-    /* Single Central Crease - Simple and Clean */
     .ticket-worn::after {
         content: '';
         position: absolute;
@@ -420,7 +490,6 @@
         z-index: 1;
     }
     
-    /* Watermark Logo - Stamp Effect */
     .ticket-watermark {
         position: absolute;
         top: 20%;
@@ -435,10 +504,14 @@
         opacity: 0.3;
     }
     
-    /* Make sure content is above wear effects */
     .ticket-content {
         position: relative;
         z-index: 2;
+        flex: 1;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
     
     .cinema-ticket:hover {
@@ -449,14 +522,12 @@
             0 0 0 2px rgba(218, 165, 32, 0.4);
     }
     
-    /* Clickable area (link) */
     .ticket-clickable-area {
         display: block;
         color: inherit;
         text-decoration: none;
     }
     
-    /* Perforated Left Edge */
     .ticket-perforation {
         width: 24px;
         background: linear-gradient(135deg, 
@@ -479,16 +550,6 @@
         color: inherit;
     }
     
-    /* Main Content Area */
-    .ticket-content {
-        flex: 1;
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-    
-    /* Header */
     .ticket-header {
         display: flex;
         justify-content: space-between;
@@ -512,7 +573,6 @@
         font-family: 'Courier New', monospace;
     }
     
-    /* Event Image */
     .ticket-image {
         width: 100%;
         height: 140px;
@@ -522,7 +582,6 @@
         margin: 0.5rem 0;
     }
     
-    /* Title */
     .ticket-title {
         font-family: 'Crimson Pro', serif;
         font-size: 1.25rem;
@@ -537,7 +596,111 @@
         margin: 0.5rem 0;
     }
     
-    /* Details Grid */
+    /* Rankings Section */
+    .ticket-rankings {
+        margin: 0.75rem 0;
+        padding: 0.75rem;
+        background: rgba(139, 115, 85, 0.05);
+        border-radius: 6px;
+        border: 1px dashed rgba(139, 115, 85, 0.2);
+    }
+    
+    .ticket-rankings-title {
+        font-size: 0.75rem;
+        font-weight: 900;
+        color: #b91c1c;
+        text-align: center;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+        font-family: 'Crimson Pro', serif;
+    }
+    
+    .ticket-rankings-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .ticket-ranking-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.375rem;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 4px;
+        font-size: 0.75rem;
+    }
+    
+    .ticket-ranking-first {
+        background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.15) 100%);
+        border: 1px solid rgba(217, 119, 6, 0.3);
+    }
+    
+    .ticket-ranking-second {
+        background: linear-gradient(135deg, rgba(229, 231, 235, 0.3) 0%, rgba(209, 213, 219, 0.2) 100%);
+        border: 1px solid rgba(156, 163, 175, 0.3);
+    }
+    
+    .ticket-ranking-third {
+        background: linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(184, 115, 51, 0.15) 100%);
+        border: 1px solid rgba(160, 82, 45, 0.3);
+    }
+    
+    .ticket-ranking-medal {
+        font-size: 1.25rem;
+        flex-shrink: 0;
+    }
+    
+    .ticket-ranking-name {
+        flex: 1;
+        font-weight: 600;
+        color: #1a1a1a;
+        font-family: 'Crimson Pro', serif;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .ticket-ranking-score {
+        font-weight: 900;
+        color: #b91c1c;
+        font-family: 'Crimson Pro', serif;
+        flex-shrink: 0;
+    }
+    
+    .ticket-price {
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: #b91c1c;
+        font-family: 'Special Elite', 'Courier New', monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.25rem 0.625rem;
+        margin: 0.5rem auto;
+        width: fit-content;
+        border: 2px solid #b91c1c;
+        border-radius: 3px;
+        opacity: 0.75;
+        position: relative;
+        box-shadow: 
+            0 1px 3px rgba(185, 28, 28, 0.15),
+            inset 0 0 6px rgba(185, 28, 28, 0.04);
+        background: 
+            radial-gradient(ellipse at 30% 40%, rgba(185, 28, 28, 0.03) 0%, transparent 60%),
+            radial-gradient(ellipse at 70% 70%, rgba(185, 28, 28, 0.025) 0%, transparent 50%);
+        pointer-events: none;
+    }
+    
+    .ticket-price::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border: 1px solid rgba(185, 28, 28, 0.12);
+        border-radius: 2px;
+        pointer-events: none;
+    }
+    
     .ticket-details {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -581,50 +744,11 @@
         flex-shrink: 0;
     }
     
-    /* Price - Stamp with Special Elite Font (Authentic Stamp Font) */
-    .ticket-price {
-        text-align: center;
-        font-size: 0.75rem;
-        font-weight: 400;
-        color: #b91c1c;
-        font-family: 'Special Elite', 'Courier New', monospace;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        padding: 0.25rem 0.625rem;
-        margin: 0.5rem auto;
-        width: fit-content;
-        border: 2px solid #b91c1c;
-        border-radius: 3px;
-        opacity: 0.75;
-        position: relative;
-        /* Minimal effects - font does the work! */
-        box-shadow: 
-            0 1px 3px rgba(185, 28, 28, 0.15),
-            inset 0 0 6px rgba(185, 28, 28, 0.04);
-        background: 
-            /* Light texture for ink absorption */
-            radial-gradient(ellipse at 30% 40%, rgba(185, 28, 28, 0.03) 0%, transparent 60%),
-            radial-gradient(ellipse at 70% 70%, rgba(185, 28, 28, 0.025) 0%, transparent 50%);
-        pointer-events: none;
-    }
-    
-    /* Subtle irregular border */
-    .ticket-price::before {
-        content: '';
-        position: absolute;
-        inset: -1px;
-        border: 1px solid rgba(185, 28, 28, 0.12);
-        border-radius: 2px;
-        pointer-events: none;
-    }
-    
-    /* Barcode Wrapper */
     .ticket-barcode-wrapper {
         position: relative;
         margin-top: 0.5rem;
     }
     
-    /* Barcode */
     .ticket-barcode {
         display: flex;
         flex-direction: column;
@@ -659,7 +783,6 @@
         letter-spacing: 0.1em;
     }
     
-    /* Barcode Tooltip - Vintage Paper Style */
     .barcode-tooltip {
         position: absolute;
         bottom: 100%;
@@ -748,7 +871,6 @@
         font-family: 'Crimson Pro', serif;
     }
     
-    /* Social Actions */
     .ticket-social {
         display: flex;
         align-items: center;
@@ -759,7 +881,6 @@
         border-top: 1px dashed rgba(139, 115, 85, 0.25);
     }
     
-    /* Stub (tear-off section) */
     .ticket-stub {
         width: 80px;
         background: linear-gradient(180deg, 
@@ -807,7 +928,6 @@
         letter-spacing: 0.05em;
     }
     
-    /* Fade-in animation */
     @keyframes fade-in { 
         from { opacity: 0; transform: scale(0.95); } 
         to { opacity: 1; transform: scale(1); } 
@@ -817,43 +937,6 @@
         opacity: 0; 
     }
     </style>
-    <?php else: ?>
-    
-    <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
-        <div class="text-center mb-12 section-title-fade">
-            <h2 class="text-4xl md:text-5xl font-bold mb-3 text-white" style="font-family: 'Crimson Pro', serif;">
-                <?php echo __('home.events_section_title'); ?>
-
-            </h2>
-            <p class="text-lg text-neutral-200 font-medium">
-                <?php echo e(__('home.events_section_subtitle')); ?>
-
-            </p>
-        </div>
-        
-        <div class="flex flex-col items-center justify-center py-20 px-4">
-            <div class="text-center max-w-md">
-                <svg class="w-24 h-24 mx-auto mb-6 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-                <h3 class="text-2xl font-bold text-white mb-3" style="font-family: 'Crimson Pro', serif;">
-                    <?php echo e(__('home.no_events_title')); ?>
-
-                </h3>
-                <p class="text-white/80 mb-6">
-                    <?php echo e(__('home.no_events_subtitle')); ?>
-
-                </p>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
-                <a href="<?php echo e(route('events.create')); ?>" 
-                   class="inline-block px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-300">
-                    <?php echo e(__('home.create_content')); ?>
-
-                </a>
-                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            </div>
-        </div>
-    </div>
-    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
-<?php /**PATH C:\xampp\htdocs\slamin_v2\resources\views/livewire/home/events-slider.blade.php ENDPATH**/ ?>
+
+<?php /**PATH C:\xampp\htdocs\slamin_v2\resources\views/livewire/home/completed-poetry-slams.blade.php ENDPATH**/ ?>
