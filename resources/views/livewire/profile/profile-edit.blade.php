@@ -335,12 +335,12 @@
                              class="relative group cursor-pointer">
                             <div class="bg-white dark:bg-neutral-800 rounded-xl p-4 border-2 transition-all duration-300
                                 {{ in_array($role['name'], $selectedRoles) 
-                                    ? 'border-' . $role['color'] . '-500 shadow-lg shadow-' . $role['color'] . '-500/20' 
-                                    : 'border-neutral-200 dark:border-neutral-700 hover:border-' . $role['color'] . '-300' }}">
+                                    ? 'border-green-500 shadow-lg shadow-green-500/20' 
+                                    : 'border-neutral-200 dark:border-neutral-700 hover:border-green-300' }}">
                                 
                                 {{-- Selected Badge --}}
                                 @if(in_array($role['name'], $selectedRoles))
-                                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-{{ $role['color'] }}-500 rounded-full flex items-center justify-center shadow-lg">
+                                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
                                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
                                         </svg>
