@@ -1,7 +1,9 @@
 <div class="min-h-screen">
     
     
-    <section class="relative pt-16 pb-12 md:pb-20 overflow-hidden wooden-desk-section">
+    <section class="relative pt-16 pb-12 md:pb-20 overflow-hidden" 
+             style="background: url('/assets/images/poetry-desk-background.webp') center/cover no-repeat, #8b7355; 
+                    box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.1), inset 0 -2px 12px rgba(0, 0, 0, 0.08);">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
                 
