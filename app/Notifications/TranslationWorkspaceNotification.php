@@ -71,6 +71,15 @@ class TranslationWorkspaceNotification extends Notification implements ShouldQue
             'icon' => '🔔',
         ];
 
+        $url = null;
+        try {
+            $url = route('gigs.workspace', $this->translation->gig_application_id);
+        } catch (\Exception $e) {
+            \Log::error('Failed to generate workspace URL', ['error' => $e->getMessage()]);
+            // Fallback URL
+            $url = '/gigs/applications/' . $this->translation->gig_application_id . '/workspace';
+        }
+        
         return [
             'title' => $data['title'],
             'message' => $data['message'],
@@ -78,7 +87,7 @@ class TranslationWorkspaceNotification extends Notification implements ShouldQue
             'poem_title' => $this->translation->poem->title,
             'translation_id' => $this->translation->id,
             'application_id' => $this->translation->gig_application_id,
-            'url' => route('gigs.workspace', $this->translation->gig_application_id),
+            'url' => $url,
             'type' => $this->type,
         ];
     }
