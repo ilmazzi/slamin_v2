@@ -444,11 +444,11 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                 </h3>
                 <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4"><?php echo e(__('profile.edit.roles_description')); ?></p>
                 
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="grid sm:grid-cols-3 gap-4">
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $this->availableRoles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div wire:key="role-<?php echo e($role['name']); ?>"
-                             wire:click="<?php echo e($role['removable'] ? 'toggleRole(\'' . $role['name'] . '\')' : ''); ?>"
-                             class="relative group <?php echo e($role['removable'] ? 'cursor-pointer' : 'cursor-not-allowed opacity-75'); ?>">
+                             wire:click="toggleRole('<?php echo e($role['name']); ?>')"
+                             class="relative group cursor-pointer">
                             <div class="bg-white dark:bg-neutral-800 rounded-xl p-4 border-2 transition-all duration-300
                                 <?php echo e(in_array($role['name'], $selectedRoles) 
                                     ? 'border-' . $role['color'] . '-500 shadow-lg shadow-' . $role['color'] . '-500/20' 
@@ -459,15 +459,6 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                     <div class="absolute -top-2 -right-2 w-8 h-8 bg-<?php echo e($role['color']); ?>-500 rounded-full flex items-center justify-center shadow-lg">
                                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                                        </svg>
-                                    </div>
-                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                
-                                
-                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$role['removable']): ?>
-                                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
-                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                         </svg>
                                     </div>
                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>

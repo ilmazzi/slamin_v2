@@ -202,16 +202,13 @@ class ProfileEdit extends Component
      */
     public function getAvailableRolesProperty()
     {
-        $isAdmin = $this->user->hasRole('admin');
-        
-        $roles = [
+        return [
             [
                 'name' => 'poet',
                 'display_name' => __('profile.edit.role_poet'),
                 'description' => __('profile.edit.role_poet_desc'),
                 'icon' => '✍️',
                 'color' => 'purple',
-                'removable' => true,
             ],
             [
                 'name' => 'organizer',
@@ -219,7 +216,6 @@ class ProfileEdit extends Component
                 'description' => __('profile.edit.role_organizer_desc'),
                 'icon' => '🎭',
                 'color' => 'blue',
-                'removable' => true,
             ],
             [
                 'name' => 'audience',
@@ -227,47 +223,8 @@ class ProfileEdit extends Component
                 'description' => __('profile.edit.role_audience_desc'),
                 'icon' => '👥',
                 'color' => 'green',
-                'removable' => true,
-            ],
-            [
-                'name' => 'judge',
-                'display_name' => __('profile.edit.role_judge'),
-                'description' => __('profile.edit.role_judge_desc'),
-                'icon' => '⚖️',
-                'color' => 'yellow',
-                'removable' => true,
-            ],
-            [
-                'name' => 'venue_owner',
-                'display_name' => __('profile.edit.role_venue_owner'),
-                'description' => __('profile.edit.role_venue_owner_desc'),
-                'icon' => '🏛️',
-                'color' => 'orange',
-                'removable' => true,
-            ],
-            [
-                'name' => 'technician',
-                'display_name' => __('profile.edit.role_technician'),
-                'description' => __('profile.edit.role_technician_desc'),
-                'icon' => '🔧',
-                'color' => 'gray',
-                'removable' => true,
             ],
         ];
-        
-        // Add admin role if user is admin (but not removable)
-        if ($isAdmin) {
-            array_unshift($roles, [
-                'name' => 'admin',
-                'display_name' => 'Amministratore',
-                'description' => 'Accesso completo al sistema',
-                'icon' => '👑',
-                'color' => 'red',
-                'removable' => false,
-            ]);
-        }
-        
-        return $roles;
     }
 
     public function save()

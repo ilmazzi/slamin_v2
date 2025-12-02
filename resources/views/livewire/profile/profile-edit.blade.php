@@ -328,11 +328,11 @@
                 </h3>
                 <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">{{ __('profile.edit.roles_description') }}</p>
                 
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="grid sm:grid-cols-3 gap-4">
                     @foreach($this->availableRoles as $role)
                         <div wire:key="role-{{ $role['name'] }}"
-                             wire:click="{{ $role['removable'] ? 'toggleRole(\'' . $role['name'] . '\')' : '' }}"
-                             class="relative group {{ $role['removable'] ? 'cursor-pointer' : 'cursor-not-allowed opacity-75' }}">
+                             wire:click="toggleRole('{{ $role['name'] }}')"
+                             class="relative group cursor-pointer">
                             <div class="bg-white dark:bg-neutral-800 rounded-xl p-4 border-2 transition-all duration-300
                                 {{ in_array($role['name'], $selectedRoles) 
                                     ? 'border-' . $role['color'] . '-500 shadow-lg shadow-' . $role['color'] . '-500/20' 
@@ -343,15 +343,6 @@
                                     <div class="absolute -top-2 -right-2 w-8 h-8 bg-{{ $role['color'] }}-500 rounded-full flex items-center justify-center shadow-lg">
                                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
-                                        </svg>
-                                    </div>
-                                @endif
-                                
-                                {{-- Admin Lock Badge --}}
-                                @if(!$role['removable'])
-                                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
-                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                         </svg>
                                     </div>
                                 @endif
