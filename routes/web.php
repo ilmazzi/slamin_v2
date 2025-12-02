@@ -255,6 +255,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/gigs', \App\Livewire\Translations\GigIndex::class)->name('gigs.index');
     Route::get('/gigs/{gig}', \App\Livewire\Translations\GigShow::class)->name('gigs.show');
     
+    // Translation Workspace
+    Route::get('/gigs/applications/{application}/workspace', \App\Livewire\Translations\TranslationWorkspace::class)->name('gigs.workspace');
+    
     // Gigs Management
     Route::get('/gigs/{gig}/edit', \App\Livewire\Gigs\GigEdit::class)->name('gigs.edit');
     Route::get('/gigs/{gig}/applications', \App\Livewire\Gigs\ApplicationsManagement::class)->name('gigs.applications');

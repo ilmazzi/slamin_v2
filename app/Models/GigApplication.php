@@ -72,6 +72,22 @@ class GigApplication extends Model
     {
         return $this->hasMany(PoemTranslationNegotiation::class);
     }
+    
+    /**
+     * Traduzioni caricate
+     */
+    public function translations(): HasMany
+    {
+        return $this->hasMany(PoemTranslation::class);
+    }
+    
+    /**
+     * Traduzione attiva (ultima versione)
+     */
+    public function activeTranslation()
+    {
+        return $this->hasOne(PoemTranslation::class)->latestOfMany('version');
+    }
 
     /**
      * Scope per candidature pendenti

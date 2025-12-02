@@ -248,7 +248,7 @@
                     @else
                     <!-- Negotiation Closed Notice -->
                     <div class="flex-shrink-0 p-6 border-t border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-900">
-                        <div class="text-center">
+                        <div class="text-center space-y-3">
                             @if($application->status === 'accepted')
                                 <div class="inline-flex items-center gap-2 px-6 py-3 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-xl font-semibold">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -256,6 +256,14 @@
                                     </svg>
                                     {{ __('negotiations.negotiation_closed_accepted') }}
                                 </div>
+                                
+                                <a href="{{ route('gigs.workspace', $application) }}" 
+                                   class="inline-flex items-center gap-2 px-6 py-3 bg-accent-600 hover:bg-accent-700 text-white font-bold rounded-lg shadow-lg transition-all hover:scale-105">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                    🚀 Vai al Workspace Collaborativo
+                                </a>
                             @elseif($application->status === 'rejected')
                                 <div class="inline-flex items-center gap-2 px-6 py-3 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 rounded-xl font-semibold">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
