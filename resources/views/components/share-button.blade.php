@@ -274,9 +274,20 @@ class="relative inline-block" {{ $attributes->only(['class']) }}>
                     <!-- Fediverse (Mastodon, Pixelfed, etc) -->
                     <button @click="shareOn('fediverse')" 
                             class="flex flex-col items-center gap-3 px-4 py-5 bg-neutral-50 dark:bg-neutral-900/50 hover:bg-purple-50 dark:hover:bg-purple-900/20 border border-neutral-200 dark:border-neutral-700 hover:border-purple-300 dark:hover:border-purple-800 rounded-xl transition-all group">
-                        <div class="w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 text-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z"/>
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-600 text-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform p-2">
+                            <svg class="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Pentagono intrecciato del Fediverso -->
+                                <path d="M50 10 L90 35 L75 85 L25 85 L10 35 Z" stroke="currentColor" stroke-width="8" fill="none" stroke-linejoin="round"/>
+                                <path d="M50 10 L75 85" stroke="currentColor" stroke-width="6" opacity="0.8"/>
+                                <path d="M50 10 L25 85" stroke="currentColor" stroke-width="6" opacity="0.8"/>
+                                <path d="M90 35 L25 85" stroke="currentColor" stroke-width="6" opacity="0.8"/>
+                                <path d="M90 35 L10 35" stroke="currentColor" stroke-width="6" opacity="0.8"/>
+                                <path d="M75 85 L10 35" stroke="currentColor" stroke-width="6" opacity="0.8"/>
+                                <circle cx="50" cy="10" r="6" fill="currentColor"/>
+                                <circle cx="90" cy="35" r="6" fill="currentColor"/>
+                                <circle cx="75" cy="85" r="6" fill="currentColor"/>
+                                <circle cx="25" cy="85" r="6" fill="currentColor"/>
+                                <circle cx="10" cy="35" r="6" fill="currentColor"/>
                             </svg>
                         </div>
                         <span class="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Fediverso</span>
@@ -352,8 +363,18 @@ class="relative inline-block" {{ $attributes->only(['class']) }}>
             <!-- Header -->
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-xl font-bold text-neutral-900 dark:text-white flex items-center gap-2">
-                    <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z"/>
+                    <svg class="w-7 h-7 text-purple-600" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 10 L90 35 L75 85 L25 85 L10 35 Z" stroke="currentColor" stroke-width="8" fill="none" stroke-linejoin="round"/>
+                        <path d="M50 10 L75 85" stroke="currentColor" stroke-width="6" opacity="0.8"/>
+                        <path d="M50 10 L25 85" stroke="currentColor" stroke-width="6" opacity="0.8"/>
+                        <path d="M90 35 L25 85" stroke="currentColor" stroke-width="6" opacity="0.8"/>
+                        <path d="M90 35 L10 35" stroke="currentColor" stroke-width="6" opacity="0.8"/>
+                        <path d="M75 85 L10 35" stroke="currentColor" stroke-width="6" opacity="0.8"/>
+                        <circle cx="50" cy="10" r="6" fill="currentColor"/>
+                        <circle cx="90" cy="35" r="6" fill="currentColor"/>
+                        <circle cx="75" cy="85" r="6" fill="currentColor"/>
+                        <circle cx="25" cy="85" r="6" fill="currentColor"/>
+                        <circle cx="10" cy="35" r="6" fill="currentColor"/>
                     </svg>
                     Condividi nel Fediverso
                 </h3>
