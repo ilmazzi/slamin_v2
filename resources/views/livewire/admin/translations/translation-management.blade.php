@@ -281,7 +281,7 @@
                 {{-- Progress Bar --}}
                 @if($isImporting)
                     <div class="mb-6 space-y-3" 
-                         wire:poll.500ms
+                         wire:poll.2s
                          wire:key="import-progress-{{ now()->timestamp }}">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-sm font-bold text-neutral-700 dark:text-neutral-300">

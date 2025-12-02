@@ -1,5 +1,5 @@
 <!-- Livewire Component Root (required) -->
-<div wire:poll.1s="pollForBadge" wire:poll.keep-alive>
+<div wire:poll.30s="pollForBadge">
     @if($showNotification && $badge)
     <!-- Full Screen Badge Notification -->
     <div class="badge-notification-overlay" 
