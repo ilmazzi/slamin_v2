@@ -491,6 +491,11 @@ class EventEdit extends Component
     {
         $this->dispatch('trigger-geocoding');
     }
+    
+    public function updatedCountry()
+    {
+        $this->dispatch('trigger-geocoding');
+    }
 
     public function updatedLatitude()
     {
