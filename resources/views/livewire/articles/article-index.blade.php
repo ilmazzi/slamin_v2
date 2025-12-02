@@ -535,6 +535,25 @@
                 font-size: 1.5rem;
             }
         }
+        
+        /* Articles Hero Background - Light & Dark Mode */
+        .articles-hero-bg {
+            background: 
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' seed='8' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.25'/%3E%3C/svg%3E"),
+                repeating-linear-gradient(0deg, transparent, transparent 150px, rgba(200, 180, 160, 0.15) 150px, rgba(200, 180, 160, 0.15) 152px),
+                repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(180, 160, 140, 0.08) 4px, rgba(180, 160, 140, 0.08) 5px),
+                linear-gradient(180deg, #f5f1e8 0%, #ebe7de 15%, #e8e4db 30%, #e5e1d8 50%, #e8e4db 70%, #ebe7de 85%, #f5f1e8 100%);
+            box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.05), inset 0 -1px 8px rgba(0, 0, 0, 0.03);
+        }
+        
+        :is(.dark .articles-hero-bg) {
+            background: 
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' seed='8' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.3'/%3E%3C/svg%3E"),
+                repeating-linear-gradient(0deg, transparent, transparent 150px, rgba(80, 70, 60, 0.2) 150px, rgba(80, 70, 60, 0.2) 152px),
+                repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(60, 55, 50, 0.15) 4px, rgba(60, 55, 50, 0.15) 5px),
+                linear-gradient(180deg, #3a3632 0%, #2f2d28 15%, #34322d 30%, #2d2b26 45%, #32302b 60%, #35332e 75%, #383630 90%, #3a3632 100%);
+            box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.25), inset 0 -2px 12px rgba(0, 0, 0, 0.2);
+        }
     </style>
     
     {{-- Article Modal --}}
