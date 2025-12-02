@@ -339,6 +339,24 @@
                             @elseif($isOwner)
                                 {{-- Owner Actions --}}
                                 <div class="space-y-3">
+                                    {{-- Check if there's an accepted application with translation in review --}}
+                                    @php
+                                        $acceptedApp = $gig->applications()->where('status', 'accepted')->with('translations')->first();
+                                        $hasTranslationInReview = $acceptedApp && $acceptedApp->translations()->whereIn('status', ['in_review', 'draft'])->exists();
+                                    @endphp
+                                    
+                                    @if($acceptedApp && $hasTranslationInReview)
+                                        <a href="{{ route('gigs.workspace', $acceptedApp) }}" 
+                                           class="block w-full px-6 py-4 bg-gradient-to-r from-accent-600 to-accent-700 hover:from-accent-700 hover:to-accent-800 text-white font-black text-center uppercase tracking-wider transition-all hover:shadow-2xl hover:scale-105 animate-pulse">
+                                            <div class="flex items-center justify-center gap-2">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                </svg>
+                                                🚀 Revisiona Traduzione
+                                            </div>
+                                        </a>
+                                    @endif
+                                    
                                     <a href="{{ route('gigs.edit', $gig) }}" 
                                        class="block w-full px-6 py-4 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-black text-center uppercase tracking-wider transition-all hover:shadow-2xl hover:scale-105">
                                         {{ __('gigs.edit') }}

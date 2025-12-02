@@ -5,6 +5,7 @@ namespace App\Livewire\Translations;
 use App\Models\GigApplication;
 use App\Models\PoemTranslation;
 use App\Models\TranslationComment;
+use App\Notifications\TranslationWorkspaceNotification;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
@@ -127,6 +128,11 @@ class TranslationWorkspace extends Component
             $comment->resolve(Auth::id());
             $this->translation->load('comments.user');
             
+            // Notify if comment was from other user
+            if ($comment->user_id !== Auth::id()) {
+                $this->notifyOtherParty('comment_resolved');
+            }
+            
             session()->flash('success', 'Commento risolto!');
         }
     }
@@ -174,8 +180,13 @@ class TranslationWorkspace extends Component
         $isAuthor = Auth::id() === $this->application->gig->poem->user_id;
         $otherUser = $isAuthor ? $this->application->user : $this->application->gig->poem->user;
         
-        // TODO: Implement notification
-        // $otherUser->notify(new TranslationWorkspaceNotification($this->translation, $type));
+        if ($otherUser && $otherUser->id !== Auth::id()) {
+            $otherUser->notify(new TranslationWorkspaceNotification($this->translation, $type));
+            
+            // Dispatch global notification refresh
+            $this->dispatch('refresh-notifications');
+            $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+        }
     }
     
     public function render()
