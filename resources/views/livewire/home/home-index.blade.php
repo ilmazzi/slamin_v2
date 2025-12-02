@@ -265,6 +265,11 @@
     {{-- Carousel Section --}}
     <livewire:home.hero-carousel />
 
+    {{-- Decorative Separator --}}
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+        <div class="section-separator"></div>
+    </div>
+
     {{-- Video/Foto Community - FILM STUDIO SECTION --}}
     <div class="py-20 md:py-24 film-studio-section">
         <livewire:home.videos-section />
