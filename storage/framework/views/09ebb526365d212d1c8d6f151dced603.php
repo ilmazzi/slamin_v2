@@ -1,14 +1,16 @@
 <div>
-    @if ($topGigs && $topGigs->count() > 0)
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($topGigs && $topGigs->count() > 0): ?>
     <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
         
         <!-- Header -->
         <div class="text-center mb-12 section-title-fade">
             <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
-                {!! __('home.gigs_section_title') !!}
+                <?php echo __('home.gigs_section_title'); ?>
+
             </h2>
             <p class="text-lg text-neutral-600 dark:text-neutral-100 font-medium">
-                {{ __('home.gigs_section_subtitle') }}
+                <?php echo e(__('home.gigs_section_subtitle')); ?>
+
             </p>
         </div>
 
@@ -76,7 +78,7 @@
             
             <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-20 pt-20 px-8 md:px-12 scrollbar-hide"
                  style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
-                @foreach($topGigs as $i => $gig)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $topGigs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $gig): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php
                     // Random tape properties per card
                     $tapeWidth = rand(110, 150);
@@ -88,100 +90,104 @@
                 <div class="w-80 md:w-96 flex-shrink-0 fade-scale-item"
                      x-data
                      x-intersect.once="$el.classList.add('animate-fade-in')"
-                     style="animation-delay: {{ $i * 0.1 }}s">
+                     style="animation-delay: <?php echo e($i * 0.1); ?>s">
                     
-                    {{-- NOTICE BOARD CARD --}}
-                    <a href="{{ route('gigs.show', $gig) }}" 
+                    
+                    <a href="<?php echo e(route('gigs.show', $gig)); ?>" 
                        class="group block h-full notice-card">
                         
-                        {{-- Washi tape at top (fully visible) --}}
-                        <div class="washi-tape washi-top" 
-                             style="width: {{ $tapeWidth }}px; transform: translate(calc(-50% + {{ $tapeOffsetX }}px), 0) rotate({{ $tapeRotation }}deg);"></div>
                         
-                        {{-- Paper note --}}
-                        <div class="notice-paper" style="transform: rotate({{ rand(-2, 2) }}deg);">
+                        <div class="washi-tape washi-top" 
+                             style="width: <?php echo e($tapeWidth); ?>px; transform: translate(calc(-50% + <?php echo e($tapeOffsetX); ?>px), 0) rotate(<?php echo e($tapeRotation); ?>deg);"></div>
+                        
+                        
+                        <div class="notice-paper" style="transform: rotate(<?php echo e(rand(-2, 2)); ?>deg);">
                             
-                            {{-- Header section --}}
+                            
                             <div class="notice-header-section">
                                 <div class="flex items-center justify-between mb-3">
                                     <span class="notice-category-badge">
-                                        {{ __('gigs.categories.' . $gig->category) }}
+                                        <?php echo e(__('gigs.categories.' . $gig->category)); ?>
+
                                     </span>
-                                    @if($gig->is_urgent)
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($gig->is_urgent): ?>
                                         <span class="notice-urgent-flag">!! URGENTE !!</span>
-                                    @endif
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
                             </div>
                             
-                            {{-- Title --}}
+                            
                             <h3 class="notice-title group-hover:text-accent-700 transition-colors">
-                                {{ $gig->title }}
+                                <?php echo e($gig->title); ?>
+
                             </h3>
                             
-                            {{-- Description --}}
+                            
                             <p class="notice-description">
-                                {{ Str::limit(strip_tags($gig->description), 100) }}
+                                <?php echo e(Str::limit(strip_tags($gig->description), 100)); ?>
+
                             </p>
                             
-                            {{-- Details with icons --}}
+                            
                             <div class="notice-details-list">
-                                @if($gig->location)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($gig->location): ?>
                                     <div class="notice-detail-row">
                                         <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                                         </svg>
-                                        <span>{{ $gig->location }}</span>
+                                        <span><?php echo e($gig->location); ?></span>
                                     </div>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 
-                                @if($gig->deadline)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($gig->deadline): ?>
                                     <div class="notice-detail-row">
                                         <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
                                         </svg>
-                                        <span>Scadenza: {{ $gig->deadline->format('d M Y') }}</span>
+                                        <span>Scadenza: <?php echo e($gig->deadline->format('d M Y')); ?></span>
                                     </div>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 
-                                @if($gig->compensation)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($gig->compensation): ?>
                                     <div class="notice-detail-row notice-compensation-row">
                                         <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
                                         </svg>
-                                        <span>{{ Str::limit($gig->compensation, 35) }}</span>
+                                        <span><?php echo e(Str::limit($gig->compensation, 35)); ?></span>
                                     </div>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                             
-                            {{-- Footer info --}}
+                            
                             <div class="notice-footer-bar">
                                 <div class="notice-author">
                                     <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
                                     </svg>
-                                    <span>{{ $gig->user ? $gig->user->name : ($gig->requester ? $gig->requester->name : 'Organizzatore') }}</span>
+                                    <span><?php echo e($gig->user ? $gig->user->name : ($gig->requester ? $gig->requester->name : 'Organizzatore')); ?></span>
                                 </div>
                                 <div class="notice-applications-badge">
-                                    {{ $gig->application_count }}@if($gig->max_applications)/{{ $gig->max_applications }}@endif
+                                    <?php echo e($gig->application_count); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($gig->max_applications): ?>/<?php echo e($gig->max_applications); ?><?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
                             </div>
                         </div>
                         
-                        {{-- Washi tape at bottom --}}
+                        
                         <div class="washi-tape washi-bottom" 
-                             style="width: {{ $tapeWidth }}px; transform: translate(calc(-50% + {{ $tapeBottomOffsetX }}px), 0) rotate({{ $tapeBottomRotation }}deg);"></div>
+                             style="width: <?php echo e($tapeWidth); ?>px; transform: translate(calc(-50% + <?php echo e($tapeBottomOffsetX); ?>px), 0) rotate(<?php echo e($tapeBottomRotation); ?>deg);"></div>
                     </a>
                 </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
 
-        {{-- CTA - Simple Text --}}
+        
         <div class="text-center mt-8">
-            <a href="{{ route('gigs.index') }}" 
+            <a href="<?php echo e(route('gigs.index')); ?>" 
                class="inline-block text-2xl md:text-3xl font-bold text-neutral-800 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300"
                style="font-family: 'Crimson Pro', serif;">
-                → {{ __('home.see_all_gigs') }}
+                → <?php echo e(__('home.see_all_gigs')); ?>
+
             </a>
         </div>
     </div>
@@ -473,15 +479,17 @@
                 inset 0 -1px 3px rgba(0, 0, 0, 0.2);
         }
     </style>
-    @else
-    {{-- Empty State Placeholder --}}
+    <?php else: ?>
+    
     <div class="max-w-[90rem] mx-auto px-4 md:px-6 lg:px-8">
         <div class="text-center mb-12 section-title-fade">
             <h2 class="text-4xl md:text-5xl font-bold mb-3 text-neutral-900 dark:text-white" style="font-family: 'Crimson Pro', serif;">
-                {!! __('home.gigs_section_title') !!}
+                <?php echo __('home.gigs_section_title'); ?>
+
             </h2>
             <p class="text-lg text-neutral-600 dark:text-neutral-100 font-medium">
-                {{ __('home.gigs_section_subtitle') }}
+                <?php echo e(__('home.gigs_section_subtitle')); ?>
+
             </p>
         </div>
         
@@ -491,13 +499,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
                 <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-3" style="font-family: 'Crimson Pro', serif;">
-                    {{ __('home.no_gigs_title') }}
+                    <?php echo e(__('home.no_gigs_title')); ?>
+
                 </h3>
                 <p class="text-neutral-600 dark:text-neutral-400">
-                    {{ __('home.no_gigs_subtitle') }}
+                    <?php echo e(__('home.no_gigs_subtitle')); ?>
+
                 </p>
             </div>
         </div>
     </div>
-    @endif
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
+<?php /**PATH C:\xampp\htdocs\slamin_v2\resources\views/livewire/home/gigs-section.blade.php ENDPATH**/ ?>
