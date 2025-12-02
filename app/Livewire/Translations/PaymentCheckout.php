@@ -52,7 +52,7 @@ class PaymentCheckout extends Component
         }
 
         $this->application = $application->load(['gig.poem', 'user']);
-        $this->amount = $application->negotiated_compensation ?? $application->gig->compensation ?? 0;
+        $this->amount = (float) ($application->negotiated_compensation ?? $application->gig->compensation ?? 0);
 
         // Crea o recupera il PaymentIntent
         $this->createOrRetrievePaymentIntent();
@@ -141,7 +141,7 @@ class PaymentCheckout extends Component
 
         try {
             // Calcola commissioni
-            $commissionData = PaymentService::calculateCommission($this->amount);
+            $commissionData = PaymentService::calculateCommission((float) $this->amount);
 
             // Crea il pagamento come completato (offline)
             TranslationPayment::create([
@@ -181,7 +181,7 @@ class PaymentCheckout extends Component
 
     public function render()
     {
-        $commissionData = PaymentService::calculateCommission($this->amount);
+        $commissionData = PaymentService::calculateCommission((float) $this->amount);
         $paymentMethods = PaymentService::getEnabledPaymentMethods();
 
         return view('livewire.translations.payment-checkout', [
