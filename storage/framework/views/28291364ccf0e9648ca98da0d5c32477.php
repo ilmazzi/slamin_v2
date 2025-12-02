@@ -4,12 +4,13 @@
     ?>
     
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($carouselSlides->count() > 0): ?>
-    <section class="relative py-12 md:py-16 bg-white dark:bg-neutral-900 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+    <section class="relative bg-white dark:bg-neutral-900 overflow-hidden group">
+        <div class="relative"
              x-data="{
                  currentSlide: 0,
                  slides: <?php echo e($carouselSlides->count()); ?>,
-                 autoplayInterval: null
+                 autoplayInterval: null,
+                 showArrows: false
              }"
              x-init="
                  if (slides > 1) {
@@ -18,12 +19,11 @@
                      }, 6000);
                  }
              "
-             @mouseenter="if (autoplayInterval) clearInterval(autoplayInterval)"
-             @mouseleave="if (slides > 1) autoplayInterval = setInterval(() => { currentSlide = (currentSlide + 1) % slides; }, 6000)">
+             @mouseenter="showArrows = true; if (autoplayInterval) clearInterval(autoplayInterval)"
+             @mouseleave="showArrows = false; if (slides > 1) autoplayInterval = setInterval(() => { currentSlide = (currentSlide + 1) % slides; }, 6000)">
             
-            <div class="relative">
                 
-                <div class="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
+                <div class="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden">
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $carouselSlides; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $carousel): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="absolute inset-0 transition-all duration-700 ease-in-out"
                          :class="currentSlide === <?php echo e($index); ?> ? 'opacity-100 z-10' : 'opacity-0 z-0'">
@@ -115,16 +115,30 @@
                 
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($carouselSlides->count() > 1): ?>
                 <button @click="currentSlide = (currentSlide - 1 + slides) % slides"
-                        class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-lg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        x-show="showArrows"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 -translate-x-4"
+                        x-transition:enter-end="opacity-100 translate-x-0"
+                        x-transition:leave="transition ease-in duration-200"
+                        x-transition:leave-start="opacity-100 translate-x-0"
+                        x-transition:leave-end="opacity-0 -translate-x-4"
+                        class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 md:w-16 md:h-16 bg-white/20 backdrop-blur-md border-2 border-white/40 rounded-full flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all shadow-2xl">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/>
                     </svg>
                 </button>
                 
                 <button @click="currentSlide = (currentSlide + 1) % slides"
-                        class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-14 md:h-14 bg-white/10 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-lg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        x-show="showArrows"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 translate-x-4"
+                        x-transition:enter-end="opacity-100 translate-x-0"
+                        x-transition:leave="transition ease-in duration-200"
+                        x-transition:leave-start="opacity-100 translate-x-0"
+                        x-transition:leave-end="opacity-0 translate-x-4"
+                        class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-14 h-14 md:w-16 md:h-16 bg-white/20 backdrop-blur-md border-2 border-white/40 rounded-full flex items-center justify-center text-white hover:bg-white/30 hover:scale-110 transition-all shadow-2xl">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"/>
                     </svg>
                 </button>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
