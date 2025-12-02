@@ -40,18 +40,23 @@ class TranslationGigSeeder extends Seeder
             $translator->assignRole('poet');
         }
         
-        // Create a poem
-        $poem = Poem::create([
-            'user_id' => $author->id,
-            'title' => 'La Notte Stellata',
-            'content' => '<p>Sotto il manto della notte,</p><p>le stelle danzano silenziose,</p><p>sussurrano segreti antichi</p><p>a chi sa ascoltare.</p><p><br></p><p>Nel buio profondo,</p><p>trovo la luce dell\'anima,</p><p>un faro che guida</p><p>attraverso l\'oscurità.</p>',
-            'is_public' => true,
-            'published_at' => now(),
-            'moderation_status' => 'approved',
-        ]);
+        // Get or create a poem
+        $poem = Poem::firstOrCreate(
+            ['slug' => 'la-notte-stellata'],
+            [
+                'user_id' => $author->id,
+                'title' => 'La Notte Stellata',
+                'content' => '<p>Sotto il manto della notte,</p><p>le stelle danzano silenziose,</p><p>sussurrano segreti antichi</p><p>a chi sa ascoltare.</p><p><br></p><p>Nel buio profondo,</p><p>trovo la luce dell\'anima,</p><p>un faro che guida</p><p>attraverso l\'oscurità.</p>',
+                'is_public' => true,
+                'published_at' => now(),
+                'moderation_status' => 'approved',
+            ]
+        );
         
-        // Create translation gig
-        $gig = Gig::create([
+        // Get or create translation gig
+        $gig = Gig::firstOrCreate(
+            ['poem_id' => $poem->id, 'user_id' => $author->id],
+            [
             'title' => 'Traduzione Poesia: La Notte Stellata → Inglese',
             'description' => 'Cerco un traduttore esperto per tradurre questa poesia in inglese. È importante mantenere il ritmo e la musicalità del testo originale.',
             'requirements' => 'Esperienza con traduzione poetica, ottima conoscenza dell\'inglese, sensibilità letteraria.',
@@ -72,10 +77,13 @@ class TranslationGigSeeder extends Seeder
             'requester_id' => $author->id,
             'poem_id' => $poem->id,
             'status' => 'open',
-        ]);
+            ]
+        );
         
-        // Create application
-        $application = GigApplication::create([
+        // Get or create application
+        $application = GigApplication::firstOrCreate(
+            ['gig_id' => $gig->id, 'user_id' => $translator->id],
+            [
             'gig_id' => $gig->id,
             'user_id' => $translator->id,
             'message' => 'Sono un traduttore professionista con 5 anni di esperienza in traduzione poetica. Ho tradotto opere di Dante e Petrarca in inglese.',
@@ -86,7 +94,8 @@ class TranslationGigSeeder extends Seeder
             'compensation_expectation' => '75.00',
             'proposed_compensation' => 75.00,
             'status' => 'pending',
-        ]);
+            ]
+        );
         
         $this->command->info('✅ Created translation gig seeder data:');
         $this->command->info("   Author: {$author->email} (password: password)");

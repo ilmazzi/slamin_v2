@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class GigApplication extends Model
 {
@@ -87,6 +88,14 @@ class GigApplication extends Model
     public function activeTranslation()
     {
         return $this->hasOne(PoemTranslation::class)->latestOfMany('version');
+    }
+
+    /**
+     * Pagamento associato
+     */
+    public function payment(): HasOne
+    {
+        return $this->hasOne(TranslationPayment::class);
     }
 
     /**

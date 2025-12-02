@@ -258,6 +258,10 @@ Route::middleware('auth')->group(function () {
     // Translation Workspace
     Route::get('/gigs/applications/{application}/workspace', \App\Livewire\Translations\TranslationWorkspace::class)->name('gigs.workspace');
     
+    // Payment Routes
+    Route::get('/gigs/applications/{application}/payment', \App\Livewire\Translations\PaymentCheckout::class)->name('gigs.payment.checkout');
+    Route::get('/gigs/applications/{application}/payment/success', \App\Livewire\Translations\PaymentSuccess::class)->name('gigs.payment.success');
+    
     // Gigs Management
     Route::get('/gigs/{gig}/edit', \App\Livewire\Gigs\GigEdit::class)->name('gigs.edit');
     Route::get('/gigs/{gig}/applications', \App\Livewire\Gigs\ApplicationsManagement::class)->name('gigs.applications');

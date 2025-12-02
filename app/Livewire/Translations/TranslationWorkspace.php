@@ -89,8 +89,8 @@ class TranslationWorkspace extends Component
                 ]);
                 
                 $otherUser->notify(new TranslationWorkspaceNotification($this->translation, 'translation_updated'));
-                $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
-                $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+                // Don't dispatch here - it would trigger on sender's browser
+                // Recipient will see notification via polling
             }
             
             session()->flash('success', 'Traduzione salvata! Versione ' . $this->translation->version);
@@ -142,9 +142,7 @@ class TranslationWorkspace extends Component
             } catch (\Exception $e) {
                 \Log::error('❌ Notification failed', ['error' => $e->getMessage()]);
             }
-            
-            $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
-            $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+            // Don't dispatch - recipient will see via polling
         } else {
             \Log::warning('⚠️ Notification NOT sent', [
                 'otherUser_exists' => $otherUser ? 'yes' : 'no',
@@ -176,8 +174,7 @@ class TranslationWorkspace extends Component
                 ]);
                 
                 $comment->user->notify(new TranslationWorkspaceNotification($this->translation, 'comment_resolved'));
-                $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
-                $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+                // Don't dispatch - recipient will see via polling
             }
             
             session()->flash('success', 'Commento risolto!');
@@ -191,17 +188,36 @@ class TranslationWorkspace extends Component
             'submitted_at' => now(),
         ]);
         
+        // Reload relationships to ensure fresh data
+        $this->application->load('gig.poem.user');
+        
         // Notify poem AUTHOR (not translator)
         $author = $this->application->gig->poem->user;
+        
+        \Log::info('🔔 submitForReview - DEBUG', [
+            'current_user' => Auth::id(),
+            'current_user_email' => Auth::user()->email,
+            'author_id' => $author ? $author->id : 'null',
+            'author_email' => $author ? $author->email : 'null',
+            'are_same' => $author ? ($author->id === Auth::id() ? 'YES - PROBLEM!' : 'NO - OK') : 'author null',
+        ]);
+        
         if ($author && $author->id !== Auth::id()) {
-            \Log::info('🔔 Sending submitted_for_review notification', [
+            \Log::info('✅ Sending submitted_for_review notification', [
                 'from' => Auth::id(),
+                'from_email' => Auth::user()->email,
                 'to' => $author->id,
+                'to_email' => $author->email,
             ]);
             
             $author->notify(new TranslationWorkspaceNotification($this->translation, 'submitted_for_review'));
-            $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
-            $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+            // Don't dispatch - recipient will see via polling
+        } else {
+            \Log::error('❌ Notification NOT sent!', [
+                'reason' => $author ? 'Same user' : 'Author is null',
+                'author_id' => $author ? $author->id : 'null',
+                'current_user_id' => Auth::id(),
+            ]);
         }
         
         session()->flash('success', 'Traduzione inviata per revisione!');
@@ -234,8 +250,7 @@ class TranslationWorkspace extends Component
             ]);
             
             $translator->notify(new TranslationWorkspaceNotification($this->translation, 'translation_approved'));
-            $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
-            $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+            // Don't dispatch - recipient will see via polling
         }
         
         session()->flash('success', 'Traduzione approvata! Ora puoi procedere al pagamento.');

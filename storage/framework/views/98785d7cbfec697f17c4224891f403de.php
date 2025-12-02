@@ -378,11 +378,74 @@ if (isset($__slots)) unset($__slots);
                                 <div class="space-y-3">
                                     
                                     <?php
-                                        $acceptedApp = $gig->applications()->where('status', 'accepted')->with('translations')->first();
+                                        $acceptedApp = $gig->applications()->where('status', 'accepted')->orWhere('status', 'completed')->with(['translations', 'payment'])->first();
                                         $hasTranslationInReview = $acceptedApp && $acceptedApp->translations()->whereIn('status', ['in_review', 'draft'])->exists();
+                                        $hasApprovedTranslation = $acceptedApp && $acceptedApp->translations()->where('status', 'approved')->exists();
+                                        $hasCompletedPayment = $acceptedApp && $acceptedApp->payment && $acceptedApp->payment->status === 'completed';
                                     ?>
                                     
-                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($acceptedApp && $hasTranslationInReview): ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($acceptedApp && $hasCompletedPayment): ?>
+                                        
+                                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-2 border-blue-400 dark:border-blue-600 rounded-xl p-6 mb-3">
+                                            <div class="flex items-center gap-3 mb-4">
+                                                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-black text-blue-900 dark:text-blue-100 uppercase text-sm">
+                                                        ✅ Pagamento Completato
+                                                    </h4>
+                                                    <p class="text-xs text-blue-700 dark:text-blue-300">
+                                                        Traduzione disponibile
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="space-y-2">
+                                                <a href="<?php echo e(route('gigs.workspace', $acceptedApp)); ?>" 
+                                                   class="block w-full px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold text-center rounded-lg transition-all">
+                                                    📄 Visualizza Traduzione
+                                                </a>
+                                                <div class="text-sm text-blue-800 dark:text-blue-200 text-center">
+                                                    Pagato il <?php echo e($acceptedApp->payment->paid_at->format('d/m/Y')); ?> - €<?php echo e(number_format($acceptedApp->payment->amount, 2)); ?>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php elseif($acceptedApp && $hasApprovedTranslation): ?>
+                                        
+                                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-2 border-green-400 dark:border-green-600 rounded-xl p-6 mb-3">
+                                            <div class="flex items-center gap-3 mb-4">
+                                                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-black text-green-900 dark:text-green-100 uppercase text-sm">
+                                                        ✅ Traduzione Approvata
+                                                    </h4>
+                                                    <p class="text-xs text-green-700 dark:text-green-300">
+                                                        Pronto per il pagamento
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="space-y-2">
+                                                <a href="<?php echo e(route('gigs.workspace', $acceptedApp)); ?>" 
+                                                   class="block w-full px-4 py-3 bg-white dark:bg-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white font-semibold text-center rounded-lg transition-all border border-neutral-200 dark:border-neutral-700">
+                                                    👁️ Visualizza Traduzione
+                                                </a>
+                                                
+                                                <a href="<?php echo e(route('gigs.payment.checkout', $acceptedApp)); ?>" 
+                                                   class="block w-full px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-black text-center rounded-lg transition-all shadow-lg hover:shadow-xl">
+                                                    💳 Procedi al Pagamento
+                                                </a>
+                                            </div>
+                                        </div>
+                                    <?php elseif($acceptedApp && $hasTranslationInReview): ?>
                                         <a href="<?php echo e(route('gigs.workspace', $acceptedApp)); ?>" 
                                            class="block w-full px-6 py-4 bg-gradient-to-r from-accent-600 to-accent-700 hover:from-accent-700 hover:to-accent-800 text-white font-black text-center uppercase tracking-wider transition-all hover:shadow-2xl hover:scale-105 animate-pulse">
                                             <div class="flex items-center justify-center gap-2">
@@ -574,8 +637,8 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
     </div>
 </div>
 
-
-<?php
+<?php $__env->startPush('modals'); ?>
+    <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
@@ -595,4 +658,5 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
+<?php $__env->stopPush(); ?>
 <?php /**PATH C:\xampp\htdocs\slamin_v2\resources\views/livewire/translations/gig-show.blade.php ENDPATH**/ ?>
