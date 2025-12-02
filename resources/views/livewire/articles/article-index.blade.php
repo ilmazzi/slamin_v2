@@ -350,7 +350,7 @@
 
                 {{-- Toggle per mostrare tutti gli articoli --}}
                 <div class="text-center mb-12">
-                    <button wire:click="toggleShowAll" class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow-lg transition-all duration-200">
+                    <button wire:click="toggleShowAll" class="px-6 py-3 bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-600 shadow-lg transition-all duration-200">
                         <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                         </svg>
