@@ -65,7 +65,7 @@
     </section>
 
     
-    <section class="relative py-8 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-900/95">
+    <section class="relative py-8 bg-gradient-to-b from-white to-neutral-50 dark:from-neutral-900 dark:to-neutral-900/95">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             
             
@@ -74,11 +74,11 @@
                        type="text"
                        placeholder="<?php echo e(__('articles.index.search_placeholder')); ?>"
                        class="w-full px-6 py-4 rounded-full 
-                              border-2 border-gray-300/50 dark:border-gray-700/50 
-                              bg-white/60 dark:bg-gray-800/60
+                              border-2 border-neutral-300/50 dark:border-neutral-700/50 
+                              bg-white/60 dark:bg-neutral-800/60
                               backdrop-blur-sm
-                              text-gray-900 dark:text-white placeholder:text-gray-500
-                              focus:border-primary-400 focus:ring-4 focus:ring-primary-400/20 focus:bg-white dark:focus:bg-gray-800
+                              text-neutral-900 dark:text-white placeholder:text-neutral-500
+                              focus:border-primary-400 focus:ring-4 focus:ring-primary-400/20 focus:bg-white dark:focus:bg-neutral-800
                               transition-all duration-300 
                               text-center"
                        style="font-family: 'Playfair Display', serif; font-size: 1.125rem;">
@@ -86,7 +86,7 @@
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($search): ?>
                     <button wire:click="$set('search', '')" 
                             class="absolute right-6 top-1/2 -translate-y-1/2
-                                   text-gray-400 hover:text-primary-600
+                                   text-neutral-400 hover:text-primary-600
                                    hover:scale-110 transition-all">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -98,7 +98,7 @@
             
             
             <details class="mt-6">
-                <summary class="text-center text-sm text-gray-500 hover:text-primary-600 cursor-pointer transition-colors" style="font-family: 'Playfair Display', serif;">
+                <summary class="text-center text-sm text-neutral-500 hover:text-primary-600 cursor-pointer transition-colors" style="font-family: 'Playfair Display', serif;">
                     <?php echo e(__('articles.filters.show_filters') ?? 'Mostra filtri avanzati'); ?>
 
                 </summary>
@@ -119,7 +119,7 @@
                             <option value="popular"><?php echo e(__('articles.filters.popular')); ?></option>
                             <option value="featured"><?php echo e(__('articles.filters.featured')); ?></option>
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-400">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
@@ -145,7 +145,7 @@
                                 </option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-neutral-400">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
@@ -178,7 +178,7 @@
     </section>
 
     
-    <section class="bg-gray-50 dark:bg-gray-900 py-12">
+    <section class="bg-neutral-50 dark:bg-neutral-900 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             
@@ -195,14 +195,14 @@
                     <div class="mb-12">
                     <div class="flex items-center gap-2 mb-6">
                         <div class="h-px flex-1 bg-gradient-to-r from-transparent via-accent-500 to-transparent"></div>
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">
                             <?php echo e(__('articles.index.featured')); ?>
 
                         </h2>
                         <div class="h-px flex-1 bg-gradient-to-r from-transparent via-accent-500 to-transparent"></div>
                     </div>
 
-                    <article class="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+                    <article class="group relative bg-white dark:bg-neutral-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
                         <div class="md:flex">
                             <div class="md:w-1/2 relative overflow-hidden">
                                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($bannerArticle->featured_image_url): ?>
@@ -232,17 +232,17 @@
 
                                     </span>
                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors cursor-pointer" 
+                                <h3 class="text-3xl font-bold text-neutral-900 dark:text-white mb-4 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors cursor-pointer" 
                                     style="font-family: 'Playfair Display', serif;"
                                     onclick="Livewire.dispatch('openArticleModal', { articleId: <?php echo e($bannerArticle->id); ?> })">
                                     <?php echo e($bannerArticle->title); ?>
 
                                 </h3>
-                                <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-3">
+                                <p class="text-neutral-600 dark:text-neutral-300 mb-6 line-clamp-3">
                                     <?php echo e($bannerArticle->excerpt); ?>
 
                                 </p>
-                                <div class="flex flex-col gap-4 text-sm text-gray-500 dark:text-gray-400">
+                                <div class="flex flex-col gap-4 text-sm text-neutral-500 dark:text-neutral-400">
                                     <div class="flex items-center gap-4 flex-wrap">
                                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($bannerArticle->user): ?>
                                             <div class="flex items-center gap-2">
@@ -250,12 +250,12 @@
                                                     src="<?php echo e(\App\Helpers\AvatarHelper::getUserAvatarUrl($bannerArticle->user, 80)); ?>" 
                                                     alt="<?php echo e(\App\Helpers\AvatarHelper::getDisplayName($bannerArticle->user)); ?>"
                                                     class="w-9 h-9 rounded-full object-cover ring-2 ring-white/70 dark:ring-gray-700 shadow-sm">
-                                                <span class="font-medium text-gray-700 dark:text-gray-200">
+                                                <span class="font-medium text-neutral-700 dark:text-neutral-200">
                                                     <?php echo e(\App\Helpers\AvatarHelper::getDisplayName($bannerArticle->user)); ?>
 
                                                 </span>
                                             </div>
-                                            <span class="text-gray-400">•</span>
+                                            <span class="text-neutral-400">•</span>
                                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         <span><?php echo e($bannerArticle->published_at->format('d M Y')); ?></span>
                                         <span><?php echo e(__('articles.index.reading_time', ['minutes' => $bannerArticle->read_time])); ?></span>
@@ -606,7 +606,7 @@ if (isset($__slots)) unset($__slots);
 
                     </h2>
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($showAllArticles && !$search && !$selectedCategory): ?>
-                        <button wire:click="toggleShowAll" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200">
+                        <button wire:click="toggleShowAll" class="px-4 py-2 bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-all duration-200">
                             <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"/>
                             </svg>
@@ -650,14 +650,14 @@ if (isset($__slots)) unset($__slots);
                 <?php else: ?>
                     
                     <div class="text-center py-16">
-                        <svg class="w-24 h-24 text-gray-300 dark:text-gray-600 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-24 h-24 text-neutral-300 dark:text-neutral-600 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                         </svg>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h3 class="text-2xl font-bold text-neutral-900 dark:text-white mb-2">
                             <?php echo e(__('articles.index.no_articles')); ?>
 
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <p class="text-neutral-600 dark:text-neutral-400">
                             <?php echo e(__('articles.index.no_articles_subtitle')); ?>
 
                         </p>
@@ -676,8 +676,8 @@ if (isset($__slots)) unset($__slots);
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($hasSidebar && !$search && !$selectedCategory && !$showAllArticles): ?>
                     <aside class="lg:w-1/3">
                         <div class="sticky top-24 space-y-6">
-                            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                            <div class="bg-white dark:bg-neutral-800 rounded-xl shadow-lg p-6">
+                                <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-6 flex items-center gap-2">
                                     <svg class="w-5 h-5 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
                                     </svg>
@@ -688,7 +688,7 @@ if (isset($__slots)) unset($__slots);
                                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = ['sidebar1', 'sidebar2', 'sidebar3', 'sidebar4', 'sidebar5']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sidebarPos): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!empty($layoutArticles[$sidebarPos])): ?>
                                             <?php $sidebarArticle = $layoutArticles[$sidebarPos]; ?>
-                                            <article class="group pb-4 border-b border-gray-200 dark:border-gray-700 last:border-0 last:pb-0">
+                                            <article class="group pb-4 border-b border-neutral-200 dark:border-neutral-700 last:border-0 last:pb-0">
                                                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($sidebarArticle->featured_image_url): ?>
                                                     <div class="relative overflow-hidden rounded-lg mb-3 h-32">
                                                         <img 
@@ -698,7 +698,7 @@ if (isset($__slots)) unset($__slots);
                                                         >
                                                     </div>
                                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2 cursor-pointer"
+                                                <h4 class="font-semibold text-neutral-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2 cursor-pointer"
                                                     onclick="Livewire.dispatch('openArticleModal', { articleId: <?php echo e($sidebarArticle->id); ?> })">
                                                     <?php echo e($sidebarArticle->title); ?>
 
@@ -709,7 +709,7 @@ if (isset($__slots)) unset($__slots);
 
                                                     </span>
                                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                                <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
+                                                <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-2">
                                                     <?php echo e($sidebarArticle->excerpt); ?>
 
                                                 </p>
@@ -801,6 +801,25 @@ if (isset($__slots)) unset($__slots);
             .hero-magazine-title-large {
                 font-size: 1.5rem;
             }
+        }
+        
+        /* Articles Hero Background - Light & Dark Mode */
+        .articles-hero-bg {
+            background: 
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' seed='8' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.25'/%3E%3C/svg%3E"),
+                repeating-linear-gradient(0deg, transparent, transparent 150px, rgba(200, 180, 160, 0.15) 150px, rgba(200, 180, 160, 0.15) 152px),
+                repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(180, 160, 140, 0.08) 4px, rgba(180, 160, 140, 0.08) 5px),
+                linear-gradient(180deg, #f5f1e8 0%, #ebe7de 15%, #e8e4db 30%, #e5e1d8 50%, #e8e4db 70%, #ebe7de 85%, #f5f1e8 100%);
+            box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.05), inset 0 -1px 8px rgba(0, 0, 0, 0.03);
+        }
+        
+        :is(.dark .articles-hero-bg) {
+            background: 
+                url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' seed='8' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.3'/%3E%3C/svg%3E"),
+                repeating-linear-gradient(0deg, transparent, transparent 150px, rgba(80, 70, 60, 0.2) 150px, rgba(80, 70, 60, 0.2) 152px),
+                repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(60, 55, 50, 0.15) 4px, rgba(60, 55, 50, 0.15) 5px),
+                linear-gradient(180deg, #3a3632 0%, #2f2d28 15%, #34322d 30%, #2d2b26 45%, #32302b 60%, #35332e 75%, #383630 90%, #3a3632 100%);
+            box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.25), inset 0 -2px 12px rgba(0, 0, 0, 0.2);
         }
     </style>
     
