@@ -15,7 +15,7 @@
     {{-- HERO IMMERSIVO CON PARALLAX --}}
     <section class="hero-immersive">
         {{-- Background layers con parallax --}}
-        <div class="parallax-bg" :style="`transform: translateY(${scrollY * 0.5}px)`">
+        <div class="parallax-bg">
             @if($user->banner_image_url)
                 <img src="{{ $user->banner_image_url }}" alt="" class="banner-blur">
             @else
@@ -27,15 +27,16 @@
         <canvas id="particles-canvas" class="particles-layer"></canvas>
 
         {{-- Hero content --}}
-        <div class="hero-content-wrap" :style="`opacity: ${1 - scrollProgress}`">
+        <div class="hero-content-wrap">
             <div class="hero-inner">
                 {{-- Avatar con effetto 3D --}}
-                <div class="avatar-3d" :style="`transform: translateY(${scrollY * 0.2}px) rotateX(${scrollProgress * 20}deg)`">
+                <div class="avatar-3d">
                     <div class="avatar-ring-outer"></div>
                     <div class="avatar-ring-middle"></div>
                     <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($user, 500) }}"
                          alt="{{ \App\Helpers\AvatarHelper::getDisplayName($user) }}"
-                         class="avatar-img">
+                         class="avatar-img"
+                         style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: center; display: block;">
                     @if($user->verified_at ?? false)
                         <div class="verified-seal">
                             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
@@ -46,7 +47,7 @@
                 </div>
 
                 {{-- Info principale --}}
-                <div class="hero-info" :style="`transform: translateY(${scrollY * 0.15}px)`">
+                <div class="hero-info">
                     @if($primaryRole)
                         <div class="role-tag">{{ $primaryRole }}</div>
                     @endif
@@ -471,6 +472,7 @@ document.addEventListener('livewire:init', () => {
 @livewire('media.photo-modal')
 
 @push('styles')
+@vite(['resources/css/profile.css', 'resources/js/profile.js'])
 <style>
     .profile-info-compact {
         display: flex;

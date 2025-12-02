@@ -34,6 +34,15 @@
                     <li><a href="<?php echo e(route('help')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.help')); ?></a></li>
                     <li><a href="<?php echo e(route('support')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.support')); ?></a></li>
                     <li><a href="<?php echo e(route('contact')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.contact')); ?></a></li>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
+                    <li>
+                        <button onclick="Livewire.dispatch('openTutorial')" 
+                                class="hover:text-primary-400 transition-colors flex items-center gap-2 text-left">
+                            <span>📚</span>
+                            <span><?php echo e(__('footer.tutorial')); ?></span>
+                        </button>
+                    </li>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </ul>
             </div>
 
@@ -43,6 +52,7 @@
                 <ul class="space-y-2 text-sm">
                     <li><a href="<?php echo e(route('terms')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.terms')); ?></a></li>
                     <li><a href="<?php echo e(route('privacy')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.privacy')); ?></a></li>
+                    <li><a href="<?php echo e(route('cookies')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.cookies')); ?></a></li>
                     <li><a href="<?php echo e(route('about')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.about')); ?></a></li>
                 </ul>
             </div>

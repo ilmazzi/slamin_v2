@@ -25,8 +25,8 @@
     justify-content: center;
     overflow: hidden;
     padding-top: 0;
-    margin-top: -4rem; /* Compensa il pt-16 del layout main */
-    pointer-events: none; /* Lascia passare gli eventi di scroll */
+    margin-top: 0; /* Non compensare più */
+    pointer-events: none;
 }
 
 .hero-immersive > * {
@@ -74,8 +74,14 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
-    padding-top: calc(6rem + env(safe-area-inset-top, 0px)); /* Spazio per topbar */
-    pointer-events: auto; /* Assicura che catturi gli eventi del mouse */
+    padding-top: 10rem; /* Spazio per topbar + sidebar */
+    pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+    .hero-content-wrap {
+        padding-top: 8rem; /* Meno spazio su mobile */
+    }
 }
 
 .hero-inner {
@@ -93,19 +99,29 @@
     perspective: 1000px;
     transform-style: preserve-3d;
     transition: transform 0.3s ease;
+    will-change: auto;
+    overflow: visible; /* Assicura che l'immagine non venga tagliata */
+}
+
+@media (max-width: 768px) {
+    .avatar-3d {
+        width: 200px;
+        height: 200px;
+    }
 }
 
 .avatar-ring-outer,
 .avatar-ring-middle {
     position: absolute;
-    inset: -20px;
+    inset: 0;
     border-radius: 50%;
     border: 2px solid rgba(74, 124, 89, 0.3);
     animation: rotateRing 20s linear infinite;
+    pointer-events: none;
 }
 
 .avatar-ring-middle {
-    inset: -10px;
+    inset: 5px;
     border-color: rgba(74, 124, 89, 0.2);
     animation: rotateRing 15s linear infinite reverse;
 }
@@ -120,11 +136,13 @@
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    border: 5px solid rgba(74, 124, 89, 0.5);
+    object-position: center center;
     box-shadow: 
+        0 0 0 4px rgba(74, 124, 89, 0.5),
         0 20px 60px rgba(0, 0, 0, 0.4),
         0 0 100px rgba(74, 124, 89, 0.3);
     transition: transform 0.3s ease;
+    display: block;
 }
 
 .avatar-3d:hover .avatar-img {
@@ -177,13 +195,19 @@
 }
 
 .name-title {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 0.5rem;
     font-family: 'Crimson Pro', serif;
     text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     animation: fadeInUp 0.6s ease 0.1s both;
+}
+
+@media (min-width: 768px) {
+    .name-title {
+        font-size: 4rem;
+    }
 }
 
 .handle {
