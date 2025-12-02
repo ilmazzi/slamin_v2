@@ -1,7 +1,7 @@
 <div class="min-h-screen">
     
     {{-- HERO con Paper Sheet + Titolo (come media page) --}}
-    <section class="relative pt-16 pb-12 md:pb-20 overflow-hidden bg-neutral-900 dark:bg-black">
+    <section class="relative pt-16 pb-12 md:pb-20 overflow-hidden wooden-desk-section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
                 
