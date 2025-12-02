@@ -1,96 +1,106 @@
-# 🚀 Laravel Forge Deployment
+# 🔧 FORGE DEPLOYMENT - URGENT FIX
 
-## Setup Deployment Script
+## ❌ Problema Attuale:
+```
+Route [gigs.workspace] not defined
+```
 
-1. **Vai su Laravel Forge Dashboard**
-   - Seleziona il tuo server
-   - Vai alla sezione del sito `slamin.it`
+## ✅ Soluzione:
 
-2. **Configura Deploy Script**
-   - Vai su **"Apps" > "Deploy Script"**
-   - Copia il contenuto di `deploy.sh` nello script di deploy
-   - Oppure usa direttamente: `bash /home/forge/slamin.it/deploy.sh`
-
-3. **Abilita Quick Deploy (Opzionale)**
-   - Attiva "Quick Deploy" se vuoi deploy automatici ad ogni push su `main`
-
-4. **Primo Deploy Manuale**
-   - Clicca su **"Deploy Now"** per eseguire il primo deploy
-
-## Script di Deploy Include:
-
-✅ Pull delle ultime modifiche da Git
-✅ Install/Update Composer dependencies (production)
-✅ Install/Update NPM dependencies
-✅ Build assets con Vite (npm run build)
-✅ Clear di tutte le cache Laravel
-✅ Esecuzione migrazioni database
-✅ Ottimizzazione per produzione (config, route, view cache)
-✅ Clear cache Livewire
-✅ Restart queue workers
-✅ Reload PHP-FPM
-
-## Comandi Manuali (se necessario)
-
-Se devi eseguire comandi specifici via SSH:
+### **Opzione 1: Via SSH (PIÙ VELOCE)**
 
 ```bash
-# SSH nel server
-ssh forge@your-server-ip
+# Connettiti al server
+ssh forge@slamin.it
 
-# Vai nella directory del progetto
+# Vai nella directory
 cd /home/forge/slamin.it
 
-# Pulisci cache Livewire
-php artisan livewire:configure --optimize
+# Pull
+git pull origin main
 
-# Ricompila assets
-npm run build
+# Migrations
+php artisan migrate --force
 
-# Pulisci tutte le cache
-php artisan optimize:clear
+# IMPORTANTE: Clear + Cache routes
+php artisan route:clear
+php artisan route:cache
 
-# Ricrea cache ottimizzate
-php artisan optimize
-```
-
-## Variabili d'Ambiente
-
-Assicurati che nel file `.env` su Forge siano impostate:
-
-```env
-APP_ENV=production
-APP_DEBUG=false
-VITE_APP_URL=https://slamin.it
-```
-
-## Troubleshooting
-
-### Assets non aggiornati
-```bash
-npm run build
+# Clear altre cache
+php artisan config:clear
+php artisan config:cache
 php artisan view:clear
+
+# Restart queue
+php artisan queue:restart
+
+# Exit
+exit
 ```
 
-### Cache Livewire
+### **Opzione 2: Via Forge Dashboard**
+
+1. Vai su **Laravel Forge Dashboard**
+2. Seleziona il sito **slamin.it**
+3. Vai su **Deployments**
+4. Clicca **Deploy Now**
+5. Aspetta che finisca
+6. Vai su **Commands**
+7. Esegui questi comandi uno alla volta:
+   ```
+   php artisan route:clear
+   php artisan route:cache
+   php artisan config:cache
+   php artisan migrate --force
+   ```
+
+### **Opzione 3: Deploy Script Automatico**
+
+Se hai uno script di deploy su Forge, aggiungi:
+
 ```bash
-php artisan livewire:configure --optimize
+cd /home/forge/slamin.it
+git pull origin main
+composer install --no-dev --optimize-autoloader
+php artisan migrate --force
+php artisan route:clear
+php artisan config:clear
+php artisan cache:clear
 php artisan view:clear
+php artisan config:cache
+php artisan route:cache
+php artisan queue:restart
 ```
 
-### Permessi
-```bash
-sudo chown -R forge:forge /home/forge/slamin.it
-sudo chmod -R 755 /home/forge/slamin.it/storage
-sudo chmod -R 755 /home/forge/slamin.it/bootstrap/cache
-```
+---
 
-## Deploy dalla CLI
+## 🔍 Verifica che funzioni:
 
-Puoi anche triggerare un deploy dalla CLI usando il Forge API o webhook:
+Dopo il deploy, controlla i log:
 
 ```bash
-# Via webhook (se configurato)
-curl -X POST https://forge.laravel.com/servers/YOUR_SERVER_ID/sites/YOUR_SITE_ID/deploy/http?token=YOUR_TOKEN
+tail -f storage/logs/laravel.log | grep "gigs.workspace"
 ```
 
+**NON** dovresti più vedere l'errore "Route not defined".
+
+---
+
+## 📊 Log Attuali (Prima del Fix):
+
+```
+✅ Notification sent successfully
+❌ Route [gigs.workspace] not defined
+```
+
+Questo conferma che:
+- ✅ La notifica viene inviata correttamente
+- ✅ Il destinatario è corretto (user 51)
+- ❌ La route non è cached sul server
+
+**Dopo il fix vedrai:**
+```
+✅ Notification sent successfully
+✅ Notification saved to database
+✅ User 51 receives notification
+```

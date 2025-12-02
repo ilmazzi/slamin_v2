@@ -18,10 +18,13 @@ php artisan config:clear
 php artisan cache:clear
 php artisan view:clear
 
-# 5. Optimize (opzionale ma consigliato)
-php artisan optimize
+# 5. Optimize (IMPORTANTE!)
 php artisan config:cache
 php artisan route:cache
+php artisan view:cache
+
+# 6. Restart queue workers (se usi le code)
+php artisan queue:restart
 ```
 
 ## Nuove Route Aggiunte:
