@@ -31,11 +31,11 @@
                 
                 <!-- TITOLO A FIANCO -->
                 <div class="text-center md:text-left">
-                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight" style="font-family: 'Playfair Display', serif;">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-neutral-900 dark:text-white leading-tight" style="font-family: 'Playfair Display', serif;">
                         <?php echo e(__('articles.hero.title')); ?>
 
                     </h1>
-                    <p class="text-xl md:text-2xl text-white/80 mt-4 font-medium">
+                    <p class="text-xl md:text-2xl text-neutral-800 dark:text-neutral-200 mt-4 font-medium">
                         <?php echo e(__('articles.hero.subtitle')); ?>
 
                     </p>
