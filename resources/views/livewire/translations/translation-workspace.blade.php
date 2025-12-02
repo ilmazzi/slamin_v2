@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-neutral-50 dark:bg-neutral-900">
+<div class="min-h-screen bg-neutral-50 dark:bg-neutral-900" wire:poll.30s>
     
     {{-- Header --}}
     <div class="bg-gradient-to-r from-accent-600 to-primary-600 dark:from-accent-700 dark:to-primary-700 py-8 shadow-lg">

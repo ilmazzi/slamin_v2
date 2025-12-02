@@ -6,6 +6,7 @@ use App\Models\GigApplication;
 use App\Models\PoemTranslation;
 use App\Models\TranslationComment;
 use App\Notifications\TranslationWorkspaceNotification;
+use App\Livewire\Components\NotificationCenter;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
@@ -81,8 +82,14 @@ class TranslationWorkspace extends Component
             $otherUser = $isAuthor ? $this->application->user : $this->application->gig->poem->user;
             
             if ($otherUser && $otherUser->id !== Auth::id()) {
+                \Log::info('🔔 Sending translation_updated notification', [
+                    'from' => Auth::id(),
+                    'to' => $otherUser->id,
+                    'translation_id' => $this->translation->id,
+                ]);
+                
                 $otherUser->notify(new TranslationWorkspaceNotification($this->translation, 'translation_updated'));
-                $this->dispatch('refresh-notifications');
+                $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
                 $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
             }
             
@@ -123,8 +130,13 @@ class TranslationWorkspace extends Component
         $otherUser = $isAuthor ? $this->application->user : $this->application->gig->poem->user;
         
         if ($otherUser && $otherUser->id !== Auth::id()) {
+            \Log::info('🔔 Sending comment_added notification', [
+                'from' => Auth::id(),
+                'to' => $otherUser->id,
+            ]);
+            
             $otherUser->notify(new TranslationWorkspaceNotification($this->translation, 'comment_added'));
-            $this->dispatch('refresh-notifications');
+            $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
             $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
         }
         
@@ -144,8 +156,13 @@ class TranslationWorkspace extends Component
             
             // Notify the COMMENT AUTHOR (not current user)
             if ($comment->user_id !== Auth::id()) {
+                \Log::info('🔔 Sending comment_resolved notification', [
+                    'from' => Auth::id(),
+                    'to' => $comment->user_id,
+                ]);
+                
                 $comment->user->notify(new TranslationWorkspaceNotification($this->translation, 'comment_resolved'));
-                $this->dispatch('refresh-notifications');
+                $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
                 $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
             }
             
@@ -163,8 +180,13 @@ class TranslationWorkspace extends Component
         // Notify poem AUTHOR (not translator)
         $author = $this->application->gig->poem->user;
         if ($author && $author->id !== Auth::id()) {
+            \Log::info('🔔 Sending submitted_for_review notification', [
+                'from' => Auth::id(),
+                'to' => $author->id,
+            ]);
+            
             $author->notify(new TranslationWorkspaceNotification($this->translation, 'submitted_for_review'));
-            $this->dispatch('refresh-notifications');
+            $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
             $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
         }
         
@@ -192,8 +214,13 @@ class TranslationWorkspace extends Component
         // Notify TRANSLATOR (not author)
         $translator = $this->application->user;
         if ($translator && $translator->id !== Auth::id()) {
+            \Log::info('🔔 Sending translation_approved notification', [
+                'from' => Auth::id(),
+                'to' => $translator->id,
+            ]);
+            
             $translator->notify(new TranslationWorkspaceNotification($this->translation, 'translation_approved'));
-            $this->dispatch('refresh-notifications');
+            $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
             $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
         }
         
