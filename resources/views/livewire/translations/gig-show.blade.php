@@ -487,4 +487,7 @@
 
         </div>
     </div>
+    
+    {{-- Poem Modal --}}
+    <livewire:poems.poem-modal />
 </div>
