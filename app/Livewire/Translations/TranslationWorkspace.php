@@ -133,11 +133,25 @@ class TranslationWorkspace extends Component
             \Log::info('🔔 Sending comment_added notification', [
                 'from' => Auth::id(),
                 'to' => $otherUser->id,
+                'other_user_email' => $otherUser->email,
             ]);
             
-            $otherUser->notify(new TranslationWorkspaceNotification($this->translation, 'comment_added'));
+            try {
+                $otherUser->notify(new TranslationWorkspaceNotification($this->translation, 'comment_added'));
+                \Log::info('✅ Notification sent successfully');
+            } catch (\Exception $e) {
+                \Log::error('❌ Notification failed', ['error' => $e->getMessage()]);
+            }
+            
             $this->dispatch('refresh-notifications')->to(NotificationCenter::class);
             $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+        } else {
+            \Log::warning('⚠️ Notification NOT sent', [
+                'otherUser_exists' => $otherUser ? 'yes' : 'no',
+                'otherUser_id' => $otherUser ? $otherUser->id : 'null',
+                'current_user_id' => Auth::id(),
+                'same_user' => $otherUser ? ($otherUser->id === Auth::id()) : 'unknown',
+            ]);
         }
         
         $this->reset(['newComment', 'selectedText', 'selectionStart', 'selectionEnd', 'showCommentForm']);
