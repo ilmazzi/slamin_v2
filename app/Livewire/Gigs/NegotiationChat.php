@@ -85,17 +85,17 @@ class NegotiationChat extends Component
             $this->application->user->notify(new GigApplicationAccepted($this->application));
         }
 
-        // Send notification to the other party
+        // Send notification ONLY to the other party (not to sender)
         $otherParty = $isRequester ? $this->application->user : ($this->application->gig->requester ?? $this->application->gig->user);
-        if ($otherParty) {
+        if ($otherParty && $otherParty->id !== Auth::id()) {
             $otherParty->notify(new NegotiationMessageReceived($negotiation));
+            
+            // Dispatch event to refresh notifications globally (Livewire)
+            $this->dispatch('refresh-notifications');
+            
+            // Dispatch browser event for instant UI update (JavaScript)
+            $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
         }
-
-        // Dispatch event to refresh notifications globally (Livewire)
-        $this->dispatch('refresh-notifications');
-        
-        // Dispatch browser event for instant UI update (JavaScript)
-        $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
 
         // Reset form
         $this->reset(['message', 'proposedCompensation', 'proposedDeadline', 'messageType']);

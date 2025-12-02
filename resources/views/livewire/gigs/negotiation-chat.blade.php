@@ -142,6 +142,7 @@
                     </div>
 
                     <!-- Message Input Form -->
+                    @if($application->status === 'pending')
                     <div class="flex-shrink-0 p-6 border-t border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900/50">
                         
                         <!-- Message Type Selector -->
@@ -244,6 +245,35 @@
                         </form>
 
                     </div>
+                    @else
+                    <!-- Negotiation Closed Notice -->
+                    <div class="flex-shrink-0 p-6 border-t border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-900">
+                        <div class="text-center">
+                            @if($application->status === 'accepted')
+                                <div class="inline-flex items-center gap-2 px-6 py-3 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-xl font-semibold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    {{ __('negotiations.negotiation_closed_accepted') }}
+                                </div>
+                            @elseif($application->status === 'rejected')
+                                <div class="inline-flex items-center gap-2 px-6 py-3 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 rounded-xl font-semibold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    {{ __('negotiations.negotiation_closed_rejected') }}
+                                </div>
+                            @else
+                                <div class="inline-flex items-center gap-2 px-6 py-3 bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-300 rounded-xl font-semibold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                    {{ __('negotiations.negotiation_closed') }}
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
 
                 </div>
 

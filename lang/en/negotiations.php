@@ -22,4 +22,8 @@ return [
         'accept' => 'Accept',
         'reject' => 'Reject',
     ],
+    
+    'negotiation_closed' => 'Negotiation closed',
+    'negotiation_closed_accepted' => '✓ Application accepted - Negotiation concluded',
+    'negotiation_closed_rejected' => '✗ Application rejected - Negotiation concluded',
 ];
