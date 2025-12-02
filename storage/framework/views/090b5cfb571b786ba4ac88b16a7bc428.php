@@ -1,9 +1,7 @@
 <div class="min-h-screen">
     
-    {{-- HERO con Paper Sheet + Titolo (come media page) --}}
-    <section class="relative pt-16 pb-12 md:pb-20 overflow-hidden" 
-             style="background: url('/assets/images/poetry-desk-background.webp') center/cover no-repeat, #8b7355; 
-                    box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.1), inset 0 -2px 12px rgba(0, 0, 0, 0.08);">
+    
+    <section class="relative pt-16 pb-12 md:pb-20 overflow-hidden wooden-desk-section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
                 
@@ -12,7 +10,7 @@
                     <div class="hero-paper-sheet">
                         <div class="flex items-center justify-center h-full">
                             <h3 class="hero-paper-title">
-                                "{{ __('home.hero_category_poems') }}"
+                                "<?php echo e(__('home.hero_category_poems')); ?>"
                             </h3>
                         </div>
                     </div>
@@ -21,16 +19,18 @@
                 <!-- TITOLO A FIANCO -->
                 <div class="text-center md:text-left">
                     <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight" style="font-family: 'Crimson Pro', serif;">
-                        {!! __('poems.index.hero_title', ['highlight' => '<span class="italic text-accent-400">'.__('poems.index.hero_title_highlight').'</span>']) !!}
+                        <?php echo __('poems.index.hero_title', ['highlight' => '<span class="italic text-accent-400">'.__('poems.index.hero_title_highlight').'</span>']); ?>
+
                     </h1>
                     <p class="text-xl md:text-2xl text-white/80 mt-4 font-medium">
-                        {{ __('poems.index.hero_subtitle') }}
+                        <?php echo e(__('poems.index.hero_subtitle')); ?>
+
                     </p>
                     
-                    @auth
-                        @can('create.poem')
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(auth()->guard()->check()): ?>
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create.poem')): ?>
                         <div class="mt-6">
-                            <a href="{{ route('poems.create') }}" 
+                            <a href="<?php echo e(route('poems.create')); ?>" 
                                class="group inline-flex items-center gap-3 px-6 py-3 rounded-xl
                                       bg-gradient-to-r from-accent-500 to-accent-600 
                                       hover:from-accent-600 hover:to-accent-700
@@ -42,17 +42,17 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                           d="M12 4v16m8-8H4"/>
                                 </svg>
-                                <span>{{ __('poems.create.write_poem') }}</span>
+                                <span><?php echo e(__('poems.create.write_poem')); ?></span>
                             </a>
                         </div>
-                        @endcan
-                    @endauth
+                        <?php endif; ?>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
             </div>
         </div>
     </section>
     
-    {{-- POEMS CONTENT SECTION --}}
+    
     <div class="poems-poetic-background">
         
         <!-- Pattern calligrafico decorativo -->
@@ -84,7 +84,7 @@
                 <div class="relative group">
                     <input wire:model.live.debounce.500ms="search"
                            type="text"
-                           placeholder="{{ __('poems.index.search_placeholder') }}"
+                           placeholder="<?php echo e(__('poems.index.search_placeholder')); ?>"
                            class="w-full px-6 py-4 rounded-full 
                                   border-2 border-neutral-300/50 dark:border-neutral-700/50 
                                   bg-white/60 dark:bg-neutral-800/60
@@ -95,7 +95,7 @@
                                   text-center italic"
                            style="font-family: 'Crimson Pro', serif; font-size: 1.125rem;">
                     
-                    @if($search)
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($search): ?>
                         <button wire:click="$set('search', '')" 
                                 class="absolute right-6 top-1/2 -translate-y-1/2
                                        text-neutral-400 hover:text-accent-600
@@ -105,13 +105,14 @@
                                       d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </button>
-                    @endif
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
                 
                 <!-- Minimal Filters - Hidden by default, expandable -->
                 <details class="mt-6">
                     <summary class="text-center text-sm text-neutral-500 hover:text-accent-600 cursor-pointer transition-colors font-poem">
-                        {{ __('poems.index.filters_summary') }}
+                        <?php echo e(__('poems.index.filters_summary')); ?>
+
                     </summary>
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
                         <!-- Category -->
@@ -123,10 +124,10 @@
                                            text-neutral-900 dark:text-white text-sm
                                            focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20
                                            transition-all cursor-pointer font-poem">
-                                <option value="">{{ __('poems.filters.all_categories_plain') }}</option>
-                                @foreach($categories as $key => $name)
-                                    <option value="{{ $key }}">{{ $name }}</option>
-                                @endforeach
+                                <option value=""><?php echo e(__('poems.filters.all_categories_plain')); ?></option>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($key); ?>"><?php echo e($name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </select>
                         </div>
                         
@@ -139,10 +140,10 @@
                                            text-neutral-900 dark:text-white text-sm
                                            focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20
                                            transition-all cursor-pointer font-poem">
-                                <option value="">{{ __('poems.filters.all_languages_plain') }}</option>
-                                @foreach($languages as $code => $name)
-                                    <option value="{{ $code }}">{{ $name }}</option>
-                                @endforeach
+                                <option value=""><?php echo e(__('poems.filters.all_languages_plain')); ?></option>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $languages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code => $name): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($code); ?>"><?php echo e($name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </select>
                         </div>
                         
@@ -155,10 +156,10 @@
                                            text-neutral-900 dark:text-white text-sm
                                            focus:border-accent-400 focus:ring-2 focus:ring-accent-400/20
                                            transition-all cursor-pointer font-poem">
-                                <option value="recent">{{ __('poems.filters.recent') }}</option>
-                                <option value="popular">{{ __('poems.filters.popular') }}</option>
-                                <option value="oldest">{{ __('poems.filters.oldest') }}</option>
-                                <option value="alphabetical">{{ __('poems.filters.alphabetical') }}</option>
+                                <option value="recent"><?php echo e(__('poems.filters.recent')); ?></option>
+                                <option value="popular"><?php echo e(__('poems.filters.popular')); ?></option>
+                                <option value="oldest"><?php echo e(__('poems.filters.oldest')); ?></option>
+                                <option value="alphabetical"><?php echo e(__('poems.filters.alphabetical')); ?></option>
                             </select>
                         </div>
                     </div>
@@ -168,9 +169,9 @@
         
         <!-- Poems Grid - Poetic Style -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            @if($poems && $poems->count() > 0)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($poems && $poems->count() > 0): ?>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                    @foreach($poems as $index => $poem)
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $poems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $poem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <?php $paperRotation = rand(-2, 2); ?>
                     <div class="poetry-card-wrapper"
                          x-data="{ visible: false }" 
@@ -179,84 +180,149 @@
                              x-transition:enter="transition ease-out duration-700"
                              x-transition:enter-start="opacity-0 translate-y-8"
                              x-transition:enter-end="opacity-100 translate-y-0"
-                             style="transition-delay: {{ ($index % 9) * 100 }}ms">
+                             style="transition-delay: <?php echo e(($index % 9) * 100); ?>ms">
                             
-                            {{-- COPIATO ESATTAMENTE DALLA HOMEPAGE --}}
-                            <div class="paper-sheet-wrapper" style="transform: rotate({{ $paperRotation }}deg);">
+                            
+                            <div class="paper-sheet-wrapper" style="transform: rotate(<?php echo e($paperRotation); ?>deg);">
                                 <div class="paper-sheet group">
                                     
-                                    {{-- Content cliccabile --}}
+                                    
                                     <div class="block cursor-pointer hover:opacity-90 transition-opacity" 
-                                         onclick="Livewire.dispatch('openPoemModal', { poemId: {{ $poem->id }} })">
+                                         onclick="Livewire.dispatch('openPoemModal', { poemId: <?php echo e($poem->id); ?> })">
                                         
-                                        {{-- Date in alto a destra --}}
+                                        
                                         <div class="absolute top-3 right-3 text-xs text-neutral-500 dark:text-neutral-400 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm px-2 py-1 rounded-full z-10">
-                                            {{ $poem->created_at->diffForHumans() }}
+                                            <?php echo e($poem->created_at->diffForHumans()); ?>
+
                                         </div>
                                         
                                         <div class="paper-author-info">
-                                            <img src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 80) }}" 
-                                                 alt="{{ $poem->user->name }}"
+                                            <img src="<?php echo e(\App\Helpers\AvatarHelper::getUserAvatarUrl($poem->user, 80)); ?>" 
+                                                 alt="<?php echo e($poem->user->name); ?>"
                                                  class="paper-avatar">
-                                            <a href="{{ \App\Helpers\AvatarHelper::getUserProfileUrl($poem->user) }}" 
+                                            <a href="<?php echo e(\App\Helpers\AvatarHelper::getUserProfileUrl($poem->user)); ?>" 
                                                class="paper-author-name hover:underline transition-colors"
                                                onclick="event.stopPropagation();">
-                                                {{ \App\Helpers\AvatarHelper::getDisplayName($poem->user) }}
+                                                <?php echo e(\App\Helpers\AvatarHelper::getDisplayName($poem->user)); ?>
+
                                             </a>
                                         </div>
                                         
-                                        {{-- Poem Title --}}
+                                        
                                         <h3 class="paper-title">
-                                            "{{ $poem->title ?: __('poems.untitled') }}"
+                                            "<?php echo e($poem->title ?: __('poems.untitled')); ?>"
                                         </h3>
                                         
-                                        {{-- Poem Content --}}
+                                        
                                         <div class="paper-content">
-                                            {{ \App\Helpers\PlaceholderHelper::cleanHtmlContent($poem->description ?? $poem->content, 180) }}
+                                            <?php echo e(\App\Helpers\PlaceholderHelper::cleanHtmlContent($poem->description ?? $poem->content, 180)); ?>
+
                                         </div>
                                         
-                                        {{-- Read more hint --}}
+                                        
                                         <div class="paper-readmore">
-                                            {{ __('common.read_more') }} →
+                                            <?php echo e(__('common.read_more')); ?> →
                                         </div>
                                     </div>
                                     
-                                    {{-- Social Actions - ESATTAMENTE COME HOMEPAGE --}}
+                                    
                                     <div class="paper-actions-integrated" @click.stop>
-                                        <x-like-button 
-                                            :itemId="$poem->id"
-                                            itemType="poem"
-                                            :isLiked="false"
-                                            :likesCount="$poem->like_count ?? 0"
-                                            size="sm" />
+                                        <?php if (isset($component)) { $__componentOriginal332a28e2e55aa3574ada95b4497eb0b2 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal332a28e2e55aa3574ada95b4497eb0b2 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.like-button','data' => ['itemId' => $poem->id,'itemType' => 'poem','isLiked' => false,'likesCount' => $poem->like_count ?? 0,'size' => 'sm']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('like-button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['itemId' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($poem->id),'itemType' => 'poem','isLiked' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(false),'likesCount' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($poem->like_count ?? 0),'size' => 'sm']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal332a28e2e55aa3574ada95b4497eb0b2)): ?>
+<?php $attributes = $__attributesOriginal332a28e2e55aa3574ada95b4497eb0b2; ?>
+<?php unset($__attributesOriginal332a28e2e55aa3574ada95b4497eb0b2); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal332a28e2e55aa3574ada95b4497eb0b2)): ?>
+<?php $component = $__componentOriginal332a28e2e55aa3574ada95b4497eb0b2; ?>
+<?php unset($__componentOriginal332a28e2e55aa3574ada95b4497eb0b2); ?>
+<?php endif; ?>
                                         
-                                        <x-comment-button 
-                                            :itemId="$poem->id"
-                                            itemType="poem"
-                                            :commentsCount="$poem->comment_count ?? 0"
-                                            size="sm" />
+                                        <?php if (isset($component)) { $__componentOriginale34ce5ad0385b05e8d24b4bea6ec4cfd = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginale34ce5ad0385b05e8d24b4bea6ec4cfd = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.comment-button','data' => ['itemId' => $poem->id,'itemType' => 'poem','commentsCount' => $poem->comment_count ?? 0,'size' => 'sm']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('comment-button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['itemId' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($poem->id),'itemType' => 'poem','commentsCount' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($poem->comment_count ?? 0),'size' => 'sm']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginale34ce5ad0385b05e8d24b4bea6ec4cfd)): ?>
+<?php $attributes = $__attributesOriginale34ce5ad0385b05e8d24b4bea6ec4cfd; ?>
+<?php unset($__attributesOriginale34ce5ad0385b05e8d24b4bea6ec4cfd); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginale34ce5ad0385b05e8d24b4bea6ec4cfd)): ?>
+<?php $component = $__componentOriginale34ce5ad0385b05e8d24b4bea6ec4cfd; ?>
+<?php unset($__componentOriginale34ce5ad0385b05e8d24b4bea6ec4cfd); ?>
+<?php endif; ?>
                                         
-                                        <x-share-button 
-                                            :itemId="$poem->id"
-                                            itemType="poem"
-                                            size="sm" />
+                                        <?php if (isset($component)) { $__componentOriginalb32cd1c2ffd206a678a9d8db2f247966 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalb32cd1c2ffd206a678a9d8db2f247966 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.share-button','data' => ['itemId' => $poem->id,'itemType' => 'poem','size' => 'sm']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('share-button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['itemId' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($poem->id),'itemType' => 'poem','size' => 'sm']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalb32cd1c2ffd206a678a9d8db2f247966)): ?>
+<?php $attributes = $__attributesOriginalb32cd1c2ffd206a678a9d8db2f247966; ?>
+<?php unset($__attributesOriginalb32cd1c2ffd206a678a9d8db2f247966); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalb32cd1c2ffd206a678a9d8db2f247966)): ?>
+<?php $component = $__componentOriginalb32cd1c2ffd206a678a9d8db2f247966; ?>
+<?php unset($__componentOriginalb32cd1c2ffd206a678a9d8db2f247966); ?>
+<?php endif; ?>
                                         
-                                        <x-report-button 
-                                            :itemId="$poem->id"
-                                            itemType="poem"
-                                            size="sm" />
+                                        <?php if (isset($component)) { $__componentOriginalcab7032bfdfb17b0d85d7225950dd852 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalcab7032bfdfb17b0d85d7225950dd852 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.report-button','data' => ['itemId' => $poem->id,'itemType' => 'poem','size' => 'sm']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('report-button'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['itemId' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($poem->id),'itemType' => 'poem','size' => 'sm']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalcab7032bfdfb17b0d85d7225950dd852)): ?>
+<?php $attributes = $__attributesOriginalcab7032bfdfb17b0d85d7225950dd852; ?>
+<?php unset($__attributesOriginalcab7032bfdfb17b0d85d7225950dd852); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalcab7032bfdfb17b0d85d7225950dd852)): ?>
+<?php $component = $__componentOriginalcab7032bfdfb17b0d85d7225950dd852; ?>
+<?php unset($__componentOriginalcab7032bfdfb17b0d85d7225950dd852); ?>
+<?php endif; ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 
                 <!-- Pagination -->
                 <div class="flex justify-center mt-12">
-                    {{ $poems->links('components.pagination.poetic') }}
+                    <?php echo e($poems->links('components.pagination.poetic')); ?>
+
                 </div>
-            @else
+            <?php else: ?>
                 <!-- Empty State - Poetic -->
                 <div class="text-center py-20">
                     <div class="inline-flex items-center justify-center w-32 h-32 rounded-full 
@@ -271,14 +337,16 @@
                     </div>
                     
                     <h3 class="text-3xl font-bold text-neutral-900 dark:text-white mb-4" style="font-family: 'Crimson Pro', serif;">
-                        {{ __('poems.index.no_poems_title') }}
+                        <?php echo e(__('poems.index.no_poems_title')); ?>
+
                     </h3>
                     
                     <p class="text-lg text-neutral-600 dark:text-neutral-400 mb-8 italic font-poem">
-                        {{ __('poems.index.empty_quote') }}
+                        <?php echo e(__('poems.index.empty_quote')); ?>
+
                     </p>
                     
-                    @if($search || $category || $language)
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($search || $category || $language): ?>
                         <button wire:click="resetFilters"
                                 class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl
                                        bg-gradient-to-r from-accent-500 to-accent-600 
@@ -289,17 +357,36 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                             </svg>
-                            <span>{{ __('poems.index.reset_filters_button') }}</span>
+                            <span><?php echo e(__('poems.index.reset_filters_button')); ?></span>
                         </button>
-                    @endif
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </div>
-            @endif
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
         </div>
     </div>
     
-    {{-- Poem Modal with Book Opening Effect --}}
-    <livewire:poems.poem-modal />
+    
+    <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('poems.poem-modal', []);
+
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-1663735069-0', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
     
     <style>
         /* ========================================
@@ -664,3 +751,4 @@
         }
     </style>
 </div>
+<?php /**PATH C:\xampp\htdocs\slamin_v2\resources\views/livewire/poems/poem-index.blade.php ENDPATH**/ ?>
