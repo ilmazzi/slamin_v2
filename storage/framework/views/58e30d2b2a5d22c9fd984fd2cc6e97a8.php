@@ -1,7 +1,8 @@
 <div class="min-h-screen">
     
     
-    <section class="relative pt-16 pb-12 md:pb-20 overflow-hidden bg-neutral-900 dark:bg-black">
+    <section class="relative pt-16 pb-12 md:pb-20 overflow-hidden" 
+             style="background: url(&quot;data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='wood'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' seed='8' /%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23wood)' opacity='0.25'/%3E%3C/svg%3E&quot;), repeating-linear-gradient(0deg, transparent, transparent 150px, rgba(200, 180, 160, 0.15) 150px, rgba(200, 180, 160, 0.15) 152px), repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(180, 160, 140, 0.08) 4px, rgba(180, 160, 140, 0.08) 5px), linear-gradient(180deg, #f5f1e8 0%, #ebe7de 15%, #e8e4db 30%, #e5e1d8 50%, #e8e4db 70%, #ebe7de 85%, #f5f1e8 100%); box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.05), inset 0 -1px 8px rgba(0, 0, 0, 0.03);">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12">
                 
