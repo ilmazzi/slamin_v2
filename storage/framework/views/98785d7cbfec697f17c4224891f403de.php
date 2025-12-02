@@ -572,9 +572,10 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
 
         </div>
     </div>
-    
-    
-    <?php
+</div>
+
+
+<?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
@@ -594,5 +595,4 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
-</div>
 <?php /**PATH C:\xampp\htdocs\slamin_v2\resources\views/livewire/translations/gig-show.blade.php ENDPATH**/ ?>
