@@ -12,7 +12,7 @@ class NewUsersSection extends Component
     {
         $newUsers = User::withCount(['poems', 'articles', 'likes', 'comments', 'views', 'followers', 'following'])
             ->orderBy('created_at', 'desc')
-            ->limit(3)
+            ->limit(6)
             ->get();
         
         return view('livewire.home.new-users-section', [

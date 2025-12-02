@@ -53,7 +53,7 @@
             
             <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-16 px-8 md:px-12 scrollbar-hide"
                  style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $poems->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $poem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $poems->take(6); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $poem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php
                 $paperRotation = rand(-2, 2); // Slight random rotation
             ?>

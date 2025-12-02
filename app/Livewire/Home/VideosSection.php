@@ -49,7 +49,7 @@ class VideosSection extends Component
             ->with('user')
             ->selectRaw('videos.*, (COALESCE(view_count, 0) + COALESCE(like_count, 0) + COALESCE(comment_count, 0)) as total_interactions')
             ->orderByDesc('total_interactions')
-            ->limit(3)
+            ->limit(4)
             ->get();
         
         // Get direct URLs for PeerTube videos
@@ -73,7 +73,7 @@ class VideosSection extends Component
         }
         
         // Merge and shuffle videos and photos
-        $media = $videos->concat($photos)->shuffle()->take(5);
+        $media = $videos->concat($photos)->shuffle()->take(6);
         
         return view('livewire.home.videos-section', [
             'videos' => $videos, // Keep for backward compatibility

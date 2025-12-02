@@ -39,7 +39,7 @@
             
             <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-20 px-8 md:px-12 scrollbar-hide"
                  style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
-        @foreach($articles->take(3) as $i => $article)
+        @foreach($articles->take(6) as $i => $article)
         <?php
             // Random positioning for magazine covers
             $rotation = rand(-3, 3);

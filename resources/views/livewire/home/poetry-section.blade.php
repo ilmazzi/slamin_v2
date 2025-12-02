@@ -51,7 +51,7 @@
             
             <div x-ref="scrollContainer" class="flex gap-6 overflow-x-auto pb-12 pt-16 px-8 md:px-12 scrollbar-hide"
                  style="-webkit-overflow-scrolling: touch; overflow-y: visible;">
-            @foreach($poems->take(3) as $i => $poem)
+            @foreach($poems->take(6) as $i => $poem)
             <?php
                 $paperRotation = rand(-2, 2); // Slight random rotation
             ?>

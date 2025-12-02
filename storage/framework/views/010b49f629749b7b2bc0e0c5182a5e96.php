@@ -289,6 +289,11 @@ if (isset($__slots)) unset($__slots);
 ?>
 
     
+    <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
+        <div class="section-separator"></div>
+    </div>
+
+    
     <div class="py-20 md:py-24 film-studio-section">
         <?php
 $__split = function ($name, $params = []) {
