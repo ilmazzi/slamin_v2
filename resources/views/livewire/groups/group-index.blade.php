@@ -1,15 +1,15 @@
 <div class="min-h-screen bg-neutral-50 dark:bg-neutral-950">
     {{-- Header --}}
-    <div class="bg-gradient-to-r from-primary-600 to-primary-700 dark:from-primary-700 dark:to-primary-800 py-12">
+    <div class="polaroid-wall-header py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">{{ __('groups.community_title') }}</h1>
-                    <p class="text-primary-100">{{ __('groups.community_subtitle') }}</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-2">{{ __('groups.community_title') }}</h1>
+                    <p class="text-neutral-700 dark:text-neutral-300">{{ __('groups.community_subtitle') }}</p>
                 </div>
                 @auth
                 <a href="{{ route('groups.create') }}" wire:navigate
-                   class="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary-600 rounded-xl font-semibold hover:bg-primary-50 transition-all shadow-lg">
+                   class="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold transition-all shadow-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
@@ -206,3 +206,28 @@
         @endif
     </div>
 </div>
+
+<style>
+    /* Polaroid Wall Header Background - Light & Dark Mode */
+    .polaroid-wall-header {
+        position: relative;
+        background: 
+            radial-gradient(ellipse at 20% 30%, rgba(180, 150, 120, 0.08) 0%, transparent 40%),
+            radial-gradient(ellipse at 80% 70%, rgba(160, 140, 110, 0.06) 0%, transparent 35%),
+            radial-gradient(ellipse at 40% 80%, rgba(200, 170, 140, 0.07) 0%, transparent 38%),
+            url("data:image/svg+xml,%3Csvg width='280' height='280' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='stucco'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='6' seed='28' /%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23stucco)' opacity='0.15'/%3E%3C/svg%3E"),
+            repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0, 0, 0, 0.012) 2px, rgba(0, 0, 0, 0.012) 3px),
+            linear-gradient(135deg, #f5f1e8 0%, #ebe7de 20%, #e8e4db 40%, #e5e1d8 60%, #ebe7de 80%, #f5f1e8 100%);
+        box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.06), inset 0 -1px 4px rgba(0, 0, 0, 0.04);
+    }
+    
+    :is(.dark .polaroid-wall-header) {
+        background: 
+            radial-gradient(ellipse at 20% 30%, rgba(80, 70, 60, 0.12) 0%, transparent 40%),
+            radial-gradient(ellipse at 80% 70%, rgba(70, 60, 50, 0.1) 0%, transparent 35%),
+            radial-gradient(ellipse at 40% 80%, rgba(90, 75, 65, 0.11) 0%, transparent 38%),
+            url("data:image/svg+xml,%3Csvg width='280' height='280' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='stucco'%3E%3CfeTurbulance type='fractalNoise' baseFrequency='1.8' numOctaves='6' seed='28' /%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23stucco)' opacity='0.18'/%3E%3C/svg%3E"),
+            linear-gradient(135deg, #3a3530 0%, #353128 15%, #38342c 30%, #332f26 45%, #36322a 60%, #312d24 75%, #35312b 90%, #3a3530 100%);
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 -2px 8px rgba(0, 0, 0, 0.15);
+    }
+</style>
