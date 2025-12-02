@@ -26,63 +26,12 @@ class PaymentSuccess extends Component
 
         $this->application = $application->load(['gig.poem', 'user']);
 
-        // Recupera il payment_intent_id (Stripe) o paypal_order_id dalla query string
+        // Recupera il payment_intent_id dalla query string
         $paymentIntentId = request()->query('payment_intent');
-        $paypalOrderId = request()->query('paypal_order_id');
 
         if ($paymentIntentId) {
             $this->verifyAndCompletePayment($paymentIntentId);
-        } elseif ($paypalOrderId) {
-            $this->verifyAndCompletePayPalPayment($paypalOrderId);
         } else {
-            $this->processing = false;
-        }
-    }
-
-    protected function verifyAndCompletePayPalPayment($paypalOrderId)
-    {
-        try {
-            // Per ora, registra il pagamento come completato
-            // TODO: Implementare verifica con PayPal API
-            
-            $commissionData = \App\Services\PaymentService::calculateCommission((float) $this->application->negotiated_compensation ?? $this->application->gig->compensation ?? 0);
-
-            $this->payment = TranslationPayment::create([
-                'gig_application_id' => $this->application->id,
-                'poem_id' => $this->application->gig->poem_id,
-                'client_id' => Auth::id(),
-                'translator_id' => $this->application->user_id,
-                'amount' => $commissionData['total_amount'],
-                'currency' => 'EUR',
-                'status' => 'completed',
-                'paid_at' => now(),
-                'commission_rate' => $commissionData['commission_rate'],
-                'commission_fixed' => $commissionData['commission_fixed'],
-                'commission_total' => $commissionData['commission_total'],
-                'translator_amount' => $commissionData['translator_amount'],
-                'platform_amount' => $commissionData['platform_amount'],
-                'payment_method' => 'paypal',
-                'stripe_metadata' => [
-                    'paypal_order_id' => $paypalOrderId,
-                ],
-            ]);
-
-            // Aggiorna lo status dell'application
-            $this->application->update(['status' => 'completed']);
-
-            Log::info('PayPal payment completed successfully', [
-                'payment_id' => $this->payment->id,
-                'paypal_order_id' => $paypalOrderId,
-                'amount' => $this->payment->amount,
-            ]);
-
-            $this->processing = false;
-
-        } catch (\Exception $e) {
-            Log::error('PayPal payment verification failed', [
-                'error' => $e->getMessage(),
-                'paypal_order_id' => $paypalOrderId,
-            ]);
             $this->processing = false;
         }
     }

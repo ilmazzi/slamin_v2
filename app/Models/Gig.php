@@ -422,10 +422,17 @@ class Gig extends Model
 
         \DB::transaction(function () use ($application) {
             // Accetta la candidatura
-            $application->update([
+            $updateData = [
                 'status' => 'accepted',
                 'accepted_at' => now(),
-            ]);
+            ];
+            
+            // Se non c'è un compenso negoziato, usa quello proposto dall'applicant
+            if (!$application->negotiated_compensation && $application->compensation_expectation) {
+                $updateData['negotiated_compensation'] = $application->compensation_expectation;
+            }
+            
+            $application->update($updateData);
 
             // Rifiuta tutte le altre candidature pendenti
             $this->applications()

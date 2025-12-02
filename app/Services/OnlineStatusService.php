@@ -34,6 +34,11 @@ class OnlineStatusService
 
     public function setOnline(int|string $userId): void
     {
+        // Skip in local if Redis is not available
+        if (app()->environment('local') && !$this->isRedisAvailable()) {
+            return;
+        }
+
         $key   = $this->key($userId);
         $value = Carbon::now()->toIso8601String();
 
@@ -47,24 +52,52 @@ class OnlineStatusService
             // Throttled hook point for presence updates (event intentionally omitted if not defined)
             Cache::add($throttleKey, 1, 15);
         } catch (\Throwable $e) {
-            Log::error('OnlineStatusService setOnline error', [
-                'key' => $key,
-                'ttl' => $this->ttlSeconds,
-                'error' => $e->getMessage(),
-            ]);
+            // Silently fail in local, log in production
+            if (!app()->environment('local')) {
+                Log::error('OnlineStatusService setOnline error', [
+                    'key' => $key,
+                    'ttl' => $this->ttlSeconds,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
+    }
+
+    protected function isRedisAvailable(): bool
+    {
+        static $available = null;
+        
+        if ($available !== null) {
+            return $available;
+        }
+        
+        try {
+            Redis::connection($this->connection)->ping();
+            $available = true;
+        } catch (\Throwable $e) {
+            $available = false;
+        }
+        
+        return $available;
     }
 
     public function isOnline(int|string $userId): bool
     {
+        // Skip in local if Redis is not available
+        if (app()->environment('local') && !$this->isRedisAvailable()) {
+            return false;
+        }
+
         try {
             $exists = Redis::connection($this->connection)->exists($this->key($userId));
             return (int) $exists >= 1;
         } catch (\Throwable $e) {
-            Log::error('OnlineStatusService isOnline error', [
-                'key' => $this->key($userId),
-                'error' => $e->getMessage(),
-            ]);
+            if (!app()->environment('local')) {
+                Log::error('OnlineStatusService isOnline error', [
+                    'key' => $this->key($userId),
+                    'error' => $e->getMessage(),
+                ]);
+            }
             return false;
         }
     }
@@ -112,6 +145,11 @@ class OnlineStatusService
      */
     public function cleanupExpired(): int
     {
+        // Skip in local if Redis is not available
+        if (app()->environment('local') && !$this->isRedisAvailable()) {
+            return 0;
+        }
+
         try {
             $pattern = $this->redisPrefix . '*';
             $keys = Redis::connection($this->connection)->keys($pattern);
@@ -134,9 +172,11 @@ class OnlineStatusService
 
             return $fixedCount;
         } catch (\Throwable $e) {
-            Log::error('OnlineStatusService cleanupExpired error', [
-                'error' => $e->getMessage(),
-            ]);
+            if (!app()->environment('local')) {
+                Log::error('OnlineStatusService cleanupExpired error', [
+                    'error' => $e->getMessage(),
+                ]);
+            }
             return 0;
         }
     }

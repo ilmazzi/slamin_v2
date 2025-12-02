@@ -16,7 +16,7 @@ class PaymentCheckout extends Component
 {
     public GigApplication $application;
     public $amount;
-    public $paymentMethod = 'paypal'; // PayPal come default
+    public $paymentMethod = 'stripe'; // Stripe Payment Element (include PayPal)
     public $clientSecret;
     public $paymentIntentId;
     public $processing = false;
@@ -52,7 +52,21 @@ class PaymentCheckout extends Component
         }
 
         $this->application = $application->load(['gig.poem', 'user']);
-        $this->amount = (float) ($application->negotiated_compensation ?? $application->gig->compensation ?? 0);
+        
+        // Determina l'importo: usa negotiated_compensation, altrimenti compensation_expectation, altrimenti compensation del gig
+        $amount = $application->negotiated_compensation 
+                  ?? $application->compensation_expectation 
+                  ?? $application->gig->compensation 
+                  ?? 0;
+        
+        // Se è una stringa (es. "€50-100"), usa 0 e mostra errore
+        if (!is_numeric($amount)) {
+            $this->errorMessage = 'Il compenso non è stato definito. Contatta il traduttore per concordare un importo.';
+            $this->amount = 0;
+            return;
+        }
+        
+        $this->amount = (float) $amount;
 
         // Crea o recupera il PaymentIntent
         $this->createOrRetrievePaymentIntent();
@@ -79,10 +93,10 @@ class PaymentCheckout extends Component
             // Calcola commissioni
             $commissionData = PaymentService::calculateCommission($this->amount);
 
-            // Crea nuovo PaymentIntent
+            // Crea nuovo PaymentIntent con il totale che include commissioni
             Stripe::setApiKey(config('services.stripe.secret'));
             $paymentIntent = PaymentIntent::create([
-                'amount' => PaymentService::toCents($this->amount),
+                'amount' => PaymentService::toCents($commissionData['total_amount']),
                 'currency' => 'eur',
                 'metadata' => [
                     'gig_application_id' => $this->application->id,
@@ -90,6 +104,9 @@ class PaymentCheckout extends Component
                     'poem_id' => $this->application->gig->poem_id,
                     'translator_id' => $this->application->user_id,
                     'client_id' => Auth::id(),
+                    'translator_amount' => $commissionData['translator_amount'],
+                    'platform_commission' => $commissionData['platform_commission'],
+                    'stripe_commission' => $commissionData['stripe_commission'],
                 ],
                 'description' => 'Traduzione: ' . ($this->application->gig->poem->title ?? 'N/A'),
             ]);
@@ -100,15 +117,15 @@ class PaymentCheckout extends Component
                 'poem_id' => $this->application->gig->poem_id,
                 'client_id' => Auth::id(),
                 'translator_id' => $this->application->user_id,
-                'amount' => $this->amount,
+                'amount' => $commissionData['total_amount'], // Totale pagato dal cliente
                 'currency' => 'EUR',
                 'stripe_payment_intent_id' => $paymentIntent->id,
                 'status' => 'pending',
                 'commission_rate' => $commissionData['commission_rate'],
                 'commission_fixed' => $commissionData['commission_fixed'],
-                'commission_total' => $commissionData['commission_total'],
+                'commission_total' => $commissionData['platform_commission'],
                 'translator_amount' => $commissionData['translator_amount'],
-                'platform_amount' => $commissionData['platform_amount'],
+                'platform_amount' => $commissionData['platform_commission'],
                 'payment_method' => 'stripe',
             ]);
 
@@ -149,15 +166,15 @@ class PaymentCheckout extends Component
                 'poem_id' => $this->application->gig->poem_id,
                 'client_id' => Auth::id(),
                 'translator_id' => $this->application->user_id,
-                'amount' => $this->amount,
+                'amount' => $commissionData['total_amount'], // Totale pagato dal cliente
                 'currency' => 'EUR',
                 'status' => 'completed',
                 'paid_at' => now(),
                 'commission_rate' => $commissionData['commission_rate'],
                 'commission_fixed' => $commissionData['commission_fixed'],
-                'commission_total' => $commissionData['commission_total'],
+                'commission_total' => $commissionData['platform_commission'],
                 'translator_amount' => $commissionData['translator_amount'],
-                'platform_amount' => $commissionData['platform_amount'],
+                'platform_amount' => $commissionData['platform_commission'],
                 'payment_method' => 'offline',
                 'payout_status' => 'pending_manual',
                 'payout_notes' => 'Pagamento offline - da verificare manualmente',

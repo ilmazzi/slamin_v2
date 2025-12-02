@@ -185,7 +185,18 @@
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($application->compensation_expectation): ?>
                                 <div class="mb-2">
                                     <span class="text-sm font-semibold text-neutral-700 dark:text-neutral-300"><?php echo e(__('gigs.applications.compensation_expectation')); ?>:</span>
-                                    <span class="text-sm text-neutral-600 dark:text-neutral-400 ml-2"><?php echo e($application->compensation_expectation); ?></span>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(is_numeric($application->compensation_expectation)): ?>
+                                        <span class="text-lg font-bold text-green-600 dark:text-green-400 ml-2">€<?php echo e(number_format($application->compensation_expectation, 2)); ?></span>
+                                    <?php else: ?>
+                                        <span class="text-sm text-neutral-600 dark:text-neutral-400 ml-2"><?php echo e($application->compensation_expectation); ?></span>
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                </div>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($application->compensation_notes): ?>
+                                <div class="mb-2">
+                                    <span class="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Note sul compenso:</span>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-1 italic"><?php echo e($application->compensation_notes); ?></p>
                                 </div>
                             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
@@ -267,5 +278,4 @@ if (isset($__slots)) unset($__slots);
         </div>
 
     </div>
-</div>
-<?php /**PATH C:\xampp\htdocs\slamin_v2\resources\views/livewire/gigs/applications-management.blade.php ENDPATH**/ ?>
+</div><?php /**PATH C:\xampp\htdocs\slamin_v2\resources\views/livewire/gigs/applications-management.blade.php ENDPATH**/ ?>

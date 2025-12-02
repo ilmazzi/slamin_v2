@@ -24,6 +24,15 @@ class UpdateOnlineStatus
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Skip in local environment if Redis is not available
+        if (app()->environment('local')) {
+            if (Auth::check()) {
+                // Only update last_seen_at (database), skip Redis
+                $this->onlineStatusService->touchLastSeen(Auth::user());
+            }
+            return $next($request);
+        }
+
         if (Auth::check()) {
             // Aggiorna lo stato online dell'utente (rinnova il TTL)
             $this->onlineStatusService->setOnline(Auth::id());

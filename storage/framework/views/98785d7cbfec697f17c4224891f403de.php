@@ -378,7 +378,7 @@ if (isset($__slots)) unset($__slots);
                                 <div class="space-y-3">
                                     
                                     <?php
-                                        $acceptedApp = $gig->applications()->where('status', 'accepted')->orWhere('status', 'completed')->with(['translations', 'payment'])->first();
+                                        $acceptedApp = $gig->applications()->whereIn('status', ['accepted', 'completed'])->with(['translations', 'payment'])->first();
                                         $hasTranslationInReview = $acceptedApp && $acceptedApp->translations()->whereIn('status', ['in_review', 'draft'])->exists();
                                         $hasApprovedTranslation = $acceptedApp && $acceptedApp->translations()->where('status', 'approved')->exists();
                                         $hasCompletedPayment = $acceptedApp && $acceptedApp->payment && $acceptedApp->payment->status === 'completed';
@@ -601,13 +601,35 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                                     
                                     <div>
                                         <label class="block text-sm font-black text-neutral-900 dark:text-white uppercase tracking-wider mb-3">
-                                            <?php echo e(__('gigs.applications.compensation_expectation')); ?>
-
+                                            <?php echo e(__('gigs.applications.compensation_expectation')); ?> *
                                         </label>
-                                        <input type="text" 
-                                               wire:model="applicationCompensationExpectation" 
-                                               class="w-full px-5 py-4 border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10 transition-all"
-                                               placeholder="<?php echo e(__('gigs.applications.compensation_expectation_placeholder')); ?>">
+                                        <div class="relative">
+                                            <span class="absolute left-5 top-4 text-neutral-500 dark:text-neutral-400 font-bold">€</span>
+                                            <input type="number" 
+                                                   wire:model="applicationCompensationExpectation" 
+                                                   step="0.01"
+                                                   min="0"
+                                                   required
+                                                   class="w-full pl-12 pr-5 py-4 border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                                                   placeholder="150.00">
+                                        </div>
+                                        <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                                            Inserisci l'importo numerico (es. 150 per €150)
+                                        </p>
+                                    </div>
+
+                                    
+                                    <div>
+                                        <label class="block text-sm font-black text-neutral-900 dark:text-white uppercase tracking-wider mb-3">
+                                            Note sul Compenso (Opzionale)
+                                        </label>
+                                        <textarea wire:model="applicationCompensationNotes" 
+                                                  rows="3"
+                                                  class="w-full px-5 py-4 border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                                                  placeholder="Es: Di solito prendo 5€/ora, per questo lavoro stimo 30 ore..."></textarea>
+                                        <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                                            Spiega come hai calcolato il compenso o aggiungi dettagli
+                                        </p>
                                     </div>
 
                                 </div>

@@ -22,6 +22,7 @@ class GigApplication extends Model
         'portfolio_url',
         'availability',
         'compensation_expectation',
+        'compensation_notes',
         // Campi sistema traduzioni (retrocompatibilità)
         'cover_letter',
         'proposed_compensation',

@@ -90,11 +90,8 @@ class NegotiationChat extends Component
         if ($otherParty && $otherParty->id !== Auth::id()) {
             $otherParty->notify(new NegotiationMessageReceived($negotiation));
             
-            // Dispatch event to refresh notifications globally (Livewire)
-            $this->dispatch('refresh-notifications');
-            
-            // Dispatch browser event for instant UI update (JavaScript)
-            $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+            // Don't dispatch events - recipient will see notification via polling
+            // Sender should NOT see the animation
         }
 
         // Reset form

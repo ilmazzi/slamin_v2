@@ -20,6 +20,7 @@ class GigShow extends Component
     public $applicationPortfolioUrl = '';
     public $applicationAvailability = '';
     public $applicationCompensationExpectation = '';
+    public $applicationCompensationNotes = '';
 
     public function mount(Gig $gig)
     {
@@ -59,7 +60,8 @@ class GigShow extends Component
             'applicationPortfolio' => 'nullable|max:2000',
             'applicationPortfolioUrl' => 'nullable|url|max:500',
             'applicationAvailability' => 'nullable|max:500',
-            'applicationCompensationExpectation' => 'nullable|max:200',
+            'applicationCompensationExpectation' => 'required|numeric|min:0|max:999999',
+            'applicationCompensationNotes' => 'nullable|max:1000',
         ]);
 
         $application = GigApplication::create([
@@ -71,6 +73,7 @@ class GigShow extends Component
             'portfolio_url' => $this->applicationPortfolioUrl,
             'availability' => $this->applicationAvailability,
             'compensation_expectation' => $this->applicationCompensationExpectation,
+            'compensation_notes' => $this->applicationCompensationNotes,
             'status' => 'pending',
         ]);
 
@@ -83,11 +86,8 @@ class GigShow extends Component
             $recipient->notify(new GigApplicationReceived($application));
         }
 
-        // Refresh notifications globally
-        $this->dispatch('refresh-notifications');
-        
-        // Dispatch browser event for instant UI update
-        $this->js('window.dispatchEvent(new CustomEvent("notification-received"))');
+        // Don't dispatch events - recipient will see notification via polling
+        // Sender should NOT see the animation
 
         session()->flash('success', __('gigs.applications.application_sent'));
         
