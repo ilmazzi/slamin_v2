@@ -7,6 +7,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Services\ImageService;
+use App\Models\Role;
 
 class ProfileEdit extends Component
 {
@@ -39,6 +40,9 @@ class ProfileEdit extends Component
     public $show_email = false;
     public $show_phone = false;
     public $show_birth_date = false;
+    
+    // Roles management
+    public $selectedRoles = [];
 
     protected function rules()
     {
@@ -90,6 +94,9 @@ class ProfileEdit extends Component
         $this->show_email = $this->user->show_email ?? false;
         $this->show_phone = $this->user->show_phone ?? false;
         $this->show_birth_date = $this->user->show_birth_date ?? false;
+        
+        // Load user roles
+        $this->selectedRoles = $this->user->roles->pluck('name')->toArray();
     }
 
     public function updatedAvatar()
@@ -177,6 +184,91 @@ class ProfileEdit extends Component
     {
         $this->social_linkedin = $this->normalizeUrl($value);
     }
+    
+    /**
+     * Toggle role selection
+     */
+    public function toggleRole($roleName)
+    {
+        if (in_array($roleName, $this->selectedRoles)) {
+            $this->selectedRoles = array_values(array_diff($this->selectedRoles, [$roleName]));
+        } else {
+            $this->selectedRoles[] = $roleName;
+        }
+    }
+    
+    /**
+     * Get available roles for selection
+     */
+    public function getAvailableRolesProperty()
+    {
+        $isAdmin = $this->user->hasRole('admin');
+        
+        $roles = [
+            [
+                'name' => 'poet',
+                'display_name' => __('profile.edit.role_poet'),
+                'description' => __('profile.edit.role_poet_desc'),
+                'icon' => '✍️',
+                'color' => 'purple',
+                'removable' => true,
+            ],
+            [
+                'name' => 'organizer',
+                'display_name' => __('profile.edit.role_organizer'),
+                'description' => __('profile.edit.role_organizer_desc'),
+                'icon' => '🎭',
+                'color' => 'blue',
+                'removable' => true,
+            ],
+            [
+                'name' => 'audience',
+                'display_name' => __('profile.edit.role_audience'),
+                'description' => __('profile.edit.role_audience_desc'),
+                'icon' => '👥',
+                'color' => 'green',
+                'removable' => true,
+            ],
+            [
+                'name' => 'judge',
+                'display_name' => __('profile.edit.role_judge'),
+                'description' => __('profile.edit.role_judge_desc'),
+                'icon' => '⚖️',
+                'color' => 'yellow',
+                'removable' => true,
+            ],
+            [
+                'name' => 'venue_owner',
+                'display_name' => __('profile.edit.role_venue_owner'),
+                'description' => __('profile.edit.role_venue_owner_desc'),
+                'icon' => '🏛️',
+                'color' => 'orange',
+                'removable' => true,
+            ],
+            [
+                'name' => 'technician',
+                'display_name' => __('profile.edit.role_technician'),
+                'description' => __('profile.edit.role_technician_desc'),
+                'icon' => '🔧',
+                'color' => 'gray',
+                'removable' => true,
+            ],
+        ];
+        
+        // Add admin role if user is admin (but not removable)
+        if ($isAdmin) {
+            array_unshift($roles, [
+                'name' => 'admin',
+                'display_name' => 'Amministratore',
+                'description' => 'Accesso completo al sistema',
+                'icon' => '👑',
+                'color' => 'red',
+                'removable' => false,
+            ]);
+        }
+        
+        return $roles;
+    }
 
     public function save()
     {
@@ -188,6 +280,12 @@ class ProfileEdit extends Component
             $this->social_twitter = $this->normalizeUrl($this->social_twitter);
             $this->social_youtube = $this->normalizeUrl($this->social_youtube);
             $this->social_linkedin = $this->normalizeUrl($this->social_linkedin);
+            
+            // Validate roles first
+            if (empty($this->selectedRoles)) {
+                session()->flash('error', __('profile.edit.roles_min_one'));
+                return;
+            }
             
             $rules = [
                 'name' => 'required|string|max:255',
@@ -272,6 +370,21 @@ class ProfileEdit extends Component
             }
 
             $this->user->update($data);
+            
+            // Update roles
+            if (!empty($this->selectedRoles)) {
+                // Preserve admin role if user is admin
+                if ($this->user->hasRole('admin') && !in_array('admin', $this->selectedRoles)) {
+                    $this->selectedRoles[] = 'admin';
+                }
+                
+                $this->user->syncRoles($this->selectedRoles);
+                
+                \Log::info('Roles updated', [
+                    'user_id' => $this->user->id,
+                    'roles' => $this->selectedRoles,
+                ]);
+            }
             
             // Debug: log dei dati salvati
             \Log::info('Profile updated', [

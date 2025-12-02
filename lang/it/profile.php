@@ -130,6 +130,26 @@ return [
         'update_error' => 'Errore durante l\'aggiornamento',
         'avatar_removed' => 'Avatar rimosso con successo',
         'banner_removed' => 'Banner rimosso con successo',
+        
+        // Roles Management
+        'roles' => 'Gestisci Ruoli',
+        'roles_description' => 'Seleziona i ruoli che meglio descrivono la tua partecipazione alla community. Puoi avere più ruoli contemporaneamente.',
+        'roles_help' => 'Almeno un ruolo deve essere selezionato',
+        'role_poet' => 'Poeta',
+        'role_poet_desc' => 'Pubblica poesie e partecipa agli eventi slam',
+        'role_organizer' => 'Organizzatore',
+        'role_organizer_desc' => 'Crea e gestisci eventi Poetry Slam',
+        'role_audience' => 'Pubblico',
+        'role_audience_desc' => 'Partecipa come spettatore agli eventi',
+        'role_judge' => 'Giudice',
+        'role_judge_desc' => 'Valuta le performance negli eventi',
+        'role_venue_owner' => 'Proprietario Locale',
+        'role_venue_owner_desc' => 'Gestisci un locale per eventi',
+        'role_technician' => 'Tecnico',
+        'role_technician_desc' => 'Supporto tecnico per gli eventi',
+        'roles_updated' => 'Ruoli aggiornati con successo!',
+        'roles_error' => 'Errore durante l\'aggiornamento dei ruoli',
+        'roles_min_one' => 'Devi selezionare almeno un ruolo',
     ],
 ];
 

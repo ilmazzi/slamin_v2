@@ -318,6 +318,64 @@
                 </div>
             </div>
 
+            {{-- Roles Management --}}
+            <div class="bg-gradient-to-br from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 rounded-xl p-6 border-2 border-primary-200 dark:border-primary-800 shadow-sm">
+                <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    {{ __('profile.edit.roles') }}
+                </h3>
+                <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">{{ __('profile.edit.roles_description') }}</p>
+                
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach($this->availableRoles as $role)
+                        <div wire:key="role-{{ $role['name'] }}"
+                             wire:click="{{ $role['removable'] ? 'toggleRole(\'' . $role['name'] . '\')' : '' }}"
+                             class="relative group {{ $role['removable'] ? 'cursor-pointer' : 'cursor-not-allowed opacity-75' }}">
+                            <div class="bg-white dark:bg-neutral-800 rounded-xl p-4 border-2 transition-all duration-300
+                                {{ in_array($role['name'], $selectedRoles) 
+                                    ? 'border-' . $role['color'] . '-500 shadow-lg shadow-' . $role['color'] . '-500/20' 
+                                    : 'border-neutral-200 dark:border-neutral-700 hover:border-' . $role['color'] . '-300' }}">
+                                
+                                {{-- Selected Badge --}}
+                                @if(in_array($role['name'], $selectedRoles))
+                                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-{{ $role['color'] }}-500 rounded-full flex items-center justify-center shadow-lg">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                @endif
+                                
+                                {{-- Admin Lock Badge --}}
+                                @if(!$role['removable'])
+                                    <div class="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                        </svg>
+                                    </div>
+                                @endif
+                                
+                                <div class="flex items-start gap-3">
+                                    <div class="text-3xl">{{ $role['icon'] }}</div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="font-bold text-neutral-900 dark:text-white truncate">{{ $role['display_name'] }}</h4>
+                                        <p class="text-xs text-neutral-600 dark:text-neutral-400 mt-1">{{ $role['description'] }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                
+                <p class="mt-4 text-xs text-neutral-600 dark:text-neutral-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    {{ __('profile.edit.roles_help') }}
+                </p>
+            </div>
+
             {{-- Privacy Settings --}}
             <div class="bg-white dark:bg-neutral-800 rounded-xl p-6 border border-neutral-200 dark:border-neutral-700 shadow-sm">
                 <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-4">{{ __('profile.edit.privacy') }}</h3>

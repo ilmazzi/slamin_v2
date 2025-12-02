@@ -127,6 +127,28 @@ return [
         'update_error' => 'Error updating profile',
         'avatar_removed' => 'Avatar removed successfully',
         'banner_removed' => 'Banner removed successfully',
+        
+        // Roles Management
+        'roles' => 'Manage Roles',
+        'roles_description' => 'Select the roles that best describe your participation in the community. You can have multiple roles at the same time.',
+        'roles_help' => 'At least one role must be selected',
+        'role_poet' => 'Poet',
+        'role_poet_desc' => 'Publish poems and participate in slam events',
+        'role_organizer' => 'Organizer',
+        'role_organizer_desc' => 'Create and manage Poetry Slam events',
+        'role_audience' => 'Audience',
+        'role_audience_desc' => 'Attend events as a spectator',
+        'role_judge' => 'Judge',
+        'role_judge_desc' => 'Evaluate performances at events',
+        'role_venue_owner' => 'Venue Owner',
+        'role_venue_owner_desc' => 'Manage a venue for events',
+        'role_technician' => 'Technician',
+        'role_technician_desc' => 'Technical support for events',
+        'roles_updated' => 'Roles updated successfully!',
+        'roles_error' => 'Error updating roles',
+        'roles_min_one' => 'You must select at least one role',
+        'avatar_removed' => 'Avatar removed successfully',
+        'banner_removed' => 'Banner removed successfully',
     ],
 ];
 
