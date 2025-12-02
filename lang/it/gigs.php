@@ -109,6 +109,7 @@ return array (
     'host' => 'Host',
     'judge' => 'Giudice',
     'technician' => 'Tecnico',
+    'translation' => 'Traduzione',
   ),
   'languages' => 
   array (

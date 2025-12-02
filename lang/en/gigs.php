@@ -72,6 +72,7 @@ return [
         'paid' => 'Paid',
         'volunteer' => 'Volunteer',
         'collaboration' => 'Collaboration',
+        'translation' => 'Translation',
     ],
     
     'languages' => [

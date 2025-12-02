@@ -72,6 +72,7 @@ return [
         'paid' => 'Rémunéré',
         'volunteer' => 'Bénévolat',
         'collaboration' => 'Collaboration',
+        'translation' => 'Traduction',
     ],
     
     'languages' => [
