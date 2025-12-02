@@ -16,7 +16,7 @@ class PaymentCheckout extends Component
 {
     public GigApplication $application;
     public $amount;
-    public $paymentMethod = 'stripe';
+    public $paymentMethod = 'paypal'; // PayPal come default
     public $clientSecret;
     public $paymentIntentId;
     public $processing = false;

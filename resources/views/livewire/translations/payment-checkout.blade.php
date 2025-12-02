@@ -87,19 +87,59 @@
                         <div class="mb-6">
                             <div class="flex gap-2 border-b border-neutral-200 dark:border-neutral-700">
                                 <button type="button"
+                                        wire:click="$set('paymentMethod', 'paypal')"
+                                        class="px-4 py-3 font-semibold transition-colors border-b-2 {{ $paymentMethod === 'paypal' ? 'border-blue-600 text-blue-600' : 'border-transparent text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white' }}">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 00-.794.68l-.04.22-.63 3.993-.028.15a.805.805 0 01-.793.68H8.25c-.467 0-.825-.377-.745-.84l.014-.075L9.28 13.7a1.018 1.018 0 011.006-.862h2.095c3.1 0 5.522-1.26 6.226-4.904.086-.445.133-.89.133-1.327 0-.862-.172-1.619-.524-2.226a3.662 3.662 0 00-.82-.943 3.662 3.662 0 00-1.043-.668A5.186 5.186 0 0014.955 3h-5.21c-.467 0-.865.338-.944.802l-1.805 11.44a.805.805 0 00.794.92h2.85l.716-4.54.76-4.82a.944.944 0 01.932-.802h1.052c1.268 0 2.33.182 3.148.54.757.332 1.369.814 1.819 1.436z"/>
+                                        </svg>
+                                        PayPal
+                                        <span class="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">Consigliato</span>
+                                    </div>
+                                </button>
+                                <button type="button"
                                         wire:click="$set('paymentMethod', 'stripe')"
-                                        class="px-4 py-2 font-semibold transition-colors border-b-2 {{ $paymentMethod === 'stripe' ? 'border-primary-600 text-primary-600' : 'border-transparent text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white' }}">
+                                        class="px-4 py-3 font-semibold transition-colors border-b-2 {{ $paymentMethod === 'stripe' ? 'border-primary-600 text-primary-600' : 'border-transparent text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white' }}">
                                     💳 Carta di Credito
                                 </button>
                                 <button type="button"
                                         wire:click="$set('paymentMethod', 'offline')"
-                                        class="px-4 py-2 font-semibold transition-colors border-b-2 {{ $paymentMethod === 'offline' ? 'border-primary-600 text-primary-600' : 'border-transparent text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white' }}">
+                                        class="px-4 py-3 font-semibold transition-colors border-b-2 {{ $paymentMethod === 'offline' ? 'border-primary-600 text-primary-600' : 'border-transparent text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white' }}">
                                     💰 Pagamento Offline
                                 </button>
                             </div>
                         </div>
 
-                        @if($paymentMethod === 'stripe')
+                        @if($paymentMethod === 'paypal')
+                            {{-- PayPal Payment Form --}}
+                            <div id="paypal-payment-form">
+                                <div class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                                    <div class="flex items-start gap-3">
+                                        <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <div>
+                                            <h4 class="font-semibold text-blue-900 dark:text-blue-200 mb-1">Come funziona PayPal?</h4>
+                                            <ul class="text-sm text-blue-800 dark:text-blue-300 space-y-1">
+                                                <li>✓ Clicca sul pulsante PayPal qui sotto</li>
+                                                <li>✓ Verrai reindirizzato al sito sicuro di PayPal</li>
+                                                <li>✓ Accedi al tuo account PayPal (o creane uno)</li>
+                                                <li>✓ Conferma il pagamento</li>
+                                                <li>✓ Tornerai automaticamente su Slamin</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="paypal-button-container" class="mb-6">
+                                    <!-- PayPal Button will be inserted here -->
+                                </div>
+
+                                <p class="text-xs text-neutral-500 dark:text-neutral-400 text-center">
+                                    🔒 Pagamento sicuro tramite PayPal. I tuoi dati finanziari non vengono condivisi con Slamin.
+                                </p>
+                            </div>
+                        @elseif($paymentMethod === 'stripe')
                             {{-- Stripe Payment Form --}}
                             <div id="stripe-payment-form">
                                 <div id="payment-element" class="mb-6">
@@ -165,6 +205,54 @@
         @endif
     </div>
 
+    {{-- PayPal Script --}}
+    @if(!$paymentCompleted && $paymentMethod === 'paypal')
+        @push('scripts')
+        <script src="https://www.paypal.com/sdk/js?client-id={{ config('services.paypal.client_id') }}&currency=EUR"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof paypal !== 'undefined') {
+                    paypal.Buttons({
+                        createOrder: function(data, actions) {
+                            return actions.order.create({
+                                purchase_units: [{
+                                    amount: {
+                                        value: '{{ number_format($amount, 2, '.', '') }}',
+                                        currency_code: 'EUR'
+                                    },
+                                    description: 'Traduzione: {{ $application->gig->poem->title ?? "N/A" }}'
+                                }],
+                                application_context: {
+                                    brand_name: 'Slamin',
+                                    locale: 'it-IT',
+                                    shipping_preference: 'NO_SHIPPING'
+                                }
+                            });
+                        },
+                        onApprove: function(data, actions) {
+                            return actions.order.capture().then(function(details) {
+                                // Redirect to success page
+                                window.location.href = '{{ route('gigs.payment.success', $application) }}?paypal_order_id=' + data.orderID;
+                            });
+                        },
+                        onError: function(err) {
+                            alert('Si è verificato un errore con PayPal. Riprova o usa un altro metodo di pagamento.');
+                            console.error('PayPal Error:', err);
+                        },
+                        style: {
+                            layout: 'vertical',
+                            color: 'blue',
+                            shape: 'rect',
+                            label: 'pay'
+                        }
+                    }).render('#paypal-button-container');
+                }
+            });
+        </script>
+        @endpush
+    @endif
+
+    {{-- Stripe Script --}}
     @if(!$paymentCompleted && $paymentMethod === 'stripe' && $clientSecret)
         @push('scripts')
         <script src="https://js.stripe.com/v3/"></script>
