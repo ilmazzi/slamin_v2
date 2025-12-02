@@ -102,10 +102,10 @@
                     <div class="relative">
                         <select wire:model.live="sortBy"
                                 class="w-full px-4 py-3 rounded-xl
-                                       border-2 border-gray-300/50 dark:border-gray-700/50
-                                       bg-white/60 dark:bg-gray-800/60
+                                       border-2 border-neutral-300/50 dark:border-neutral-700/50
+                                       bg-white/60 dark:bg-neutral-800/60
                                        backdrop-blur-sm
-                                       text-gray-700 dark:text-gray-300
+                                       text-neutral-700 dark:text-neutral-300
                                        focus:border-primary-400 focus:ring-4 focus:ring-primary-400/20
                                        transition-all duration-300
                                        appearance-none cursor-pointer"
@@ -125,10 +125,10 @@
                     <div class="relative">
                         <select wire:model.live="selectedCategory"
                                 class="w-full px-4 py-3 rounded-xl
-                                       border-2 border-gray-300/50 dark:border-gray-700/50
-                                       bg-white/60 dark:bg-gray-800/60
+                                       border-2 border-neutral-300/50 dark:border-neutral-700/50
+                                       bg-white/60 dark:bg-neutral-800/60
                                        backdrop-blur-sm
-                                       text-gray-700 dark:text-gray-300
+                                       text-neutral-700 dark:text-neutral-300
                                        focus:border-primary-400 focus:ring-4 focus:ring-primary-400/20
                                        transition-all duration-300
                                        appearance-none cursor-pointer"
@@ -238,7 +238,7 @@
                                                 <img 
                                                     src="{{ \App\Helpers\AvatarHelper::getUserAvatarUrl($bannerArticle->user, 80) }}" 
                                                     alt="{{ \App\Helpers\AvatarHelper::getDisplayName($bannerArticle->user) }}"
-                                                    class="w-9 h-9 rounded-full object-cover ring-2 ring-white/70 dark:ring-gray-700 shadow-sm">
+                                                    class="w-9 h-9 rounded-full object-cover ring-2 ring-white/70 dark:ring-neutral-700 shadow-sm">
                                                 <span class="font-medium text-neutral-700 dark:text-neutral-200">
                                                     {{ \App\Helpers\AvatarHelper::getDisplayName($bannerArticle->user) }}
                                                 </span>
@@ -362,7 +362,7 @@
             {{-- Griglia Articoli (Tutti o con Filtri) --}}
             @if($showAllArticles || $search || $selectedCategory)
                 <div class="mb-8 flex items-center justify-between">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h2 class="text-2xl font-bold text-neutral-900 dark:text-white">
                         {{ __('articles.index.all_articles') }}
                     </h2>
                     @if($showAllArticles && !$search && !$selectedCategory)
