@@ -46,8 +46,8 @@
     {{-- Subscribers Tab --}}
     @if($activeTab === 'subscribers')
         <div class="space-y-4">
-            {{-- Filters --}}
-            <div class="flex gap-4">
+            {{-- Filters and Add Button --}}
+            <div class="flex gap-4 items-center">
                 <div class="flex-1">
                     <input type="text" 
                            wire:model.live.debounce.300ms="search" 
@@ -60,6 +60,13 @@
                     <option value="active">Attivi</option>
                     <option value="unsubscribed">Disiscritti</option>
                 </select>
+                <button wire:click="openAddModal" 
+                        class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold flex items-center gap-2 whitespace-nowrap">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Aggiungi Iscritto
+                </button>
             </div>
 
             {{-- Subscribers List --}}
@@ -207,6 +214,59 @@
                                 class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold disabled:opacity-50">
                             <span wire:loading.remove>Invia Newsletter</span>
                             <span wire:loading>Invio in corso...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
+
+    {{-- Add Subscriber Modal --}}
+    @if($showAddModal)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" wire:click="closeAddModal">
+            <div class="bg-white dark:bg-neutral-800 rounded-lg p-6 max-w-md w-full mx-4" wire:click.stop>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-neutral-900 dark:text-white">Aggiungi Iscritto</h3>
+                    <button wire:click="closeAddModal" class="text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <form wire:submit.prevent="addSubscriber" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Email *</label>
+                        <input type="email" 
+                               wire:model="newEmail" 
+                               placeholder="email@example.com"
+                               class="w-full px-4 py-2 rounded-lg bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white"
+                               required>
+                        @error('newEmail')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Nome (opzionale)</label>
+                        <input type="text" 
+                               wire:model="newName" 
+                               placeholder="Nome completo"
+                               class="w-full px-4 py-2 rounded-lg bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
+                        @error('newName')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="flex justify-end gap-3">
+                        <button type="button" 
+                                wire:click="closeAddModal" 
+                                class="px-4 py-2 bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-600">
+                            Annulla
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold">
+                            Aggiungi
                         </button>
                     </div>
                 </form>

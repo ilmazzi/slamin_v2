@@ -20,6 +20,11 @@ class NewsletterManagement extends Component
     public $search = '';
     public $statusFilter = 'all'; // all, active, unsubscribed
 
+    // Add subscriber
+    public $showAddModal = false;
+    public $newEmail = '';
+    public $newName = '';
+
     // Send newsletter
     public $showSendModal = false;
     public $subject = '';
@@ -97,6 +102,48 @@ class NewsletterManagement extends Component
         NewsletterSubscriber::findOrFail($id)->delete();
         session()->flash('success', 'Iscritto eliminato con successo');
         $this->loadStats();
+    }
+
+    public function openAddModal()
+    {
+        $this->showAddModal = true;
+        $this->newEmail = '';
+        $this->newName = '';
+    }
+
+    public function closeAddModal()
+    {
+        $this->showAddModal = false;
+        $this->newEmail = '';
+        $this->newName = '';
+    }
+
+    public function addSubscriber()
+    {
+        $this->validate([
+            'newEmail' => 'required|email|unique:newsletter_subscribers,email',
+            'newName' => 'nullable|string|max:255',
+        ], [
+            'newEmail.required' => 'L\'email è obbligatoria',
+            'newEmail.email' => 'Inserisci un indirizzo email valido',
+            'newEmail.unique' => 'Questa email è già iscritta alla newsletter',
+            'newName.max' => 'Il nome non può superare i 255 caratteri',
+        ]);
+
+        try {
+            NewsletterSubscriber::create([
+                'email' => $this->newEmail,
+                'name' => $this->newName ?: null,
+                'status' => 'active',
+            ]);
+
+            session()->flash('success', 'Iscritto aggiunto con successo');
+            $this->closeAddModal();
+            $this->loadStats();
+            $this->resetPage();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Errore durante l\'aggiunta dell\'iscritto: ' . $e->getMessage());
+        }
     }
 
     public function openSendModal()
