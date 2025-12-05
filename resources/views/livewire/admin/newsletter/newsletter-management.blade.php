@@ -160,10 +160,13 @@
                     <div>
                         <label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Destinatari</label>
                         <select wire:model="sendTo" class="w-full px-4 py-2 rounded-lg bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white">
-                            <option value="all">Tutti gli iscritti attivi</option>
-                            <option value="active">Solo iscritti attivi</option>
+                            <option value="all">Tutti gli iscritti attivi alla newsletter</option>
                             <option value="custom">Email personalizzate (separate da virgola)</option>
                         </select>
+                        <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                            <strong>"Tutti gli iscritti attivi":</strong> Invia a tutti gli utenti che si sono iscritti alla newsletter e sono attualmente attivi.<br>
+                            <strong>"Email personalizzate":</strong> Invia a indirizzi email specifici che inserisci manualmente (anche se non sono iscritti alla newsletter).
+                        </p>
                     </div>
 
                     @if($sendTo === 'custom')

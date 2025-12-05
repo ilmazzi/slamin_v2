@@ -119,7 +119,7 @@ class NewsletterManagement extends Component
         $this->validate([
             'subject' => 'required|string|max:255',
             'content' => 'required|string|min:10',
-            'sendTo' => 'required|in:all,active,custom',
+            'sendTo' => 'required|in:all,custom',
             'customEmails' => 'required_if:sendTo,custom|string',
         ], [
             'subject.required' => 'Il soggetto è obbligatorio',
@@ -135,8 +135,7 @@ class NewsletterManagement extends Component
             $recipients = [];
             
             if ($this->sendTo === 'all') {
-                $recipients = NewsletterSubscriber::where('status', 'active')->pluck('email')->toArray();
-            } elseif ($this->sendTo === 'active') {
+                // Tutti gli iscritti attivi alla newsletter
                 $recipients = NewsletterSubscriber::where('status', 'active')->pluck('email')->toArray();
             } elseif ($this->sendTo === 'custom') {
                 $emails = array_map('trim', explode(',', $this->customEmails));
