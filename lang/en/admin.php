@@ -181,6 +181,10 @@ return [
                 'deactivated' => 'Subreddit deactivated',
             ],
         ],
+        'newsletter' => [
+            'title' => 'Newsletter',
+            'description' => 'Manage subscribers and send newsletters',
+        ],
         'settings' => [
             'title' => 'System Settings',
             'description' => 'General system configuration',

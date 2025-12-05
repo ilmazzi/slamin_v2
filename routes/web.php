@@ -15,6 +15,10 @@ Broadcast::routes(['middleware' => ['web', 'auth']]);
 // Public routes
 Route::get('/', \App\Livewire\Home\HomeIndex::class)->name('home');
 
+// Newsletter
+Route::get('/newsletter/unsubscribe/{token}', [App\Http\Controllers\NewsletterController::class, 'unsubscribe'])
+    ->name('newsletter.unsubscribe');
+
 // Global Search
 Route::get('/search', \App\Livewire\Search\GlobalSearch::class)->name('search');
 
@@ -402,6 +406,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         ->name('gamification.badges');
     Route::get('/gamification/user-badges', \App\Livewire\Admin\Gamification\UserBadges::class)
         ->name('gamification.user-badges');
+    
+    // Newsletter
+    Route::get('/newsletter', \App\Livewire\Admin\Newsletter\NewsletterManagement::class)
+        ->name('newsletter.index');
 });
 
 // Gallery Route

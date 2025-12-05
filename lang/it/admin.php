@@ -185,6 +185,10 @@ return [
                 'deactivated' => 'Subreddit disattivato',
             ],
         ],
+        'newsletter' => [
+            'title' => 'Newsletter',
+            'description' => 'Gestisci iscritti e invia newsletter',
+        ],
         'settings' => [
             'title' => 'Impostazioni Sistema',
             'description' => 'Configurazione generale del sistema',
