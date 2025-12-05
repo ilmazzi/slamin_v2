@@ -32,6 +32,10 @@ return [
     'cookies' => 'Cookie Policy',
     'about' => 'Chi Siamo',
     
+    // Newsletter
+    'newsletter' => 'Newsletter',
+    'newsletter_description' => 'Resta aggiornato con le ultime novità e gli eventi della community.',
+    
     // Copyright
     'copyright' => 'Tutti i diritti riservati.',
 ];

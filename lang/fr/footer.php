@@ -27,12 +27,16 @@ return [
     'tutorial' => 'Tutoriel',
     
     // Legal links
-    'terms' => 'Termini di Servizio',
-    'privacy' => 'Privacy Policy',
-    'cookies' => 'Cookie Policy',
-    'about' => 'Chi Siamo',
+    'terms' => 'Conditions d\'utilisation',
+    'privacy' => 'Politique de confidentialité',
+    'cookies' => 'Politique des cookies',
+    'about' => 'À propos',
+    
+    // Newsletter
+    'newsletter' => 'Newsletter',
+    'newsletter_description' => 'Restez informé des dernières actualités et événements de la communauté.',
     
     // Copyright
-    'copyright' => 'Tutti i diritti riservati.',
+    'copyright' => 'Tous droits réservés.',
 ];
 

@@ -45,15 +45,13 @@
                 </ul>
             </div>
 
-            <!-- Legal -->
+            <!-- Newsletter -->
             <div>
-                <h3 class="text-white font-bold mb-4">{{ __('footer.legal') }}</h3>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="{{ route('terms') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.terms') }}</a></li>
-                    <li><a href="{{ route('privacy') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.privacy') }}</a></li>
-                    <li><a href="{{ route('cookies') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.cookies') }}</a></li>
-                    <li><a href="{{ route('about') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.about') }}</a></li>
-                </ul>
+                <h3 class="text-white font-bold mb-4">{{ __('footer.newsletter') ?? 'Newsletter' }}</h3>
+                <p class="text-sm text-neutral-400 mb-4">
+                    {{ __('footer.newsletter_description') ?? 'Resta aggiornato con le ultime novità' }}
+                </p>
+                <livewire:components.newsletter-subscribe />
             </div>
         </div>
 
