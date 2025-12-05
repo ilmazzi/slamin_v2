@@ -207,7 +207,7 @@
                         </div>
                         
                         <!-- FOGLIO VINTAGE per Traduzione -->
-                        <div class="relative vintage-paper-container" style="transform: perspective(1200px) rotateX(1deg);">
+                        <div class="relative vintage-paper-container">
                             <div class="relative vintage-paper-sheet overflow-visible p-12 md:p-16">
                                 <!-- Angolo piegato sinistra -->
                                 <div class="vintage-corner-left"></div>
@@ -248,7 +248,7 @@
                         </div>
                     @else
                         <!-- FOGLIO VINTAGE REALISTICO -->
-                        <div class="relative vintage-paper-container" style="transform: perspective(1200px) rotateX(1deg);">
+                        <div class="relative vintage-paper-container">
                             <div class="relative vintage-paper-sheet overflow-visible p-12 md:p-16">
                                 <!-- Angolo piegato sinistra -->
                                 <div class="vintage-corner-left"></div>
@@ -272,6 +272,11 @@
                 
                 <!-- STILE FOGLIO VINTAGE -->
                 <style>
+                    /* Container - nessun overlay */
+                    .vintage-paper-container {
+                        position: relative;
+                    }
+                    
                     /* FOGLIO VINTAGE - Carta Antica */
                     .vintage-paper-sheet {
                         background: linear-gradient(135deg, 
@@ -406,14 +411,15 @@
                     @media (max-width: 768px) {
                         .poem-content {
                             color: #111827 !important;
-                            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+                            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
                             font-weight: 500;
                         }
                         
+                        /* Su mobile, anche in dark mode, testo scuro su sfondo chiaro */
                         @media (prefers-color-scheme: dark) {
                             .poem-content {
-                                color: #f9fafb !important;
-                                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+                                color: #1f2937 !important;
+                                text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
                             }
                         }
                     }
@@ -434,29 +440,30 @@
                         }
                     }
                     
-                    /* Mobile - sfondo più chiaro per migliore leggibilità */
+                    /* Mobile - sfondo molto più chiaro per migliore leggibilità */
                     @media (max-width: 768px) {
+                        .vintage-paper-container {
+                            transform: none !important;
+                        }
+                        
                         .vintage-paper-sheet {
-                            background: linear-gradient(135deg, 
-                                #f9f7f4 0%, 
-                                #fdfbf8 20%, 
-                                #f9f7f4 40%,
-                                #fdfbf8 60%,
-                                #f9f7f4 80%,
-                                #fdfbf8 100%
-                            ) !important;
+                            background: #fefcf9 !important;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+                        }
+                        
+                        .vintage-texture,
+                        .vintage-stains {
+                            opacity: 0.1 !important;
                         }
                         
                         @media (prefers-color-scheme: dark) {
                             .vintage-paper-sheet {
-                                background: linear-gradient(135deg, 
-                                    #4a453f 0%, 
-                                    #554f48 20%, 
-                                    #4a453f 40%,
-                                    #554f48 60%,
-                                    #4a453f 80%,
-                                    #554f48 100%
-                                ) !important;
+                                background: #f5f3f0 !important;
+                            }
+                            
+                            .poem-content {
+                                color: #1f2937 !important;
+                                text-shadow: none !important;
                             }
                         }
                     }
