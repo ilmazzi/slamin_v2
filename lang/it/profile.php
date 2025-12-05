@@ -16,6 +16,7 @@ return [
     'scroll_to_explore' => 'Scorri per esplorare',
     'edit_profile' => 'Modifica Profilo',
     'manage_media' => 'Gestisci Media',
+    'contact' => 'Contatta',
     'my_media' => 'I Miei Media',
     'my_media_description' => 'Gestisci tutti i tuoi video e foto caricati',
     'languages' => 'Lingue',

@@ -219,13 +219,15 @@
                                 <div class="vintage-stains"></div>
                                 
                                 <!-- Contenuto Traduzione -->
-                                <div class="poem-content relative z-10 text-neutral-800 dark:text-neutral-200 font-poem text-lg md:text-xl leading-relaxed">
-                                    {!! $currentTranslation->content !!}
+                                <div class="poem-content relative z-30 text-neutral-900 dark:text-neutral-100 font-poem text-lg md:text-xl leading-relaxed" style="color: #1f2937 !important; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);">
+                                    <div style="position: relative; z-index: 100;">
+                                        {!! $currentTranslation->content !!}
+                                    </div>
                                 </div>
                                 
                                 <!-- Translator Notes dentro foglio -->
                                 @if($currentTranslation->translator_notes)
-                                    <div class="mt-10 pt-8 border-t border-amber-300/30 relative z-10">
+                                    <div class="mt-10 pt-8 border-t border-amber-300/30 relative z-20">
                                         <div class="flex items-start gap-3">
                                             <svg class="w-6 h-6 text-amber-700 dark:text-amber-400 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -258,8 +260,10 @@
                                 <div class="vintage-stains"></div>
                                 
                                 <!-- Contenuto Poesia -->
-                                <div class="poem-content relative z-10 text-neutral-800 dark:text-neutral-200 font-poem text-lg md:text-xl leading-relaxed">
-                                    {!! $poem->content !!}
+                                <div class="poem-content relative z-30 text-neutral-900 dark:text-neutral-100 font-poem text-lg md:text-xl leading-relaxed" style="color: #1f2937 !important; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);">
+                                    <div style="position: relative; z-index: 100;">
+                                        {!! $poem->content !!}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -321,15 +325,16 @@
                         border-style: solid;
                         border-width: 55px 55px 0 0;
                         border-color: #e8d4b8 transparent transparent transparent;
-                        z-index: 100;
+                        z-index: 1;
                         filter: drop-shadow(2px 2px 4px rgba(139, 99, 61, 0.2));
+                        pointer-events: none;
                     }
                     
                     /* Texture vintage */
                     .vintage-texture {
                         position: absolute;
                         inset: 0;
-                        opacity: 0.4;
+                        opacity: 0.2;
                         z-index: 1;
                         background-image: 
                             repeating-linear-gradient(
@@ -354,8 +359,9 @@
                     .vintage-stains {
                         position: absolute;
                         inset: 0;
-                        z-index: 2;
+                        z-index: 1;
                         pointer-events: none;
+                        opacity: 0.3;
                         background-image:
                             radial-gradient(
                                 ellipse 180px 140px at 95% 8%,
@@ -376,19 +382,82 @@
                             );
                     }
                     
+                    /* Assicura che il contenuto sia sempre sopra */
+                    .poem-content {
+                        position: relative !important;
+                        z-index: 30 !important;
+                    }
+                    
+                    .poem-content * {
+                        position: relative;
+                        z-index: 100 !important;
+                        color: inherit !important;
+                    }
+                    
+                    /* Dark mode - testo più chiaro */
+                    @media (prefers-color-scheme: dark) {
+                        .poem-content {
+                            color: #f3f4f6 !important;
+                            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+                        }
+                    }
+                    
+                    /* Mobile - testo ancora più visibile */
+                    @media (max-width: 768px) {
+                        .poem-content {
+                            color: #111827 !important;
+                            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+                            font-weight: 500;
+                        }
+                        
+                        @media (prefers-color-scheme: dark) {
+                            .poem-content {
+                                color: #f9fafb !important;
+                                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+                            }
+                        }
+                    }
+                    
                     @media (prefers-color-scheme: dark) {
                         .vintage-paper-sheet {
                             background: linear-gradient(135deg, 
-                                #2a2622 0%, 
-                                #352f28 20%, 
-                                #2a2622 40%,
-                                #352f28 60%,
-                                #2a2622 80%,
-                                #352f28 100%
+                                #3a352f 0%, 
+                                #453f38 20%, 
+                                #3a352f 40%,
+                                #453f38 60%,
+                                #3a352f 80%,
+                                #453f38 100%
                             );
                         }
                         .vintage-corner-left {
-                            border-color: #1f1b17 transparent transparent transparent;
+                            border-color: #2f2a24 transparent transparent transparent;
+                        }
+                    }
+                    
+                    /* Mobile - sfondo più chiaro per migliore leggibilità */
+                    @media (max-width: 768px) {
+                        .vintage-paper-sheet {
+                            background: linear-gradient(135deg, 
+                                #f9f7f4 0%, 
+                                #fdfbf8 20%, 
+                                #f9f7f4 40%,
+                                #fdfbf8 60%,
+                                #f9f7f4 80%,
+                                #fdfbf8 100%
+                            ) !important;
+                        }
+                        
+                        @media (prefers-color-scheme: dark) {
+                            .vintage-paper-sheet {
+                                background: linear-gradient(135deg, 
+                                    #4a453f 0%, 
+                                    #554f48 20%, 
+                                    #4a453f 40%,
+                                    #554f48 60%,
+                                    #4a453f 80%,
+                                    #554f48 100%
+                                ) !important;
+                            }
                         }
                     }
                 </style>

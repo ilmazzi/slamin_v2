@@ -46,15 +46,33 @@
                 </ul>
             </div>
 
-            <!-- Legal -->
+            <!-- Newsletter -->
             <div>
-                <h3 class="text-white font-bold mb-4"><?php echo e(__('footer.legal')); ?></h3>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="<?php echo e(route('terms')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.terms')); ?></a></li>
-                    <li><a href="<?php echo e(route('privacy')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.privacy')); ?></a></li>
-                    <li><a href="<?php echo e(route('cookies')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.cookies')); ?></a></li>
-                    <li><a href="<?php echo e(route('about')); ?>" class="hover:text-primary-400 transition-colors"><?php echo e(__('footer.about')); ?></a></li>
-                </ul>
+                <h3 class="text-white font-bold mb-4"><?php echo e(__('footer.newsletter') ?? 'Newsletter'); ?></h3>
+                <p class="text-sm text-neutral-400 mb-4">
+                    <?php echo e(__('footer.newsletter_description') ?? 'Resta aggiornato con le ultime novità'); ?>
+
+                </p>
+                <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('components.newsletter-subscribe', []);
+
+$key = null;
+
+$key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-2144302274-0', null);
+
+$__html = app('livewire')->mount($__name, $__params, $key);
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
             </div>
         </div>
 

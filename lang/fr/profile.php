@@ -15,6 +15,7 @@ return [
     
     'scroll_to_explore' => 'Faites défiler pour explorer',
     'edit_profile' => 'Modifier le profil',
+    'contact' => 'Contacter',
     'languages' => 'Langues',
     'badges' => 'Badges',
     'native' => 'Langue maternelle',

@@ -15,6 +15,7 @@ return [
     
     'scroll_to_explore' => 'Scroll to explore',
     'edit_profile' => 'Edit Profile',
+    'contact' => 'Contact',
     'languages' => 'Languages',
     'badges' => 'Badges',
     'native' => 'Native',

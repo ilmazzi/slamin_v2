@@ -188,10 +188,21 @@
                         </a>
                     </div>
 
-                    {{-- Follow Button (only if not own profile) --}}
+                    {{-- Follow and Contact Buttons (only if not own profile) --}}
                     @if(!$isOwnProfile)
-                        <div class="mt-4 flex justify-center">
+                        <div class="mt-4 flex justify-center gap-3">
                             <livewire:components.follow-button :userId="$user->id" size="md" variant="default" />
+                            @auth
+                                <button wire:click="contactUser" 
+                                        class="follow-button follow-button-md follow-button-default">
+                                    <span class="follow-content">
+                                        <svg class="follow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                        </svg>
+                                        <span class="follow-text">{{ __('profile.contact') }}</span>
+                                    </span>
+                                </button>
+                            @endauth
                         </div>
                     @endif
 

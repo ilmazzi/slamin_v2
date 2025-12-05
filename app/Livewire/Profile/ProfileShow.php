@@ -4,6 +4,7 @@ namespace App\Livewire\Profile;
 
 use Livewire\Component;
 use App\Models\User;
+use App\Models\Conversation;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileShow extends Component
@@ -129,6 +130,24 @@ class ProfileShow extends Component
                            $this->user->articles()->published()->sum('like_count') + 
                            $this->user->poems()->published()->sum('like_count'),
         ];
+    }
+
+    public function contactUser()
+    {
+        if (!Auth::check() || $this->isOwnProfile) {
+            return;
+        }
+
+        $otherUser = $this->user;
+        
+        // Create or get existing private conversation
+        $conversation = Conversation::createOrGetPrivate(Auth::user(), $otherUser);
+        
+        // Mark as read
+        $conversation->markAsRead(Auth::user());
+        
+        // Redirect to conversation
+        return $this->redirect(route('chat.show', $conversation), navigate: true);
     }
 
     public function render()
