@@ -5,6 +5,18 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold text-neutral-900 dark:text-white mb-8">{{ __('groups.my_invitations') }}</h1>
 
+        @if(session('success'))
+            <div class="mb-6 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-300 rounded-lg">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="mb-6 p-4 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg">
+                {{ session('error') }}
+            </div>
+        @endif
+
         @forelse($invitations as $item)
             @php
                 $invitation = $item['invitation'];
@@ -14,13 +26,21 @@
                 <div class="flex items-center justify-between">
                     <div class="flex-1">
                         @if($type === 'group')
-                            <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">{{ $invitation->group->name }}</h3>
+                            <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">
+                                <a href="{{ route('groups.show', $invitation->group) }}" 
+                                   class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                                    {{ $invitation->group->name }}
+                                </a>
+                            </h3>
                             <p class="text-neutral-600 dark:text-neutral-400 mb-2">
                                 Invitato da <strong>{{ $invitation->invitedBy->name }}</strong>
                             </p>
                         @else
                             <h3 class="text-xl font-bold text-neutral-900 dark:text-white mb-2">
-                                {{ $invitation->event->title }}
+                                <a href="{{ route('events.show', $invitation->event) }}" 
+                                   class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                                    {{ $invitation->event->title }}
+                                </a>
                             </h3>
                             <p class="text-neutral-600 dark:text-neutral-400 mb-2">
                                 Invitato da <strong>{{ $invitation->inviter->name }}</strong> come 

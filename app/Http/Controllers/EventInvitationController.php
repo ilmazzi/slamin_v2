@@ -13,16 +13,30 @@ class EventInvitationController extends Controller
     public function accept(EventInvitation $invitation)
     {
         // Check if the invitation belongs to the authenticated user
-        if ($invitation->invited_user_id !== Auth::id()) {
+        // For email invitations, check by email
+        if ($invitation->invited_user_id && $invitation->invited_user_id !== Auth::id()) {
             abort(403, __('events.invitation.cannot_accept_others_invitation'));
+        }
+        
+        if ($invitation->invited_email && $invitation->invited_email !== Auth::user()->email) {
+            abort(403, __('events.invitation.cannot_accept_others_invitation'));
+        }
+        
+        // If it's an email invitation, link it to the user now
+        if ($invitation->invited_email && !$invitation->invited_user_id) {
+            $invitation->update(['invited_user_id' => Auth::id()]);
         }
 
         // Check if invitation is still pending
         if (!$invitation->isPending()) {
-            return response()->json([
-                'success' => false,
-                'message' => __('events.invitation.already_responded')
-            ], 400);
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('events.invitation.already_responded')
+                ], 400);
+            }
+            return redirect()->route('group-invitations.index')
+                ->with('error', __('events.invitation.already_responded'));
         }
 
         // Update invitation status
@@ -58,25 +72,44 @@ class EventInvitationController extends Controller
             ]);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => __('events.invitation.accepted_success')
-        ]);
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => __('events.invitation.accepted_success')
+            ]);
+        }
+
+        return redirect()->route('group-invitations.index')
+            ->with('success', __('events.invitation.accepted_success'));
     }
 
     public function decline(EventInvitation $invitation)
     {
         // Check if the invitation belongs to the authenticated user
-        if ($invitation->invited_user_id !== Auth::id()) {
+        // For email invitations, check by email
+        if ($invitation->invited_user_id && $invitation->invited_user_id !== Auth::id()) {
             abort(403, __('events.invitation.cannot_decline_others_invitation'));
+        }
+        
+        if ($invitation->invited_email && $invitation->invited_email !== Auth::user()->email) {
+            abort(403, __('events.invitation.cannot_decline_others_invitation'));
+        }
+        
+        // If it's an email invitation, link it to the user now
+        if ($invitation->invited_email && !$invitation->invited_user_id) {
+            $invitation->update(['invited_user_id' => Auth::id()]);
         }
 
         // Check if invitation is still pending
         if (!$invitation->isPending()) {
-            return response()->json([
-                'success' => false,
-                'message' => __('events.invitation.already_responded')
-            ], 400);
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('events.invitation.already_responded')
+                ], 400);
+            }
+            return redirect()->route('group-invitations.index')
+                ->with('error', __('events.invitation.already_responded'));
         }
 
         // Update invitation status
@@ -95,10 +128,15 @@ class EventInvitationController extends Controller
             ]);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => __('events.invitation.declined_success')
-        ]);
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => __('events.invitation.declined_success')
+            ]);
+        }
+
+        return redirect()->route('group-invitations.index')
+            ->with('success', __('events.invitation.declined_success'));
     }
 }
 

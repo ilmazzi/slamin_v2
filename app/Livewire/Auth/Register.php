@@ -116,6 +116,9 @@ class Register extends Component
             // Assegna i ruoli usando syncRoles
             $user->syncRoles($roles);
 
+            // Link pending event invitations for this email
+            $this->linkPendingEventInvitations($user);
+
             // Login automatico per permettere l'accesso alla pagina di verifica
             Auth::login($user);
 
@@ -171,6 +174,53 @@ class Register extends Component
             ]);
 
             $this->addError('error', 'Errore durante la registrazione: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Link pending event invitations for the newly registered user
+     */
+    private function linkPendingEventInvitations(User $user)
+    {
+        // Find all pending invitations with this email
+        $pendingInvitations = \App\Models\EventInvitation::where('invited_email', $user->email)
+            ->whereNull('invited_user_id')
+            ->where('status', 'pending')
+            ->get();
+
+        foreach ($pendingInvitations as $invitation) {
+            // Update invitation to link to the user
+            $invitation->update([
+                'invited_user_id' => $user->id,
+            ]);
+
+            // If role is performer, create EventParticipant
+            if ($invitation->role === 'performer') {
+                $existingParticipant = \App\Models\EventParticipant::where('event_id', $invitation->event_id)
+                    ->where('user_id', $user->id)
+                    ->first();
+
+                if (!$existingParticipant) {
+                    \App\Models\EventParticipant::create([
+                        'event_id' => $invitation->event_id,
+                        'user_id' => $user->id,
+                        'registration_type' => 'invited',
+                        'status' => 'confirmed',
+                        'added_by' => $invitation->inviter_id,
+                    ]);
+                }
+            }
+
+            // Send notification to the user
+            try {
+                $user->notify(new \App\Notifications\EventInvitationNotification($invitation));
+            } catch (\Exception $e) {
+                Log::error('Error sending invitation notification after registration', [
+                    'user_id' => $user->id,
+                    'invitation_id' => $invitation->id,
+                    'error' => $e->getMessage()
+                ]);
+            }
         }
     }
 

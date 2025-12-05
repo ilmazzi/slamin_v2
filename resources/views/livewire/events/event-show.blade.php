@@ -366,6 +366,77 @@
                 {{-- Sidebar (1/3) - Compact Info Cards --}}
                 <div class="lg:col-span-1 space-y-4">
                     
+                    {{-- User Invitation Card --}}
+                    @if(auth()->check() && $userInvitation)
+                        <div class="bg-gradient-to-br from-amber-50 to-red-50 dark:from-amber-900/20 dark:to-red-900/20 rounded-2xl p-4 shadow-sm border-2 border-amber-200 dark:border-amber-800">
+                            <div class="flex items-center gap-2 mb-3">
+                                <svg class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                <div class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wide">Il Tuo Invito</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <p class="text-sm text-neutral-700 dark:text-neutral-300 mb-1">
+                                    Sei stato invitato come 
+                                    <strong class="text-amber-700 dark:text-amber-400">
+                                        @if($userInvitation->role === 'performer')
+                                            {{ __('events.invitation.role_performer') }}
+                                        @elseif($userInvitation->role === 'organizer')
+                                            {{ __('events.invitation.role_organizer') }}
+                                        @elseif($userInvitation->role === 'audience')
+                                            {{ __('events.invitation.role_audience') }}
+                                        @else
+                                            {{ __('events.invitation.role_participant') }}
+                                        @endif
+                                    </strong>
+                                </p>
+                                <p class="text-xs text-neutral-500 dark:text-neutral-400">
+                                    Invitato da <strong>{{ $userInvitation->inviter->name }}</strong>
+                                </p>
+                            </div>
+
+                            @if($userInvitation->status === 'pending')
+                                <div class="flex gap-2">
+                                    <button 
+                                        wire:click="acceptInvitation"
+                                        wire:loading.attr="disabled"
+                                        class="flex-1 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                        <span wire:loading.remove wire:target="acceptInvitation">
+                                            {{ __('events.invitation.accept') }}
+                                        </span>
+                                        <span wire:loading wire:target="acceptInvitation">
+                                            ...
+                                        </span>
+                                    </button>
+                                    <button 
+                                        wire:click="declineInvitation"
+                                        wire:loading.attr="disabled"
+                                        class="flex-1 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                        <span wire:loading.remove wire:target="declineInvitation">
+                                            {{ __('events.invitation.decline') }}
+                                        </span>
+                                        <span wire:loading wire:target="declineInvitation">
+                                            ...
+                                        </span>
+                                    </button>
+                                </div>
+                            @else
+                                <div class="px-3 py-2 rounded-lg text-sm font-semibold text-center
+                                    {{ $userInvitation->status === 'accepted' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : '' }}
+                                    {{ $userInvitation->status === 'declined' ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' : '' }}">
+                                    @if($userInvitation->status === 'accepted')
+                                        {{ __('events.invitation.accepted') }}
+                                    @elseif($userInvitation->status === 'declined')
+                                        {{ __('events.invitation.declined') }}
+                                    @else
+                                        {{ ucfirst($userInvitation->status) }}
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+
                     {{-- Organizer Card --}}
                     @if($event->organizer)
                         <div class="bg-white dark:bg-neutral-800 rounded-2xl p-4 shadow-sm border border-neutral-200 dark:border-neutral-700 hover:shadow-md transition-shadow">

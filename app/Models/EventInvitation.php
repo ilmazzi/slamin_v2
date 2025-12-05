@@ -12,6 +12,8 @@ class EventInvitation extends Model
     protected $fillable = [
         'event_id',
         'invited_user_id',
+        'invited_email',
+        'invited_name',
         'inviter_id',
         'role',
         'status',
@@ -31,6 +33,44 @@ class EventInvitation extends Model
     public function invitedUser()
     {
         return $this->belongsTo(User::class, 'invited_user_id');
+    }
+
+    /**
+     * Check if invitation is for a registered user
+     */
+    public function isForRegisteredUser(): bool
+    {
+        return !is_null($this->invited_user_id);
+    }
+
+    /**
+     * Check if invitation is for a non-registered user (email only)
+     */
+    public function isForNonRegisteredUser(): bool
+    {
+        return is_null($this->invited_user_id) && !is_null($this->invited_email);
+    }
+
+    /**
+     * Get the email of the invited person
+     */
+    public function getInvitedEmailAttribute($value)
+    {
+        if ($value) {
+            return $value;
+        }
+        return $this->invitedUser?->email;
+    }
+
+    /**
+     * Get the name of the invited person
+     */
+    public function getInvitedNameAttribute($value)
+    {
+        if ($value) {
+            return $value;
+        }
+        return $this->invitedUser?->name;
     }
 
     public function inviter()

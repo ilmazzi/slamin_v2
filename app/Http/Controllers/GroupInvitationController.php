@@ -227,7 +227,7 @@ class GroupInvitationController extends Controller
             ]);
         }
 
-        return redirect()->route('groups.show', $invitation->group)
+        return redirect()->route('group-invitations.index')
                         ->with('success', __('groups.invitation_accepted'));
     }
 
@@ -267,7 +267,8 @@ class GroupInvitationController extends Controller
             ]);
         }
 
-        return back()->with('success', __('groups.invitation_declined'));
+        return redirect()->route('group-invitations.index')
+                        ->with('success', __('groups.invitation_declined'));
     }
 
     /**

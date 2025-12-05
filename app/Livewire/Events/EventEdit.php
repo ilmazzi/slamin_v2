@@ -123,6 +123,11 @@ class EventEdit extends Component
     public $searchResults = [];
     public $audienceSearchResults = [];
     public $searching = false;
+    
+    // Email invitation fields
+    public $emailInvitationName = '';
+    public $emailInvitationEmail = '';
+    public $emailInvitationRole = 'performer';
 
     // Group search
     public $groupSearchQuery = '';
@@ -768,6 +773,53 @@ class EventEdit extends Component
         session()->flash('success', "Invito aggiunto per {$user->name}");
     }
 
+    public function addEmailInvitation()
+    {
+        // Validate email
+        if (empty($this->emailInvitationEmail) || !filter_var($this->emailInvitationEmail, FILTER_VALIDATE_EMAIL)) {
+            session()->flash('error', 'Inserisci un indirizzo email valido');
+            return;
+        }
+
+        // Check if email already invited
+        if (collect($this->invitations)->contains('email', $this->emailInvitationEmail)) {
+            session()->flash('warning', 'Email già invitata');
+            return;
+        }
+
+        // Check if user with this email exists
+        $existingUser = User::where('email', $this->emailInvitationEmail)->first();
+        if ($existingUser) {
+            // User exists, use normal invitation
+            $this->addInvitation($existingUser->id, $this->emailInvitationRole);
+            $this->emailInvitationName = '';
+            $this->emailInvitationEmail = '';
+            return;
+        }
+
+        // Add email invitation
+        $invitation = [
+            'user_id' => null,
+            'name' => $this->emailInvitationName ?: 'Utente non registrato',
+            'email' => $this->emailInvitationEmail,
+            'role' => $this->emailInvitationRole,
+            'is_email_invitation' => true,
+        ];
+
+        $this->invitations[] = $invitation;
+
+        // Also add to performer_invitations if role is performer
+        if ($this->emailInvitationRole === 'performer') {
+            $this->performer_invitations[] = $invitation;
+        }
+
+        // Clear fields
+        $this->emailInvitationName = '';
+        $this->emailInvitationEmail = '';
+
+        session()->flash('success', "Invito via email aggiunto per {$invitation['email']}");
+    }
+
     public function removeInvitation($index)
     {
         if (isset($this->invitations[$index])) {
@@ -943,26 +995,49 @@ class EventEdit extends Component
                 $event->groups()->detach();
             }
 
-            // Get existing invitation user IDs to avoid re-notifying
-            $existingInvitationUserIds = $event->invitations()->pluck('invited_user_id')->toArray();
+            // Get existing invitation user IDs and emails to avoid re-notifying
+            $existingInvitationUserIds = $event->invitations()->whereNotNull('invited_user_id')->pluck('invited_user_id')->toArray();
+            $existingInvitationEmails = $event->invitations()->whereNotNull('invited_email')->pluck('invited_email')->toArray();
             
             // Delete and recreate invitations
             $event->invitations()->delete();
             
             if (!empty($this->invitations)) {
                 foreach ($this->invitations as $invitation) {
-                    $eventInvitation = $event->invitations()->create([
-                        'invited_user_id' => $invitation['user_id'],
-                        'inviter_id' => Auth::id(),
-                        'role' => $invitation['role'],
-                        'status' => 'pending',
-                    ]);
+                    $isEmailInvitation = isset($invitation['is_email_invitation']) && $invitation['is_email_invitation'];
                     
-                    // Send notification only if user wasn't already invited (new invitation)
-                    if (!in_array($invitation['user_id'], $existingInvitationUserIds)) {
-                        $invitedUser = \App\Models\User::find($invitation['user_id']);
-                        if ($invitedUser) {
-                            $invitedUser->notify(new \App\Notifications\EventInvitationNotification($eventInvitation));
+                    if ($isEmailInvitation) {
+                        // Email invitation for non-registered user
+                        $eventInvitation = $event->invitations()->create([
+                            'invited_user_id' => null,
+                            'invited_email' => $invitation['email'],
+                            'invited_name' => $invitation['name'],
+                            'inviter_id' => Auth::id(),
+                            'role' => $invitation['role'],
+                            'status' => 'pending',
+                        ]);
+
+                        // Send email invitation only if email wasn't already invited
+                        if (!in_array($invitation['email'], $existingInvitationEmails)) {
+                            \Illuminate\Support\Facades\Mail::to($invitation['email'])->send(
+                                new \App\Mail\EventInvitationEmail($eventInvitation, $event)
+                            );
+                        }
+                    } else {
+                        // Regular invitation for registered user
+                        $eventInvitation = $event->invitations()->create([
+                            'invited_user_id' => $invitation['user_id'],
+                            'inviter_id' => Auth::id(),
+                            'role' => $invitation['role'],
+                            'status' => 'pending',
+                        ]);
+                        
+                        // Send notification only if user wasn't already invited (new invitation)
+                        if (!in_array($invitation['user_id'], $existingInvitationUserIds)) {
+                            $invitedUser = \App\Models\User::find($invitation['user_id']);
+                            if ($invitedUser) {
+                                $invitedUser->notify(new \App\Notifications\EventInvitationNotification($eventInvitation));
+                            }
                         }
                     }
                 }

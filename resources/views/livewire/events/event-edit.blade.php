@@ -1403,12 +1403,61 @@
                                         </div>
                                     @endif
 
+                                    {{-- Email Invitation Form --}}
+                                    <div class="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 mb-4 border border-amber-200 dark:border-amber-800">
+                                        <div class="flex items-start gap-2 mb-3">
+                                            <svg class="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            <div class="flex-1">
+                                                <p class="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-1">
+                                                    Se conosci la mail di questa persona, invitala su Slamin!
+                                                </p>
+                                                <p class="text-xs text-amber-700 dark:text-amber-400">
+                                                    Invieremo un'email per invitarla a registrarsi e partecipare all'evento.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-2 mb-2">
+                                            <input type="text" 
+                                                   wire:model="emailInvitationName" 
+                                                   placeholder="Nome (opzionale)" 
+                                                   class="px-3 py-2 rounded-lg bg-white dark:bg-neutral-800 border border-amber-300 dark:border-amber-700 text-neutral-900 dark:text-white text-sm">
+                                            <input type="email" 
+                                                   wire:model="emailInvitationEmail" 
+                                                   placeholder="Email *" 
+                                                   class="px-3 py-2 rounded-lg bg-white dark:bg-neutral-800 border border-amber-300 dark:border-amber-700 text-neutral-900 dark:text-white text-sm">
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <select wire:model="emailInvitationRole" 
+                                                    class="px-3 py-2 rounded-lg bg-white dark:bg-neutral-800 border border-amber-300 dark:border-amber-700 text-neutral-900 dark:text-white text-sm">
+                                                <option value="performer">Artista</option>
+                                                <option value="organizer">Organizer</option>
+                                            </select>
+                                            <button type="button" 
+                                                    wire:click="addEmailInvitation"
+                                                    class="flex-1 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm font-semibold">
+                                                Invita via Email
+                                            </button>
+                                        </div>
+                                    </div>
+
                                     {{-- Invited List --}}
                                     @if(count($invitations) > 0)
                                         <div class="space-y-2">
                                             @foreach($invitations as $index => $invitation)
                                                 <div class="bg-white dark:bg-neutral-800 rounded-lg p-3 flex items-center justify-between">
-                                                    <div class="font-semibold text-neutral-900 dark:text-white">{{ $invitation['name'] }}</div>
+                                                    <div>
+                                                        <div class="font-semibold text-neutral-900 dark:text-white">{{ $invitation['name'] }}</div>
+                                                        @if(isset($invitation['is_email_invitation']) && $invitation['is_email_invitation'])
+                                                            <div class="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                                                </svg>
+                                                                {{ $invitation['email'] }} (non registrato)
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                     <div class="flex items-center gap-3">
                                                         <select wire:model="invitations.{{ $index }}.role" 
                                                                 class="px-3 py-1 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white text-sm">

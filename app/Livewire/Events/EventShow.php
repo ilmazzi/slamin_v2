@@ -10,10 +10,78 @@ use Illuminate\Support\Facades\Log;
 class EventShow extends Component
 {
     public Event $event;
+    public $userInvitation = null;
 
     public function mount(Event $event)
     {
         $this->event = $event;
+        $this->loadUserInvitation();
+    }
+
+    public function loadUserInvitation()
+    {
+        if (Auth::check()) {
+            $this->userInvitation = $this->event->invitations()
+                ->where('invited_user_id', Auth::id())
+                ->first();
+        }
+    }
+
+    public function acceptInvitation()
+    {
+        if (!$this->userInvitation || $this->userInvitation->invited_user_id !== Auth::id()) {
+            session()->flash('error', __('events.invitation.cannot_accept_others_invitation'));
+            return;
+        }
+
+        if (!$this->userInvitation->isPending()) {
+            session()->flash('error', __('events.invitation.already_responded'));
+            return;
+        }
+
+        // Create EventParticipant if role is 'performer' and participant doesn't exist
+        if ($this->userInvitation->role === 'performer') {
+            $existingParticipant = \App\Models\EventParticipant::where('event_id', $this->event->id)
+                ->where('user_id', Auth::id())
+                ->first();
+
+            if (!$existingParticipant) {
+                \App\Models\EventParticipant::create([
+                    'event_id' => $this->event->id,
+                    'user_id' => Auth::id(),
+                    'registration_type' => 'invited',
+                    'status' => 'confirmed',
+                    'added_by' => $this->userInvitation->inviter_id,
+                ]);
+            }
+        }
+
+        $this->userInvitation->update(['status' => 'accepted']);
+
+        // Refresh event to update relationships
+        $this->event->refresh();
+        $this->loadUserInvitation();
+        session()->flash('success', __('events.invitation.accepted_success'));
+    }
+
+    public function declineInvitation()
+    {
+        if (!$this->userInvitation || $this->userInvitation->invited_user_id !== Auth::id()) {
+            session()->flash('error', __('events.invitation.cannot_decline_others_invitation'));
+            return;
+        }
+
+        if (!$this->userInvitation->isPending()) {
+            session()->flash('error', __('events.invitation.already_responded'));
+            return;
+        }
+
+        $this->userInvitation->update(['status' => 'declined']);
+
+        // Refresh event to update relationships
+        $this->event->refresh();
+        $this->loadUserInvitation();
+        session()->flash('success', __('events.invitation.declined_success'));
     }
 
     public function resendInvitations()
