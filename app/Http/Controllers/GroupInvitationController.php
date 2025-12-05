@@ -11,16 +11,69 @@ use Illuminate\Support\Facades\Auth;
 class GroupInvitationController extends Controller
 {
     /**
-     * Mostra gli inviti ricevuti dall'utente
+     * Mostra gli inviti ricevuti dall'utente (gruppi + eventi)
      */
     public function index()
     {
         $user = Auth::user();
 
-        $invitations = GroupInvitation::where('user_id', $user->id)
+        // Filtra solo gli inviti in sospeso se richiesto (quando si clicca dal dashboard)
+        $pendingOnly = request()->get('pending', false);
+        
+        // Recupera inviti ai gruppi
+        $groupInvitationsQuery = GroupInvitation::where('user_id', $user->id);
+        if ($pendingOnly) {
+            $groupInvitationsQuery->where('status', 'pending');
+        }
+        $groupInvitations = $groupInvitationsQuery
                            ->with(['group', 'invitedBy'])
                            ->orderBy('created_at', 'desc')
-                           ->paginate(10);
+                           ->get()
+                           ->map(function ($invitation) {
+                               return [
+                                   'type' => 'group',
+                                   'id' => $invitation->id,
+                                   'invitation' => $invitation,
+                                   'created_at' => $invitation->created_at,
+                               ];
+                           });
+
+        // Recupera inviti agli eventi
+        $eventInvitationsQuery = \App\Models\EventInvitation::where('invited_user_id', $user->id);
+        if ($pendingOnly) {
+            $eventInvitationsQuery->where('status', 'pending');
+        }
+        $eventInvitations = $eventInvitationsQuery
+                           ->with(['event', 'inviter'])
+                           ->orderBy('created_at', 'desc')
+                           ->get()
+                           ->map(function ($invitation) {
+                               return [
+                                   'type' => 'event',
+                                   'id' => $invitation->id,
+                                   'invitation' => $invitation,
+                                   'created_at' => $invitation->created_at,
+                               ];
+                           });
+
+        // Unisci e ordina per data
+        $allInvitations = $groupInvitations->concat($eventInvitations)
+                          ->sortByDesc('created_at')
+                          ->values();
+
+        // Paginazione manuale
+        $page = request()->get('page', 1);
+        $perPage = 10;
+        $total = $allInvitations->count();
+        $items = $allInvitations->slice(($page - 1) * $perPage, $perPage)->values();
+        
+        $invitations = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $total,
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
 
         return view('groups.invitations.index', compact('invitations'));
     }

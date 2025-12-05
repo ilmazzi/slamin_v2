@@ -246,7 +246,7 @@ class DashboardIndex extends Component
                 'description' => __('dashboard.invitations_to_reply', ['count' => $invitationsCount]),
                 'count' => $invitationsCount,
                 'color' => 'warning',
-                'url' => route('group-invitations.index'),
+                'url' => route('group-invitations.index', ['pending' => true]),
             ],
             [
                 'icon' => 'ph-chat-circle',
