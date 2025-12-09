@@ -45,6 +45,7 @@ Route::post('/api/comments', [App\Http\Controllers\Api\CommentController::class,
     ->middleware('auth')
     ->name('api.comments.store');
 
+
 // User Search API
 Route::get('/api/users/search', [App\Http\Controllers\Api\UserSearchController::class, 'search'])
     ->middleware('auth')
@@ -410,6 +411,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     // Newsletter
     Route::get('/newsletter', \App\Livewire\Admin\Newsletter\NewsletterManagement::class)
         ->name('newsletter.index');
+    
 });
 
 // Gallery Route

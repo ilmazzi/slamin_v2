@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fe70ba69cf481aedee8f29d91187565",
+    "content-hash": "8f6906737e1ee6a7c863d2f0575fba3d",
     "packages": [
         {
             "name": "brick/math",
@@ -1307,6 +1307,72 @@
                 }
             ],
             "time": "2025-08-22T14:27:06+00:00"
+        },
+        {
+            "name": "haevol/laravel-openproject-feedback",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/haevol/laravel-openproject-feedback.git",
+                "reference": "a371d677e496901e665105d9955147662a67e0f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/haevol/laravel-openproject-feedback/zipball/a371d677e496901e665105d9955147662a67e0f0",
+                "reference": "a371d677e496901e665105d9955147662a67e0f0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^10.0|^11.0|^12.0",
+                "illuminate/routing": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^10.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Haevol\\OpenProjectFeedback\\OpenProjectFeedbackServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Haevol\\OpenProjectFeedback\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Haevol\\OpenProjectFeedback\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Haevol",
+                    "email": "info@haevol.org"
+                }
+            ],
+            "description": "Laravel package for collecting user feedback and automatically creating work packages in OpenProject",
+            "keywords": [
+                "bug-tracking",
+                "feedback",
+                "issue-tracking",
+                "laravel",
+                "openproject"
+            ],
+            "support": {
+                "source": "https://github.com/haevol/laravel-openproject-feedback/tree/main",
+                "issues": "https://github.com/haevol/laravel-openproject-feedback/issues"
+            },
+            "time": "2025-12-09T13:12:59+00:00"
         },
         {
             "name": "intervention/gif",
@@ -10144,7 +10210,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "haevol/laravel-openproject-feedback": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -435,28 +435,54 @@
     <!-- Cookie Banner -->
     <x-cookie-banner />
     
-    <!-- Userback Widget -->
-    <script>
-        window.Userback = window.Userback || {};
-        Userback.access_token = "A-XS47P2vKL4SvC5uR2tFpztFlb";
-        
-        @if(auth()->check())
-        // Identify logged-in user
-        Userback.user_data = {
-            id: "{!! auth()->id() !!}",
-            info: {
-                name: "{!! addslashes(auth()->user()->name) !!}",
-                email: "{!! auth()->user()->email !!}"
-            }
-        };
+    <!-- Feedback Widget -->
+    @if(config('openproject-feedback.widget.enabled', true))
+        @if(!config('openproject-feedback.widget.show_only_authenticated', true) || auth()->check())
+            @if(config('openproject-feedback.widget.show_only_authenticated', true) && auth()->check())
+                <script>
+                    (function() {
+                        function addAuthClass() {
+                            if (document.body) {
+                                document.body.classList.add('authenticated');
+                                document.body.setAttribute('data-user-id', '{{ auth()->id() }}');
+                            } else {
+                                setTimeout(addAuthClass, 10);
+                            }
+                        }
+                        addAuthClass();
+                    })();
+                </script>
+            @endif
+
+            <script>
+                window.OpenProjectFeedbackConfig = {
+                    route: '{{ route('openproject-feedback.store') }}',
+                    position: '{{ config('openproject-feedback.widget.position', 'bottom-left') }}',
+                    offset: {
+                        bottom: {{ config('openproject-feedback.widget.offset.bottom', 64) }},
+                        top: {{ config('openproject-feedback.widget.offset.top', 16) }},
+                        left: {{ config('openproject-feedback.widget.offset.left', 0) }},
+                        right: {{ config('openproject-feedback.widget.offset.right', 16) }},
+                    },
+                    zIndex: {{ config('openproject-feedback.widget.z_index', 50) }},
+                    colors: {
+                        primary: '{{ config('openproject-feedback.widget.color.primary', '#3b82f6') }}',
+                        hover: '{{ config('openproject-feedback.widget.color.hover', '#2563eb') }}',
+                    },
+                    text: '{{ config('openproject-feedback.widget.text', 'FEEDBACK') }}',
+                    showOnlyAuthenticated: {{ config('openproject-feedback.widget.show_only_authenticated', true) ? 'true' : 'false' }},
+                };
+            </script>
+            @php
+                $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+                $widgetFile = $manifest['resources/js/vendor/openproject-feedback/feedback-widget.js']['file'] ?? null;
+            @endphp
+            @if($widgetFile)
+                <script src="{{ asset('build/' . $widgetFile) }}"></script>
+            @else
+                @vite(['resources/js/vendor/openproject-feedback/feedback-widget.js'])
+            @endif
         @endif
-        
-        (function(d) {
-            var s = d.createElement('script');
-            s.async = true;
-            s.src = 'https://static.userback.io/widget/v1.js';
-            (d.head || d.body).appendChild(s);
-        })(document);
-    </script>
+    @endif
 </body>
 </html>

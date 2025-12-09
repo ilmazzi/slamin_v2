@@ -21,7 +21,8 @@ export default defineConfig({
                 'resources/js/forum.js',
                 'resources/css/chat.css',
                 'resources/js/chat.js',
-                'resources/css/scoring.css'
+                'resources/css/scoring.css',
+                'resources/js/vendor/openproject-feedback/feedback-widget.js'
             ],
             refresh: true,
         }),
