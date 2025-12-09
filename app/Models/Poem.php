@@ -217,9 +217,21 @@ class Poem extends Model
 
         static::creating(function ($poem) {
             if (empty($poem->slug)) {
-                $poem->slug = $poem->title 
-                    ? Str::slug($poem->title) 
-                    : 'poesia-' . Str::random(8);
+                if ($poem->title) {
+                    $baseSlug = Str::slug($poem->title);
+                    $slug = $baseSlug;
+                    $counter = 1;
+                    
+                    // Assicurati che lo slug sia unico
+                    while (static::where('slug', $slug)->exists()) {
+                        $slug = $baseSlug . '-' . $counter;
+                        $counter++;
+                    }
+                    
+                    $poem->slug = $slug;
+                } else {
+                    $poem->slug = 'poesia-' . Str::random(8);
+                }
             }
             if (empty($poem->word_count)) {
                 $poem->word_count = str_word_count(strip_tags($poem->content));
@@ -239,7 +251,17 @@ class Poem extends Model
                 $poem->word_count = str_word_count(strip_tags($poem->content));
             }
             if ($poem->isDirty('title') && empty($poem->slug)) {
-                $poem->slug = Str::slug($poem->title);
+                $baseSlug = Str::slug($poem->title);
+                $slug = $baseSlug;
+                $counter = 1;
+                
+                // Assicurati che lo slug sia unico (escludendo il record corrente)
+                while (static::where('slug', $slug)->where('id', '!=', $poem->id)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+                
+                $poem->slug = $slug;
             }
         });
     }
