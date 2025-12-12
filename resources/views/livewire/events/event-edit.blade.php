@@ -2622,3 +2622,162 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 @endpush
+
+    const addressInput = document.getElementById('venue_address');
+    
+    // Country change - immediate zoom
+    if (countrySelect) {
+        countrySelect.addEventListener('change', () => {
+            if (countryTimeout) clearTimeout(countryTimeout);
+            countryTimeout = setTimeout(() => {
+                geocodeCountry();
+            }, 100);
+        });
+    }
+    
+    // City change - geocode city
+    if (cityInput) {
+        cityInput.addEventListener('input', () => {
+            if (cityTimeout) clearTimeout(cityTimeout);
+            cityTimeout = setTimeout(() => {
+                geocodeCity();
+            }, 500);
+        });
+    }
+    
+    // Postcode change - restrict area
+    if (postcodeInput) {
+        postcodeInput.addEventListener('input', () => {
+            if (postcodeTimeout) clearTimeout(postcodeTimeout);
+            postcodeTimeout = setTimeout(() => {
+                geocodeCity(); // Will use postcode in query
+            }, 500);
+        });
+    }
+    
+    // Address change - precise geocoding
+    if (addressInput) {
+        addressInput.addEventListener('input', () => {
+            if (addressTimeout) clearTimeout(addressTimeout);
+            addressTimeout = setTimeout(() => {
+                geocodeFullAddress();
+            }, 500);
+        });
+    }
+}
+
+// Listen for Livewire initialization
+document.addEventListener('livewire:init', () => {
+    // Setup progressive geocoding
+    setTimeout(() => {
+        setupProgressiveGeocoding();
+        // Initialize with country if map is ready
+        if (creationMap) {
+            geocodeCountry();
+        }
+    }, 500);
+    
+    // Listen for geocoding trigger from PHP (backward compatibility)
+    Livewire.on('trigger-geocoding', () => {
+        console.log('🔔 Geocoding triggered from PHP');
+        if (creationMap && !@this.get('is_online')) {
+            geocodeFullAddress();
+        }
+    });
+    
+    Livewire.on('address-changed', () => {
+        console.log('🔔 Address changed - will geocode');
+        if (creationMap && !@this.get('is_online')) {
+            geocodeFullAddress();
+        }
+    });
+    
+    // Listen for map location update (when coordinates change directly)
+    Livewire.on('update-map-location', (data) => {
+        console.log('🔔 Updating map location:', data);
+        if (creationMap && data.latitude && data.longitude) {
+            const lat = parseFloat(data.latitude);
+            const lng = parseFloat(data.longitude);
+            
+            // Remove old marker
+            if (creationMarker) {
+                creationMap.removeLayer(creationMarker);
+            }
+            
+            // Add new marker
+            creationMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: `<div style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); border: 3px solid white; position: relative; z-index: 1000;"></div>`,
+                    className: 'custom-event-marker',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32]
+                }),
+                zIndexOffset: 1000
+            }).addTo(creationMap);
+            
+            // Center map on marker
+            creationMap.setView([lat, lng], 14);
+            
+            console.log('📍 Marker updated to:', lat, lng);
+        }
+    });
+    
+    Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
+        succeed(({ snapshot, effect }) => {
+            setTimeout(() => {
+                const mapContainer = document.getElementById('eventCreationMap');
+                if (mapContainer && mapContainer.offsetParent !== null && !creationMap) {
+                    console.log('🔄 Livewire updated, map container visible, initializing...');
+                    initCreationMap();
+                    setupProgressiveGeocoding();
+                    // Re-initialize geocoding based on current values
+                    setTimeout(() => {
+                        if (creationMap) {
+                            const address = @this.get('venue_address') || '';
+                            if (address && address.length >= 3) {
+                                geocodeFullAddress();
+                            } else {
+                                const city = @this.get('city') || '';
+                                if (city && city.length >= 2) {
+                                    geocodeCity();
+                                } else {
+                                    geocodeCountry();
+                                }
+                            }
+                        }
+                    }, 300);
+                }
+            }, 500);
+        });
+    });
+});
+
+// Also try when Step 2 becomes visible
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const mapContainer = document.getElementById('eventCreationMap');
+        if (mapContainer && mapContainer.offsetParent !== null) {
+            console.log('📍 DOMContentLoaded, map visible, initializing...');
+            initCreationMap();
+            setupProgressiveGeocoding();
+            // Initialize with current values
+            setTimeout(() => {
+                if (creationMap) {
+                    const address = @this.get('venue_address') || '';
+                    if (address && address.length >= 3) {
+                        geocodeFullAddress();
+                    } else {
+                        const city = @this.get('city') || '';
+                        if (city && city.length >= 2) {
+                            geocodeCity();
+                        } else {
+                            geocodeCountry();
+                        }
+                    }
+                }
+            }, 500);
+        }
+    }, 1000);
+});
+</script>
+@endpush

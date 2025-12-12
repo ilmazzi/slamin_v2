@@ -58,16 +58,23 @@
         </div>
 
         <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-            <p class="text-center text-gray-600 dark:text-gray-300 text-sm flex items-center justify-center flex-wrap gap-1">
-                <span>Everything by everyone on this site is licensed under</span>
-                <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>
-                <span class="inline-flex items-center gap-1 ml-1">
-                    <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC" class="w-4 h-4 inline-block">
-                    <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="BY" class="w-4 h-4 inline-block">
-                    <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="NC" class="w-4 h-4 inline-block">
-                    <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="SA" class="w-4 h-4 inline-block">
-                </span>
-            </p>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-600 dark:text-gray-300">
+                <div class="flex items-center justify-center flex-wrap gap-2">
+                    <span>Everything by everyone on this site is licensed under</span>
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>
+                    <span class="inline-flex items-center gap-1 ml-1">
+                        <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC" class="w-4 h-4 inline-block">
+                        <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="BY" class="w-4 h-4 inline-block">
+                        <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="NC" class="w-4 h-4 inline-block">
+                        <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="SA" class="w-4 h-4 inline-block">
+                    </span>
+                </div>
+                <div class="flex items-center justify-center flex-wrap gap-4">
+                    <a href="{{ route('about') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('footer.about') }}</a>
+                    <a href="{{ route('terms') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('footer.terms') }}</a>
+                    <a href="{{ route('privacy') }}" class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">{{ __('footer.privacy') }}</a>
+                </div>
+            </div>
         </div>
     </div>
 </footer>
