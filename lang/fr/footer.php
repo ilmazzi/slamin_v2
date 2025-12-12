@@ -6,11 +6,12 @@ return [
     'description_alt' => 'Un portale dedicato ai poeti per condividere le loro opere, partecipare ad eventi e connettersi con la community letteraria.',
     
     // Section titles
-    'discover' => 'Scopri',
-    'community' => 'Community',
-    'legal' => 'Legale',
-    'useful_links' => 'Link Utili',
-    'resources' => 'Risorse',
+    'discover' => 'Découvrir',
+    'community' => 'Communauté',
+    'info' => 'Info',
+    'legal' => 'Légal',
+    'useful_links' => 'Liens Utiles',
+    'resources' => 'Ressources',
     
     // Discover links
     'events' => 'Eventi',
@@ -38,5 +39,6 @@ return [
     
     // Copyright
     'copyright' => 'Tous droits réservés.',
+    'license_text' => 'Tout le contenu de ce site est sous licence',
 ];
 

@@ -47,37 +47,28 @@
 
             <!-- Info -->
             <div>
-                <h3 class="text-white font-bold mb-4">{{ __('footer.info') ?? 'Info' }}</h3>
+                <h3 class="text-white font-bold mb-4">{{ __('footer.info') }}</h3>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="{{ route('about') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.about') ?? 'Chi siamo' }}</a></li>
-                    <li><a href="{{ route('terms') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.terms') ?? 'Termini di servizio' }}</a></li>
-                    <li><a href="{{ route('privacy') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.privacy') ?? 'Informativa privacy' }}</a></li>
+                    <li><a href="{{ route('about') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.about') }}</a></li>
+                    <li><a href="{{ route('terms') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.terms') }}</a></li>
+                    <li><a href="{{ route('privacy') }}" class="hover:text-primary-400 transition-colors">{{ __('footer.privacy') }}</a></li>
                 </ul>
             </div>
 
             <!-- Newsletter -->
             <div>
-                <h3 class="text-white font-bold mb-4">{{ __('footer.newsletter') ?? 'Newsletter' }}</h3>
+                <h3 class="text-white font-bold mb-4">{{ __('footer.newsletter') }}</h3>
                 <p class="text-sm text-neutral-400 mb-4">
-                    {{ __('footer.newsletter_description') ?? 'Resta aggiornato con le ultime novità' }}
+                    {{ __('footer.newsletter_description') }}
                 </p>
                 <livewire:components.newsletter-subscribe />
             </div>
         </div>
 
-        <!-- Quick Info Links (visible on all layouts) -->
-        <div class="mb-8 flex items-center flex-wrap gap-4 text-sm">
-            <a href="{{ route('about') }}" class="text-neutral-300 hover:text-primary-300 transition-colors">{{ __('footer.about') ?? 'Chi siamo' }}</a>
-            <span class="text-neutral-500">•</span>
-            <a href="{{ route('terms') }}" class="text-neutral-300 hover:text-primary-300 transition-colors">{{ __('footer.terms') ?? 'Termini di servizio' }}</a>
-            <span class="text-neutral-500">•</span>
-            <a href="{{ route('privacy') }}" class="text-neutral-300 hover:text-primary-300 transition-colors">{{ __('footer.privacy') ?? 'Informativa privacy' }}</a>
-        </div>
-
         <!-- Bottom Bar -->
         <div class="border-t border-neutral-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center flex-wrap gap-3 text-sm text-neutral-500">
-                <span>Everything by everyone on this site is licensed under</span>
+                <span>{{ __('footer.license_text') }}</span>
                 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-primary-400 hover:text-primary-300 transition-colors" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>
                 <span class="inline-flex items-center gap-1 ml-1">
                     <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="CC" class="w-4 h-4 inline-block">
@@ -87,9 +78,9 @@
                 </span>
             </div>
             <div class="flex items-center flex-wrap gap-6 text-sm">
-                <a href="{{ route('about') }}" class="text-neutral-400 hover:text-primary-400 transition-colors">{{ __('footer.about') ?? 'Chi siamo' }}</a>
-                <a href="{{ route('terms') }}" class="text-neutral-400 hover:text-primary-400 transition-colors">{{ __('footer.terms') ?? 'Termini di servizio' }}</a>
-                <a href="{{ route('privacy') }}" class="text-neutral-400 hover:text-primary-400 transition-colors">{{ __('footer.privacy') ?? 'Informativa privacy' }}</a>
+                <a href="{{ route('about') }}" class="text-neutral-400 hover:text-primary-400 transition-colors">{{ __('footer.about') }}</a>
+                <a href="{{ route('terms') }}" class="text-neutral-400 hover:text-primary-400 transition-colors">{{ __('footer.terms') }}</a>
+                <a href="{{ route('privacy') }}" class="text-neutral-400 hover:text-primary-400 transition-colors">{{ __('footer.privacy') }}</a>
             </div>
         </div>
     </div>

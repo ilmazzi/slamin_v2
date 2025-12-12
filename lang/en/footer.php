@@ -8,6 +8,7 @@ return [
     // Section titles
     'discover' => 'Discover',
     'community' => 'Community',
+    'info' => 'Info',
     'legal' => 'Legal',
     'useful_links' => 'Useful Links',
     'resources' => 'Resources',
@@ -38,5 +39,6 @@ return [
     
     // Copyright
     'copyright' => 'All rights reserved.',
+    'license_text' => 'Everything by everyone on this site is licensed under',
 ];
 

@@ -8,6 +8,7 @@ return [
     // Section titles
     'discover' => 'Scopri',
     'community' => 'Community',
+    'info' => 'Info',
     'legal' => 'Legale',
     'useful_links' => 'Link Utili',
     'resources' => 'Risorse',
@@ -38,5 +39,6 @@ return [
     
     // Copyright
     'copyright' => 'Tutti i diritti riservati.',
+    'license_text' => 'Tutto il contenuto di questo sito è rilasciato sotto licenza',
 ];
 
