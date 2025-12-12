@@ -341,9 +341,11 @@
     </div>
 
     {{-- Top Gigs - CORK BOARD SECTION --}}
+    @if(!auth()->check() || !auth()->user()->hasRole('audience'))
     <div class="py-20 md:py-24 cork-board-section">
         <livewire:home.gigs-section />
     </div>
+    @endif
 
     {{-- Decorative Separator --}}
     <div class="py-12 md:py-16 bg-white dark:bg-neutral-900">
