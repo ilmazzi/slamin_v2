@@ -673,9 +673,60 @@
                                         </label>
                                     </div>
 
+                                    {{-- Paese (testo libero, qualunque nazione) --}}
                                     <div class="relative group">
                                         <input type="text"
-                                               wire:model.live.debounce.1500ms="venue_address"
+                                               wire:model.live.debounce.500ms="country"
+                                               id="country"
+                                               placeholder=" "
+                                               class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
+                                                      focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                      transition-all duration-300">
+                                        <label for="country" class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                                            Paese
+                                        </label>
+                                    </div>
+
+                                    {{-- Città --}}
+                                    <div class="relative group">
+                                        <input type="text"
+                                               wire:model.live.debounce.500ms="city"
+                                               id="city"
+                                               placeholder=" "
+                                               class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
+                                                      focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                      transition-all duration-300">
+                                        <label for="city" 
+                                               class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
+                                                      peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
+                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
+                                                      transition-all duration-200">
+                                            Città
+                                        </label>
+                                    </div>
+
+                                    {{-- CAP --}}
+                                    <div class="relative group">
+                                        <input type="text"
+                                               wire:model.live.debounce.500ms="postcode"
+                                               id="postcode"
+                                               placeholder=" "
+                                               class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
+                                                      focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
+                                                      transition-all duration-300">
+                                        <label for="postcode" 
+                                               class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
+                                                      peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
+                                                      peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
+                                                      transition-all duration-200">
+                                            CAP
+                                        </label>
+                                    </div>
+
+                                    {{-- Indirizzo --}}
+                                    <div class="relative group">
+                                        <input type="text"
+                                               wire:model.live.debounce.500ms="venue_address"
                                                id="venue_address"
                                                placeholder=" "
                                                class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
@@ -688,61 +739,6 @@
                                                       transition-all duration-200">
                                             Indirizzo
                                         </label>
-                                    </div>
-
-                                    <div class="grid md:grid-cols-3 gap-4">
-                                        <div class="relative group">
-                                            <input type="text"
-                                                   wire:model.live.debounce.1500ms="city"
-                                                   id="city"
-                                                   placeholder=" "
-                                                   class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
-                                                          focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                          transition-all duration-300">
-                                            <label for="city" 
-                                                   class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
-                                                          peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                          peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
-                                                          transition-all duration-200">
-                                                Città
-                                            </label>
-                                        </div>
-                                        <div class="relative group">
-                                            <select wire:model="country"
-                                                    id="country"
-                                                    class="w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white appearance-none cursor-pointer
-                                                           focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                           transition-all duration-300">
-                                                <option value="IT">Italia</option>
-                                                <option value="CH">Svizzera</option>
-                                                <option value="FR">Francia</option>
-                                                <option value="DE">Germania</option>
-                                                <option value="ES">Spagna</option>
-                                                <option value="UK">Regno Unito</option>
-                                            </select>
-                                            <label for="country" class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
-                                                Paese
-                                            </label>
-                                            <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400 dark:text-neutral-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                            </svg>
-                                        </div>
-                                        <div class="relative group">
-                                            <input type="text"
-                                                   wire:model="postcode"
-                                                   id="postcode"
-                                                   placeholder=" "
-                                                   class="peer w-full px-5 py-4 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-transparent
-                                                          focus:border-primary-500 dark:focus:border-primary-400 focus:ring-4 focus:ring-primary-500/10
-                                                          transition-all duration-300">
-                                            <label for="postcode" 
-                                                   class="absolute left-5 -top-2.5 px-2 text-sm font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300
-                                                          peer-placeholder-shown:top-4 peer-placeholder-shown:text-base
-                                                          peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600 dark:peer-focus:text-primary-400
-                                                          transition-all duration-200">
-                                                CAP
-                                            </label>
-                                        </div>
                                     </div>
 
                                     {{-- Interactive Map - ALWAYS in DOM --}}
@@ -2309,32 +2305,55 @@ function initCreationMap() {
     }, 1200);
 }
 
-// Geocode address and place marker
-function geocodeAddress() {
-    if (!creationMap) {
-        console.log('❌ Map not initialized yet');
-        return;
-    }
+// Progressive geocoding functions
+const countryCenters = {
+    'IT': { lat: 41.9028, lng: 12.4964, zoom: 6 },
+    'CH': { lat: 46.8182, lng: 8.2275, zoom: 7 },
+    'FR': { lat: 46.2276, lng: 2.2137, zoom: 6 },
+    'DE': { lat: 51.1657, lng: 10.4515, zoom: 6 },
+    'ES': { lat: 40.4637, lng: -3.7492, zoom: 6 },
+    'UK': { lat: 55.3781, lng: -3.4360, zoom: 6 }
+};
 
-    const address = @this.get('venue_address') || '';
+// Geocode country - zoom on country
+function geocodeCountry() {
+    if (!creationMap) return;
+    
+    const country = @this.get('country') || 'IT';
+    const center = countryCenters[country] || countryCenters['IT'];
+    
+    // Remove marker if exists
+    if (creationMarker) {
+        creationMap.removeLayer(creationMarker);
+        creationMarker = null;
+    }
+    
+    // Center map on country
+    creationMap.setView([center.lat, center.lng], center.zoom);
+    console.log('🌍 Zoomed to country:', country);
+}
+
+// Geocode city - zoom on city
+function geocodeCity() {
+    if (!creationMap) return;
+    
     const city = @this.get('city') || '';
-    const country = @this.get('country') || 'IT'; // Default to Italy if not set
-
-    if (!address && !city) {
-        console.log('❌ No address or city to geocode');
+    const country = @this.get('country') || 'IT';
+    const postcode = @this.get('postcode') || '';
+    
+    if (!city || city.length < 2) {
+        geocodeCountry();
         return;
     }
-
-    const fullAddress = [address, city].filter(Boolean).join(', ');
     
-    // Build Nominatim URL with country restriction
-    let nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}&accept-language=it&limit=1`;
-    if (country) {
-        nominatimUrl += `&countrycodes=${country}`;
+    // Build query: city + postcode (if available) + country
+    let query = city;
+    if (postcode) {
+        query = `${postcode} ${city}`;
     }
     
-    console.log('🔍 Geocoding address:', fullAddress, 'in country:', country);
-
+    const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&accept-language=en&limit=1`;
+    
     fetch(nominatimUrl)
         .then(response => response.json())
         .then(data => {
@@ -2342,15 +2361,69 @@ function geocodeAddress() {
                 const result = data[0];
                 const lat = parseFloat(result.lat);
                 const lng = parseFloat(result.lon);
+                
+                // Remove old marker
+                if (creationMarker) {
+                    creationMap.removeLayer(creationMarker);
+                    creationMarker = null;
+                }
+                
+                // Center map on city (zoom 11-12)
+                const zoom = postcode ? 13 : 11;
+                creationMap.setView([lat, lng], zoom);
+                
+                console.log('🏙️ Zoomed to city:', city, 'at', lat, lng);
+            } else {
+                geocodeCountry();
+            }
+        })
+        .catch(err => {
+            console.error('City geocoding error:', err);
+            geocodeCountry();
+        });
+}
 
+// Geocode full address - place precise marker
+function geocodeFullAddress() {
+    if (!creationMap) return;
+    
+    const address = @this.get('venue_address') || '';
+    const city = @this.get('city') || '';
+    const postcode = @this.get('postcode') || '';
+    const country = @this.get('country') || 'IT';
+    
+    // If no address, just geocode city
+    if (!address || address.length < 3) {
+        geocodeCity();
+        return;
+    }
+    
+    // Build full address
+    const addressParts = [address];
+    if (postcode) addressParts.push(postcode);
+    if (city) addressParts.push(city);
+    const fullAddress = addressParts.join(', ');
+    
+    const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}&accept-language=en&limit=1`;
+    
+    console.log('🔍 Geocoding full address:', fullAddress);
+    
+    fetch(nominatimUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.length > 0) {
+                const result = data[0];
+                const lat = parseFloat(result.lat);
+                const lng = parseFloat(result.lon);
+                
                 console.log('✅ Geocoded to:', lat, lng);
-
+                
                 // Remove old marker
                 if (creationMarker) {
                     creationMap.removeLayer(creationMarker);
                 }
-
-                // Add new marker
+                
+                // Add precise marker
                 creationMarker = L.marker([lat, lng], {
                     icon: L.divIcon({
                         html: `<div style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); border: 3px solid white; position: relative; z-index: 1000;"></div>`,
@@ -2360,52 +2433,104 @@ function geocodeAddress() {
                     }),
                     zIndexOffset: 1000
                 }).addTo(creationMap);
-
-                // Center map on marker
-                creationMap.setView([lat, lng], 14);
-
+                
+                // Center map on marker with precise zoom
+                creationMap.setView([lat, lng], 15);
+                
                 // Update coordinates
                 @this.set('latitude', lat.toFixed(6));
                 @this.set('longitude', lng.toFixed(6));
-
-                console.log('📍 Marker placed at geocoded address');
+                
+                console.log('📍 Precise marker placed at:', lat, lng);
             } else {
-                console.log('❌ No geocoding results found');
+                // Fallback to city geocoding
+                geocodeCity();
             }
         })
-        .catch(err => console.error('Geocoding error:', err));
+        .catch(err => {
+            console.error('Geocoding error:', err);
+            geocodeCity();
+        });
 }
 
-// Debounce timer for geocoding
-let geocodeTimeout = null;
+// Debounce timers
+let countryTimeout = null;
+let cityTimeout = null;
+let postcodeTimeout = null;
+let addressTimeout = null;
 
-// Listen for Livewire updates (when is_online changes)
+// Setup progressive geocoding listeners
+function setupProgressiveGeocoding() {
+    const countrySelect = document.getElementById('country');
+    const cityInput = document.getElementById('city');
+    const postcodeInput = document.getElementById('postcode');
+    const addressInput = document.getElementById('venue_address');
+    
+    // Country change - immediate zoom
+    if (countrySelect) {
+        countrySelect.addEventListener('change', () => {
+            if (countryTimeout) clearTimeout(countryTimeout);
+            countryTimeout = setTimeout(() => {
+                geocodeCountry();
+            }, 100);
+        });
+    }
+    
+    // City change - geocode city
+    if (cityInput) {
+        cityInput.addEventListener('input', () => {
+            if (cityTimeout) clearTimeout(cityTimeout);
+            cityTimeout = setTimeout(() => {
+                geocodeCity();
+            }, 500);
+        });
+    }
+    
+    // Postcode change - restrict area
+    if (postcodeInput) {
+        postcodeInput.addEventListener('input', () => {
+            if (postcodeTimeout) clearTimeout(postcodeTimeout);
+            postcodeTimeout = setTimeout(() => {
+                geocodeCity(); // Will use postcode in query
+            }, 500);
+        });
+    }
+    
+    // Address change - precise geocoding
+    if (addressInput) {
+        addressInput.addEventListener('input', () => {
+            if (addressTimeout) clearTimeout(addressTimeout);
+            addressTimeout = setTimeout(() => {
+                geocodeFullAddress();
+            }, 500);
+        });
+    }
+}
+
+// Listen for Livewire initialization
 document.addEventListener('livewire:init', () => {
-    // Listen for geocoding trigger from PHP
+    // Setup progressive geocoding
+    setTimeout(() => {
+        setupProgressiveGeocoding();
+        // Initialize with country if map is ready
+        if (creationMap) {
+            geocodeCountry();
+        }
+    }, 500);
+    
+    // Listen for geocoding trigger from PHP (backward compatibility)
     Livewire.on('trigger-geocoding', () => {
         console.log('🔔 Geocoding triggered from PHP');
         if (creationMap && !@this.get('is_online')) {
-            geocodeAddress();
+            geocodeFullAddress();
         }
     });
     
     Livewire.on('address-changed', () => {
         console.log('🔔 Address changed - will geocode');
-        // Clear existing timeout
-        if (geocodeTimeout) {
-            clearTimeout(geocodeTimeout);
+        if (creationMap && !@this.get('is_online')) {
+            geocodeFullAddress();
         }
-        
-        // Debounce geocoding (wait 1.5 seconds after user stops typing)
-        geocodeTimeout = setTimeout(() => {
-            const address = @this.get('venue_address') || '';
-            const city = @this.get('city') || '';
-            
-            if ((address.length > 3 || city.length > 2) && creationMap && !@this.get('is_online')) {
-                console.log('🔄 Auto-geocoding address...');
-                geocodeAddress();
-            }
-        }, 1500);
     });
     
     // Listen for map location update (when coordinates change directly)
@@ -2445,6 +2570,23 @@ document.addEventListener('livewire:init', () => {
                 if (mapContainer && mapContainer.offsetParent !== null && !creationMap) {
                     console.log('🔄 Livewire updated, map container visible, initializing...');
                     initCreationMap();
+                    setupProgressiveGeocoding();
+                    // Re-initialize geocoding based on current values
+                    setTimeout(() => {
+                        if (creationMap) {
+                            const address = @this.get('venue_address') || '';
+                            if (address && address.length >= 3) {
+                                geocodeFullAddress();
+                            } else {
+                                const city = @this.get('city') || '';
+                                if (city && city.length >= 2) {
+                                    geocodeCity();
+                                } else {
+                                    geocodeCountry();
+                                }
+                            }
+                        }
+                    }, 300);
                 }
             }, 500);
         });
@@ -2458,6 +2600,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mapContainer && mapContainer.offsetParent !== null) {
             console.log('📍 DOMContentLoaded, map visible, initializing...');
             initCreationMap();
+            setupProgressiveGeocoding();
+            // Initialize with current values
+            setTimeout(() => {
+                if (creationMap) {
+                    const address = @this.get('venue_address') || '';
+                    if (address && address.length >= 3) {
+                        geocodeFullAddress();
+                    } else {
+                        const city = @this.get('city') || '';
+                        if (city && city.length >= 2) {
+                            geocodeCity();
+                        } else {
+                            geocodeCountry();
+                        }
+                    }
+                }
+            }, 500);
         }
     }, 1000);
 });
