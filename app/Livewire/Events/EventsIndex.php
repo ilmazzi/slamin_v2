@@ -375,24 +375,30 @@ class EventsIndex extends Component
     {
         $now = Carbon::now();
         $startOfToday = $now->copy()->startOfDay();
-        $visibilityCutoff = $now->copy()->subHours(6);
+        // Mostra gli eventi terminati negli ultimi 3 giorni (fino a 72h dopo la fine)
+        $recentEndWindow = $now->copy()->subDays(3);
         
         $events = Event::with(['organizer', 'venueOwner'])
             ->whereIn('status', [Event::STATUS_PUBLISHED, Event::STATUS_COMPLETED])
-            ->where(function ($q) use ($visibilityCutoff) {
-                $q->where(function ($q2) use ($visibilityCutoff) {
-                      $q2->whereNotNull('end_datetime')
-                         ->where('end_datetime', '<', $visibilityCutoff);
-                  })
-                  ->orWhere(function ($q3) use ($visibilityCutoff) {
-                      $q3->where('status', Event::STATUS_COMPLETED)
-                         ->whereNotNull('end_datetime')
-                         ->where('end_datetime', '<', $visibilityCutoff);
-                  });
-            })
+            ->whereNotNull('end_datetime')
+            ->whereBetween('end_datetime', [$recentEndWindow, $now])
             ->orderBy('end_datetime', 'desc') // Più recente a sinistra
             ->withCount(['views', 'likes', 'comments'])
+            ->limit(10)
             ->get();
+
+        // Se mancano eventi (es. completed senza end_datetime), riempi fino a 10
+        if ($events->count() < 10) {
+            $missing = 10 - $events->count();
+            $fallback = Event::with(['organizer', 'venueOwner'])
+                ->where('status', Event::STATUS_COMPLETED)
+                ->whereNull('end_datetime')
+                ->orderBy('updated_at', 'desc')
+                ->withCount(['views', 'likes', 'comments'])
+                ->limit($missing)
+                ->get();
+            $events = $events->merge($fallback)->take(10);
+        }
 
         // Load rankings for Poetry Slam events
         foreach ($events as $event) {
