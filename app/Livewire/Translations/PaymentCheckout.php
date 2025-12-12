@@ -25,6 +25,12 @@ class PaymentCheckout extends Component
 
     public function mount(GigApplication $application)
     {
+        // Gli utenti audience non possono accedere ai pagamenti
+        if (Auth::check() && Auth::user()->hasRole('audience')) {
+            session()->flash('error', __('gigs.messages.audience_not_allowed'));
+            return redirect()->route('home');
+        }
+        
         // Verifica che l'utente sia il proprietario del gig
         if ($application->gig->user_id !== Auth::id()) {
             abort(403, 'Non autorizzato');

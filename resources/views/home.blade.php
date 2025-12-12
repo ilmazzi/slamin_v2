@@ -54,12 +54,14 @@
                     </div>
                     <div class="text-sm text-neutral-600 dark:text-neutral-400">Eventi</div>
                 </div>
+                @if(!auth()->check() || !auth()->user()->hasRole('audience'))
                 <div class="text-center group cursor-pointer">
                     <div class="text-4xl md:text-5xl font-bold text-accent-500 mb-2 transition-transform duration-300 group-hover:scale-110">
                         89
                     </div>
                     <div class="text-sm text-neutral-600 dark:text-neutral-400">Gigs Aperti</div>
                 </div>
+                @endif
             </div>
         </div>
     </section>
@@ -116,6 +118,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Ultime Poesie -->
     <section class="py-16 bg-white dark:bg-neutral-800">
@@ -223,6 +226,7 @@
     </section>
 
     <!-- Gigs Disponibili -->
+    @if(!auth()->check() || !auth()->user()->hasRole('audience'))
     <section class="py-16 bg-white dark:bg-neutral-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center mb-8">

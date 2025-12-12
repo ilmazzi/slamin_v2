@@ -21,6 +21,12 @@ class MyApplications extends Component
             session()->flash('error', __('gigs.messages.login_required'));
             return redirect()->route('login');
         }
+        
+        // Gli utenti audience non possono accedere alle candidature
+        if (Auth::user()->hasRole('audience')) {
+            session()->flash('error', __('gigs.messages.audience_not_allowed'));
+            return redirect()->route('home');
+        }
     }
 
     public function updatedStatusFilter()

@@ -25,6 +25,12 @@ class TranslationWorkspace extends Component
     
     public function mount(GigApplication $application)
     {
+        // Gli utenti audience non possono accedere al workspace
+        if (Auth::check() && Auth::user()->hasRole('audience')) {
+            session()->flash('error', __('gigs.messages.audience_not_allowed'));
+            return redirect()->route('home');
+        }
+        
         $this->application = $application->load([
             'gig.poem.user',
             'user',

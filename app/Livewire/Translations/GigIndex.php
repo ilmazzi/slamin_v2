@@ -8,10 +8,20 @@ use App\Models\Group;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
+use Illuminate\Support\Facades\Auth;
 
 class GigIndex extends Component
 {
     use WithPagination;
+
+    public function mount()
+    {
+        // Gli utenti audience non possono accedere agli ingaggi
+        if (Auth::check() && Auth::user()->hasRole('audience')) {
+            session()->flash('error', __('gigs.messages.audience_not_allowed'));
+            return redirect()->route('home');
+        }
+    }
 
     #[Url]
     public $search = '';
