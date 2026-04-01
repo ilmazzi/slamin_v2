@@ -67,7 +67,7 @@
     
     {{-- Article Modal Assets (needed on articles page and home page) --}}
     @vite(['resources/css/article-modal.css'])
-
+<script defer src="https://analytics.slamin.it/script.js" data-website-id="c0b84abf-7884-4893-b23a-5154ae12cd4a"></script>
     {{ $head ?? '' }}
 </head>
 <body class="antialiased bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-x-hidden" 
